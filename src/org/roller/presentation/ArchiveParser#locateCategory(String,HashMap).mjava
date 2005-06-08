@@ -1,0 +1,40 @@
+    /**
+     * Iterate over Item's Categories, if any, using the first one.  
+     * Try to match against any we've already pulled.  
+     * If none found locally, check against the database.  
+     * If we still don't find a match, create one and store it locally.
+     * If there are no Item Categories, use defaultCategory
+     * 
+     * @param mapping
+     * @param actionForm
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     * @throws ServletException
+     */
+    private WeblogCategoryData locateCategory(
+                                  String catName, HashMap categoryMap) 
+    throws RollerException
+    {
+        WeblogCategoryData category = (WeblogCategoryData)categoryMap.get(catName);
+        if (category == null) // not in local map
+        {
+            // look for it in database, by path
+            category = roller.getWeblogManager()
+                .getWeblogCategoryByPath(website, category, catName);
+                        
+            if (category == null) // not in database
+            {    
+                // create a new one
+                category = new WeblogCategoryData(null, 
+                    website, rootCategory, 
+                    catName, catName, null);
+                category.save();
+            }
+            categoryMap.put(catName, category);
+        }
+        
+        return category;
+    }
+

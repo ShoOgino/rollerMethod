@@ -1,0 +1,21 @@
+    /**
+     * Initialize controller values of filter.
+    **/
+    public void init(FilterConfig filterConfig)
+    {
+        this.mFilterConfig = filterConfig;
+
+        // debug
+        //System.out.println("BreadCrumbFilter is loaded");
+
+        if (!StringUtils.isEmpty(filterConfig.getInitParameter("maxStackSize")))
+        {
+            String temp = filterConfig.getInitParameter("maxStackSize");
+            int mSS = NumberUtils.stringToInt(temp);
+            if (mSS != 0)
+            {
+                mMaxStackSize = mSS;
+            }
+        }
+    }
+

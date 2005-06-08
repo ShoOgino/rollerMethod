@@ -1,0 +1,21 @@
+    public static String[] getThemeFilenames(String themeDir)
+    {
+        ThemeCache themeCache = ThemeCache.getInstance();
+        if (themeCache.getFileList(themeDir) != null)
+        {
+            return themeCache.getFileList(themeDir);
+        }
+
+        File dir = new File(themeDir);
+        FilenameFilter filter = new FilenameFilter()
+        {
+            public boolean accept(File dir, String name)
+            {
+                return name.endsWith(".vm");
+            }
+        };
+        String[] children = dir.list(filter);
+        themeCache.setFileList(themeDir, children);
+        return children;
+    }
+

@@ -1,0 +1,24 @@
+    private String matchBookmarks(String text, FolderData folder)
+    {
+        BookmarkData bookmark;
+        String regEx;
+        String link;
+        String bkDescription;
+        Iterator bookmarks = folder.getBookmarks().iterator();
+        while (bookmarks.hasNext())
+        {
+            bookmark = (BookmarkData)bookmarks.next();
+            bkDescription = bookmark.getDescription();
+            if (bkDescription == null) bkDescription = "";
+
+            regEx = "\\b" + bookmark.getName() + "\\b";
+
+            link = "<a href=\"" +
+                bookmark.getUrl() + "\" title=\"" +
+                bkDescription + "\">" +
+                bookmark.getName() + "</a>";
+            text = text.replaceAll(regEx, link);
+        }
+        return text;
+    }
+

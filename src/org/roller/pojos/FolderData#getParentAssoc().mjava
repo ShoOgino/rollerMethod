@@ -1,0 +1,8 @@
+    /** 
+     * @see org.roller.pojos.HierarchicalPersistentObject#getParentAssoc()
+     */
+    protected Assoc getParentAssoc() throws RollerException
+    {
+        return RollerFactory.getRoller().getBookmarkManager().getFolderParentAssoc(this);
+    }
+

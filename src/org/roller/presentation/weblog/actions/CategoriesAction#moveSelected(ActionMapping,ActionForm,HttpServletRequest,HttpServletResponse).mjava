@@ -1,0 +1,54 @@
+     /**
+     * Move Categories and bookmarks indicated by CategoriesForm bean.
+     * @param mapping Action mapping.
+     * @param actionForm  Form bean.
+     * @param request Request.
+     * @param response Response.
+     * @return Forward to CategoriesForm or access-denied.
+     * @throws RollerException
+     */
+    public ActionForward moveSelected(
+        ActionMapping       mapping,
+        ActionForm          actionForm,
+        HttpServletRequest  request,
+        HttpServletResponse response)
+        throws RollerException
+    {
+        RollerRequest rreq = RollerRequest.getRollerRequest(request);
+        if (rreq.isUserAuthorizedToEdit())
+        {
+            WeblogManager wmgr = rreq.getRoller().getWeblogManager();
+            CategoriesForm form = (CategoriesForm)actionForm; 
+
+            mLogger.debug("Moving categories to category, id=" 
+                + form.getMoveToCategoryId());
+                
+            // Move subCategories to new category.
+            String Categories[] = form.getSelectedCategories();
+            WeblogCategoryData parent = wmgr.retrieveWeblogCategory(form.getMoveToCategoryId());
+            if (null != Categories)
+            {
+                for (int i = 0; i < Categories.length; i++)
+                {
+                    WeblogCategoryData cd = wmgr.retrieveWeblogCategory(Categories[i]); 
+                    
+                    // Don't move category into itself.                   
+                    if (!cd.getId().equals(parent.getId()))
+                    {
+                        cd.setParent(parent);
+                        cd.save();
+                    }
+                }
+            }
+
+            rreq.getRoller().commit();
+            
+            addModelObjects(request, (CategoriesForm)actionForm);
+            return mapping.findForward("CategoriesForm");
+        }
+        else
+        {
+            return mapping.findForward("access-denied");
+        }
+    }
+

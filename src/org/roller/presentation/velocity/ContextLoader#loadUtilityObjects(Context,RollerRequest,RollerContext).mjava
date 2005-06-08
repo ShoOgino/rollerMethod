@@ -1,0 +1,33 @@
+    protected static void loadUtilityObjects(
+        Context ctx, RollerRequest rreq, RollerContext rollerCtx)
+    {
+
+        // date formatter for macro's
+        // set this up with the Locale to make sure we can reuse it with other patterns
+        // in the macro's
+        Locale viewLocale = (Locale) ctx.get("viewLocale");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", viewLocale);
+        if (rreq.getWebsite() != null)
+        {
+            sdf.setTimeZone(rreq.getWebsite().getTimeZoneInstance());
+        }
+        // add formatter to context
+        ctx.put("dateFormatter", sdf );
+
+        // Note: in the macro's, the formats are taken from the ResourceBundles.
+        // Only the plainFormat is specified here, because it is used to render
+        // the Entry Day link.
+        ctx.put("plainFormat", "yyyyMMdd");
+
+        ctx.put("page",            rreq.getPage() );
+        ctx.put("utilities",       new Utilities() );
+        ctx.put("stringUtils",     new StringUtils() );        
+        ctx.put("rollerVersion",   rollerCtx.getRollerVersion() );
+        ctx.put("rollerBuildTime", rollerCtx.getRollerBuildTime() );
+        ctx.put("rollerBuildUser", rollerCtx.getRollerBuildUser() );
+        ctx.put("newsfeedCache",   NewsfeedCache.getInstance(
+                                       rollerCtx.getRollerConfig()) );
+        
+        ctx.put("requestParameters", rreq.getRequest().getParameterMap());
+    }
+

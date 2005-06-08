@@ -1,0 +1,24 @@
+    /**
+     * Converts a text string to HTML or XML entities.
+     *
+     * @author Erik C. Thauvin
+     * @param text The string to convert.
+     * @param xml Convert the string to XML if set to true.
+     *
+     * @return The converted string.
+     */
+    public static final String textToHTML(String text, boolean xml)
+    {
+        final StringBuffer html = new StringBuffer();
+
+        // Loop thru each characters of the text
+        for (int i = 0; i < text.length(); i++)
+        {
+            // Convert character to HTML/XML
+            html.append(charToHTML(text.charAt(i), xml));
+        }
+
+        // Return HTML/XML string
+        return html.toString();
+    }
+

@@ -1,0 +1,92 @@
+    public void testMoveFolderContents() throws RollerException
+    {
+        WebsiteData wd = null;
+        BookmarkManager bmgr = getRoller().getBookmarkManager();
+
+        //getRoller().begin();
+
+        wd = getRoller().getUserManager().retrieveWebsite(mWebsite.getId());
+        FolderData root = bmgr.getRootFolder(wd);
+
+        FolderData dest = bmgr.createFolder();
+        dest.setName("dest");
+        dest.setParent(root);
+        dest.setWebsite(wd);
+        dest.save();
+
+        // create source folder f1
+        FolderData f1 = bmgr.createFolder();
+        f1.setName("f1");
+        f1.setParent(root);
+        f1.setWebsite(wd);
+        f1.save();
+
+        // create bookmark b1 inside source folder f1
+        BookmarkData b1 = bmgr.createBookmark(
+            f1, "b1", "testbookmark",
+            "http://example.com", "http://example.com/rss",
+            new Integer(1), new Integer(1), "image.gif");
+        b1.save();
+
+        // create folder f2 inside f1
+        FolderData f2 = bmgr.createFolder();
+        f2.setName("f2");
+        f2.setParent(f1);
+        f2.setWebsite(wd);
+        f2.save();
+
+        // create bookmark b2 inside folder f2
+        BookmarkData b2 = bmgr.createBookmark(
+            f2, "b2", "testbookmark",
+            "http://example.com", "http://example.com/rss",
+            new Integer(1), new Integer(1), "image.gif");
+        b2.save();
+
+        // create folder f3 inside folder f2
+        FolderData f3 = bmgr.createFolder();
+        f3.setName("f3");
+        f3.setParent(f2);
+        f3.setWebsite(wd);
+        f3.save();
+
+        // crete bookmark b3 inside folder f3
+        BookmarkData b3 = bmgr.createBookmark(
+            f3, "b3", "testbookmark",
+            "http://example.com", "http://example.com/rss",
+            new Integer(1), new Integer(1), "image.gif");
+        b3.save();
+
+        getRoller().commit();
+
+        //getRoller().begin();
+
+        // verify number of entries in each folder
+        dest = bmgr.retrieveFolder(dest.getId());
+        f1 = bmgr.retrieveFolder(f1.getId());
+        assertEquals(0, dest.retrieveBookmarks(true).size());
+        assertEquals(0, dest.retrieveBookmarks(false).size());
+        assertEquals(1, f1.retrieveBookmarks(false).size());
+
+        List f1list = f1.retrieveBookmarks(true);
+        assertEquals(3, f1list.size());
+
+        // move contents of source category c1 to destination catetory dest
+        f1.moveContents(dest);
+
+        getRoller().commit();
+
+
+
+        //getRoller().begin();
+
+        // after move, verify number of entries in eacch folder
+        dest = bmgr.retrieveFolder(dest.getId());
+        f1 = bmgr.retrieveFolder(f1.getId());
+        assertEquals(3, dest.retrieveBookmarks(true).size());
+        assertEquals(3, dest.retrieveBookmarks(false).size());
+        assertEquals(0, f1.retrieveBookmarks(true).size());
+        assertEquals(0, f1.retrieveBookmarks(false).size());
+
+        getRoller().commit();
+    }
+

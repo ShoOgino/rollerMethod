@@ -1,0 +1,31 @@
+    //-----------------------------------------------------------------------
+    /**
+     * Respond to request to add a new or edit an existing weblog entry.
+     * Loads the appropriate model objects and forwards the request to
+     * the edit weblog page.
+     */
+    public ActionForward query(
+        ActionMapping       mapping,
+        ActionForm          actionForm,
+        HttpServletRequest  request,
+        HttpServletResponse response)
+        throws IOException, ServletException, RollerException
+    {
+        WeblogQueryForm form = (WeblogQueryForm)actionForm;
+        RollerRequest rreq = RollerRequest.getRollerRequest(request);
+        WeblogManager wmgr = rreq.getRoller().getWeblogManager();
+        
+        request.setAttribute("model", new WeblogQueryPageModel(
+           request, 
+           response, 
+           mapping,
+           rreq.getWebsite(),
+           form.getCategoryId(),
+           form.getStartDateString(),
+           form.getEndDateString(),
+           form.getStatus(),
+           form.getMaxEntries())); 
+        
+        return mapping.findForward("weblogQuery.page");
+    }
+

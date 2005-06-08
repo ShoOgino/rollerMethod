@@ -1,0 +1,12 @@
+    //------------------------------------------------------------------------
+    // aren't doGet/Post/Put/Delete all supposed to go through service() first?
+    protected void service(HttpServletRequest req, HttpServletResponse resp)
+        throws ServletException, IOException
+    {
+        //mLogger.debug("Entering RollerAtomServlet service() method");
+        startRollerRequest(req, resp);
+        super.service(req, resp);
+        closeRoller(req);
+        //mLogger.debug("Exiting RollerAtomServlet service() method");
+    }
+

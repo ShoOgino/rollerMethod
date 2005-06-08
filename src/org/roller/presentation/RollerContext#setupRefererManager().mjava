@@ -1,0 +1,26 @@
+    /**
+     * Add TurnoverReferersTask to run on a schedule.
+     */
+    private void setupRefererManager()
+    {
+        try
+        {
+            final RefererManager refManager =
+                RollerFactory.getRoller().getRefererManager();
+
+            refManager.setThreadManager(mThreadManager);
+
+            // Check for turnover when we first start
+            refManager.checkForTurnover(false, null);
+
+            // Schedule a check every day, starting at end of today
+            mThreadManager.scheduleDailyTimerTask(
+                new TurnoverReferersTask(refManager));
+
+        }
+        catch (RollerException e)
+        {
+            mLogger.warn("Couldn't schedule referer turnover task", e);
+        }
+    }
+

@@ -1,0 +1,11 @@
+    public WeblogEntryData getWeblogEntry() throws RollerException
+    {
+        if (weblogEntry == null) 
+        {
+            weblogEntry = new WeblogEntryData();
+            form.copyTo(weblogEntry, getRequest().getLocale());
+            weblogEntry.setWebsite(rollerRequest.getWebsite());
+        }
+        return weblogEntry;
+    }
+

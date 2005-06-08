@@ -1,0 +1,19 @@
+    //------------------------------------------------------------------------
+    /**
+     * Get {@link org.roller.pojos.UserData UserData} object.
+     * @see org.roller.pojos.UserData
+     * @return User object.
+     */
+    public UserData getUser()
+    {
+        try
+        {
+            return getRollerRequest().getUser();
+        }
+        catch (Exception e)
+        {
+            mLogger.error("Getting user",e); 
+        }
+        return null;
+    }
+

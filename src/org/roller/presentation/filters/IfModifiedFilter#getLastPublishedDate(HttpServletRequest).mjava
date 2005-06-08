@@ -1,0 +1,43 @@
+    public static Date getLastPublishedDate(HttpServletRequest request)
+	    throws RollerException
+	{
+	    // Get user name without using heavy RollerRequest URL parser
+	    String userName = null;
+	    String pathInfo = request.getPathInfo();
+	    pathInfo = pathInfo != null ? pathInfo : "";
+	    String[] pathInfoArray = StringUtils.split(pathInfo, "/");
+	    if (pathInfoArray.length == 1)
+	    {
+	        userName = pathInfoArray[0];
+	    }
+	    else if (pathInfoArray.length > 1) 
+	    {
+	        // request is for a specific date or anchor, can't return 304
+	        return null;
+	    }
+	
+	    // Get last pub time for specific weblog category requested
+	    String catname =
+	        request.getParameter(RollerRequest.WEBLOGCATEGORYNAME_KEY);
+	
+	    // update times are cached to reduce database queries per request
+	    StringBuffer sb = new StringBuffer();
+        sb.append("zzz_");
+	    sb.append(userName);
+        sb.append("_zzz_");
+	    sb.append(catname);
+	    String key = sb.toString();
+	
+	    Date updateTime = (Date)mDateCache.get(key);
+	    if (updateTime == null)
+	    {
+	        mLogger.debug("Hitting database for update time: "+key);
+	        Roller roller = RollerContext.getRoller(request);
+	        roller.begin();
+	        WeblogManager wmgr = roller.getWeblogManager();
+	        updateTime = wmgr.getWeblogLastPublishTime(userName, catname);	
+	        mDateCache.put(key, updateTime);
+	    }
+	    return updateTime;
+	}
+

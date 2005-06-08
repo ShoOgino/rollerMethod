@@ -1,0 +1,66 @@
+    /* 
+     * @see org.roller.model.WeblogManager#getNextEntry(org.roller.pojos.WeblogEntryData)
+     */
+    public WeblogEntryData getNextPrevEntry(WeblogEntryData current, String catName, boolean next)
+        throws RollerException
+    {
+        if (catName != null && catName.trim().equals("/"))
+        {
+            catName = null;
+        }
+
+        Junction conjunction = Expression.conjunction();
+        
+        conjunction.add(Expression.eq("website", current.getWebsite()));
+        conjunction.add(Expression.eq("publishEntry", Boolean.TRUE));
+        
+        if (next)
+        {
+            conjunction.add(Expression.gt("pubTime", current.getPubTime()));
+        }
+        else
+        {
+            conjunction.add(Expression.lt("pubTime", current.getPubTime()));
+        }
+        
+        if (catName != null)
+        {
+            WeblogCategoryData category = 
+                getWeblogCategoryByPath(current.getWebsite(), null, catName);
+            if (category != null)
+            {
+                conjunction.add(Expression.eq("category", category));
+            }
+            else
+            {
+                throw new RollerException("Cannot find category: "+catName);
+            }
+        }
+
+        try
+        {
+            Session session = ((HibernateStrategy)mStrategy).getSession();
+            Criteria criteria = session.createCriteria(WeblogEntryData.class);
+            if (next)
+            {
+                criteria.addOrder(Order.asc("pubTime"));
+            }
+            else
+            {
+                criteria.addOrder(Order.desc("pubTime"));
+            }
+            criteria.add(conjunction);
+            criteria.setMaxResults(1);
+            List results = criteria.list();
+            if (results.size() > 0)
+            {    
+              return (WeblogEntryData)results.get(0);
+            }
+            return null;
+        }
+        catch (HibernateException e)
+        {
+            throw new RollerException(e);
+        }
+    }
+

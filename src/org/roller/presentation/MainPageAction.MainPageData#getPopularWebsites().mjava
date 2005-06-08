@@ -1,0 +1,14 @@
+        /** Get list of most popular websites in terms of day hits */
+        public List getPopularWebsites() throws RollerException
+        {
+            List list = (List)mPopularWebsites.getObject();
+            if (list == null)
+            {
+                mLogger.debug("Refreshing popular websites list");
+                Roller roller = RollerRequest.getRollerRequest(mRequest).getRoller();            
+                list = roller.getRefererManager().getDaysPopularWebsites(40);
+                mPopularWebsites.setObject(list);
+            }
+            return list;
+       }
+

@@ -1,0 +1,60 @@
+    public void hide_testUpdateIfNeeded() throws Exception
+    {
+        UserManager umgr = getRoller().getUserManager();
+        WeblogManager wmgr = getRoller().getWeblogManager();
+        PersistenceStrategy pstrategy = getRoller().getPersistenceStrategy();
+
+        // create cats without a root
+        //getRoller().begin();
+
+        WebsiteData website = umgr.retrieveWebsite(mWebsite.getId());
+        WeblogCategoryData origRoot = wmgr.getRootWeblogCategory(mWebsite);
+        website.setBloggerCategory(null);
+        website.setDefaultCategory(null);
+
+        if (null != origRoot) origRoot.remove();
+
+        WeblogCategoryData cat1 = wmgr.createWeblogCategory(
+            website, null, "cat1 name", "cat1 desc", null);
+        pstrategy.store(cat1);
+
+        WeblogCategoryData cat2 = wmgr.createWeblogCategory(
+            website, null, "cat2 name", "cat2 desc", null);
+        pstrategy.store(cat2);
+
+        WeblogCategoryData cat3 = wmgr.createWeblogCategory(
+            website, null, "cat3 name", "cat3 desc", null);
+        pstrategy.store(cat3);
+
+        getRoller().commit();
+
+        // upgrade site
+
+        // We need a database connection and the hibernate.properties file
+        // is easier to parse than the Castor database.xml file.
+        Properties hibernateProperties = new Properties();
+        hibernateProperties.load(new FileInputStream("hibernate.properties"));
+        String driverClass = hibernateProperties.getProperty("hibernate.connection.driver_class");
+        String connectionUrl = hibernateProperties.getProperty("hibernate.connection.url");
+        Class.forName(driverClass);
+        Connection con = DriverManager.getConnection(connectionUrl);
+
+        getRoller().upgradeDatabase(con);
+
+        // verify that upgrade created a root and assigned it to cats
+        //getRoller().begin();
+        WeblogCategoryData root = wmgr.getRootWeblogCategory(mWebsite);
+        assertNotNull(root);
+
+        cat1 = wmgr.retrieveWeblogCategory(cat1.getId());
+        assertEquals(root, cat1.getParent());
+
+        cat2 = wmgr.retrieveWeblogCategory(cat2.getId());
+        assertEquals(root, cat2.getParent());
+
+        cat3 = wmgr.retrieveWeblogCategory(cat3.getId());
+        assertEquals(root, cat3.getParent());
+
+        getRoller().release();
+    }
+

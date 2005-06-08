@@ -1,0 +1,44 @@
+    //------------------------------------------------------------------------
+    /*
+     * This is no longer a part of the Atom spec, but I'm leaving it
+     * in anticipation of future spec changes or extension by Roller.
+     */
+    protected List entryKeywordSearch(String[] pathInfo) throws Exception
+    {
+        String searchTerm = URLDecoder.decode( pathInfo[2], "UTF-8" );
+        IndexManager manager =
+            RollerContext.getRollerContext(
+                RollerContext.getServletContext() ).getIndexManager();
+        SearchOperation search = new SearchOperation();
+        search.setTerm( searchTerm );
+        search.setUsername( pathInfo[0] );
+        manager.executeIndexOperationNow( search );
+
+        Hits hits = search.getResults();
+        WeblogManager wmanager = getWeblogManager();
+
+        if (mLogger.isDebugEnabled())
+        {
+            mLogger.debug("numresults = " + hits.length());
+        }
+
+        List searchResults = new ArrayList();
+        Document doc = null;
+        String username = null;
+        String anchor = null;
+        WeblogEntryData entry = null;
+        for (int i = 0; i < hits.length(); i++)
+        {
+             doc = hits.doc(i);
+             username =
+                 doc.getField(FieldConstants.USERNAME).stringValue();
+             anchor =
+                 doc.getField(FieldConstants.ANCHOR).stringValue();
+             entry =
+                 wmanager.getWeblogEntryByAnchor(entry.getWebsite(), anchor);
+             searchResults.add( AtomAssistant.convertToAtomEntry(entry, authorized()) );
+        }
+
+        return searchResults;
+    }
+

@@ -1,0 +1,21 @@
+    protected static void loadPathValues(
+      Context ctx, RollerRequest rreq, RollerContext rollerCtx, String userName)
+    {
+        HttpServletRequest request = rreq.getRequest();
+        String url = null;
+        if ( userName != null )
+        {
+            url = Utilities.escapeHTML( 
+                rollerCtx.getAbsoluteContextUrl(request)+"/page/"+userName);
+        }
+        else
+        {
+            url= Utilities.escapeHTML(rollerCtx.getAbsoluteContextUrl(request));
+        }
+        ctx.put("websiteURL", url);
+        ctx.put("baseURL",    rollerCtx.getContextUrl( request ) );
+        ctx.put("absBaseURL", rollerCtx.getAbsoluteContextUrl( request ) );
+        ctx.put("ctxPath",    request.getContextPath() );
+        ctx.put("uploadPath", ContextLoader.figureResourcePath( rreq ) );
+    }
+

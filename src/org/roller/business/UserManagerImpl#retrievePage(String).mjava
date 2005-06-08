@@ -1,0 +1,8 @@
+    public PageData retrievePage(String id) throws RollerException
+    {
+        // Don't hit database for templates stored on disk
+        if (id != null && id.endsWith(".vm")) return null; 
+
+        return (PageData)mStrategy.load(id,PageData.class);
+    }
+

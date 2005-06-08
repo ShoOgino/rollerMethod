@@ -1,0 +1,41 @@
+    //-----------------------------------------------------------------------
+    /**
+     * Get the "forward" necessary to display the
+     * "single entry" view.
+     */
+	private ActionForward updateFromPageForward(
+		HttpServletRequest request,
+		RollerRequest rreq,
+		WeblogEntryData wd,
+		UserData user)
+	{
+		ActionForward forward;
+		PageData page = rreq.getPage();
+		if (page == null)
+		{
+		    try
+		    {
+		        page = rreq.getRoller().getUserManager().
+		            retrievePage(wd.getWebsite().getDefaultPageId());
+		    }
+		    catch (Exception ignore)
+		    {
+		    }
+		}
+		StringBuffer sb = new StringBuffer();
+		sb.append("/page/");
+		sb.append(user.getUserName());
+		if (page == null)
+		{
+		    sb.append("?anchor=");
+		}
+		else
+		{
+		    request.setAttribute(RollerRequest.PAGEID_KEY, page.getId());
+		    sb.append("/").append(page.getLink()).append("/");
+		}
+		sb.append(wd.getAnchor());
+		forward = new ActionForward(sb.toString());
+		return forward;
+	}
+

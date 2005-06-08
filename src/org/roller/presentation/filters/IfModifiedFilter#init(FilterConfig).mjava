@@ -1,0 +1,9 @@
+    /**
+     * @see javax.servlet.Filter#init(javax.servlet.FilterConfig)
+     */
+    public void init(FilterConfig filterConfig) throws ServletException
+    {
+        // This method is not multithreaded, so we dont need to sync
+        mContext = filterConfig.getServletContext();
+    }
+

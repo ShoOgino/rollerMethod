@@ -1,0 +1,66 @@
+    public LRUCacheHandler(FilterConfig config)
+    {      
+        mName = config.getFilterName();
+        mLogger.info("Initializing for: " + mName);
+        int size = 200;
+        try
+        {
+            size = Integer.parseInt(config.getInitParameter("size"));
+        }
+        catch (Exception e)
+        {
+            mLogger.warn(config.getFilterName() 
+                + "Can't read cache size parameter, using default...");
+        }
+        mLogger.info(mName + " size=" + size);
+        mPageCache = Collections.synchronizedMap(new LRUCache(size));
+
+        long intervalSeconds = mTimeoutInterval / 1000L;
+        try
+        {
+            mTimeoutInterval = 1000L * Long.parseLong(
+                config.getInitParameter("timeoutInterval"));
+            
+            if (mTimeoutInterval == -1)
+            {
+                mLogger.info(config.getFilterName() 
+                   + "timeoutInterval of -1: timeouts are disabled");
+            }
+            else if (mTimeoutInterval < (30 * 1000))
+            {
+                mTimeoutInterval = 30 * 1000;
+                mLogger.warn(config.getFilterName() 
+                   + "timeoutInterval cannot be less than 30 seconds");
+            }
+        }
+        catch (Exception e)
+        {
+            mLogger.warn(config.getFilterName() 
+                + "Can't read timeoutInterval parameter, disabling timeout.");
+            mTimeoutInterval = -1;
+        }
+        mLogger.info(mName + " timeoutInterval=" + intervalSeconds);
+        
+        try
+        {
+            mTimeoutRatio = Float.parseFloat(
+                config.getInitParameter("timeoutRatio"));
+        }
+        catch (Exception e)
+        {
+            mLogger.warn(config.getFilterName() 
+                + "Can't read timeoutRatio parameter, using default...");
+        }
+        mLogger.info(mName + " timeoutRatio=" + mTimeoutRatio);
+        
+        if (mTimeoutInterval != -1 && mTimeoutRatio != 0.0)
+        {
+            Timer timer = new Timer();            
+            timer.scheduleAtFixedRate(new TimerTask() {
+                public void run() {
+                    timeoutCache();
+                }
+            }, mTimeoutInterval, mTimeoutInterval);        
+        }
+    }
+

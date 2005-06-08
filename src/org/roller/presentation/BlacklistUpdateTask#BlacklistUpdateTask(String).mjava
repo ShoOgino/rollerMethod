@@ -1,0 +1,8 @@
+    public BlacklistUpdateTask(String uploadDir)
+    {
+        // load Blacklist from file
+        blacklist = Blacklist.getBlacklist(uploadDir);        
+        // now have it check for an update
+        blacklist.checkForUpdate();
+    }
+

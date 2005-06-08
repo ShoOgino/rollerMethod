@@ -1,0 +1,23 @@
+    /* 
+     * @see org.roller.model.UserManager#getUser(java.lang.String, boolean)
+     */
+    public UserData getUser(String userName, boolean enabledOnly)
+            throws RollerException
+    {
+        Map userMap = ((MockPersistenceStrategy)mStrategy).getObjectStore(UserData.class);
+        Iterator it = userMap.values().iterator();
+        while(it.hasNext())
+        {
+            UserData user = (UserData)it.next();
+            if (user.getUserName().equals(userName))
+            {
+                if (!enabledOnly || getWebsite(userName).getIsEnabled().booleanValue()) 
+                {
+                    return user;
+                }
+                return null;
+            }
+        }
+        return null;
+    }
+

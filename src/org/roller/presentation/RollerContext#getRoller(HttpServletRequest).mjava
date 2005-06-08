@@ -1,0 +1,17 @@
+    /**
+     * Get an instance of Roller from the RollerFactory.
+     * If one does not exist, tell Factory to create new one.
+     */
+    public static Roller getRoller(HttpServletRequest req)
+    {
+        Roller roller = RollerFactory.getRoller();
+        if (roller == null)
+        {
+            RollerFactory.setRoller(
+                mContext.getInitParameter(ROLLER_IMPL_KEY),
+                mCastorXML);
+            roller = RollerFactory.getRoller();
+        }
+        return roller;
+    }
+

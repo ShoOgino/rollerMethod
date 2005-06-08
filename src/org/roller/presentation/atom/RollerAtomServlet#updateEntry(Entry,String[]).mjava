@@ -1,0 +1,40 @@
+    //------------------------------------------------------------------------
+    /* (non-Javadoc)
+     * @see org.osjava.atom4j.servlet.AtomServlet#updateEntry(org.osjava.atom4j.pojo.Entry)
+     */
+    protected void updateEntry(Entry atomEntry, String[] pathInfo) throws Exception
+    {
+        RollerRequest rreq = RollerRequest.getRollerRequest();
+        UserData user = rreq.getUser();
+        if (user != null && pathInfo.length > 2)
+        {
+            // find the WeblogEntryData to be edited
+            WeblogManager weblogMgr = getWeblogManager();
+            WeblogEntryData rollerEntry =
+                weblogMgr.retrieveWeblogEntry(pathInfo[2]);
+
+            if (rollerEntry != null)
+            {
+                Timestamp pubTime = rollerEntry.getPubTime();
+                Timestamp updateTime = new Timestamp(System.currentTimeMillis());
+                if (atomEntry.getIssued() != null)
+                {
+                    pubTime = new Timestamp( atomEntry.getIssued().getTime() );
+                }
+                if (atomEntry.getModified() != null)
+                {
+                    updateTime = new Timestamp( atomEntry.getModified().getTime() );
+                }
+
+                rollerEntry.setTitle(atomEntry.getTitle().getText());
+                rollerEntry.setText(atomEntry.getContent().getText());
+                rollerEntry.setPubTime(pubTime);
+                rollerEntry.setUpdateTime(updateTime);
+
+                // store it
+                rollerEntry.save();
+                flushPageCache(rreq);
+            }
+        }
+    }
+

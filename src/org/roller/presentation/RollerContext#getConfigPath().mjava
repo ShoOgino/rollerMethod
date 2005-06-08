@@ -1,0 +1,39 @@
+    /**
+     * Determine where we should read/write roller-config.xml to.
+     * A file in ${user.home} overrides one in WEB-INF.
+     */
+    public String getConfigPath()
+    {
+        String configPath =
+            System.getProperty("user.home")
+                + File.separator
+                + "roller-config.xml";
+
+        if (mLogger.isDebugEnabled())
+        {
+            mLogger.debug(
+                "Looking for roller-config.xml at '" + configPath + "'");
+        }
+
+        if (!new File(configPath).exists())
+        {
+            // No config found in user.home, store it in WEB-INF instead.
+            if (mLogger.isDebugEnabled())
+            {
+                mLogger.debug("File not found: '" + configPath);
+            }
+
+            String root = mContext.getRealPath("/");
+            configPath =
+                root
+                    + File.separator
+                    + "WEB-INF"
+                    + File.separator
+                    + "roller-config.xml";
+        }
+
+        mLogger.info("Using roller-config.xml at '" + configPath + "'");
+
+        return configPath;
+    }
+

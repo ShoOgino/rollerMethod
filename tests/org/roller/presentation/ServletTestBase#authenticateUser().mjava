@@ -1,0 +1,16 @@
+    //-----------------------------------------------------------------------
+    protected String authenticateUser()
+    {
+        String username = mWebsite.getUser().getUserName();
+
+        // in order to pass authentication check
+        MockHttpServletRequest mkRequest = mockFactory.getMockRequest();
+        mkRequest.setUserPrincipal(new MockPrincipal(username));
+        mkRequest.setUserInRole("editor", true);
+        
+        // for RollerRequest initialization, parseRequestParams()
+        mkRequest.setRemoteUser(username);
+
+        return username;
+    }
+

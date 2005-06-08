@@ -1,0 +1,17 @@
+    public void testSelectFolder() 
+    {
+        MockActionMapping mapping = module.getMockActionMapping();
+        mapping.setForward("BookmarksForm");
+        mapping.setupForwards( new String[] {"access-denied"} );
+        mapping.setParameter("method");
+        
+        module.addRequestParameter("method","selectFolder");
+        
+        authenticateUser();
+
+        module.actionPerform(BookmarksAction.class, form);
+        
+        module.verifyNoActionMessages();
+        module.verifyForward("BookmarksForm");
+    }
+

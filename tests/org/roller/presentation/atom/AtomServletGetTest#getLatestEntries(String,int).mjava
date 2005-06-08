@@ -1,0 +1,13 @@
+    //-----------------------------------------------------------------------
+    protected List getLatestEntries(String username, int i) throws RollerException
+    {
+        return getRoller().getWeblogManager().getWeblogEntries(
+                       mWebsite,               // userName
+                       null,                  // startDate
+                       new Date(),            // endDate
+                       null,                  // catName
+                       WeblogManager.PUB_ONLY, // status
+                       new Integer(RollerRequest.getRollerRequest().getWeblogEntryCount()));
+        
+    }
+

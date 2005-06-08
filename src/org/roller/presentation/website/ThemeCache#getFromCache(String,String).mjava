@@ -1,0 +1,10 @@
+	/**
+	 * Null will be returned if there is a problem or if caching is "turned
+	 * off".
+	 */
+	public String getFromCache(String themeName, String fileName)
+	{
+		if (!cacheTemplateFiles) return null;
+		return (String) cache.get(themeName + ":" + fileName);
+	}
+

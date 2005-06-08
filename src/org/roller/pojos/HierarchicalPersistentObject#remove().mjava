@@ -1,0 +1,46 @@
+    /** Remove self, all decendent children and associations. */
+    public void remove() 
+        throws RollerException
+    {
+        PersistenceStrategy pstrategy =
+            RollerFactory.getRoller().getPersistenceStrategy();
+
+        // loop to remove all of my descendent categories and associations
+        List toRemove = new LinkedList();
+        Iterator catIter = this.getAllDescendentAssocs().iterator();
+        while (catIter.hasNext())
+        {
+            Assoc assoc = (Assoc)catIter.next();
+            HierarchicalPersistentObject hpo = assoc.getObject();
+            
+            // remove my descendent's parent and grandparent associations
+            Iterator ancestors = hpo.getAncestorAssocs().iterator();
+            while (ancestors.hasNext())
+            {
+                Assoc dassoc = (Assoc)ancestors.next();
+                dassoc.remove();
+            }
+            
+            // remove decendent association and descendents
+            assoc.remove();
+            toRemove.add(hpo);
+        }
+        Iterator iter = toRemove.iterator();
+        while (catIter.hasNext())
+        {
+            PersistentObject po = (PersistentObject) catIter.next();
+            pstrategy.remove(po);
+        }
+
+        // loop to remove my own parent and grandparent associations
+        Iterator ancestors = getAncestorAssocs().iterator();
+        while (ancestors.hasNext())
+        {
+            Assoc assoc = (Assoc)ancestors.next();
+            assoc.remove();
+        }
+        
+        // remove myself
+        pstrategy.remove(this);        
+    }
+

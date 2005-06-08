@@ -1,0 +1,53 @@
+    //------------------------------------------------------------------------
+    private void extractByParsingRss( String rssLink, String requestURL ) 
+    	throws MalformedURLException, IOException, ParseException 
+	{
+        //FlockFeedFactory factory = new FlockFeedFactory();
+ 		//FlockFeedI flockFeed = factory.createFeed(new URL(rssLink));
+        //Iterator articleIter = flockFeed.getArticles().iterator();
+        //String feedTitle = flockFeed.getTitle();
+        ChannelIF channel = RSSParser.parse(
+            new ChannelBuilder(), new URL(rssLink));
+        Iterator itemIter = channel.getItems().iterator();
+        String feedTitle = channel.getTitle();
+        
+        int count = 0;
+        
+        if (mLogger.isDebugEnabled())
+        {
+            mLogger.debug("Feed parsed, title: "+feedTitle);
+        }
+        
+        while ( itemIter.hasNext() )
+        {
+            count++;
+            //FlockArticleI item = (FlockArticleI)itemIter();
+            ItemIF item = (ItemIF)itemIter.next();
+            if ( item.getDescription().indexOf(requestURL) != -1 )
+            {
+                mFound = true;       
+            	mPermalink = item.getLink().toString();
+                if ( feedTitle != null && feedTitle.trim().length() > 0 )
+                {
+            	   mTitle = feedTitle + ": " + item.getTitle();
+                }
+                else
+                {
+                    mTitle = item.getTitle();
+                }
+            	mExcerpt = item.getDescription();
+            	mExcerpt = Utilities.removeHTML(mExcerpt);
+            	if ( mExcerpt.length() > mMaxExcerpt ) 
+            	{
+            		mExcerpt = mExcerpt.substring(0,mMaxExcerpt)+"...";
+            	}
+            	break;
+            }
+        }
+        
+        if (mLogger.isDebugEnabled())
+        {
+            mLogger.debug("Parsed "+count+" articles, found linkback="+mFound);
+ 	    }
+    }
+

@@ -1,0 +1,43 @@
+    protected static void loadCommentValues(
+       Context ctx, RollerRequest rreq, RollerContext rollerCtx ) 
+       throws RollerException
+    {
+        HttpServletRequest request = rreq.getRequest();
+        RollerConfig rollerConfig = rollerCtx.getRollerConfig();
+        
+        // Add comments related values to context
+        ctx.put("isCommentPage", Boolean.TRUE);
+        ctx.put("escapeHtml", rollerConfig.getEscapeCommentHtml() );
+        ctx.put("autoformat", rollerConfig.getAutoformatComments() );
+        
+        // Make sure comment form object is available in context
+        CommentFormEx commentForm = 
+            (CommentFormEx)request.getAttribute("commentForm");
+        if ( commentForm == null )
+        {
+            commentForm = new CommentFormEx();
+        
+            // Set fields to spaces to please Velocity
+            commentForm.setName("");
+            commentForm.setEmail("");
+            commentForm.setUrl("");
+            commentForm.setContent("");
+        }        
+        ctx.put("commentForm",commentForm); 
+            
+        // Either put a preview comment in to context          
+        if ( request.getAttribute("previewFromPage")!=null )
+        {
+            ArrayList list = new ArrayList();
+            CommentData cd = new CommentData();
+            commentForm.copyTo(cd, request.getLocale());
+            list.add(cd);
+            ctx.put("previewComments",list);            
+        }
+        else // Or the whole set of comment for the specified weblog entry
+        {
+            WeblogEntryData entry = rreq.getWeblogEntry();
+            ctx.put("entry",entry);            
+        }
+    }   
+

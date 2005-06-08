@@ -1,0 +1,18 @@
+    /* 
+     * @see org.roller.model.UserManager#getWebsite(java.lang.String)
+     */
+    public WebsiteData getWebsite(String userName) throws RollerException
+    {
+        Map websiteMap = ((MockPersistenceStrategy)mStrategy).getObjectStore(WebsiteData.class);
+        Iterator it = websiteMap.values().iterator();
+        while(it.hasNext())
+        {
+            WebsiteData website = (WebsiteData)it.next();
+            if (website.getUser().getUserName().equals(userName))
+            {
+                return website;
+            }
+        }
+        return null;
+    }
+

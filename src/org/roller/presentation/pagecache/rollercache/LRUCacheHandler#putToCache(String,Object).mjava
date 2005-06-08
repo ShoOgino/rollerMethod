@@ -1,0 +1,20 @@
+    public synchronized void putToCache(String key, Object entry) 
+    {
+        mPageCache.put(key, entry);
+        if (mLogger.isDebugEnabled())
+        {
+            misses++;
+            
+            StringBuffer sb = new StringBuffer();
+            sb.append("Missed, cache size=");
+            sb.append(mPageCache.size());
+            sb.append(", hits=");
+            sb.append(hits);
+            sb.append(", misses=");
+            sb.append(misses);
+            sb.append(", key=");
+            sb.append(key);
+            mLogger.debug(sb.toString());
+        }
+    }
+

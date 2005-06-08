@@ -1,0 +1,37 @@
+    //-----------------------------------------------------------------------
+    /**
+     * Ping the weblogs.com server.  Notifies them of blog updates.
+     * Several other sites reference weblogs.com for updates.
+     * 
+     * @param request
+     * @param user
+     * @param wf
+     * @param entry
+     */
+    private void sendWeblogsDotComPing(
+        HttpServletRequest request,
+        UserData user,
+        WeblogEntryFormEx wf,
+        WeblogEntryData entry)
+    {
+        // send a ping to Weblogs.com
+        if (wf.getSendWeblogsPing() != null &&
+            wf.getSendWeblogsPing().booleanValue())
+        {
+            RollerContext rctx = RollerContext.getRollerContext(request);
+            String blogUrl = Utilities.escapeHTML(
+                rctx.getAbsoluteContextUrl(request)
+                + "/page/" + user.getUserName());
+
+            String blogName = entry.getWebsite().getName();
+            String result =
+                RollerXmlRpcClient.sendWeblogsPing(blogUrl, blogName);
+            if (result != null) // condition
+            {
+                request.getSession().setAttribute(
+                    RollerSession.STATUS_MESSAGE,
+                    "Weblogs.com Response: " + result);
+            }
+        }
+    }
+

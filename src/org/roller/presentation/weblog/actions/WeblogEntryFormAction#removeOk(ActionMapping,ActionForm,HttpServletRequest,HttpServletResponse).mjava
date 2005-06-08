@@ -1,0 +1,41 @@
+    //-----------------------------------------------------------------------
+    /**
+     * Responds to request to remove weblog entry. Forwards user to page
+     * that presents the 'are you sure?' question.
+     */
+    public ActionForward removeOk(
+        ActionMapping       mapping,
+        ActionForm          actionForm,
+        HttpServletRequest  request,
+        HttpServletResponse response)
+        throws IOException, ServletException
+    {
+        ActionForward forward = mapping.findForward("weblogEntryRemove.page");
+        try
+        {
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            if ( rreq.isUserAuthorizedToEdit() )
+            {
+                WeblogEntryFormEx wf = (WeblogEntryFormEx)actionForm;
+                WeblogEntryData wd = 
+                    rreq.getRoller().getWeblogManager().retrieveWeblogEntry(wf.getId());
+                wf.copyFrom(wd, request.getLocale());
+                if (wd == null || wd.getId() == null)
+                {
+                    throw new NullPointerException(
+                        "Unable to find WeblogEntry for " +
+                        request.getParameter(RollerRequest.WEBLOGENTRYID_KEY));
+                }
+            }
+            else
+            {
+                forward = mapping.findForward("access-denied");
+            }
+        }
+        catch (Exception e)
+        {
+            throw new ServletException(e);
+        }
+        return forward;
+    }
+

@@ -1,0 +1,91 @@
+    /**
+     * Returns a Channel object for the supplied RSS newsfeed URL.
+     * 
+     * @param feedUrl
+     *            RSS newsfeed URL.
+     * @return FlockFeedI for specified RSS newsfeed URL.
+     */
+    public ChannelIF getChannel(String feedUrl)
+    {
+        ChannelIF channel = null;
+        //FlockFeed feed = null;
+        try
+        {
+            //FlockFeedFactory factory = new FlockFeedFactory();
+
+            // If aggregator has been disable return null
+            boolean enabled = mConfig.getEnableAggregator().booleanValue();
+            if (!enabled)
+            {
+                return null;
+            }
+
+            if (mConfig.getRssUseCache().booleanValue())
+            {
+                if (mLogger.isDebugEnabled())
+                {
+                    mLogger.debug("Newsfeed: use Cache for " + feedUrl);
+                }
+
+                // Get pre-parsed feed from the cache
+                channel = (ChannelIF) mCache.get(feedUrl);
+                if (mLogger.isDebugEnabled())
+                {
+                    mLogger.debug("Newsfeed: got from Cache");
+                }
+
+                if (channel == null)
+                {
+                    try
+                    {
+                        // Parse the feed
+                        channel = RSSParser.parse(
+                                new ChannelBuilder(), new URL(feedUrl));
+                    }
+                    catch (ParseException e1)
+                    {
+                        mLogger.info("Error parsing RSS: " + feedUrl);
+                    }
+                }
+
+                //channel = factory.createFeed(new URL(feedUrl));
+
+                // Store parsed feed in the cache
+                mCache.put(feedUrl, channel);
+                mLogger.debug("Newsfeed: not in Cache");
+            }
+            else
+            {
+                if (mLogger.isDebugEnabled())
+                {
+                    mLogger.debug("Newsfeed: not using Cache for " + feedUrl);
+                }
+                try
+                {
+                    // Parse the feed
+                    channel = RSSParser.parse(new ChannelBuilder(), new URL(
+                            feedUrl));
+                }
+                catch (ParseException e1)
+                {
+                    mLogger.info("Error parsing RSS: " + feedUrl);
+                }
+            }
+        }
+        catch (IOException ioe)
+        {
+            if (mLogger.isDebugEnabled())
+            {
+                mLogger.debug("Newsfeed: Unexpected exception", ioe);
+            }
+        }
+        //        catch (FlockResourceException e)
+        //        {
+        //            if (mLogger.isDebugEnabled())
+        //            {
+        //                mLogger.debug("Newsfeed: Flock parsing exception",e);
+        //            }
+        //        }
+        return channel;
+    }
+

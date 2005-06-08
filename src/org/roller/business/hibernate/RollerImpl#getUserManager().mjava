@@ -1,0 +1,12 @@
+    /** 
+     * @see org.roller.pojos.Roller#getUserManager()
+     */
+    public UserManager getUserManager() throws RollerException
+    {
+        if ( mUserMgr == null ) 
+        {
+            mUserMgr = new HibernateUserManagerImpl(mStrategy, this);
+        }
+        return mUserMgr;
+    }
+

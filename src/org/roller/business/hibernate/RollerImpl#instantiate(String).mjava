@@ -1,0 +1,43 @@
+    /**
+     * Instantiates and returns an instance of RollerImpl.
+     * @see org.roller.pojos.Roller#instantiate(ServletContext)
+     */
+    public static Roller instantiate(String dummy) 
+        throws RollerException
+    {
+        if (me == null) {
+            if (mLogger.isDebugEnabled()) 
+            {
+                mLogger.debug("initializing sessionFactory for Hibernate");
+            }
+            
+    		try
+    		{
+            Configuration config = new Configuration();
+            config.addClass(org.roller.business.HitCountData.class);     
+            config.addClass(org.roller.pojos.BookmarkData.class);
+            config.addClass(org.roller.pojos.CommentData.class);
+            config.addClass(org.roller.pojos.FolderAssoc.class);
+            config.addClass(org.roller.pojos.FolderData.class);
+            config.addClass(org.roller.pojos.PageData.class);
+            config.addClass(org.roller.pojos.RefererData.class);
+            config.addClass(org.roller.pojos.RoleData.class);
+            config.addClass(org.roller.pojos.RollerConfig.class);
+            config.addClass(org.roller.pojos.UserData.class);
+            config.addClass(org.roller.pojos.UserCookie.class);
+            config.addClass(org.roller.pojos.WeblogCategoryData.class);
+            config.addClass(org.roller.pojos.WeblogCategoryAssoc.class);
+            config.addClass(org.roller.pojos.WeblogEntryData.class);
+            config.addClass(org.roller.pojos.WebsiteData.class);        
+            mSessionFactory = config.buildSessionFactory();
+    		}
+    		catch (HibernateException e)
+    		{
+    			mLogger.error("Error Setting up SessionFactory",e);
+    			throw new RollerException(e);
+    		}
+            me = new RollerImpl();    
+        } 
+        return me;
+    }
+

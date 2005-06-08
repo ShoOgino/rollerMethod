@@ -1,0 +1,49 @@
+    //------------------------------------------------------------------------
+    protected WebsiteData validate(String username, String password) throws Exception
+    {
+        boolean authenticated = false;
+        boolean enabled = false;
+        WebsiteData website = null;
+        try
+        {
+            // Get Roller request object for current thread
+            RollerRequest rreq = RollerRequest.getRollerRequest();
+            
+            UserManager userMgr = rreq.getRoller().getUserManager();
+            website = userMgr.getWebsite(username);
+            
+            enabled = website.getEnableBloggerApi().booleanValue();
+            if (enabled)
+            {    
+                // are passwords encrypted?
+                RollerContext rollerContext = 
+                    RollerContext.getRollerContext(rreq.getRequest());
+                RollerConfig rollerConfig = rollerContext.getRollerConfig();
+                //System.out.print("password was [" + password + "] ");
+                if (rollerConfig.getEncryptPasswords().booleanValue()) {
+                	password = 
+                        Utilities.encodePassword(password, rollerConfig.getAlgorithm());
+                }
+                //System.out.println("is now [" + password + "]");
+    			authenticated = website.getUser().getPassword().equals(password);
+            }
+        }
+        catch (Exception e)
+        {
+            mLogger.error("ERROR internal error validating user", e);
+        }
+        
+        if ( !enabled )
+        {
+            throw new XmlRpcException(
+                BLOGGERAPI_DISABLED, BLOGGERAPI_DISABLED_MSG);
+        }
+        
+        if ( !authenticated )
+        {
+            throw new XmlRpcException(
+                AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
+        }
+        return website;
+    }
+

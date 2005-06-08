@@ -1,0 +1,45 @@
+    /**
+     * Read in RollerConfig from the indicated filePath or, if the file cannot be found
+     * returns a freshly initialized RollerConfig object.
+     * @param filePath where roller-config.xml can be found.
+     */
+    public RollerConfig readFromFile(String filePath) throws RollerException
+    {
+        // Try to read roller-config.xml
+        RollerConfigFile file = null;
+        java.io.InputStream in = null;
+        try
+        {
+            in = new FileInputStream(filePath);
+            file = RollerConfigFile.readConfig(in);
+        }
+        catch (FileNotFoundException fnf)
+        {
+            mLogger.info("roller-config.xml not found, creating new: "+ filePath);
+    		    return new RollerConfig();
+        }
+        catch (SecurityException se)
+        {
+            throw new RuntimeException(se);
+        }
+        finally
+        {
+            try
+            {
+                if (in != null)
+                    in.close();
+            }
+            catch (java.io.IOException ioe)
+            {
+                mLogger.warn("ERROR closing InputStream", ioe);
+            }
+        }
+
+        if (file == null)
+        {
+            file = new RollerConfigFile();
+            mLogger.warn("Unable to read in roller-config.xml, creating 'blank' RollerConfigFile");
+        }
+        return newConfigFromFile(file);
+    }
+

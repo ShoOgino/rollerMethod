@@ -1,0 +1,33 @@
+    //------------------------------------------------------------------------
+    /*
+     * Just in case we weren't able to set the Base URL at init.
+     */
+    private void startRollerRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException
+    {
+        RollerRequest rreq = RollerRequest.getRollerRequest();
+        if (rreq == null)
+        {
+            try
+            {
+                rreq = RollerRequest.getRollerRequest(req, getServletContext());
+            }
+            catch (RollerException e)
+            {
+                // An error initializing the request is considered to be a 404
+                //mLogger.debug("RollerRequest threw Exception", e);
+                resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+
+        }
+
+        // mBaseUrl was not available at init()
+        if (mBaseUrl == null)
+        {
+            String base = RollerContext.getRollerContext(
+                getServletContext() ).getAbsoluteContextUrl(req);
+            mLogger.error("mBaseUrl is null, set to " + base);
+            setBaseUrl( base );
+        }
+    }
+

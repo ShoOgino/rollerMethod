@@ -1,0 +1,18 @@
+    /** static singleton retriever * */
+    public static NewsfeedCache getInstance(RollerConfig config)
+    {
+        if (mInstance == null)
+        {
+            if (mLogger.isDebugEnabled())
+            {
+                mLogger.debug("Instantiating new NewsfeedCache");
+            }
+
+            synchronized (NewsfeedCache.class)
+            {
+                mInstance = new NewsfeedCache(config);
+            }
+        }
+        return mInstance;
+    }
+

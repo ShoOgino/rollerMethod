@@ -1,0 +1,23 @@
+	/** Build the URL for editing an WeblogEntry **/
+	public String getEntryEditUrl(WeblogEntryData entry)
+	{
+		Hashtable params = new Hashtable();
+		params.put( RollerRequest.WEBLOGENTRYID_KEY, entry.getId());
+		params.put( RollerRequest.ANCHOR_KEY,        entry.getAnchor());
+        if (mUsername != null)
+        {    
+            params.put( RollerRequest.USERNAME_KEY,  mUsername);
+        }
+		try
+		{
+			return RequestUtils.computeURL( mPageContext,
+				"weblogEdit", null, null, null, params, null, false);
+		}
+		catch (MalformedURLException mue)
+		{
+			mLogger.warn("RollerRequest.editEntryUrl exception: ", mue);
+		}
+		return 
+           mRollerReq.getRequest().getContextPath() + "weblog.do?method=edit";
+	}
+

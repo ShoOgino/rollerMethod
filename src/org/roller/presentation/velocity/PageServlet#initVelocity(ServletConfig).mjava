@@ -1,0 +1,69 @@
+	/**
+	 * Override initVelocity() so we can man-handle the list of
+	 * resource loaders and remove "preview" if it is present.
+	 * @see org.apache.velocity.servlet.VelocityServlet#initVelocity(ServletConfig)
+	 */
+	protected void initVelocity( ServletConfig config )
+		 throws ServletException
+	{
+		try
+		{
+			/*
+			 *  call the overridable method to allow the 
+			 *  derived classes a shot at altering the configuration
+			 *  before initializing Runtime
+			 */
+			Properties props = loadConfiguration( config );
+			
+			// remove "preview," from the beginning of the 
+			// resource.loader list
+			String resourceLoaders = (String)props.get("resource.loader");
+			if (resourceLoaders != null &&
+				resourceLoaders.indexOf("preview") > -1)
+			{
+				int begin = resourceLoaders.indexOf("preview");
+				int length = "preview".length() + 1;
+				String tempStr = "";
+				if (begin > 0)
+				{
+					tempStr = resourceLoaders.substring(0,begin);
+				}
+				resourceLoaders = tempStr + resourceLoaders.substring(begin+length);
+
+				//System.out.println("PageServlet RESOURCELOADERS: " + resourceLoaders);
+				props.put("resource.loader", resourceLoaders);
+			}
+			
+			// remove all trace of the PreviewResourceLoader
+			props.remove("preview.resource.loader.public.name");
+			props.remove("preview.resource.loader.description");
+			props.remove("preview.resource.loader.class");
+			props.remove("preview.resource.loader.cache");
+			props.remove("preview.resource.loader.modificationCheckInterval");
+			
+			/** set custom logging file */
+			props.setProperty( "runtime.log", "page_servlet.log" );
+			
+			// make user WebappResourceLoader has what it needs
+			WebappResourceLoader.setServletContext( getServletContext() );
+			
+            if (mLogger.isDebugEnabled())
+            {
+                mLogger.debug("VelocityEngine props: " + props.toString());
+            }
+            
+			ve = new VelocityEngine();
+			ve.info("*******************************************");
+			ve.info("Initializing VelocityEngine for PageServlet");
+			ve.init( props );
+			ve.info("Done initializing VelocityEngine for PageServlet");
+			ve.info("************************************************");
+		}
+		catch( Exception e )
+		{
+			String msg = "Error initializing Velocity: " + e.toString();
+            mLogger.error(msg, e);
+			throw new ServletException(msg, e);
+		}   
+	}
+

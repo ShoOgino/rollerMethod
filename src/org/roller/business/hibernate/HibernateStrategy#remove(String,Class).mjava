@@ -1,0 +1,42 @@
+    //-------------------------------------------------------------------------
+    /**
+     * Removes object using an existing transaction.
+     * @param clazz Class of object to remove.
+     * @param id Id of object to remove.
+     * @throws RollerException Error deleting object.
+     */
+    public void remove( String id, Class clazz )
+        throws RollerException
+    {
+        if ( id == null )
+        {
+            throw new RollerException(Messages.getString(
+                "HibernateStrategy.nullNotValidId"));
+        }
+
+        if ( clazz == null )
+        {
+            throw new RollerException(Messages.getString(
+                "HibernateStrategy.nullNotValidClass"));
+        }
+
+        // Create persistent instance and delete it
+        Object obj;
+        try
+        {
+            obj = getSession().load(clazz,id);
+            getSession().delete(obj);
+        }
+        catch (Exception e)
+        {
+            String msg = Messages.formatString(
+                "HibernateStrategy.exceptionRemoving",id,clazz.getName());
+            mLogger.error(msg, e);
+
+            // Gavin: "make sure you never catch + handle an exception and
+            // then keep using the session (ObjectNotFoundException included!)"
+            release();
+            throw new RollerException(e);
+        }
+    }
+

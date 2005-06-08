@@ -1,0 +1,27 @@
+    /**
+     * If there is an ERROR or STATUS message in the session,
+     * place it into the Context for rendering later.
+     * 
+     * @param rreq
+     */
+    private static void loadStatusMessage(Context ctx, RollerRequest rreq)
+    {
+        HttpSession session = rreq.getRequest().getSession(false);
+        String msg = null;
+        if (session != null)
+            msg = (String)session.getAttribute(RollerSession.ERROR_MESSAGE);
+        if (msg != null)
+        {
+            ctx.put("errorMessage", msg);
+            session.removeAttribute(RollerSession.ERROR_MESSAGE);
+        }
+
+        if (session != null)
+            msg = (String)session.getAttribute(RollerSession.STATUS_MESSAGE);
+        if (msg != null)
+        {
+            ctx.put("statusMessage", msg);
+            session.removeAttribute(RollerSession.STATUS_MESSAGE);
+        }
+    }
+

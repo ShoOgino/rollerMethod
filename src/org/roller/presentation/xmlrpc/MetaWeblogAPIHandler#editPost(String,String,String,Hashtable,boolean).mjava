@@ -1,0 +1,75 @@
+    /**
+     * Edits a given post. Optionally, will publish the blog after making the edit
+     *
+     * @param postid Unique identifier of the post to be changed
+     * @param userid Login for a MetaWeblog user who has permission to post to the blog
+     * @param password Password for said username
+     * @param struct Contents of the post
+     * @param publish If true, the blog will be published immediately after the post is made
+     * @throws org.apache.xmlrpc.XmlRpcException
+     * @return
+     */
+    public boolean editPost(String postid, String userid, String password,
+                            Hashtable struct, boolean publish)
+                     throws Exception
+    {
+        mLogger.info("editPost() Called ========[ SUPPORTED ]=====");
+        mLogger.info("     PostId: " + postid);
+        mLogger.info("     UserId: " + userid);
+        mLogger.info("    Publish: " + publish);
+
+        validate(userid,password);
+
+        Roller roller = RollerRequest.getRollerRequest().getRoller();
+
+        Hashtable postcontent = struct;
+        String description = (String)postcontent.get("description");
+        String title = (String)postcontent.get("title");
+        if (title == null) title = "";
+
+        String cat = null;
+        if ( postcontent.get("categories") != null )
+        {
+            Vector cats = (Vector)postcontent.get("categories");
+            cat = (String)cats.elementAt(0);
+        }
+        mLogger.info("      Title: " + title);
+        mLogger.info("   Category: " + cat);
+
+        try
+        {
+            WeblogManager weblogMgr = roller.getWeblogManager();
+
+            Timestamp current =
+                new Timestamp(System.currentTimeMillis());
+
+            WeblogEntryData entry =
+                weblogMgr.retrieveWeblogEntry(postid);
+
+            if ( !title.equals("") ) entry.setTitle(title);
+            entry.setText(description);
+            entry.setUpdateTime(current);
+            entry.setPublishEntry(Boolean.valueOf(publish));
+
+            if ( cat != null )
+            {
+                // Use first category specified by request
+                WeblogCategoryData cd = 
+                	weblogMgr.getWeblogCategoryByPath(entry.getWebsite(), cat);
+                entry.setCategory(cd);
+            }
+
+            entry.save();
+            roller.commit();
+            flushPageCache(userid);
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            String msg = "ERROR in MetaWeblogAPIHandler.editPost";
+            mLogger.error(msg,e);
+            throw new XmlRpcException(UNKNOWN_EXCEPTION, msg);
+        }
+    }
+

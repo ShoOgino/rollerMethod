@@ -1,0 +1,11 @@
+	/**
+	 * @param search
+	 */
+	public void executeIndexOperationNow(final IndexOperation op) {
+		try {
+			mThreadManager.executeInForeground(op);
+		} catch (InterruptedException e) {
+			mLogger.error("Error executing operation", e);
+		}
+	}
+

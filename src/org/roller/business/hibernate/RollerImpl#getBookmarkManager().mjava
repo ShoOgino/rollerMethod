@@ -1,0 +1,12 @@
+    /** 
+     * @see org.roller.pojos.Roller#getBookmarkManager()
+     */
+    public BookmarkManager getBookmarkManager() throws RollerException
+    {
+        if ( mBookmarkMgr == null ) 
+        {
+            mBookmarkMgr = new HibernateBookmarkManagerImpl(mStrategy, this);
+        }
+        return mBookmarkMgr;
+    }
+

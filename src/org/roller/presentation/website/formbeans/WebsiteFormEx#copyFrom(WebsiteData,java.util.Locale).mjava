@@ -1,0 +1,20 @@
+    /** 
+     * @see org.roller.presentation.forms.WebsiteForm#copyFrom(org.roller.pojos.WebsiteData)
+     */
+    public void copyFrom(WebsiteData dataHolder, java.util.Locale locale) throws RollerException
+    {
+        super.copyFrom(dataHolder, locale);
+        if (dataHolder.getDefaultCategory() != null)
+        {
+            defaultCategoryId = dataHolder.getDefaultCategory().getId();
+        }
+        if (dataHolder.getBloggerCategory() != null)
+        {
+            bloggerCategoryId = dataHolder.getBloggerCategory().getId();
+        }
+        if (dataHolder.getDefaultPlugins() != null)
+        {
+            defaultPluginsArray = StringUtils.split(dataHolder.getDefaultPlugins(), ",");
+        }
+    }
+

@@ -1,0 +1,11 @@
+    //------------------------------------------------------------------------
+    /**
+     * Version number of Roller.
+     * @return Version number of Roller.
+     */
+    public String showVersion()
+    {
+        ServletContext ctx = mPageContext.getServletContext();
+        return ctx.getInitParameter( RollerContext.VERSION_KEY );
+    }
+

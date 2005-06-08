@@ -1,0 +1,139 @@
+        public void run()
+        {
+
+            try
+            {
+                LinkbackExtractor lb = new LinkbackExtractor(
+                    mReferer.getRefererUrl(),mReferer.getRequestUrl());
+
+                if ( lb.getTitle()!=null && lb.getExcerpt()!=null )
+                {
+                    mReferer.setTitle(lb.getTitle());
+                    mReferer.setExcerpt(lb.getExcerpt());
+
+
+                    if ( lb.getPermalink() != null )
+                    {
+                        // The presence of a permalink indicates that this
+                        // linkback was parsed out of an RSS feed and is
+                        // presumed to be a good linkback.
+
+                        mReferer.setRefererPermalink(lb.getPermalink());
+
+                        // See if this request/permalink is in the DB
+                        List matchRef = getExistingReferers(
+                            mReferer.getWebsite(),
+                            mReferer.getDateString(),
+                            mReferer.getRefererPermalink());
+
+                        // If it is the first, then set it to be visible
+                        if ( matchRef.size() == 0 )
+                        {
+                            mReferer.setVisible(Boolean.TRUE);
+                        }
+                        else
+                        {
+                            // We can't throw away duplicates or we will
+                            // end up reparsing them everytime a hit comes
+                            // in from one of them, but we can mark them
+                            // as duplicates.
+                            mReferer.setDuplicate(Boolean.TRUE);
+                        }
+
+                        storeReferer(mReferer);
+                    }
+
+                    else
+                    {
+                        // Store the new referer
+                        storeReferer(mReferer);
+
+                        // Hacky Referer URL weighting kludge:
+                        //
+                        // If there are multple referers to a request URL,
+                        // then we want to pick the best one. The others
+                        // are marked as duplicates. To do this we use a
+                        // weight. The weight formula is:
+                        //
+                        // w = URL length + (100 if URL contains anchor)
+
+                        // LOOP: find the referer with the highest weight
+                        Boolean visible = Boolean.FALSE;
+                        List refs= getReferersWithSameTitle(
+                            mReferer.getWebsite(),
+                            mReferer.getRequestUrl(),
+                            lb.getTitle(),
+                            lb.getExcerpt());
+                        RefererData chosen = null;
+                        int maxweight = 0;
+                        for (Iterator rdItr = refs.iterator();rdItr.hasNext();)
+                        {
+                            RefererData referer = (RefererData) rdItr.next();
+
+                            int weight = referer.getRefererUrl().length();
+                            if (referer.getRefererUrl().indexOf('#') != -1)
+                            {
+                                weight += 100;
+                            }
+
+                            if ( weight > maxweight )
+                            {
+                                chosen = referer;
+                                maxweight = weight;
+                            }
+
+                            if (referer.getVisible().booleanValue())
+                            {
+                                // If any are visible then chosen
+                                // replacement must be visible as well.
+                                visible = Boolean.TRUE;
+                            }
+
+                        }
+
+                        // LOOP: to mark all of the lower weight ones
+                        // as duplicates
+                        for (Iterator rdItr = refs.iterator();rdItr.hasNext();) {
+                            RefererData referer = (RefererData) rdItr.next();
+
+                            if (referer != chosen)
+                            {
+                                referer.setDuplicate(Boolean.TRUE);
+                            }
+                            else
+                            {
+                                referer.setDuplicate(Boolean.FALSE);
+                                referer.setVisible(visible);
+                            }
+                            storeReferer(referer);
+                        }
+
+
+                    }
+                }
+                else
+                {
+                    // It is not a linkback, but store it anyway
+                    storeReferer(mReferer);
+
+                    mLogger.info("No excerpt found at refering URL "
+                        + mReferer.getRefererUrl());
+                }
+            }
+            catch (Exception e)
+            {
+                mLogger.error("Processing linkback",e);
+            }
+            finally
+            {
+                try {
+                    mStrategy.release();
+                }
+                catch (RollerException e) {
+                    mLogger.error(
+                    "Exception logged by ManagerSupport.releaseDatabase()");
+                }
+            }
+
+        }
+

@@ -1,0 +1,11 @@
+    public Map getObjectStore(Class clazz) 
+    {
+        HashMap objMap = (HashMap)classMap.get(clazz);
+        if (objMap == null) 
+        {
+            objMap = new HashMap();
+            classMap.put(clazz, objMap);
+        }
+        return objMap;
+    }
+

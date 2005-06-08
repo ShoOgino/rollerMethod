@@ -1,0 +1,16 @@
+    /* 
+     * @see org.roller.model.UserManager#getPageByLink(org.roller.pojos.WebsiteData, java.lang.String)
+     */
+    public PageData getPageByLink(WebsiteData w, String p)
+            throws RollerException
+    {
+        List pages = getPages(w);
+        Iterator it = pages.iterator();
+        while (it.hasNext())
+        {
+            PageData page = (PageData)it.next();
+            if (page.getLink().equals(p)) return page;
+        }
+        return null;
+    }
+

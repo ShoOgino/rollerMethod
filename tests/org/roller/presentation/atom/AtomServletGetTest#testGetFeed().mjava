@@ -1,0 +1,26 @@
+    //-----------------------------------------------------------------------
+    public void testGetFeed() throws RollerException
+    {
+        String username = getUser().getUserName();
+
+        // set pathinfo
+        mkRequest.setPathInfo("/" + username + "/feed/" + mWebsite.getId());
+
+        servletTestModule.doGet();
+
+        // returns list of Atom Entries
+        List entries = getLatestEntries(username,
+            RollerRequest.getRollerRequest().getWeblogEntryCount());
+        Feed expectedFeed = AtomAssistant.convertToAtomFeed(mWebsite, entries, true);
+
+        try
+        {
+            // the output will contain XML header junk, so use Contains
+            servletTestModule.verifyOutputContains(expectedFeed.toString());
+        }
+        catch (VerifyFailedException vfe)
+        {
+            fail("Expected feed not returned");
+        }
+    }
+

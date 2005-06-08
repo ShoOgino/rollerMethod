@@ -1,0 +1,19 @@
+    /** Return parent category, or null if category is root of hierarchy. */
+    public FolderData getParent() throws RollerException
+    {
+        if (mNewParent != null)
+        {
+            // Category has new parent, so return that
+            return (FolderData)mNewParent;
+        }
+        else if (getParentAssoc() != null)
+        {
+            // Return parent found in database
+            return ((FolderAssoc)getParentAssoc()).getAncestorFolder();
+        }
+        else 
+        {
+            return null;
+        }
+    }
+

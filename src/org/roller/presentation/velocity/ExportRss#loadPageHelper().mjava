@@ -1,0 +1,2 @@
+    /**     * Create a PageHelper.  Note that will have no values     * necessary in parsing a Web request (such as /page) -     * it is only useful for the restricted export_rss.vm     * and has no PagePlugins either.  We want the exported     * Entry.text to be the raw values.     */    private void loadPageHelper()    {        // Add Velocity page helper to context        PageHelper pageHelper = new PageHelper(null, null, ctx);        // set no PagePlugins - we *do not* want to render them.
+        ctx.put("pageHelper", pageHelper );    }

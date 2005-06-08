@@ -1,0 +1,34 @@
+    /** 
+     * @see org.roller.model.BookmarkManager#isFolderInUser(org.roller.pojos.FolderData)
+     */
+    public boolean isDuplicateFolderName(FolderData folder) throws RollerException
+    {
+        // ensure that no sibling folders share the same name
+        FolderData parent = 
+            null == folder.getId() ? (FolderData)folder.getNewParent() : folder.getParent();
+        
+        if (null != parent)
+        {
+            List sameNames;
+            try
+            {
+                Session session = ((HibernateStrategy) mStrategy).getSession();
+                Criteria criteria = session.createCriteria(FolderAssoc.class);
+                criteria.createAlias("folder", "f");
+                criteria.add(Expression.eq("f.name", folder.getName()));
+                criteria.add(Expression.eq("ancestorFolder", parent));
+                criteria.add(Expression.eq("relation", Assoc.PARENT));
+                sameNames = criteria.list();
+            }
+            catch (HibernateException e)
+            {
+                throw new RollerException(e);        
+            }
+            if (sameNames.size() > 0) 
+            {
+                return true;        
+            }
+        }
+        return false;
+    }
+

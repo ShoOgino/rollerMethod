@@ -1,0 +1,7 @@
+    public void testGetPages() throws RollerException
+    {
+        // testuser0 is enabled and has 3 pages
+        WebsiteData wd0 = getRoller().getUserManager().getWebsite(enabledUserName);
+        assertEquals(3, getRoller().getUserManager().getPages(wd0).size());
+    }
+

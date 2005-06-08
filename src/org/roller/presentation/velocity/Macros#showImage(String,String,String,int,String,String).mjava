@@ -1,0 +1,42 @@
+    //------------------------------------------------------------------------
+    /**
+     * Shows HTML for an image in user's resource directory.
+     * @param imageUrl URL to image
+     * @param linkUrl  URL that image links to, null or empty if none
+     * @param alt      Description of image and of link
+     * @param border   For IMG tag's border attribute
+     * @param halign   For IMG tag's halign attribute
+     * @param valign   For IMG tag's valign attribute
+     * @return String  HTML for displaying image
+     */
+    public String showImage( String imageUrl, String linkUrl,
+        String alt, int border, String halign, String valign )
+    {
+        StringBuffer sb = new StringBuffer();
+        if ( linkUrl!=null && linkUrl.trim().length()>0 )
+        {
+            sb.append( "<a href=\"");
+            sb.append( linkUrl );
+            sb.append( "\" >");
+        }
+
+        sb.append("<img src=\"");
+        sb.append( imageUrl );
+        sb.append( "\" alt=\"");
+        sb.append( alt);
+        sb.append( "\" border=\"");
+        sb.append( border);
+        sb.append( "\" halign=\"");
+        sb.append( halign);
+        sb.append( "\" valign=\"");
+        sb.append( valign);
+        sb.append( "\" />");
+
+        if ( linkUrl!=null && linkUrl.trim().length()>0 )
+        {
+            sb.append( "</a>");
+        }
+
+        return sb.toString();
+    }
+

@@ -1,0 +1,14 @@
+    /** Encapsulates UserManager.getPageByName() */
+    public String getPageIdByName(String pageName)
+    {
+        PageData pd = (PageData)mPageMap.get(pageName);
+        if ( pd != null ) 
+        {
+            return pd.getId();
+        }
+        else
+        {
+            return null;
+        }
+    }
+

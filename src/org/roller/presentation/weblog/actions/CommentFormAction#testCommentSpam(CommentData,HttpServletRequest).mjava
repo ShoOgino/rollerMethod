@@ -1,0 +1,11 @@
+    //-----------------------------------------------------------------------
+    /**
+	 * @param cf
+	 * @return
+	 */
+	private void testCommentSpam(CommentData cd, HttpServletRequest req)
+	{
+        new CommentSpamChecker().testComment(cd,
+            RollerContext.getRollerContext(req).getThreadManager());
+	}
+

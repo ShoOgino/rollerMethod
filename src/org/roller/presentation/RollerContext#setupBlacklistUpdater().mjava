@@ -1,0 +1,9 @@
+    //------------------------------------------------------------------------
+    /**
+     * Add BlacklistUpdateTask to run on a schedule.
+     */
+    private void setupBlacklistUpdater()
+    {
+        mThreadManager.scheduleDailyTimerTask(new BlacklistUpdateTask(mConfig.getUploadDir()));
+    }
+

@@ -1,0 +1,32 @@
+    //------------------------------------------------------------------------
+    /**
+     * Show RSS auto-discovery element.
+     * @return HTML for RSS auto-discovery element. 
+     */
+    public String showRSSAutodiscoveryLink()
+    {
+        String links = "ERROR: error generating RSS autodiscovery link";
+        try
+        {
+            RollerRequest rreq = RollerRequest.getRollerRequest(
+                (HttpServletRequest)mPageContext.getRequest());
+            RollerContext rctx = RollerContext.getRollerContext(
+                rreq.getServletContext());
+             
+            StringBuffer sb = new StringBuffer();
+            sb.append("<link rel=\"alternate\" type=\"application/rss+xml\" ");
+            sb.append("title=\"RSS\" href=\"");
+            sb.append( rctx.getContextUrl(
+                (HttpServletRequest)mPageContext.getRequest()) );
+            sb.append( "/rss/" );
+            sb.append( getUser().getUserName() );
+            sb.append( "\">" );
+            links = sb.toString();
+        }
+        catch (Throwable e)
+        {
+            mLogger.error("Showing RSS link",e);
+        }
+        return links;
+    }
+

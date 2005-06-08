@@ -1,0 +1,49 @@
+    /**
+     * Edits a given post. Optionally, will publish the blog after making the edit
+     *
+     * @param appkey Unique identifier/passcode of the application sending the post
+     * @param postid Unique identifier of the post to be changed
+     * @param userid Login for a Blogger user who has permission to post to the blog
+     * @param password Password for said username
+     * @param content Contents of the post
+     * @param publish If true, the blog will be published immediately after the post is made
+     * @throws XmlRpcException
+     * @return
+     */
+    public boolean editPost(String appkey, String postid, String userid,
+                            String password, String content, boolean publish)
+                     throws Exception
+    {
+        mLogger.info("editPost() Called ========[ SUPPORTED ]=====");
+        mLogger.info("     Appkey: " + appkey);
+        mLogger.info("     PostId: " + postid);
+        mLogger.info("     UserId: " + userid);
+        mLogger.info("    Publish: " + publish);
+        mLogger.info("     Content:\n " + content);
+
+        validate(userid,password);
+
+        try
+        {
+            Timestamp current = new Timestamp(System.currentTimeMillis());
+
+            Roller roller = RollerRequest.getRollerRequest().getRoller();
+            WeblogManager weblogMgr = roller.getWeblogManager();
+            WeblogEntryData entry = weblogMgr.retrieveWeblogEntry(postid);
+            entry.setText(content);
+            entry.setUpdateTime(current);
+            entry.setPublishEntry(Boolean.valueOf(publish));
+
+            entry.save();
+            roller.commit();
+            flushPageCache(userid);
+            return true;
+        }
+        catch (Exception e)
+        {
+            String msg = "ERROR in BlooggerAPIHander.editPost";
+            mLogger.error(msg,e);
+            throw new XmlRpcException(UNKNOWN_EXCEPTION, msg);
+        }
+    }
+

@@ -1,0 +1,109 @@
+    public boolean equals(Object pOther)
+    {
+        if (pOther instanceof WeblogEntryData)
+        {
+            WeblogEntryData lTest = (WeblogEntryData) pOther;
+            boolean lEquals = true;
+
+            if (this.id == null)
+            {
+                lEquals = lEquals && (lTest.id == null);
+            }
+            else
+            {
+                lEquals = lEquals && this.id.equals(lTest.id);
+            }
+
+            if (this.category == null)
+            {
+                lEquals = lEquals && (lTest.category == null);
+            }
+            else
+            {
+                lEquals = lEquals && this.category.equals(lTest.category);
+            }
+
+            if (this.mWebsite == null)
+            {
+                lEquals = lEquals && (lTest.mWebsite == null);
+            }
+            else
+            {
+                lEquals = lEquals && this.mWebsite.equals(lTest.mWebsite);
+            }
+
+            if (this.title == null)
+            {
+                lEquals = lEquals && (lTest.title == null);
+            }
+            else
+            {
+                lEquals = lEquals && this.title.equals(lTest.title);
+            }
+
+            if (this.text == null)
+            {
+                lEquals = lEquals && (lTest.text == null);
+            }
+            else
+            {
+                lEquals = lEquals && this.text.equals(lTest.text);
+            }
+
+            if (this.anchor == null)
+            {
+                lEquals = lEquals && (lTest.anchor == null);
+            }
+            else
+            {
+                lEquals = lEquals && this.anchor.equals(lTest.anchor);
+            }
+
+            if (this.pubTime == null)
+            {
+                lEquals = lEquals && (lTest.pubTime == null);
+            }
+            else
+            {
+                lEquals = lEquals && this.pubTime.equals(lTest.pubTime);
+            }
+
+            if (this.updateTime == null)
+            {
+                lEquals = lEquals && (lTest.updateTime == null);
+            }
+            else
+            {
+                lEquals = lEquals && 
+                          this.updateTime.equals(lTest.updateTime);
+            }
+
+            if (this.publishEntry == null)
+            {
+                lEquals = lEquals && (lTest.publishEntry == null);
+            }
+            else
+            {
+                lEquals = lEquals && 
+                          this.publishEntry.equals(lTest.publishEntry);
+            }
+
+            if (this.mPlugins == null)
+            {
+                lEquals = lEquals && (lTest.mPlugins == null);
+            }
+            else
+            {
+                lEquals = lEquals && 
+                          this.mPlugins.equals(lTest.mPlugins);
+            }
+
+
+            return lEquals;
+        }
+        else
+        {
+            return false;
+        }
+    }
+

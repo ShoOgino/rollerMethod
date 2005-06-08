@@ -1,0 +1,16 @@
+    /* 
+     * @see org.roller.model.ConfigManager#getRollerConfig()
+     */
+    public RollerConfig getRollerConfig() throws RollerException
+    {
+        Map configMap = ((MockPersistenceStrategy)mStrategy).getObjectStore(RollerConfig.class);
+        if (configMap.isEmpty())
+        {
+            RollerConfig config = new RollerConfig();
+            storeRollerConfig(config);
+            return config;
+        }
+        
+        return (RollerConfig)configMap.values().iterator().next();
+    }
+

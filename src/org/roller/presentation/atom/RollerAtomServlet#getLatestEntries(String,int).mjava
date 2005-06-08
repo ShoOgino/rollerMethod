@@ -1,0 +1,24 @@
+    //------------------------------------------------------------------------
+    protected List getLatestEntries(String userrName, int maxEntries)
+    {
+        List rollerEntries = new ArrayList(maxEntries);
+        try
+        {
+            RollerRequest rreq = RollerRequest.getRollerRequest();
+            WebsiteData website = rreq.getWebsite();
+            rollerEntries = getWeblogManager().getWeblogEntries(
+                            website,                  // userName
+                            null,                     // startDate
+                            new Date(),               // endDate
+                            null,                     // catName
+                            WeblogManager.PUB_ONLY,   // status
+                            new Integer(maxEntries)); // maxEntries
+        }
+        catch (RollerException e)
+        {
+            mLogger.error(e);
+        }
+
+        return rollerEntries;
+    }
+

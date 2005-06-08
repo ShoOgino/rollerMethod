@@ -1,0 +1,20 @@
+    /**
+     * Determine the Row Number - from the IterateTag
+     */
+    protected int getRowNumber()
+    {
+        // Determine if embedded in an IterateTag
+        Tag tag = findAncestorWithClass(this, IterateTag.class);
+
+        if (tag == null)
+        {
+            return 1;
+        }
+
+        // Determine the current row number
+        IterateTag iterator = (IterateTag) tag;
+
+        //        return iterator.getLengthCount() + 1;
+        return iterator.getIndex() + 1;
+    }
+

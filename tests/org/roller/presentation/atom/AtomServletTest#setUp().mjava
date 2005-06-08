@@ -1,0 +1,11 @@
+    //-----------------------------------------------------------------------
+    public void setUp() throws Exception
+    {
+        super.setUp();
+        
+        mkRequest = mockFactory.getMockRequest();
+        
+        servletTestModule = new ServletTestModule(mockFactory);
+        servletTestModule.createServlet(RollerAtomServlet.class);
+    }
+

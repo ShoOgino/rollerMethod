@@ -1,0 +1,24 @@
+    /**
+     * @see org.roller.model.UserManager#removeLoginCookies(java.lang.String)
+     */
+    public void removeLoginCookies(String username) throws RollerException
+    {
+        Session session = ((HibernateStrategy)mStrategy).getSession();
+        Criteria criteria = session.createCriteria(UserCookie.class); 
+        criteria.add(Expression.eq("username", username));        
+        List list;
+        try
+        {
+            list = criteria.list();
+        }
+        catch (HibernateException e)
+        {
+            throw new RollerException(e);
+        }
+        for (Iterator it = list.iterator(); it.hasNext();)
+        {
+            String id = ((UserCookie) it.next()).getId();
+            mStrategy.remove(id, UserCookie.class);
+        }        
+    }
+

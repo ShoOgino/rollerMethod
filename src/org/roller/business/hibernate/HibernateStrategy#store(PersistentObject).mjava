@@ -1,0 +1,51 @@
+    //-------------------------------------------------------------------------
+    /**
+     * Store object using an existing transaction.
+     * @param obj
+     * @throws RollerException
+     */
+    public PersistentObject store(PersistentObject obj)
+        throws RollerException
+    {
+        if ( obj == null )
+        {
+            throw new RollerException(Messages.getString(
+                "HibernateStrategy.nullPassedIn"));
+        }
+
+        Session ses = getSession();
+        try
+        {
+            // Dave: I tried using ses.saveOrUpdate() here, but it did not work.
+
+            if ( obj.getId() == null || obj.getId().trim().equals("") )
+            {
+                // Object has never been written to database, so save it.
+                // This makes obj into a persistent instance.
+                ses.save(obj);
+            }
+
+            if ( !ses.contains(obj) )
+            {
+                // Object has been written to database, but instance passed in
+                // is not a persistent instance, so must be loaded into session.
+                PersistentObject vo =
+                    (PersistentObject)ses.load(obj.getClass(),obj.getId());
+                vo.setData(obj);
+                obj = vo;
+            }
+        }
+        catch (Exception e)
+        {
+            String msg = Messages.formatString(
+                "HibernateStrategy.exceptionStoring",obj.getId());
+            mLogger.error(msg, e);
+
+            // Gavin: "make sure you never catch + handle an exception and
+            // then keep using the session (ObjectNotFoundException included!)"
+            release();
+            throw new RollerException(msg,e);
+        }
+        return obj;
+    }
+

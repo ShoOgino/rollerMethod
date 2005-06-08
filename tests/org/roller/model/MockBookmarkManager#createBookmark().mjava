@@ -1,0 +1,16 @@
+    /* 
+     * @see org.roller.model.BookmarkManager#createBookmark()
+     */
+    public BookmarkData createBookmark()
+    {
+        BookmarkData book = new BookmarkData();
+        try
+        {
+            mStrategy.store(book);
+        }
+        catch (RollerException e)
+        {
+        }
+        return book;
+    }
+

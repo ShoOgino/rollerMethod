@@ -1,0 +1,23 @@
+    //------------------------------------------------------------------------    
+    /** 
+     * @see org.roller.model.UserManager#getPages(java.lang.String)
+     */
+    public List getPages(WebsiteData website) throws RollerException
+    {
+        if (website == null)
+            throw new RollerException("website is null");
+                                                                      
+        Session session = ((HibernateStrategy)mStrategy).getSession();
+        Criteria criteria = session.createCriteria(PageData.class);
+        criteria.add(Expression.eq("website",website)); 
+        criteria.addOrder(Order.asc("name"));
+        try
+        {
+            return criteria.list();
+        }
+        catch (HibernateException e)
+        {
+            throw new RollerException(e);
+        }
+    }
+

@@ -1,0 +1,25 @@
+    /**
+     * @param website
+     * @param doc
+     * @param anchor
+     * @return
+     */
+    private WeblogEntryData buildSearchEntry(WebsiteData website, Document doc)
+    {
+        String pubTimeStr = doc.getField(FieldConstants.PUBLISHED).stringValue();
+        WeblogEntryData entry = new WeblogEntryData();
+        entry.setWebsite(website);
+        entry.setTitle(doc.getField(FieldConstants.TITLE).stringValue());
+        entry.setAnchor(doc.getField(FieldConstants.ANCHOR).stringValue());
+        entry.setPubTime( DateUtil.parseTimestampFromFormats(pubTimeStr) );
+        entry.setText( doc.getField(FieldConstants.CONTENT_STORED).stringValue() );
+        if (doc.getField(FieldConstants.CATEGORY) != null)
+        {
+            WeblogCategoryData category = new WeblogCategoryData();
+            category.setWebsite(website);
+            category.setName(doc.getField(FieldConstants.CATEGORY).stringValue());
+            entry.setCategory( category );
+        }
+        return entry;
+    }
+

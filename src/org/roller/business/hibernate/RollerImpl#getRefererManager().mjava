@@ -1,0 +1,12 @@
+    /** 
+     * @see org.roller.pojos.Roller#getRefererManager()
+     */
+    public RefererManager getRefererManager() throws RollerException
+    {
+        if ( mRefererMgr == null ) 
+        {
+            mRefererMgr = new HibernateRefererManagerImpl(this, mStrategy);
+        }
+        return mRefererMgr;
+    }
+

@@ -1,0 +1,43 @@
+    protected static void loadRssValues(
+       Context ctx, RollerRequest rreq, String userName) throws RollerException
+    {
+        HttpServletRequest request = rreq.getRequest();
+        
+        int entryLength = -1;
+        String sExcerpts = request.getParameter("excerpts");
+        if ( sExcerpts!=null && sExcerpts.equalsIgnoreCase("true"))
+        {
+            entryLength = 150;
+        }
+        ctx.put("entryLength",  new Integer(entryLength));
+        
+        int entryCount = 15;
+        String sCount = request.getParameter("count");
+        if ( sCount!=null && sExcerpts.trim().equals(""))
+        {
+            try
+            {
+                entryCount = Integer.parseInt(sCount);
+            }
+            catch (NumberFormatException e)
+            {
+                mLogger.warn("Improperly formatted count parameter");
+            }
+            if ( entryCount > 50 ) entryCount = 50;
+            if ( entryCount < 0 ) entryCount = 15;
+        }
+        ctx.put("entryCount",  new Integer(entryCount));
+            
+        String catname = null;
+        String catPath = null;
+        if ( rreq.getWeblogCategory() != null )
+        {
+            catname = rreq.getWeblogCategory().getName();
+            catPath = rreq.getWeblogCategory().getPath();
+        } 
+        ctx.put("catname", (catname!=null) ? catname : "");
+        ctx.put("catPath", (catPath != null) ? catPath : "");
+        ctx.put("updateTime", request.getAttribute("updateTime"));
+        ctx.put("now", new Date());
+    }
+

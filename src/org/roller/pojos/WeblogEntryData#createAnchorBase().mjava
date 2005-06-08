@@ -1,0 +1,36 @@
+    /** Create anchor for weblog entry, based on title or text */
+    public String createAnchorBase()
+    {
+        // Use title or text for base anchor
+        String base = getTitle();
+        if (base == null || base.trim().equals(""))
+        {
+            base = getText();
+        }
+        if (base != null && !base.trim().equals(""))
+        {
+            base = Utilities.replaceNonAlphanumeric(base, ' ');
+
+            // Use only the first 4 words
+            StringTokenizer toker = new StringTokenizer(base);
+            String tmp = null;
+            int count = 0;
+            while (toker.hasMoreTokens() && count < 5)
+            {
+                String s = (String) toker.nextToken();
+                s = s.toLowerCase();
+                tmp = (tmp == null) ? s : tmp + "_" + s;
+                count++;
+            }
+            base = tmp;
+        }
+        // No title or text, so instead we will use the items date
+        // in YYYYMMDD format as the base anchor
+        else
+        {
+            base = DateUtil.format8chars(getPubTime());
+        }
+
+        return base;
+    }
+

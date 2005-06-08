@@ -1,0 +1,26 @@
+    private UserData deleteUser(ActionMapping mapping, HttpServletRequest request, 
+                                RollerRequest rreq, UserAdminForm uaf, UserManager mgr, 
+                                UserData ud) throws RollerException
+    {
+        // remove user's Entries from Lucene index
+        RollerContext.getRollerContext(
+            RollerContext.getServletContext()).getIndexManager()
+            .scheduleIndexOperation(new RemoveUserIndexOperation(ud));
+        
+        // delete user from database
+        ud.remove();
+        rreq.getRoller().commit();
+        PageCache.removeFromCache( request, ud );
+        ud = null;
+
+        request.getSession().setAttribute(
+            RollerSession.STATUS_MESSAGE,
+                uaf.getUserName() + " has been deleted");
+
+        uaf.reset(mapping, request);
+        
+        List users = mgr.getUsers(false);
+        request.setAttribute("users", users);
+        return ud;
+    }
+

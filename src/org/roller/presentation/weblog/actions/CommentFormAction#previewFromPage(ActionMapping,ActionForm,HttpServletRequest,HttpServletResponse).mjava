@@ -1,0 +1,15 @@
+    //-----------------------------------------------------------------------
+    /**
+     * Load comment and blog entry objects and forward to comment preview page.
+     */
+    public ActionForward previewFromPage(
+        ActionMapping       mapping,
+        ActionForm          actionForm,
+        HttpServletRequest  request,
+        HttpServletResponse response)
+        throws IOException, ServletException
+    {
+        request.setAttribute("previewFromPage","true");
+        return preview(mapping,actionForm,request,response);
+    }
+

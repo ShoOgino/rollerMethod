@@ -1,0 +1,18 @@
+    //------------------------------------------------------------------------
+    /**
+     * Get the RollerRequest object that is stored in the request. Creates
+     * RollerRequest if one not found in mRequest.
+     */
+    public static RollerRequest getRollerRequest( HttpServletRequest r )
+    {
+        try
+        {
+            return getRollerRequest(r, RollerContext.getServletContext());
+        }
+        catch (Exception e)
+        {
+            mLogger.error("Unable to create a RollerRequest", e);
+        }
+        return null;
+    }
+

@@ -1,0 +1,10 @@
+    /**
+     * @param entry
+     */
+    private void indexEntry(WeblogEntryData entry)
+    {
+        // index the new Entry
+        AddEntryOperation addEntry = new AddEntryOperation(entry);
+        indexMgr.scheduleIndexOperation(addEntry);
+    }
+

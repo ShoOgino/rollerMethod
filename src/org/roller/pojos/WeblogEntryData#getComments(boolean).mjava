@@ -1,0 +1,11 @@
+    public List getComments(boolean ignoreSpam)
+    {
+        List list = new ArrayList();
+        try
+        {
+            return RollerFactory.getRoller().getWeblogManager().getComments(getId(), ignoreSpam);
+        }
+        catch (RollerException alreadyLogged) {}
+        return list;
+    }
+

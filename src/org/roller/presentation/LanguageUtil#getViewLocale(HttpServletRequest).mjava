@@ -1,0 +1,69 @@
+	/**
+	 * This method returns the Locale in which the current viewer wants
+	 * to view the website. This 'View Locale' is derived as follows:
+	 * <ul>
+	 * <li>look for existing Locale in Session</li>
+	 * <li>if not available, get Locale from request</li>
+	 * <li>if not available, use {@link org.roller.presentation.LanguageUtil.getDefaultLocale()} 
+	 * (= Locale from <code>WebsiteData</code>)</li>
+	 * <li>if a Locale is available in the request, verify it against the locales that 
+	 * are supported by Roller; if it is not supported replace it with the default Locale</li>
+	 * 
+	 * The reason why I don't want to resort to the standard default mechanism of the
+	 * Java ResourceBundles, is that this only works for the messages and not for
+	 * other things like the dates and calendars (standard Java classes supports all locales). 
+	 * I think it looks silly to have the dates and calendars appear in French (e.g.) while 
+	 * the messages appear in English.
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public static Locale getViewLocale(HttpServletRequest request)
+	{
+		mLogger.debug("getViewLocale()");
+		Locale viewLocale = null;
+
+		// if user is logged in and the user looking at his own website, take website-locale
+		if (isWebsiteOfPrincipal(request)) {
+			viewLocale = getDefaultLocale(request);
+			mLogger.debug("websiteLocale = "+viewLocale);
+		} else {
+			// check session for existing Locale
+			viewLocale = (Locale) request.getSession().getAttribute(Globals.LOCALE_KEY);
+			mLogger.debug("sessionLocale = "+viewLocale);
+		}
+
+		// if not found, look in many places
+		if (viewLocale == null)
+		{
+			// get from request
+			viewLocale = request.getLocale();
+			mLogger.debug("requestLocale = "+viewLocale);
+
+			//still not there? take default
+			if (viewLocale == null)
+			{
+				viewLocale = getDefaultLocale(request);
+				mLogger.debug("defaultLocale = "+viewLocale);
+			}
+		}
+		
+		/*
+		 * If viewLocale is not supported, switch back to default.
+		 * 
+		 * Note: I do this here under the assumption
+		 * that the Locale in the Session is always supported. So,
+		 * no checks on the Session Locale.
+		 */
+		ServletContext ctx = request.getSession().getServletContext();
+		if (!LanguageUtil.isSupported(viewLocale.getLanguage(), ctx))
+		{
+			viewLocale = Locale.getDefault();
+		}
+		mLogger.debug("return Locale = "+viewLocale);
+		
+		// add to session (for Velocity text tool)
+		request.getSession().setAttribute(Globals.LOCALE_KEY, viewLocale);
+		return viewLocale;
+	}
+

@@ -1,0 +1,20 @@
+        /** Get list of recent weblog entries */
+        public List getRecentWeblogEntries() throws RollerException
+        {
+            List list = (List)mRecentEntries.getObject();
+            if (list == null)
+            {
+                mLogger.debug("Refreshing recent entries list");
+                Roller roller = RollerRequest.getRollerRequest(mRequest).getRoller();			                       
+                list = roller.getWeblogManager().getWeblogEntries(
+                    null,                   // userName
+                    null,                   // startDate
+                    new Date(),             // endDate
+                    null,                   // catName
+                    WeblogManager.PUB_ONLY, // status
+                    new Integer(30));       // maxEntries
+                mRecentEntries.setObject(list);
+            }
+            return list;
+        }
+

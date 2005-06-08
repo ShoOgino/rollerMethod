@@ -1,0 +1,55 @@
+    /* (non-Javadoc)
+     * @see java.lang.Runnable#run()
+     */
+    public void doRun()
+    {
+        searchresults = null;
+      		
+        IndexSearcher searcher = null;
+
+        try
+        {
+            searcher = new IndexSearcher(manager.getSharedIndexReader());
+
+            Query query =
+                MultiFieldQueryParser.parse(
+                    term, SEARCH_FIELDS, new StandardAnalyzer());
+
+            Term tUsername =
+                IndexUtil.getTerm(FieldConstants.USERNAME, username);
+
+            if (tUsername != null)
+            {
+                BooleanQuery bQuery = new BooleanQuery();
+                bQuery.add(query, true, false);
+                bQuery.add(new TermQuery(tUsername), true, false);
+                query = bQuery;
+            }
+            
+            Term tCategory =
+                IndexUtil.getTerm(FieldConstants.CATEGORY, category);
+
+            if (tCategory != null)
+            {
+                BooleanQuery bQuery = new BooleanQuery();
+                bQuery.add(query, true, false);
+                bQuery.add(new TermQuery(tCategory), true, false);
+                query = bQuery;
+            }
+
+            searchresults = searcher.search(query, null/*Filter*/, SORTER);
+            
+        }
+        catch (IOException e)
+        {
+            mLogger.error("Error searching index", e);
+            parseError = e.getMessage();
+        }
+        catch (ParseException e)
+        {
+            // who cares?
+            parseError = e.getMessage();
+        }
+        // don't need to close the reader, since we didn't do any writing!        
+    }
+

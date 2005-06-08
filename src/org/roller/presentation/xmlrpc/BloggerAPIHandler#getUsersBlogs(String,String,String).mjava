@@ -1,0 +1,43 @@
+    /**
+     * Returns information on all the blogs a given user is a member of
+     *
+     * @param appkey Unique identifier/passcode of the application sending the post
+     * @param userid Login for a Blogger user who has permission to post to the blog
+     * @param password Password for said username
+     * @throws XmlRpcException
+     * @return
+     */
+    public Object getUsersBlogs(String appkey, String userid, String password)
+                         throws Exception
+    {
+        mLogger.info("getUsersBlogs() Called ===[ SUPPORTED ]=======");
+        mLogger.info("     Appkey: " + appkey);
+        mLogger.info("     UserId: " + userid);
+
+        WebsiteData website = validate(userid,password);
+
+        try
+        {
+            RollerRequest rreq = RollerRequest.getRollerRequest();
+            HttpServletRequest req = rreq.getRequest();
+            String contextUrl =
+                RollerContext.getRollerContext(req).getAbsoluteContextUrl(req);
+
+            Hashtable blog = new Hashtable(3);
+            blog.put("url", contextUrl+"/page/"+userid);
+            blog.put("blogid", userid);
+            blog.put("blogName", website.getName());
+
+            Vector result = new Vector();
+            result.add(blog);
+
+            return result;
+        }
+        catch (Exception e)
+        {
+            String msg = "ERROR in BlooggerAPIHander.getUsersBlogs";
+            mLogger.error(msg,e);
+            throw new XmlRpcException(UNKNOWN_EXCEPTION, msg);
+        }
+    }
+

@@ -1,0 +1,14 @@
+    /** Get comments for weblog entry specified by request */
+    public List getComments( WeblogEntryData entry )
+    {
+        try
+        {
+            return mWeblogMgr.getComments( entry.getId() );
+        }
+        catch (RollerException e)
+        {
+            mLogger.error("PageModel getComments()", e);
+        }
+        return new ArrayList();
+    }
+

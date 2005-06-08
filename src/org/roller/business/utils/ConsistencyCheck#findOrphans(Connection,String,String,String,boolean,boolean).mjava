@@ -1,0 +1,63 @@
+    /** Find orphans, records in a manytable that refer to a onetable that 
+     * no longer exists.
+     * @param con       Database connection to be used.
+     * @param manytable Name of the manytable.
+     * @param fkname    Name of the foreign key field in the manytable.
+     * @param onetable  Name of the onetable.
+     * @param delete    True if orphans in manytable are to be deleted.
+     * @return          List of orphans found (will be empty if delete is true.
+     * @throws SQLException
+     */
+    public static List findOrphans(
+        Connection con, String manytable, String fkname, String onetable, boolean delete, boolean verbose) 
+        throws SQLException
+    {
+        List orphans = new LinkedList();
+        
+        Statement stall = con.createStatement();
+        ResultSet rsall = stall.executeQuery(
+            "select id,"+fkname+" as fk from "+manytable);
+        while (rsall.next()) 
+        {
+            String id = rsall.getString("id");
+            String fk = rsall.getString("fk");
+            if (fk != null)
+            {
+                Statement stone = con.createStatement();
+                ResultSet rsone = stone.executeQuery(
+                    "select id from "+onetable+" where id='"+fk+"' limit 1");
+                if (!rsone.next()) 
+                {
+                    orphans.add(id);   
+                }                
+            }
+        } 
+        
+        if (!delete)
+        {
+            debug("Orphans found in "+manytable+" = "+orphans.size());
+            if (verbose)
+            {
+                Iterator iter = orphans.iterator();
+                while (iter.hasNext())
+                {
+                    String id = (String) iter.next();
+                    debug("   "+manytable+" id="+id);
+                }
+            }
+        }
+        else
+        {
+            debug("Deleting orphans found in "+manytable+" count = "+orphans.size());            
+            Iterator iter = orphans.iterator();
+            while (iter.hasNext())
+            {
+                String id = (String) iter.next();
+                Statement stdel = con.createStatement();
+                stdel.executeUpdate("delete from "+manytable+" where id='"+id+"'");
+            }
+            orphans = new LinkedList();
+        }
+        return orphans;
+    }
+

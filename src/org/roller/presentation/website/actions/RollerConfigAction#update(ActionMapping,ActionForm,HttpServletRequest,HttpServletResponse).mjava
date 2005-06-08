@@ -1,0 +1,41 @@
+    //-----------------------------------------------------------------------
+    public ActionForward update(
+        ActionMapping       mapping,
+        ActionForm          actionForm,
+        HttpServletRequest  request,
+        HttpServletResponse response)
+        throws IOException, ServletException
+    {
+        ActionForward forward = mapping.findForward("rollerConfig.page");
+        ActionErrors errors = new ActionErrors();
+        try
+        {
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            if ( rreq.isUserAuthorizedToEdit() && rreq.isAdminUser() )
+            {
+                RollerContext rc = RollerContext.getRollerContext( request );
+                RollerConfigFormEx rcForm = (RollerConfigFormEx)actionForm;
+                                    				
+                // get current RollerConfig and set new values
+                RollerConfig rollerConfig = rc.getRollerConfig();
+                rcForm.copyTo(rollerConfig, request.getLocale());
+                
+                // persist
+                rreq.getRoller().getConfigManager().storeRollerConfig(rollerConfig);
+                rreq.getRoller().commit();
+            }
+            else
+            {
+                forward = mapping.findForward("access-denied");
+            }
+        }
+        catch (RollerException e)
+        {
+            mLogger.error(e);
+            errors.add(ActionErrors.GLOBAL_ERROR, new ActionError(
+               "error.update.rollerConfig",e.getClass().getName()));
+            saveErrors(request,errors);
+        }
+        return forward;
+    }
+

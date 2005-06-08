@@ -1,0 +1,25 @@
+    //------------------------------------------------------------------------
+    public ActionForward newUser(
+        ActionMapping       mapping,
+        ActionForm          actionForm,
+        HttpServletRequest  request,
+        HttpServletResponse response)
+        throws IOException, ServletException
+    {
+        ActionForward forward = mapping.findForward("addUser.page");
+        ActionErrors errors = new ActionErrors();
+        RollerRequest rreq = RollerRequest.getRollerRequest(request);
+        try
+        {
+        		UserFormEx userForm = (UserFormEx)actionForm;
+            loadRequestObjects(request, rreq, null, userForm);
+            userForm.setLocale(request.getLocale().toString());
+        }
+        catch (Exception e)
+        {
+            errors.add(ActionErrors.GLOBAL_ERROR,
+                new ActionError("error.editing.user", e.toString()));
+        }
+        return forward;
+    }
+

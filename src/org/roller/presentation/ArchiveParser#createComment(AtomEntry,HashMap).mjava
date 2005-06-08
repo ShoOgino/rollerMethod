@@ -1,0 +1,42 @@
+    /**
+     * @param atomEntry
+     * @param entryMap
+     */
+    private void createComment(AtomEntry atomEntry, HashMap entryMap) throws RollerException
+    {
+        // first try to get the Entry from local cache
+        CommentData comment = roller.getWeblogManager().retrieveComment(atomEntry.getId());
+        if (comment == null)
+        {    
+            String entryId = atomEntry.getAnnotation();
+            WeblogEntryData entry = (WeblogEntryData) entryMap.get(entryId);
+            if (entry == null)
+            {
+                // now try getting it from database
+                entry = roller.getWeblogManager().retrieveWeblogEntry(entryId);
+            }
+            if (entry != null)
+            {    
+                comment = new CommentData(
+                    null, 
+                    entry, 
+                    atomEntry.getAuthor().getName(), 
+                    atomEntry.getAuthor().getEmail(), 
+                    atomEntry.getAuthor().getUrl(), 
+                    atomEntry.getContent().getText(), 
+                    new Timestamp(atomEntry.getIssued().getTime()), 
+                    Boolean.FALSE);
+                comment.save();
+            }
+            else
+            {
+                mLogger.warn("Unable to find parent WeblogEntry for id: " + entryId +
+                             ".\n\tComment not created: " + atomEntry.getTitle().getText());
+            }
+        }
+        else
+        {
+            mLogger.info("A Comment already exists for id: " + atomEntry.getId());
+        }
+    }
+

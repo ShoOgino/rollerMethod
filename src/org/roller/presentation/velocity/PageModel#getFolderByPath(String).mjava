@@ -1,0 +1,14 @@
+    public FolderData getFolderByPath(String path)
+    {
+        try
+        {
+            return mBookmarkMgr.getFolderByPath(
+                mUserMgr.getWebsite(mUsername), null, path);
+        }
+        catch (RollerException e)
+        {
+            mLogger.error(e);
+            return null;
+        }
+    }
+

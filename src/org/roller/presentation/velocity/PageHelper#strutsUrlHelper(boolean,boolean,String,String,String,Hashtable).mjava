@@ -1,0 +1,55 @@
+	/**
+	 * Very contrived helper method for Velocimacros generating Struts links.
+	 * This is really only of use to the showNavBar macro.
+	 * @param useIds
+	 * @param isAction
+	 * @param path
+	 * @param val1
+	 * @param val2
+	 * @return String
+	 */
+	public String strutsUrlHelper( boolean useIds, boolean isAction, 
+		String path, String val1, String val2, Hashtable params)
+	{
+		if (useIds)
+		{
+			if (mRollerReq.getFolder() != null) 
+			{
+				params.put(RollerRequest.FOLDERID_KEY,
+				mRollerReq.getFolder().getId());
+			} 
+			if (mUsername != null)
+			{
+				params.put(RollerRequest.USERNAME_KEY, mUsername);
+			}
+		}
+    	
+		if (StringUtils.isNotEmpty(val1) && !val1.equals("null"))
+		{
+			params.clear();
+			params.put("rmk", val1);
+			params.put("rmik", val2);
+		}
+    	
+		String returnUrl = "";
+		try
+		{
+			if (isAction)
+			{
+				returnUrl = RequestUtils.computeURL( mPageContext,
+								path, null, null, null, params, null, false);
+			}
+			else
+			{
+				returnUrl = RequestUtils.computeURL( mPageContext,
+								null, path, null, null, params, null, false);
+			}
+		}
+		catch (MalformedURLException mue)
+		{
+			mLogger.warn("RollerRequest.strutsUrlHelper exception: ", mue);
+			returnUrl = "<span class=\"error\">ERROR generating link</span>";
+		}
+		return returnUrl;
+	}
+

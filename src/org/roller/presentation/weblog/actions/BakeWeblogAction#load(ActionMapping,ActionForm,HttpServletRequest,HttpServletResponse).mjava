@@ -1,0 +1,21 @@
+	public ActionForward load(
+		ActionMapping       mapping,
+		ActionForm          actionForm,
+		HttpServletRequest  request,
+		HttpServletResponse response)
+		throws IOException, ServletException
+	{
+		RollerRequest rreq = RollerRequest.getRollerRequest(request);
+		try {
+			if ( !rreq.isUserAuthorizedToEdit() )
+			{
+				return mapping.findForward("access-denied");
+			}
+		}
+		catch (Exception e)
+		{
+			return mapping.findForward("access-denied");
+		}
+		return mapping.findForward("baking.done");
+	}
+

@@ -1,0 +1,19 @@
+    /**
+     * Copy values from WeblogEntryData to this Form.
+     */
+    public void copyFrom(WeblogEntryData entry, Locale locale) 
+        throws RollerException
+    {
+        super.copyFrom(entry, locale);
+        mCategoryId = entry.getCategory().getId();
+        
+        initPubTimeDateString(locale);
+        
+        if (entry.getPlugins() != null)
+        {
+            pluginsArray = StringUtils.split(entry.getPlugins(), ",");
+        }
+        
+        populateSpamComments(entry);
+    }
+

@@ -1,0 +1,46 @@
+    /**
+     * Returns the main or archive index template of a given blog
+     *
+     * @param appkey Unique identifier/passcode of the application sending the post
+     * @param blogid Unique identifier of the blog the post will be added to
+     * @param userid Login for a Blogger user who has permission to post to the blog
+     * @param password Password for said username
+     * @param templateType Determines which of the blog's templates will be returned. Currently, either "main" or "archiveIndex"
+     * @throws XmlRpcException
+     * @return
+     */
+    public String getTemplate(String appkey, String blogid, String userid,
+                              String password, String templateType)
+                       throws Exception
+    {
+        mLogger.info("getTemplate() Called =====[ SUPPORTED ]=====");
+        mLogger.info("     Appkey: " + appkey);
+        mLogger.info("     BlogId: " + blogid);
+        mLogger.info("     UserId: " + userid);
+        mLogger.info("       Type: " + templateType);
+
+        validate(userid,password);
+
+        try
+        {
+            Roller roller = RollerRequest.getRollerRequest().getRoller();
+            UserManager userMgr = roller.getUserManager();
+            PageData page = userMgr.retrievePage(templateType);
+
+            if ( null == page )
+            {
+                throw new XmlRpcException(UNKNOWN_EXCEPTION,"Template not found");
+            }
+            else
+            {
+                return page.getTemplate();
+            }
+        }
+        catch (Exception e)
+        {
+            String msg = "ERROR in BlooggerAPIHander.getTemplate";
+            mLogger.error(msg,e);
+            throw new XmlRpcException(UNKNOWN_EXCEPTION,msg);
+        }
+    }
+

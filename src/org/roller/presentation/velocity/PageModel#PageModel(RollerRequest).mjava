@@ -1,0 +1,44 @@
+	/**
+	 * Initialize PageModel and allow PageModel to initialized VelocityContext.
+	 * @param rreq
+	 * @param ctx
+	 */
+	public PageModel(RollerRequest rreq)
+	{
+		mRollerReq = rreq;
+        
+        if ( rreq.getUser() != null )
+        {
+            mUsername = rreq.getUser().getUserName();
+        }
+        
+		try
+		{
+			mBookmarkMgr = rreq.getRoller().getBookmarkManager();
+			mRefererMgr  = rreq.getRoller().getRefererManager();
+			mUserMgr     = rreq.getRoller().getUserManager();
+			mWeblogMgr   = rreq.getRoller().getWeblogManager();
+			
+			/** 
+			 * Preload what we can for encapsulation.  What we cannot preload we
+			 * will use the Managers later to fetch.
+			 */
+            if ( mUsername != null )
+            {
+                // Get the pages, put into context & load map
+                List pages = mUserMgr.getPages(mRollerReq.getWebsite());
+                Iterator pageIter = pages.iterator();
+                while (pageIter.hasNext())
+                {
+                    PageData page = (PageData) pageIter.next();
+                    mPageMap.put(page.getName(), page);
+                }
+            }
+            
+		}
+		catch (RollerException e)
+		{
+			mLogger.error("PageModel Roller get*Manager Exception", e);
+		}
+	}
+

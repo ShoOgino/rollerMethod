@@ -1,0 +1,29 @@
+    /**
+     * Convert an RSS Item to a WeblogEntryData.
+     * @param buf
+     * @param item
+     * @param category
+     * @return
+     * @throws RollerException
+     */
+    private WeblogEntryData entryFromRSS(StringBuffer buf, ItemIF item, WeblogCategoryData category) throws RollerException
+    {
+        WeblogEntryData entry;
+        // make sure there is an item date
+        if (item.getDate() == null)
+        {
+            item.setDate(new Date(current.getTime()));
+        }
+        
+        entry = new WeblogEntryData(
+            (String)null, category, website, 
+            item.getTitle(), (String)null, 
+            item.getDescription(), (String)null, 
+            new Timestamp(item.getDate().getTime()),
+            new Timestamp(item.getDate().getTime()), 
+            Boolean.TRUE);
+        entry.save();
+        buf.append("\"").append(item.getTitle()).append("\" imported.<br />\n");
+        return entry;
+    }
+

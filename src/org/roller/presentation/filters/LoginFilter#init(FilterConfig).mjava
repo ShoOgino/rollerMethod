@@ -1,0 +1,20 @@
+    /**
+     * Initialize controller values of filter.
+     */
+    public void init(FilterConfig config) 
+    {
+        this.mFilterConfig = config;
+
+        String param = config.getInitParameter("enabled");
+        enabled = Boolean.valueOf(param).booleanValue();
+
+        if (mLogger.isDebugEnabled()) 
+        {
+            mLogger.debug("Remember Me enabled: " + enabled);
+        }
+
+        config.getServletContext()
+              .setAttribute("rememberMeEnabled",
+                            config.getInitParameter("enabled"));
+    }
+

@@ -1,0 +1,9 @@
+    /** 
+     * @see org.roller.pojos.ParsedRequest#isLinkbackEnabled()
+     */
+    public boolean isEnableLinkback()
+    {
+        RollerContext rctx = RollerContext.getRollerContext(mRequest);
+        return rctx.getRollerConfig().getEnableLinkback().booleanValue();
+    }
+

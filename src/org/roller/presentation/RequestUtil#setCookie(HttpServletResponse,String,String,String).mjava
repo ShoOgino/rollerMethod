@@ -1,0 +1,25 @@
+    /**
+     * Convenience method to set a cookie
+     *
+     * @param response
+     * @param name
+     * @param value
+     * @param path
+     * @return HttpServletResponse
+     */
+    public static void setCookie(HttpServletResponse response, String name,
+                                 String value, String path) 
+    {
+        if (mLogger.isDebugEnabled()) 
+        {
+            mLogger.debug("Setting cookie '" + name + "' on path '" + path + "'");
+        }
+
+        Cookie cookie = new Cookie(name, value);
+        cookie.setSecure(false);
+        cookie.setPath(path);
+        cookie.setMaxAge(3600 * 24 * 30); // 30 days
+
+        response.addCookie(cookie);
+    }
+

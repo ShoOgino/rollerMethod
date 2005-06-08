@@ -1,0 +1,27 @@
+    /** 
+     * @see org.roller.model.WeblogManager#getWeblogEntryDayMap(
+     * java.lang.String, 
+     * java.util.Date, 
+     * java.util.Date, 
+     * java.lang.String, 
+     * java.lang.String, 
+     * java.lang.Integer)
+     */
+    public Map getWeblogEntryStringMap(
+                    WebsiteData website, 
+                    Date    startDate, 
+                    Date    endDate, 
+                    String  catName, 
+                    String  status, 
+                    Integer maxEntries) throws RollerException
+    {
+        return getWeblogEntryMap(
+                        website,
+                        startDate,
+                        endDate,
+                        catName,
+                        status,
+                        maxEntries,
+                        true);
+    }
+

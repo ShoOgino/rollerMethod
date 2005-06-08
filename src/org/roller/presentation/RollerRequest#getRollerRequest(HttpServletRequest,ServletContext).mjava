@@ -1,0 +1,17 @@
+    //------------------------------------------------------------------------
+    /**
+     * Get the RollerRequest object that is stored in the request. Creates
+     * RollerRequest if one not found in mRequest.
+     */
+    public static RollerRequest getRollerRequest( 
+        HttpServletRequest r, ServletContext ctx ) throws RollerException
+    {
+        RollerRequest ret= (RollerRequest)r.getAttribute(ROLLER_REQUEST);
+        if ( ret == null )
+        {
+            ret = new RollerRequest(r,ctx);
+            r.setAttribute( ROLLER_REQUEST, ret );
+        }
+        return ret;
+    }
+

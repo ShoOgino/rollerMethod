@@ -1,0 +1,9 @@
+    /* 
+     * @see org.roller.model.UserManager#getUsers()
+     */
+    public List getUsers() throws RollerException
+    {
+        Map userMap = ((MockPersistenceStrategy)mStrategy).getObjectStore(UserData.class);
+        return new ArrayList(userMap.values());
+    }
+

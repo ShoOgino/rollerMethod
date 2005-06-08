@@ -1,0 +1,17 @@
+    /**
+     * Delete the website created for this test.
+     *
+     * @throws RollerException
+     */
+    private void deleteWebsite(String deleteMe) throws RollerException
+    {
+        mLogger.debug("try to delete " + deleteMe);
+        //getRoller().begin();
+        mWebsite = getRoller().getUserManager().getWebsite(deleteMe);
+        if (mWebsite != null)
+        {
+            mWebsite.getUser().remove();
+        }
+        getRoller().commit();
+    }
+

@@ -1,0 +1,24 @@
+    public String parse() throws RollerException
+    {        
+        StringBuffer buf = new StringBuffer();
+        
+        // parse file and convert to WeblogEntryDatas
+        Feed atomFeed = getAtomFeed();
+        if (atomFeed != null)
+        {    
+            importAtom(buf, atomFeed);
+        }
+        else
+        {    
+            // not an Atom feed, try RSS
+            ChannelIF channel = getInformaChannel();
+            
+            if (channel != null && channel.getItems()!= null)
+            {
+                importRSS(buf, channel);
+            }
+        }
+        
+        return buf.toString();
+    }
+

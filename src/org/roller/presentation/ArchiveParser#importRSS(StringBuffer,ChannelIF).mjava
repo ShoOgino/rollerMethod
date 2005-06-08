@@ -1,0 +1,51 @@
+    /**
+     * @param rreq
+     * @param buf
+     * @param channel
+     * @throws RollerException
+     */
+    private void importRSS(StringBuffer buf, ChannelIF channel) throws RollerException
+    {       
+        ItemIF item;
+        WeblogEntryData entry = null;
+        WeblogCategoryData category;
+        HashMap categoryMap = new HashMap();
+        categoryMap.put("defaultCategory", defaultCategory);
+        Iterator it = channel.getItems().iterator();
+        while (it.hasNext())
+        {
+            entry = null; //reset
+            item = (ItemIF)it.next();
+            
+            if (item.getGuid() != null && !item.getGuid().isPermaLink())
+            {
+                entry = roller.getWeblogManager().retrieveWeblogEntry(item.getGuid().getLocation());
+            }
+            
+            if (entry == null)
+            {    
+                category = null;
+                // return WeblogCategoryData for getCategories
+                if (item.getCategories() != null)
+                {
+                    Iterator cIt = item.getCategories().iterator();
+                    if (cIt.hasNext()) 
+                    {
+                        // see if we've already created a category for this String
+                        CategoryIF catIF = (CategoryIF)cIt.next();
+                        category = locateCategory(catIF.getTitle(), categoryMap);
+                    }
+                }
+                if (category == null) category = defaultCategory;
+                
+                entry = entryFromRSS(buf, item, category);
+                
+                indexEntry(entry);
+            }
+            else
+            {
+                buf.append("An Entry already exists for id: " + entry.getId() + ".<br />");
+            }
+        }
+    }
+

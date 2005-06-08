@@ -1,0 +1,75 @@
+    public ActionForward add(
+        ActionMapping       mapping,
+        ActionForm          actionForm,
+        HttpServletRequest  request,
+        HttpServletResponse response)
+        throws IOException, ServletException
+    {
+        UserFormEx form = (UserFormEx)actionForm;
+        RollerRequest rreq = RollerRequest.getRollerRequest(request);
+        ServletContext ctx = rreq.getServletContext();
+        RollerContext rollerContext = RollerContext.getRollerContext(ctx);
+        RollerConfig rollerConfig = rollerContext.getRollerConfig();
+        if ( !rollerConfig.getNewUserAllowed().booleanValue() )
+        {
+            throw new ServletException("New users disabled!");
+        }
+
+        ActionErrors errors = validate(form, new ActionErrors());
+        if ( !errors.isEmpty() )
+        {
+            saveErrors(request, errors);
+            return mapping.findForward("newUser");
+        }
+
+        try
+        {
+            // Add new user
+            UserManager mgr = rreq.getRoller().getUserManager();           
+
+            UserData ud = new UserData();
+            form.copyTo(ud, request.getLocale());
+            ud.setId(null);
+            ud.setDateCreated(new java.util.Date());
+
+            // encrypt the user's password
+            if (rollerConfig.getEncryptPasswords().booleanValue()) {
+                ud.setPassword(Utilities.encodePassword(ud.getPassword(), 
+                                    rollerConfig.getAlgorithm()));
+            }
+            
+            String theme = form.getTheme();
+            HashMap pages = rollerContext.readThemeMacros(theme);
+            mgr.addUser( ud, pages, theme, form.getLocale(), form.getTimezone() );
+            rreq.getRoller().commit();
+
+			// Flush cache so user will immediately appear on index page
+            PageCache.removeFromCache( request, ud );
+            MainPageAction.flushMainPageCache();
+            
+			request.getSession(true).removeAttribute("org.roller.users");
+
+            // Determine user's blog URL and show welcome page
+            String weblogURL = rollerContext.getAbsoluteContextUrl(request)
+                             + "/page/"+ud.getUserName();
+            request.setAttribute("weblogURL",weblogURL);
+
+            String rssURL = rollerContext.getAbsoluteContextUrl(request)
+                          + "/rss/"+ud.getUserName();
+            request.setAttribute("rssURL",rssURL);
+
+            return mapping.findForward("welcome.page");
+        }
+        catch (RollerException e)
+        {
+            errors.add( ActionErrors.GLOBAL_ERROR,
+               new ActionError(e.getMessage()));
+            saveErrors(request,errors);
+
+            form.setUserName("");
+        }
+
+        // Error occured, send user back to new user form
+        return mapping.findForward("newUser");
+    }
+

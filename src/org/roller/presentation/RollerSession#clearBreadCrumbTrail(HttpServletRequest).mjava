@@ -1,0 +1,15 @@
+    //------------------------------------------------------------------------
+    /**
+     * Clear bread crumb trail.
+     * @param useReferer If true try to return the "referer" header.
+     */
+    public static void clearBreadCrumbTrail( HttpServletRequest req )
+    { 
+        HttpSession ses = req.getSession(false);
+        if (ses != null && ses.getAttribute(BREADCRUMB) != null)
+        {
+            ArrayStack stack = (ArrayStack)ses.getAttribute(BREADCRUMB);
+            stack.clear();
+        }
+    }
+

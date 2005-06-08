@@ -1,0 +1,28 @@
+    public String getSpellCheckHtml() throws RollerException
+    {
+        String text = getWeblogEntry().getText();
+        String escapeText = StringUtils.replace( text, "<", "{" );
+        escapeText = StringUtils.replace( escapeText, ">", "}" );
+        StringBuffer newText = new StringBuffer(escapeText);
+        ArrayList events = (ArrayList)
+            getRequest().getSession().getAttribute("spellCheckEvents");
+        SpellCheckEvent event = null;
+        String word = null;
+        int start = -1;
+        int end = -1;
+        String select = null;
+        for(ListIterator it=events.listIterator(events.size()); it.hasPrevious();)
+        {
+            event = (SpellCheckEvent)it.previous();
+            word = event.getInvalidWord();
+            start = event.getWordContextPosition();
+            end = start + word.length();
+            select = makeSelect(word, event.getSuggestions());
+    
+            newText.replace( start, end, select );
+        }
+        escapeText = StringUtils.replace( newText.toString(), "}", "&gt;" );
+        escapeText = StringUtils.replace( escapeText, "{", "&lt;" );
+        return escapeText;
+    }
+

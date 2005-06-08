@@ -1,0 +1,12 @@
+    /** 
+     * Create cache.
+     * @param maxsize Maximum number of entries in cache.
+     * @param timeout Entry timeout in milli-seconds.
+     */
+    public LRUCache2(int maxsize, long timeout) 
+    {
+        this.environment = new DefaultEnvironment();
+        this.timeout = timeout;
+        this.cache = Collections.synchronizedMap(new LRULinkedHashMap(maxsize));
+    }
+

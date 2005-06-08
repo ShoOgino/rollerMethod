@@ -1,0 +1,36 @@
+    /** 
+     * Use Hibernate directly because Roller's Query API does too much allocation.
+     */
+    public WebsiteData getWebsite(String userName, boolean enabledOnly)
+                    throws RollerException
+    {
+        if (userName==null )
+            throw new RollerException("userName is null");
+
+        try
+        {
+            Session session = ((HibernateStrategy)mStrategy).getSession();
+            Criteria criteria = session.createCriteria(WebsiteData.class);
+            criteria.createAlias("user","u");
+    
+            if (enabledOnly) 
+            {
+                criteria.add(Expression.conjunction()
+                                .add(Expression.eq("u.userName",userName))
+                                .add(Expression.eq("isEnabled",Boolean.TRUE)));
+            }
+            else
+            {
+                criteria.add(Expression.conjunction()
+                                .add(Expression.eq("u.userName",userName)));
+            }
+        
+            List list = criteria.list();
+            return list.size()!=0 ? (WebsiteData)list.get(0) : null;
+        }
+        catch (HibernateException e)
+        {
+            throw new RollerException(e);
+        }
+    }
+

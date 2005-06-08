@@ -1,0 +1,17 @@
+    private Date parseDate( String dateString )
+    {
+        Date ret = null;        
+        if (   dateString!=null 
+            && dateString.length()==8
+            && StringUtils.isNumeric(dateString) )
+        {
+            ParsePosition pos = new ParsePosition(0);
+            ret = mFmt.parse( dateString, pos );
+            
+            // make sure the requested date is not in the future
+            Date today = getToday();
+            if (ret.after(today)) ret = today;
+        }
+        return ret;
+    }
+

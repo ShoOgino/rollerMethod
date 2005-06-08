@@ -1,0 +1,47 @@
+	/**
+     * Cancel choosing of theme.
+     * 
+	 * @param mapping Struts action mapping.
+	 * @param form Theme editor form bean.
+	 * @param request Servlet request.
+	 * @param response Servlet response.
+	 * @return Forward to edit-website page.
+	 * @throws IOException
+	 * @throws ServletException
+	 */
+	public ActionForward cancel(
+		ActionMapping       mapping,
+		ActionForm          form,
+		HttpServletRequest  request,
+		HttpServletResponse response)
+		throws IOException, ServletException
+	{
+		ActionForward forward = mapping.findForward("editTheme");
+		try
+		{
+			RollerRequest rreq = RollerRequest.getRollerRequest(request);
+			if ( rreq.isUserAuthorizedToEdit() )
+			{
+				// clear the page cache
+				UserData ud = rreq.getUser();
+				PageCache.removeFromCache( request, ud );
+                ThemeEditorForm teForm = (ThemeEditorForm)form;
+								
+				// clear the places holding onto the template
+				PreviewResourceLoader.clearAllTemplates( ud.getUserName() );
+				request.getSession().removeAttribute(SESSION_TEMPLATE);
+				teForm.setThemeName("Custom");
+			}
+			else
+			{
+				forward = mapping.findForward("access-denied");
+			}
+		}
+		catch (Exception e)
+		{
+            mLogger.error("ERROR in action",e);
+			throw new ServletException(e);
+		}
+		return forward;
+	}
+

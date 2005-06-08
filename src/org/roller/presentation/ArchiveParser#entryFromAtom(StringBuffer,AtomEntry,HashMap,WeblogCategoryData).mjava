@@ -1,0 +1,40 @@
+    /**
+     * Convert an AtomEntry to a WeblogEntryData.
+     * @param buf
+     * @param atomEntry
+     * @param entryMap
+     * @param category
+     * @return
+     * @throws RollerException
+     */
+    private WeblogEntryData entryFromAtom(StringBuffer buf, AtomEntry atomEntry, HashMap entryMap, WeblogCategoryData category) throws RollerException
+    {        
+        System.out.println(atomEntry);
+        String title = atomEntry.getTitle().getText();
+        String content = "";
+        Date issued = new Date(current.getTime());
+        Date modified = new Date(current.getTime());     
+        String id = atomEntry.getId();
+        if (atomEntry.getContent() != null) 
+        {
+            content = atomEntry.getContent().getText();
+        }
+        if (atomEntry.getIssued() != null) issued = atomEntry.getIssued();
+        if (atomEntry.getModified()!= null) modified = atomEntry.getModified();
+        
+        WeblogEntryData entry = new WeblogEntryData(
+            null, category, website, 
+            title, (String)null, 
+            content, (String)null, 
+            new Timestamp(issued.getTime()),
+            new Timestamp(modified.getTime()), 
+            Boolean.TRUE);
+        entry.save();
+        // store entry in local cache for Comments' to lookup
+        if (id == null) id = entry.getId();
+        entryMap.put(id, entry);
+        
+        buf.append("\"").append(title).append("\" imported.<br />\n");
+        return entry;
+    }
+

@@ -1,0 +1,9 @@
+    /** 
+     * @see org.roller.pojos.PersistentObject#remove()
+     */
+    public void remove() throws RollerException
+    {
+        RollerFactory.getRoller().getWeblogManager().removeWeblogEntryContents(this);
+        super.remove();
+    }
+

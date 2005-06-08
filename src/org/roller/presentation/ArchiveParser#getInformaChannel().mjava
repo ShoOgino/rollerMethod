@@ -1,0 +1,29 @@
+    /**
+     * @param channel
+     * @return
+     */
+    private ChannelIF getInformaChannel()
+    {
+        ChannelIF channel = null;
+        try
+        {
+            FileInputStream fis = new FileInputStream(archiveFile);
+            BufferedInputStream bis = new BufferedInputStream(fis);
+            channel = RSSParser.parse(new ChannelBuilder(), bis);
+            bis.close();
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+        return channel;
+    }
+

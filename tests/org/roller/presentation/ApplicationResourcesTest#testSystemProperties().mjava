@@ -1,0 +1,10 @@
+	public void testSystemProperties() {
+		Properties sysProps = System.getProperties();
+		Set keys = sysProps.keySet();
+		for (Iterator iter = keys.iterator(); iter.hasNext();)
+		{
+			String key = (String) iter.next();
+			System.out.println(key + " = " + sysProps.getProperty(key));
+		}
+	}
+

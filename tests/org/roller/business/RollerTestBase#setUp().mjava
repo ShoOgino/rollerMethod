@@ -1,0 +1,35 @@
+    //------------------------------------------------------------------------
+    /**
+     * @see TestCase#setUp()
+     */
+    protected void setUp() throws Exception
+    {
+        super.setUp();
+
+        //try
+        //{
+            UserManager umgr = getRoller().getUserManager();
+
+            getRoller().release();
+            getRoller().begin();
+
+            // create User
+            UserData user = createUser(umgr,
+                       testUsername,
+                       "password",
+                       "TestUser",
+                       "testuser@example.com"
+            );
+
+            // get website
+            mWebsite = umgr.getWebsite(user.getUserName());
+
+            getRoller().commit();
+        //}
+        //catch (RollerException e)
+        //{
+        //    getRoller().rollback();
+        //    mLogger.error("Setting up storage",e);
+        //}
+    }
+

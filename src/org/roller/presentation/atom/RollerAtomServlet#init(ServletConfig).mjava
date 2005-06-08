@@ -1,0 +1,21 @@
+    //------------------------------------------------------------------------
+    /**
+     * Tries to set the BaseUrl if RollerContext.getAbsolutionContextURL
+     * is not null.  Using this method rather than the no-arg to assist
+     * in UnitTesting (troubles with MockRunner).
+     */
+    public void init(ServletConfig config) throws ServletException
+    {
+        RollerContext rContext = RollerContext.getRollerContext(config.getServletContext());
+        if (rContext == null)
+        {
+            mLogger.error("RollerContext not initialized yet!");
+            //mBaseUrl = "/" + getServletContext().getServletContextName();
+        }
+        else
+        {
+            setBaseUrl( rContext.getAbsoluteContextUrl() );
+        }
+        super.init(config);
+    }
+

@@ -1,0 +1,32 @@
+	/**
+	 * Verifies if the user is logged in and if so, if the website he
+	 * is currently viewing, is the user's website. In that case, true is returned.
+	 * Otherwise false.
+	 * 
+	 * The reason for this additional check is that I only want to enforce the
+	 * user's own locale if he at his own website. If I didn't, a logged-in user would be forced to 
+	 * view other sites in their default locale. That could lead to confusing situations.
+	 * 
+	 * TODO: Maybe what I am saying is: shouldn't we store the user's locale as the user's locale,
+	 * instead of as the website's locale?
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public static boolean isWebsiteOfPrincipal(HttpServletRequest request) {
+		boolean result = false;
+		
+		// get website data
+		RollerRequest rreq = RollerRequest.getRollerRequest(request);
+		WebsiteData website = rreq.getWebsite();
+		
+		// get Principal
+		Principal principal = request.getUserPrincipal(); 
+
+		if (website==null || principal==null) {
+			return false;
+		} else {
+			return website.getUser().getUserName().equals(principal.getName());
+		}
+	}
+

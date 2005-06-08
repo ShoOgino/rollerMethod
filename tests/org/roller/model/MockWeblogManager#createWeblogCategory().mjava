@@ -1,0 +1,16 @@
+    /* 
+     * @see org.roller.model.WeblogManager#createWeblogCategory()
+     */
+    public WeblogCategoryData createWeblogCategory()
+    {
+        WeblogCategoryData cat = new WeblogCategoryData();
+        try
+        {
+            mStrategy.store(cat);
+        }
+        catch (RollerException e)
+        {
+        }
+        return cat;
+    }
+

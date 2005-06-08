@@ -1,0 +1,11 @@
+    /**
+     * @see org.roller.model.Roller#getConfigManager()
+     */
+    public ConfigManager getConfigManager() throws RollerException {
+        if (mConfigManager == null)
+        {
+            mConfigManager = new HibernateConfigManagerImpl(mStrategy, this);
+        }
+        return mConfigManager;
+    }
+

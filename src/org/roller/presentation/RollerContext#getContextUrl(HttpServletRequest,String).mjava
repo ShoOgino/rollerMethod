@@ -1,0 +1,14 @@
+    //-----------------------------------------------------------------------
+    /**
+     * Returns the full url for the website of the specified username.
+     */
+    public String getContextUrl(HttpServletRequest request, String username)
+    {
+        String url = this.getContextUrl(request);
+        if (username != null)
+        {
+            url = url + "/page/" + username;
+        }
+        return url;
+    }
+

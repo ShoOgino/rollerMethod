@@ -1,0 +1,70 @@
+    /**
+     * This method was added to the Blogger 1.0 API via an Email from Evan
+     * Williams to the Yahoo Group bloggerDev, see the email message for details - 
+     * http://groups.yahoo.com/group/bloggerDev/message/225 
+     *
+     * @param appkey Unique identifier/passcode of the application sending the post
+     * @param blogid Unique identifier of the blog the post will be added to
+     * @param userid Login for a Blogger user who has permission to post to the blog
+     * @param password Password for said username
+     * @param numposts Number of Posts to Retrieve
+     * @throws XmlRpcException
+     * @return Vector of Hashtables, each containing dateCreated, userid, postid, content
+     */
+    public Object getRecentPosts(
+        String appkey, String blogid, String userid, String password, int numposts)
+        throws Exception
+    {
+        mLogger.info("getRecentPosts() Called ===========[ SUPPORTED ]=====");
+        mLogger.info("     Appkey: " + appkey);
+        mLogger.info("     BlogId: " + blogid);
+        mLogger.info("     UserId: " + userid);
+        mLogger.info("     Number: " + numposts);
+
+        WebsiteData website = validate(userid,password);
+
+        try
+        {
+            Vector results = new Vector();
+
+            Roller roller = RollerRequest.getRollerRequest().getRoller();
+            WeblogManager weblogMgr = roller.getWeblogManager();
+            if (website != null)
+            {
+                if (numposts > 100) numposts = 100; // TODO: WeblogEntry throttle
+    
+                Map entries = weblogMgr.getWeblogEntryObjectMap(
+                                website,                // userName
+                                null,                   // startDate
+                                new Date(),             // endDate
+                                null,                   // catName
+                                WeblogManager.ALL,      // status
+                                new Integer(numposts)); // maxEntries 
+                
+                Iterator iter = entries.values().iterator();
+                while (iter.hasNext())
+                {
+                    ArrayList list = (ArrayList) iter.next();
+                    Iterator i = list.iterator();
+                    while (i.hasNext())
+                    {
+                        WeblogEntryData entry = (WeblogEntryData) i.next();    
+                        Hashtable result = new Hashtable();    
+                        result.put("dateCreated", entry.getPubTime());
+                        result.put("userid", userid);
+                        result.put("postid", entry.getId());
+                        result.put("content", entry.getText());                        
+                        results.add(result);
+                    }
+                }
+            }
+            return results;
+        }
+        catch (Exception e)
+        {
+            String msg = "ERROR in BlooggerAPIHander.getRecentPosts";
+            mLogger.error(msg,e);
+            throw new XmlRpcException(UNKNOWN_EXCEPTION, msg);
+        }
+    }
+

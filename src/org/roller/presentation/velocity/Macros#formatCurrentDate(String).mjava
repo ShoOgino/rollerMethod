@@ -1,0 +1,21 @@
+    //------------------------------------------------------------------------
+    /**
+     * Returns the current date formatted according to the specified pattern.
+     * @param pattern Date pattern, @see java.text.SimpleDateFormat
+     * @return Current date formatted according to specified pattern.
+     */
+    public String formatCurrentDate( String pattern )
+    {
+        String date = null;
+        try
+        {
+            SimpleDateFormat format = new SimpleDateFormat( pattern );
+            date = format.format( new Date() );
+        }
+        catch (RuntimeException e)
+        {
+            date = "ERROR: formatting date";
+        }
+        return date;
+    }
+

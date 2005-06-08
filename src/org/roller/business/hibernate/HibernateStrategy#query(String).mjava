@@ -1,0 +1,23 @@
+    public List query( String query )
+        throws RollerException
+    {
+        try
+        {
+            if (query.indexOf("$") > -1)
+            {
+                query = query.replaceAll("\\$\\d+", "\\?");
+            }
+            return getSession().find(query);
+        }
+        catch (Exception e)
+        {
+            String msg = Messages.getString("HibernateStrategy.duringQuery");
+            mLogger.error(msg, e);
+
+            // Gavin: "make sure you never catch + handle an exception and
+            // then keep using the session (ObjectNotFoundException included!)"
+            release();
+            throw new RollerException(msg,e);
+        }
+    }
+

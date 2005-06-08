@@ -1,0 +1,97 @@
+    public Template handleRequest(HttpServletRequest request,
+                        HttpServletResponse response, Context ctx) throws Exception
+    {
+    	// set request Charcter Encoding here, because the SearchServlet
+    	// is not preceeded by the RequestFilter
+    	mLogger.debug("handleRequest()");
+		try
+		{
+			// insure that incoming data is parsed as UTF-8
+			request.setCharacterEncoding("UTF-8");
+		}
+		catch (UnsupportedEncodingException e)
+		{
+			throw new ServletException("Can't set incoming encoding to UTF-8");
+		}
+    	        
+        ctx.put("term", "");
+        ctx.put("hits", new Integer(0));
+        ctx.put("searchResults", new TreeMap());  
+        
+        mLogger.debug("q = "+request.getParameter("q"));
+        
+        // do no work if query term is empty
+        if (StringUtils.isEmpty(request.getParameter("q")))
+        {  
+            return generalSearchResults(request, response, ctx);        
+        }
+
+        boolean userSpecificSearch = checkForUser(request);
+        try
+        {
+            RollerRequest rreq = getRollerRequest(request, response);
+            
+            SearchOperation search = new SearchOperation();
+            search.setTerm(request.getParameter("q"));
+            ctx.put("term", request.getParameter("q"));
+
+            WebsiteData website = null;
+            if (userSpecificSearch)
+            {    
+                website = rreq.getWebsite();
+                search.setUsername(rreq.getUser().getUserName());
+                ctx.put("username", rreq.getUser().getUserName());
+            }
+            
+            if (StringUtils.isNotEmpty(request.getParameter("c")))
+            {
+                search.setCategory(request.getParameter("c"));
+            }
+
+            // execute search
+            executeSearch(search);
+
+            Map searchResults = new TreeMap();
+            int hitCount = search.getResultsCount();
+            if (hitCount == -1)
+            {
+                // this means there has been a parsing (or IO) error
+                //ctx.put("errorMessage", search.getParseError());
+                ctx.put("errorMessage", "There was a problem with your search.");
+                hitCount = 0;
+            }
+            else
+            {    
+                // Convert the Hits into WeblogEntryData instances.
+                Hits hits = search.getResults();
+                searchResults = convertHitsToEntries(rreq, website, hits);
+                ctx.put("offset", request.getAttribute("offset"));
+                ctx.put("limit", request.getAttribute("limit"));
+                
+                if (request.getAttribute("categories") != null)
+                {
+                    Set cats = (Set)request.getAttribute("categories");
+                    if (cats.size() > 0)
+                    {
+                        ctx.put("categories", cats);
+                    }
+                }
+            }
+            ctx.put("searchResults", searchResults);
+            ctx.put("hits", new Integer(hitCount));
+        }
+        catch (Exception e)
+        {
+            mLogger.error("EXCEPTION: in SearchServlet", e);
+            request.setAttribute("DisplayException", e);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }        
+
+        if (userSpecificSearch)   
+        {    
+            return super.handleRequest(request, response, ctx);
+        }
+
+        return generalSearchResults(request, response, ctx);
+    }
+

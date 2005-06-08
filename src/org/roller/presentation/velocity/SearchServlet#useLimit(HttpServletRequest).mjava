@@ -1,0 +1,21 @@
+    /**
+     * @param request
+     * @return
+     */
+    private int useLimit(HttpServletRequest request)
+    {
+        int limit = LIMIT;
+        if (request.getParameter("n") != null)
+        {
+            try
+            {
+                limit = Integer.valueOf(request.getParameter("n")).intValue();
+            }
+            catch (NumberFormatException e)
+            {
+                // Not a valid Integer
+            }
+        }
+        return limit;
+    }
+

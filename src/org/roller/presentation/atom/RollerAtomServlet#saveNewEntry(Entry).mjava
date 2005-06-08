@@ -1,0 +1,51 @@
+    //------------------------------------------------------------------------
+    /* (non-Javadoc)
+     * @see org.osjava.atom4j.servlet.AtomServlet#saveNewEntry(org.osjava.atom4j.pojo.Entry)
+     */
+    protected void saveNewEntry(Entry atomEntry) throws Exception
+    {
+        RollerRequest rreq = RollerRequest.getRollerRequest();
+        HttpServletRequest req = rreq.getRequest();
+        Roller roller = rreq.getRoller();
+
+        WeblogManager weblogMgr = roller.getWeblogManager();
+
+        WebsiteData website = rreq.getWebsite();
+        Timestamp current = new Timestamp(System.currentTimeMillis());
+
+        Timestamp pubTime = current;
+        Timestamp updateTime = current;
+        if (atomEntry.getIssued() != null)
+        {
+            pubTime = new Timestamp( atomEntry.getIssued().getTime() );
+        }
+        if (atomEntry.getModified() != null)
+        {
+            updateTime = new Timestamp( atomEntry.getModified().getTime() );
+        }
+
+        WeblogEntryData rollerEntry = new WeblogEntryData();
+        rollerEntry.setTitle(atomEntry.getTitle().getText());
+        rollerEntry.setText(atomEntry.getContent().getText());
+        rollerEntry.setPubTime(pubTime);
+        rollerEntry.setUpdateTime(updateTime);
+        rollerEntry.setWebsite(website);
+        rollerEntry.setPublishEntry( Boolean.TRUE );
+        rollerEntry.setCategory(website.getBloggerCategory());
+
+        // store it
+        rollerEntry.save();
+        flushPageCache(rreq);
+
+        atomEntry.setId(rollerEntry.getId());
+
+        // send ping - no longer automatic
+        /*
+        String contextUrl =
+            RollerContext.getRollerContext(req).getAbsoluteContextUrl(req);
+        RollerXmlRpcClient.sendWeblogsPing(
+            contextUrl + entry.getPermaLink(),
+            entry.getWebsite().getName());
+        */
+    }
+

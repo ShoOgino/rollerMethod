@@ -1,0 +1,97 @@
+    public boolean equals(Object pOther)
+    {
+        if (pOther instanceof BookmarkData)
+        {
+            BookmarkData lTest = (BookmarkData) pOther;
+            boolean lEquals = true;
+
+            if (this.id == null)
+            {
+                lEquals = lEquals && (lTest.id == null);
+            }
+            else
+            {
+                lEquals = lEquals && this.id.equals(lTest.id);
+            }
+
+            if (this.name == null)
+            {
+                lEquals = lEquals && (lTest.name == null);
+            }
+            else
+            {
+                lEquals = lEquals && this.name.equals(lTest.name);
+            }
+
+            if (this.description == null)
+            {
+                lEquals = lEquals && (lTest.description == null);
+            }
+            else
+            {
+                lEquals = lEquals && 
+                          this.description.equals(lTest.description);
+            }
+
+            if (this.url == null)
+            {
+                lEquals = lEquals && (lTest.url == null);
+            }
+            else
+            {
+                lEquals = lEquals && this.url.equals(lTest.url);
+            }
+
+            if (this.weight == null)
+            {
+                lEquals = lEquals && (lTest.weight == null);
+            }
+            else
+            {
+                lEquals = lEquals && this.weight.equals(lTest.weight);
+            }
+
+            if (this.priority == null)
+            {
+                lEquals = lEquals && (lTest.priority == null);
+            }
+            else
+            {
+                lEquals = lEquals && this.priority.equals(lTest.priority);
+            }
+
+//            if (this.mFolder == null)
+//            {
+//                lEquals = lEquals && (lTest.mFolder == null);
+//            }
+//            else
+//            {
+//                lEquals = lEquals && this.mFolder.equals(lTest.mFolder);
+//            }
+//
+            if (this.image == null)
+            {
+                lEquals = lEquals && (lTest.image == null);
+            }
+            else
+            {
+                lEquals = lEquals && this.image.equals(lTest.image);
+            }
+
+            if (this.feedUrl == null)
+            {
+                lEquals = lEquals && (lTest.feedUrl == null);
+            }
+            else
+            {
+                lEquals = lEquals && this.feedUrl.equals(lTest.feedUrl);
+            }
+
+            return lEquals;
+        }
+        else
+        {
+            return false;
+        }
+    }
+

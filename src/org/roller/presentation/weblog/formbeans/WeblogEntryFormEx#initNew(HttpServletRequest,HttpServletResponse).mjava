@@ -1,0 +1,18 @@
+    /**
+     * @param request
+     * @param response
+     */
+    public void initNew(HttpServletRequest request, HttpServletResponse response) 
+    {
+        RollerRequest rreq = RollerRequest.getRollerRequest(request);
+        if (rreq.getWebsite().getDefaultPlugins() != null)
+        {
+            setPluginsArray(StringUtils.split(
+                    rreq.getWebsite().getDefaultPlugins(), ",") );
+        }
+        allowComments = Boolean.TRUE;
+        updateTime = new Timestamp(new Date().getTime());
+        pubTime = updateTime;
+        initPubTimeDateString(request.getLocale());
+    }
+

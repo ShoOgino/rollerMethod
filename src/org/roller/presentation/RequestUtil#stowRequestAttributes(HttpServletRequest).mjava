@@ -1,0 +1,21 @@
+	/**
+	 * Stores request attributes in session
+	 *
+	 * @param aRequest 
+	 */
+	public static void stowRequestAttributes(HttpServletRequest aRequest) {
+		if (aRequest.getSession().getAttribute(STOWED_REQUEST_ATTRIBS) != null) {
+			return;
+		}
+
+		Enumeration enum1 = aRequest.getAttributeNames();
+		Map map = new HashMap();
+
+		while (enum1.hasMoreElements()) {
+			String name = (String) enum1.nextElement();
+			map.put(name, aRequest.getAttribute(name));
+		}
+
+		aRequest.getSession().setAttribute(STOWED_REQUEST_ATTRIBS, map);
+	}
+

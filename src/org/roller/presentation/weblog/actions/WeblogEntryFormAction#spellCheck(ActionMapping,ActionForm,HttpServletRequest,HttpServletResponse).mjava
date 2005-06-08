@@ -1,0 +1,46 @@
+    //-----------------------------------------------------------------------
+    public ActionForward spellCheck(
+        ActionMapping       mapping,
+        ActionForm          actionForm,
+        HttpServletRequest  request,
+        HttpServletResponse response)
+        throws IOException, ServletException
+    {
+        ActionForward forward = mapping.findForward("weblogEdit.page");
+        try
+        {
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            if ( rreq.isUserAuthorizedToEdit() )
+            {
+                HttpSession session = request.getSession(true);
+                WeblogEntryFormEx wf = (WeblogEntryFormEx)actionForm;
+                
+                // we need to save any new entries before SpellChecking
+                if (wf.getId() == null) 
+                {
+                    save(mapping, actionForm, request, response);
+                }
+
+                // pass the submitted entry text through the spellchecker
+                ArrayList words =
+                    RollerSpellCheck.getSpellingErrors( wf.getText() );
+                session.setAttribute("spellCheckEvents", words);
+
+                request.setAttribute("model", 
+                    new WeblogEntryPageModel(
+                       request, response, mapping, 
+                       (WeblogEntryFormEx)actionForm,
+                       WeblogEntryPageModel.SPELL_MODE, words));
+            }
+            else
+            {
+                forward = mapping.findForward("access-denied");
+            }
+        }
+        catch (Exception e)
+        {
+            throw new ServletException(e);
+        }
+        return forward;
+    }
+

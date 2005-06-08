@@ -1,0 +1,22 @@
+    //-----------------------------------------------------------------------
+    /**
+     * Returns RollerConfig object. Changed so that it always tries
+     * to fetch from the database first. If it should error, return
+     * the stored copy.
+     */
+    public RollerConfig getRollerConfig()
+    {
+        if (mConfig == null)
+        {
+            try 
+            {
+    			mConfig = getRoller(null).getConfigManager().getRollerConfig();
+    		} 
+            catch (RollerException e) 
+            {
+    			mLogger.error("Unable to get RollerConfig from database");
+    		}
+        }
+        return mConfig;
+    }
+

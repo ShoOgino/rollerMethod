@@ -1,0 +1,55 @@
+    /**
+     * Gets the WeblogEntryData specified by the request, or null.
+     * 
+     * Why is this done lazily in the parseRequestParameters() method?
+     * 
+     * Because: that method is called from init(), which is called from
+     * a ServletFilter, and sometimes request parameters are not available
+     * in a ServletFiler. They ARE available when the URL points to a JSP,
+     * but they ARE NOT available when the URL points to the PageServlet.
+     * This may be a Tomcat bug, I'm not sure.
+     * 
+     * @return WeblogEntryData
+     */
+    public WeblogEntryData getWeblogEntry( )
+    {
+        if ( mWeblogEntry == null )
+        {        
+            // Look for anchor or entry ID that identifies a specific entry 
+            String anchor = mRequest.getParameter(ANCHOR_KEY);
+            String entryid = mRequest.getParameter(WEBLOGENTRYID_KEY);
+            if (entryid == null) 
+            {
+                entryid = (String)mRequest.getAttribute(WEBLOGENTRYID_KEY);
+            }
+            try
+            {
+                if ( entryid != null )
+                {
+                    WeblogManager weblogMgr = getRoller().getWeblogManager();
+                    mWeblogEntry = weblogMgr.retrieveWeblogEntry(entryid);                
+                
+                    // We can use entry to find the website, if we don't have one
+                    if ( mWeblogEntry != null && mWebsite == null )
+                    {
+                        mWebsite = mWeblogEntry.getWebsite();
+                    }
+                } 
+                else if ( mWebsite != null && anchor != null )
+                {
+                    WeblogManager weblogMgr = getRoller().getWeblogManager();
+                    mWeblogEntry = weblogMgr.getWeblogEntryByAnchor(
+                        mWebsite,anchor);
+                }                             
+            }
+            catch (RollerException e)
+            {
+                mLogger.error("EXCEPTION getting weblog entry",e);
+                mLogger.error("user=" + mWebsite.getUser());
+                mLogger.error("anchor=" + anchor);
+                mLogger.error("entryid=" + entryid);
+            }
+        }           
+        return mWeblogEntry;
+    }
+

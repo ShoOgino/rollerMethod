@@ -1,0 +1,32 @@
+	/**
+	 * Tests if a language is supported by roller as configured
+	 * in the LanguageServlet init paramater.
+	 * 
+	 * If no supported languages are available, false is returned.
+	 * 
+	 * @param language
+	 * @return
+	 */
+	public static boolean isSupported(String language, ServletContext ctx)
+	{
+		mLogger.debug("isSupported( language = "+language+" )");
+		boolean isSupported = false;
+		Vector supportedLanguages = getSupportedLanguages(ctx);
+
+		if (supportedLanguages == null)
+		{
+			return false;
+		}
+
+		for (int i = 0; i < supportedLanguages.size(); i++)
+		{
+			String l = (String) supportedLanguages.get(i);
+			if (language.equals(l))
+			{
+				isSupported = true;
+				break;
+			}
+		}
+		return isSupported;
+	}
+

@@ -1,0 +1,28 @@
+	public WeblogCalendarModel(
+        RollerRequest rreq, HttpServletResponse res, String url, String cat)
+	{
+        mRollerReq = rreq;
+		mReq = rreq.getRequest();
+		mRes = res;
+        mSelfUrl = url;
+        
+        setDay( mRollerReq.getDate(true) );
+        
+        // If category is specified in URL, then perpetuate it
+        String catKey = RollerRequest.WEBLOGCATEGORYNAME_KEY;
+        String catToUse = mReq.getParameter(catKey);
+        if (mReq.getParameter(catKey) == null)
+        {
+            // If no cat in URL, then use method argument
+            catToUse = cat;
+        }
+        if ( catToUse != null )
+        {
+            mCatName = "?"+catKey+"="+catToUse;
+        }
+        else
+        {
+            mCatName = "";
+        }                
+    }
+

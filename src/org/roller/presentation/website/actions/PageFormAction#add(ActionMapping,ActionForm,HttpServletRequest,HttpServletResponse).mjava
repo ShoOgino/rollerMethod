@@ -1,0 +1,54 @@
+    public ActionForward add(
+        ActionMapping       mapping,
+        ActionForm          actionForm,
+        HttpServletRequest  request,
+        HttpServletResponse response)
+        throws IOException, ServletException
+    {
+        ActionForward forward = mapping.findForward("editPages.page");
+        try
+        {
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            if ( rreq.isUserAuthorizedToEdit() )
+            {
+                PageForm form = (PageForm)actionForm;
+                PageData data = new PageData();
+                form.copyTo(data, request.getLocale());
+                WebsiteData hd = rreq.getWebsite();
+
+                data.setWebsite( hd );
+                data.setUpdateTime( new java.util.Date() );
+                data.setDescription("");
+                data.setTemplate("");
+                validateLink( data );
+
+                UserManager mgr = rreq.getRoller().getUserManager();
+                mgr.storePage( data );
+                rreq.getRoller().commit();
+
+                ActionMessages uiMessages = new ActionMessages();
+                uiMessages.add(ActionMessages.GLOBAL_MESSAGE, 
+                        new ActionMessage("pagesForm.addNewPage.success", 
+                                data.getName()));
+                saveMessages(request, uiMessages);
+                
+                UserData user = rreq.getUser();
+                PageCache.removeFromCache( request, user );
+                    
+                actionForm.reset(mapping,request);                
+                
+                addModelObjects(rreq);
+            }
+            else
+            {
+                forward = mapping.findForward("access-denied");
+            }
+        }
+        catch (Exception e)
+        {
+            mLogger.error("ERROR in action",e);
+            throw new ServletException(e);
+        }
+        return forward;
+    }
+

@@ -1,0 +1,61 @@
+    /**
+     * Get a list of recent posts for a category
+     *
+     * @param blogid Unique identifier of the blog the post will be added to
+     * @param userid Login for a Blogger user who has permission to post to the blog
+     * @param password Password for said username
+     * @param numposts Number of Posts to Retrieve
+     * @throws XmlRpcException
+     * @return
+     */
+    public Object getRecentPosts(
+        String blogid, String userid, String password, int numposts)
+		throws Exception
+    {
+        mLogger.info("getRecentPosts() Called ===========[ SUPPORTED ]=====");
+        mLogger.info("     BlogId: " + blogid);
+        mLogger.info("     UserId: " + userid);
+        mLogger.info("     Number: " + numposts);
+
+        WebsiteData website = validate(userid,password);
+
+        try
+        {
+            Vector results = new Vector();
+
+            Roller roller = RollerRequest.getRollerRequest().getRoller();
+            WeblogManager weblogMgr = roller.getWeblogManager();
+            if (website != null)
+            {
+                if (numposts > 100) numposts = 100; // TODO: WeblogEntry throttle
+    
+                Map entries = weblogMgr.getWeblogEntryObjectMap(
+                                website,                // userName
+                                null,                   // startDate
+                                new Date(),             // endDate
+                                null,                   // catName
+                                WeblogManager.ALL,      // status
+                                new Integer(numposts)); // maxEntries 
+                
+                Iterator iter = entries.values().iterator();
+                while (iter.hasNext())
+                {
+                    ArrayList list = (ArrayList) iter.next();
+                    Iterator entryIter = list.iterator();
+                    while (entryIter.hasNext())
+                    {
+                        WeblogEntryData entry = (WeblogEntryData)entryIter.next();
+                        results.addElement(createPostStruct(entry));
+                    }
+                }
+            }
+            return results;
+        }
+        catch (Exception e)
+        {
+            String msg = "ERROR in BlooggerAPIHander.getRecentPosts";
+            mLogger.error(msg,e);
+            throw new XmlRpcException(UNKNOWN_EXCEPTION, msg);
+        }
+    }
+

@@ -1,0 +1,100 @@
+    //-----------------------------------------------------------------------
+    public ActionForward update(
+        ActionMapping       mapping,
+        ActionForm          actionForm,
+        HttpServletRequest  request,
+        HttpServletResponse response)
+        throws IOException, ServletException
+    {
+        ActionForward forward = mapping.findForward("editWebsite");
+        try
+        {
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            WeblogManager wmgr = rreq.getRoller().getWeblogManager();
+            if ( rreq.isUserAuthorizedToEdit() )
+            {
+                WebsiteFormEx form = (WebsiteFormEx)actionForm;
+                
+                // checkboxes return no value when not checked
+                if (form.getAllowComments() == null)
+                {
+                    form.setAllowComments( Boolean.FALSE );
+                }
+                if (form.getEmailComments() == null)
+                {
+                    form.setEmailComments( Boolean.FALSE );
+                }
+
+                if(!form.getDefaultPageId().equals(form.getWeblogDayPageId()))
+                {
+                    // Make sure isEnabled cannot be changed
+                    WebsiteData website = rreq.getWebsite();
+                    form.setIsEnabled( website.getIsEnabled() );
+                    
+                    UserData ud = rreq.getUser();
+                    
+                    WebsiteData wd = new WebsiteData();
+                    form.copyTo(wd, request.getLocale());
+                    wd.setUser(ud);
+                    
+                    if (form.getDefaultCategoryId() != null) 
+                    {
+                        WeblogCategoryData defaultCat = 
+                            wmgr.retrieveWeblogCategory(form.getDefaultCategoryId());
+                        wd.setDefaultCategory(defaultCat);
+                    }
+                    
+                    if (form.getBloggerCategoryId() != null) 
+                    {
+                        WeblogCategoryData bloggerCat = 
+                            wmgr.retrieveWeblogCategory(form.getBloggerCategoryId());
+                        wd.setBloggerCategory(bloggerCat);
+                    }
+                    
+                    wd.save();
+                    rreq.getRoller().commit();
+
+                    request.getSession().setAttribute(
+                        RollerSession.STATUS_MESSAGE,
+                        "Successfully submitted new Weblog templates");
+
+                    request.getSession().setAttribute(
+                        RollerRequest.WEBSITEID_KEY,form.getId());
+
+                    // clear the page cache for this user
+                    PageCache.removeFromCache( request, ud );
+
+                    // set the Editor Page list
+                    ServletContext ctx = request.getSession().getServletContext();
+                    RollerConfig rollerConfig =
+                        RollerContext.getRollerContext( ctx ).getRollerConfig();
+                    request.setAttribute("editorPagesList", rollerConfig.getEditorPagesList());
+                }
+                else
+                {
+                    request.getSession().setAttribute(
+                        RollerSession.ERROR_MESSAGE,
+                        "CHANGES REJECTED: Cannot set default page template "
+                        +"and day template to same template");
+                }
+            }
+            else
+            {
+                forward = mapping.findForward("access-denied");
+            }
+                    
+            actionForm.reset(mapping,request);            
+        }
+        catch (RollerException re)
+        {
+            mLogger.error("Unexpected exception",re.getRootCause());
+            throw new ServletException(re);
+        }
+        catch (Exception e)
+        {
+            mLogger.error("Unexpected exception",e);
+            throw new ServletException(e);
+        }
+        return forward;
+    }
+

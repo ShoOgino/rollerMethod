@@ -1,0 +1,13 @@
+    /**
+     * Constructs a split output stream that both captures and passes through
+     * the servlet response.
+     *
+     * @param captureStream The stream that will be used to capture the data.
+     * @param passThroughStream The pass-through <code>ServletOutputStream</code>
+     * that will write the response to the client as originally intended.
+     */
+    public SplitServletOutputStream(OutputStream captureStream, OutputStream passThroughStream) {
+        this.captureStream = captureStream;
+        this.passThroughStream = passThroughStream;
+    }
+

@@ -1,0 +1,26 @@
+    //------------------------------------------------------------------------
+    /**
+     * Return HTML for referencing a theme.
+     * @param theme Name of theme
+     * @param stylesheet Name of stylesheet in theme.
+     * @param useImport Use import statement rather than link element.
+     * @return HTML for importing theme.
+     */
+    public String showThemeStyle(
+        String theme, String stylesheet, boolean useImport )
+    {
+        StringBuffer sb = new StringBuffer();
+        if (useImport) {
+            sb.append( "<style type=\"text/css\">");
+            sb.append( "@import url(");
+            sb.append( showThemeStylePath(theme, stylesheet));
+            sb.append( ");");
+            sb.append( "</style>");
+        } else {
+            sb.append( "<link rel=\"stylesheet\" type=\"text/css\" href=\"");
+            sb.append( showThemeStylePath(theme, stylesheet));
+            sb.append( "\" />");
+        }
+        return sb.toString();
+    }
+

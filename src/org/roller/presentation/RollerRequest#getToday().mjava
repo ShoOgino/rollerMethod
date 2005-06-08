@@ -1,0 +1,17 @@
+    /**
+     * Gets the current date based on Website's Locale & Timezone.
+     * @return
+     */
+    private Date getToday()
+    {
+        Calendar todayCal = Calendar.getInstance();
+        if (this.getWebsite() != null)
+        {
+            todayCal = Calendar.getInstance(
+                    this.getWebsite().getTimeZoneInstance(),
+                    this.getWebsite().getLocaleInstance());
+        }
+        todayCal.setTime( new Date() );
+        return todayCal.getTime(); 
+    }
+

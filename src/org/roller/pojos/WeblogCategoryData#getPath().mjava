@@ -1,0 +1,19 @@
+    /**
+     * Get path in category hierarhcy.
+     */
+    public String getPath()
+    {
+        if (null == cachedPath)
+        {
+            try
+            {
+                cachedPath = RollerFactory.getRoller().getWeblogManager().getPath(this);
+            }
+            catch (RollerException e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+        return cachedPath;
+    }
+

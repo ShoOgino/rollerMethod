@@ -1,0 +1,27 @@
+	public void testApplicationResources_zh() throws Exception {
+
+		// verify user-dir; should end with roller
+		assertNotNull(userDir);
+		assertTrue(userDir.endsWith("roller"));
+		
+		// load Chinese resource file
+		Properties zhProps = new Properties();
+		zhProps.load(new FileInputStream( userDir + "/src/org/roller/presentation/ApplicationResources_zh.properties"));
+
+		Set keys = baseProps.keySet();
+		boolean missingMessage = false;
+
+		// check Chinese
+		System.out.println("Veriyfing ZH messages...");
+		for (Iterator iter = keys.iterator(); iter.hasNext();)
+		{
+			String key = (String) iter.next();
+			if (zhProps.getProperty(key)==null) {
+				System.err.println(key+" = "+baseProps.getProperty(key));
+				missingMessage=true;
+			}
+		}
+
+		assertFalse(missingMessage);
+	}
+

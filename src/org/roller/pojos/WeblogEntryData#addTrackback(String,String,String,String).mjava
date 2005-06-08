@@ -1,0 +1,43 @@
+    /**
+     * @param entry
+     * @param url
+     * @param title
+     * @param excerpt
+     * @param blogName
+     */
+    public void addTrackback(
+        String url, String title, String excerpt, String blogName) 
+        throws RollerException
+    {
+        String modTitle = blogName + ": "  + title;
+        if (modTitle.length() >= 250)
+        {
+            modTitle = modTitle.substring(0, 257);
+            modTitle += "...";
+        }
+        
+        // Track trackbacks as comments
+        CommentData comment = new CommentData();
+        comment.setContent("[Trackback] "+excerpt);
+        comment.setName(blogName);
+        comment.setUrl(url);
+        comment.setWeblogEntry(this); 
+        comment.setPostTime(new Timestamp(new Date().getTime()));
+        comment.save();
+         
+        // Alternative: treat trackbacks as referers
+        //RefererData ref = new RefererData();
+        //ref.setWebsite(getWebsite());
+        //ref.setWeblogEntry(this);
+        //ref.setRequestUrl("(trackback)");
+        //ref.setRefererUrl(url);
+        //ref.setTitle(modTitle);
+        //ref.setExcerpt(excerpt);
+        //ref.setVisible(Boolean.TRUE);
+        //ref.setDayHits(new Integer(0));
+        //ref.setTotalHits(new Integer(0));
+        //ref.setDuplicate(Boolean.FALSE);        
+        //ref.setDateString(formatPubTime("yyyyMMdd"));        
+        //mRoller.getRefererManager().storeReferer(ref);
+    }
+

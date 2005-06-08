@@ -1,0 +1,16 @@
+    //------------------------------------------------------------------------
+    /**
+     * Get Roller implementation based on value of rollerImpl system property
+     * which should be either "hibernate" or "castor".
+     */
+    public Roller getRoller() throws RollerException
+    {
+        if ( mRoller == null )
+        {
+            //String persistence = System.getProperty("rollerImpl");
+            mRoller = org.roller.business.hibernate.RollerImpl.instantiate("dummy");
+            RollerFactory.setRoller(mRoller);
+        }
+        return mRoller;
+    }
+

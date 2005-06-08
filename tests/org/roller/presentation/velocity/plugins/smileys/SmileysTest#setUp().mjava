@@ -1,0 +1,10 @@
+    public void setUp() throws Exception
+    {
+        super.setUp();
+
+        request.setContextPath("/roller");
+        plugin.init( new MockRollerRequest(
+                           request,
+                           new MockServletContext()), null);
+    }
+

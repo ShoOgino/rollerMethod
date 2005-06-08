@@ -1,0 +1,12 @@
+    //------------------------------------------------------------------------
+    /** Create session's Roller instance */
+    public void sessionCreated(HttpSessionEvent se)
+    {
+        // put this in session too, so we can purge on passivation
+        se.getSession().setAttribute( "dummy010", this );
+        
+        RollerContext rctx = RollerContext.getRollerContext(
+            se.getSession().getServletContext());
+        rctx.sessionCreated(se);           
+    }    
+

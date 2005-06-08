@@ -1,0 +1,62 @@
+    /** Test bookmark folder paths. */
+    public void testPaths() throws Exception
+    {
+        WebsiteData wd = null;
+        BookmarkManager bmgr = getRoller().getBookmarkManager();
+        try
+        {
+            //getRoller().begin();
+
+            wd = getRoller().getUserManager().retrieveWebsite(mWebsite.getId());
+            FolderData root = bmgr.getRootFolder(wd);
+
+            FolderData f1 = bmgr.createFolder();
+            f1.setName("f1");
+            f1.setParent(root);
+            f1.setWebsite(wd);
+            f1.save();
+
+            FolderData f2 = bmgr.createFolder();
+            f2.setName("f2");
+            f2.setParent(f1);
+            f2.setWebsite(wd);
+            f2.save();
+
+            FolderData f3 = bmgr.createFolder();
+            f3.setName("f3");
+            f3.setParent(f2);
+            f3.setWebsite(wd);
+            f3.save();
+
+            getRoller().commit();
+        }
+        catch (RollerException e)
+        {
+            getRoller().release();
+            mLogger.error(e);
+        }
+
+        try
+        {
+            //getRoller().begin();
+
+            assertEquals("f1",bmgr.getFolderByPath(wd, null, "/f1").getName());
+            assertEquals("f2",bmgr.getFolderByPath(wd, null, "/f1/f2").getName());
+            assertEquals("f3",bmgr.getFolderByPath(wd, null, "/f1/f2/f3").getName());
+
+            FolderData f3 = bmgr.getFolderByPath(wd, null, "/f1/f2/f3");
+            String pathString = bmgr.getPath(f3);
+            String[] pathArray = Utilities.stringToStringArray(pathString,"/");
+            assertEquals("f1", pathArray[0]);
+            assertEquals("f2", pathArray[1]);
+            assertEquals("f3", pathArray[2]);
+
+            getRoller().release();
+        }
+        catch (RollerException e)
+        {
+            getRoller().release();
+            mLogger.error(e);
+        }
+    }
+

@@ -1,0 +1,29 @@
+    //----------------------------------------------------------------
+    public void moveFolderContents(FolderData src, FolderData dest) 
+        throws RollerException
+    {
+        // Add to destination folder
+        LinkedList deleteList = new LinkedList();
+        Iterator srcBookmarks = src.getBookmarks().iterator();
+        while (srcBookmarks.hasNext())
+        {
+            BookmarkData bd = (BookmarkData)srcBookmarks.next();
+            deleteList.add(bd);
+
+            BookmarkData movedBd = new BookmarkData();
+            movedBd.setData(bd);
+            movedBd.setId(null);
+            
+            dest.addBookmark(movedBd);
+        }
+        
+        // Remove from source folder
+        Iterator deleteIter = deleteList.iterator();
+        while (deleteIter.hasNext())
+        {
+            BookmarkData bd = (BookmarkData)deleteIter.next();
+            src.removeBookmark(bd);
+            removeBookmark(bd.getId());
+        }        
+    }
+

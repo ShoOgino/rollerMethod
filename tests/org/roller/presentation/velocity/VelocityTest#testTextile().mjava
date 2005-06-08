@@ -1,0 +1,11 @@
+    /* this is failing, but I think it is due to a problem in Textile4J:
+     * for instance, it is stripping a space after closing  a "strong" tag.
+     */
+    public void testTextile()
+    {
+        PagePlugin textile = new TextilePlugin();
+        
+        String result = textile.render(textileStr);
+        assertEquals("this will fail until Textile4J is fixed.", expected, result);         
+    }
+

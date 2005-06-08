@@ -1,0 +1,11 @@
+    /**
+     * Writes the incoming data to both the output streams.
+     *
+     * @param value The int data to write.
+     * @throws IOException
+     */
+    public void write(int value) throws IOException {
+        captureStream.write(value);
+        passThroughStream.write(value);
+    }
+

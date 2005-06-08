@@ -1,0 +1,12 @@
+    /** 
+     * @see org.roller.pojos.Roller#getWeblogManager()
+     */
+    public WeblogManager getWeblogManager() throws RollerException
+    {
+        if ( mWeblogMgr == null ) 
+        {
+            mWeblogMgr = new HibernateWeblogManagerImpl(mStrategy, this);
+        }
+        return mWeblogMgr;
+    }
+

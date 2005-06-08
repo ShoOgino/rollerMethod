@@ -1,0 +1,15 @@
+    //-----------------------------------------------------------------------
+    public void saveRollerConfig(RollerConfig rConfig) throws RollerException
+    {
+        mConfig = rConfig;
+        
+        // save database copy
+        //getRoller(null).begin(); // begin already called by RequestFilter
+        getRoller(null).getConfigManager().storeRollerConfig(rConfig);
+        getRoller(null).commit();
+        
+        // save file copy
+        RollerConfigFile rConfigFile = new RollerConfigFile(rConfig);
+        rConfigFile.writeConfig(getConfigPath());
+    }
+

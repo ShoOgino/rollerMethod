@@ -1,0 +1,60 @@
+    public void doFilter(
+        ServletRequest req, ServletResponse resp, FilterChain chain)
+        throws IOException, ServletException
+    {
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) resp;
+
+        HttpSession ses = request.getSession(false);
+        ArrayStack stack = null;
+        if (ses != null)
+        {
+            stack = (ArrayStack)ses.getAttribute(RollerSession.BREADCRUMB);
+        }
+        if (stack == null)
+        {
+            stack = new ArrayStack();
+        }
+
+        // This gives you a chance to look at your breadcrumb trail
+        if (request.getQueryString() != null 
+            && request.getQueryString().equals("BreadCrumb"))
+        {
+            response.setContentType("text/html");
+            ServletOutputStream out = response.getOutputStream();
+
+            for (int i=0; i<stack.size(); i++)
+            {
+                out.println(stack.peek(i).toString() +"<br>");
+            }
+            out.flush();
+            out.close();
+        }
+        else
+        {
+            chain.doFilter(req, resp);
+        }
+
+        StringBuffer url = request.getRequestURL();
+        // now that we've successfully returned,
+        // add url to stack if it isn't a Velocity page
+        String servletPath = request.getServletPath();
+        if (servletPath.indexOf("page") == -1 &&
+            servletPath.indexOf("comments") == -1)
+        {    
+            if (request.getQueryString() != null)
+            {
+                url.append("?").append( request.getQueryString() );
+            }
+            if (stack.size() == mMaxStackSize)
+            {
+                stack.remove(mMaxStackSize-1);
+            }
+            stack.push(url.toString());
+        }
+        if (ses != null)
+        {    
+        	ses.setAttribute(RollerSession.BREADCRUMB, stack);
+        }
+    }
+

@@ -1,0 +1,13 @@
+    /**
+     * Get a print writer
+     *
+     * @throws IOException
+     */
+    public PrintWriter getWriter() throws IOException {
+        if (cachedWriter == null) {
+            cachedWriter = new PrintWriter(getOutputStream());
+        }
+
+        return cachedWriter;
+    }
+

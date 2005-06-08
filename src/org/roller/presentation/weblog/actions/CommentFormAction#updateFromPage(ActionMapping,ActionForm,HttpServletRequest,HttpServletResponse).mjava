@@ -1,0 +1,15 @@
+	//-----------------------------------------------------------------------
+    /**
+     * Saves comment and forward to the comment-edit page.
+     */
+    public ActionForward updateFromPage(
+        ActionMapping       mapping,
+        ActionForm          actionForm,
+        HttpServletRequest  request,
+        HttpServletResponse response)
+        throws IOException, ServletException
+    {
+        request.setAttribute("updateFromPage","true");
+        return update(mapping,actionForm,request,response);
+    }
+

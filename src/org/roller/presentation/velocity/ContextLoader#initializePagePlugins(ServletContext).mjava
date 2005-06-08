@@ -1,0 +1,49 @@
+    /**
+     * Initialize PagePlugins declared in web.xml.  By using the full class
+     * name we also allow for the implementation of "external" Plugins
+     * (maybe even packaged seperately).  These classes are then later 
+     * instantiated by PageHelper.
+     * 
+     * @param mContext
+     */
+    public static void initializePagePlugins(ServletContext mContext)
+    {
+        String pluginStr = mContext.getInitParameter("org.roller.pagePlugins");
+        if (mLogger.isDebugEnabled()) mLogger.debug(pluginStr);
+        if (pluginStr != null)
+        {
+            String[] plugins = StringUtils.stripAll(
+                                   StringUtils.split(pluginStr, ",") );
+            for (int i=0; i<plugins.length; i++)
+            {
+                if (mLogger.isDebugEnabled()) mLogger.debug("try " + plugins[i]);
+                try
+                {
+                    Class pluginClass = Class.forName(plugins[i]);
+                    if (isPagePlugin(pluginClass))
+                    {
+                        mPagePlugins.add(pluginClass.newInstance());
+                    }
+                    else
+                    {
+                        mLogger.warn(pluginClass + " is not a PagePlugin");
+                    }
+                } 
+                catch (ClassNotFoundException e)
+                {
+                    mLogger.warn("ClassNotFoundException for " + plugins[i]);
+                }
+                catch (InstantiationException e)
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                catch (IllegalAccessException e)
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+

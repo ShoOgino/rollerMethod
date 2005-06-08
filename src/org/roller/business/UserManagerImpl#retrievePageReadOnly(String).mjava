@@ -1,0 +1,13 @@
+    //------------------------------------------------------------------------    
+    /** 
+     * @see org.roller.model.UserManager#retrievePage(java.lang.String)
+     */
+    public PageData retrievePageReadOnly(String id) throws RollerException
+    {
+        // Don't hit database for templates stored on disk
+        if (id != null && id.endsWith(".vm")) return null; 
+
+        // Hibernate has a read-only flag: LockMode.READ
+        return (PageData)mStrategy.load(id,PageData.class);
+    }
+

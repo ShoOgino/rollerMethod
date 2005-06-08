@@ -1,0 +1,28 @@
+    /** 
+     * Use Hibernate directly because Roller's Query API does too much allocation.
+     */
+    public PageData getPageByLink(WebsiteData website, String pagelink)
+                    throws RollerException
+    {
+        if (website == null)
+            throw new RollerException("userName is null");
+                                   
+        if (pagelink == null)
+            throw new RollerException("Pagelink is null");
+                                                                      
+        Session session = ((HibernateStrategy)mStrategy).getSession();
+        Criteria criteria = session.createCriteria(PageData.class);
+        criteria.add(Expression.eq("website",website));
+        criteria.add(Expression.eq("link",pagelink));        
+        criteria.setMaxResults(1);
+        try
+        {
+            List list = criteria.list();
+            return list.size()!=0 ? (PageData)list.get(0) : null;
+        }
+        catch (HibernateException e)
+        {
+            throw new RollerException(e);
+        }
+    }
+
