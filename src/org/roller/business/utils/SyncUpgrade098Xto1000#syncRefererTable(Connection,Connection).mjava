@@ -1,0 +1,107 @@
+    private void syncRefererTable(Connection srccon, Connection destcon) throws Exception
+    {
+        info("--- syncRefererTable ---");
+        
+        String columns = "id,websiteid,entryid,datestr,refurl,refpermalink,"
+            +"reftime,requrl,title,excerpt,dayhits,totalhits,visible,duplicate";
+        int id_num = 1;
+        int websiteid_num = 2;
+        int entryid_num = 3;
+        int datestr_num = 4;
+        int refurl_num = 5;
+        int refpermalink_num = 6;        
+        int reftime_num = 7;
+        int requrl_num = 8;
+        int title_num = 9;
+        int excerpt_num = 10;
+        int dayhits_num = 11;
+        int totalhits_num = 12;
+        int visible_num = 13;
+        int duplicate_num = 14;
+        
+        PreparedStatement destExistsStmt = destcon.prepareStatement(
+            "select id from referer where id=?");
+        PreparedStatement destInsert = destcon.prepareStatement(
+            "insert into referer "+"("+columns+") "
+            +"values (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?)");
+        PreparedStatement destUpdate = destcon.prepareStatement(
+            "update referer set id=?,websiteid=?,entryid=?,datestr=?,refurl=?,"
+            +"refpermalink=?,reftime=?,requrl=?,title=?,excerpt=?,dayhits=?,"
+            +"totalhits=?,visible=?,duplicate=?"
+            +" where id=?");
+        
+        PreparedStatement parentExistsStmt = destcon.prepareStatement(
+            "select id from website where id=?");        
+        
+        Statement srcStmt = srccon.createStatement();
+        // only sync those with excerpts
+        ResultSet srcSet = srcStmt.executeQuery(
+                "select "+columns+" from referer where excerpt is not null");
+        while (srcSet.next()) 
+        {
+            String id = srcSet.getString(id_num);
+            String entryid = srcSet.getString(entryid_num);
+            String websiteid = srcSet.getString(websiteid_num);
+            
+            destExistsStmt.clearParameters();
+            destExistsStmt.setString(id_num, id);
+            ResultSet destSet = destExistsStmt.executeQuery();
+                        
+            parentExistsStmt.clearParameters();
+            parentExistsStmt.setString(id_num, websiteid);
+            ResultSet parentSet = parentExistsStmt.executeQuery();
+            boolean parentExists = parentSet.first() || websiteid == null;
+
+            if (!destSet.first() && parentExists)
+            {
+                debug("Inserting referer id="+id);
+                destInsert.clearParameters();
+                
+                destInsert.setString(id_num, id);
+                destInsert.setString(websiteid_num, srcSet.getString(websiteid_num));
+                destInsert.setString(entryid_num, srcSet.getString(entryid_num));
+                destInsert.setString(datestr_num, srcSet.getString(datestr_num));
+                destInsert.setString(refurl_num, srcSet.getString(refurl_num));
+                
+                destInsert.setString(refpermalink_num, srcSet.getString(refpermalink_num));
+                destInsert.setString(reftime_num, srcSet.getString(reftime_num));
+                destInsert.setString(requrl_num, srcSet.getString(requrl_num));
+                destInsert.setString(title_num, srcSet.getString(title_num));
+                destInsert.setString(excerpt_num, srcSet.getString(excerpt_num));
+                
+                destInsert.setString(dayhits_num, srcSet.getString(dayhits_num));
+                destInsert.setString(totalhits_num, srcSet.getString(totalhits_num));
+                destInsert.setString(visible_num, srcSet.getString(visible_num));
+                destInsert.setString(duplicate_num, srcSet.getString(duplicate_num));
+                
+                destInsert.executeUpdate();
+            }
+            else if (parentExists)
+            {
+                debug("Updating referer id="+id);
+                destUpdate.clearParameters();
+                
+                destUpdate.setString(id_num, id);
+                destUpdate.setString(websiteid_num, srcSet.getString(websiteid_num));
+                destUpdate.setString(entryid_num, srcSet.getString(entryid_num));
+                destUpdate.setString(datestr_num, srcSet.getString(datestr_num));
+                destUpdate.setString(refurl_num, srcSet.getString(refurl_num));
+                
+                destUpdate.setString(refpermalink_num, srcSet.getString(refpermalink_num));
+                destUpdate.setString(reftime_num, srcSet.getString(reftime_num));
+                destUpdate.setString(requrl_num, srcSet.getString(requrl_num));
+                destUpdate.setString(title_num, srcSet.getString(title_num));
+                destUpdate.setString(excerpt_num, srcSet.getString(excerpt_num));
+                
+                destUpdate.setString(dayhits_num, srcSet.getString(dayhits_num));
+                destUpdate.setString(totalhits_num, srcSet.getString(totalhits_num));
+                destUpdate.setString(visible_num, srcSet.getString(visible_num));
+                destUpdate.setString(duplicate_num, srcSet.getString(duplicate_num));
+                
+                destUpdate.setString(15, srcSet.getString(id_num));
+                destUpdate.executeUpdate();
+            }                
+        }     
+        purgeDeleted(srccon,destcon,"referer");
+    }
+

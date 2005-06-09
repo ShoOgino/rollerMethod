@@ -1,0 +1,13 @@
+    /** Initializes the servlet.*/
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        
+        this.context = config.getServletContext();
+
+        try {
+            this.upload_dir = RollerFactory.getRoller().getFileManager().getUploadDir();
+            mLogger.debug("upload dir is ["+this.upload_dir+"]");
+        } catch(Exception e) { mLogger.warn(e); }
+
+    }
+

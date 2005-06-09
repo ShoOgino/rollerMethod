@@ -1,0 +1,29 @@
+        public GroupsPageModel(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            ActionMapping mapping) throws RollerException
+        {
+            super(request, response, mapping);
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            Roller roller = rreq.getRoller();
+            PlanetManager planet = roller.getPlanetManager();            
+            PlanetGroupData externalGroup = planet.getGroup("external");
+            if (externalGroup != null) 
+            {
+                Iterator allgroups = planet.getGroups().iterator();
+                while (allgroups.hasNext()) 
+                {
+                    PlanetGroupData agroup = (PlanetGroupData)allgroups.next();
+                    if (    !agroup.getHandle().equals("external")
+                         && !agroup.getHandle().equals("all")) 
+                      {
+                          groups.add(agroup);
+                      }
+                }
+            }
+            else 
+            {
+                unconfigured = true;
+            }
+        }
+

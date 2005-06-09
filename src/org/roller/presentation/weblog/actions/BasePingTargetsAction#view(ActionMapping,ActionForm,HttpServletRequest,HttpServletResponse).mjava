@@ -1,0 +1,34 @@
+    /**
+     * Display the ping targets.
+     *
+     * @param mapping
+     * @param form
+     * @param req
+     * @param res
+     * @return forward to the ping targets page
+     * @throws Exception
+     */
+    public ActionForward view(ActionMapping mapping, ActionForm form,
+                              HttpServletRequest req, HttpServletResponse res)
+        throws Exception
+    {
+        ActionForward forward = mapping.findForward(VIEW_PAGE);
+        RollerRequest rreq = RollerRequest.getRollerRequest(req);
+        try
+        {
+            if (!hasRequiredRights(rreq))
+            {
+                return mapping.findForward(ACCESS_DENIED_PAGE);
+            }
+
+            List pingTargets = getPingTargets(rreq);
+            req.setAttribute("pingTargets", pingTargets);
+            return forward;
+        }
+        catch (Exception e)
+        {
+            getLogger().error("ERROR in action", e);
+            throw new ServletException(e);
+        }
+    }
+

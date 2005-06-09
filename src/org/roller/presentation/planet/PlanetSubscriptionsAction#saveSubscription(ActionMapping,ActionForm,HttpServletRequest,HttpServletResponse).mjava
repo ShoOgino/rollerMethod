@@ -1,0 +1,70 @@
+    /** Save subscription, add to "external" group */
+    public ActionForward saveSubscription(ActionMapping mapping,
+            ActionForm actionForm, HttpServletRequest request,
+            HttpServletResponse response) throws IOException, ServletException
+    {
+        ActionForward forward = mapping.findForward("planetSubscriptions.page");
+        try
+        {
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            Roller roller = rreq.getRoller();
+            PlanetManager planet = roller.getPlanetManager();
+            PlanetSubscriptionFormEx form = (PlanetSubscriptionFormEx)actionForm;
+            
+            String groupHandle = request.getParameter("groupHandle");
+            groupHandle = (groupHandle == null) ? form.getGroupHandle() : groupHandle;
+            groupHandle = (groupHandle == null) ? "external" : groupHandle;
+
+            PlanetGroupData targetGroup = planet.getGroup(groupHandle);
+
+            if (rreq.isUserAuthorizedToEdit())
+            {
+
+                PlanetSubscriptionData sub = null;
+                ActionErrors errors = validate(planet, form);
+                if (errors.isEmpty())
+                {
+                    if (form.getId() == null || form.getId().trim().length() == 0)
+                    {
+                        sub = new PlanetSubscriptionData();
+                        targetGroup.addSubscription(sub);
+                    }
+                    else 
+                    {
+                        sub = planet.getSubscriptionById(form.getId());
+                    }                
+                    form.copyTo(sub, request.getLocale());
+                    form.setGroupHandle(groupHandle);
+                    planet.saveSubscription(sub);
+                    planet.saveGroup(targetGroup);           
+                    roller.commit();
+
+                    ActionMessages messages = new ActionMessages();
+                    messages.add(null, 
+                            new ActionMessage("planetSubscription.success.saved"));
+                    saveMessages(request, messages);
+                    form.doReset(mapping, request);
+                }
+                else
+                {
+                    saveErrors(request, errors);
+                }
+            }
+            else
+            {
+                forward = mapping.findForward("access-denied");
+            }
+            request.setAttribute("model", 
+                new SubscriptionsPageModel(
+                        targetGroup, request, response, mapping));
+        }
+        catch (RollerException e)
+        {
+            ActionErrors errors = new ActionErrors();
+            errors.add(null, new ActionError(
+              "planetSubscriptions.error.duringSave",e.getRootCauseMessage()));
+            saveErrors(request, errors);
+        }
+        return forward;
+    }
+

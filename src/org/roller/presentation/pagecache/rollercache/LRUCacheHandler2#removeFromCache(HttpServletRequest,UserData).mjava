@@ -1,0 +1,34 @@
+    /**
+     * Purge user's entries from cache.
+     */
+    public synchronized void removeFromCache(HttpServletRequest req, UserData user)
+    {
+        // TODO: can we make this a little more precise, perhaps via regex?
+        String rssString = "/rss/" + user.getUserName(); // user's pages
+        String pageString = "/page/" + user.getUserName(); // user's RSS feeds
+        String mainRssString = "/rss_"; // main RSS feed
+        String mainPageString = "/main.do"; // main page
+        String planetPageString = "/planet.do"; // planet page
+        
+        int beforeSize = mPageCache.size();
+        mPageCache.purge(new String[] 
+        {
+            rssString, 
+            pageString, 
+            mainRssString, 
+            mainPageString, 
+            planetPageString
+        });
+        int afterSize = mPageCache.size();
+        
+        if (mLogger.isDebugEnabled())
+        {
+            StringBuffer sb = new StringBuffer();
+            sb.append("Purged, count=");
+            sb.append(beforeSize - afterSize);
+            sb.append(", user=");
+            sb.append(user.getUserName());
+            mLogger.debug(sb.toString());
+        }        
+    }
+

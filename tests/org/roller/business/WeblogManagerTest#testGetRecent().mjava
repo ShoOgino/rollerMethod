@@ -1,0 +1,80 @@
+    /** Add a small category tree to the small test website (mWebsite). */
+    public void testGetRecent() throws Exception
+    {
+        getRoller().begin(UserData.SYSTEM_USER);
+        
+        WebsiteData wd = null;
+        WeblogCategoryData root = null;
+        WeblogManager wmgr = getRoller().getWeblogManager();
+
+        wd = getRoller().getUserManager().retrieveWebsite(mWebsite.getId());
+        root = wmgr.getRootWeblogCategory(wd);
+
+        // create top level folders
+        WeblogCategoryData t1 = wmgr.createWeblogCategory();
+        t1.setName("toplevel1");
+        t1.setParent(root);
+        t1.setWebsite(wd);
+        t1.save();       
+        
+        WeblogCategoryData t2 = wmgr.createWeblogCategory();
+        t2.setName("toplevel2");
+        t2.setParent(root);
+        t2.setWebsite(wd);
+        t2.save();       
+        
+        WeblogCategoryData t3 = wmgr.createWeblogCategory();
+        t3.setName("toplevel3");
+        t3.setParent(root);
+        t3.setWebsite(wd);
+        t3.save(); 
+        
+        getRoller().commit(); 
+        
+        getRoller().begin(UserData.SYSTEM_USER); 
+        
+        // get persistent instances
+        t1 = wmgr.retrieveWeblogCategory(t1.getId());
+        wd = getRoller().getUserManager().retrieveWebsite(mWebsite.getId());
+        
+        // Create four entries in 1st category
+        WeblogEntryData e1 = new WeblogEntryData(
+                null, t1, wd, "title1", null, "text1", "anchor", 
+                new Timestamp(0), new Timestamp(0), Boolean.FALSE);
+        e1.save();
+        
+        WeblogEntryData e2 = new WeblogEntryData(
+                null, t1, wd, "title2", null, "text2", "anchor", 
+                new Timestamp(0), new Timestamp(0), Boolean.FALSE);
+        e2.save();
+        
+        WeblogEntryData e3 = new WeblogEntryData(
+                null, t1, wd, "title3", null, "text3", "anchor", 
+                new Timestamp(0), new Timestamp(0), Boolean.FALSE);
+        e3.save();
+        
+        WeblogEntryData e4 = new WeblogEntryData(
+                null, t1, wd, "title4", null, "text4", "anchor", 
+                new Timestamp(0), new Timestamp(0), Boolean.FALSE);
+        e4.save();
+        
+        getRoller().commit(); 
+        
+        getRoller().begin(UserData.SYSTEM_USER);
+        
+        //List entries = wmgr.getRecentWeblogEntriesArray(
+            //wd.getUser().getUserName(), new Date(), "toplevel1", 15, false);
+        
+        List entries = wmgr.getWeblogEntries(
+                        wd,
+                        null,                       // startDate
+                        new Date(),                 // endDate
+                        "toplevel1",                 // catName
+                        WeblogManager.ALL,           // status
+                        new Integer(15));           // maxEntries
+
+        assertEquals(4, entries.size());
+        
+        getRoller().rollback();
+    }
+

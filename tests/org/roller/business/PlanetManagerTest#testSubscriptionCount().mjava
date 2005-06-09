@@ -1,0 +1,31 @@
+    public void testSubscriptionCount() throws Exception
+    {
+        try 
+        {
+            Roller roller = getRoller();
+            assertNotNull(roller);       
+            PlanetManager planet = roller.getPlanetManager();
+            assertNotNull(planet);     
+            String feed_url1 = "http://rollerweblogger.org/rss/roller";
+            String feed_url2 = "http://linuxintegrators.com/acoliver/?flavor=rss2";
+            {   
+                roller.begin();            
+                PlanetSubscriptionData sub1 = new PlanetSubscriptionData();
+                sub1.setFeedUrl(feed_url1);
+                planet.saveSubscription(sub1);            
+                PlanetSubscriptionData sub2 = new PlanetSubscriptionData();
+                sub2.setFeedUrl(feed_url2);
+                planet.saveSubscription(sub2);
+                roller.commit();
+    
+                roller.begin();
+                assertEquals(2, planet.getSubscriptionCount());
+                roller.rollback();
+            }     
+        }
+        catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+    }
+

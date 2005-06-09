@@ -1,0 +1,30 @@
+    //------------------------------------------------------------------------------
+    public void testPostResource() throws Exception 
+    {    
+        UserData user = (UserData)mUsersCreated.get(0);      
+        
+        // read test file into byte array
+        String fileName = "rssbadge.gif";
+        File testFile = new File(fileName);
+        FileInputStream fis = new FileInputStream(testFile);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        Utilities.copyInputToOutput(fis, baos);
+        
+        // post file as resource
+        MockHttpServletRequest mockRequest = getMockFactory().getMockRequest();
+        mockRequest.setContextPath("/atom");
+        mockRequest.setPathInfo(user.getUserName() + "/resources/");
+        mockRequest.addHeader("Name", fileName); 
+        mockRequest.addHeader("X-WSSE", 
+                generateWSSEHeader(user.getUserName(), user.getPassword()));        
+        mockRequest.setBodyContent(baos.toByteArray());
+        getServletModule().doPost();
+        
+        MockHttpServletResponse mockResponse = getMockFactory().getMockResponse();
+        assertEquals(HttpServletResponse.SC_CREATED, mockResponse.getStatusCode());
+        assertTrue(mockResponse.containsHeader("Location"));
+        
+        getRoller().release();
+        resetMocks();
+    }
+

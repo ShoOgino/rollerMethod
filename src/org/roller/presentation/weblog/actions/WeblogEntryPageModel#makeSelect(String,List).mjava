@@ -1,0 +1,24 @@
+    public static String makeSelect(String word, List words)
+    {
+        StringBuffer buf = new StringBuffer("<select name=\"");
+        buf.append("replacementWords\" style=\"font-size: 10px;\">");
+        buf.append("<option selected=\"selected\" value=\"").append(word);
+        buf.append("\">").append(word).append("</option>");
+        if (words == null || words.size() < 1)
+        {
+            buf.append("<option value=\"").append(word);
+            buf.append("\">No Suggestions</option>");
+        }
+        else
+        {
+            for (Iterator it2=words.iterator(); it2.hasNext();)
+            {
+                word = it2.next().toString();
+                buf.append("<option value=\"").append(word);
+                buf.append("\">").append(word).append("</option>");
+            }
+        }    
+        buf.append("</select>");
+        return buf.toString();
+    }
+

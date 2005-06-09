@@ -1,0 +1,50 @@
+	/**
+	 * @see org.roller.presentation.velocity.BasePageServlet#handleRequest(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, org.apache.velocity.context.Context)
+	 */
+	public Template handleRequest(
+		HttpServletRequest request,
+		HttpServletResponse response,
+		Context ctx) throws Exception
+	{
+		mLogger.debug("Processing language change...");
+        ServletContext servletContext = RollerContext.getServletContext();
+        
+		Locale[] supportedLanguages =
+			LanguageUtil.getSupportedLanguages(servletContext);
+
+		if (supportedLanguages == null || supportedLanguages.length == 0)
+		{
+			// add error message
+			ctx.put("languageError", "Unable to switch language: no supported languages defined.");
+			// proceed with request serving
+			return super.handleRequest(request, response, ctx);
+		}
+
+		String newLang = request.getParameter("language");
+		mLogger.debug("New language in Request: " + newLang);
+		if (newLang == null || newLang.length() == 0) {
+			// add error message
+			ctx.put("languageError", "Unable to switch language: no new language specified.");
+			// proceed with request serving
+			return super.handleRequest(request, response, ctx);
+		}
+		
+		Locale newLocale = LanguageUtil.createLocale(newLang);
+
+		// verify if new language is supported
+		if (!LanguageUtil.isSupported(newLocale, servletContext)) {
+			// add error message
+			ctx.put("languageError", "Unable to switch language: new language '"+newLang+"' is not supported.");
+			// proceed with request serving
+			return super.handleRequest(request, response, ctx);
+		}
+
+		// by now, all should be fine: change Locale
+		HttpSession session = request.getSession();
+		session.setAttribute(Globals.LOCALE_KEY, newLocale);
+		mLogger.debug("Changed language to: " + newLocale);
+
+		// proceed with request serving
+		return super.handleRequest(request, response, ctx);
+	}
+

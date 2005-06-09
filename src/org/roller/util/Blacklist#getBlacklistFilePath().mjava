@@ -1,0 +1,15 @@
+    // Added for ROL-612 - TODO: Consider refactoring - nearly duplicate code in FileManagerImpl.
+    private String getBlacklistFilePath() 
+    {
+        if (uploadDir == null && realPath==null) 
+        {
+            // to preserve existing behavior forced to interpret this differently
+            return null;
+        }
+        if (uploadDir == null || uploadDir.trim().length() == 0) 
+        {
+            uploadDir = realPath + File.separator + DEFAULT_BLACKLIST_DIR;
+        }
+        return uploadDir + File.separator + blacklistFile;
+    }
+

@@ -1,0 +1,8 @@
+    public synchronized void clearCachedAggregations() 
+    {
+        aggregation = null;
+        aggregationsByGroup.purge();
+        lastUpdatedByGroup.clear();
+        lastUpdated = new Date();
+    }
+

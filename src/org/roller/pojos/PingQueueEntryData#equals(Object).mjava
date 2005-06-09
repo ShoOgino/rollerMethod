@@ -1,0 +1,19 @@
+    /**
+     * @see Object#equals(Object o)
+     */
+    public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (!(o instanceof PingQueueEntryData)) return false;
+
+        final PingQueueEntryData pingQueueEntryData = (PingQueueEntryData) o;
+
+        if (attempts != pingQueueEntryData.attempts) return false;
+        if (entryTime != null ? !entryTime.equals(pingQueueEntryData.entryTime) : pingQueueEntryData.entryTime != null) return false;
+        if (id != null ? !id.equals(pingQueueEntryData.id) : pingQueueEntryData.id != null) return false;
+        if (pingTarget != null ? !pingTarget.equals(pingQueueEntryData.pingTarget) : pingQueueEntryData.pingTarget != null) return false;
+        if (website != null ? !website.equals(pingQueueEntryData.website) : pingQueueEntryData.website != null) return false;
+
+        return true;
+    }
+

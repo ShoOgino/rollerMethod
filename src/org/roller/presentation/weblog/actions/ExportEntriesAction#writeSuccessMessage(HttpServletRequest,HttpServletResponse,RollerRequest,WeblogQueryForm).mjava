@@ -1,0 +1,29 @@
+    private ActionMessages writeSuccessMessage(
+                    HttpServletRequest request, 
+                    HttpServletResponse response, 
+                    RollerRequest rreq, 
+                    WeblogQueryForm form) throws MalformedURLException
+    {
+        PageContext pageContext =
+            JspFactory.getDefaultFactory().getPageContext( 
+                this.getServlet(), request, response, "", true, 8192, true);
+        Map params = new HashMap();
+        params.put( RollerRequest.USERNAME_KEY,  rreq.getUser().getUserName());
+        params.put("rmik", "Files");
+        String filesLink = RequestUtils.computeURL(
+             pageContext, (String)null, (String)null, (String)null,
+             "uploadFiles", params, (String)null, false);
+        
+        String message = 
+            "Exporting Entries from " + 
+            form.getStartDateString() + " to " +
+            form.getEndDateString() + ".<br />" +
+            "Check your <a href=\"" + filesLink + "\">Files</a>.";
+
+        ActionMessages messages = new ActionMessages();
+        messages.add(ActionMessages.GLOBAL_MESSAGE, 
+                     new ActionMessage("weblogEntryExport.exportSuccess", message));
+                                                                      
+        return messages;
+    }
+

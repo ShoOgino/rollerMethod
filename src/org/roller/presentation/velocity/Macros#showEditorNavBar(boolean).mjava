@@ -1,0 +1,23 @@
+    //------------------------------------------------------------------------
+    /**
+     * Show the Roller Editor menu as a navigation bar.
+     * specified delimeter.
+     * @param vertical Displaylinks in a vertical column.
+     * @return HTML for navigation bar.
+     * */
+    public String showEditorNavBar( boolean vertical )
+    {
+        EditorNavigationBarTag editorTag = new EditorNavigationBarTag();
+        editorTag.setPageContext(mPageContext);
+        if ( vertical )
+        {
+            editorTag.setView("/navbar-vertical.vm");
+        }
+        else
+        {
+            editorTag.setView("/navbar-horizontal.vm");
+        }
+        editorTag.setModel("editor-menu.xml");
+        return editorTag.emit();
+    }
+

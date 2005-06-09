@@ -1,0 +1,90 @@
+    private void syncWeblogentryTable(Connection srccon, Connection destcon) throws Exception
+    {
+        info("--- syncWeblogentryTable ---");
+        
+        String columns = "id,anchor,title,text,pubtime,updatetime,websiteid,categoryid,publishentry";
+        int id_num=1;
+        int anchor_num=2;
+        int title_num=3;
+        int text_num=4;
+        int pubtime_num=5;
+        int updatetime_num=6;
+        int websiteid_num=7;
+        int categoryid_num=8;
+        int publishentry_num=9;
+        
+        PreparedStatement destExistsStmt = destcon.prepareStatement(
+            "select id from weblogentry where id=?");
+        PreparedStatement destInsert = destcon.prepareStatement(
+            "insert into weblogentry "+"("+columns+") "+"values (?,?,?,?,?,?,?,?,?)");
+        PreparedStatement destUpdate = destcon.prepareStatement(
+            "update weblogentry set id=?,anchor=?,title=?,text=?,pubtime=?,"
+            +"updatetime=?,websiteid=?,categoryid=?,publishentry=?"
+            +" where id=?");
+        
+        PreparedStatement parentExistsStmt = destcon.prepareStatement(
+            "select id from website where id=?");        
+        PreparedStatement categoryExistsStmt = destcon.prepareStatement(
+            "select id from weblogcategory where id=?");        
+
+        Statement srcStmt = srccon.createStatement();
+        ResultSet srcSet = srcStmt.executeQuery("select "+columns+" from weblogentry");
+        while (srcSet.next()) 
+        {
+            String id = srcSet.getString(id_num);
+            String websiteid = srcSet.getString(websiteid_num);
+            String categoryid = srcSet.getString(categoryid_num);
+            
+            destExistsStmt.clearParameters();
+            destExistsStmt.setString(id_num, id);
+            ResultSet destSet = destExistsStmt.executeQuery();
+            
+            parentExistsStmt.clearParameters();
+            parentExistsStmt.setString(id_num, websiteid);
+            ResultSet parentSet = parentExistsStmt.executeQuery();
+            boolean parentExists = parentSet.first();
+            
+            categoryExistsStmt.clearParameters();
+            categoryExistsStmt.setString(id_num, categoryid);
+            ResultSet categorySet = categoryExistsStmt.executeQuery();
+            boolean categoryExists = categorySet.first();
+            
+            if (!destSet.first() && parentExists && categoryExists)
+            {
+                debug("Inserting weblogentry id="+id);
+                destInsert.clearParameters();
+                destInsert.setString(id_num, id);
+                destInsert.setString(anchor_num, srcSet.getString(anchor_num));
+                destInsert.setString(title_num, srcSet.getString(title_num));
+                destInsert.setString(text_num, srcSet.getString(text_num));
+                destInsert.setTimestamp(pubtime_num, srcSet.getTimestamp(pubtime_num));
+                destInsert.setTimestamp(updatetime_num, srcSet.getTimestamp(updatetime_num));
+                destInsert.setString(websiteid_num, srcSet.getString(websiteid_num));
+                destInsert.setString(categoryid_num, srcSet.getString(categoryid_num));
+                destInsert.setBoolean(publishentry_num, srcSet.getBoolean(publishentry_num));
+                destInsert.executeUpdate();
+            }
+            else if (parentExists && categoryExists)
+            {
+                debug("Updating weblogentry id="+id);
+                destUpdate.clearParameters();
+                destUpdate.setString(id_num, id);
+                destUpdate.setString(anchor_num, srcSet.getString(anchor_num));
+                destUpdate.setString(title_num, srcSet.getString(title_num));
+                destUpdate.setString(text_num, srcSet.getString(text_num));
+                destUpdate.setTimestamp(pubtime_num, srcSet.getTimestamp(pubtime_num));
+                destUpdate.setTimestamp(updatetime_num, srcSet.getTimestamp(updatetime_num));
+                destUpdate.setString(websiteid_num, srcSet.getString(websiteid_num));
+                destUpdate.setString(categoryid_num, srcSet.getString(categoryid_num));
+                destUpdate.setBoolean(publishentry_num, srcSet.getBoolean(publishentry_num));
+                destUpdate.setString(10, srcSet.getString(id_num));
+                destUpdate.executeUpdate();
+            }                
+            else 
+            {
+                info("Not copying weblogentry id="+id);
+            }
+        }     
+        purgeDeleted(srccon,destcon,"weblogentry");
+    }
+

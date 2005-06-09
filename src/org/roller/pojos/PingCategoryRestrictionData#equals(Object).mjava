@@ -1,0 +1,17 @@
+    /**
+     * @see Object#equals(Object)
+     */
+    public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (!(o instanceof PingCategoryRestrictionData)) return false;
+
+        final PingCategoryRestrictionData pingCategoryRestrictionData = (PingCategoryRestrictionData)o;
+
+        if (id != null ? !id.equals(pingCategoryRestrictionData.id) : pingCategoryRestrictionData.id != null) return false;
+        if (autoPing != null ? !autoPing.equals(pingCategoryRestrictionData.autoPing) : pingCategoryRestrictionData.autoPing != null) return false;
+        if (weblogCategory != null ? !weblogCategory.equals(pingCategoryRestrictionData.weblogCategory) : pingCategoryRestrictionData.weblogCategory != null) return false;
+
+        return true;
+    }
+

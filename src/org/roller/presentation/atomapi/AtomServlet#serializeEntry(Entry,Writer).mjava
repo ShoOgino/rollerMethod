@@ -1,0 +1,25 @@
+    /** 
+     * Utility method to make up for a Rome shortcoming:
+     * Rome can only serialize entire feeds, not individual elements
+     */
+    public static void serializeEntry(Entry entry, Writer writer) 
+        throws IllegalArgumentException, FeedException, IOException
+    {
+        // Build a feed containing only the entry
+        List entries = new ArrayList();
+        entries.add(entry);
+        Feed feed1 = new Feed();
+        feed1.setFeedType(AtomServlet.FEED_TYPE);
+        feed1.setEntries(entries);
+        
+        // Get Rome to output feed as a JDOM document
+        WireFeedOutput wireFeedOutput = new WireFeedOutput();
+        Document feedDoc = wireFeedOutput.outputJDom(feed1);
+        
+        // Grab entry element from feed and get JDOM to serialize it
+        Element entryElement= (Element)feedDoc.getRootElement().getChildren().get(0);
+        XMLOutputter outputter = new XMLOutputter();
+        outputter.setFormat(Format.getPrettyFormat());
+        outputter.output(entryElement, writer);
+    }
+

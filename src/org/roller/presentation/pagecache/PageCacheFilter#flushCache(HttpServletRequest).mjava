@@ -1,0 +1,13 @@
+    //-----------------------------------------------------------------------
+    /** Flush cache for all handlers of this class */
+    public static void flushCache(HttpServletRequest req)
+    {
+        Iterator iter = mHandlers.iterator();
+        while (iter.hasNext())
+        {
+            FilterHandler handler = (FilterHandler)iter.next();
+            handler.flushCache(req);            
+        }
+        IfModifiedFilter.purgeDateCache(null);
+    }
+

@@ -1,0 +1,21 @@
+    public synchronized void timeoutCache() 
+    {
+        if (mTimeoutRatio == 1.0)
+        {
+            mLogger.debug("Timing out whole cache: " + mName);
+            mPageCache.clear();   
+        }
+        else 
+        {
+            int numToTimeout = (int)(mTimeoutRatio * mPageCache.size());
+            mLogger.debug(
+                "Timing out " + numToTimeout + " of " + mPageCache.size()
+                + " entries from cache: " + mName);
+            ArrayList allKeys = new ArrayList(mPageCache.keySet());
+            for (int i=numToTimeout; i>0; i--) 
+            {
+                mPageCache.remove(allKeys.get(i));
+            }
+        }
+    }
+

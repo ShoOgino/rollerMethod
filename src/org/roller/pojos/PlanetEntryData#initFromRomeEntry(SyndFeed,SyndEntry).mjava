@@ -1,0 +1,71 @@
+    /** 
+     * Init entry from Rome entry 
+     */
+    private void initFromRomeEntry(SyndFeed romeFeed, SyndEntry romeEntry)
+    {
+        setAuthor(romeEntry.getAuthor());
+        setTitle(romeEntry.getTitle());
+        setPermalink(romeEntry.getLink());
+        
+        // Play some games to get the date       
+        DCModule entrydc = (DCModule)romeEntry.getModule(DCModule.URI);
+        DCModule feeddc = (DCModule)romeFeed.getModule(DCModule.URI);
+        if (romeEntry.getPublishedDate() != null)
+        {        
+            setPublished(romeEntry.getPublishedDate()); // use <pubDate>
+        }
+        else if (entrydc != null)
+        {
+            setPublished(entrydc.getDate()); // use <dc:date>
+        }       
+        // Commented out: preserve knowledge that entry has no date
+        //if (getPublished() == null) // Still no published date?
+        //{
+            //if (romeFeed.getPublishedDate() != null)
+            //{
+                //setPublished(romeFeed.getPublishedDate()); // try feed's <pubDate>
+            //}
+            //else if (feeddc != null)
+            //{
+                //setPublished(feeddc.getDate()); // try feed's <dc:date>
+            //}
+        //}
+        
+        // get content and unescape if it is 'text/plain' 
+        if (romeEntry.getContents().size() > 0)
+        {
+            SyndContent content= (SyndContent)romeEntry.getContents().get(0);
+            if (content != null && content.getType().equals("text/plain"))
+            {
+                setContent(Utilities.unescapeHTML(content.getValue()));
+            }
+            else if (content != null)
+            {
+                setContent(content.getValue());
+            }
+        }
+        
+        // no content, then try <content:encoded>        
+        if (getContent() == null || getContent().trim().length() == 0)
+        {
+            ContentModule cm = (ContentModule)romeEntry.getModule(ContentModule.URI);
+            if (cm != null) 
+            {
+                setContent(Utilities.unescapeHTML(cm.getEncoded()));
+            }
+        }
+        
+        // copy categories
+        if (romeEntry.getCategories().size() > 0)
+        {
+            List list = new ArrayList();
+            Iterator cats = romeEntry.getCategories().iterator();
+            while (cats.hasNext())
+            {
+                SyndCategory cat = (SyndCategory)cats.next();
+                list.add(cat.getName());
+            }
+            setCategories(list);
+        }
+    }
+

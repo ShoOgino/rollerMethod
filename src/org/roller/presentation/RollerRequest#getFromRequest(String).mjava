@@ -1,0 +1,15 @@
+    /** Get attribute from mRequest, and if that fails try session */
+    private String getFromRequest( String key )
+    {
+        String ret = (String)mRequest.getAttribute( key );
+        if ( ret == null )
+        {
+            ret = mRequest.getParameter( key );
+            if (ret == null && mRequest.getSession(false) != null)
+            {
+                ret = (String)mRequest.getSession().getAttribute( key );
+            }
+        }
+        return ret;
+    }
+

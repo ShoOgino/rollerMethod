@@ -1,0 +1,24 @@
+    //-------------------------------------------------------------------------
+    /** 
+     * Execute Hibernate HSQL query 
+     */
+    public List query( String query )
+        throws RollerException
+    {
+        try
+        {
+            if (query.indexOf("$") > -1)
+            {
+                query = query.replaceAll("\\$\\d+", "\\?");
+            }
+            return getSession().find(query);
+        }
+        catch (Exception e)
+        {
+            String msg = Messages.getString("HibernateStrategy.duringQuery");
+            mLogger.error(msg, e);
+            newSession();
+            throw new RollerException(msg,e);
+        }
+    }
+

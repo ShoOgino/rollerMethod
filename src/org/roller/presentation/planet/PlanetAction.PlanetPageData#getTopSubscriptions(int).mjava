@@ -1,0 +1,19 @@
+        /**
+         * Get top blogs according to Technorati
+         */
+        public List getTopSubscriptions(int num) throws RollerException
+        {
+            List ret = new ArrayList();
+            try 
+            {
+                Roller roller = 
+                    RollerRequest.getRollerRequest(mRequest).getRoller();  
+                ret = roller.getPlanetManager().getTopSubscriptions(num);
+            }
+            catch (RollerException e) 
+            {
+                mLogger.error(e); 
+            }
+            return ret;
+        }
+

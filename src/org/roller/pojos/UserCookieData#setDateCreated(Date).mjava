@@ -1,0 +1,16 @@
+    /**
+     * @param dateCreated The dateCreated to set.
+     * @ejb:persistent-field
+     */
+    public void setDateCreated(final Date dateCreated )
+    {
+        if (dateCreated != null)
+        {
+        	this.dateCreated = (Date)dateCreated.clone();
+        }
+        else
+        {
+        	this.dateCreated = null;
+        }
+    }
+

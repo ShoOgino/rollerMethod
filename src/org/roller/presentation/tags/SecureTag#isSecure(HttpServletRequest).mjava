@@ -1,0 +1,24 @@
+    /** 
+     * Test for HTTPS connection by using request.isSecure() or, 
+     * if httpsHeaderName is set, test for reqest header instead.
+     * If httpsHeaderValue is also set, test for that specific value.
+     */
+    private boolean isSecure(HttpServletRequest request) 
+    {
+        boolean secure = false;
+        if (httpsHeaderName == null) 
+        {
+            secure = request.isSecure();
+        }
+        else
+        {
+            String headerValue = request.getHeader(httpsHeaderName);
+            if (headerValue != null && headerValue.trim().length() > 0)
+            {
+                secure = httpsHeaderValue==null || httpsHeaderValue.equals(headerValue); 
+            }
+        }
+        mLogger.debug("Connection secure="+secure);
+        return secure;
+    }
+

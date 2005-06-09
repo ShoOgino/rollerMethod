@@ -1,0 +1,42 @@
+    /**
+     * Request to delete files
+     */
+    public ActionForward delete(
+        ActionMapping       mapping,
+        ActionForm          actionForm,
+        HttpServletRequest  request,
+        HttpServletResponse response)
+        throws IOException, ServletException
+    {
+        ActionErrors errors = new ActionErrors();
+        UploadFileForm theForm = (UploadFileForm)actionForm;
+        ActionForward fwd = mapping.findForward("uploadFiles.page");
+        RollerRequest rreq = RollerRequest.getRollerRequest(request);
+        try
+        {
+            FileManager fmgr = rreq.getRoller().getFileManager();
+            WebsiteData website = rreq.getWebsite();
+            String[] deleteFiles = theForm.getDeleteFiles();
+            for (int i=0; i<deleteFiles.length; i++)
+            {
+                if (    deleteFiles[i].trim().startsWith("/")
+            	        || deleteFiles[i].trim().startsWith("\\")
+                     || deleteFiles[i].indexOf("..") != -1)
+            	   {
+            		   // ignore absolute paths, or paths that contiain '..'
+            	   }
+            	   else 
+            	   {
+                    fmgr.deleteFile(website, deleteFiles[i]);
+            	   }
+            }
+        }
+        catch (Exception e)
+        {
+            errors.add(ActionErrors.GLOBAL_ERROR,
+                new ActionError("error.upload.file",e.toString()));
+            saveErrors(request,errors);
+        }
+        return fwd;
+    }
+

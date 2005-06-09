@@ -1,0 +1,13 @@
+    /**
+     * Some containers don't call init() until doFilter() is used,
+     * so always check to see if mDateCache is instantiated yet.
+     */
+    private static LRUCache2 getCache()
+    {
+        if (mDateCache == null)
+        {
+            mDateCache = new LRUCache2(mCacheSize, mCacheTime*60*1000);
+        }
+        return mDateCache;
+    }
+

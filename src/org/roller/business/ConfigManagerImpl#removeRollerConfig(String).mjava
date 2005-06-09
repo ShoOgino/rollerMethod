@@ -1,0 +1,10 @@
+	/**
+	 * This isn't part of the ConfigManager Interface, because really
+	 * we shouldn't ever delete the RollerConfig.  This is mostly here
+	 * to assist with unit testing.
+	 */
+    public void removeRollerConfig(String id) throws RollerException
+    {
+        mStrategy.remove(id,RollerConfigData.class);
+    }
+

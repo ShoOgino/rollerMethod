@@ -1,0 +1,26 @@
+    private void purgeDeleted(Connection srccon, Connection destcon, String tableName) 
+    throws Exception
+    {
+        PreparedStatement destRows = destcon.prepareStatement(
+            "select id from "+tableName);
+        PreparedStatement deleteRow = destcon.prepareStatement(
+            "delete from "+tableName+" where id=?");
+        PreparedStatement srcExists = srccon.prepareStatement(
+            "select id from "+tableName+" where id=?");
+        ResultSet destSet = destRows.executeQuery();
+        while (destSet.next())
+        {
+            String id = destSet.getString(1);
+            srcExists.clearParameters();
+            srcExists.setString(1, id);
+            ResultSet existsSet = srcExists.executeQuery();
+            if (!existsSet.next() && !id.endsWith("R")) // kludge alert
+            {
+                deleteRow.clearParameters();
+                deleteRow.setString(1, id);
+                deleteRow.executeUpdate();
+                info("Deleting from "+tableName+" id="+id);
+            }
+        }        
+    }
+

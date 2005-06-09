@@ -1,0 +1,13 @@
+    public void removePageSafely(String id) throws RollerException
+    {
+        PageData pd = retrievePageReadOnly(id);
+        if (pd == null) return;
+
+        WebsiteData wd = pd.getWebsite();
+        if (pd.getId() == wd.getDefaultPageId()) {
+            mLogger.error("Refusing to remove default page from website of: " +  wd.getUser().getUserName());
+            throw new RollerException(new IllegalArgumentException("Page is default page of website."));
+        }
+        removePage(id);        
+    }
+

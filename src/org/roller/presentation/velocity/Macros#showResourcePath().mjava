@@ -1,0 +1,34 @@
+    //------------------------------------------------------------------------
+    /**
+     * Gets path to your /resources directory, where you may have uploaded 
+     * files.
+     * @return Resource path.
+     */
+    public String showResourcePath()
+    {
+        HttpServletRequest request =
+            (HttpServletRequest) mPageContext.getRequest();
+            
+        String username = getRollerRequest().getUser().getUserName();
+        
+        ServletContext app = mPageContext.getServletContext();
+                
+        StringBuffer sb = new StringBuffer();
+        String uploadPath = null;
+        try {
+            uploadPath = RollerFactory.getRoller().getFileManager().getUploadUrl();
+        } catch(Exception e) {}
+        if ( uploadPath != null && uploadPath.trim().length() > 0 )
+        {
+            sb.append( uploadPath );
+        }
+        else
+        {
+            sb.append( request.getContextPath() );
+            sb.append( RollerContext.USER_RESOURCES );
+        }
+        sb.append( "/" );
+        sb.append( username );
+        return sb.toString();
+    }
+

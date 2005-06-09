@@ -1,0 +1,27 @@
+    /**
+     * Writes this cached data out to the supplied <code>ServletResponse</code>.
+     *
+     * @param response The servlet response to output the cached content to.
+     * @throws IOException
+     */
+    public void writeTo(ServletResponse response) throws IOException {
+        //Send the content type and data to this response
+        if (contentType != null) {
+            response.setContentType(contentType);
+        }
+
+        //if (response instanceof HttpServletResponse) {
+            //((HttpServletResponse) response).setDateHeader("Last-Modified", lastModified);
+        //}
+
+        response.setContentLength(content.length);
+
+        if (locale != null) {
+            response.setLocale(locale);
+        }
+
+        OutputStream out = new BufferedOutputStream(response.getOutputStream());
+        out.write(content);
+        out.flush();
+    }
+

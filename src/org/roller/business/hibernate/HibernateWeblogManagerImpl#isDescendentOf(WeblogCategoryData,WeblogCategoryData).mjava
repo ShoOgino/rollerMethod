@@ -1,0 +1,20 @@
+    public boolean isDescendentOf(
+            WeblogCategoryData child, WeblogCategoryData ancestor)
+            throws RollerException
+    {
+        boolean ret = false;
+        try
+        {
+            Session session = ((HibernateStrategy)mStrategy).getSession();
+            Criteria criteria = session.createCriteria(WeblogCategoryAssoc.class);
+            criteria.add(Expression.eq("category", child));
+            criteria.add(Expression.eq("ancestorCategory", ancestor));
+            ret = criteria.list().size() > 0;
+        }
+        catch (HibernateException e)
+        {
+            throw new RollerException(e);        
+        }
+        return ret;
+    }
+

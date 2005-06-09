@@ -1,0 +1,52 @@
+    public void testQueryWeblogEntries() throws RollerException
+    {
+        getRoller().begin(UserData.SYSTEM_USER);
+        WeblogManager wmgr = getRoller().getWeblogManager();
+        UserManager umgr = getRoller().getUserManager();
+        
+        WebsiteData website = (WebsiteData)mWebsites.get(0);
+        website = umgr.retrieveWebsite(website.getId());
+
+        // PUBLISHISHED ONLY
+        List publishedEntries = wmgr.getWeblogEntries(
+                        website,                 // userName
+                        null,                    // startDate
+                        new Date(),              // endDate
+                        null,                    // catName
+                        WeblogManager.PUB_ONLY,  // status
+                        null);                   // maxEntries
+        assertEquals(mExpectedPublishedEntryCount, publishedEntries.size());
+                    
+        // DRAFT ONLY
+        List draftEntries = wmgr.getWeblogEntries(
+                        website,                 // userName
+                        null,                    // startDate
+                        new Date(),              // endDate
+                        null,                    // catName
+                        WeblogManager.DRAFT_ONLY,  // status
+                        null);                   // maxEntries
+        assertEquals(mExpectedEntryCount-mExpectedPublishedEntryCount, draftEntries.size());
+                          
+        // PUBLISHED and DRAFT
+        List allEntries = wmgr.getWeblogEntries(
+                        website,                 // userName
+                        null,                    // startDate
+                        new Date(),              // endDate
+                        null,                    // catName
+                        WeblogManager.ALL,       // status
+                        null);                   // maxEntries
+        assertEquals(mExpectedEntryCount, allEntries.size());
+
+        // no status specified      
+        List allEntries2 = wmgr.getWeblogEntries(
+                        website,                 // userName
+                        null,                    // startDate
+                        new Date(),              // endDate
+                        null,                    // catName
+                        null,                    // status
+                        null);                   // maxEntries
+        assertEquals(mExpectedEntryCount, allEntries2.size());
+                                            
+        getRoller().commit();
+    }
+

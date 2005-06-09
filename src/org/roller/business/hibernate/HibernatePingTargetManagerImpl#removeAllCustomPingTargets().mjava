@@ -1,0 +1,19 @@
+    /**
+     * @see org.roller.model.PingTargetManager#removeAllCustomPingTargets()
+     */
+    public void removeAllCustomPingTargets() throws RollerException
+    {
+        try
+        {
+            Session session = ((HibernateStrategy) persistenceStrategy).getSession();
+            Criteria criteria = session.createCriteria(PingTargetData.class);
+            criteria.add(Expression.isNotNull("website"));
+            List allCustomTargets = criteria.list();
+            removeTargets(allCustomTargets);
+        }
+        catch (HibernateException e)
+        {
+            throw new RollerException(e);
+        }
+    }
+

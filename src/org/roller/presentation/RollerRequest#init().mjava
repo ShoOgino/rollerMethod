@@ -1,0 +1,39 @@
+    //------------------------------------------------------------------------
+    private void init() throws RollerException
+    {
+        mRollerRequestTLS.set(this);
+        if (mRequest.getContextPath().equals("/atom"))
+        {
+            return; // Atom servlet request needs no init
+        }
+        
+        // Bind persistence session to authenticated user, if we have one
+        RollerContext rctx = RollerContext.getRollerContext(mContext); 
+        Authenticator auth = rctx.getAuthenticator();
+        String userName = auth.getAuthenticatedUserName(mRequest);
+        if (userName != null)
+        {
+            UserManager userMgr = getRoller().getUserManager();
+            UserData currentUser = userMgr.getUser(userName);
+            getRoller().setUser(currentUser);
+        }
+
+        // path info may be null, (e.g. on JSP error page)
+        mPathInfo = mRequest.getPathInfo();
+        mPathInfo = (mPathInfo!=null) ? mPathInfo : "";            
+        
+        String[] pathInfo = StringUtils.split(mPathInfo,"/");  
+        if ( pathInfo.length > 0 )
+        {
+            // Parse pathInfo and throw exception if it is invalid
+            if (!"j_security_check".equals(pathInfo[0]))
+            {
+                parsePathInfo( pathInfo );
+                return;
+            }
+        }
+
+        // Parse user, page, and entry from request params if possible
+        parseRequestParams();
+    }
+

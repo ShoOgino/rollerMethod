@@ -1,0 +1,15 @@
+    //------------------------------------------------------------------------
+    /** Is mRequest's user the admin user? */
+    public boolean isAdminUser() throws RollerException
+    {
+        UserData user = getUser();
+        if (user != null && user.hasRole("admin")) 
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+

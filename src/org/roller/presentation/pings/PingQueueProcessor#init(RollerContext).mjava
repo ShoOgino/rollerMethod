@@ -1,0 +1,17 @@
+    /**
+     * Initialize the singleton.  This is called during <code>RollerContext</code> initialization.
+     *
+     * @param rc the Roller context
+     * @throws RollerException
+     */
+    public static synchronized void init(RollerContext rc) throws RollerException
+    {
+        if (theInstance != null)
+        {
+            logger.warn("Ignoring duplicate initialization of PingQueueProcessor!");
+            return;
+        }
+        theInstance = new PingQueueProcessor(rc);
+        if (logger.isDebugEnabled()) logger.debug("Ping queue processor initialized.");
+    }
+

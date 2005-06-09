@@ -1,0 +1,24 @@
+    //------------------------------------------------------------------------
+    /**
+     * Returns most recent update time of collection of weblog entries using
+     * the specified pattern.
+     * @param weblogEntries Collection of weblog entries.
+     * @param Date format pattern, @see java.text.SimpleDateFormat.
+     * @return Most recent update time formatted by pattern.
+     */
+    public String formatUpdateTime( ArrayList weblogEntries, String pattern )
+    {
+        String date = null;
+        Date updateTime = getUpdateTime(weblogEntries);
+        try
+        {
+            SimpleDateFormat format = new SimpleDateFormat( pattern );
+            date = format.format( updateTime );
+        }
+        catch (RuntimeException e)
+        {
+            date = "ERROR: formatting date";
+        }
+        return date;
+    }
+

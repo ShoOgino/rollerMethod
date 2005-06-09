@@ -1,0 +1,33 @@
+    //------------------------------------------------------------------------
+    /** Tests storage and removal of user. */
+    public void testUserStorage() throws RollerException
+    {
+        UserManager umgr = getRoller().getUserManager();
+        UserData stored = null;
+
+        getRoller().begin(UserData.SYSTEM_USER);
+        stored = new UserData(
+            null,
+            "testUserStorage",
+            "password2",
+            "TestUser2",
+            "testuser2@example.com",
+            new java.util.Date());
+        umgr.storeUser(stored);
+        getRoller().commit();
+
+        getRoller().begin(UserData.SYSTEM_USER);
+        UserData retrieved = umgr.retrieveUser(stored.getId());
+        assertEquals(stored, retrieved);
+        getRoller().release();
+
+        getRoller().begin(UserData.SYSTEM_USER);
+        retrieved = umgr.retrieveUser(stored.getId());
+        retrieved.remove();
+        getRoller().commit();
+
+        getRoller().begin(UserData.SYSTEM_USER);
+        assertNull(umgr.retrieveUser(stored.getId()));
+        getRoller().release();
+    }
+

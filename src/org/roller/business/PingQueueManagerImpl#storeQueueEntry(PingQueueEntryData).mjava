@@ -1,0 +1,6 @@
+    public void storeQueueEntry(PingQueueEntryData pingQueueEntry) throws RollerException
+    {
+        if (logger.isDebugEnabled()) logger.debug("Storing ping queue entry: " + pingQueueEntry);
+        persistenceStrategy.store(pingQueueEntry);
+    }
+

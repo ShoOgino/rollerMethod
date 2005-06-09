@@ -1,0 +1,10 @@
+    //-------------------------------------------------------------------------
+    /** 
+     * Get existing persistence session on current thread. 
+     */
+    public Session getSession() throws RollerException
+    {
+        return (Session)(getPersistenceSession(
+           UserData.ANONYMOUS_USER, false).getSessionObject());
+    }
+

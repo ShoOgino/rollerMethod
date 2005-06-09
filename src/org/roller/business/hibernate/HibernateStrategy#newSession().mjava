@@ -1,0 +1,14 @@
+    //-------------------------------------------------------------------------
+    /** 
+     * This is called on error to start a new Hibernate session.
+     * Gavin: "make sure you never catch + handle an exception and
+     * then keep using the session (ObjectNotFoundException included!)
+     */
+    private void newSession()  throws RollerException
+    {
+        PersistenceSession pses = getPersistenceSession(null, false);       
+        UserData user = pses.getUser();
+        release();
+        getPersistenceSession(user, true);
+    }
+

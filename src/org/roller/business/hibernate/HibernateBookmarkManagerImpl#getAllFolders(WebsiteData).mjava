@@ -1,0 +1,19 @@
+    public List getAllFolders(WebsiteData website) throws RollerException
+    {
+        if (website == null)
+            throw new RollerException("Website is null");
+        
+        try
+        {
+            Session session = ((HibernateStrategy) mStrategy).getSession();
+            Criteria criteria = session.createCriteria(FolderData.class);
+            criteria.add(Expression.eq("website", website));            
+            return criteria.list();
+        }
+        catch (HibernateException e)
+        {
+            throw new RollerException(e);
+        }
+
+    }
+

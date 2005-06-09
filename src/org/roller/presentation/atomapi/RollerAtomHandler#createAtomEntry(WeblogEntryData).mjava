@@ -1,0 +1,30 @@
+    /**
+     * Create a Rome Atom entry based on a Roller entry.
+     * Content is escaped.
+     * Link is stored as rel=alternate link.
+     */
+    private Entry createAtomEntry(WeblogEntryData entry)
+    {
+        Entry atomEntry = new Entry();
+        Content content = new Content();
+        content.setMode(Content.ESCAPED);
+        content.setValue(entry.getText());
+        List contents = new ArrayList();
+        contents.add(content);
+        
+        atomEntry.setId(       entry.getId()); 
+        atomEntry.setTitle(    entry.getTitle());
+        atomEntry.setContents( contents);
+        atomEntry.setIssued(   entry.getPubTime()); 
+        atomEntry.setModified( entry.getUpdateTime());
+       
+        List links = new ArrayList();
+        Link altlink = new Link();
+        altlink.setRel("alternate");
+        altlink.setHref(entry.getPermaLink());
+        links.add(altlink);
+        atomEntry.setAlternateLinks(links);
+        
+        return atomEntry;
+    }
+

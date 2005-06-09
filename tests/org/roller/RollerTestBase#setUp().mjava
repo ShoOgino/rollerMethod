@@ -1,0 +1,23 @@
+    //------------------------------------------------------------------------
+    /**
+     * @see TestCase#setUp()
+     */
+    protected void setUp() throws Exception
+    {
+        super.setUp();
+        UserManager umgr = getRoller().getUserManager();
+
+        getRoller().begin(UserData.SYSTEM_USER);
+
+        // create User
+        UserData user = createUser(umgr,
+                   testUsername,
+                   "password",
+                   "TestUser",
+                   "testuser@example.com");
+
+        // get website
+        mWebsite = umgr.getWebsite(user.getUserName());
+        getRoller().commit();
+    }
+

@@ -1,0 +1,70 @@
+    /*
+     * Ping the selected target now.
+     */
+    public ActionForward pingSelectedNow(ActionMapping mapping, ActionForm form,
+                                         HttpServletRequest req, HttpServletResponse res)
+        throws Exception
+    {
+        try
+        {
+            RollerRequest rreq = RollerRequest.getRollerRequest(req);
+            String absoluteUrl = RollerContext.getRollerContext(req).getAbsoluteContextUrl(req);
+            PingTargetData pingTarget = select(rreq);
+            WebsiteData website = rreq.getWebsite();
+            try
+            {
+                if (!isAuthorized(rreq))
+                {
+                    return mapping.findForward("access-denied");
+                }
+                if (PingConfig.getSuspendPingProcessing())
+                {
+                    if (mLogger.isDebugEnabled()) mLogger.debug("Ping processing is disabled.");
+                    ActionMessages errors = new ActionMessages();
+                    errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("ping.pingProcessingIsSuspended"));
+                    saveErrors(req, errors);
+                }
+                else
+                {
+                    WeblogUpdatePinger.PingResult pingResult = WeblogUpdatePinger.sendPing(absoluteUrl, pingTarget, website);
+                    if (pingResult.isError())
+                    {
+                        if (mLogger.isDebugEnabled()) mLogger.debug("Ping Result: " + pingResult);
+                        ActionMessages errors = new ActionMessages();
+                        errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("ping.transmittedButErrorReturned"));
+                        errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(pingResult.getMessage()));
+                        saveErrors(req, errors);
+                    }
+                    else
+                    {
+                        ActionMessages messages = new ActionMessages();
+                        messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("ping.successful"));
+                        saveMessages(req, messages);
+                    }
+                }
+            }
+            catch (IOException ex)
+            {
+                mLogger.debug(ex);
+                ActionMessages errors = new ActionMessages();
+                errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("ping.transmissionFailed"));
+                addSpecificMessages(ex, errors);
+                saveErrors(req, errors);
+            }
+            catch (XmlRpcException ex)
+            {
+                mLogger.debug(ex);
+                ActionMessages errors = new ActionMessages();
+                errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("ping.transmissionFailed"));
+                addSpecificMessages(ex, errors);
+                saveErrors(req, errors);
+            }
+            return mapping.findForward(PING_RESULT_PAGE);
+        }
+        catch (Exception ex)
+        {
+            mLogger.error("ERROR in action", ex);
+            throw new ServletException(ex);
+        }
+    }
+

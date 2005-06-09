@@ -1,0 +1,18 @@
+    /** for now... just for testing */
+    public static void main(String[] args) throws Exception 
+    {
+        if (args.length > 0) 
+        {
+            if ("-debug".equals(args[0])) 
+            {
+                debug = true;
+            }
+        }        
+        Properties props = new Properties();
+        props.load(new FileInputStream("rollerdb.properties"));
+        Connection destcon = ConsistencyCheck.createConnection(props,"");
+        Connection srccon = ConsistencyCheck.createConnection(props,"src.");
+        
+        new SyncUpgrade098Xto1000().syncUpgrade(srccon, destcon);
+    }
+

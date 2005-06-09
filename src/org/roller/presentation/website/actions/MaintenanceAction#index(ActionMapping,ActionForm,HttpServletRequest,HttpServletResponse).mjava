@@ -1,0 +1,38 @@
+	//-----------------------------------------------------------------------
+    /**
+     * Respond to user's request to rebuild search index.
+     */
+	public ActionForward index(
+		ActionMapping       mapping,
+		ActionForm          actionForm,
+		HttpServletRequest  request,
+		HttpServletResponse response)
+		throws IOException, ServletException
+	{
+		try
+		{
+			RollerRequest rreq = RollerRequest.getRollerRequest(request);
+			if ( rreq.isUserAuthorizedToEdit() )
+			{
+				UserData ud = rreq.getUser();
+				IndexManager manager = rreq.getRoller().getIndexManager();
+				manager.rebuildUserIndex();
+				
+                ActionMessages messages = new ActionMessages();
+                messages.add(null, new ActionMessage("maintenance.message.indexed"));
+                saveMessages(request, messages);
+			}
+		}
+		catch (RollerException re)
+		{
+			mLogger.error("Unexpected exception",re.getRootCause());
+			throw new ServletException(re);
+		}
+		catch (Exception e)
+		{
+			mLogger.error("Unexpected exception",e);
+			throw new ServletException(e);
+		}
+		return mapping.findForward("maintenance.page");
+	}
+

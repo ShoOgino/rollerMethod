@@ -1,0 +1,31 @@
+	public ActionForward index(
+		ActionMapping       mapping,
+		ActionForm          actionForm,
+		HttpServletRequest  request,
+		HttpServletResponse response)
+		throws Exception
+	{
+		ActionForward forward = mapping.findForward("rollerConfig.page");
+		try {
+			// if admin requests an index be re-built, do it
+             RollerRequest rreq = RollerRequest.getRollerRequest(request);
+			IndexManager manager = rreq.getRoller().getIndexManager();
+										 
+			manager.rebuildUserIndex();
+			request.getSession().setAttribute(
+				RollerSession.STATUS_MESSAGE,
+					"Successfully scheduled rebuild of all users' indexes");
+
+            // load up RollerConfig for UI
+            RollerConfigData rollerConfig = RollerFactory.getRoller().getConfigManager().getRollerConfig();
+            RollerConfigFormEx rcForm = (RollerConfigFormEx)actionForm;
+            rcForm.copyFrom(rollerConfig, request.getLocale());
+		}
+		catch (Exception e)
+		{
+			mLogger.error("ERROR in action",e);
+			throw new ServletException(e);
+		}
+		return forward;
+	}
+

@@ -1,0 +1,13 @@
+    /**
+     * Had to work around Rome bug that squashed &lt;dc:date&gt;
+     */
+    public void testDCDateParsing() throws Exception
+    { 
+        // Test funky RSS 2.0 with <dc:date> instead of <pubDate> 
+        _testDCDateParsing("http://bitworking.org/index.rss");
+        _testDCDateParsing("http://silflayhraka.com/index.xml");
+        
+        // Test RSS 1.0 with <dc:date>  
+        _testDCDateParsing("http://www.isthatlegal.org/rss/isthatlegal.xml");
+    }
+

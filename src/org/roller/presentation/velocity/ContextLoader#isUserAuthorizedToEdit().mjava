@@ -1,0 +1,13 @@
+    public boolean isUserAuthorizedToEdit()
+    {
+        try
+        {
+            return mRollerReq.isUserAuthorizedToEdit();
+        }
+        catch (Exception e)
+        {
+            mLogger.warn("PageHelper.isUserAuthorizedToEdit)", e);
+        }
+        return false;
+    }
+

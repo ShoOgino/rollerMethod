@@ -1,0 +1,21 @@
+        public SubscriptionsPageModel(
+                PlanetGroupData group,
+                HttpServletRequest request,
+                HttpServletResponse response,
+                ActionMapping mapping) throws RollerException
+        {
+            super(request, response, mapping);
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            Roller roller = rreq.getRoller();
+            PlanetManager planet = roller.getPlanetManager();
+            if (group != null) 
+            {
+                Set subsSet = group.getSubscriptions();
+                subscriptions = new ArrayList(subsSet);
+            }
+            else 
+            {
+                unconfigured = true;
+            }
+        }
+

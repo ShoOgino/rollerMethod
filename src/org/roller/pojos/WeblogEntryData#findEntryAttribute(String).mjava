@@ -1,0 +1,7 @@
+    /** Would be named getEntryAttribute, but that would set off XDoclet */
+    public String findEntryAttribute(String name)
+    {
+        EntryAttributeData att = ((EntryAttributeData)attMap.get(name));
+        return (att != null) ? att.getValue() : null;
+    }
+

@@ -1,0 +1,30 @@
+    public void testSelectFolder() 
+    {       
+        MockServletContext ctx = getMockFactory().getMockServletContext();
+        ctx.setServletContextName("/roller");        
+        MockHttpServletRequest request = getMockFactory().getMockRequest();
+        request.setContextPath("/roller");
+
+        authenticateUser(mWebsite.getUser().getUserName(), "editor");
+        doFilters();
+
+        // Setup form bean
+        BookmarksForm form = (BookmarksForm)
+            strutsModule.createActionForm(BookmarksForm.class);
+
+        // Setup mapping and request parameters
+        MockActionMapping mapping = strutsModule.getMockActionMapping();
+        mapping.setupForwards(new String[] {"access-denied","BookmarksForm"});
+        mapping.setParameter("method");        
+        strutsModule.addRequestParameter("method","selectFolder"); 
+        
+        strutsModule.actionPerform(BookmarksAction.class, form);        
+        
+        // Test for success
+        strutsModule.verifyNoActionMessages();
+        strutsModule.verifyForward("BookmarksForm");
+        
+        // Verify objects we put in context for JSP page
+        verifyPageContext();
+    }
+

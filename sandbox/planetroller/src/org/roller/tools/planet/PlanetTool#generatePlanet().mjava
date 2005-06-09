@@ -1,0 +1,36 @@
+    /**
+     * Call Texen control template specified by configuration to generate files.
+     */
+    public void generatePlanet() throws RollerException
+    {
+        try
+        {
+            VelocityEngine engine = new VelocityEngine();
+            engine.setProperty("resource.loader","file");
+            engine.setProperty("file.resource.loader.class",
+                 "org.apache.velocity.runtime.resource.loader.FileResourceLoader");
+            engine.setProperty("file.resource.loader.path", 
+                 getConfiguration().getTemplateDir());
+            engine.init();
+            
+            VelocityContext context = new VelocityContext();
+            context.put("date", new Date());
+            context.put("utilities", new Utilities());
+            context.put("planet", this);
+
+            Generator generator = Generator.getInstance();
+            generator.setVelocityEngine(engine);
+            generator.setOutputEncoding("utf-8");
+            generator.setInputEncoding("utf-8");
+            generator.setOutputPath(getConfiguration().getOutputDir());
+            generator.setTemplatePath(getConfiguration().getTemplateDir());
+            generator.parse(config.getMainPage(), context);           
+            generator.shutdown();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            throw new RollerException("Writing planet files",e);
+        }
+    }
+

@@ -1,0 +1,26 @@
+    /**
+     * Get the previous occurring Entry.
+     */
+    public WeblogEntryData getPreviousEntry()
+    {
+        WeblogEntryData currentEntry = getWeblogEntry();
+        if (mLastEntry != null) currentEntry = mLastEntry;
+        if (mPreviousEntry == null && currentEntry != null )
+        {
+            String catName = null;
+            if (mRollerReq.getWeblogCategory() != null)
+            {
+                catName = mRollerReq.getWeblogCategory().getName();
+            }
+            try
+            {
+                mPreviousEntry = mWeblogMgr.getPreviousEntry(currentEntry, catName);
+            }
+            catch (RollerException e)
+            {
+                mLogger.error("PageModel.getPreviousEntry)", e);
+            }            
+        }
+        return mPreviousEntry;
+    }
+

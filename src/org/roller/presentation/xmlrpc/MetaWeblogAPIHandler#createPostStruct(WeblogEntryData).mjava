@@ -1,0 +1,30 @@
+    private Hashtable createPostStruct(WeblogEntryData entry)
+    {       
+        RollerRequest rreq = RollerRequest.getRollerRequest();
+        HttpServletRequest request = rreq.getRequest();
+        RollerContext rollerCtx = RollerContext.getRollerContext(request);
+        String permalink = 
+            rollerCtx.getAbsoluteContextUrl(request) + entry.getPermaLink();
+        
+        Hashtable struct = new Hashtable();       
+        struct.put("title", entry.getTitle());
+        if (entry.getLink() != null) 
+        {
+            struct.put("link", Utilities.escapeHTML(entry.getLink()));
+        }
+        
+        struct.put("description", entry.getText());
+        struct.put("pubDate", entry.getPubTime());
+        struct.put("dateCreated", entry.getPubTime());
+        struct.put("guid", Utilities.escapeHTML(permalink));
+        struct.put("permaLink", Utilities.escapeHTML(permalink));
+        struct.put("postid", entry.getId());                        
+        struct.put("userid", entry.getWebsite().getUser().getId());
+
+        Vector catArray = new Vector();
+        catArray.addElement(entry.getCategory().getPath());      
+        struct.put("categories", catArray);
+        
+        return struct;
+    }
+

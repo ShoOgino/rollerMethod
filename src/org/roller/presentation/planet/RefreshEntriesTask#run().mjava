@@ -1,0 +1,15 @@
+    public void run()
+    {
+        try
+        {
+            roller.begin();
+            roller.getPlanetManager().refreshEntries();
+            roller.commit();
+            roller.release();
+        }
+        catch (RollerException e)
+        {
+            logger.error("ERROR refreshing entries", e);
+        }
+    }
+

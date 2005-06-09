@@ -1,0 +1,19 @@
+    /**
+     * Returns a String[] list of files only (excludes directories).
+    **/
+    public String[] fileList(File d)
+    {
+        File[] files = null; //list of files & directories in the image directory
+        java.util.ArrayList images = new java.util.ArrayList();
+
+        files = d.listFiles();
+        for (int i=0; i<files.length; i++)
+        {
+            if (!files[i].isDirectory()) images.add(files[i].getName());
+        }
+
+        String[] myFiles = new String[0];
+        return (String[]) images.toArray(myFiles);
+
+    }
+

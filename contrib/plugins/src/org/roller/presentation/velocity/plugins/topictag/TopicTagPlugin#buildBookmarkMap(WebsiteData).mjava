@@ -1,0 +1,26 @@
+    /**
+     * Build the bookmark map.
+     *
+     * @return map of the user's bookmarks (type BookmarkData), keyed by name (type String).
+     */
+    protected Map buildBookmarkMap(WebsiteData website) throws RollerException
+    {
+        Map bookmarkMap = new HashMap();
+        if (website == null)
+        {
+            mLogger.debug("Init called without website.  Skipping bookmark initialization.");
+        }
+        else
+        {
+            BookmarkManager bMgr = RollerFactory.getRoller().getBookmarkManager();
+            List bookmarks = bMgr.retrieveBookmarks(bMgr.getRootFolder(website), true);
+
+            for (Iterator i = bookmarks.iterator(); i.hasNext();)
+            {
+                BookmarkData b = (BookmarkData) i.next();
+                bookmarkMap.put(b.getName(), b);
+            }
+        }
+        return bookmarkMap;
+    }
+

@@ -1,0 +1,24 @@
+    //------------------------------------------------------------------------
+    /** Validate user form. TODO: replace with Struts validation. */
+    protected ActionMessages validate( UserFormEx form, ActionMessages errors ) {
+
+        String safe = Utilities.replaceNonAlphanumeric(form.getUserName());
+        if ( "".equals(form.getUserName().trim()))
+        {
+            errors.add( ActionErrors.GLOBAL_ERROR,
+               new ActionError("error.add.user.missingUserName"));
+        }
+        else if ( !safe.equals(form.getUserName()) )
+        {
+            errors.add( ActionErrors.GLOBAL_ERROR,
+               new ActionError("error.add.user.badUserName"));
+        }
+
+        if ( "".equals(form.getEmailAddress().trim()))
+        {
+            errors.add( ActionErrors.GLOBAL_ERROR,
+               new ActionError("error.add.user.missingEmailAddress"));
+        }
+        return errors;
+    }
+

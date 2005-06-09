@@ -1,0 +1,42 @@
+    //-------------------------------------------------------------------------
+    /** 
+     * Execute Hibernate HSQL query 
+     */
+    public List query( String query, Object[] args, Type[] types )
+        throws RollerException
+    {
+        if ( query == null )
+          {
+              throw new RollerException(Messages.getString(
+                "HibernateStrategy.nullNotValidQuery"));
+          }
+
+          if ( args == null )
+          {
+              throw new RollerException(Messages.getString(
+                "HibernateStrategy.nullNotValidArgArray"));
+          }
+
+          if ( types == null )
+          {
+              throw new RollerException(Messages.getString(
+                "HibernateStrategy.nullNotValidArrayType"));
+          }
+
+          try
+          {
+              if (query.indexOf("$") > -1)
+              {
+                  query = query.replaceAll("\\$\\d+", "\\?");
+              }
+              return getSession().find(query,args,types);
+          }
+          catch (Exception e)
+          {
+              String msg = Messages.getString("HibernateStrategy.duringQuery");
+              mLogger.error(msg, e);
+              newSession();
+              throw new RollerException(msg,e);
+          }
+    }
+

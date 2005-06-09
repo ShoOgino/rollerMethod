@@ -1,0 +1,36 @@
+    /**
+     * execute
+     */
+    public ActionForward view(
+        ActionMapping mapping, ActionForm form,
+        HttpServletRequest req, HttpServletResponse res)
+        throws Exception
+    {
+        ActionForward forward = mapping.findForward("referers.page");
+        RollerRequest rreq = RollerRequest.getRollerRequest(req);
+        RefererManager refmgr = rreq.getRoller().getRefererManager();
+        try
+        {
+            if ( rreq.isUserAuthorizedToEdit() )
+            {
+                UserData ud = rreq.getUser();
+                
+                req.setAttribute("pageHits",
+                    new Integer(refmgr.getDayHits(rreq.getWebsite())));
+                    
+                req.setAttribute("totalHits",
+                    new Integer(refmgr.getTotalHits(rreq.getWebsite())));
+                    
+                List refs = refmgr.getTodaysReferers(rreq.getWebsite());
+                req.setAttribute("referers",refs);        
+            }
+        }
+        catch (Exception e)
+        {
+            mLogger.error("ERROR in action",e);
+            throw new ServletException(e);
+        }
+        
+        return forward;
+    }
+

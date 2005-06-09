@@ -1,0 +1,8 @@
+    /*
+     *  Check if the user has editing rights.
+     */
+    protected boolean hasRequiredRights(RollerRequest rreq) throws RollerException
+    {
+        return (rreq.isUserAuthorizedToEdit() && !PingConfig.getDisallowCustomTargets());
+    }
+

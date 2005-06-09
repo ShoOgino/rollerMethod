@@ -1,0 +1,30 @@
+    public ActionForward edit(
+            ActionMapping       mapping,
+            ActionForm          actionForm,
+            HttpServletRequest  request,
+            HttpServletResponse response)
+            throws IOException, ServletException {
+        
+        mLogger.debug("Handling edit request");
+        
+        ActionForward forward = mapping.findForward("rollerProperties.page");
+        try {
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            if ( rreq.isUserAuthorizedToEdit() && rreq.isAdminUser() ) {
+                
+                // just grab our properties map and put it in the request
+                Roller mRoller = RollerFactory.getRoller();
+                PropertiesManager propsManager = mRoller.getPropertiesManager();
+                Map props = propsManager.getProperties();
+                request.setAttribute("RollerProps", props);
+                
+            } else {
+                forward = mapping.findForward("access-denied");
+            }
+        } catch (Exception e) {
+            mLogger.error("ERROR in action",e);
+            throw new ServletException(e);
+        }
+        return forward;
+    }
+

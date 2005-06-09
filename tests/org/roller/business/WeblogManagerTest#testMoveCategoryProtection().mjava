@@ -1,0 +1,23 @@
+    public void testMoveCategoryProtection() throws RollerException
+    {
+        boolean safe = false;
+        try 
+        {
+            getRoller().begin(UserData.SYSTEM_USER);
+            WeblogManager wmgr = getRoller().getWeblogManager();        
+                   
+            // Move category into one of it's children
+            WeblogCategoryData c1 = wmgr.retrieveWeblogCategory(c1_id);       
+            WeblogCategoryData c3 = wmgr.retrieveWeblogCategory(c3_id);       
+            wmgr.moveWeblogCategoryContents(c1.getId(), c3.getId());
+            c3.save();
+            c1.save();
+            getRoller().commit(); 
+        }
+        catch (RollerException e)
+        {
+            safe = true;
+        }
+        assertTrue(safe);
+    }
+

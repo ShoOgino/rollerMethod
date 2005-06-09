@@ -1,0 +1,18 @@
+    //-----------------------------------------------------------------------
+    private void addModelObjects( RollerRequest rreq ) 
+        throws RollerException {  
+            
+        HttpServletRequest request = rreq.getRequest();
+            
+        UserManager mgr = rreq.getRoller().getUserManager();
+
+        UserData user = rreq.getUser();
+        request.setAttribute("user",user);
+
+        WebsiteData wd = rreq.getWebsite();
+        request.setAttribute("website", wd);
+
+        List pages = mgr.getPages(wd);
+        request.setAttribute("pages",pages);
+    }
+

@@ -1,0 +1,24 @@
+    public ThreadManagerImpl()
+    {
+        backgroundExecutor = new PooledExecutor(new BoundedBuffer(10), 25);
+        backgroundExecutor.setMinimumPoolSize(4);
+        backgroundExecutor.setKeepAliveTime(1000 * 60 * 5);
+        backgroundExecutor.waitWhenBlocked();
+        backgroundExecutor.createThreads(9);
+
+        backgroundExecutor.setThreadFactory(new ThreadFactory() {
+            public Thread newThread(Runnable command)
+            {
+                Thread t = new Thread(command);
+                t.setDaemon(false);
+                t.setName("Background Execution Threads");
+                t.setPriority(Thread.NORM_PRIORITY);
+
+                return t;
+            }
+        });
+
+        nodelayExecutor = new DirectExecutor();
+        scheduler = new Timer(true);
+    }
+

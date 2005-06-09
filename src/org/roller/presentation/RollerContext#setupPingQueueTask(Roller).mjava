@@ -1,0 +1,22 @@
+    // Set up the ping queue processing task
+    private void setupPingQueueTask(Roller roller) throws RollerException
+    {
+        long intervalMins = PingConfig.getQueueProcessingIntervalMins();
+        if (intervalMins == 0) {
+            // Ping queue processing interval of 0 indicates that ping queue processing is disabled on this host.
+            // This provides a crude  way to disable running the ping queue task on some servers if there are
+            // multiple servers in a cluster sharing a db.  Exclusion should really be handled dynamically but isn't. 
+            mLogger.warn("Ping queue processing interval is zero; processing from the ping queue will be disabled on this server.");
+            mLogger.warn("Please make sure that ping queue processing is configured to run on one server in the cluster.");
+            return;
+        }
+
+        // Set up the task
+        PingQueueTask pingQueueTask = new PingQueueTask();
+        pingQueueTask.init(this, intervalMins);
+
+        // Schedule it at the appropriate interval, delay start for one interval.
+        mLogger.info("Scheduling ping queue task to run at " + intervalMins + " minute intervals.");
+        roller.getThreadManager().scheduleFixedRateTimerTask(pingQueueTask, intervalMins, intervalMins);
+    }
+

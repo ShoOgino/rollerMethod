@@ -1,0 +1,80 @@
+    private void syncFolderTable(Connection srccon, Connection destcon) throws Exception
+    {
+        info("--- syncFolderTable ---");
+        
+        String columns = "id,name,description,parentid,websiteid";
+        int id_num=1;
+        int name_num=2;
+        int description_num=3;
+        int parentid_num=4;
+        int websiteid_num=5;
+        
+        PreparedStatement destExistsStmt = destcon.prepareStatement(
+            "select id from folder where id=?");
+        PreparedStatement destInsert = destcon.prepareStatement(
+            "insert into folder "+"("+columns+") "+"values (?,?,?,?,?)");
+        PreparedStatement destUpdate = destcon.prepareStatement(
+            "update folder set id=?,name=?,description=?,parentid=?,websiteid=?"
+            +" where id=?");
+        PreparedStatement parentExistsStmt = destcon.prepareStatement(
+            "select id from website where id=?");        
+
+        PreparedStatement assocInsert = destcon.prepareStatement(
+            "insert into folderassoc "
+            +"(id,folderid,ancestorid,relation) "+"values (?,?,?,'PARENT')");
+
+        Statement srcStmt = srccon.createStatement();
+        ResultSet srcSet = srcStmt.executeQuery("select "+columns+" from folder");
+        while (srcSet.next()) 
+        {
+            String id = srcSet.getString(id_num);
+            String userid = srcSet.getString(websiteid_num);
+            
+            destExistsStmt.clearParameters();
+            destExistsStmt.setString(id_num, id);
+            ResultSet destSet = destExistsStmt.executeQuery();
+            
+            parentExistsStmt.clearParameters();
+            parentExistsStmt.setString(id_num, userid);
+            ResultSet parentSet = parentExistsStmt.executeQuery();
+            
+            boolean parentExists = parentSet.first();
+            if (!destSet.first() && parentExists)
+            {
+                debug("Inserting folder id="+id);
+                destInsert.clearParameters();
+                destInsert.setString(id_num, id);
+                destInsert.setString(name_num, srcSet.getString(name_num));
+                destInsert.setString(description_num, srcSet.getString(description_num));
+                destInsert.setString(parentid_num, srcSet.getString(parentid_num));
+                destInsert.setString(websiteid_num, srcSet.getString(websiteid_num));
+                destInsert.executeUpdate();
+                
+                // Create folder assoc for new folder 
+                assocInsert.clearParameters();
+                assocInsert.setString(1, id+"A");
+                assocInsert.setString(2, id);
+                assocInsert.setString(3, srcSet.getString(parentid_num));
+                assocInsert.executeUpdate();                
+            }
+            else if (parentExists)
+            {
+                debug("Updating folder id="+id);
+                destUpdate.clearParameters();
+                destUpdate.setString(id_num, id);
+                destUpdate.setString(name_num, srcSet.getString(name_num));
+                destUpdate.setString(description_num, srcSet.getString(description_num));
+                destUpdate.setString(parentid_num, srcSet.getString(parentid_num));
+                destUpdate.setString(websiteid_num, srcSet.getString(websiteid_num));
+                destUpdate.setString(6, srcSet.getString(id_num));
+                destUpdate.executeUpdate();
+            }                
+            else 
+            {
+                info("Not copying folder id="+id);
+            }
+        }     
+        purgeDeleted(srccon,destcon,"folder");
+        purgeAssocs(destcon,"folderassoc","folder","folderid");
+    }
+

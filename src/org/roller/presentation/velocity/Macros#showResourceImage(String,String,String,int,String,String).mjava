@@ -1,0 +1,45 @@
+    //------------------------------------------------------------------------
+    /**
+     * Shows HTML for an image in user's resource directory.
+     * @param fileName File name in resource directory
+     * @param linkUrl  URL that image links to, null or empty if none
+     * @param alt      Description of image and of link
+     * @param border   For IMG tag's border attribute
+     * @param halign   For IMG tag's halign attribute
+     * @param valign   For IMG tag's valign attribute
+     * @return String  HTML for displaying image
+     */
+    public String showResourceImage( String fileName, String linkUrl,
+        String alt, int border, String halign, String valign )
+    {
+        HttpServletRequest request =
+            (HttpServletRequest) mPageContext.getRequest();
+        String username = getRollerRequest().getUser().getUserName();
+        ServletContext app = mPageContext.getServletContext();
+
+        StringBuffer sb = new StringBuffer();
+        String uploadPath = null;
+        try {
+            uploadPath = RollerFactory.getRoller().getFileManager().getUploadUrl();
+        } catch(Exception e) {}
+        
+        if ( uploadPath != null && uploadPath.trim().length() > 0 )
+        {
+            sb.append( uploadPath );
+            sb.append( "/");
+            sb.append( username );
+            sb.append( "/");
+            sb.append( fileName);
+        }
+        else
+        {
+            sb.append( request.getContextPath() );
+            sb.append( RollerContext.USER_RESOURCES );
+            sb.append( "/");
+            sb.append( username );
+            sb.append( "/");
+            sb.append( fileName);
+        }
+        return showImage( sb.toString(),linkUrl,alt,border,halign,valign );
+    }
+

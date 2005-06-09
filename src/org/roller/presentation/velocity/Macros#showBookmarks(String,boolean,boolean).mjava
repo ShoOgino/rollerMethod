@@ -1,0 +1,15 @@
+    /**
+     * Display bookmarks in specified folder as an expandable link.
+     * @param folderName Folder to be dislayed.
+     * @param showFolderName Display folder name as title.
+     * @param expandingFolder Show bookmarks in expanding folder.
+     * @return HTML and JavaScript for bookmarks display.
+     */
+    public String showBookmarks(
+        String folderName, boolean showFolderName, boolean expandingFolder )
+    {
+        ViewBookmarksTag booksTag = new ViewBookmarksTag();
+        booksTag.setPageContext(mPageContext);
+        return booksTag.view( folderName, showFolderName, expandingFolder );
+    }
+

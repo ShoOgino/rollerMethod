@@ -1,0 +1,12 @@
+    /** 
+     * @see org.roller.model.Roller#getRefererManager()
+     */
+    public RefererManager getRefererManager() throws RollerException
+    {
+        if ( mRefererManager == null ) 
+        {
+            mRefererManager = new HibernateRefererManagerImpl(mStrategy);
+        }
+        return mRefererManager;
+    }
+

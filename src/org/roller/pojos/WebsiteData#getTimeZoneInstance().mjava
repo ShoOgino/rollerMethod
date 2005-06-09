@@ -1,0 +1,21 @@
+    /**
+     * Return TimeZone instance for value of timezone,
+     * otherwise return system default instance.
+     * @return TimeZone
+     */
+    public TimeZone getTimeZoneInstance()
+    {
+    	if (timezone == null) 
+        {
+            if (TimeZone.getDefault() != null) 
+            {
+                this.setTimezone( TimeZone.getDefault().getID() );
+            }
+            else
+            {
+                this.setTimezone("America/New_York");
+            }
+        }
+        return TimeZone.getTimeZone(timezone);
+    }
+

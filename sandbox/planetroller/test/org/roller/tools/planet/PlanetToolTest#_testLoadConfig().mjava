@@ -1,0 +1,36 @@
+    public void _testLoadConfig() throws Exception
+    {
+        SAXBuilder builder = new SAXBuilder();
+        Document doc = builder.build(
+                new FileInputStream("./testdata/planet-test.xml"));
+        
+        Properties props = new Properties();
+        Velocity.init(props);
+        
+        PlanetManager planetTool = new PlanetTool(doc);
+        PlanetConfigData config = planetTool.getConfiguration();
+ 
+        assertNotNull(config.getMainPage());
+        assertEquals(3, planetTool.getGroupHandles().size());
+        assertNotNull(planetTool.getGroup("all"));
+        assertNotNull(planetTool.getGroup("roller"));
+        assertNotNull(planetTool.getGroup("davejava"));
+        
+        PlanetGroupData allGroup = planetTool.getGroup("all");
+        assertEquals(2, allGroup.getSubscriptions().size());
+        
+        PlanetGroupData lanceGroup = planetTool.getGroup("roller");
+        assertEquals(2, lanceGroup.getSubscriptions().size());
+        
+        PlanetGroupData rollerGroup = planetTool.getGroup("davejava");
+        assertEquals(1, rollerGroup.getSubscriptions().size());
+        
+        Iterator subs = allGroup.getSubscriptions().iterator();
+        while (subs.hasNext())
+        {
+            PlanetSubscriptionData sub = (PlanetSubscriptionData) subs.next();
+            assertNotNull(sub.getFeedUrl());
+            assertNotNull(sub.getSiteUrl());
+        }
+    }
+

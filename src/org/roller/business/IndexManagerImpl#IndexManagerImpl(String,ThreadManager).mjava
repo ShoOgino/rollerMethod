@@ -1,0 +1,77 @@
+    /**
+     * Creates a new lucene index manager. This should only be created once.
+     * Creating the index manager more than once will definately result in
+     * errors. The prefered way of getting an index is through the
+     * RollerContext.
+     * 
+     * @param indexDir -
+     *            the path to the index directory
+     */
+    public IndexManagerImpl(String indexDir, ThreadManager manager)
+    {
+        this.mThreadManager = manager;
+
+        this.indexDir = indexDir;
+
+        String test = indexDir + File.separator + ".index-inconsistent";
+        indexConsistencyMarker = new File(test);
+
+        // 1. If inconsistency marker exists.
+        //     Delete index
+        // 2. if we're using RAM index
+        //     load ram index wrapper around index
+        //
+        if (indexConsistencyMarker.exists())
+        {
+            getFSDirectory(true);
+            inconsistentAtStartup = true;
+        }
+        else
+        {
+            try
+            {
+                File makeIndexDir = new File(indexDir);
+                if (!makeIndexDir.exists())
+                {
+                    makeIndexDir.mkdirs();
+                    inconsistentAtStartup = true;
+                }
+                indexConsistencyMarker.createNewFile();
+            }
+            catch (IOException e)
+            {
+                mLogger.error(e);
+            }
+        }
+
+        if (indexExists())
+        {
+            if (useRAMIndex)
+            {
+                Directory filesystem = getFSDirectory(false);
+
+                try
+                {
+                    fRAMindex = new RAMDirectory(filesystem);
+                }
+                catch (IOException e)
+                {
+                    mLogger.error("Error creating in-memory index", e);
+                }
+            }
+        }
+        else
+        {
+            if (useRAMIndex)
+            {
+                fRAMindex = new RAMDirectory();
+                createIndex(fRAMindex);
+            }
+            else
+            {
+                createIndex(getFSDirectory(true));
+            }
+        }
+
+    }
+

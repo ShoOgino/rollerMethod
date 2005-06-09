@@ -1,0 +1,115 @@
+    private void syncWebsiteTable(Connection srccon, Connection destcon) 
+    throws Exception
+    {
+        info("--- syncWebsiteTable ---");
+        
+        int id_num=1;
+        int name_num=2;
+        int description_num=3;
+        int userid_num=4;
+        int defaultpageid_num=5; 
+        int weblogdayid_num=6;
+        int ignorewords_num=7;    
+        int enablebloggerapi_num=8; 
+        int editorpage_num=9;    
+        int bloggercatid_num=10;   
+        int allowcomments_num=11; 
+        
+        PreparedStatement destExistsStmt = destcon.prepareStatement(
+            "select id from website where id=?");
+        PreparedStatement destInsert = destcon.prepareStatement(
+            "insert into website (id,name,description,userid,defaultpageid,"
+            +"weblogdayid,ignorewords,enablebloggerapi,editorpage,"
+            +"bloggercatid,allowcomments,defaultcatid) values (?,?,?,?,?,?,?,?,?,?,?,?)");
+        PreparedStatement destUpdate = destcon.prepareStatement(
+        "update website set id=?,name=?,description=?,userid=?,defaultpageid=?,"
+            +"weblogdayid=?,ignorewords=?,enablebloggerapi=?,editorpage=?,"
+            +"bloggercatid=?,allowcomments=? where id=?");
+        PreparedStatement parentExistsStmt = destcon.prepareStatement(
+            "select id from rolleruser where id=?");
+        
+        PreparedStatement insertRootCategory = destcon.prepareStatement(
+            "insert into weblogcategory (id,name,description,websiteid,image) "+
+            "values (?,'root','root',?,NULL)");                        
+        PreparedStatement insertRootCategoryAssoc = destcon.prepareStatement(
+           "insert into weblogcategoryassoc (id,categoryid,ancestorid,relation)"
+            +" values (?,?,NULL,'PARENT')");                        
+        
+        Statement srcStmt = srccon.createStatement();
+        ResultSet srcSet = srcStmt.executeQuery(
+            "select id,name,description,userid,defaultpageid,weblogdayid,"
+           +"ignorewords,enablebloggerapi,editorpage,bloggercatid,allowcomments"
+           +" from website");        
+        while (srcSet.next()) 
+        {
+            String id = srcSet.getString(id_num);
+            String userid = srcSet.getString(userid_num);
+            
+            destExistsStmt.clearParameters();
+            destExistsStmt.setString(id_num, id);            
+            ResultSet destSet = destExistsStmt.executeQuery();
+            
+            parentExistsStmt.clearParameters();
+            parentExistsStmt.setString(id_num, userid);
+            ResultSet parentSet = parentExistsStmt.executeQuery();
+            boolean parentExists = parentSet.first();
+            
+            if (!destSet.first() && parentExists)
+            {
+                debug("Inserting website id="+id);
+                destInsert.clearParameters();
+                destInsert.setString(id_num, srcSet.getString(id_num));
+                destInsert.setString(name_num, srcSet.getString(name_num));
+                destInsert.setString(description_num, srcSet.getString(description_num));
+                destInsert.setString(userid_num, srcSet.getString(userid_num));
+                destInsert.setString(defaultpageid_num, srcSet.getString(defaultpageid_num));
+                destInsert.setString(weblogdayid_num, srcSet.getString(weblogdayid_num));
+                destInsert.setString(ignorewords_num, srcSet.getString(ignorewords_num));
+                destInsert.setBoolean(enablebloggerapi_num, srcSet.getBoolean(enablebloggerapi_num));
+                destInsert.setString(editorpage_num, srcSet.getString(editorpage_num));
+                destInsert.setString(bloggercatid_num, srcSet.getString(bloggercatid_num));
+                destInsert.setBoolean(allowcomments_num, srcSet.getBoolean(allowcomments_num));
+                destInsert.setString(12, id+"R"); // default category
+                destInsert.executeUpdate();
+                
+                // 098 had no root category per website, so create one
+                insertRootCategory.clearParameters();
+                insertRootCategory.setString(1, id+"R");
+                insertRootCategory.setString(2, id);
+                insertRootCategory.executeUpdate();
+                rootCategoryIds.put(id, id+"R"); // and add it to map
+                debug("   Inserting root weblogcategory id="+id+"R");
+                
+                // Create category assoc to go with root category
+                insertRootCategoryAssoc.clearParameters();
+                insertRootCategoryAssoc.setString(1, id+"A");
+                insertRootCategoryAssoc.setString(2, id+"R");
+                insertRootCategoryAssoc.executeUpdate();
+                debug("   Inserting root weblogcategoryassoc id="+id+"A");
+            }
+            else if (parentExists)
+            {
+                debug("Updating website id="+id);
+                destUpdate.clearParameters();
+                destUpdate.setString(id_num, srcSet.getString(id_num));
+                destUpdate.setString(name_num, srcSet.getString(name_num));
+                destUpdate.setString(description_num, srcSet.getString(description_num));
+                destUpdate.setString(userid_num, srcSet.getString(userid_num));
+                destUpdate.setString(defaultpageid_num, srcSet.getString(defaultpageid_num));
+                destUpdate.setString(weblogdayid_num, srcSet.getString(weblogdayid_num));
+                destUpdate.setString(ignorewords_num, srcSet.getString(ignorewords_num));
+                destUpdate.setBoolean(enablebloggerapi_num, srcSet.getBoolean(enablebloggerapi_num));
+                destUpdate.setString(editorpage_num, srcSet.getString(editorpage_num));
+                destUpdate.setString(bloggercatid_num, srcSet.getString(bloggercatid_num));
+                destUpdate.setBoolean(allowcomments_num, srcSet.getBoolean(allowcomments_num));
+                destUpdate.setString(12, srcSet.getString(id_num));
+                destUpdate.executeUpdate();
+            }   
+            else 
+            {
+                info("Not copying website id="+id);
+            }
+        }     
+        purgeDeleted(srccon,destcon,"website");
+    }    
+

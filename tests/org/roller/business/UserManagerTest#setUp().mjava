@@ -1,0 +1,28 @@
+    /**
+     * @see junit.framework.TestCase#setUp()
+     */
+    protected void setUp() throws Exception
+    {
+        super.setUp();
+
+        getRoller().begin(UserData.SYSTEM_USER);
+        UserManager umgr = getRoller().getUserManager();
+
+        enabledUser = createUser(umgr,
+                                 enabledUserName,
+                                 "password",
+                                 "EnabledUser",
+                                 "enabledUser@example.com"
+        );
+
+        disabledUser = createUser(umgr,
+                                 disabledUserName,
+                                 "password",
+                                 "DisabledUser",
+                                 "disabledUser@example.com"
+        );
+        umgr.getWebsite(disabledUserName,false).setIsEnabled(Boolean.FALSE);
+
+        getRoller().commit();
+    }
+

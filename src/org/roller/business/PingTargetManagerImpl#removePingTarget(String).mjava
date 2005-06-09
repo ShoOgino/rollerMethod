@@ -1,0 +1,7 @@
+    public void removePingTarget(String id) throws RollerException
+    {
+        // The retrieval is necessary in order to do the necessary cleanup of references in pingTarget.remove().
+        PingTargetData pingTarget = retrievePingTarget(id);
+        pingTarget.remove();
+    }
+

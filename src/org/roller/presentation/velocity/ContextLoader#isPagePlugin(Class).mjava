@@ -1,0 +1,14 @@
+    /**
+     * @param pluginClass
+     * @return
+     */
+    private static boolean isPagePlugin(Class pluginClass)
+    {
+        Class[] interfaces = pluginClass.getInterfaces();
+        for (int i=0; i<interfaces.length; i++)
+        {
+            if (interfaces[i].equals(PagePlugin.class)) return true;
+        }
+        return false;
+    }
+

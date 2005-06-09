@@ -1,0 +1,18 @@
+    public void execute() throws BuildException
+    {
+        try 
+        {
+            if (port==null)
+            {
+                throw new BuildException("missing port attribute");
+            }
+            System.out.println("Stopping HSQLDB at port " + port);
+            final Connection con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost:"+port);
+            con.createStatement().execute("SHUTDOWN");
+        } 
+        catch (SQLException e) 
+        {
+            throw new BuildException(e.getMessage());
+        }
+    }
+

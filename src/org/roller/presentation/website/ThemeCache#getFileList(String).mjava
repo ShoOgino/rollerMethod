@@ -1,0 +1,13 @@
+    /**
+     * The list of files in a Theme is cached as a String[], the key being the
+     * Theme location itself.  If caching is turned off this will return null.
+     * 
+     * @param theme
+     * @return String[]
+     */
+    public String[] getFileList(String themeDir)
+    {
+		if (!cacheTemplateFiles) return null;
+        return (String[])cache.get(themeDir);
+    }
+

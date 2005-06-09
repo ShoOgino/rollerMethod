@@ -1,0 +1,24 @@
+    //-------------------------------------------------------------------------
+    /** 
+     * Rollback uncommitted changes, does not release session. 
+     */
+    public void rollback() throws RollerException
+    {
+        // Can't call rollback when autoCommit=true
+        try
+        {
+            if (!getSession().connection().getAutoCommit())
+            {
+                getSession().connection().rollback();
+            }
+        }
+        catch (Exception he)
+        {
+            newSession();            
+            if (mLogger.isDebugEnabled())
+            {
+                mLogger.debug("ERROR during rollback",he);
+            }
+        }
+    }
+

@@ -1,0 +1,9 @@
+    public void init(Roller roller, String realPath) throws RollerException
+    {
+        // load Blacklist from file
+        String uploadDir = RollerFactory.getRoller().getFileManager().getUploadDir();
+        Blacklist.getBlacklist(null, uploadDir);
+        // now have it check for an update
+        Blacklist.checkForUpdate();
+    }
+

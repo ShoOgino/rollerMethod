@@ -1,0 +1,26 @@
+    public ActionForward reset(
+        ActionMapping mapping, ActionForm form,
+        HttpServletRequest req, HttpServletResponse res)
+        throws Exception
+    {
+        this.servlet.log("ReferersAction.reset()");
+        RollerRequest rreq = RollerRequest.getRollerRequest(req);
+        try
+        {
+            if ( rreq.isUserAuthorizedToEdit() )
+            {
+                RefererManager refmgr = rreq.getRoller().getRefererManager();
+                WebsiteData website = rreq.getWebsite();
+                refmgr.forceTurnover(website.getId());
+                rreq.getRoller().commit();
+            }
+            this.servlet.log("ReferersAction.reset(): don't have permission");
+        }
+        catch (Exception e)
+        {
+            mLogger.error("ERROR in action",e);
+            throw new ServletException(e);
+        }
+        return view(mapping, form, req, res);
+    }
+

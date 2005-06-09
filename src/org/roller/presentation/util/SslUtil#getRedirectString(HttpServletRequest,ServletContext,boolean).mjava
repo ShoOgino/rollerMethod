@@ -1,0 +1,35 @@
+    public static String getRedirectString(HttpServletRequest request,
+                                           ServletContext ctx, boolean isSecure) {
+        // get the port numbers from the application context
+        HTTP_PORT = RollerConfig.getProperty("securelogin.http.port");
+        HTTPS_PORT = RollerConfig.getProperty("securelogin.https.port");
+
+        // get the scheme we want to use for this page and
+        // get the scheme used in this request
+        String desiredScheme = isSecure ? HTTPS : HTTP;
+        String usingScheme = request.getScheme();
+
+        // Determine the port number we want to use
+        // and the port number we used in this request
+        String desiredPort = isSecure ? HTTPS_PORT : HTTP_PORT;
+        String usingPort = String.valueOf(request.getServerPort());
+
+        String urlString = null;
+
+        // Must also check ports, because of IE multiple redirect problem
+        if (!desiredScheme.equals(usingScheme) ||
+                !desiredPort.equals(usingPort)) {
+            urlString =
+                buildNewUrlString(request, desiredScheme, usingScheme,
+                                  desiredPort, usingPort);
+
+            // Temporarily store attributes in session
+            RequestUtil.stowRequestAttributes(request);
+        } else {
+            // Retrieve attributes from session
+            RequestUtil.reclaimRequestAttributes(request);
+        }
+
+        return urlString;
+    }
+

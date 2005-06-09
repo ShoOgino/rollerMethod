@@ -1,0 +1,51 @@
+    public boolean equals(Object pOther)
+    {
+        if (pOther instanceof WebsiteData)
+        {
+            WebsiteData lTest = (WebsiteData) pOther;
+            boolean lEquals = true;
+
+            lEquals = PojoUtil.equals(lEquals, this.id, lTest.id);
+
+            lEquals = PojoUtil.equals(lEquals, this.name, lTest.name);
+
+            lEquals = PojoUtil.equals(lEquals, this.description, lTest.description);
+
+            lEquals = PojoUtil.equals(lEquals, this.mUser, lTest.mUser);
+
+            lEquals = PojoUtil.equals(lEquals, this.defaultPageId, lTest.defaultPageId);
+
+            lEquals = PojoUtil.equals(lEquals, this.weblogDayPageId, lTest.weblogDayPageId);
+
+            lEquals = PojoUtil.equals(lEquals, this.enableBloggerApi, lTest.enableBloggerApi);
+
+            lEquals = PojoUtil.equals(lEquals, this.bloggerCategory.getId(), lTest.bloggerCategory.getId());
+
+            lEquals = PojoUtil.equals(lEquals, this.defaultCategory.getId(), lTest.defaultCategory.getId());
+
+            lEquals = PojoUtil.equals(lEquals, this.editorPage, lTest.editorPage);
+
+            lEquals = PojoUtil.equals(lEquals, this.ignoreWords, lTest.ignoreWords);
+
+            lEquals = PojoUtil.equals(lEquals, this.allowComments, lTest.allowComments);
+            
+            lEquals = PojoUtil.equals(lEquals, this.emailComments, lTest.emailComments);
+            
+            lEquals = PojoUtil.equals(lEquals, this.emailFromAddress, lTest.emailFromAddress);
+
+            lEquals = PojoUtil.equals(lEquals, this.editorTheme, lTest.editorTheme);
+
+            lEquals = PojoUtil.equals(lEquals, this.locale, lTest.locale);
+
+            lEquals = PojoUtil.equals(lEquals, this.timezone, lTest.timezone);
+
+            lEquals = PojoUtil.equals(lEquals, this.mDefaultPlugins, lTest.mDefaultPlugins);
+            
+            return lEquals;
+        }
+        else
+        {
+            return false;
+        }
+    }
+

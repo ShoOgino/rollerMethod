@@ -1,0 +1,34 @@
+	/** Get currently selected menu item in this menu 
+	 * @throws RollerException*/
+	public MenuItem getSelectedMenuItem( HttpServletRequest req, 
+			boolean returnDefault ) throws RollerException
+	{
+		MenuItemImpl def = null;
+		MenuItemImpl selected = null;
+		for ( int i=0; i<mMenuItems.size(); i++ ) 
+		{
+			MenuItemImpl item = (MenuItemImpl)mMenuItems.elementAt(i);
+			if ( item.isSelected( req ) )
+			{
+				selected = item;
+				break;
+			}
+			if ( item.isPermitted(req) && def == null)
+			{
+				def = item;
+			}
+		}
+		if ( selected != null )
+		{
+			return selected;
+		}
+		else if ( returnDefault )
+		{
+			return def;
+		}
+		else 
+		{
+			return null;
+		}
+	}
+

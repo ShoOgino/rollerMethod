@@ -1,0 +1,11 @@
+    /*
+     * Create a new ping target (blank). Here we create a common ping target.
+     */
+    protected PingTargetData createPingTarget(RollerRequest rreq, PingTargetForm pingTargetForm)
+        throws RollerException
+    {
+        PingTargetManager pingTargetMgr = rreq.getRoller().getPingTargetManager();
+        return pingTargetMgr.createCommonPingTarget(
+            pingTargetForm.getName(), pingTargetForm.getPingUrl());
+    }
+

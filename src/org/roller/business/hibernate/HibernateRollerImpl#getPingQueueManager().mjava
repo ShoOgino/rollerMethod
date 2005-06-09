@@ -1,0 +1,12 @@
+    /**
+     * @see org.roller.model.Roller#getPingTargetManager()
+     */
+    public PingQueueManager getPingQueueManager() throws RollerException
+    {
+        if (mPingQueueManager == null)
+        {
+            mPingQueueManager = new HibernatePingQueueManagerImpl(mStrategy);
+        }
+        return mPingQueueManager;
+    }
+

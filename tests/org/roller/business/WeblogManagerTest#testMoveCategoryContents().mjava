@@ -1,0 +1,37 @@
+    public void testMoveCategoryContents() throws RollerException
+    {
+        WeblogManager wmgr = getRoller().getWeblogManager();
+        
+        WeblogCategoryData c1 = wmgr.retrieveWeblogCategory(c1_id);       
+        //WeblogCategoryData c2 = wmgr.retrieveWeblogCategory(c2_id);       
+        //WeblogCategoryData c3 = wmgr.retrieveWeblogCategory(c3_id);       
+        WeblogCategoryData dest = wmgr.retrieveWeblogCategory(dest_id);              
+        
+        getRoller().begin(UserData.SYSTEM_USER);
+               
+        // verify number of entries in each category
+        dest = wmgr.retrieveWeblogCategory(dest.getId());
+        c1 = wmgr.retrieveWeblogCategory(c1.getId());
+        assertEquals(0, dest.retrieveWeblogEntries(true).size());
+        assertEquals(0, dest.retrieveWeblogEntries(false).size());
+        assertEquals(1, c1.retrieveWeblogEntries(false).size());
+        assertEquals(3, c1.retrieveWeblogEntries(true).size());
+        
+        // move contents of source category c1 to destination catetory dest
+        c1.moveContents(dest);
+        
+        getRoller().commit(); 
+        
+        getRoller().begin(UserData.SYSTEM_USER);
+        
+        // after move, verify number of entries in each category
+        dest = wmgr.retrieveWeblogCategory(dest.getId());
+        c1 = wmgr.retrieveWeblogCategory(c1.getId());
+        assertEquals(3, dest.retrieveWeblogEntries(true).size());
+        assertEquals(3, dest.retrieveWeblogEntries(false).size());        
+        assertEquals(0, c1.retrieveWeblogEntries(true).size());
+        assertEquals(0, c1.retrieveWeblogEntries(false).size());
+        
+        getRoller().commit();      
+    }
+

@@ -1,0 +1,32 @@
+    /**
+     * Initialize VelocityHelper, setting the variables it will be hiding from
+     * the Velocimacros.
+     */
+    public PageHelper(
+            RollerRequest rreq, HttpServletResponse response, Context ctx)
+    {
+        mVelocityContext = ctx;
+        mRollerReq = rreq;
+        mResponse = response;
+        if (rreq != null) 
+        {
+            mPageContext = rreq.getPageContext();
+            UserData user = null;
+            if ( rreq.getRequest().getAttribute(RollerRequest.OWNING_USER) != null)
+            {
+                user = (UserData)
+                    rreq.getRequest().getAttribute(RollerRequest.OWNING_USER);
+            }
+            else if ( rreq.getUser() != null )
+            {
+                user = rreq.getUser();
+            }
+            if ( user != null )
+            {       
+                mUsername = user.getUserName();       
+            }
+        }
+        
+        if (mVelocityContext == null) mVelocityContext = new VelocityContext();
+    }
+

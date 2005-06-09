@@ -1,0 +1,21 @@
+	/**
+	 * Helper method to convert a language string to a <code>Locale</code> object.
+	 * Example language stringds are 'en' or 'en_US'.
+	 * 
+	 * @param lang
+	 * @return
+	 */
+	public static Locale createLocale(String lang) {
+		mLogger.debug("createLocale( lang = "+lang+" )");
+		Locale l = null;
+		if (lang.indexOf("_")>0) {
+			String tmpLang = lang.substring(0, lang.indexOf("_"));
+			String tmpCoun = lang.substring(lang.indexOf("_")+1, lang.length());
+			l = new Locale(tmpLang, tmpCoun); 
+		} else
+		{
+			l = new Locale(lang);
+		}
+		return l;
+	}
+

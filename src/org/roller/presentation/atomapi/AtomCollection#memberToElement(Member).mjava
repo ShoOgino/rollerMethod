@@ -1,0 +1,14 @@
+    /** Serialize a collection member into an XML element */
+    public static Element memberToElement(Member member)
+    {
+        Element element = new Element("member", ns);
+        element.setAttribute("title", member.getTitle()); // TODO: escape/strip HTML?
+        element.setAttribute("href", member.getHref());
+        if (member.getHrefreadonly() != null)
+        {
+            element.setAttribute("hrefreadonly", member.getHrefreadonly());
+        }
+        element.setAttribute("updated", df.format(member.getUpdated()));
+        return element;
+    }
+

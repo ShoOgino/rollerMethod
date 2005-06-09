@@ -1,0 +1,29 @@
+    public void testIsWeblogCategoryInUse() throws Exception
+    {
+        WeblogManager wmgr = getRoller().getWeblogManager();
+        UserManager umgr = getRoller().getUserManager();
+                    
+        getRoller().begin(UserData.SYSTEM_USER);
+        
+        WebsiteData website = umgr.retrieveWebsite(mWebsite.getId());
+        WeblogEntryData entry = (WeblogEntryData)mEntriesCreated.get(2);
+        WeblogCategoryData rootCat = wmgr.getRootWeblogCategory(website);
+        
+        WeblogCategoryData usedCat = 
+            wmgr.retrieveWeblogCategory(entry.getCategory().getId()); 
+                         
+        WeblogCategoryData unusedCat = wmgr.createWeblogCategory(
+            website, rootCat, "testy", "tasty", "testy.gif");
+        unusedCat.save();
+            
+        getRoller().commit();
+        
+        getRoller().begin(UserData.SYSTEM_USER);
+        usedCat = wmgr.retrieveWeblogCategory(usedCat.getId());
+        assertTrue(usedCat.isInUse());
+        
+        unusedCat = wmgr.retrieveWeblogCategory(unusedCat.getId());
+        assertFalse(unusedCat.isInUse());       
+        getRoller().commit();
+    }
+

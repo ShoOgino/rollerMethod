@@ -1,0 +1,15 @@
+    /** 
+     * Construct by reading confuration JDOM Document. 
+     */
+    public PlanetTool(Document doc) throws RollerException
+    {
+        try
+        {
+            initFromXML(doc);
+        }
+        catch (JDOMException e)
+        {
+            throw new RollerException("Extracting config from parsed XML", e);
+        }
+    }
+

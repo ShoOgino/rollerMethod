@@ -1,0 +1,23 @@
+    /**
+     * Revokes specified role from user.
+     * @param roleName Name of role to be revoked.
+     */
+    public void revokeRole(String roleName) throws RollerException
+    {
+        RoleData removeme = null; 
+        Iterator iter = roles.iterator();
+        while (iter.hasNext()) 
+        {
+            RoleData role = (RoleData) iter.next();
+            if (role.getRole().equals(roleName)) 
+            {
+                removeme = role;
+            }
+        }
+        if (removeme != null)
+        {
+            roles.remove(removeme);
+            RollerFactory.getRoller().getUserManager().removeRole(removeme.getId());
+        }
+    }
+

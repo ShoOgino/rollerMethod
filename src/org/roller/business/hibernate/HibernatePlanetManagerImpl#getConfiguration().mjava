@@ -1,0 +1,16 @@
+    public PlanetConfigData getConfiguration() throws RollerException
+    {
+        try
+        {
+            Session session = ((HibernateStrategy)strategy).getSession();
+            Criteria criteria = session.createCriteria(PlanetConfigData.class);
+            criteria.setMaxResults(1);
+            List list = criteria.list();
+            return list.size()!=0 ? (PlanetConfigData)list.get(0) : null;
+        }
+        catch (HibernateException e)
+        {
+            throw new RollerException(e);
+        }
+    }
+

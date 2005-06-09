@@ -1,0 +1,59 @@
+    /**
+     * @param con
+     * @param delete
+     */
+    private static void correctFolderTrees(Connection con, boolean delete) throws SQLException
+    {
+        PreparedStatement rootStatement = con.prepareStatement(
+            "select a.id from folder as f, folderassoc as a where "+
+            "f.websiteid=? and f.id=a.folderid and "+
+            "a.relation='PARENT' and a.ancestorid is null");
+        PreparedStatement childrenStatement = con.prepareStatement(
+            "select id from folderassoc where ancestorid=?");
+
+        // loop through all websites
+        Statement websitesStatement = con.createStatement();
+        ResultSet websitesResultSet = 
+            websitesStatement.executeQuery("select id from website");
+        while (websitesResultSet.next()) 
+        {
+            String websiteId = websitesResultSet.getString(1);
+            //debug("Website "+websiteId);
+            
+            // find root folder(s)
+            List rootIds = new LinkedList();
+            rootStatement.clearParameters();
+            rootStatement.setString(1, websiteId);
+            ResultSet rootResultSet = rootStatement.executeQuery();
+            while (rootResultSet.next())
+            {
+                rootIds.add(rootResultSet.getString(1));
+            }
+            if (rootIds.size() > 1) 
+            {
+                // too many roots, need to figure out which are bogus
+                Iterator rootIter = rootIds.iterator();
+                while (rootIter.hasNext())
+                {
+                    String rootId = (String)rootIter.next();
+                    childrenStatement.clearParameters();
+                    childrenStatement.setString(1, rootId);
+                    ResultSet childrenResultSet = childrenStatement.executeQuery();
+                    List childIds = new LinkedList();
+                    while (childrenResultSet.next()) 
+                    {
+                        childIds.add(childrenResultSet.getString(1));
+                    }
+                    if (childIds.size() == 0)
+                    {
+                        debug("Folder "+rootId+" in website "+websiteId+"is a bogus root folder!");
+                    }
+                }
+            }
+            else if (rootIds.size() == 0)
+            {
+                debug("Website "+websiteId+" has no root folder!");
+            }
+        }
+    }
+

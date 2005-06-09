@@ -1,0 +1,68 @@
+    //-----------------------------------------------------------------------
+    /** 
+     * Show query for user page or, if userName specified in request, show
+     * the admin user page for the specified user.
+     */
+    public ActionForward edit(
+        ActionMapping       mapping,
+        ActionForm          actionForm,
+        HttpServletRequest  request,
+        HttpServletResponse response)
+        throws IOException, ServletException
+    {
+        ActionForward forward = mapping.findForward("adminUser.page");
+        ActionMessages msgs = new ActionMessages();
+        try
+        {
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            if ( rreq.isUserAuthorizedToEdit() && rreq.isAdminUser() )
+            {
+                UserAdminForm userForm = (UserAdminForm)actionForm;
+                UserManager mgr = rreq.getRoller().getUserManager();
+                
+                if (userForm != null && userForm.getUserName() != null)
+                {
+                    UserData user = mgr.getUser( userForm.getUserName(), false );                    
+                    if (user != null)
+                    {
+                        userForm.copyFrom(user, request.getLocale());
+                        
+                        // User must set new password twice
+                        userForm.setPasswordText(null);
+                        userForm.setPasswordConfirm(null);
+                        
+                        // Join in the website enabled field
+                        WebsiteData website = 
+                            mgr.getWebsite(userForm.getUserName(), false);
+                        userForm.setUserEnabled(website.getIsEnabled());
+                    }
+                    else
+                    {
+                        msgs.add(ActionMessages.GLOBAL_MESSAGE,
+                            new ActionMessage("userAdmin.invalidNewUserName"));
+                        userForm.setUserName("");
+                    }
+                }
+            }
+            else
+            {
+                forward = mapping.findForward("access-denied");
+            }
+        }
+        catch (Exception e)
+        {
+            mLogger.error("ERROR in action",e);
+            throw new ServletException(e);
+        }
+        
+        if (request.getSession().getAttribute("cookieLogin") != null) 
+        {
+            // TODO: make it possible to change passwords regardless of remember me
+            msgs.add(ActionMessages.GLOBAL_MESSAGE, 
+                    new ActionMessage("userAdmin.cookieLogin"));
+        }
+        
+         saveMessages(request, msgs);
+         return forward;
+    }
+

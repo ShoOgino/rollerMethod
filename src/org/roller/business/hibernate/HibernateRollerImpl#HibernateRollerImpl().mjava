@@ -1,0 +1,19 @@
+    protected HibernateRollerImpl() throws RollerException
+    {
+        mLogger.debug("Initializing sessionFactory for Hibernate");
+        
+        try 
+        {
+            Configuration config = new Configuration();
+            config.configure("/hibernate.cfg.xml");
+            mSessionFactory = config.buildSessionFactory();
+        } 
+        catch (HibernateException e) 
+        {
+            mLogger.error("Error Setting up SessionFactory",e);
+            throw new RollerException(e);
+        }
+        
+        mStrategy = new HibernateStrategy(mSessionFactory);    
+    }
+

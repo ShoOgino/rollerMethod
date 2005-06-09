@@ -1,0 +1,21 @@
+    /**
+     * Save all properties
+     */
+    public void store(Map properties) throws RollerException
+    {
+        // just go through the list and store each property
+        Iterator props = properties.values().iterator();
+        while (props.hasNext())
+        {
+            try
+            {
+                this.mStrategy.store((RollerPropertyData) props.next());
+            }
+            catch (RollerException re)
+            {
+                mLogger.error("Couldn't store Roller property", re);
+                throw re;
+            }
+        }
+    }
+

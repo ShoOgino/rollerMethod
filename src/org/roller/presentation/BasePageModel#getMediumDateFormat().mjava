@@ -1,0 +1,11 @@
+    public String getMediumDateFormat()
+    {
+        DateFormat sdf = DateFormat.getDateInstance(
+                DateFormat.MEDIUM, request.getLocale());
+        if (sdf instanceof SimpleDateFormat)
+        {
+            return ((SimpleDateFormat)sdf).toLocalizedPattern();
+        }
+        return "MMM dd, yyyy";
+    }
+

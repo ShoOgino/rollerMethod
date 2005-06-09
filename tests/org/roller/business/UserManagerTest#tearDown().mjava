@@ -1,0 +1,19 @@
+    /**
+     * @see junit.framework.TestCase#tearDown()
+     */
+    public void tearDown() throws Exception
+    {
+        super.tearDown();
+
+        getRoller().begin(UserData.SYSTEM_USER);
+        UserManager umgr = getRoller().getUserManager();
+
+        enabledUser = umgr.retrieveUser(enabledUser.getId());
+        enabledUser.remove();
+
+        disabledUser = umgr.retrieveUser(disabledUser.getId());
+        disabledUser.remove();
+
+        getRoller().commit();
+    }
+

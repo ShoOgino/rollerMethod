@@ -1,0 +1,37 @@
+    public void testPermissions() throws Exception
+    {
+        getRoller().begin(UserData.ANONYMOUS_USER);
+        
+        // evil testuser
+        UserData testuser = getRoller().getUserManager().getUser("testuser");       
+        assertNotNull(testuser);
+        
+        // gets hold of testuser0's entry
+        WebsiteData website0 = getRoller().getUserManager().getWebsite("testuser0");
+        assertNotNull(website0);
+        List entries = getRoller().getWeblogManager().getWeblogEntries(
+                website0,
+                null,       // start
+                new Date(), // end
+                null,       // cat
+                WeblogManager.ALL,
+                new Integer(1));
+        WeblogEntryData entry = (WeblogEntryData)entries.get(0);
+        assertNotNull(entry);
+        
+        // and tries to save it
+        getRoller().setUser(testuser);
+        boolean denied = false; 
+        try 
+        {
+            entry.save();
+        }
+        catch (RollerPermissionsException e)
+        {
+            // permission denied!
+            denied = true;
+        }       
+        assertTrue(denied);
+        getRoller().rollback();
+    }
+

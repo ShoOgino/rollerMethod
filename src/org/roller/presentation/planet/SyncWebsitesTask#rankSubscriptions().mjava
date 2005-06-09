@@ -1,0 +1,98 @@
+    /** 
+     * Loop through all subscriptions get get Technorati rankings for each 
+     */
+    private void rankSubscriptions()
+    {       
+        int count = 0;
+        int errorCount = 0;
+        try
+        {
+            roller.begin();
+            PlanetManager planet = roller.getPlanetManager();
+            PlanetConfigData config = planet.getConfiguration();
+            Technorati technorati = null;
+            if (config.getProxyHost()!=null && config.getProxyPort() != -1)
+            {
+                technorati = new Technorati(
+                        config.getProxyHost(), config.getProxyPort());
+            }
+            else 
+            {
+                technorati = new Technorati();
+            }                
+            UserManager userManager = roller.getUserManager();
+            try 
+            {
+                // Technorati API allows only 500 queries per-day
+                int limit = 500;
+                int userCount = planet.getSubscriptionCount();
+                int mod = (userCount / limit) + 1;
+                
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(new Date());
+                int day = cal.get(Calendar.DAY_OF_YEAR);
+                
+                int start = (day % mod) * limit;
+                int end = start + limit;
+                end = end > userCount ? userCount : end; 
+                logger.info("Updating subscriptions ["+start+":"+end+"]");
+                
+                Iterator subs = planet.getAllSubscriptions();
+                while (subs.hasNext())
+                {
+                    PlanetSubscriptionData sub = 
+                            (PlanetSubscriptionData)subs.next();
+                    if (count >= start && count < end)
+                    {
+                        try
+                        {
+                            Technorati.Result result = 
+                                    technorati.getBloginfo(sub.getSiteUrl());
+                            if (result != null && result.getWeblog() != null)
+                            {
+                              sub.setInboundblogs(
+                                      result.getWeblog().getInboundblogs());
+                              sub.setInboundlinks(
+                                      result.getWeblog().getInboundlinks());
+                              logger.debug("Adding rank for "
+                                      +sub.getFeedUrl()+" ["+count+"|"
+                                      +sub.getInboundblogs()+"|"
+                                      +sub.getInboundlinks()+"]");
+                            }
+                            else 
+                            {
+                              logger.debug(
+                                "No ranking available for "
+                                      +sub.getFeedUrl()+" ["+count+"]");
+                              sub.setInboundlinks(0);
+                              sub.setInboundblogs(0);
+                            }
+                            planet.saveSubscription(sub);
+                        }
+                        catch (Exception e) 
+                        {
+                            logger.warn("WARN ranking subscription ["
+                                        + count + "]: " + e.getMessage());
+                            if (errorCount++ > 5)
+                            {
+                                logger.warn(
+                                    "   Stopping ranking, too many errors");
+                                break;
+                            }
+                        }
+                    }
+                    count++;
+                }
+                roller.commit();
+            }
+            finally
+            {
+                roller.release();
+            }
+        }
+        catch (Exception e)
+        {
+            logger.error("ERROR ranking subscriptions", e);
+        }
+    }
+

@@ -1,0 +1,16 @@
+    //------------------------------------------------------------------------
+    /**
+     * Display a theme image.
+     * @param theme Name of theme.
+     * @param imageName Name of image. 
+     * @return HTML for image.
+     */    
+    public String showThemeImage( String theme, String imageName )
+    {
+        StringBuffer sb = new StringBuffer();
+        sb.append( "<img alt=\""+imageName+"\" src=\"");
+        sb.append( showThemeImagePath(theme, imageName));
+        sb.append( "\"/>");
+        return sb.toString();
+    }
+

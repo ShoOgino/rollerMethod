@@ -1,0 +1,26 @@
+    //------------------------------------------------------------------------
+    /**
+     * Gets the BookmarkData specified by the request, or null.
+     * @return BookmarkData
+     */
+    public BookmarkData getBookmark( )
+    {
+        if ( mBookmark == null )
+        {
+            String id = getFromRequest(BOOKMARKID_KEY);
+            if ( id != null )
+            {
+                try
+                {
+                    mBookmark = 
+                        getRoller().getBookmarkManager().retrieveBookmark(id);
+                }
+                catch (RollerException e)
+                {
+                    mLogger.error("Getting bookmark from request",e);
+                }
+            }
+        }
+        return mBookmark;
+    }
+

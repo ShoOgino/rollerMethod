@@ -1,0 +1,93 @@
+    /** 
+     * @see org.roller.model.UserManager#removeWebsiteContents(org.roller.pojos.WebsiteData)
+     */
+    public void removeWebsiteContents(WebsiteData website) 
+        throws RollerException
+    {
+        try
+        {
+            Session session = ((HibernateStrategy)mStrategy).getSession();
+
+            //UserManager umgr = RollerFactory.getRoller().getUserManager();
+            BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
+            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+            //PersistenceStrategy pstrat = RollerFactory.getRoller().getPersistenceStrategy();
+            //QueryFactory factory = pstrat.getQueryFactory();
+            
+            // remove folders (takes bookmarks with it)
+            FolderData rootFolder = bmgr.getRootFolder(website);
+            if (null != rootFolder)
+            { 
+                rootFolder.remove();
+                // Still cannot get all Bookmarks cleared!                
+//                Iterator allFolders = bmgr.getAllFolders(website).iterator();
+//                while (allFolders.hasNext()) 
+//                {
+//                    FolderData aFolder = (FolderData)allFolders.next();
+//                    bmgr.deleteFolderContents(aFolder);
+//                    aFolder.remove();
+//                }
+            }
+                        
+            // remove entries
+            Criteria entryQuery = session.createCriteria(WeblogEntryData.class);
+            entryQuery.add(Expression.eq("website", website));
+            List entries = entryQuery.list();
+            for (Iterator iter = entries.iterator(); iter.hasNext();) 
+            {
+                WeblogEntryData entry = (WeblogEntryData) iter.next();
+                entry.remove();
+            }
+            
+            // remove associated pages
+            Criteria pageQuery = session.createCriteria(PageData.class);
+            pageQuery.add(Expression.eq("website", website));
+            List pages = pageQuery.list();
+            for (Iterator iter = pages.iterator(); iter.hasNext();) 
+            {
+                PageData page = (PageData) iter.next();
+                page.remove();
+            }
+            
+            // remove associated referers
+            Criteria refererQuery = session.createCriteria(RefererData.class);
+            refererQuery.add(Expression.eq("website", website));
+            List referers = refererQuery.list();
+            for (Iterator iter = referers.iterator(); iter.hasNext();) 
+            {
+                RefererData referer = (RefererData) iter.next();
+                referer.remove();
+            }
+            
+            // remove categories
+            WeblogCategoryData rootCat = wmgr.getRootWeblogCategory(website);
+            if (null != rootCat)
+            {
+                rootCat.remove();
+                Iterator it = wmgr.getWeblogCategories(website).iterator();
+                while (it.hasNext()) 
+                {
+                     ((WeblogCategoryData)it.next()).remove();
+                }
+            }
+
+            // Remove the website's ping queue entries
+            PingQueueManager pingQueueMgr = RollerFactory.getRoller().getPingQueueManager();
+            pingQueueMgr.removeQueueEntriesByWebsite(website);
+
+            // Remove the website's custom ping targets
+            PingTargetManager pingTargetMgr = RollerFactory.getRoller().getPingTargetManager();
+            pingTargetMgr.removeCustomPingTargets(website);
+
+            // Remove the website's auto ping configurations
+            AutoPingManager autoPingMgr = RollerFactory.getRoller().getAutopingManager();
+            List autopings = autoPingMgr.getAutoPingsByWebsite(website);
+            autoPingMgr.removeAutoPings(autopings);
+
+        }
+        catch (HibernateException e)
+        {
+            throw new RollerException(e);
+        }
+    }
+

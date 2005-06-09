@@ -1,0 +1,32 @@
+   public boolean equals( Object pOther )
+   {
+      if( pOther instanceof PubTimeData )
+      {
+         PubTimeData lTest = (PubTimeData) pOther;
+         boolean lEquals = true;
+
+         if( this.id == null )
+         {
+            lEquals = lEquals && ( lTest.id == null );
+         }
+         else
+         {
+            lEquals = lEquals && this.id.equals( lTest.id );
+         }
+         if( this.pubTime == null )
+         {
+            lEquals = lEquals && ( lTest.pubTime == null );
+         }
+         else
+         {
+            lEquals = lEquals && this.pubTime.equals( lTest.pubTime );
+         }
+
+         return lEquals;
+      }
+      else
+      {
+         return false;
+      }
+   }
+

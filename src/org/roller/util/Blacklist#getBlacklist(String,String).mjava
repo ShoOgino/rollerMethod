@@ -1,0 +1,14 @@
+    /**
+     * Singleton factory method.
+     */
+    public static Blacklist getBlacklist(String realPath, String uploadDir)
+    {
+        if (blacklist == null)
+        {
+            Blacklist temp = new Blacklist(realPath, uploadDir);
+            temp.extractFromFile();
+            blacklist = temp;
+        }
+        return blacklist;
+    }
+

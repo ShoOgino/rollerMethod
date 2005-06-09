@@ -1,0 +1,25 @@
+    //------------------------------------------------------------------------
+    /**
+     * Gets the PageData specified by the request, or null.
+     * @return PageData
+     */
+    public PageData getPage()
+    {
+        if (mPage == null)
+        {
+            String id = getFromRequest(PAGEID_KEY);
+            if ( id != null )
+            {
+                try
+                {
+                    mPage = getRoller().getUserManager().retrievePage(id);
+                }
+                catch (RollerException e)
+                {
+                    mLogger.error("Getting page from request",e);
+                }
+            }
+        }
+        return mPage;
+    }
+

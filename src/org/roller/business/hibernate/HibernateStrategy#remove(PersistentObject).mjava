@@ -1,0 +1,28 @@
+    //-------------------------------------------------------------------------
+    /**
+     * Remove object from persistence storage.
+     */
+    public void remove(PersistentObject po) throws RollerException
+    {
+        if (!po.canSave())
+        {
+            throw new RollerPermissionsException(
+                "DENIED: cannot remove: "+po.toString());
+        }
+        try
+        {
+            if (po.getId() != null) // no need to delete transient object
+            {
+                getSession().delete(po);
+            }
+        }
+        catch (HibernateException e)
+        {
+            String msg = Messages.formatString(
+                "HibernateStrategy.exceptionRemoving",po.getId());
+            mLogger.error(msg, e);
+            newSession();
+            throw new RollerException(e);
+        }
+    }
+

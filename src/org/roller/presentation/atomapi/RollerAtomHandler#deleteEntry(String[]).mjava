@@ -1,0 +1,20 @@
+    /**
+     * Delete entry, URI like this /blog-name/entry/id
+     */
+    public void deleteEntry(String[] pathInfo) throws Exception
+    {
+        if (pathInfo.length == 3) // URI is /blogname/entries/entryid
+        { 
+            WeblogEntryData rollerEntry = 
+                mRoller.getWeblogManager().retrieveWeblogEntry(pathInfo[2]);
+            if (canEdit(rollerEntry))
+            {    
+                rollerEntry.remove();
+                mRoller.commit();
+                return;
+            }
+            throw new Exception("ERROR not authorized to delete entry");
+        }
+        throw new Exception("ERROR: bad URI");
+    }
+

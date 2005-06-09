@@ -1,0 +1,11 @@
+    /**
+     * Delete named file from website's resource area.
+     */
+    public void deleteFile(WebsiteData site, String name)
+            throws RollerException
+    {
+        String dir = this.upload_dir + site.getUser().getUserName();
+        File f = new File(dir + File.separator + name);
+        f.delete();
+    }
+

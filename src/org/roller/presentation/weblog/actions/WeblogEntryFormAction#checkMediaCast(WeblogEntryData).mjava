@@ -1,0 +1,60 @@
+    private boolean checkMediaCast(WeblogEntryData entry)
+    {
+        boolean valid = false;
+        String url = entry.findEntryAttribute("att_mediacast_url");
+        boolean empty = (url == null) || (url.trim().length() == 0);
+        if (!empty)
+        {
+            // fetch MediaCast content type and length
+            valid = false;
+            try
+            {
+                mLogger.debug("Sending HTTP HEAD");
+                HttpURLConnection con = (HttpURLConnection)
+                    new URL(url).openConnection();
+                mLogger.debug("Getting response code");
+                con.setRequestMethod("HEAD");
+                if (con.getResponseCode() != 200) 
+                {
+                    mLogger.debug("Response code indicates error");
+                    mLogger.error("ERROR "+con.getResponseCode()+" return from MediaCast URL");
+                    mLogger.debug(con.getContent().toString());
+                }
+                else if (con.getContentType()!=null && con.getContentLength()!=-1)
+                {
+                    mLogger.debug("Got good reponse and content info");
+                    entry.putEntryAttribute(
+                        "att_mediacast_type", con.getContentType());
+                    entry.putEntryAttribute(
+                        "att_mediacast_length", ""+con.getContentLength());
+                    valid = true;
+                }
+            }
+            catch (Exception e)
+            {
+                mLogger.error("ERROR checking MediaCast URL");
+            }
+        } 
+        else 
+        {
+            mLogger.debug("No MediaCast specified, but that is OK");
+            valid = true;
+        }
+        if (!valid || empty)
+        {
+            mLogger.debug("Removing MediaCast attributes");
+            try 
+            {
+                entry.removeEntryAttribute("att_mediacast_url");
+                entry.removeEntryAttribute("att_mediacast_type");
+                entry.removeEntryAttribute("att_mediacast_length");
+            }
+            catch (RollerException e) 
+            {
+                mLogger.error("ERROR removing invalid MediaCast attributes");
+            }
+        }
+        mLogger.debug("operation complete");
+        return valid;
+    }
+

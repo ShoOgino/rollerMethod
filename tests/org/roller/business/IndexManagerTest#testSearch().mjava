@@ -1,0 +1,22 @@
+    public void testSearch() 
+    {
+        try
+        {
+            IndexManager imgr = getRoller().getIndexManager();
+            
+            SearchOperation search = new SearchOperation(imgr);
+            search.setTerm("test");
+            imgr.executeIndexOperationNow(search);
+            assertTrue(search.getResultsCount() > 0);
+            
+            SearchOperation search2 = new SearchOperation(imgr);
+            search2.setTerm("test");
+            imgr.executeIndexOperationNow(search2);
+            assertTrue(search2.getResultsCount() > 0);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+

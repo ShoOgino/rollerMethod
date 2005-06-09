@@ -1,0 +1,18 @@
+    /**
+     * Save the entry and queue applicable web log update pings if the entry is published.
+     * @see org.roller.pojos.PersistentObject#save()
+     */
+    public void save() throws RollerException
+    {
+        // If no anchor then create one
+        if (getAnchor()==null || getAnchor().trim().equals(""))
+        {
+            setAnchor(createAnchor());
+        }
+        if (getPublishEntry() != null && getPublishEntry().booleanValue()) {
+            // Queue applicable pings for this update.
+            RollerFactory.getRoller().getAutopingManager().queueApplicableAutoPings(this);
+        }
+        super.save();
+    }
+

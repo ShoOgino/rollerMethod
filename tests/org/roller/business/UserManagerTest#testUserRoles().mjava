@@ -1,0 +1,41 @@
+    public void testUserRoles() throws Exception {
+        
+        UserData user = null;
+        
+        // check existing roles within a session
+        getRoller().begin(UserData.SYSTEM_USER);        
+        user = getRoller().getUserManager().getUser(enabledUserName);
+        assertNotNull(user);
+        assertNotNull(user.getRoles());
+        assertEquals(1, user.getRoles().size()); 
+        getRoller().release();
+        
+        // test hasRole within a session
+        getRoller().begin(UserData.SYSTEM_USER);        
+        user = getRoller().getUserManager().getUser(enabledUserName);
+        assertTrue(user.hasRole("editor"));
+        getRoller().release();
+        
+        // and without a session
+        assertTrue(user.hasRole("editor"));
+
+        // test revokeRole within session
+        getRoller().begin(UserData.SYSTEM_USER);
+        user = getRoller().getUserManager().getUser(enabledUserName);
+        user.revokeRole("editor");
+        assertFalse(user.hasRole("editor"));
+        getRoller().commit();
+        
+        // role has been removed after commit?
+        assertFalse(user.hasRole("editor"));
+        
+        // restore role
+        getRoller().begin(UserData.SYSTEM_USER);
+        user = getRoller().getUserManager().getUser(enabledUserName);
+        user.grantRole("editor");
+        assertTrue(user.hasRole("editor"));
+        getRoller().commit();
+
+        assertTrue(user.hasRole("editor"));
+    }
+

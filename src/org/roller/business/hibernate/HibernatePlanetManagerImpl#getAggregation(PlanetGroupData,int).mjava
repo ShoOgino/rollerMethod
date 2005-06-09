@@ -1,0 +1,73 @@
+    public synchronized List getAggregation(PlanetGroupData group, int maxEntries) 
+        throws RollerException
+    {
+        long startTime = System.currentTimeMillis();
+        List ret = null;
+        try
+        {
+            if (group != null) 
+            {
+                ret = (List)aggregationsByGroup.get(group);
+            }
+            else 
+            {
+                ret = aggregation;
+            }
+            if (ret == null) 
+            {
+                Session session = 
+                    ((HibernateStrategy)strategy).getSession();
+                if (group != null)
+                {
+                    Query query = session.createQuery(
+                        "select entry from org.roller.pojos.PlanetEntryData entry "
+                        +"join entry.subscription.groupSubscriptionAssocs assoc "
+                        +"where assoc.group=:group order by entry.published desc");
+                    query.setEntity("group", group);
+                    query.setMaxResults(maxEntries);
+                    ret = query.list();
+                }
+                else
+                {
+                    Query query = session.createQuery(
+                       "select entry from org.roller.pojos.PlanetEntryData entry "
+                       +"join entry.subscription.groupSubscriptionAssocs assoc "
+                       +"where "
+                       +"assoc.group.handle='external' or assoc.group.handle='all'"
+                       +" order by entry.published desc");
+                    query.setMaxResults(maxEntries);
+                    ret = query.list();
+                }
+                Date retLastUpdated = null;
+                if (ret.size() > 0)
+                {
+                    PlanetEntryData entry = (PlanetEntryData)ret.get(0);
+                    retLastUpdated = entry.getPublished();
+                }
+                else 
+                {
+                    retLastUpdated = new Date();
+                }
+                if (group != null)
+                {
+                    aggregationsByGroup.put(group, ret);
+                    lastUpdatedByGroup.put(group, retLastUpdated);
+                }
+                else
+                {
+                    aggregation = ret;
+                    lastUpdated = retLastUpdated;
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            logger.error("ERROR: building aggregation for: "+group, e);
+            throw new RollerException(e);
+        }
+        long endTime = System.currentTimeMillis();
+        logger.info("Generated aggregation in "
+                                    +((endTime-startTime)/1000.0)+" seconds");
+        return ret; 
+    }
+

@@ -1,0 +1,11 @@
+    public String getShortDateFormat()
+    {
+        DateFormat sdf = DateFormat.getDateInstance(
+                DateFormat.SHORT, request.getLocale());
+        if (sdf instanceof SimpleDateFormat)
+        {
+            return ((SimpleDateFormat)sdf).toLocalizedPattern();
+        }
+        return "yyyy/MM/dd";
+    }
+

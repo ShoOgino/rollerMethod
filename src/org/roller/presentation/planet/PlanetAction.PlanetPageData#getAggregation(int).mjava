@@ -1,0 +1,10 @@
+        /** 
+         * Get aggregation of entries in 'all' and 'external' groups
+         */
+        public List getAggregation(int num) throws RollerException
+        {
+            Roller roller = 
+                RollerRequest.getRollerRequest(mRequest).getRoller();            
+            return roller.getPlanetManager().getAggregation(num);
+        }
+

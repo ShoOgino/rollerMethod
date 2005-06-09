@@ -1,0 +1,35 @@
+    /** 
+     * @see org.roller.model.WeblogManager#getWeblogCategories(
+     * org.roller.pojos.WebsiteData, boolean)
+     */
+    public List getWeblogCategories(WebsiteData website, boolean includeRoot) 
+        throws RollerException
+    {
+        if (website == null)
+            throw new RollerException("website is null");
+        
+        if (includeRoot) return getWeblogCategories(website);
+
+        try
+        {
+            Session session = ((HibernateStrategy)mStrategy).getSession();
+            Criteria criteria = session.createCriteria(WeblogCategoryAssoc.class); 
+            criteria.createAlias("category", "c");
+            criteria.add(Expression.eq("c.website", website));
+            criteria.add(Expression.isNotNull("ancestorCategory"));
+            criteria.add(Expression.eq("relation", "PARENT"));
+            Iterator assocs = criteria.list().iterator();
+            List cats = new ArrayList();
+            while (assocs.hasNext())
+            {
+                WeblogCategoryAssoc assoc = (WeblogCategoryAssoc) assocs.next();
+                cats.add(assoc.getCategory());
+            }
+            return cats;
+        }
+        catch (HibernateException e)
+        {
+            throw new RollerException(e);
+        }
+    }
+

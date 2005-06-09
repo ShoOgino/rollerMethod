@@ -1,0 +1,35 @@
+    /**
+     * @param results
+     */
+    private void writeToFile(String results)
+    {
+        FileWriter out = null;
+        String path = getBlacklistFilePath();
+        if (path == null)
+        {
+            mLogger.debug("Not writing blacklist file since directory paths were null.");
+            return;
+        }
+        try
+        {
+            // attempt writing results
+            out = new FileWriter(path);
+            out.write( results.toCharArray() );
+        }
+        catch (Exception e)
+        {
+            mLogger.info("Unable to write new " + path);
+        }
+        finally
+        {
+            try
+            {
+                if (out != null) out.close();
+            }
+            catch (IOException e)
+            {
+                mLogger.error("Unable to close stream to " + path);
+            }
+        }
+    }
+

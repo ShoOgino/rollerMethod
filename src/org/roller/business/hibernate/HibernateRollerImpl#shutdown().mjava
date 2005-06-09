@@ -1,0 +1,15 @@
+    public void shutdown()
+    {
+        super.shutdown();
+        
+        try
+        {
+            release();
+            mSessionFactory.close();
+        }
+        catch (HibernateException e)
+        {
+            mLogger.error("Unable to close SessionFactory", e);
+        }
+    }
+

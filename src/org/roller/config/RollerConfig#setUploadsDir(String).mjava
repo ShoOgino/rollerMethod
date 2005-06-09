@@ -1,0 +1,14 @@
+    /**
+     * Set the "uploads.dir" property at runtime.
+     *
+     * Properties are meant to be read-only, but we make this one exception
+     * for now because we know that some people are still writing their
+     * uploads to the webapp context and we can only get that path at runtime.
+     */
+    public static void setUploadsDir(String path) {
+        
+        // only do this if the user wants to use the webapp context
+        if("${webapp.context}".equals(mConfig.getProperty("uploads.dir")))
+            mConfig.setProperty("uploads.dir", path);
+    }
+

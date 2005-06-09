@@ -1,0 +1,15 @@
+    // Private helper to URL encode the tag text.
+    private String urlEncode(String text)
+    {
+        // URL encode the searchtext
+        try
+        {
+            return URLEncoder.encode(text, "UTF-8");
+        }
+        catch (UnsupportedEncodingException uex)
+        {
+            // Should never actually occur for UTF-8.  If it does, we barf bitterly.
+            throw new RuntimeException(uex);
+        }
+    }
+

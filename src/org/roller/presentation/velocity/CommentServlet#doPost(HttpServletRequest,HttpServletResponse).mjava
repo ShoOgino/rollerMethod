@@ -1,0 +1,89 @@
+    //-----------------------------------------------------------------------
+    /**
+     * Handle POST from comment form, then hand off to super for page rendering.
+     */
+    public void doPost(
+            HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException
+    {
+        if (request.getParameter("method") != null 
+            && request.getParameter("method").equals("preview"))
+        {
+            doPreviewPost(request, response);
+            return;
+        }
+
+        RollerRequest rreq = RollerRequest.getRollerRequest(request);
+        HttpSession session = request.getSession();
+        try
+        {
+            // Get weblog entry object, put in page context
+            WeblogEntryData wd = rreq.getWeblogEntry();
+            if (wd == null || wd.getId() == null)
+            {
+                throw new RollerException(
+                    "Unable to find WeblogEntry for "
+                    + request.getParameter(RollerRequest.WEBLOGENTRYID_KEY));
+            }
+            if (   !wd.getWebsite().getAllowComments().booleanValue()
+                || !wd.getCommentsStillAllowed())
+            {
+                throw new RollerException("ERROR comments not allowed");
+            }
+            
+            request.setAttribute("blogEntry", wd);
+
+            // get the User to which the blog belongs
+            UserData user = wd.getWebsite().getUser();
+            
+            // TODO: A hack to be replaced by Object.canEdit()
+            request.setAttribute(RollerRequest.OWNING_USER, user);
+
+            // Save comment
+            WeblogManager mgr = rreq.getRoller().getWeblogManager();
+            CommentFormEx cf = new CommentFormEx();
+            CommentData cd = new CommentData();
+            RequestUtils.populate(cf, request);
+            cf.copyTo(cd, request.getLocale());
+            cd.setWeblogEntry(wd);
+            cd.setRemoteHost(request.getRemoteHost());
+            cd.setPostTime(new java.sql.Timestamp(System.currentTimeMillis()));
+            
+            if (!testCommentSpam(cd, request)) 
+            {
+                if (RollerContext.getCommentAuthenticator().authenticate(cd, request))
+                {
+                    cd.save();
+                    rreq.getRoller().commit();
+                    reindexEntry(rreq.getRoller(), wd);
+
+                    // Refresh user's entries in page cache
+                    PageCacheFilter.removeFromCache(request, user);
+
+                    // Put array of comments in context
+                    List comments = mgr.getComments(wd.getId());
+                    request.setAttribute("blogComments", comments);
+
+                    // MR: Added functionality to e-mail comments
+                    sendEmailNotification(request, rreq, wd, cd, user,comments);
+                    
+                    super.doPost(request, response);
+                    return;
+                }
+                else
+                {
+                    request.getSession().setAttribute(
+                        RollerSession.ERROR_MESSAGE, 
+                        bundle.getString("error.commentAuthFailed"));
+                }
+            }
+            doPreviewPost(request, response);
+        }
+        catch (Exception e)
+        {
+            mLogger.error("ERROR posting comment", e);
+            // Noted: this never gets back to the user.  Not sure why it is being set.
+            session.setAttribute(RollerSession.ERROR_MESSAGE, e.getMessage());
+        }
+    }
+

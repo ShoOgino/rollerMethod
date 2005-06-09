@@ -1,0 +1,8 @@
+    public boolean getEmailComments() 
+    {
+        WebsiteData website = mRollerReq.getWebsite();
+        boolean emailComments = RollerRuntimeConfig.getBooleanProperty("users.comments.emailnotify");
+        
+        return (website.getEmailComments().booleanValue() && emailComments);
+    }
+

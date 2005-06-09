@@ -1,0 +1,48 @@
+   public boolean equals( Object pOther )
+   {
+      if( pOther instanceof RoleData )
+      {
+         RoleData lTest = (RoleData) pOther;
+         boolean lEquals = true;
+
+         if( this.id == null )
+         {
+            lEquals = lEquals && ( lTest.id == null );
+         }
+         else
+         {
+            lEquals = lEquals && this.id.equals( lTest.id );
+         }
+         if( this.userName == null )
+         {
+            lEquals = lEquals && ( lTest.userName == null );
+         }
+         else
+         {
+            lEquals = lEquals && this.userName.equals( lTest.userName );
+         }
+         if( this.user == null )
+         {
+            lEquals = lEquals && ( lTest.user == null );
+         }
+         else
+         {
+            lEquals = lEquals && this.user.equals( lTest.user );
+         }
+         if( this.role == null )
+         {
+            lEquals = lEquals && ( lTest.role == null );
+         }
+         else
+         {
+            lEquals = lEquals && this.role.equals( lTest.role );
+         }
+
+         return lEquals;
+      }
+      else
+      {
+         return false;
+      }
+   }
+

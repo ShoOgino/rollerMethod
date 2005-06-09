@@ -1,0 +1,15 @@
+    /**
+     * Returns a new instance of RollerSpellCheck, using
+     * the (hopefully) prebuilt SpellChecker.
+     **/
+    public static RollerSpellCheck getInstance() throws RollerException
+    {
+        if (RollerSpellCheck.dictionary == null)
+        {
+            throw new RollerException(
+                "RollerSpellCheck.SpellDictionary has not been defined");
+        }
+
+        return new RollerSpellCheck();
+    }
+

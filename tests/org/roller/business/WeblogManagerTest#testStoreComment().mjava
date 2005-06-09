@@ -1,0 +1,34 @@
+    public void testStoreComment() throws Exception
+    {
+        getRoller().begin(UserData.SYSTEM_USER);
+        WeblogManager wmgr = getRoller().getWeblogManager();
+        
+        // Get entry to which comment will be added
+        WeblogEntryData entry1 = (WeblogEntryData)mEntriesCreated.get(1);
+        
+        // Ensure that entry is a persistent instance
+        entry1 = getRoller().getWeblogManager().retrieveWeblogEntry(
+            entry1.getId());
+        
+        CommentData comment = new CommentData(
+            null, 
+            entry1, 
+            "TestCommentUser", 
+            "test@test.com", 
+            "", 
+            "This is a test", 
+            new Timestamp(new Date().getTime()), 
+            Boolean.FALSE,   // spam
+            Boolean.FALSE);  // notify
+            
+        comment.save();
+        getRoller().commit();
+        
+        List comments = wmgr.getComments(entry1.getId());
+        assertTrue(comments.size() > mCommentCount);
+        
+        getRoller().begin(UserData.SYSTEM_USER);
+        wmgr.removeComment(comment.getId());
+        getRoller().commit();
+    }   
+

@@ -1,0 +1,24 @@
+    public void release()
+    {
+        super.release();
+        
+        if (mBookmarkManager != null) mBookmarkManager.release();
+        if (mConfigManager != null) mConfigManager.release();
+        if (mRefererManager != null) mRefererManager.release();
+        if (mUserManager != null) mUserManager.release();
+        if (mWeblogManager != null) mWeblogManager.release();
+        if (mPingTargetManager != null) mPingTargetManager.release();
+        if (mPingQueueManager != null) mPingQueueManager.release();
+        if (mAutoPingManager != null) mAutoPingManager.release();
+        
+        try
+        {
+            if (mStrategy != null) mStrategy.release(); 
+        }
+        catch (Exception e)
+        {
+            mLogger.error(
+            "Exception with mSupport.release() [" + e + "]", e);
+        }
+    }
+

@@ -1,0 +1,16 @@
+    //------------------------------------------------------------------------------
+    /** 
+     * Really really reset mocks.
+     */
+    private void resetMocks() 
+    {
+        mockFactory = null;
+        getMockFactory().refresh();
+        getMockFactory().getMockRequest().clearParameters();
+        getMockFactory().getMockRequest().clearAttributes();
+        setServletModule(new ServletTestModule(getMockFactory()));        
+        getServletModule().setServlet(
+            getServletModule().createServlet(AtomServlet.class));
+        getServletModule().clearOutput();
+    }
+

@@ -1,0 +1,17 @@
+    /* 
+     * Find occurences of ascii emoticons and turn them into
+     * HTML image pointers.
+     * 
+     * @see org.roller.presentation.velocity.PagePlugin#render(java.lang.String)
+     */
+    public String render(String text)
+    {
+        Matcher matcher = null;
+        for (int i=0; i<smileyPatterns.length; i++)
+        {
+            matcher = smileyPatterns[i].matcher(text);
+            text = matcher.replaceAll(imageTags[i]);
+        }
+        return text;
+    }
+

@@ -1,0 +1,38 @@
+    //-----------------------------------------------------------------------
+    /**
+     * Apply ignoreWord/spam filters to all referers in system.
+     */
+    public void applyRefererFilters() throws RollerException
+    {
+        try
+        {
+            Session session = ((HibernateStrategy)mStrategy).getSession();
+            Criteria criteria = session.createCriteria(RefererData.class);
+            
+            String spamwords = RollerRuntimeConfig.getProperty("spam.referers.ignorewords");
+            
+            String[] ignoreWords = StringUtils.split(
+                StringUtils.deleteWhitespace(spamwords),",");
+            Junction or = Expression.disjunction();          
+            for (int i=0; i<ignoreWords.length; i++) 
+            {
+                String ignoreWord = ignoreWords[i].trim();
+                or.add(Expression.ilike("refererUrl","%"+ignoreWord+"%"));
+            }
+            criteria.add(Expression.conjunction()
+                .add(Expression.isNull("excerpt"))
+                .add(or)
+            );
+            
+            Iterator referers = criteria.list().iterator();
+            while (referers.hasNext())
+            {
+                removeReferer( ((RefererData)referers.next()).getId() );
+            }
+        }
+        catch (HibernateException e)
+        {
+            throw new RollerException(e);
+        }
+    }
+

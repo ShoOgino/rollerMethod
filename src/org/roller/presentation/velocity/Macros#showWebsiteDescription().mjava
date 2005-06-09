@@ -1,0 +1,18 @@
+    //------------------------------------------------------------------------
+    /**
+     * Website description.
+     * @return Website description.
+     */
+    public String showWebsiteDescription()
+    {
+        WebsiteData wd = null;
+        RollerRequest rreq = getRollerRequest();
+        try {
+            wd = rreq.getWebsite();
+        }
+        catch (Exception e) {
+            return "ERROR finding website in request: " + e.toString();
+        }
+        return wd.getDescription();
+    }
+

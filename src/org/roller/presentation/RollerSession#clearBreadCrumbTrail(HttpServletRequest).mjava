@@ -1,0 +1,15 @@
+    //------------------------------------------------------------------------
+    /**
+     * Clear bread crumb trail.
+     * @param req the request
+     */
+    public static void clearBreadCrumbTrail( HttpServletRequest req )
+    { 
+        HttpSession ses = req.getSession(false);
+        if (ses != null && ses.getAttribute(BREADCRUMB) != null)
+        {
+            ArrayStack stack = (ArrayStack)ses.getAttribute(BREADCRUMB);
+            stack.clear();
+        }
+    }
+

@@ -1,0 +1,10 @@
+    // Sets up properties.  For better and worse, doesn't use reflection
+    private void initializeProperties()
+    {
+        setDefaultTopicBookmarkName(getSetting("defaultTopicBookmarkName", getDefaultTopicBookmarkName()));
+        setDefaultTopicSite(getSetting("defaultTopicSite", getDefaultTopicSite()));
+        setTagRegexWithBookmark(getSetting("tagRegexWithBookmark", getTagRegexWithBookmark()));
+        setTagRegexWithoutBookmark(getSetting("tagRegexWithoutBookmark", getTagRegexWithoutBookmark()));
+        setLinkFormatString(getSetting("linkFormatString", getLinkFormatString()));
+    }
+

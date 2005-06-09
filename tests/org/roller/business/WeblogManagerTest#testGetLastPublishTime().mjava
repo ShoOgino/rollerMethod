@@ -1,0 +1,12 @@
+    public void testGetLastPublishTime() throws Exception
+    {
+        getRoller().begin(UserData.SYSTEM_USER);
+        WeblogManager wmgr = getRoller().getWeblogManager();
+        WebsiteData website = (WebsiteData)mWebsites.get(0);
+        
+        Date lastPub = wmgr.getWeblogLastPublishTime(
+                           website.getUser().getUserName());
+        //System.out.println(lastPub);
+        assertTrue(lastPub.compareTo(new Date()) <= 0);
+    }
+

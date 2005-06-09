@@ -1,0 +1,17 @@
+    public List getAutoPingsByWebsite(WebsiteData website) throws RollerException
+    {
+        try
+        {
+            Session session = ((HibernateStrategy) persistenceStrategy).getSession();
+            Criteria criteria = session.createCriteria(AutoPingData.class);
+            // Currently category restrictions are not yet implemented, so we return all auto ping configs for the
+            // website.
+            criteria.add(Expression.eq("website", website));
+            return criteria.list();
+        }
+        catch (HibernateException e)
+        {
+            throw new RollerException(e);
+        }
+    }
+

@@ -1,0 +1,24 @@
+    /**
+     * Converts a character to CDATA character.
+     * @param ch The character to convert.
+     * @return The converted string.
+     */
+    public static final String charToCDATA(char ch)
+    {
+        int c;
+
+        if (ch >= 128)
+        {
+            c = ch;
+
+            return ("&#" + c + ';');
+        }
+
+        // No conversion
+        else
+        {
+            // Return character as string
+            return (String.valueOf(ch));
+        }
+    }
+

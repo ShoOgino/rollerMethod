@@ -1,0 +1,20 @@
+    /**
+     * Attempts to remove the Entry from the Lucene index and
+     * then re-index the Entry if it is Published.  If the Entry
+     * is being deleted then mark it published = false.
+     * @param entry
+     */
+    private void reindexEntry(Roller roller, WeblogEntryData entry) throws RollerException
+    {
+         IndexManager manager = roller.getIndexManager();
+        
+        // remove entry before (re)adding it, or in case it isn't Published
+        //manager.removeEntryIndexOperation(entry); 
+        
+        // if published, index the entry
+        if (entry.getPublishEntry() == Boolean.TRUE) 
+        {
+            manager.addEntryReIndexOperation(entry);
+        }
+    }
+

@@ -1,0 +1,14 @@
+    public String getPath(WeblogCategoryData category) throws RollerException
+    {
+        if (null == category.getParent())
+        {
+            return "/";
+        }
+        else
+        {
+            String parentPath = getPath(category.getParent());
+            parentPath = "/".equals(parentPath) ? "" : parentPath;
+            return parentPath + "/" + category.getName();
+        }
+    }
+

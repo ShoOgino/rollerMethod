@@ -1,0 +1,38 @@
+    public void testGroupStorage() throws Exception
+    {
+        Roller roller = getRoller();
+        assertNotNull(roller);       
+        PlanetManager planet = roller.getPlanetManager();
+        assertNotNull(planet);  
+        
+        {   // save group
+            roller.begin(UserData.SYSTEM_USER);
+            PlanetGroupData group = new PlanetGroupData();
+            group.setDescription("test_group_desc");
+            group.setHandle("test_handle");
+            group.setTitle("test_title");
+            planet.saveGroup(group);
+            roller.commit();
+        }
+        {   // retrieve group 
+            roller.begin();
+            PlanetGroupData group = planet.getGroup("test_handle");
+            assertEquals("test_group_desc",group.getDescription());
+            assertEquals("test_title",group.getTitle());
+            assertEquals(1, planet.getGroupHandles().size());
+            roller.rollback();
+        }
+        {   // remove group
+            roller.begin();
+            PlanetGroupData group = planet.getGroup("test_handle");
+            planet.deleteGroup(group);
+            roller.commit();
+        }
+        {   // verify that it is gone
+            roller.begin();
+            PlanetGroupData group = planet.getGroup("test_handle");
+            assertNull(group);
+            roller.rollback();
+        }
+    }
+

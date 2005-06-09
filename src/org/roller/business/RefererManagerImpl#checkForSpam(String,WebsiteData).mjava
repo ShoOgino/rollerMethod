@@ -1,0 +1,39 @@
+    /**
+     * Check the Referer URL against the Site-wide RefererSpamWords list
+     * and against the user's own IgnoreWords list.  If the Referer contains
+     * any of the words from either list consider it Spam.
+     * 
+     * @param refererUrl
+     * @return
+     * @throws RollerException
+     */
+    private boolean checkForSpam(String refererUrl, WebsiteData website) throws RollerException
+    {
+        String spamwords = RollerRuntimeConfig.getProperty("spam.referers.ignorewords");
+        LinkedList spamWords = new LinkedList(Arrays.asList(
+                StringUtils.split(StringUtils.deleteWhitespace(spamwords), ",")));
+    
+        if ( website.getIgnoreWords() != null )
+        {
+            spamWords.addAll( 
+                Arrays.asList(StringUtils.split(
+                    StringUtils.deleteWhitespace(
+                        website.getIgnoreWords()),",")));
+        }
+        for( Iterator i = spamWords.iterator(); i.hasNext(); )
+        {
+            String word = (String)i.next();
+            if (refererUrl.indexOf(word) != -1)
+            {
+                if (mLogger.isDebugEnabled())
+                {
+                    mLogger.debug("Flagged a Spam because '" + word + 
+                                  "' was found in '" + refererUrl + "'");
+                }
+                refererUrl = null;
+                return true;
+            }
+        }
+        return false;
+    }
+

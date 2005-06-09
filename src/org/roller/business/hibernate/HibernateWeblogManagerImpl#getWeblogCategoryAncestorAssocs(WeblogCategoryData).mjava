@@ -1,0 +1,19 @@
+    /** 
+     * @see org.roller.model.WeblogManager#getWeblogCategoryAncestorAssocs(org.roller.pojos.WeblogCategoryData)
+     */
+    public List getWeblogCategoryAncestorAssocs(WeblogCategoryData cat) 
+        throws RollerException
+    {
+        try
+        {
+            Session session = ((HibernateStrategy)mStrategy).getSession();
+            Criteria criteria = session.createCriteria(WeblogCategoryAssoc.class);
+            criteria.add(Expression.eq("category", cat));
+            return criteria.list();
+        }
+        catch (HibernateException e)
+        {
+            throw new RollerException(e);
+        }
+    }
+

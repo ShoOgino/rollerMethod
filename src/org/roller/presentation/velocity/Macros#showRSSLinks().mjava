@@ -1,0 +1,68 @@
+    //------------------------------------------------------------------------
+    /**
+     * Show a list of links to each of your RSS feeds.
+     * @return HTML for RSS feed links.
+     */
+    public String showRSSLinks()
+    {
+        String links = "ERROR: creating RSS links";
+        try
+        {                
+            RollerRequest rreq = getRollerRequest();
+            RollerContext rctx = RollerContext.getRollerContext(
+                rreq.getServletContext());
+                
+            UserData ud = rreq.getUser();
+
+            String baseUrl = rctx.getContextUrl(
+                (HttpServletRequest)mPageContext.getRequest());
+            StringBuffer sb = new StringBuffer();
+
+
+            sb.append("<a href=\"");
+            sb.append( baseUrl );
+            sb.append("/rss/");
+            sb.append( ud.getUserName() );
+            sb.append("\">All</a> ");
+            sb.append("[<a href=\"");
+            sb.append( baseUrl );
+            sb.append("/rss/");
+            sb.append( ud.getUserName() );
+            sb.append("?excerpts=true\">");
+            sb.append("excerpts</a>]");
+            sb.append("<br />");
+
+			List cats = rreq.getRoller().getWeblogManager()
+                .getWeblogCategories(rreq.getWebsite(), false);
+			for (Iterator wbcItr = cats.iterator(); wbcItr.hasNext();) {
+				WeblogCategoryData category = (WeblogCategoryData) wbcItr.next();
+				String catName = category.getName();
+				sb.append("<a href=\"");
+				sb.append( baseUrl );
+				sb.append("/rss/");
+				sb.append( ud.getUserName() );
+				sb.append("?catname=");
+				sb.append( catName );
+				sb.append("\">");
+				sb.append( catName );
+				sb.append("</a> ");
+				sb.append("[<a href=\"");
+				sb.append( baseUrl );
+				sb.append("/rss/");
+				sb.append( ud.getUserName() );
+				sb.append("?catname=");
+				sb.append( catName );
+				sb.append("&amp;excerpts=true\">");
+				sb.append("excerpts</a>]");
+				sb.append("<br />");
+			}
+            
+            links = sb.toString();
+        }
+        catch (Exception e)
+        {
+            mLogger.error("Unexpected exception",e);
+        }
+        return links;
+    }
+

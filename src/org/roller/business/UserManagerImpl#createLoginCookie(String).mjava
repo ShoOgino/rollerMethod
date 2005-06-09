@@ -1,0 +1,11 @@
+    /**
+     * @see org.roller.model.UserManager#createLoginCookie(java.lang.String)
+     */
+    public String createLoginCookie(String username) throws RollerException 
+    {
+        UserCookieData cookie = new UserCookieData();
+        cookie.setUsername(username);
+
+        return saveLoginCookie(cookie);
+    }
+

@@ -1,0 +1,26 @@
+    /**
+     * Transform the Page specified by the pageId using Velocity. Return the
+     * resulting String.
+     *
+     * @param pid
+     * @param context
+     * @throws ResourceNotFoundException
+     * @throws ParseErrorException
+     * @throws MethodInvocationException
+     * @throws Exception
+     */
+    private String transformTemplate(String pid, List entries,
+            VelocityContext context, RollerRequest rreq)
+            throws
+            ResourceNotFoundException,
+            ParseErrorException,
+            MethodInvocationException,
+            Exception {
+        
+        context.put( "entries", entries );
+        
+        StringWriter sw = new StringWriter();
+        Velocity.mergeTemplate(pid, Velocity.ENCODING_DEFAULT, context, sw );
+        return sw.toString();
+    }
+

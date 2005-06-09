@@ -1,0 +1,28 @@
+    /**
+     * Release Roller persistence session at end of request processing.
+     */
+    public void doFilter(
+        ServletRequest req, ServletResponse res, FilterChain chain)
+        throws IOException, ServletException
+    {
+        HttpServletRequest request = (HttpServletRequest)req;
+        HttpServletResponse response = (HttpServletResponse)res;
+        if (mLogger.isDebugEnabled())
+        {
+            mLogger.debug("Entered PersistenceSessionFilter");
+        }
+        Roller roller = RollerContext.getRoller((HttpServletRequest)request);
+        try 
+        {
+            chain.doFilter(request, response);
+        }
+        finally 
+        {
+            roller.release();
+        }
+        if (mLogger.isDebugEnabled())
+        {
+            mLogger.debug("Exiting PersistenceSessionFilter");
+        }
+    }
+

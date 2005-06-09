@@ -1,0 +1,13 @@
+    //-------------------------------------------------------------------------
+    /** 
+     * Map attributes as set because XDoclet 1.2b4 map support is broken. 
+     * @ejb:persistent-field
+     * @hibernate.set lazy="true" order-by="name" inverse="true" cascade="all" 
+     * @hibernate.collection-key column="entryid" type="String"
+     * @hibernate.collection-one-to-many class="org.roller.pojos.EntryAttributeData"
+     */
+    public Set getEntryAttributes()    
+    {
+        return attSet;
+    }
+

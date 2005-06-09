@@ -1,0 +1,25 @@
+    /**
+     * Convenience method for getPermalink(category)
+     * where no category is necessary.
+     * @return
+     */
+    public String getPermaLink()
+    {
+        String lAnchor = this.getAnchor();
+        
+        try
+        {
+            lAnchor = URLEncoder.encode(anchor, "UTF-8");
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            // go with the "no encoding" version
+        }
+        
+        WebsiteData website = this.getWebsite();
+        String plink = "/page/" + website.getUser().getUserName() + 
+                "?anchor=" + lAnchor;
+        
+        return plink;
+    }
+

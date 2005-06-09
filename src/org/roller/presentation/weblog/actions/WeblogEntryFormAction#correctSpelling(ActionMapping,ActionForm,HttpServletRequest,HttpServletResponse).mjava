@@ -1,0 +1,57 @@
+    //-----------------------------------------------------------------------
+    public ActionForward correctSpelling(
+        ActionMapping       mapping,
+        ActionForm          actionForm,
+        HttpServletRequest  request,
+        HttpServletResponse response)
+        throws IOException, ServletException
+    {
+        try
+        {
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            if ( rreq.isUserAuthorizedToEdit() )
+            {
+                HttpSession session = request.getSession(true);
+                WeblogEntryFormEx wf = (WeblogEntryFormEx)actionForm;
+                // misspelt words have been submitted
+                if (wf.getReplacementWords() != null &&
+                    wf.getReplacementWords().length > 0)
+                {
+                    // replace misspelt words with chosen replacement
+                    String[] replacementWords = wf.getReplacementWords();
+                    StringBuffer entryText = new StringBuffer(wf.getText());
+
+                    ArrayList events =
+                        (ArrayList) session.getAttribute("spellCheckEvents");
+                    SpellCheckEvent event = null;
+                    String oldWord = null;
+                    String newWord = null;
+                    int start = -1;
+                    int end = -1;
+                    int count = replacementWords.length;
+                    for(ListIterator it=events.listIterator(events.size());
+                        it.hasPrevious();)
+                    {
+                        event = (SpellCheckEvent)it.previous();
+                        oldWord = event.getInvalidWord();
+                        newWord = replacementWords[ --count ];
+                        if (!oldWord.equals(newWord))
+                        {
+                            start = event.getWordContextPosition();
+                            end = start + oldWord.length();
+                            entryText.replace( start, end, newWord );
+                        }
+                    }
+                    wf.setText( entryText.toString() );
+
+                    return save(mapping, wf, request, response);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            throw new ServletException(e);
+        }
+        return mapping.findForward("access-denied");
+    }    
+

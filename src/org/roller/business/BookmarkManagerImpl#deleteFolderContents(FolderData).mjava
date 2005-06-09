@@ -1,0 +1,13 @@
+    //----------------------------------------------------------------
+    public void deleteFolderContents(FolderData src) 
+    throws RollerException
+    {
+        Iterator srcBookmarks = src.getBookmarks().iterator();
+        while (srcBookmarks.hasNext())
+        {
+            BookmarkData bd = (BookmarkData)srcBookmarks.next();
+            removeBookmark(bd.getId());
+
+        }   
+    }
+

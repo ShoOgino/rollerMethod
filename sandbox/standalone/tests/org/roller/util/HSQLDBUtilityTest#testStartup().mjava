@@ -1,0 +1,20 @@
+	public void testStartup() throws Exception {
+		
+		final String port = "8808";
+		System.setProperty("hsqldb_database", "/tmp/testdb");
+		System.setProperty("hsqldb_port", "8808");
+		HSQLDBUtility.start();
+		
+		Thread.sleep(2000); // give HSQLDB time to startup
+		
+		Connection con = getConnection(port);
+		assertNotNull(con);
+		
+		HSQLDBUtility.stop();
+
+		// TODO: test for shutdown
+		//Thread.sleep(2000); // give HSQLDB time to shutdown
+		//Connection nocon = getConnection(port);
+		//assertNull(nocon);
+    }
+

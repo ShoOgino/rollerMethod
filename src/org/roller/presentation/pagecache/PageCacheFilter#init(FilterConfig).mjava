@@ -1,0 +1,16 @@
+    //-----------------------------------------------------------------------
+    /**
+     * Initialize the filter.
+     * @param filerConfig The filter configuration
+     */
+    public void init(FilterConfig filterConfig)
+    {
+        if (mLogger.isDebugEnabled())
+        {
+            mLogger.debug(
+                "Initializing as filterName: "+filterConfig.getFilterName());
+        }        
+        mHandler = new LRUCacheHandler2(filterConfig);
+        mHandlers.add(mHandler);
+    }
+

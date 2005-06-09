@@ -1,0 +1,21 @@
+    /** Validate posted group */
+    private ActionErrors validate(
+            PlanetManager planet, PlanetGroupForm form)
+    {
+        ActionErrors errors = new ActionErrors();
+        if (form.getTitle()==null || form.getTitle().trim().length()==0)
+        {            
+            errors.add(null, new ActionError("planetGroups.error.title"));
+        }
+        if (form.getHandle()==null || form.getHandle().trim().length()==0)
+        {            
+            errors.add(null, new ActionError("planetGroups.error.handle"));
+        }
+        if (form.getHandle() != null && 
+        (form.getHandle().equals("all") || form.getHandle().equals("external")))
+        {
+           errors.add(null, new ActionError("planetGroups.error.nameReserved"));
+        }
+        return errors;
+    }
+

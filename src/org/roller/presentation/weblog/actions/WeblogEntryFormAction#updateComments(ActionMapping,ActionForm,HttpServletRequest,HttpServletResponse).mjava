@@ -1,0 +1,86 @@
+    //-----------------------------------------------------------------------
+    /**
+     * Update selected comments: delete and/or mark as spam.
+     */
+    public ActionForward updateComments(
+        ActionMapping       mapping,
+        ActionForm          actionForm,
+        HttpServletRequest  request,
+        HttpServletResponse response)
+        throws IOException, ServletException
+    {
+        ActionForward forward = mapping.findForward("weblogEdit.page");
+        ActionErrors errors = new ActionErrors();
+        RollerRequest rreq = RollerRequest.getRollerRequest(request);
+        try
+        {
+            if ( rreq.isUserAuthorizedToEdit() )
+            {
+                WeblogEntryData wd = rreq.getWeblogEntry();
+                if (wd == null || wd.getId() == null)
+                {
+                  throw new NullPointerException("Unable to find WeblogEntry for "+
+                        request.getParameter(RollerRequest.WEBLOGENTRYID_KEY));
+                }
+                WeblogEntryFormEx form = (WeblogEntryFormEx)actionForm;
+
+                // If form indicates that comments should be deleted, then delete
+                WeblogManager mgr = rreq.getRoller().getWeblogManager();
+                String[] deleteIds = form.getDeleteComments();
+                if (deleteIds != null && deleteIds.length > 0)
+                {
+                    mgr.removeComments( deleteIds );
+                }
+
+                List comments = mgr.getComments( wd.getId(), false ); // spam too
+                if (form.getSpamComments() != null)
+                {
+                    // comments marked as spam
+                    List spamIds = Arrays.asList(form.getSpamComments());
+
+                    // iterate over all comments, check each to see if
+                    // is in the spamIds list.  If so, mark it as spam.
+                    Iterator it = comments.iterator();
+                    while (it.hasNext())
+                    {
+                        CommentData comment = (CommentData)it.next();
+                        if (spamIds.contains(comment.getId()))
+                        {
+                            comment.setSpam(Boolean.TRUE);                            
+                        }
+                        else 
+                        {
+                            comment.setSpam(Boolean.FALSE);
+                        }
+                        comment.save();
+                    }
+                }
+
+                rreq.getRoller().commit();
+                
+                reindexEntry(rreq.getRoller(), wd);
+                
+                request.setAttribute("model",
+                        new WeblogEntryPageModel(request, response, mapping, 
+                                (WeblogEntryFormEx)actionForm,
+                                WeblogEntryPageModel.EDIT_MODE));
+            }
+            else
+            {
+                forward = mapping.findForward("access-denied");
+            }
+        }
+        catch (Exception e)
+        {
+            forward = mapping.findForward("error");
+
+            errors.add(ActionErrors.GLOBAL_ERROR,
+                new ActionError("error.edit.comment", e.toString()));
+            saveErrors(request,errors);
+
+            mLogger.error(getResources(request).getMessage("error.edit.comment")
+                + e.toString(),e);
+        }
+        return forward;
+    }
+

@@ -1,0 +1,12 @@
+    /**
+     * @see org.roller.model.Roller#getPlanetManager()
+     */
+    public PlanetManager getPlanetManager() throws RollerException
+    {
+        if ( planetManager == null ) 
+        {
+            planetManager = new HibernatePlanetManagerImpl(mStrategy,this);
+        }
+        return planetManager;
+    }
+

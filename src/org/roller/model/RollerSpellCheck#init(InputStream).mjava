@@ -1,0 +1,22 @@
+    /**
+     * Initializer which takes an InputStream for
+     * /WEB-INF/english.0 to load the SpellDictionary.
+     * Building the SpellDictionary, and thus the SpellChecker
+     * is an expensive operation.
+     * You can get this InputStream with ServletContext.getResource(
+     * "/WEB-INF/english.0").  Throws a RollerException if
+     * SpellDictionary cannot be instantiated.
+     **/
+    public static void init(InputStream in) throws RollerException
+    {
+        try {
+            InputStreamReader inR = new InputStreamReader( in );
+            RollerSpellCheck.dictionary = new SpellDictionary( inR );
+
+        } catch (IOException ioe) {
+            mLogger.error("RollerSpellCheck unable to load SpellDictionary",
+                ioe);
+            throw new RollerException(ioe);
+        }
+    }
+

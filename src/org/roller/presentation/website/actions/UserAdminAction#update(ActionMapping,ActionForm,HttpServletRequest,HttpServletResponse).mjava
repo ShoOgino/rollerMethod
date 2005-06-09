@@ -1,0 +1,86 @@
+    //-----------------------------------------------------------------------
+    /** 
+     * Process POST of edited user data, may cause delete of user. 
+     */
+    public ActionForward update(
+        ActionMapping       mapping,
+        ActionForm          actionForm,
+        HttpServletRequest  request,
+        HttpServletResponse response)
+        throws IOException, ServletException
+    {
+        ActionForward forward = mapping.findForward("adminUser.page");
+        ActionMessages msgs = new ActionMessages();
+        try
+        {
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            if ( rreq.isUserAuthorizedToEdit() && rreq.isAdminUser() )
+            {
+                UserAdminForm userForm = (UserAdminForm)actionForm;
+                UserManager mgr = rreq.getRoller().getUserManager();
+                
+                // Need system user to update user
+                rreq.getRoller().setUser(UserData.SYSTEM_USER);
+
+			   UserData user = mgr.retrieveUser(userForm.getId());
+                userForm.copyTo(user, request.getLocale()); // doesn't copy password
+
+                if (userForm.getDelete())
+                {
+                    // TODO: ask are you sure before deleting user
+                    PageCacheFilter.removeFromCache( request, user );
+                    user = deleteUser(mapping, request, rreq, userForm, mgr, user);
+                    
+                    msgs.add(ActionMessages.GLOBAL_MESSAGE,
+                            new ActionMessage("userSettings.deleted"));
+                    saveMessages(request, msgs);
+                }
+                else
+                {
+                    // If user set both password and passwordConfirm then reset 
+                    if (    !StringUtils.isEmpty(userForm.getPasswordText()) 
+                         && !StringUtils.isEmpty(userForm.getPasswordConfirm()))
+                    {
+                        try
+                        {
+                            user.resetPassword(rreq.getRoller(), 
+                               userForm.getPasswordText(), 
+                               userForm.getPasswordConfirm());
+                        }
+                        catch (RollerException e)
+                        {
+                            msgs.add(ActionMessages.GLOBAL_MESSAGE, 
+                              new ActionMessage("userSettings.passwordResetError"));
+                        }
+                    }
+                    
+                    // Persist changes to user
+                    mgr.storeUser( user );
+                    rreq.getRoller().commit(); 
+                    
+                    // Flush both main page and regular page caches
+                    refreshIndexCache(request, rreq, userForm);      
+                    PageCacheFilter.removeFromCache( request, user );
+                    
+                    msgs.add(ActionMessages.GLOBAL_MESSAGE,
+                        new ActionMessage("userSettings.saved"));
+                    saveMessages(request, msgs);
+                }
+                
+                // Operation complete, return to edit action
+                userForm.setUserName(null); 
+                return edit(mapping, actionForm, request, response);
+            }
+            else
+            {
+                forward = mapping.findForward("access-denied");
+            }
+        }
+        catch (Exception e)
+        {
+            mLogger.error("ERROR in action",e);
+            throw new ServletException(e);
+        }
+        return forward;
+    }
+

@@ -1,0 +1,10 @@
+    public void _testDCDateParsing(String url) throws Exception
+    { 
+        URL feedUrl = new URL(url);
+        SyndFeedInput input = new SyndFeedInput();
+        SyndFeed feed = input.build(new XmlReader(feedUrl)); 
+        SyndEntry entry = (SyndEntry)feed.getEntries().get(0);
+        DCModule dcm = (DCModule)entry.getModule(DCModule.URI);
+        assertNotNull(dcm.getDate());
+    }
+

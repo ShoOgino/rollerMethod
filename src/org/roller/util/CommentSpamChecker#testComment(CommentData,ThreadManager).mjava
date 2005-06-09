@@ -1,0 +1,22 @@
+    // -----------------------------------------------------------------------
+    /**
+     * Spawns thread to run comment check.
+     */
+    public void testComment(CommentData comment, ThreadManager threadMgr)
+    {
+        try
+        {
+            if (threadMgr != null)
+            {
+                threadMgr.executeInBackground(new CommentCheckerRunnable(comment));
+            }
+            else
+            {
+                mLogger.warn("No thread manager found.");
+            }
+        } 
+        catch (InterruptedException e) {
+            mLogger.warn("Interrupted during Comment Spam check",e);
+        }
+    }
+

@@ -1,0 +1,6 @@
+    protected String getString(Element elem, String path) throws Exception {
+        XPath xpath = XPath.newInstance(path);
+        Element e = (Element)xpath.selectSingleNode(elem);
+        return e!=null ? e.getText() : null;
+    }
+

@@ -1,0 +1,13 @@
+    /**
+     * Resolve the bookmark name and return the URL from it.  If the bookmark can't be found, return null
+     *
+     * @param bookmarkName name of the bookmark
+     * @return String form of the URL from the bookmark by that name from any of the user's folders, or null if not
+     *         found.
+     */
+    protected String getBookmarkSite(String bookmarkName)
+    {
+        BookmarkData bookmark = (BookmarkData) getUserBookmarks().get(bookmarkName);
+        return bookmark == null ? null : bookmark.getUrl();
+    }
+

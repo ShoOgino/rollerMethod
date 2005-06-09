@@ -1,0 +1,28 @@
+    /*
+     * Load delete confirmation view.
+     */
+    public ActionForward disableSelected(ActionMapping mapping, ActionForm form,
+                                         HttpServletRequest req, HttpServletResponse res)
+        throws Exception
+    {
+        RollerRequest rreq = RollerRequest.getRollerRequest(req);
+        AutoPingManager autoPingMgr = rreq.getRoller().getAutopingManager();
+        try
+        {
+            if (!isAuthorized(rreq))
+            {
+                return mapping.findForward("access-denied");
+            }
+            PingTargetData pingTarget = select(rreq);
+            autoPingMgr.removeAutoPing(pingTarget, rreq.getWebsite());
+            rreq.getRoller().commit();
+
+            return view(mapping, form, req, res);
+        }
+        catch (Exception e)
+        {
+            mLogger.error("ERROR in action", e);
+            throw new ServletException(e);
+        }
+    }
+

@@ -1,0 +1,8 @@
+    /** Store bookmark and add to folder */
+    public void addBookmark(BookmarkData bookmark) throws RollerException
+    {
+        bookmark.setFolder(this);
+        bookmarks.add(bookmark);  
+        bookmark.save();      
+    }
+

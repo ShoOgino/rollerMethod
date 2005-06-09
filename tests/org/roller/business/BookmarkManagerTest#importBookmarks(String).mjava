@@ -1,0 +1,19 @@
+    //------------------------------------------------------------------------
+    public void importBookmarks(String fileName) throws Exception
+    {
+        getRoller().begin(UserData.SYSTEM_USER);
+        InputStream fis = this.getClass().getResourceAsStream(fileName);
+        getRoller().getBookmarkManager().importBookmarks(
+            mWebsite, "ZZZ_imports_ZZZ", fileToString(fis));
+        getRoller().commit();
+        getRoller().release();
+
+        FolderData fd = null;
+
+        getRoller().begin(UserData.SYSTEM_USER);
+        fd = getRoller().getBookmarkManager().getFolder(mWebsite, "ZZZ_imports_ZZZ");
+        assertTrue("no bookmarks found", fd.retrieveBookmarks(true).size() > 0 );
+        fd.remove();
+        getRoller().commit();
+    }
+

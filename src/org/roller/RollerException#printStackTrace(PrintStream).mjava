@@ -1,0 +1,13 @@
+    /** 
+     * @see java.lang.Throwable#printStackTrace(java.io.PrintStream)
+     */
+    public void printStackTrace(PrintStream s)
+    {
+        super.printStackTrace(s);
+        if (mRootCause != null)
+        {
+            s.println("--- ROOT CAUSE ---");
+            mRootCause.printStackTrace(s);
+        }
+    }
+

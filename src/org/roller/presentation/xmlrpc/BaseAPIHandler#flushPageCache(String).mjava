@@ -1,0 +1,13 @@
+    //------------------------------------------------------------------------
+    protected void flushPageCache(String user) throws Exception
+    {
+        // Get Roller request object for current thread
+        RollerRequest rreq = RollerRequest.getRollerRequest();
+        
+        UserManager umgr = rreq.getRoller().getUserManager();
+        UserData ud = umgr.getUser(user);
+        
+        PageCacheFilter.removeFromCache( rreq.getRequest(), ud );
+        MainPageAction.flushMainPageCache();
+    }
+

@@ -1,0 +1,39 @@
+        protected Result(String apiUrl, String url, String type) throws Exception {
+            Map args = new HashMap();
+            args.put("url", url);
+            args.put("type", type);
+            args.put("format", "xml");
+            args.put("key", mKey);
+
+            int start = 0;
+            boolean repeat = true;
+            XPath itemsPath = XPath.newInstance("/tapi/document/item/weblog");            
+
+            while (repeat) {
+                 Document doc = getRawResults(apiUrl,args);               
+                Element elem = doc.getRootElement();                          
+                String error = getString(elem,"/tapi/document/result/error");
+                if ( error != null ) throw new Exception(error);
+                if (mWeblog == null) {
+                    XPath p = XPath.newInstance("/tapi/document/result/weblog");
+                    Element w = (Element) p.selectSingleNode(doc);
+                    mWeblog = new Weblog(w);
+                }
+                int count=0;
+                Iterator iter = itemsPath.selectNodes(doc).iterator();
+                while (iter.hasNext()) {
+                    Element element = (Element) iter.next();
+                    Weblog w = new Weblog(element);
+                    mWeblogs.add(w);
+                    count++;
+                }
+                if ( count < 20 ) { 
+                    repeat = false;
+                }
+                else {
+                    start += 20;
+                    args.put("start",new Integer(start));
+                }
+            }
+        }
+

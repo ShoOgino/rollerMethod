@@ -1,0 +1,44 @@
+    /**
+     * Process the ping queue.  Performs one pass through the ping queue, processing every entry once.  On ping failure
+     * an entry is requeued for processing on subsequent passes until the configured maximum number of attempts is
+     * reached.
+     */
+    public synchronized void processQueue()
+    {
+        if (PingConfig.getSuspendPingProcessing()) {
+            logger.info("Ping processing has been suspended.  Skipping current round of ping queue processing.");
+            return;
+        }
+
+        String absoluteContextUrl = rollerContext.getAbsoluteContextUrl();
+        if (absoluteContextUrl == null)
+        {
+            logger.warn("WARNING: Skipping current ping queue processing round because we cannot yet determine the site's absolute context url.");
+            return;
+        }
+
+        // TODO: Group by ping target and ping all sites for that target?
+        // We're currently not taking advantage of grouping by ping target site and then sending
+        // all of the pings for that target at once.  If it becomes an efficiency issue, we should do
+        // that.
+
+        try
+        {
+            if (logger.isDebugEnabled()) logger.debug("Started processing ping queue.");
+            // Get all of the entries
+            List entries = pingQueueMgr.getAllQueueEntries();
+
+            // Process each entry
+            for (Iterator i = entries.iterator(); i.hasNext();)
+            {
+                PingQueueEntryData pingQueueEntry = (PingQueueEntryData) i.next();
+                processQueueEntry(absoluteContextUrl, pingQueueEntry);
+            }
+            if (logger.isDebugEnabled()) logger.debug("Finished processing ping queue.");
+        }
+        catch (Exception ex)
+        {
+            logger.error("Unexpected exception processing ping queue!  Aborting this pass of ping queue processing.", ex);
+        }
+    }
+

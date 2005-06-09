@@ -1,0 +1,56 @@
+    public void testConfigurationStorage() throws Exception
+    {
+        Roller roller = getRoller();
+        assertNotNull(roller);       
+        PlanetManager planet = roller.getPlanetManager();
+        assertNotNull(planet);    
+        
+        {   // save config with default group
+            roller.begin();
+            
+            PlanetConfigData config = new PlanetConfigData();
+            config.setCacheDir("test_cache_dir");
+            config.setTitle("test_title");
+            config.setAdminEmail("test_admin_email");
+
+            PlanetGroupData group = new PlanetGroupData();
+            group.setDescription("test_group_desc");
+            group.setHandle("test_handle");
+            group.setTitle("test_title");
+            planet.saveGroup(group);
+            
+            config.setDefaultGroup(group);
+            planet.saveConfiguration(config);
+            
+            roller.commit();
+        }
+        {   // retrieve config and default group
+            roller.begin();
+            PlanetConfigData config = planet.getConfiguration();
+            assertEquals("test_cache_dir",config.getCacheDir());
+            assertEquals("test_title", config.getTitle());
+            assertEquals("test_admin_email", config.getAdminEmail());
+            
+            PlanetGroupData group = config.getDefaultGroup();
+            assertEquals("test_group_desc",group.getDescription());
+            assertEquals("test_title",group.getTitle());
+            
+            roller.rollback();
+        }
+        {   // remove config
+            roller.begin();
+            PlanetConfigData config = planet.getConfiguration();
+            config.remove();
+            roller.commit();
+        }
+        {
+            // make sure config and group are gone
+            roller.begin();
+            PlanetConfigData config = planet.getConfiguration();
+            assertNull(config);
+            PlanetGroupData group = planet.getGroup("test_handle");
+            assertNull(group);
+            roller.rollback();
+        }
+    }
+

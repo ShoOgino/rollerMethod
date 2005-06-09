@@ -1,0 +1,19 @@
+    /**
+     * Facade for WeblogManager.getRecentComments().
+     * Get the most recent (chronologically) posted Comments
+     * for this website, limited to maxCount.  
+     * @return List of Comments.
+     */
+    public List getRecentComments(int maxCount)
+    {
+        try
+        {
+            return mWeblogMgr.getRecentComments(mRollerReq.getWebsite(), maxCount);
+        }
+        catch (RollerException e)
+        {
+            mLogger.error(e);
+            return new ArrayList();
+        }
+    }
+

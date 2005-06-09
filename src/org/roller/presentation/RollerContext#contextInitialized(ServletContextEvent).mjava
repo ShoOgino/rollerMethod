@@ -1,0 +1,71 @@
+    //-----------------------------------------------------------------------
+    /**
+     * Responds to context initialization event by processing context
+     * paramters for easy access by the rest of the application.
+     */
+    public void contextInitialized(ServletContextEvent sce)
+    {
+        if (mLogger.isDebugEnabled())
+        {
+            mLogger.debug("RollerContext initializing");
+        }
+
+        // Save context in self and self in context
+        mContext = sce.getServletContext();
+        mContext.setAttribute(ROLLER_CONTEXT, this);
+
+        try
+        {
+            // get the *real* path to <context>/resources
+            String ctxPath = mContext.getRealPath("/");
+            if(!ctxPath.endsWith(File.separator))
+                ctxPath += File.separator + "resources";
+            else
+                ctxPath += "resources";
+            
+            // try setting the uploads path to <context>/resources
+            // NOTE: this should go away at some point
+            // we leave it here for now to allow users to keep writing
+            // uploads into their webapp context, but this is a bad idea
+            //
+            // also, the RollerConfig.setUploadsDir() method is smart
+            // enough to disregard this call unless the uploads.path
+            // is set to ${webapp.context}
+            RollerConfig.setUploadsDir(ctxPath);
+            
+            
+            Roller roller = RollerFactory.getRoller();
+            
+            roller.begin(UserData.SYSTEM_USER);
+            
+            //setupRollerConfig();
+            setupRollerProperties();
+            upgradeDatabaseIfNeeded();
+            setupSpellChecker();
+            setupPagePlugins();
+            setupIndexManager(roller);
+            setupRefererManager(roller);
+            initializePingFeatures(roller);
+            setupPingQueueTask(roller);
+            setupScheduledTasks(mContext, roller);
+            
+            roller.commit();
+            roller.release();
+            
+            String flag = RollerConfig.getProperty("debug.memory.enabled");
+            if (flag != null && !flag.equalsIgnoreCase("false"))
+            {
+                mMemDebug = true;
+            }
+
+            if (mLogger.isDebugEnabled())
+            {
+                mLogger.debug("RollerContext initialization complete");
+            }
+        }
+        catch (Throwable t)
+        {
+            mLogger.fatal("RollerContext initialization failed", t);
+        }
+    }
+

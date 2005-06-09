@@ -1,0 +1,27 @@
+    //-------------------------------------------------------------------------
+    /** 
+     * Release database session, rolls back any uncommitted changes. 
+     */
+    public void release() throws RollerException
+    {
+        PersistenceSession pses = (PersistenceSession)mSessionTLS.get();
+        if ( null == pses ) return; // there is no session to release
+        mSessionTLS.set(null); // sets thread's session to null
+        Session ses = (Session)pses.getSessionObject();
+        if (ses != null)
+        {
+            try
+            {
+                if (ses.isOpen())
+                {
+                    ses.close();   
+                }               
+            }
+            catch (Throwable he)
+            {
+            	    mLogger.error("ERROR cleaning up Hibernate session", he);
+            }
+        }
+        ses = null;
+    }
+

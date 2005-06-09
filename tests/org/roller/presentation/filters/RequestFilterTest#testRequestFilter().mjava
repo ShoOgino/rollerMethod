@@ -1,0 +1,22 @@
+    public void testRequestFilter() throws Exception {        
+        
+        servletModule.setServlet(
+           servletModule.createServlet(PageServlet.class));       
+
+        MockHttpServletRequest mockRequest = getMockFactory().getMockRequest();
+        mockRequest.setContextPath("/roller/page");
+        mockRequest.setPathInfo("/testuser/20050101");
+        mockRequest.setRequestURL("http://localost:8080");
+
+        servletModule.createFilter(PersistenceSessionFilter.class);
+        servletModule.createFilter(RequestFilter.class);
+        servletModule.setDoChain(true);
+
+        servletModule.doFilter();   
+        
+        HttpServletRequest req = (HttpServletRequest)
+            servletModule.getFilteredRequest();
+        RollerRequest rreq = RollerRequest.getRollerRequest(req);
+        assertNotNull(rreq);    
+    }
+

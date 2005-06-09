@@ -1,0 +1,55 @@
+    private void syncRolleruserTable(Connection srccon, Connection destcon) 
+    throws Exception
+    {
+        info("--- syncRolleruserTable ---");        
+        Set existing = new  TreeSet();         
+        PreparedStatement destExistsStmt = destcon.prepareStatement(
+            "select id from rolleruser where id=?");
+        PreparedStatement destInsert = destcon.prepareStatement(
+            "insert into rolleruser "
+            +"(id,username,passphrase,fullname,emailaddress,datecreated) "
+            +"values (?,?,?,?,?,?)");
+        PreparedStatement destUpdate = destcon.prepareStatement(
+            "update rolleruser set id=?, username=?, passphrase=?, "
+            +"fullname=?, emailaddress=?, datecreated=? where id=?");
+
+        Statement srcStmt = srccon.createStatement();
+        ResultSet srcSet = srcStmt.executeQuery(
+           "select id,username,passphrase,fullname,emailaddress,datecreated "
+           +"from rolleruser");
+        while (srcSet.next()) 
+        {
+            String id = srcSet.getString(1);
+            existing.add(id);
+            destExistsStmt.clearParameters();
+            destExistsStmt.setString(1,id);
+            ResultSet destSet = destExistsStmt.executeQuery();
+            if (!destSet.first())
+            {
+                debug("Inserting rolleruser id="+id);
+                destInsert.clearParameters();
+                destInsert.setString(1, srcSet.getString(1));
+                destInsert.setString(2, srcSet.getString(2));
+                destInsert.setString(3, srcSet.getString(3));
+                destInsert.setString(4, srcSet.getString(4));
+                destInsert.setString(5, srcSet.getString(5));
+                destInsert.setDate(  6, srcSet.getDate(6));
+                destInsert.executeUpdate();
+            }
+            else
+            {
+                debug("Updating rolleruser id="+id);
+                destUpdate.clearParameters();
+                destUpdate.setString(1, srcSet.getString(1));
+                destUpdate.setString(2, srcSet.getString(2));
+                destUpdate.setString(3, srcSet.getString(3));
+                destUpdate.setString(4, srcSet.getString(4));
+                destUpdate.setString(5, srcSet.getString(5));
+                destUpdate.setDate(  6, srcSet.getDate(6));
+                destUpdate.setString(7, srcSet.getString(1));
+                destUpdate.executeUpdate();
+            }                
+        } 
+        purgeDeleted(srccon,destcon,"rolleruser");
+    }
+

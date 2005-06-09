@@ -1,0 +1,66 @@
+    /**
+     * Authenticates a user and returns basic user info (name, email, userid, etc.)
+     *
+     * @param appkey Unique identifier/passcode of the application sending the post
+     * @param userid Login for a Blogger user who has permission to post to the blog
+     * @param password Password for said username
+     * @throws XmlRpcException
+     * @return
+     */
+    public Object getUserInfo(String appkey, String userid, String password)
+                       throws Exception
+    {
+        mLogger.info("getUserInfo() Called =====[ SUPPORTED ]=====");
+        mLogger.info("     Appkey: " + appkey);
+        mLogger.info("     UserId: " + userid);
+
+        validate(userid,password);
+
+        try
+        {
+            Roller roller = RollerRequest.getRollerRequest().getRoller();
+            UserManager userMgr = roller.getUserManager();
+            UserData user = userMgr.getUser(userid);
+
+            // parses full name into two strings, firstname and lastname
+            String firstname = "", lastname = "";
+            StringTokenizer toker = new StringTokenizer(user.getFullName());
+
+            if (toker.hasMoreTokens())
+            {
+                firstname = toker.nextToken();
+            }
+
+            while (toker.hasMoreTokens())
+            {
+                if ( !lastname.equals("") )
+                {
+                    lastname += " ";
+                }
+                lastname += toker.nextToken();
+            }
+
+            RollerRequest rreq = RollerRequest.getRollerRequest();
+            HttpServletRequest req = rreq.getRequest();
+            String contextUrl =
+                RollerContext.getRollerContext(req).getAbsoluteContextUrl(req);
+            
+            // populates user information to return as a result
+            Hashtable result = new Hashtable();
+            result.put("nickname", user.getUserName());
+            result.put("userid", user.getUserName());
+            result.put("url", contextUrl+"/page/"+userid);
+            result.put("email", "");
+            result.put("lastname", lastname);
+            result.put("firstname", firstname);
+
+            return result;
+        }
+        catch (RollerException e)
+        {
+            String msg = "ERROR in BlooggerAPIHander.getInfo";
+            mLogger.error(msg,e);
+            throw new XmlRpcException(UNKNOWN_EXCEPTION,msg);
+        }
+    }
+

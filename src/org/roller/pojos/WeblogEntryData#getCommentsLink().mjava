@@ -1,0 +1,16 @@
+    public String getCommentsLink()
+    {
+        String dayString = DateUtil.format8chars(this.getPubTime());
+        String lAnchor = this.getAnchor();
+        try
+        {
+            lAnchor = URLEncoder.encode(anchor, "UTF-8");
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            // go with the "no encoding" version
+        }        
+        String clink = "/page/" + this.getWebsite().getUser().getUserName() + "?anchor=" + lAnchor;
+        return clink;
+    }
+

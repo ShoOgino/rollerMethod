@@ -1,0 +1,11 @@
+    /**
+     * Creates query String from request body parameters
+     */
+    public static String getRequestParameters(HttpServletRequest aRequest)
+    {
+        // set the ALGORIGTHM as defined for the application
+        //ALGORITHM = (String) aRequest.getAttribute(Constants.ENC_ALGORITHM);
+        Map m = aRequest.getParameterMap();
+        return createQueryStringFromMap(m, "&").toString();
+    }
+

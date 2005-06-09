@@ -1,0 +1,16 @@
+    public void run()
+    {
+        if (refManager != null)
+            try
+            {
+                RollerFactory.getRoller().begin();
+                refManager.checkForTurnover(false, null);
+                RollerFactory.getRoller().commit();
+                RollerFactory.getRoller().release();
+            }
+            catch (RollerException e)
+            {
+                mLogger.error("Error while checking for referer turnover", e);
+            }
+    }
+

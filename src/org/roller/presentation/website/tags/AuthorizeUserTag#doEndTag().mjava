@@ -1,0 +1,64 @@
+ 	//----------------------------------------------------------- 
+    /**
+     * Process start tag.
+     * @return EVAL_SKIP_BODY
+     */
+    public int doEndTag() throws JspException 
+	{
+		HttpServletRequest req = null;
+		UserData user = null; 
+		try
+		{
+			req = (HttpServletRequest)pageContext.getRequest();
+			user = RollerRequest.getRollerRequest(req).getUser();
+		}
+		catch (Exception e)
+		{
+            mLogger.error("ERROR in tag",e);
+			throw new JspException(e);
+		}
+
+		Principal prince = req.getUserPrincipal(); 
+		if ( prince == null || !prince.getName().equals( user.getUserName() ) )
+		{
+			ServletContext ctx = req.getSession().getServletContext();
+			ModuleConfig mConfig = RequestUtils.getModuleConfig(req,ctx);
+			ForwardConfig fConfig = mConfig.findForwardConfig(name);
+			if (fConfig==null)
+				throw new JspException("Forward "+name+"not found");
+			
+			// Forward or redirect to the corresponding actual path
+			String path = fConfig.getPath();
+			if (fConfig.getRedirect()) 
+			{
+				HttpServletResponse response =
+					(HttpServletResponse) pageContext.getResponse();
+				try 
+				{
+					response.sendRedirect(response.encodeRedirectURL(path));
+				} 
+				catch (Exception e) 
+				{
+                  mLogger.error("ERROR in tag",e);
+				  throw new JspException("Error redirecting to forward "+name);
+				}
+			} 
+			else 
+			{
+				try 
+				{
+					pageContext.forward(path);
+				} 
+				catch (Exception e) 
+				{
+                    mLogger.error("ERROR in tag",e);
+					throw new JspException("Error forward to "+name);
+				}
+			}
+
+			// Skip the remainder of this page
+			return (SKIP_PAGE);
+		}
+		return Tag.SKIP_BODY;
+    }
+

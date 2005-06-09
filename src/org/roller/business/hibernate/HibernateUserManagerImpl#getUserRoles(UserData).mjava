@@ -1,0 +1,19 @@
+    /* 
+     * @see org.roller.business.UserManagerBase#getRoles(org.roller.pojos.UserData)
+     */
+    public List getUserRoles(UserData user) throws RollerException
+    {
+        
+        Session session = ((HibernateStrategy)mStrategy).getSession();
+        Criteria criteria = session.createCriteria(RoleData.class);
+        criteria.add(Expression.eq("user", user));
+        try
+        {
+            return criteria.list();
+        }
+        catch (HibernateException e)
+        {
+            throw new RollerException(e);
+        }
+    }
+

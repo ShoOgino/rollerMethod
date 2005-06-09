@@ -1,0 +1,26 @@
+    /**
+     * Load file-listings page.
+     */
+    public ActionForward unspecified(
+            ActionMapping       mapping,
+            ActionForm          actionForm,
+            HttpServletRequest  request,
+            HttpServletResponse response)
+        throws IOException, ServletException
+    {       
+        try
+        {
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            if ( !rreq.isUserAuthorizedToEdit() )
+            {
+                return mapping.findForward("access-denied");
+            }
+        }
+        catch (RollerException re)
+        {
+            mLogger.error("Unexpected exception",re.getRootCause());
+            throw new ServletException(re);
+        }
+        return mapping.findForward("uploadFiles.page"); 
+    }
+

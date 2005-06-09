@@ -1,0 +1,19 @@
+    // TODO: Consider unifying with other RollerRequest methods
+    // Private helper to get ping target specified by request
+    private PingTargetData select(RollerRequest rreq) throws RollerException
+    {
+        String pingTargetId = rreq.getRequest().getParameter(RollerRequest.PINGTARGETID_KEY);
+        PingTargetManager pingTargetMgr = rreq.getRoller().getPingTargetManager();
+        if (pingTargetId == null || pingTargetId.length() == 0)
+        {
+            throw new RollerException("Missing ping target id: " + pingTargetId);
+        }
+
+        PingTargetData pingTarget = pingTargetMgr.retrievePingTarget(pingTargetId);
+        if (pingTarget == null)
+        {
+            throw new RollerException("No such ping target id: " + pingTargetId);
+        }
+        return pingTarget;
+    }
+

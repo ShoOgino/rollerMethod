@@ -1,0 +1,18 @@
+    /**
+     * Get recent weblog entries using request parameters to determine
+     * username, date, and category name parameters.
+     * @return List of WeblogEntryData objects.
+     * @throws RollerException
+     */
+    public List getRecentDraftEntries() throws RollerException
+    {
+        return rollerRequest.getRoller().getWeblogManager()
+            .getWeblogEntries(
+                rollerRequest.getWebsite(), 
+                null,              // startDate
+                null,              // endDate
+                null,              // catName
+                WeblogManager.DRAFT_ONLY, // status
+                new Integer(20));  // maxEntries
+    }
+

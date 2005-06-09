@@ -1,0 +1,14 @@
+    /** Encapsulates WeblogManager.getComments().size() */
+    public int getCommentCount(String entryId)
+    {
+        try
+        {
+            return mWeblogMgr.getComments( entryId ).size();
+        }
+        catch (RollerException e)
+        {
+            mLogger.error("PageModel getCommentCount()", e);
+        }
+        return 0;
+    }
+

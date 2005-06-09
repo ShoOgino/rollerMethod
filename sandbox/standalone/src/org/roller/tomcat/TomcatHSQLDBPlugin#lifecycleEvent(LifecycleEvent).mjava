@@ -1,0 +1,14 @@
+	public void lifecycleEvent(LifecycleEvent event) {	
+		
+		if (event.getType().equals(Lifecycle.START_EVENT)) {
+			HSQLDBUtility.start();
+		}
+		else if (event.getType().equals(Lifecycle.STOP_EVENT)) {
+			HSQLDBUtility.stop();
+		}
+		else {
+			System.out.println(getClass().getName() 
+               + ": Not handling LifecycleEvent: " + event.getType());
+		}
+	}
+

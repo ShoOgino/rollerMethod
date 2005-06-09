@@ -1,0 +1,31 @@
+    /**
+     * Helper method that returns collection of categories, called by getCollection().
+     */
+    public AtomCollection getCollectionOfCategories(
+            String[] pathInfo, Date start, Date end, int offset) throws Exception
+    {
+        String username = pathInfo[0];
+        String absUrl = mRollerContext.getAbsoluteContextUrl(mRequest);
+        WebsiteData website = mRoller.getUserManager().getWebsite(username);
+        WeblogManager wmgr = mRoller.getWeblogManager();
+        List items = wmgr.getWeblogCategories(website);
+        if (canView(website)) 
+        {
+            AtomCollection col = new AtomCollection();
+            Iterator iter = items.iterator();
+            Date now = new Date();
+            while (iter.hasNext())
+            {
+                WeblogCategoryData item = (WeblogCategoryData)iter.next();
+                AtomCollection.Member member = new AtomCollection.Member();
+                member.setTitle(item.getPath());
+                member.setUpdated(now);
+                member.setHref(
+                    absUrl + "/atom/" + username + "/category/" + item.getId());
+                col.addMember(member);
+            }
+            return col;
+        }
+        throw new Exception("ERROR: not authorized");       
+    }
+

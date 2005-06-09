@@ -1,0 +1,21 @@
+    /**
+     * Child TestCases should take care to tearDown() their own resources
+     * (including their own implementation).  RollerTestBase will clean up the
+     * getRoller() instance.
+     *
+     * @see TestCase#tearDown()
+     */
+    public void tearDown() throws Exception
+    {
+        try
+        {
+            deleteWebsite(testUsername);
+            //getRoller().release();
+        }
+        catch (RollerException e)
+        {
+            mLogger.error("Tearing down",e);
+        }
+        super.tearDown();
+    }
+

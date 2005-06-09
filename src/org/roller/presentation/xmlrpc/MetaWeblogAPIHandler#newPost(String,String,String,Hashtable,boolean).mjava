@@ -1,0 +1,86 @@
+    /**
+     * Makes a new post to a designated blog. Optionally, will publish the blog after making the post
+     *
+     * @param blogid Unique identifier of the blog the post will be added to
+     * @param userid Login for a MetaWeblog user who has permission to post to the blog
+     * @param password Password for said username
+     * @param struct Contents of the post
+     * @param publish If true, the blog will be published immediately after the post is made
+     * @throws org.apache.xmlrpc.XmlRpcException
+     * @return
+     */
+    public String newPost(
+        String blogid, String userid, String password, Hashtable struct, boolean publish)
+        throws Exception
+    {
+        mLogger.info("newPost() Called ===========[ SUPPORTED ]=====");
+        mLogger.info("     BlogId: " + blogid);
+        mLogger.info("     UserId: " + userid);
+        mLogger.info("    Publish: " + publish);
+
+        WebsiteData website = validate(userid,password);
+
+        Hashtable postcontent = struct;
+        String description = (String)postcontent.get("description");
+        String title = (String)postcontent.get("title");
+        if (title == null) title = "";
+
+        String cat = null;
+        if ( postcontent.get("categories") != null )
+        {
+            Vector cats = (Vector)postcontent.get("categories");
+            if (cats.size() > 0) 
+            {
+                // only use the first category passed in
+                cat = (String)cats.elementAt(0);
+            }
+        }
+        mLogger.info("      Title: " + title);
+        mLogger.info("   Category: " + cat);
+
+        try
+        {
+            Roller roller = RollerRequest.getRollerRequest().getRoller();
+            WeblogManager weblogMgr = roller.getWeblogManager();
+
+            Timestamp current = new Timestamp(System.currentTimeMillis());
+
+            WeblogEntryData entry = new WeblogEntryData();
+            entry.setTitle(title);
+            entry.setText(description);
+            entry.setPubTime(current);
+            entry.setUpdateTime(current);
+            entry.setWebsite(website);
+            entry.setPublishEntry(Boolean.valueOf(publish));
+
+            if ( cat != null )
+            {
+                // Use first category specified by request
+                WeblogCategoryData cd = 
+                    weblogMgr.getWeblogCategoryByPath(website, cat);
+                entry.setCategory(cd);
+            }
+            else
+            {
+                // Use Blogger API category from user's weblog config
+                entry.setCategory(website.getBloggerCategory());
+            }
+
+            entry.save();
+            roller.commit();
+            flushPageCache(userid);
+
+            // TODO: Roller timestamps need better than 1 second accuracy
+            // Until then, we can't allow more than one post per second
+            Thread.sleep(1000);
+
+            return entry.getId();
+        }
+        catch (Exception e)
+        {
+            String msg = "ERROR in MetaWeblogAPIHandler.newPost";
+            mLogger.error(msg,e);
+            throw new XmlRpcException(UNKNOWN_EXCEPTION, msg);
+        }
+    }
+

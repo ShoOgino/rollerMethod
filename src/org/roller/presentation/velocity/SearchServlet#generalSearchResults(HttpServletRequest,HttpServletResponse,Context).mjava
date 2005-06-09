@@ -1,0 +1,33 @@
+    /**
+     * If this is not a user-specific search, we need to display the 
+     * "generic" search results list.
+     * 
+     * @param request
+     * @param response
+     * @param ctx
+     * @return
+     */
+    private Template generalSearchResults(HttpServletRequest request, HttpServletResponse response, Context ctx)
+    {
+        Template outty = null;
+        Exception pageException = null;
+        try
+        {
+            ContextLoader.setupContext( 
+                ctx, RollerRequest.getRollerRequest(request), response );
+            outty = getTemplate( "searchresults.vm", "UTF-8" );
+        }
+        catch (Exception e)
+        {
+            pageException = e;
+            response.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
+        }
+
+        if (pageException != null)
+        {
+            mLogger.error("EXCEPTION: in RollerServlet", pageException);
+            request.setAttribute("DisplayException", pageException);
+        }
+        return outty;
+    }
+

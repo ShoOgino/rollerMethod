@@ -1,0 +1,103 @@
+    /** 
+     * Ensure there's a subscription in the "all" group for every Roller user.
+     */
+    private void syncWebsites()
+    {       
+        try
+        {
+            List liveUserFeeds = new ArrayList();            
+            String baseURL = 
+                roller.getConfigManager().getRollerConfig().getAbsoluteURL();
+            if (baseURL == null || baseURL.trim().length()==0)
+            {
+                logger.error("ERROR: cannot sync websites with Planet Roller - "
+                            +"absolute URL not specified in Roller Config");
+            }
+            else
+            {
+                roller.begin();
+                PlanetManager planet = roller.getPlanetManager();
+                UserManager userManager = roller.getUserManager();
+                PlanetGroupData group = planet.getGroup("all");
+                if (group == null)
+                {
+                    group = new PlanetGroupData();
+                    group.setHandle("all");
+                    group.setTitle("all");
+                    planet.saveGroup(group);
+                    roller.commit();
+                }
+                try 
+                {
+                    String baseFeedURL = baseURL + "/rss/";
+                    String baseSiteURL = baseURL + "/page/";
+                    Iterator users = roller.getUserManager().getUsers().iterator();
+                    while (users.hasNext())
+                    {
+                        UserData user = (UserData) users.next();
+                        
+                        StringBuffer sitesb = new StringBuffer();
+                        sitesb.append(baseSiteURL);
+                        sitesb.append(user.getUserName());
+                        String siteUrl = sitesb.toString();
+                        
+                        StringBuffer feedsb = new StringBuffer();
+                        feedsb.append(baseFeedURL);
+                        feedsb.append(user.getUserName());
+                        String feedUrl = feedsb.toString();
+                        
+                        liveUserFeeds.add(feedUrl);
+                        
+                        PlanetSubscriptionData sub = 
+                                planet.getSubscription(feedUrl);
+                        WebsiteData website = 
+                                userManager.getWebsite(user.getUserName());
+                        if (sub == null)
+                        {
+                            logger.info("ADDING feed: "+feedUrl);
+                            sub = new PlanetSubscriptionData();
+                            sub.setTitle(website.getName());
+                            sub.setFeedUrl(feedUrl);
+                            sub.setSiteUrl(siteUrl);
+                            sub.setAuthor(user.getUserName());
+                            planet.saveSubscription(sub);
+                            group.addSubscription(sub);
+                        }
+                        else
+                        {
+                            sub.setTitle(website.getName());
+                            sub.setAuthor(user.getUserName());
+                            planet.saveSubscription(sub);
+                        }
+                    }
+                    planet.saveGroup(group);
+                    roller.commit();
+                    roller.release();
+                    
+                    roller.begin();
+                    group = group = planet.getGroup("all");
+                    Iterator subs = group.getSubscriptions().iterator();
+                    while (subs.hasNext())
+                    {
+                        PlanetSubscriptionData sub = 
+                                (PlanetSubscriptionData)subs.next();
+                        if (!liveUserFeeds.contains(sub.getFeedUrl()))
+                        {
+                            logger.info("DELETING feed: "+sub.getFeedUrl());
+                            planet.deleteSubscription(sub);
+                        }
+                    }
+                    roller.commit();                   
+                }
+                finally
+                {
+                    roller.release();
+                }
+            }
+        }
+        catch (RollerException e)
+        {
+            logger.error("ERROR refreshing entries", e);
+        }
+    }
+

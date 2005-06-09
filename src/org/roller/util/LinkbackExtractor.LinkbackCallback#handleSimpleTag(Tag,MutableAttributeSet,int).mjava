@@ -1,0 +1,60 @@
+        /**
+         * Needed to handle SPAN tag.
+         */
+        public void handleSimpleTag(Tag tag, MutableAttributeSet atts, int pos)
+        {
+            if (mList.contains(tag) && mFound && mEnd == 0)
+            {
+                mEnd = pos;
+            }
+            else if (tag.equals(Tag.LINK))
+            {
+                // Look out for RSS autodiscovery link
+                String title = (String) atts.getAttribute(HTML.Attribute.TITLE);
+                String type = (String) atts.getAttribute(HTML.Attribute.TYPE);
+                if (title != null && type != null
+                        && type.equals("application/rss+xml")
+                        && title.equals("RSS"))
+                {
+                    mRssLink = (String) atts.getAttribute(HTML.Attribute.HREF);
+
+                    if (mLogger.isDebugEnabled())
+                    {
+                        mLogger.debug("Found RSS link " + mRssLink);
+                    }
+
+                    if (mRssLink.startsWith("/") && mRssLink.length() > 1)
+                    {
+                        try
+                        {
+                            URL url = new URL(mRefererURL);
+                            mRssLink = url.getProtocol() + "://"
+                                    + url.getHost() + ":" + url.getPort()
+                                    + mRssLink;
+                        }
+                        catch (MalformedURLException e)
+                        {
+                            mRssLink = null;
+                            if (mLogger.isDebugEnabled())
+                            {
+                                mLogger.debug("Determining RSS URL", e);
+                            }
+                        }
+                    }
+                    else if (!mRssLink.startsWith("http"))
+                    {
+                        int slash = mRefererURL.lastIndexOf("/");
+                        if (slash != -1)
+                        {
+                            mRssLink = mRefererURL.substring(0, slash) + "/"
+                                    + mRssLink;
+                        }
+                    }
+                    if (mLogger.isDebugEnabled())
+                    {
+                        mLogger.debug("Qualified RSS link is " + mRssLink);
+                    }
+                }
+            }
+        }
+

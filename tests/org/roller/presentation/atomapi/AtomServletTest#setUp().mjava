@@ -1,0 +1,12 @@
+    //------------------------------------------------------------------------------
+    public void setUp() throws Exception
+    {
+        super.setUp();       
+        super.setUpTestWeblogs();        
+        resetMocks();
+        MockServletContext ctx = getMockFactory().getMockServletContext();
+        ctx.setRealPath("/", "");
+        rollerContext = new MockRollerContext();
+        rollerContext.init(ctx);
+    }
+

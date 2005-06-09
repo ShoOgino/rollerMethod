@@ -1,0 +1,81 @@
+    /**
+     * Iterate over Hits and build sets of WeblogEntryData
+     * objects, placed into Date buckets (in reverse order).
+     * 
+     * @param rreq
+     * @param website
+     * @param hits
+     * @throws RollerException
+     * @throws IOException
+     */
+    private TreeMap convertHitsToEntries(
+        RollerRequest rreq, WebsiteData website, Hits hits) 
+        throws RollerException, IOException
+    {
+        // determine offset (starting point)
+        int offset = useOffset(rreq.getRequest());
+        if (offset >= hits.length()) offset = OFFSET;
+        rreq.getRequest().setAttribute("offset", new Integer(offset));
+        
+        // determine limit (number of results to display)
+        int limit = useLimit(rreq.getRequest());
+        rreq.getRequest().setAttribute("limit", new Integer(limit));
+        if (offset + limit > hits.length()) limit = hits.length()-offset;
+        
+        boolean userSpecificSearch = checkForUser(rreq.getRequest());
+        TreeMap searchResults = new TreeMap(new ReverseComparator());
+        TreeSet categories = new TreeSet();
+        UserManager userMgr = 
+            RollerContext.getRoller(rreq.getRequest()).getUserManager();
+        WeblogManager weblogMgr =
+            RollerContext.getRoller(rreq.getRequest()).getWeblogManager();
+        WeblogEntryData entry;
+        Document doc = null;
+        String username = null;
+        for (int i = offset; i < offset+limit; i++)
+        {
+            entry = null; // reset for each iteration
+            
+            doc = hits.doc(i);
+            username =
+                doc.getField(FieldConstants.USERNAME).stringValue();
+            
+            if (userSpecificSearch && website != null) 
+            {
+                // "wrong user" results have been reported
+                if (username.equals(rreq.getUser().getUserName()))
+                {    
+                    //entry = buildSearchEntry(website, doc);
+                    
+                    // get real entry for display on user's site
+                    entry = weblogMgr.retrieveWeblogEntry(
+                        doc.getField(FieldConstants.ID).stringValue() );
+                }
+            }
+            else
+            {
+                website = userMgr.getWebsite(username);
+                // if user is not enabled, website will be null
+                if (website != null)
+                {
+                    entry = buildSearchEntry(website, doc);
+                    if (doc.getField(FieldConstants.CATEGORY) != null)
+                    {
+                        categories.add(
+                            doc.getField(FieldConstants.CATEGORY)
+                                .stringValue());
+                    }
+                }
+            }
+            
+            // maybe null if search result returned inactive user
+            // or entry's user is not the requested user.
+            if (entry != null)
+            {    
+                addToSearchResults(searchResults, entry);
+            }
+        }
+        rreq.getRequest().setAttribute("categories", categories);
+        return searchResults;
+    }
+

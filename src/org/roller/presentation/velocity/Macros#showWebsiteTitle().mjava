@@ -1,0 +1,18 @@
+    //------------------------------------------------------------------------
+    /**
+     * Title of your website.
+     * @return Title of your website.
+     */
+    public String showWebsiteTitle()
+    {
+        WebsiteData wd = null;
+        RollerRequest rreq = getRollerRequest();
+        try {
+            wd = rreq.getWebsite();
+        }
+        catch (Exception e) {
+            return "ERROR finding website in request: " + e.toString();
+        }
+        return wd.getName();
+    }
+

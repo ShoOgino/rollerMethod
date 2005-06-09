@@ -1,0 +1,19 @@
+    public void syncUpgrade(Connection srccon, Connection destcon) 
+    throws Exception
+    {    
+        rootCategoryIds = buildRootCategoryMap(destcon);        
+        
+        syncRolleruserTable(srccon,destcon);
+        syncUserroleTable(srccon,destcon);
+        syncWebsiteTable(srccon,destcon);
+        syncWebpageTable(srccon,destcon);
+        syncWeblogcategoryTable(srccon,destcon);        
+        syncFolderTable(srccon,destcon);
+        syncBookmarkTable(srccon,destcon);
+        syncWeblogentryTable(srccon,destcon);
+        syncCommentTable(srccon,destcon);
+        syncRefererTable(srccon,destcon);
+        
+        ConsistencyCheck.findAndDeleteOrphans(destcon, true, debug);
+    }
+

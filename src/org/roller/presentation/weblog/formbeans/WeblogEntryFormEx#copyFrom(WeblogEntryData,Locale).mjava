@@ -1,0 +1,27 @@
+    /**
+     * Copy values from WeblogEntryData to this Form.
+     */
+    public void copyFrom(WeblogEntryData entry, Locale locale) 
+        throws RollerException
+    {
+        super.copyFrom(entry, locale);
+        mCategoryId = entry.getCategory().getId();
+        
+        initPubTimeDateString(locale);
+        
+        if (entry.getPlugins() != null)
+        {
+            pluginsArray = StringUtils.split(entry.getPlugins(), ",");
+        }
+        
+        attributes = new HashMap();
+        Iterator atts = entry.getEntryAttributes().iterator();
+        while (atts.hasNext())
+        {
+            EntryAttributeData att = (EntryAttributeData)atts.next();
+            attributes.put(att.getName(), att.getValue());
+        }
+      
+        populateSpamComments(entry);
+    }
+

@@ -1,0 +1,11 @@
+    public void _testPubDateParsing(String url) throws Exception
+    { 
+        HttpClient client = new HttpClient();
+        GetMethod method = new GetMethod(url);
+        System.setProperty("httpclient.useragent", "Rome Fetcher");
+        int code = client.executeMethod(method);
+        SyndFeedInput input = new SyndFeedInput();
+        SyndFeed feed = input.build(new XmlReader(method.getResponseBodyAsStream())); 
+        assertNotNull(((SyndEntry)feed.getEntries().get(0)).getPublishedDate());
+    }
+

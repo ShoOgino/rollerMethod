@@ -1,0 +1,16 @@
+	/**
+	 * Return local HSQLDB connection or null on error.
+	 */
+	private Connection getConnection(final String port) {
+		Connection con = null;
+		try {
+			Class.forName("org.hsqldb.jdbcDriver");
+			con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost:"+port);
+		} catch (ClassNotFoundException e) {
+			System.out.println(e);
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		return con;
+	}
+

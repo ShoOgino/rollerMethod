@@ -1,0 +1,41 @@
+	/**
+	 * @see org.apache.velocity.runtime.resource.loader.ResourceLoader#getResourceStream(java.lang.String)
+	 */
+	public InputStream getResourceStream(String name)
+		throws ResourceNotFoundException
+	{
+		InputStream result = null;
+        
+		if (name == null || name.length() == 0)
+		{
+			throw new ResourceNotFoundException ("No template name provided");
+		}
+        
+		try 
+		{
+			if (!name.startsWith("/"))
+				name = "/" + name;
+
+			result = getContext().getResourceAsStream( name );
+		}
+		catch( NullPointerException npe)
+		{
+			String msg = "WebappResourceLoader.getResourceStream(): " + name;
+			if (mContext == null)
+			{
+				mLogger.info("WebappResourceLoader("+name+"): ServletContext is null");
+				msg += "\n\tServletContext is null";
+			}
+			throw new ResourceNotFoundException(msg);
+		}
+		catch( Exception fnfe )
+		{
+			/*
+			 *  log and convert to a general Velocity ResourceNotFoundException
+			 */            
+			throw new ResourceNotFoundException( fnfe.getMessage() );
+		}
+        
+		return result;
+	}
+

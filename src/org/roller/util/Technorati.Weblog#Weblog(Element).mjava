@@ -1,0 +1,15 @@
+        public Weblog(Element elem) throws Exception {
+            mName = getString(elem,"name");
+            mUrl = getString(elem,"url");
+            mRssurl = getString(elem,"rssurl");
+            mLastupdate = getString(elem,"lastupdate");
+            mNearestpermalink = getString(elem,"nearestpermalink");
+            mExcerpt = getString(elem,"excerpt");
+            try { 
+                mInboundlinks = getInt(elem,"inboundlinks");
+            } catch (Exception ignored) {}
+            try { 
+                mInboundblogs = getInt(elem,"inboundblogs");
+            } catch (Exception ignored) {}
+        }
+

@@ -1,0 +1,23 @@
+    //------------------------------------------------------------------------------
+    /** 
+     * Test get of introspection URI
+     */
+    public void testGetIntrospection() throws Exception
+    {
+        UserData user = (UserData)mUsersCreated.get(0);        
+                
+        MockHttpServletRequest mockRequest = getMockFactory().getMockRequest();
+        mockRequest.addHeader("X-WSSE", 
+                generateWSSEHeader(user.getUserName(), user.getPassword()));
+        mockRequest.setContextPath("/atom");
+        mockRequest.setPathInfo("/" + user.getUserName());
+        getServletModule().doGet();
+
+        String output = getServletModule().getOutput();
+        SAXBuilder builder = new SAXBuilder();
+        Document doc = builder.build(new StringReader(output));
+        
+        AtomService service = AtomService.documentToService(doc);
+        assertEquals(1, service.getWorkspaces().size());
+    }
+

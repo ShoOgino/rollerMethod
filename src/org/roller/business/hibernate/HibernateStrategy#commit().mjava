@@ -1,0 +1,26 @@
+    //-------------------------------------------------------------------------
+    /** 
+     * Commits current transaction, if there is one, does not release session. 
+     */
+    public void commit() throws RollerException
+    {
+        try
+        {
+            if (mSessionTLS.get()!=null)
+            {
+                getSession().flush();
+
+                // can't call commit when autocommit is true
+                if (!getSession().connection().getAutoCommit())
+                {
+                    getSession().connection().commit();
+                }
+            }
+        }
+        catch (Exception he) // HibernateExeption or SQLException
+        {
+            newSession();
+            throw new RollerException(he);
+        }
+    }
+

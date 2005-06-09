@@ -1,0 +1,14 @@
+    /** Encapsulates RefererManager */
+    public int getTotalHits()
+    {
+        try
+        {
+            return mRefererMgr.getTotalHits(mRollerReq.getWebsite());
+        }
+        catch (RollerException e)
+        {
+            mLogger.error("PageModel getTotalHits()", e);
+        }
+        return 0;
+    }
+

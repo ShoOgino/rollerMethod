@@ -1,0 +1,21 @@
+    public synchronized List getTopSubscriptions(int max) throws RollerException
+    {
+        if (topSubscriptions == null)
+        {
+            try
+            {
+                Session session = ((HibernateStrategy)strategy).getSession();
+                Criteria criteria = 
+                        session.createCriteria(PlanetSubscriptionData.class);
+                criteria.setMaxResults(max);
+                criteria.addOrder(Order.desc("inboundblogs"));
+                topSubscriptions = criteria.list();
+            }
+            catch (HibernateException e)
+            {
+                throw new RollerException(e);
+            }
+        }
+        return topSubscriptions;
+    }
+

@@ -1,0 +1,16 @@
+    Directory getFSDirectory(boolean delete)
+    {
+        Directory directory = null;
+
+        try
+        {
+            directory = FSDirectory.getDirectory(indexDir, delete);
+        }
+        catch (IOException e)
+        {
+            mLogger.error("Problem accessing index directory", e);
+        }
+
+        return directory;
+    }
+

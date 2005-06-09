@@ -1,0 +1,35 @@
+    /** 
+     * @see org.roller.model.WeblogManager#checkWeblogCategoryName(org.roller.pojos.WeblogCategoryData)
+     */
+    public boolean isDuplicateWeblogCategoryName(WeblogCategoryData cat) 
+        throws RollerException
+    {        
+        // ensure that no sibling categories share the same name
+        WeblogCategoryData parent = 
+            null == cat.getId() ? (WeblogCategoryData)cat.getNewParent() : cat.getParent();
+           
+        if (null != parent) // don't worry about root
+        {
+            List sameNames;
+            try
+            {
+                Session session = ((HibernateStrategy)mStrategy).getSession();
+                Criteria criteria = session.createCriteria(WeblogCategoryAssoc.class);
+                criteria.createAlias("category", "c");
+                criteria.add(Expression.eq("c.name", cat.getName()));
+                criteria.add(Expression.eq("ancestorCategory", parent));
+                criteria.add(Expression.eq("relation", Assoc.PARENT));
+                sameNames = criteria.list();
+            }
+            catch (HibernateException e)
+            {
+                throw new RollerException(e);        
+            }
+            if (sameNames.size() > 1) 
+            {
+                return true;        
+            }           
+        }
+        return false;
+    }
+

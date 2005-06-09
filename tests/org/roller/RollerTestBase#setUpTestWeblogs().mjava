@@ -1,0 +1,41 @@
+    //-----------------------------------------------------------------------
+    /** If you use this, call tearDownTestWeblogs() */
+    public void setUpTestWeblogs() throws Exception
+    {
+        UserManager umgr = getRoller().getUserManager();
+        WeblogManager wmgr = getRoller().getWeblogManager();
+
+        // Loop to create weblogs
+        for (int i=0; i<mBlogCount; i++)
+        {
+            getRoller().begin(UserData.SYSTEM_USER);
+
+            UserData ud = createUser(umgr,
+                "testuser"+i,         // userName
+                "password",           // password
+                "Test User #"+i,      // fullName
+                "test"+i+"@test.com"  // emailAddress
+                );
+            WebsiteData website = umgr.getWebsite(ud.getUserName());
+            mWebsites.add(website);
+            mUsersCreated.add(ud);
+
+            getRoller().commit();
+
+            mLogger.debug("Created user "+ud.getUserName());
+
+            // ensure that the first weblog entry created is the newest
+            mCalendar = Calendar.getInstance();
+            mCalendar.setTime(new Date());
+
+            // create categories
+            getRoller().begin(UserData.SYSTEM_USER);
+            website  = umgr.retrieveWebsite(website.getId());
+            WeblogCategoryData rootCat = wmgr.getRootWeblogCategory(website);
+            createCategoryPostsAndComments(0, wmgr, website, rootCat);
+            getRoller().commit();
+        }
+
+        // commit all the objects
+    }
+

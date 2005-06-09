@@ -1,0 +1,17 @@
+    //-----------------------------------------------------------------------
+    /**
+     *  Gets the hard-drive location of the upload directory.
+     */
+    public static String getUploadDir(ServletContext app)
+    {
+        // ACK ... this really isn't the right place for this lookup!!
+        String uploaddir = null;
+        try 
+        {
+            uploaddir = RollerFactory.getRoller().getFileManager().getUploadDir();
+        } 
+        catch(Exception e) {}
+        
+        return uploaddir;
+    }
+

@@ -1,0 +1,35 @@
+	/**
+	 * Loads model and forwards to main.page.
+     */
+	public ActionForward execute(
+		ActionMapping mapping, ActionForm form,
+		HttpServletRequest req, HttpServletResponse res)
+		throws Exception
+	{        
+        RollerContext rctx = RollerContext.getRollerContext(req);
+		
+        req.setAttribute("version",rctx.getRollerVersion());
+        req.setAttribute("buildTime",rctx.getRollerBuildTime());
+        req.setAttribute("baseURL", rctx.getContextUrl(req));
+        req.setAttribute("data", new MainPageData(req));
+        
+        /* I am pretty sure this value isn't used on the display anymore, 
+         * but I am scared to remove it ... Allen G */
+        boolean allowNewUsers = 
+                RollerRuntimeConfig.getBooleanProperty("users.registration.enabled");
+
+        java.security.Principal prince = req.getUserPrincipal();
+        if (prince != null) 
+        {
+            req.setAttribute("loggedIn",Boolean.TRUE);
+            req.setAttribute("userName",prince.getName());
+        } 
+        else if (allowNewUsers)
+        {   
+            req.setAttribute("allowNewUsers",Boolean.TRUE);
+        }
+        req.setAttribute("leftPage","/theme/status.jsp");
+        
+        return mapping.findForward("main.page");
+	}
+

@@ -1,0 +1,26 @@
+    /** 
+     * Consistency checker, find and optionally delete orphans. 
+     */
+    public static void main(String[] args) throws Exception
+    {
+        Properties props = new Properties();
+        props.load(new FileInputStream("rollerdb.properties"));
+        Connection con = createConnection(props,"");
+        
+        boolean delete = false;
+        boolean verbose = false;
+        if (args.length > 0) 
+        {
+            if ("-purge".equals(args[0])) 
+            {
+                delete = true;
+            }
+            else if ("-v".equals(args[0]))
+            {
+                verbose = true;
+            }
+        }        
+        
+        findAndDeleteOrphans(con, delete, verbose);
+    }
+

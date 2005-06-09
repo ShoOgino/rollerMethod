@@ -1,0 +1,54 @@
+    /**
+     * Save file to website's resource directory.
+     * @param site Website to save to
+     * @param name Name of file to save
+     * @param size Size of file to be saved
+     * @param is Read file from input stream
+     */
+    public void saveFile(WebsiteData site, String name, long size, InputStream is)
+            throws RollerException
+    {
+        if (!canSave(site, name, size, new RollerMessages())) 
+        {
+            throw new RollerException("ERROR: upload denied");
+        }
+        
+        byte[] buffer = new byte[8192];
+        int bytesRead = 0;
+        String dir = this.upload_dir;
+        String userName = site.getUser().getUserName();
+
+        File dirPath = new File(dir + File.separator + userName);
+        if (!dirPath.exists())
+        {
+            dirPath.mkdirs();
+        }
+        OutputStream bos = null;
+        try
+        {
+            bos = new FileOutputStream(
+                    dirPath.getAbsolutePath() + File.separator + name);
+            while ((bytesRead = is.read(buffer, 0, 8192)) != -1)
+            {
+                bos.write(buffer, 0, bytesRead);
+            }
+        }
+        catch (Exception e)
+        {
+            throw new RollerException("ERROR uploading file", e);
+        }
+        finally 
+        {
+            try 
+            {
+                bos.flush();
+                bos.close();
+            } 
+            catch (Exception ignored) {}
+        }
+        if (mLogger.isDebugEnabled())
+        {
+            mLogger.debug("The file has been written to \"" + dir + userName + "\"");
+        }
+    }
+

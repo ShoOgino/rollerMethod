@@ -1,0 +1,45 @@
+    /**
+     * Pass the String through any PagePlugins that have been
+     * assigned to the PageHelper, as selected by the Entry.
+     * 
+     * @param str
+     * @return
+     */
+    public String renderPlugins(WeblogEntryData entry)
+    {
+        // we have to make a copy to temporarily store the
+        // changes wrought by Plugins (otherwise they might
+        // end up persisted!).
+        WeblogEntryData copy = new WeblogEntryData(entry);
+        
+        if (mPagePlugins != null)
+        {
+            List entryPlugins = copy.getPluginsList();
+            // if no Entry plugins, don't bother looping.
+            if (entryPlugins != null && !entryPlugins.isEmpty())
+            {    
+                // need to do this to tell ReadMore not to do its job
+                // if we are in the "view one Entry" page.
+                if (mRollerReq == null || mRollerReq.getWeblogEntry() != null)
+                {
+                    mSkipFlag = true;
+                }
+                
+                // now loop over mPagePlugins, matching
+                // against Entry plugins (by name):
+                // where a match is found render Plugin.
+                Iterator iter = mPagePlugins.iterator();
+                PagePlugin pagePlugin = null;
+                while (iter.hasNext())
+                {
+                    pagePlugin = (PagePlugin)iter.next();
+                    if (entryPlugins.contains(pagePlugin.getName()))
+                    {
+                        copy.setText((pagePlugin).render(copy, mSkipFlag));
+                    }
+                }
+            }
+        }
+        return copy.getText();
+    }
+

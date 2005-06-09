@@ -1,0 +1,13 @@
+    public Set getSubscriptions() 
+    {
+        Set set = new TreeSet();
+        Iterator assocs = getGroupSubscriptionAssocs().iterator();
+        while (assocs.hasNext())
+        {
+            PlanetGroupSubscriptionAssoc assoc = 
+                    (PlanetGroupSubscriptionAssoc)assocs.next();
+            set.add(assoc.getSubscription());
+        }
+        return set;
+    }
+

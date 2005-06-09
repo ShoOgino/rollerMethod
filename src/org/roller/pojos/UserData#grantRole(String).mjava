@@ -1,0 +1,14 @@
+    /**
+     * Grant to user role specified by role name.
+     * @param roleName Name of role to be granted.
+     */
+    public void grantRole(String roleName) throws RollerException 
+    {
+        if (!hasRole(roleName))
+        {
+            RoleData role = new RoleData(null, this, roleName);
+            RollerFactory.getRoller().getUserManager().storeRole(role);
+            roles.add(role);
+        }
+    }
+

@@ -1,0 +1,44 @@
+    // ------------------------------------------------------------- Properties
+    //--------------------------------------------------------- Public Methods
+    /**
+     * Intialize the hyperlink.
+     * 
+     * @exception JspException
+     *                if a JSP exception has occurred
+     */
+    public int doStartTag() throws JspException
+    {
+        // Special case for name anchors
+        if (linkName != null)
+        {
+            StringBuffer results = new StringBuffer("<a name=\"");
+            results.append(linkName);
+            results.append("\">");
+            return (EVAL_BODY_TAG);
+        }
+        // Generate the hyperlink URL
+        Map params = RequestUtils.computeParameters(pageContext, paramId,
+                        paramName, paramProperty, paramScope, name, property,
+                        scope, transaction);
+        String url = null;
+        try
+        {
+            url = RequestUtils.computeURL(pageContext, forward, href, page,
+                            params, anchor, false);
+        }
+        catch (MalformedURLException e)
+        {
+            RequestUtils.saveException(pageContext, e);
+            throw new JspException(messages.getMessage("rewrite.url", e
+                            .toString()));
+        }
+        // Generate the opening anchor element
+        hrefURL = new StringBuffer("<a href=\"");
+        hrefURL.append(url);
+        if (cat.isDebugEnabled())
+            cat.debug("hrefURL = '" + hrefURL.toString());
+        // Evaluate the body of this tag
+        this.text = null;
+        return (EVAL_BODY_TAG);
+    }
+

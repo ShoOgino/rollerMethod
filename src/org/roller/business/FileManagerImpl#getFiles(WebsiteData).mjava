@@ -1,0 +1,12 @@
+    /**
+     * Get collection files in website's resource directory.
+     * @param site Website
+     * @return Collection of files in website's resource directory
+     */
+    public File[] getFiles(WebsiteData site) throws RollerException
+    {
+        String dir = this.upload_dir + site.getUser().getUserName();
+        File uploadDir = new File(dir);
+        return uploadDir.listFiles();
+    }
+

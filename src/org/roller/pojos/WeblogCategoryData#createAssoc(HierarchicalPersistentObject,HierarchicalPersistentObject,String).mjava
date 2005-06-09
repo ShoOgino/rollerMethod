@@ -1,0 +1,17 @@
+    /** 
+     * @see org.roller.pojos.HierarchicalPersistentObject#createAssoc(
+     * org.roller.pojos.HierarchicalPersistentObject, 
+     * org.roller.pojos.HierarchicalPersistentObject, java.lang.String)
+     */
+    public Assoc createAssoc(
+        HierarchicalPersistentObject object, 
+        HierarchicalPersistentObject associatedObject, 
+        String relation) throws RollerException
+    {
+        WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+        return wmgr.createWeblogCategoryAssoc(
+            (WeblogCategoryData)object, 
+            (WeblogCategoryData)associatedObject, 
+            relation);
+    }
+

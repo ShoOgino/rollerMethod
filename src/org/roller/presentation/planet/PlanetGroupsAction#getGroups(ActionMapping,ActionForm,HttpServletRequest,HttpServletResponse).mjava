@@ -1,0 +1,40 @@
+    /** Populate page model and forward to subscription page */
+    public ActionForward getGroups(ActionMapping mapping,
+            ActionForm actionForm, HttpServletRequest request,
+            HttpServletResponse response) throws IOException, ServletException
+    {
+        ActionForward forward = mapping.findForward("planetGroups.page");
+        try
+        {
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            if (rreq.isUserAuthorizedToEdit())
+            {
+                Roller roller = rreq.getRoller();
+                PlanetManager planet = roller.getPlanetManager();
+                PlanetGroupForm form = (PlanetGroupForm)actionForm;
+                if (request.getParameter("groupHandle") != null)
+                {
+                    String feedUrl = request.getParameter("groupHandle");
+                    PlanetGroupData group = planet.getGroup(feedUrl);
+                    form.copyFrom(group, request.getLocale());
+                }
+                else 
+                {
+                    form.doReset(mapping, request);
+                }
+                request.setAttribute("model", 
+                    new GroupsPageModel(request, response, mapping));
+            }
+            else
+            {
+                forward = mapping.findForward("access-denied");
+            }
+        }
+        catch (Exception e)
+        {
+            request.getSession().getServletContext().log("ERROR", e);
+            throw new ServletException(e);
+        }
+        return forward;
+    }
+

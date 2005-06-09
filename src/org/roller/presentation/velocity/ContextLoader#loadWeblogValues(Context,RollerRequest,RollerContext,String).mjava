@@ -1,0 +1,29 @@
+    /**
+     * @param ctx
+     * @param rreq
+     * @param rollerCtx
+     * @param userName
+     */
+    private static void loadWeblogValues(
+       Context ctx, RollerRequest rreq, RollerContext rollerCtx, String userName)
+       throws RollerException
+    {
+        // if there is an "_entry" page, only load it once
+        WebsiteData website = rreq.getRoller().getUserManager().getWebsite(userName);
+        PageModel pageModel = (PageModel)ctx.get("pageModel");
+        if (website != null && pageModel != null) 
+        {
+            /* alternative display pages - customization */
+            PageData entryPage = pageModel.getUsersPageByName(website, "_entry");
+            if (entryPage != null)
+            {
+                ctx.put("entryPage", entryPage);
+            }
+            PageData descPage = pageModel.getUsersPageByName(website, "_desc");
+            if (descPage != null)
+            {
+                ctx.put("descPage", descPage);
+            }
+        }
+    }
+

@@ -1,0 +1,15 @@
+    public void removeAllAutoPings() throws RollerException
+    {
+        try
+        {
+            Session session = ((HibernateStrategy) persistenceStrategy).getSession();
+            Criteria criteria = session.createCriteria(AutoPingData.class);
+            List allAutoPings = criteria.list();
+            removeAutoPings(allAutoPings);
+        }
+        catch (HibernateException e)
+        {
+            throw new RollerException(e);
+        }
+    }
+
