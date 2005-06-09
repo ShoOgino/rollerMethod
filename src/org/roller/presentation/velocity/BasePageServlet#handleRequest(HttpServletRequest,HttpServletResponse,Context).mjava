@@ -1,62 +1,0 @@
-    public Template handleRequest( HttpServletRequest request,
-                                   HttpServletResponse response,
-                                   Context ctx ) throws Exception
-    {
-        String pid = null;
-        Template outty = null;
-        Exception pageException = null;        
-        try
-        {
-            PageContext pageContext =
-                JspFactory.getDefaultFactory().getPageContext(
-                    this, request, response,"", true, 8192, true);
-            // Needed to init request attributes, etc.
-            RollerRequest rreq = RollerRequest.getRollerRequest(pageContext);            UserManager userMgr = rreq.getRoller().getUserManager();            WebsiteData wd = rreq.getWebsite();                        PageData pd = null;
-            // If request specified the page, then go with that
-            if ( rreq.getPage() != null )
-            {                pd = rreq.getPage();
-                pid = pd.getId();
-            }
-            // If page not available from request, then use website's default
-            else if ( rreq.getPage() == null && wd != null )
-            {
-                pd = userMgr.retrievePage(wd.getDefaultPageId());
-                pid = pd.getId();
-            }
-            // Still no page ID, then we have a problem
-            if ( pid == null )
-            {
-                throw new ResourceNotFoundException("Page not found");
-            }                        // if page has an extension - use that to set the contentType            int period = pd.getLink().indexOf('.');            if (period > -1) {                String extension = pd.getLink().substring(period+1);                if ("js".equals(extension)) {                	extension = "javascript";                }                response.setContentType("text/" + extension);            }
-            // Made it this far, populate the Context
-            ContextLoader.setupContext( ctx, rreq, response );            
-            // run the page
-            outty =  getTemplate( pid, "UTF-8" );                        /**             * User can define a Decorator Template.             */            if (wd != null)            {                // parse/merge Page template                StringWriter sw = new StringWriter();                outty.merge(ctx, sw);                ctx.put("decorator_body", sw.toString());                                // replace outty with decorator Template                outty = findDecorator(ctx.get("decorator"), userMgr, wd);                            }
-        }
-        catch( ParseErrorException pee )
-        {
-			pageException = pee;
-            response.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
-        }
-        catch( ResourceNotFoundException rnfe )
-        {
-			pageException = rnfe;
-            response.setStatus( HttpServletResponse.SC_NOT_FOUND );
-        }
-        catch( RollerException re )
-        {
-			pageException = re;
-            response.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
-        }
-        catch( Exception e )
-        {
-			pageException = e;
-            response.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        }
-        if (pageException != null)
-        {
-        	mLogger.error("EXCEPTION: in RollerServlet", pageException);
-			request.setAttribute("DisplayException", pageException);
-        }
-        return outty;
-    }
