@@ -1,0 +1,14 @@
+    /**
+     * Creates and stores a pending PermissionsData for user and website specified.
+     */
+    public PermissionsData inviteUser(WebsiteData website, 
+            UserData user, short mask) throws RollerException
+    {
+        PermissionsData perms = new PermissionsData();
+        perms.setWebsite(website);
+        perms.setUser(user);
+        perms.setPermissionMask(mask);
+        mStrategy.store(perms);
+        return perms;
+    }
+
