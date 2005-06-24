@@ -1,0 +1,15 @@
+    public boolean canSave() throws RollerException
+    {
+        Roller roller = RollerFactory.getRoller();
+        if (roller.getUser().equals(UserData.SYSTEM_USER)) 
+        {
+            return true;
+        }
+        if (getWebsite().hasUserPermissions(
+           roller.getUser(), (short)(PermissionsData.ADMIN|PermissionsData.AUTHOR)))
+        {
+            return true;
+        }
+        return false;
+    }
+
