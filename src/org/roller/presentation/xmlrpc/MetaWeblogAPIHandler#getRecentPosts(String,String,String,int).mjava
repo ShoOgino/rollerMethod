@@ -17,7 +17,7 @@
         mLogger.info("     UserId: " + userid);
         mLogger.info("     Number: " + numposts);
 
-        WebsiteData website = validate(userid,password);
+        WebsiteData website = validate(blogid, userid,password);
 
         try
         {
@@ -43,7 +43,7 @@
                     while (entryIter.hasNext())
                     {
                         WeblogEntryData entry = (WeblogEntryData)entryIter.next();
-                        results.addElement(createPostStruct(entry));
+                        results.addElement(createPostStruct(entry, userid));
                     }
                 }
             }

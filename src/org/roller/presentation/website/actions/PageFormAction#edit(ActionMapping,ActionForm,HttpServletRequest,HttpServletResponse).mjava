@@ -12,12 +12,11 @@
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             if ( rreq.isUserAuthorizedToEdit() )
             {
-                UserData ud = rreq.getUser();
                 PageData pd = rreq.getPage();
                 PageForm pf = (PageForm)actionForm;
                 pf.copyFrom(pd, request.getLocale());
 
-                PageCacheFilter.removeFromCache( request,ud );
+                PageCacheFilter.removeFromCache( request, rreq.getWebsite() );
                 
                 addModelObjects(rreq);
             }

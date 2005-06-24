@@ -18,26 +18,24 @@
         try
         {
             // Get weblog entry object, put in page context
-            WeblogEntryData wd = rreq.getWeblogEntry();
-            if (wd == null || wd.getId() == null)
+            WeblogEntryData entry = rreq.getWeblogEntry();
+            WebsiteData website = entry.getWebsite();
+            if (entry == null || entry.getId() == null)
             {
                 throw new RollerException(
                     "Unable to find WeblogEntry for "
                     + request.getParameter(RollerRequest.WEBLOGENTRYID_KEY));
             }
-            if (   !wd.getWebsite().getAllowComments().booleanValue()
-                || !wd.getCommentsStillAllowed())
+            if (   !entry.getWebsite().getAllowComments().booleanValue()
+                || !entry.getCommentsStillAllowed())
             {
                 throw new RollerException("ERROR comments not allowed");
             }
             
-            request.setAttribute("blogEntry", wd);
+            request.setAttribute("blogEntry", entry);
 
-            // get the User to which the blog belongs
-            UserData user = wd.getWebsite().getUser();
-            
             // TODO: A hack to be replaced by Object.canEdit()
-            request.setAttribute(RollerRequest.OWNING_USER, user);
+            request.setAttribute(RollerRequest.OWNING_WEBSITE, website);
 
             // Save comment
             WeblogManager mgr = rreq.getRoller().getWeblogManager();
@@ -45,7 +43,7 @@
             CommentData cd = new CommentData();
             RequestUtils.populate(cf, request);
             cf.copyTo(cd, request.getLocale());
-            cd.setWeblogEntry(wd);
+            cd.setWeblogEntry(entry);
             cd.setRemoteHost(request.getRemoteHost());
             cd.setPostTime(new java.sql.Timestamp(System.currentTimeMillis()));
             
@@ -55,17 +53,17 @@
                 {
                     cd.save();
                     rreq.getRoller().commit();
-                    reindexEntry(rreq.getRoller(), wd);
+                    reindexEntry(rreq.getRoller(), entry);
 
                     // Refresh user's entries in page cache
-                    PageCacheFilter.removeFromCache(request, user);
+                    PageCacheFilter.removeFromCache(request, website);
 
                     // Put array of comments in context
-                    List comments = mgr.getComments(wd.getId());
+                    List comments = mgr.getComments(entry.getId());
                     request.setAttribute("blogComments", comments);
 
                     // MR: Added functionality to e-mail comments
-                    sendEmailNotification(request, rreq, wd, cd, user,comments);
+                    sendEmailNotification(request, rreq, entry, cd, website, comments);
                     
                     super.doPost(request, response);
                     return;

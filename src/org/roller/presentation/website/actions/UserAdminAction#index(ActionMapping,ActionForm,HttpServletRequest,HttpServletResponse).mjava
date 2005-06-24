@@ -18,11 +18,10 @@
 				
 				// if admin requests an index be re-built, do it
 				IndexManager manager = rreq.getRoller().getIndexManager();								 
-				manager.rebuildUserIndex();
+				manager.rebuildWebsiteIndex();
  				request.getSession().setAttribute(
 					RollerSession.STATUS_MESSAGE,
-						"Successfully scheduled rebuild of index for '" 
-						+ uaf.getUserName() + "'");
+						"Successfully scheduled rebuild of index for");
 			}
 		}
 		catch (Exception e)

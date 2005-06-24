@@ -4,9 +4,9 @@
     public AtomCollection getCollectionOfResources(
             String[] pathInfo, Date start, Date end, int offset) throws Exception
     {
-        String username = pathInfo[0];
+        String handle = pathInfo[0];
         String absUrl = mRollerContext.getAbsoluteContextUrl(mRequest);
-        WebsiteData website = mRoller.getUserManager().getWebsite(username);
+        WebsiteData website = mRoller.getUserManager().getWebsiteByHandle(handle);
         FileManager fmgr = mRoller.getFileManager();
         File[] files = fmgr.getFiles(website);
         if (canView(website)) 
@@ -18,7 +18,7 @@
                 member.setTitle(files[i].getName());
                 member.setUpdated(new Date(files[i].lastModified()));
                 member.setHref(absUrl 
-                    + "/atom/" + username + "/resource/" + files[i].getName() );
+                    + "/atom/" + website.getHandle() + "/resource/" + files[i].getName() );
                 col.addMember(member);
             }
             return col;

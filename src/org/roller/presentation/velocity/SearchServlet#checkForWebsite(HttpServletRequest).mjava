@@ -1,0 +1,25 @@
+    /**
+     * Look in PathInfo so req.getRemoteUser() doesn't interfere.
+     * 
+     * @param request
+     * @return
+     */
+    private boolean checkForWebsite(HttpServletRequest request)
+    {
+        if (StringUtils.isNotEmpty(
+                request.getParameter(RollerRequest.WEBSITEHANDLE_KEY))) 
+        {
+            return true;
+        }
+        
+        String pathInfoStr = request.getPathInfo();
+        pathInfoStr = (pathInfoStr!=null) ? pathInfoStr : "";            
+        
+        String[] pathInfo = StringUtils.split(pathInfoStr,"/");            
+        if ( pathInfo.length > 0 )
+        {
+            return true; // is a user page
+        }
+        return false;
+    }
+

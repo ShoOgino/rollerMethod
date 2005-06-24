@@ -21,7 +21,7 @@
         mLogger.info("    Publish: " + publish);
         mLogger.info("    Content:\n " + content);
 
-        WebsiteData website = validate(userid,password);
+        WebsiteData website = validate(blogid, userid,password);
 
         // extract the title from the content
         String title = "";
@@ -52,7 +52,7 @@
 
             entry.save();
             roller.commit();
-            flushPageCache(userid);
+            flushPageCache(entry.getWebsite());
 /*
             String blogUrl = Utilities.escapeHTML( 
                 RollerContext.getRollerContext(req).getAbsoluteContextUrl(req)

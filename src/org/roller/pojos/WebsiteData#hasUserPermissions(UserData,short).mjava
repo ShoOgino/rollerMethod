@@ -1,0 +1,26 @@
+    /**
+     * Returns true if user has all permissions specified by mask.
+     */
+    public boolean hasUserPermissions(UserData user, short mask)
+    {
+        PermissionsData userPerms = null;
+        Iterator iter = getPermissions().iterator();
+        while (iter.hasNext())
+        {
+            PermissionsData perms = (PermissionsData) iter.next();
+            if (perms.getUser().getId().equals(user.getId())) 
+            {
+                userPerms = perms;
+                break;
+            }
+        }
+        if (!userPerms.isPending())
+        {
+            if (userPerms != null && (userPerms.getPermissionMask() & mask) > 0) 
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+

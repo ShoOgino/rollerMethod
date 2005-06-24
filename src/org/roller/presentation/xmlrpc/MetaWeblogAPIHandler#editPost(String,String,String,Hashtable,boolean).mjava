@@ -18,9 +18,11 @@
         mLogger.info("     UserId: " + userid);
         mLogger.info("    Publish: " + publish);
 
-        validate(userid,password);
-
         Roller roller = RollerRequest.getRollerRequest().getRoller();
+        WeblogManager weblogMgr = roller.getWeblogManager();
+        WeblogEntryData entry = weblogMgr.retrieveWeblogEntry(postid);
+
+        validate(entry.getWebsite().getHandle(), userid,password);
 
         Hashtable postcontent = struct;
         String description = (String)postcontent.get("description");
@@ -38,13 +40,9 @@
 
         try
         {
-            WeblogManager weblogMgr = roller.getWeblogManager();
 
             Timestamp current =
                 new Timestamp(System.currentTimeMillis());
-
-            WeblogEntryData entry =
-                weblogMgr.retrieveWeblogEntry(postid);
 
             if ( !title.equals("") ) entry.setTitle(title);
             entry.setText(description);
@@ -61,7 +59,7 @@
 
             entry.save();
             roller.commit();
-            flushPageCache(userid);
+            flushPageCache(entry.getWebsite());
 
             // TODO: Roller timestamps need better than 1 second accuracy
             // Until then, we can't allow more than one post per second

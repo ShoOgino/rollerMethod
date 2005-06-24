@@ -19,12 +19,12 @@
             String pageLink = mRollerReq.getPageLink();
             if ( pageLink != null )
             {
-                selfUrl = 
-                    request.getContextPath()+"/page/"+mUsername+"/"+pageLink;
+                selfUrl = request.getContextPath() + "/page/" 
+                          + mWebsite.getHandle() + "/"+pageLink;
             }
             else
             {
-                selfUrl = request.getContextPath()+"/page/"+mUsername;
+                selfUrl = request.getContextPath()+"/page/" + mWebsite.getHandle();
             }
 
             // setup weblog calendar model

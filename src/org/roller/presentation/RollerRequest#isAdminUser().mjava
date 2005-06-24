@@ -1,15 +1,10 @@
-    //------------------------------------------------------------------------
-    /** Is mRequest's user the admin user? */
+    /** 
+     * Does user have the admin role (aka global superuser)
+     */
     public boolean isAdminUser() throws RollerException
     {
-        UserData user = getUser();
-        if (user != null && user.hasRole("admin")) 
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        UserData user = getAuthenticatedUser();
+        if (user != null && user.hasRole("admin")) return true;
+        return false;
     }
 

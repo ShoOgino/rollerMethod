@@ -3,10 +3,10 @@
     public void sessionCreated(HttpSessionEvent se)
     {
         // put this in session, so that we get HttpSessionActivationListener callbacks
-        se.getSession().setAttribute( ROLLER_SESSION, this );
+        se.getSession().setAttribute(ROLLER_SESSION, this);
         
         RollerContext rctx = RollerContext.getRollerContext(
-            se.getSession().getServletContext());
+            se.getSession().getServletContext());       
         rctx.sessionCreated(se);           
     }    
 

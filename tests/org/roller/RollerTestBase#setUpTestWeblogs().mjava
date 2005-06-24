@@ -16,7 +16,7 @@
                 "Test User #"+i,      // fullName
                 "test"+i+"@test.com"  // emailAddress
                 );
-            WebsiteData website = umgr.getWebsite(ud.getUserName());
+            WebsiteData website = (WebsiteData)umgr.getWebsites(ud, null).get(0);
             mWebsites.add(website);
             mUsersCreated.add(ud);
 

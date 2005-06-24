@@ -12,26 +12,24 @@
            RollerContext.getRollerContext(rreq.getRequest());
            
         try
-        {
-            UserData ud = rreq.getUser();
-            UserManager mgr = rreq.getRoller().getUserManager();
-            String username = ud.getUserName();
-        
+        {        
             HashMap pages = rollerContext.readThemeMacros(theme);
             Iterator iter = pages.keySet().iterator();
             while ( iter.hasNext() )
             {
                 String pageName = (String) iter.next();
                 String sb = (String)pages.get( pageName );
-    
-                PageData page = mgr.getPageByName( rreq.getWebsite(), pageName );
+                UserManager umgr = rreq.getRoller().getUserManager();
+                WebsiteData website = rreq.getCurrentWebsite();
+                String handle = website.getHandle();
+                PageData page = umgr.getPageByName( rreq.getWebsite(), pageName );
                 if (page != null)
                 {
-                    PreviewResourceLoader.setTemplate(page.getId(),sb,username);
+                    PreviewResourceLoader.setTemplate(page.getId(),sb, handle);
                 }
                 else
                 {
-                    PreviewResourceLoader.setTemplate(pageName, sb, username);
+                    PreviewResourceLoader.setTemplate(pageName, sb, handle);
                 }
             }
         }

@@ -24,7 +24,7 @@
         UserData user1 = umgr.retrieveUser(user.getId());
         assertNotNull(user1);
 
-        WebsiteData website = umgr.getWebsite(user.getUserName());
+        WebsiteData website = (WebsiteData)umgr.getWebsites(user, null).get(0);
         assertNotNull(website);
 
         FolderData root = getRoller().getBookmarkManager().getRootFolder(website);
@@ -46,7 +46,7 @@
         UserData user2 = umgr.retrieveUser(user.getId());
         assertNull(user2);
 
-        WebsiteData website2 = umgr.getWebsite(user.getUserName());
+        WebsiteData website2 = (WebsiteData)umgr.getWebsites(user, null).get(0);
         assertNull(website2);
 
         assertNull(getRoller().getBookmarkManager().retrieveFolder(root.getId()));

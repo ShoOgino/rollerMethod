@@ -11,19 +11,15 @@
         if (rreq != null) 
         {
             mPageContext = rreq.getPageContext();
-            UserData user = null;
-            if ( rreq.getRequest().getAttribute(RollerRequest.OWNING_USER) != null)
+            WebsiteData website = null;
+            if ( rreq.getRequest().getAttribute(RollerRequest.OWNING_WEBSITE) != null)
             {
-                user = (UserData)
-                    rreq.getRequest().getAttribute(RollerRequest.OWNING_USER);
+                website = (WebsiteData)
+                    rreq.getRequest().getAttribute(RollerRequest.OWNING_WEBSITE);
             }
-            else if ( rreq.getUser() != null )
+            else if ( rreq.getWebsite() != null )
             {
-                user = rreq.getUser();
-            }
-            if ( user != null )
-            {       
-                mUsername = user.getUserName();       
+                website = rreq.getWebsite();
             }
         }
         

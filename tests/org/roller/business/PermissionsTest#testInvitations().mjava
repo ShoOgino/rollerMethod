@@ -6,6 +6,7 @@
      * <li> can accept invitation by setting pending to false</li>
      * <li> can get list of permissions from user </li>
      * <li> can get list of permissions from website </li>
+     * <li> users can be removed from website</li>
      * </ul>
      */
     public void testInvitations()
@@ -16,21 +17,22 @@
             String userName = "testuser0";
             String permsId;
             
+            // test invite user to website
             getRoller().begin();
             {
-                // invite user to website
                 UserData tuser = umgr.getUser(userName);       
-                WebsiteData tsite = umgr.getWebsite(userName);
+                WebsiteData tsite = (WebsiteData)umgr.getWebsites(tuser, null).get(0);
                 PermissionsData perms = umgr.inviteUser(
                         tsite, tuser, PermissionsData.LIMITED);
                 permsId = perms.getId();
             }
             getRoller().commit();  
             
+            // test user accepts invitation
             getRoller().begin();
             {
                 UserData tuser = umgr.getUser(userName);       
-                WebsiteData tsite = umgr.getWebsite(userName);
+                WebsiteData tsite = (WebsiteData)umgr.getWebsites(tuser, null).get(0);
                 
                 // can get pending permission object
                 PermissionsData perms = umgr.getPermissions(tsite, tuser);
@@ -53,10 +55,11 @@
             }
             getRoller().commit();
             
+            // test user is member of website, website has member user
             getRoller().begin();
             {
                 UserData tuser = umgr.getUser(userName);       
-                WebsiteData tsite = umgr.getWebsite(userName);
+                WebsiteData tsite = (WebsiteData)umgr.getWebsites(tuser, null).get(0);
 
                 // assert that invitation list is empty
                 assertTrue(umgr.getPendingPermissions(tuser).isEmpty());
@@ -71,15 +74,35 @@
                               ((WebsiteData)websites.get(0)).getId());
                 
                 // assert that website has user
-                List users = umgr.getUsers(tsite);
+                List users = umgr.getUsers(tsite, null);
                 assertEquals( tuser.getId(),
                               ((UserData)users.get(0)).getId());
             }
-            getRoller().commit();            
+            getRoller().commit();    
+            
+            // test user can be retired from website
+            getRoller().begin();
+            {
+                UserData tuser = umgr.getUser(userName);       
+                WebsiteData tsite = (WebsiteData)umgr.getWebsites(tuser, null).get(0);
+                umgr.retireUser(tsite, tuser);
+            }
+            getRoller().commit();
+            getRoller().begin();
+            {
+                UserData tuser = umgr.getUser(userName);       
+                WebsiteData tsite = (WebsiteData)umgr.getWebsites(tuser, null).get(0);                
+                List websites = umgr.getWebsites(tuser, null);
+                assertEquals(0, websites.size());
+                List users = umgr.getUsers(tsite, null);
+                assertEquals(0, users.size());
+            }
+            getRoller().commit();
         }
         catch (Exception e)
         {
             e.printStackTrace();
+            fail();
         }               
     }
 

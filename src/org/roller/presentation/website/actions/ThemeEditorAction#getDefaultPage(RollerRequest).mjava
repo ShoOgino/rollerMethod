@@ -8,9 +8,8 @@
 	{
 		try
 		{
-			UserData ud = rreq.getUser();
 			UserManager mgr = rreq.getRoller().getUserManager();
-			WebsiteData wd = mgr.getWebsite( ud.getUserName() );
+			WebsiteData wd = rreq.getWebsite();
 			String defaultPageId = wd.getDefaultPageId();
 			return mgr.retrievePage( defaultPageId );
 		}

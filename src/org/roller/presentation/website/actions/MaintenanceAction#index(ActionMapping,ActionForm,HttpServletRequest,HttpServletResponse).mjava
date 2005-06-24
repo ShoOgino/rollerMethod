@@ -14,9 +14,9 @@
 			RollerRequest rreq = RollerRequest.getRollerRequest(request);
 			if ( rreq.isUserAuthorizedToEdit() )
 			{
-				UserData ud = rreq.getUser();
+				WebsiteData website = rreq.getWebsite();
 				IndexManager manager = rreq.getRoller().getIndexManager();
-				manager.rebuildUserIndex();
+				manager.rebuildWebsiteIndex(website);
 				
                 ActionMessages messages = new ActionMessages();
                 messages.add(null, new ActionMessage("maintenance.message.indexed"));

@@ -20,8 +20,7 @@
                 UserManager userMgr = rreq.getRoller().getUserManager();
                 WeblogManager weblogMgr = rreq.getRoller().getWeblogManager();
 
-                UserData user = rreq.getUser();
-                WebsiteData site = userMgr.getWebsite( user.getUserName() );
+                WebsiteData site = rreq.getWebsite();
                 WeblogEntryFormEx wf = (WeblogEntryFormEx)actionForm;
                 
                 // I was getting column 'x' cannot be null, so I fixed it here.
@@ -88,7 +87,7 @@
                  
                 // Flush the page cache
                 mLogger.debug("Removing from cache");
-                PageCacheFilter.removeFromCache(request, user);
+                PageCacheFilter.removeFromCache(request, rreq.getWebsite());
 				// refresh the front page cache
                 MainPageAction.flushMainPageCache();
 

@@ -19,8 +19,7 @@
                 WeblogEntryData wd = mgr.retrieveWeblogEntry(request.getParameter("id"));
                 
                 // Flush the page cache
-                UserData user = rreq.getUser();
-                PageCacheFilter.removeFromCache(request, user);
+                PageCacheFilter.removeFromCache(request, rreq.getWebsite());
 
 				// remove the index for it
                 wd.setPublishEntry(Boolean.FALSE);

@@ -14,12 +14,11 @@
 			RollerRequest rreq = RollerRequest.getRollerRequest(request);
 			if ( rreq.isUserAuthorizedToEdit() )
 			{
-				UserData user = rreq.getUser();
-	            PageCacheFilter.removeFromCache(request, user);
+	            PageCacheFilter.removeFromCache(request, rreq.getWebsite());
 
-                ActionMessages messages = new ActionMessages();
-                messages.add(null, new ActionMessage("maintenance.message.flushed"));
-                saveMessages(request, messages);
+                 ActionMessages messages = new ActionMessages();
+                 messages.add(null, new ActionMessage("maintenance.message.flushed"));
+                 saveMessages(request, messages);
             }
         }
         catch (Exception e)

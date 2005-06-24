@@ -1,6 +1,8 @@
     public void testGetPageByLink() throws RollerException
     {
-        WebsiteData wd0 = getRoller().getUserManager().getWebsite(enabledUserName);
+        UserManager umgr = getRoller().getUserManager();
+        WebsiteData wd0 = (WebsiteData)umgr.getWebsites(
+                umgr.getUser(enabledUserName), null).get(0);
         assertNotNull(getRoller().getUserManager().getPageByLink(wd0,"Weblog"));
     }
 

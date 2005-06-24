@@ -5,7 +5,7 @@
      */
     public File[] getFiles(WebsiteData site) throws RollerException
     {
-        String dir = this.upload_dir + site.getUser().getUserName();
+        String dir = this.upload_dir + site.getHandle();
         File uploadDir = new File(dir);
         return uploadDir.listFiles();
     }

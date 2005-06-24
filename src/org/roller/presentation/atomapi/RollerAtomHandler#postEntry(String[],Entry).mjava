@@ -4,8 +4,8 @@
     public Entry postEntry(String[] pathInfo, Entry entry) throws Exception
     {
         // authenticated client posted a weblog entry
-        String username = pathInfo[0];
-        WebsiteData website = mRoller.getUserManager().getWebsite(username);
+        String handle = pathInfo[0];
+        WebsiteData website = mRoller.getUserManager().getWebsiteByHandle(handle);
         if (canEdit(website))
         {            
             // Save it and commit it

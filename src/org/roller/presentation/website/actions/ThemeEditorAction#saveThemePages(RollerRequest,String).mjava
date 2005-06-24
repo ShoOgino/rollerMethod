@@ -14,10 +14,8 @@
            
         try
         {
-            UserData ud = rreq.getUser();
             UserManager mgr = rreq.getRoller().getUserManager();
-            String username = ud.getUserName();
-            WebsiteData website = mgr.getWebsite( username );
+            WebsiteData website = rreq.getWebsite();
         
             HashMap pages = rollerContext.readThemeMacros(theme);
             Iterator iter = pages.keySet().iterator();

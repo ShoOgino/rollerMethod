@@ -1,0 +1,28 @@
+    /** 
+     * Get RollerSession from request (and add user if not already present).
+     */
+    public static RollerSession getRollerSession(HttpServletRequest request)
+    {
+        RollerSession rollerSession = null;
+        HttpSession session = request.getSession(false);
+        if (session != null) 
+        {
+            rollerSession = (RollerSession)session.getAttribute(ROLLER_SESSION);
+            Principal principal = request.getUserPrincipal();
+            if (rollerSession.getAuthenticatedUser() == null && principal != null)
+            {
+                try 
+                {
+                    UserManager umgr = RollerFactory.getRoller().getUserManager();
+                    UserData user = umgr.getUser(principal.getName());
+                    rollerSession.setAuthenticatedUser(user);
+                }
+                catch (RollerException e)
+                {
+                    mLogger.error("ERROR: getting user object");
+                }
+            }
+        }
+        return rollerSession;
+    }
+

@@ -22,7 +22,7 @@
         mLogger.info("   Template: " + templateData);
         mLogger.info("       Type: " + templateType);
 
-        validate(userid,password);
+        validate(blogid, userid, password);
 
         if (! templateType.equals("main"))
         {
@@ -38,7 +38,7 @@
             PageData page = userMgr.retrievePage(templateType);
             page.setTemplate(templateData);
             userMgr.storePage(page);
-            flushPageCache(userid);
+            flushPageCache(page.getWebsite());
 
             return true;
         }

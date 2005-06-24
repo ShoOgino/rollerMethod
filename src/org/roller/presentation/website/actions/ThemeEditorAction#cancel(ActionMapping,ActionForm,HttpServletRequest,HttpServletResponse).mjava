@@ -23,12 +23,12 @@
 			if ( rreq.isUserAuthorizedToEdit() )
 			{
 				// clear the page cache
-				UserData ud = rreq.getUser();
-				PageCacheFilter.removeFromCache( request, ud );
-                ThemeEditorForm teForm = (ThemeEditorForm)form;
+				WebsiteData website = rreq.getWebsite();
+				PageCacheFilter.removeFromCache( request, website );
+                 ThemeEditorForm teForm = (ThemeEditorForm)form;
 								
 				// clear the places holding onto the template
-				PreviewResourceLoader.clearAllTemplates( ud.getUserName() );
+				PreviewResourceLoader.clearAllTemplates( website.getHandle() );
 				request.getSession().removeAttribute(SESSION_TEMPLATE);
 				teForm.setThemeName("Custom");
 			}

@@ -17,7 +17,7 @@
                    "testuser@example.com");
 
         // get website
-        mWebsite = umgr.getWebsite(user.getUserName());
+        mWebsite = (WebsiteData)umgr.getWebsites(user, null).get(0);
         getRoller().commit();
     }
 

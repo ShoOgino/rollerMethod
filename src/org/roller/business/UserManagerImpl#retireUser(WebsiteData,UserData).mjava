@@ -1,0 +1,23 @@
+    /**
+     * Remove user permissions from a website.
+     */
+    public void retireUser(WebsiteData website, UserData user) throws RollerException
+    {
+        if (website == null) throw new RollerException("Website cannot be null");
+        if (user == null) throw new RollerException("User cannot be null");        
+        Iterator perms = website.getPermissions().iterator();
+        PermissionsData target = null;
+        while (perms.hasNext())
+        {
+            PermissionsData pd = (PermissionsData)perms.next();
+            if (pd.getUser().getId().equals(user.getId()))
+            {
+                target = pd;
+                break;
+            }
+        }
+        if (target == null) throw new RollerException("User not member of website");
+        website.removePermission(target);
+        target.remove();
+    }
+

@@ -8,8 +8,6 @@
 	{
          
         RollerRequest rreq = RollerRequest.getRollerRequest(req);
-        String userName = rreq.getUser().getUserName();
-
         try
         {
             if ( rreq.isUserAuthorizedToEdit() )
@@ -27,7 +25,7 @@
                     
                     rreq.getRoller().commit();
                     
-                    PageCacheFilter.removeFromCache( req, rreq.getUser() );
+                    PageCacheFilter.removeFromCache( req, rreq.getWebsite() );
                 }                
             }
         }
@@ -43,7 +41,7 @@
 		{
 			RollerContext rctx = RollerContext.getRollerContext(
 				rreq.getServletContext());
-			url = rctx.getContextUrl( req, userName);
+			url = rctx.getContextUrl( req, rreq.getWebsite());
 			res.sendRedirect(url);
 		}
 		catch (Exception e)

@@ -10,12 +10,12 @@
     {
         // remove user's Entries from Lucene index
         IndexManager indexManager = rreq.getRoller().getIndexManager();
-        indexManager.removeUserIndex(ud); 
+        WebsiteData website = rreq.getCurrentWebsite();
+        indexManager.removeWebsiteIndex(website); 
         
         // delete user from database
         ud.remove();
         rreq.getRoller().commit();
-        PageCacheFilter.removeFromCache( request, ud );
         ud = null;
 
         request.getSession().setAttribute(
@@ -24,7 +24,7 @@
 
         uaf.reset(mapping, request);
         
-        List users = mgr.getUsers(false);
+        List users = mgr.getUsers(null, null); 
         request.setAttribute("users", users);
         return ud;
     }

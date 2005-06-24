@@ -18,7 +18,7 @@
         mLogger.info("     UserId: " + userid);
         mLogger.info("    Publish: " + publish);
 
-        WebsiteData website = validate(userid,password);
+        WebsiteData website = validate(blogid, userid,password);
 
         Hashtable postcontent = struct;
         String description = (String)postcontent.get("description");
@@ -68,7 +68,7 @@
 
             entry.save();
             roller.commit();
-            flushPageCache(userid);
+            flushPageCache(entry.getWebsite());
 
             // TODO: Roller timestamps need better than 1 second accuracy
             // Until then, we can't allow more than one post per second

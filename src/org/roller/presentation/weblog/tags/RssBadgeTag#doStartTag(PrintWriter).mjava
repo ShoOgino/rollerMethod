@@ -11,17 +11,16 @@
 				(HttpServletRequest)pageContext.getRequest();
 			RollerRequest rreq = RollerRequest.getRollerRequest(req);
 
-			UserData ud = rreq.getUser();
-
+			WebsiteData website = rreq.getWebsite();
 			pw.println(
-				"<a href="+"\""+req.getContextPath()+"/rss/"
-                +ud.getUserName()+"\">"
-				+"<img "+"src=\""+req.getContextPath()+"/images/rssbadge.gif\" "
-				+"class=\"rssbadge\" "
-				+"alt=\"XML\""
-				+"/>"
-				+"</a>");
-		}
+        		   "<a href="+"\"" + req.getContextPath() + "/rss/"
+                + website.getHandle() + "\">"
+                + "<img "+"src=\"" + req.getContextPath() + "/images/rssbadge.gif\" "
+                + "class=\"rssbadge\" "
+                + "alt=\"XML\""
+                + "/>"
+                + "</a>");
+         }
 		catch (Exception e)
 		{
             mLogger.error("Exception",e);

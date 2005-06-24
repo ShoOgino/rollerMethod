@@ -6,20 +6,16 @@
     public void init(RollerRequest rreq)
     {
         mRollerReq = rreq;
-        UserData user = null;
-        if ( rreq.getRequest().getAttribute(RollerRequest.OWNING_USER) != null)
+        if ( rreq.getRequest().getAttribute(RollerRequest.OWNING_WEBSITE) != null)
         {
-            user = (UserData)
-                rreq.getRequest().getAttribute(RollerRequest.OWNING_USER);
+            mWebsite = (WebsiteData)
+                rreq.getRequest().getAttribute(RollerRequest.OWNING_WEBSITE);
         }
-        else if ( rreq.getUser() != null )
+        else if ( rreq.getWebsite() != null )
         {
-            user = rreq.getUser();
+            mWebsite = rreq.getWebsite();
         }
-        if ( user != null )
-        {
-            mUsername = user.getUserName();
-        }
+        mHandle = mWebsite.getHandle();
         
         try
         {
@@ -27,24 +23,18 @@
             mRefererMgr  = rreq.getRoller().getRefererManager();
             mUserMgr     = rreq.getRoller().getUserManager();
             mWeblogMgr   = rreq.getRoller().getWeblogManager();
-            
-            /** 
-             * Preload what we can for encapsulation.  What we cannot preload we
-             * will use the Managers later to fetch.
-             */
-            if ( mUsername != null )
+           
+            // Preload what we can for encapsulation.  What we cannot preload we
+            // will use the Managers later to fetch.
+
+            // Get the pages, put into context & load map
+            List pages = mUserMgr.getPages(mWebsite);
+            Iterator pageIter = pages.iterator();
+            while (pageIter.hasNext())
             {
-                // Get the pages, put into context & load map
-                WebsiteData website = mUserMgr.getWebsite(user.getUserName());
-                List pages = mUserMgr.getPages(website);
-                Iterator pageIter = pages.iterator();
-                while (pageIter.hasNext())
-                {
-                    PageData page = (PageData) pageIter.next();
-                    mPageMap.put(page.getName(), page);
-                }
+                PageData page = (PageData) pageIter.next();
+                mPageMap.put(page.getName(), page); 
             }
-            
         }
         catch (RollerException e)
         {

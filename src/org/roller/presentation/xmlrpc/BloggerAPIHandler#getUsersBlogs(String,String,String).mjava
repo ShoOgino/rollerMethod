@@ -13,31 +13,38 @@
         mLogger.info("getUsersBlogs() Called ===[ SUPPORTED ]=======");
         mLogger.info("     Appkey: " + appkey);
         mLogger.info("     UserId: " + userid);
-
-        WebsiteData website = validate(userid,password);
-
-        try
+        
+        Vector result = new Vector();
+        if (validateUser(userid, password))
         {
-            RollerRequest rreq = RollerRequest.getRollerRequest();
-            HttpServletRequest req = rreq.getRequest();
-            String contextUrl =
-                RollerContext.getRollerContext(req).getAbsoluteContextUrl(req);
-
-            Hashtable blog = new Hashtable(3);
-            blog.put("url", contextUrl+"/page/"+userid);
-            blog.put("blogid", userid);
-            blog.put("blogName", website.getName());
-
-            Vector result = new Vector();
-            result.add(blog);
-
-            return result;
+            try
+            {
+                RollerRequest rreq = RollerRequest.getRollerRequest();
+                HttpServletRequest req = rreq.getRequest();
+                String contextUrl =
+                    RollerContext.getRollerContext(req).getAbsoluteContextUrl(req);
+                
+                UserManager umgr = rreq.getRoller().getUserManager();
+                UserData user = umgr.getUser(userid);
+                List websites = umgr.getWebsites(user, Boolean.TRUE);
+                Iterator iter = websites.iterator();
+                while (iter.hasNext())
+                {
+                    WebsiteData website = (WebsiteData)iter.next();
+                    Hashtable blog = new Hashtable(3);
+                    blog.put("url", contextUrl+"/page/"+website.getHandle());
+                    blog.put("blogid", website.getHandle());
+                    blog.put("blogName", website.getName());   
+                    result.add(blog);                    
+                }
+            }
+            catch (Exception e)
+            {
+                String msg = "ERROR in BlooggerAPIHander.getUsersBlogs";
+                mLogger.error(msg,e);
+                throw new XmlRpcException(UNKNOWN_EXCEPTION, msg);
+            }
         }
-        catch (Exception e)
-        {
-            String msg = "ERROR in BlooggerAPIHander.getUsersBlogs";
-            mLogger.error(msg,e);
-            throw new XmlRpcException(UNKNOWN_EXCEPTION, msg);
-        }
+        return result;
     }
 

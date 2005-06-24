@@ -65,7 +65,7 @@
 				// will be able to find it
 				PageData page = getDefaultPage( rreq );			
 				PreviewResourceLoader.setTemplate(page.getId(), 
-					teForm.getThemeTemplate(), rreq.getUser().getUserName() );
+					teForm.getThemeTemplate(), rreq.getWebsite().getHandle() );
 				
 				// save the template in session for later editing
 				session.setAttribute(SESSION_TEMPLATE,

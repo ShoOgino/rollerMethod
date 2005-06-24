@@ -32,16 +32,12 @@
         pageHelper.initializePlugins(mPagePlugins);
         ctx.put("pageHelper", pageHelper );
 
-        // Add legacy macros too, so that old-school pages still work
-        Macros macros= new Macros(rreq.getPageContext(), pageHelper);
-        ctx.put("macros", macros);
-
         // Load standard Roller objects and values into the context 
-        String userName = loadWebsiteValues(ctx, rreq, rollerCtx );
-        loadWeblogValues( ctx, rreq, rollerCtx, userName );            
-        loadPathValues( ctx, rreq, rollerCtx, userName );                                         
-        loadRssValues( ctx, rreq, userName );                        
-        loadUtilityObjects( ctx, rreq, rollerCtx, userName ); 
+        String handle = loadWebsiteValues(ctx, rreq, rollerCtx );
+        loadWeblogValues( ctx, rreq, rollerCtx, handle );            
+        loadPathValues( ctx, rreq, rollerCtx, handle );                                         
+        loadRssValues( ctx, rreq, handle );                        
+        loadUtilityObjects( ctx, rreq, rollerCtx, handle ); 
         loadRequestParamKeys(ctx);
         loadStatusMessage( ctx, rreq );
         

@@ -16,8 +16,9 @@
         pages.put("css","CSS page content");
         umgr.addUser(user, pages, "basic", "en_US_WIN", "America/Los_Angeles");
         mRoller.commit();
-        WebsiteData mWebsite = umgr.getWebsite(user.getUserName());
         
-        return mWebsite;
+        WebsiteData website = (WebsiteData)umgr.getWebsites(user,null).get(0);
+
+        return website;
     }
 

@@ -5,11 +5,12 @@
      * @param userName
      */
     private static void loadWeblogValues(
-       Context ctx, RollerRequest rreq, RollerContext rollerCtx, String userName)
+       Context ctx, RollerRequest rreq, RollerContext rollerCtx, String handle)
        throws RollerException
     {
         // if there is an "_entry" page, only load it once
-        WebsiteData website = rreq.getRoller().getUserManager().getWebsite(userName);
+        WebsiteData website = 
+            rreq.getRoller().getUserManager().getWebsiteByHandle(handle);
         PageModel pageModel = (PageModel)ctx.get("pageModel");
         if (website != null && pageModel != null) 
         {

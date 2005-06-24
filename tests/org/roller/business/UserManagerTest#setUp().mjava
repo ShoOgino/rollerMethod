@@ -21,7 +21,8 @@
                                  "DisabledUser",
                                  "disabledUser@example.com"
         );
-        umgr.getWebsite(disabledUserName,false).setIsEnabled(Boolean.FALSE);
+        ((WebsiteData)umgr.getWebsites(disabledUser, null)
+                .get(0)).setIsEnabled(Boolean.FALSE);
 
         getRoller().commit();
     }

@@ -5,8 +5,11 @@
 
         WebsiteData wd = pd.getWebsite();
         if (pd.getId() == wd.getDefaultPageId()) {
-            mLogger.error("Refusing to remove default page from website of: " +  wd.getUser().getUserName());
-            throw new RollerException(new IllegalArgumentException("Page is default page of website."));
+            mLogger.error(
+                   "Refusing to remove default page from website with handle: " 
+                   +  wd.getHandle());
+            throw new RollerException(
+                   new IllegalArgumentException("Page is default page of website."));
         }
         removePage(id);        
     }

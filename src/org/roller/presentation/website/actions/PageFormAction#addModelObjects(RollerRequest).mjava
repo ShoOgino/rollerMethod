@@ -6,7 +6,7 @@
             
         UserManager mgr = rreq.getRoller().getUserManager();
 
-        UserData user = rreq.getUser();
+        UserData user = rreq.getAuthenticatedUser();
         request.setAttribute("user",user);
 
         WebsiteData wd = rreq.getWebsite();

@@ -28,7 +28,6 @@
                 if (userForm.getDelete())
                 {
                     // TODO: ask are you sure before deleting user
-                    PageCacheFilter.removeFromCache( request, user );
                     user = deleteUser(mapping, request, rreq, userForm, mgr, user);
                     
                     msgs.add(ActionMessages.GLOBAL_MESSAGE,
@@ -57,10 +56,6 @@
                     // Persist changes to user
                     mgr.storeUser( user );
                     rreq.getRoller().commit(); 
-                    
-                    // Flush both main page and regular page caches
-                    refreshIndexCache(request, rreq, userForm);      
-                    PageCacheFilter.removeFromCache( request, user );
                     
                     msgs.add(ActionMessages.GLOBAL_MESSAGE,
                         new ActionMessage("userSettings.saved"));

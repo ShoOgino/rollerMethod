@@ -3,6 +3,14 @@
      */
     private boolean canEdit(WeblogEntryData entry)
     {
-        return entry.getWebsite().getUser().getUserName().equals(mUsername);
+        try 
+        {
+            return entry.canSave();
+        }
+        catch (Exception e)
+        {
+            mLogger.error("ERROR: checking website.canSave()");
+        }
+        return false;
     }
 

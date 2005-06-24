@@ -5,7 +5,19 @@
         MockHttpServletRequest request = getMockFactory().getMockRequest();
         request.setContextPath("/roller");
 
-        authenticateUser(mWebsite.getUser().getUserName(), "editor");
+        UserManager umgr = null;
+        UserData user = null; 
+        try
+        {
+            umgr = getRoller().getUserManager();
+            user = (UserData)umgr.getUsers(mWebsite, null).get(0);       
+        }
+        catch (RollerException e)
+        {
+            e.printStackTrace();
+            fail();
+        }
+        authenticateUser(user.getUserName(), "editor");
         doFilters();
 
         // Setup form bean

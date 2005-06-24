@@ -32,8 +32,7 @@
                                 data.getName()));
                 saveMessages(request, uiMessages);
                 
-                UserData user = rreq.getUser();
-                PageCacheFilter.removeFromCache( request, user );
+                PageCacheFilter.removeFromCache( request, rreq.getWebsite() );
                     
                 actionForm.reset(mapping,request);                
                 

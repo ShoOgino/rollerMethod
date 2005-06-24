@@ -18,16 +18,17 @@
         mLogger.info("     PostId: " + postid);
         mLogger.info("     UserId: " + userid);
 
-        validate(userid,password);
-
         Roller roller = RollerRequest.getRollerRequest().getRoller();
         WeblogManager weblogMgr = roller.getWeblogManager();
+        WeblogEntryData entry = weblogMgr.retrieveWeblogEntry(postid);
+
+        validate(entry.getWebsite().getHandle(), userid, password);
+
         try
         {
-            WeblogEntryData entry = weblogMgr.retrieveWeblogEntry(postid);
             entry.remove();
             roller.commit();
-            flushPageCache(userid);
+            flushPageCache(entry.getWebsite());
         }
         catch (Exception e)
         {

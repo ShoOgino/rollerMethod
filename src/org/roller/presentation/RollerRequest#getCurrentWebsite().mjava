@@ -1,0 +1,10 @@
+    /**
+     * Get the current website from the Roller session, or null if none exists.
+     */
+    public WebsiteData getCurrentWebsite()
+    {
+        RollerSession rollerSession = RollerSession.getRollerSession(mRequest);
+        if (rollerSession != null) return rollerSession.getCurrentWebsite();
+        return null;
+    }
+

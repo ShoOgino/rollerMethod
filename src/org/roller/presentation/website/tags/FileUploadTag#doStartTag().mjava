@@ -19,7 +19,7 @@
             HttpServletRequest request =
                 (HttpServletRequest)pageContext.getRequest();
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            UserData user = rreq.getUser();
+            WebsiteData website = rreq.getCurrentWebsite();
             
             String maxDir = RollerRuntimeConfig.getProperty("uploads.dir.maxsize");
             String maxFile = RollerRuntimeConfig.getProperty("uploads.file.maxsize");
@@ -28,9 +28,9 @@
             
             int maxDirBytes = (int)(1024000 * maxDirMB.doubleValue());
 
-            // determine the number of bytes in user's directory
+            // determine the number of bytes in website's directory
             int userDirSize = 0;
-            File d = new File(dir + user.getUserName());
+            File d = new File(dir + website.getHandle());
             if (d.mkdirs() || d.exists())
             {
                 File[] files = d.listFiles();

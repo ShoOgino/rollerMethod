@@ -16,7 +16,7 @@
                 PageForm pf = (PageForm)actionForm;
                 pf.copyFrom(cd, request.getLocale());
 
-                UserData ud = rreq.getUser();
+                UserData ud = rreq.getAuthenticatedUser();
                 request.setAttribute("user",ud);
             }
             else

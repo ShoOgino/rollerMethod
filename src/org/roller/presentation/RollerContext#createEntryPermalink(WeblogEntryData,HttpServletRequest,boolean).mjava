@@ -18,13 +18,11 @@
 
             String dayString = DateUtil.format8chars(entry.getPubTime());
 
-            UserData ud = entry.getWebsite().getUser();
-
             link =
                 Utilities.escapeHTML(
                     baseUrl
                         + "/page/"
-                        + ud.getUserName()
+                        + entry.getWebsite().getHandle()
                         + "/"
                         + dayString
                         + "#"

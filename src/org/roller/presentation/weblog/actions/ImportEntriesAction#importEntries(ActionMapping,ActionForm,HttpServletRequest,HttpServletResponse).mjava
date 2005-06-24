@@ -15,17 +15,17 @@
             }
             else
             {
-				getXmlFiles(actionForm, rreq);
+			   getXmlFiles(actionForm, rreq);
                 ImportEntriesForm form = (ImportEntriesForm)actionForm;
                 if (StringUtils.isNotEmpty(form.getImportFileName()))
                 {
                     // "default" values
-                    UserData user = rreq.getUser();
+                    WebsiteData website = rreq.getWebsite();
 
                     // load selected file
                     ServletContext app = this.getServlet().getServletConfig().getServletContext();
                     String dir = RollerContext.getUploadDir( app );
-                    File f = new File(dir + user.getUserName() +
+                    File f = new File(dir + website.getHandle() +
                                       "/" + form.getImportFileName());
 
                     //ArchiveParser archiveParser =
@@ -42,7 +42,7 @@
                         saveMessages(request, notices);
 
                         // Flush the page cache
-                        PageCacheFilter.removeFromCache( request, user );
+                        PageCacheFilter.removeFromCache(request, website);
                         // refresh the front page cache
                         MainPageAction.flushMainPageCache();
                     }

@@ -5,9 +5,9 @@
             String[] pathInfo, Date start, Date end, int offset) 
         throws Exception
     {
-        String username = pathInfo[0];
+        String handle = pathInfo[0];
         String absUrl = mRollerContext.getAbsoluteContextUrl(mRequest);
-        WebsiteData website = mRoller.getUserManager().getWebsite(username);
+        WebsiteData website = mRoller.getUserManager().getWebsiteByHandle(handle);
         List entries = null;
         if (canView(website)) 
         {
@@ -65,7 +65,7 @@
                 member.setTitle(rollerEntry.getDisplayTitle());
                 member.setUpdated(rollerEntry.getUpdateTime());
                 member.setHref(absUrl 
-                    + "/atom/" + username + "/entry/" + rollerEntry.getId());
+                    + "/atom/" + handle + "/entry/" + rollerEntry.getId());
                 col.addMember(member);
             }
             return col;

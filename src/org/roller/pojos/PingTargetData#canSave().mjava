@@ -17,7 +17,8 @@
         {
             return true;
         }
-        if (website != null && website.getUser().equals(user))
+        if (website != null && website.hasUserPermissions(
+                user, (short)(PermissionsData.ADMIN | PermissionsData.AUTHOR))) 
         {
             return true;
         }
