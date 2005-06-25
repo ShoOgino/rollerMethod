@@ -1,7 +1,9 @@
     public synchronized List getTopSubscriptions(
             PlanetGroupData group, int max) throws RollerException
     {
-        if (topSubscriptions == null)
+        String groupHandle = (group == null) ? NO_GROUP : group.getHandle();
+        List ret = (List)topSubscriptionsByGroup.get(groupHandle);
+        if (ret == null)
         {
             try
             {
@@ -14,13 +16,14 @@
                    +"order by sub.inboundblogs desc");
                 query.setString("groupHandle", group.getHandle());
                 query.setMaxResults(max);
-                topSubscriptions = query.list();
+                ret = query.list();
             }
             catch (HibernateException e)
             {
                 throw new RollerException(e);
             }
+            topSubscriptionsByGroup.put(groupHandle, ret);
         }
-        return topSubscriptions;
+        return ret;
     }
 

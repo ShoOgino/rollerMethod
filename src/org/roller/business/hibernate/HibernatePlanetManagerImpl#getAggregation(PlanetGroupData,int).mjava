@@ -1,20 +1,14 @@
     public synchronized List getAggregation(PlanetGroupData group, int maxEntries) 
         throws RollerException
     {
-        long startTime = System.currentTimeMillis();
         List ret = null;
         try
         {
-            if (group != null) 
-            {
-                ret = (List)aggregationsByGroup.get(group);
-            }
-            else 
-            {
-                ret = aggregation;
-            }
+            String groupHandle = (group == null) ? NO_GROUP : group.getHandle();
+            ret = (List)aggregationsByGroup.get(groupHandle);
             if (ret == null) 
             {
+                long startTime = System.currentTimeMillis();
                 Session session = 
                     ((HibernateStrategy)strategy).getSession();
                 if (group != null)
@@ -48,16 +42,12 @@
                 {
                     retLastUpdated = new Date();
                 }
-                if (group != null)
-                {
-                    aggregationsByGroup.put(group, ret);
-                    lastUpdatedByGroup.put(group, retLastUpdated);
-                }
-                else
-                {
-                    aggregation = ret;
-                    lastUpdated = retLastUpdated;
-                }
+                aggregationsByGroup.put(groupHandle, ret);
+                lastUpdatedByGroup.put(groupHandle, retLastUpdated);
+
+                long endTime = System.currentTimeMillis();
+                logger.info("Generated aggregation in "
+                                    +((endTime-startTime)/1000.0)+" seconds");
             }
         }
         catch (Exception e)
@@ -65,9 +55,6 @@
             logger.error("ERROR: building aggregation for: "+group, e);
             throw new RollerException(e);
         }
-        long endTime = System.currentTimeMillis();
-        logger.info("Generated aggregation in "
-                                    +((endTime-startTime)/1000.0)+" seconds");
         return ret; 
     }
 

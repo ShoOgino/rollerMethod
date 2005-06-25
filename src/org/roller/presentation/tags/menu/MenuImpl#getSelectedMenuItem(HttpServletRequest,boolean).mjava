@@ -1,5 +1,7 @@
-	/** Get currently selected menu item in this menu 
-	 * @throws RollerException*/
+	/** 
+     * Get currently selected menu item in this menu 
+	 * @throws RollerException
+     */
 	public MenuItem getSelectedMenuItem( HttpServletRequest req, 
 			boolean returnDefault ) throws RollerException
 	{
@@ -13,6 +15,7 @@
 				selected = item;
 				break;
 			}
+		    // Set first permitted and enabled menu item in each menu as default
 			if ( item.isPermitted(req) && def == null)
 			{
 				def = item;

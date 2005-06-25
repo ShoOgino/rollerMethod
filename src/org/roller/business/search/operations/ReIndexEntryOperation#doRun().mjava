@@ -22,6 +22,7 @@
         }
         
         IndexWriter writer = beginWriting();
+        Roller roller = RollerFactory.getRoller();
         try
         {
             if (writer != null)
@@ -35,6 +36,7 @@
         }
         finally
         {
+            if (roller != null) roller.release();
             endWriting();
         }    	
     }    

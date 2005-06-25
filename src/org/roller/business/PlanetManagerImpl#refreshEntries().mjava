@@ -147,6 +147,7 @@
                 }
                 sub.purgeEntries();
                 sub.addEntries(newEntries); 
+                if (roller != null) roller.commit();
             }
             long subEndTime = System.currentTimeMillis();  
             logger.info("   " + count + " - " 

@@ -1,5 +1,13 @@
-        public PlanetPageData(HttpServletRequest req) 
+        public PlanetPageData(HttpServletRequest req) throws RollerException
         {
-            mRequest = req;
+           mRequest = req;
+           Roller roller = 
+           RollerRequest.getRollerRequest(mRequest).getRoller();  
+           PlanetConfigData cfg = roller.getPlanetManager().getConfiguration();
+           if (cfg != null)
+           {
+               mTitle = cfg.getTitle();
+               mDescription = cfg.getDescription();
+           }
         }
 

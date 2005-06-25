@@ -1,7 +1,7 @@
     public synchronized void clearCachedAggregations() 
     {
-        aggregation = null;
         aggregationsByGroup.purge();
+        topSubscriptionsByGroup.purge();
         lastUpdatedByGroup.clear();
         lastUpdated = new Date();
     }

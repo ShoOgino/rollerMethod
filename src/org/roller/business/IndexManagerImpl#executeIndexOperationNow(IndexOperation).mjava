@@ -5,7 +5,15 @@
     {
         try
         {
-            mThreadManager.executeInForeground(op);
+            // only if search is enabled
+            if(this.searchEnabled) {
+                mLogger.debug("Executing index operation now: "+op.getClass().getName());
+                RollerFactory.getRoller().getThreadManager().executeInForeground(op);
+            }
+        }
+        catch (RollerException re)
+        {
+            mLogger.error("Error getting thread manager", re);
         }
         catch (InterruptedException e)
         {

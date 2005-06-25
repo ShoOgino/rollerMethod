@@ -27,6 +27,9 @@
         String title = (String)postcontent.get("title");
         if (title == null) title = "";
 
+        Date dateCreated = (Date)postcontent.get("dateCreated");
+        if (dateCreated == null) dateCreated = (Date)postcontent.get("pubDate");
+
         String cat = null;
         if ( postcontent.get("categories") != null )
         {
@@ -49,6 +52,10 @@
             if ( !title.equals("") ) entry.setTitle(title);
             entry.setText(description);
             entry.setUpdateTime(current);
+            if (dateCreated != null) 
+            {
+                entry.setPubTime(new Timestamp(dateCreated.getTime()));
+            }
             entry.setPublishEntry(Boolean.valueOf(publish));
 
             if ( cat != null )
