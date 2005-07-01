@@ -23,7 +23,7 @@
             WebsiteData website = rreq.getWebsite();
                 
             // Request specifies popup
-            PageData page = null;
+            WeblogTemplate page = null;
             Exception pageException = null;
             try 
             {
@@ -43,7 +43,7 @@
             // User doesn't have one so return the default
             if (page == null) 
             {
-                page = new PageData("/popupcomments.vm", website, "Comments", 
+                page = new WeblogTemplate("/popupcomments.vm", website, "Comments", 
                     "Comments", "dummy_link", "dummy_template", new Date());
             }
             rreq.setPage(page);

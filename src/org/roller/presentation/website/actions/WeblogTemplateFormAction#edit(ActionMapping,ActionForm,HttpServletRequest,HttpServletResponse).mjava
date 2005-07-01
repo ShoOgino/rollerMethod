@@ -1,23 +1,25 @@
     //-----------------------------------------------------------------------
-    public ActionForward removeOk(
+    public ActionForward edit(
         ActionMapping       mapping,
         ActionForm          actionForm,
         HttpServletRequest  request,
         HttpServletResponse response)
         throws IOException, ServletException
     {
-        ActionForward forward = mapping.findForward("removePage.page");
+        ActionForward forward = mapping.findForward("editPage.page");
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             if ( rreq.isUserAuthorizedToEdit() )
             {
-                PageData cd = rreq.getPage();
-                PageForm pf = (PageForm)actionForm;
-                pf.copyFrom(cd, request.getLocale());
-
                 UserData ud = rreq.getUser();
-                request.setAttribute("user",ud);
+                WeblogTemplate pd = rreq.getPage();
+                WeblogTemplateForm pf = (WeblogTemplateForm)actionForm;
+                pf.copyFrom(pd, request.getLocale());
+
+                PageCacheFilter.removeFromCache( request,ud );
+                
+                addModelObjects(rreq);
             }
             else
             {

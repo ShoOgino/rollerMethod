@@ -9,7 +9,7 @@
     private String getDefaultPageId(RollerRequest rreq) throws RollerException {
         UserManager userMgr = rreq.getRoller().getUserManager();
         WebsiteData wd = rreq.getWebsite();
-        PageData pd = userMgr.retrievePage(wd.getDefaultPageId());
+        WeblogTemplate pd = userMgr.retrievePage(wd.getDefaultPageId());
         return pd.getId();
     }
 

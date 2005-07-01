@@ -14,12 +14,12 @@
         if (website != null && pageModel != null) 
         {
             /* alternative display pages - customization */
-            PageData entryPage = pageModel.getUsersPageByName(website, "_entry");
+            WeblogTemplate entryPage = pageModel.getUsersPageByName(website, "_entry");
             if (entryPage != null)
             {
                 ctx.put("entryPage", entryPage);
             }
-            PageData descPage = pageModel.getUsersPageByName(website, "_desc");
+            WeblogTemplate descPage = pageModel.getUsersPageByName(website, "_desc");
             if (descPage != null)
             {
                 ctx.put("descPage", descPage);

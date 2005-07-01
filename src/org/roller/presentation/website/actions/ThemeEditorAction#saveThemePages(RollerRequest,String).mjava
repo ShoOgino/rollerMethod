@@ -26,7 +26,7 @@
                 String pageName = (String) iter.next();
                 String pageContent = (String)pages.get( pageName );
     
-                PageData page = mgr.getPageByName( rreq.getWebsite(), pageName );
+                WeblogTemplate page = mgr.getPageByName( rreq.getWebsite(), pageName );
                 if (page != null)
                 {
                     // User already has page by that name, so overwrite it.
@@ -35,7 +35,7 @@
                 else
                 {
                     // User does not have page by that name, so create new page.
-                    page = new PageData( null,
+                    page = new WeblogTemplate( null,
                         website,         // website
                         pageName,        // name
                         pageName,        // description

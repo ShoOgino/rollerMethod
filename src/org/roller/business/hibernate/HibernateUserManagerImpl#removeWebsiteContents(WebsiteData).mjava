@@ -40,12 +40,12 @@
             }
             
             // remove associated pages
-            Criteria pageQuery = session.createCriteria(PageData.class);
+            Criteria pageQuery = session.createCriteria(WeblogTemplate.class);
             pageQuery.add(Expression.eq("website", website));
             List pages = pageQuery.list();
             for (Iterator iter = pages.iterator(); iter.hasNext();) 
             {
-                PageData page = (PageData) iter.next();
+                WeblogTemplate page = (WeblogTemplate) iter.next();
                 page.remove();
             }
             

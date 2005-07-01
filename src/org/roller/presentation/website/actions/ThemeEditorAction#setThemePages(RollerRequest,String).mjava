@@ -24,7 +24,7 @@
                 String pageName = (String) iter.next();
                 String sb = (String)pages.get( pageName );
     
-                PageData page = mgr.getPageByName( rreq.getWebsite(), pageName );
+                WeblogTemplate page = mgr.getPageByName( rreq.getWebsite(), pageName );
                 if (page != null)
                 {
                     PreviewResourceLoader.setTemplate(page.getId(),sb,username);

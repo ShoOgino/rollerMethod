@@ -12,9 +12,9 @@
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             if ( rreq.isUserAuthorizedToEdit() )
             {
-                PageForm form = (PageForm)actionForm;
+                WeblogTemplateForm form = (WeblogTemplateForm)actionForm;
                 UserManager mgr = rreq.getRoller().getUserManager();
-                PageData data = mgr.retrievePage(form.getId());
+                WeblogTemplate data = mgr.retrievePage(form.getId());
                 data.save(); // should through exception if no save permission
                 form.copyTo(data, request.getLocale());
                 data.setUpdateTime( new java.util.Date() );
@@ -26,7 +26,7 @@
                 rreq.getRoller().commit();
 
                 // set the (possibly) new link back into the Form bean
-                ((PageForm)actionForm).setLink( data.getLink() );
+                ((WeblogTemplateForm)actionForm).setLink( data.getLink() );
 
                 ActionMessages uiMessages = new ActionMessages();
                 uiMessages.add(ActionMessages.GLOBAL_MESSAGE, 

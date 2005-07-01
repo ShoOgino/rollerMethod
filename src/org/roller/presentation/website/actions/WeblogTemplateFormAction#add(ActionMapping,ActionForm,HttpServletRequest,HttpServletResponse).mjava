@@ -11,8 +11,8 @@
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             if ( rreq.isUserAuthorizedToEdit() )
             {
-                PageForm form = (PageForm)actionForm;
-                PageData data = new PageData();
+                WeblogTemplateForm form = (WeblogTemplateForm)actionForm;
+                WeblogTemplate data = new WeblogTemplate();
                 form.copyTo(data, request.getLocale());
                 WebsiteData hd = rreq.getWebsite();
 
