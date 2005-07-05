@@ -6,8 +6,7 @@
         try
         {
             List liveUserFeeds = new ArrayList();            
-            String baseURL = 
-                roller.getConfigManager().getRollerConfig().getAbsoluteURL();
+            String baseURL = RollerRuntimeConfig.getProperty("site.absoluteurl");
             if (baseURL == null || baseURL.trim().length()==0)
             {
                 logger.error("ERROR: cannot sync websites with Planet Roller - "
