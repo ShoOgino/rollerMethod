@@ -10,19 +10,19 @@
     {
         // if there is an "_entry" page, only load it once
         WebsiteData website = rreq.getRoller().getUserManager().getWebsite(userName);
-        PageModel pageModel = (PageModel)ctx.get("pageModel");
-        if (website != null && pageModel != null) 
+        //PageModel pageModel = (PageModel)ctx.get("pageModel");
+        if (website != null) 
         {
             /* alternative display pages - customization */
-            WeblogTemplate entryPage = pageModel.getUsersPageByName(website, "_entry");
+            Template entryPage = website.getPageByName("_entry");
             if (entryPage != null)
             {
-                ctx.put("entryPage", entryPage);
+                ctx.put("entryPage", new TemplateWrapper(entryPage));
             }
-            WeblogTemplate descPage = pageModel.getUsersPageByName(website, "_desc");
+            Template descPage = website.getPageByName("_desc");
             if (descPage != null)
             {
-                ctx.put("descPage", descPage);
+                ctx.put("descPage", new TemplateWrapper(descPage));
             }
         }
     }

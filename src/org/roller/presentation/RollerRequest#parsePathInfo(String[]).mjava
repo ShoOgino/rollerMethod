@@ -22,7 +22,7 @@
                     // we have the /username form of URL
                     mDate = getDate(true);
                     mDateString = DateUtil.format8chars(mDate);
-                    mPage = userMgr.retrievePage(mWebsite.getDefaultPageId());
+                    mPage = mWebsite.getDefaultPage();
                 }
                 else if ( pathInfo.length == 2 )
                 {
@@ -33,20 +33,20 @@
                         mDate = getDate(true);
                         mDateString = DateUtil.format8chars(mDate);
                         mPageLink = pathInfo[1];
-                        mPage = userMgr.getPageByLink(mWebsite, pathInfo[1]);
+                        mPage = mWebsite.getPageByLink(pathInfo[1]);
                     }
                     else
                     {
                         // we have the /username/datestring form of URL
                         mDateString = pathInfo[1];
-                        mPage = userMgr.retrievePage(mWebsite.getDefaultPageId());
+                        mPage = mWebsite.getDefaultPage();
                         mIsDateSpecified = true;
                     }               
                 }
                 else if ( pathInfo.length == 3 )
                 {
                     mPageLink = pathInfo[1];
-                    mPage = userMgr.getPageByLink(mWebsite, pathInfo[1]);
+                    mPage = mWebsite.getPageByLink(pathInfo[1]);
                     
                     mDate = parseDate(pathInfo[2]);
                     if ( mDate == null ) // pre-jdk1.4 --> || mDate.getYear() <= 70 )
@@ -77,7 +77,7 @@
                 {
                     // we have the /username/pagelink/datestring/anchor form of URL
                     mPageLink = pathInfo[1];
-                    mPage = userMgr.getPageByLink(mWebsite, pathInfo[1]);
+                    mPage = mWebsite.getPageByLink(pathInfo[1]);
                     
                     mDate = parseDate(pathInfo[2]);
                     mDateString = pathInfo[2];

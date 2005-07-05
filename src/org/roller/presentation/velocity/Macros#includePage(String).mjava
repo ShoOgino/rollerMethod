@@ -27,11 +27,12 @@
                        
             // Get included page template 
             RollerRequest rreq = RollerRequest.getRollerRequest(
-                (HttpServletRequest)mPageContext.getRequest());                
-            UserManager userMgr = rreq.getRoller().getUserManager();
+                (HttpServletRequest)mPageContext.getRequest()); 
+            WebsiteData website = rreq.getWebsite();
+            //UserManager userMgr = rreq.getRoller().getUserManager();
             
-            WeblogTemplate pd = userMgr.getPageByName( 
-                rreq.getWebsite(), pageName );
+            org.roller.model.Template pd = website.getPageByName(pageName);
+            
             Template vtemplate = null;
             if (pd != null)
             {

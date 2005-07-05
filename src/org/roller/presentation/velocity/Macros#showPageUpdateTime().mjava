@@ -5,7 +5,7 @@
      */
     public String showPageUpdateTime()
     {
-        WeblogTemplate pd = null;
+        org.roller.model.Template pd = null;
         RollerRequest rreq = getRollerRequest();
         try
         {
@@ -15,7 +15,7 @@
         {
             return "ERROR finding page in request: " + e.toString();
         }
-        if (pd.getUpdateTime() == null) return "";
-        return pd.getUpdateTime().toString();
+        if (pd.getLastModified() == null) return "";
+        return pd.getLastModified().toString();
     }
 

@@ -21,7 +21,7 @@
         // the Entry Day link.
         ctx.put("plainFormat", "yyyyMMdd");
 
-        ctx.put("page",            rreq.getPage() );
+        ctx.put("page",            new TemplateWrapper(rreq.getPage()));
         ctx.put("utilities",       new Utilities() );
         ctx.put("stringUtils",     new StringUtils() );        
         ctx.put("rollerVersion",   rollerCtx.getRollerVersion() );

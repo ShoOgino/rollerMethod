@@ -34,14 +34,18 @@
              */
             if ( mUsername != null )
             {
+                // if we have website from RollerRequest, use it
+                mWebsite = rreq.getWebsite();
+                if(mWebsite == null)
+                    mWebsite = mUserMgr.getWebsite(user.getUserName());
+                
                 // Get the pages, put into context & load map
-                WebsiteData website = mUserMgr.getWebsite(user.getUserName());
-                List pages = mUserMgr.getPages(website);
+                List pages = mWebsite.getPages();
                 Iterator pageIter = pages.iterator();
                 while (pageIter.hasNext())
                 {
-                    WeblogTemplate page = (WeblogTemplate) pageIter.next();
-                    mPageMap.put(page.getName(), page);
+                    Template page = (Template) pageIter.next();
+                    mPageMap.put(page.getName(), new TemplateWrapper(page));
                 }
             }
             

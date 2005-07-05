@@ -1,14 +1,19 @@
     /** Encapsulates UserManager.getPageByName() */
     public String getPageIdByName(String pageName)
     {
-        WeblogTemplate pd = (WeblogTemplate)mPageMap.get(pageName);
-        if ( pd != null ) 
-        {
-            return pd.getId();
+        mLogger.debug("looking up page ["+pageName+"]");
+        
+        String template_id = null;
+        
+        try {
+            Template pd = mWebsite.getPageByName(pageName);
+            template_id = pd.getId();
+        } catch(Exception e) {
+            mLogger.error(e);
         }
-        else
-        {
-            return null;
-        }
+        
+        mLogger.debug("returning template id ["+template_id+"]");
+        
+        return template_id;
     }
 
