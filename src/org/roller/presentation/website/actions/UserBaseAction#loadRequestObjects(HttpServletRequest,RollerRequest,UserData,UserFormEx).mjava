@@ -21,7 +21,8 @@
         // prepare themes for interface
         ServletContext ctx = rreq.getServletContext();
         RollerContext rollerContext = RollerContext.getRollerContext(ctx);
-        String[] themes = rollerContext.getThemeNames();
+        List themes = 
+                RollerFactory.getRoller().getThemeManager().getEnabledThemesList();
         request.setAttribute( "themes", themes );
 
         // prepare locales & timezones
