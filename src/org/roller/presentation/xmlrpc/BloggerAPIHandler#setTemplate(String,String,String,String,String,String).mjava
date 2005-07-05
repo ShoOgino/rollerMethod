@@ -36,7 +36,7 @@
             UserManager userMgr = roller.getUserManager();
 
             WeblogTemplate page = userMgr.retrievePage(templateType);
-            page.setTemplate(templateData);
+            page.setContents(templateData);
             userMgr.storePage(page);
             flushPageCache(userid);
 

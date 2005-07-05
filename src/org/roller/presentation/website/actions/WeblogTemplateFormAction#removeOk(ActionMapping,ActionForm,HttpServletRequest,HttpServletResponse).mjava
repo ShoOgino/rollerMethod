@@ -12,7 +12,7 @@
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             if ( rreq.isUserAuthorizedToEdit() )
             {
-                WeblogTemplate cd = rreq.getPage();
+                WeblogTemplate cd = (WeblogTemplate) rreq.getPage();
                 WeblogTemplateForm pf = (WeblogTemplateForm)actionForm;
                 pf.copyFrom(cd, request.getLocale());
 

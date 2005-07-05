@@ -19,9 +19,9 @@
             if (mLogger.isDebugEnabled())
             {
                 mLogger.debug(name + ": resource=" + resource.getLastModified() + 
-							    " vs. page=" + page.getUpdateTime().getTime());
+							    " vs. page=" + page.getLastModified().getTime());
             }
-            return page.getUpdateTime().getTime();
+            return page.getLastModified().getTime();
         }
         catch (RollerException re)
         {

@@ -13,7 +13,7 @@
             if ( rreq.isUserAuthorizedToEdit() )
             {
                 UserData ud = rreq.getUser();
-                WeblogTemplate pd = rreq.getPage();
+                WeblogTemplate pd = (WeblogTemplate) rreq.getPage();
                 WeblogTemplateForm pf = (WeblogTemplateForm)actionForm;
                 pf.copyFrom(pd, request.getLocale());
 
