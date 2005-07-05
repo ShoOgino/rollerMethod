@@ -1,0 +1,9 @@
+    protected ThemeManagerImpl() {
+        
+        // rather than be lazy we are going to load all themes from
+        // the disk preemptively during initialization and cache them
+        mLogger.debug("Initializing ThemeManagerImpl");
+        mLogger.info("Loading all themes from disk ... ");
+        this.themes = this.loadAllThemesFromDisk();
+    }
+

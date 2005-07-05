@@ -1,0 +1,38 @@
+    /**
+     * This is a convenience method which loads all the theme data from
+     * themes stored on the filesystem in the roller webapp /themes/ directory.
+     */
+    private Map loadAllThemesFromDisk() {
+        
+        Map themes = new HashMap();
+        
+        // NOTE: we need to figure out how to get the roller context path
+        String themespath = RollerConfig.getProperty("context.realpath");
+        if(themespath.endsWith(File.separator))
+            themespath += "themes";
+        else
+            themespath += File.separator + "themes";
+        
+        // first, get a list of the themes available
+        File themesdir = new File(themespath);
+        FilenameFilter filter = new FilenameFilter() {
+            public boolean accept(File dir, String name) {
+                File file =
+                        new File(dir.getAbsolutePath() + File.separator + name);
+                return file.isDirectory();
+            }
+        };
+        String[] themenames = themesdir.list(filter);
+        
+        // now go through each theme and read all it's templates
+        Theme theme = null;
+        for(int i=0; i < themenames.length; i++) {
+            theme = this.loadThemeFromDisk(themenames[i], 
+                        themespath + File.separator + themenames[i]);
+            
+            themes.put(theme.getName(), theme);
+        }
+        
+        return themes;
+    }
+

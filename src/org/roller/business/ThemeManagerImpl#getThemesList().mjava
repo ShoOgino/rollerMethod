@@ -1,0 +1,13 @@
+    /**
+     * @see org.roller.model.ThemeManager#getThemesList()
+     */
+    public List getThemesList() {
+        
+        List themes = new ArrayList(this.themes.keySet());
+        
+        // sort 'em ... the natural sorting order for Strings is alphabetical
+        Collections.sort(themes);
+        
+        return themes;
+    }
+
