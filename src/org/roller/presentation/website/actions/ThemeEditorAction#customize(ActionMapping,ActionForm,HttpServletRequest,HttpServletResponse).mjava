@@ -1,0 +1,57 @@
+    /**
+     * Customize action method.
+     *
+     * Happens when a user clicks the "Customize" button on their current theme.
+     * This method copies down all the theme templates from the currently
+     * selected theme into the users custom template pages and updates the users
+     * theme to "custom".
+     */
+    public ActionForward customize(
+            ActionMapping       mapping,
+            ActionForm          form,
+            HttpServletRequest  request,
+            HttpServletResponse response)
+            throws IOException, ServletException {
+        
+        ActionErrors errors = new ActionErrors();
+        ActionForward forward = mapping.findForward("editTheme.page");
+        try {
+            
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            if ( rreq.isUserAuthorizedToEdit() ) {
+                
+                // copy down current theme to weblog templates
+                Roller roller = RollerFactory.getRoller();
+                ThemeManager themeMgr = roller.getThemeManager();
+                
+                String username = rreq.getUser().getUserName();
+                WebsiteData website = roller.getUserManager().getWebsite(username);
+                Theme usersTheme = themeMgr.getTheme(website.getEditorTheme());
+
+                // only if custom themes are allowed
+                if(RollerRuntimeConfig.getBooleanProperty("themes.customtheme.allowed")) {
+                    try {
+                        this.saveThemePages(website, usersTheme);
+                    } catch(RollerException re) {
+                        mLogger.error(re);
+                        errors.add(null, new ActionMessage("Error customizing theme"));
+                        saveErrors(request, errors);
+                    }
+                    
+                    // make sure to flush the page cache so ppl can see the change
+                    PageCacheFilter.removeFromCache(request, rreq.getUser());
+                }
+                
+                // just take the user back home to the edit theme page
+                return this.edit(mapping, form, request, response);
+                
+            } else {
+                forward = mapping.findForward("access-denied");
+            }
+        } catch (Exception e) {
+            mLogger.error("ERROR in action",e);
+            throw new ServletException(e);
+        }
+        return forward;
+    }
+

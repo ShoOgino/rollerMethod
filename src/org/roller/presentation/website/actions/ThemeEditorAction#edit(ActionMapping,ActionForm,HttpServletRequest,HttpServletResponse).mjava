@@ -1,85 +1,51 @@
-	/**
-     * Take user to edit theme page.
+    /**
+     * Base action method.
      * 
-     * @param mapping Struts action mapping.
-     * @param form Theme editor form bean.
-     * @param request Servlet request.
-     * @param response Servlet response.
-     * @return Forward to edit-website page.
-     * @throws IOException
-     * @throws ServletException
-	 */
-	//-----------------------------------------------------------------------
-	public ActionForward edit(
-		ActionMapping       mapping,
-		ActionForm          form,
-		HttpServletRequest  request,
-		HttpServletResponse response)
-		throws IOException, ServletException
-	{
-		ActionErrors errors = new ActionErrors();
-		ActionForward forward = mapping.findForward("editTheme.page");
-		try
-		{
-			RollerRequest rreq = RollerRequest.getRollerRequest(request);
-			if ( rreq.isUserAuthorizedToEdit() )
-			{
-				loadThemes( rreq, errors, true);
-				ThemeEditorForm teForm = (ThemeEditorForm)form;
-				
-				teForm.setThemeName(null); // start fresh
+     * Shows the theme chooser page with this users current theme selected.
+     **/
+    public ActionForward edit(
+            ActionMapping       mapping,
+            ActionForm          form,
+            HttpServletRequest  request,
+            HttpServletResponse response)
+            throws IOException, ServletException {
+        
+        ActionErrors errors = new ActionErrors();
+        ActionForward forward = mapping.findForward("editTheme.page");
+        try {
+            
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            if ( rreq.isUserAuthorizedToEdit() ) {
                 
-                if (mLogger.isDebugEnabled())
-                {
-                    mLogger.debug("loaded themes, form="+teForm);
-                }  
+                // get users current theme and our themes list
+                Roller roller = RollerFactory.getRoller();
+                ThemeManager themeMgr = roller.getThemeManager();
                 
-//				// if a custom template has been previewed already,
-//				// it'll be in memory.
-//				String template = 
-//                   (String)request.getSession().getAttribute(SESSION_TEMPLATE);
-//                
-//                if (mLogger.isDebugEnabled())
-//                {
-//                    mLogger.debug("got template="+template);
-//                }
-//                
-//				if (StringUtils.isNotEmpty(template))
-//				{
-//					// load the template in memory
-//					teForm.setThemeTemplate( template );
-//                    
-//                    if (mLogger.isDebugEnabled())
-//                    {
-//                        mLogger.debug("set template");
-//                    }
-//				}
-//				// otherwise the "custom" template will need be loaded
-//				// from the current page.
-//				else
-//				{
+                String username = rreq.getUser().getUserName();
+                WebsiteData website = roller.getUserManager().getWebsite(username);
+                String currentTheme = website.getEditorTheme();
+                List themes = themeMgr.getEnabledThemesList();
                 
-				// clear any previously set themes
-                clearThemePages(rreq, 
-					(String)request.getSession(true).getAttribute(LAST_THEME)); 
-                                
-			     // load the current default page
-                WeblogTemplate page = getDefaultPage( rreq );
-					teForm.setThemeTemplate( page.getTemplate() );
-					
-					
-				//}				
-			}
-			else
-			{
-				forward = mapping.findForward("access-denied");
-			}
-		}
-		catch (Exception e)
-		{
+                // if we allow custom themes then add it to the end of the list
+                if(RollerRuntimeConfig.getBooleanProperty("themes.customtheme.allowed"))
+                    themes.add(Theme.CUSTOM);
+                
+                // on the first pass just show a preview of the current theme
+                request.setAttribute("previewTheme", currentTheme);
+                request.setAttribute("currentTheme", currentTheme);
+                request.setAttribute("themesList", themes);
+                
+                mLogger.debug("Previewing theme "+currentTheme+" to "+username);
+                
+            } else {
+                forward = mapping.findForward("access-denied");
+            }
+            
+        } catch (Exception e) {
             mLogger.error("ERROR in action",e);
-			throw new ServletException(e); 
-		}
-		return forward;
-	}
+            throw new ServletException(e);
+        }
+        
+        return forward;
+    }
 
