@@ -1,1 +1,69 @@
-    public Template handleRequest( HttpServletRequest request,            HttpServletResponse response,            Context ctx ) throws Exception {                Template outty = null;        Exception pageException = null;                try {            PageContext pageContext =                    JspFactory.getDefaultFactory().getPageContext(                    this, request, response,"", true, 8192, true);            // Needed to init request attributes, etc.            RollerRequest rreq = RollerRequest.getRollerRequest(pageContext);            UserManager userMgr = RollerFactory.getRoller().getUserManager();                        WebsiteData website = null;            if (request.getAttribute(RollerRequest.OWNING_USER) != null) {                UserData user = (UserData)                    request.getAttribute(RollerRequest.OWNING_USER);                website = userMgr.getWebsite(user.getUserName());            } else {                website = rreq.getWebsite();            }                        org.roller.model.Template page = null;                        // If request specified the page, then go with that            if (rreq.getPage() != null &&                    rreq.getRequest().getAttribute(RollerRequest.OWNING_USER) == null) {                page = rreq.getPage();                                // If page not available from request, then use website's default            } else if (website != null) {                page = website.getDefaultPage();                rreq.setPage(page);            }                        // Still no page ID, then we have a problem            if ( page == null ) {                throw new ResourceNotFoundException("Page not found");            }            // this sets up the page we want to render            outty = prepareForPageExecution(ctx, rreq, response, page);                        // if there is a decorator template then apply it            if (website != null) {                // parse/merge Page template                StringWriter sw = new StringWriter();                outty.merge(ctx, sw);                ctx.put("decorator_body", sw.toString());                                // replace outty with decorator Template                outty = findDecorator(website, (String) ctx.get("decorator"));            }                    } catch( Exception e ) {            pageException = e;            response.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR);        }                if (pageException != null) {            mLogger.error("EXCEPTION: in RollerServlet", pageException);            request.setAttribute("DisplayException", pageException);        }                return outty;    }
+    public Template handleRequest( HttpServletRequest request,
+            HttpServletResponse response,
+            Context ctx ) throws Exception {
+        
+        Template outty = null;
+        Exception pageException = null;
+        
+        try {
+            PageContext pageContext =
+                    JspFactory.getDefaultFactory().getPageContext(
+                    this, request, response,"", true, 8192, true);
+            // Needed to init request attributes, etc.
+            RollerRequest rreq = RollerRequest.getRollerRequest(pageContext);
+            UserManager userMgr = RollerFactory.getRoller().getUserManager();
+            
+            WebsiteData website = null;
+            if (request.getAttribute(RollerRequest.OWNING_USER) != null) {
+                UserData user = (UserData)
+                    request.getAttribute(RollerRequest.OWNING_USER);
+                website = userMgr.getWebsite(user.getUserName());
+            } else {
+                website = rreq.getWebsite();
+            }
+            
+            org.roller.model.Template page = null;
+            
+            // If request specified the page, then go with that
+            if (rreq.getPage() != null &&
+                    rreq.getRequest().getAttribute(RollerRequest.OWNING_USER) == null) {
+                page = rreq.getPage();
+                
+                // If page not available from request, then use website's default
+            } else if (website != null) {
+                page = website.getDefaultPage();
+                rreq.setPage(page);
+            }
+            
+            // Still no page ID, then we have a problem
+            if ( page == null ) {
+                throw new ResourceNotFoundException("Page not found");
+            }
+
+            // this sets up the page we want to render
+            outty = prepareForPageExecution(ctx, rreq, response, page);
+            
+            // if there is a decorator template then apply it
+            if (website != null) {
+                // parse/merge Page template
+                StringWriter sw = new StringWriter();
+                outty.merge(ctx, sw);
+                ctx.put("decorator_body", sw.toString());
+                
+                // replace outty with decorator Template
+                outty = findDecorator(website, (String) ctx.get("decorator"));
+            }
+            
+        } catch( Exception e ) {
+            pageException = e;
+            response.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+        
+        if (pageException != null) {
+            mLogger.error("EXCEPTION: in RollerServlet", pageException);
+            request.setAttribute("DisplayException", pageException);
+        }
+        
+        return outty;
+    }
+
