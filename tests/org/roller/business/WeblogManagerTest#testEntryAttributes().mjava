@@ -2,11 +2,12 @@
         getRoller().begin(UserData.SYSTEM_USER);
         WeblogManager wmgr = getRoller().getWeblogManager();
         WebsiteData website = (WebsiteData)mWebsites.get(0); 
+        UserData user = (UserData)mUsersCreated.get(0);
         
         WeblogCategoryData cat = wmgr.getRootWeblogCategory(website);       
 
         WeblogEntryData entry = new WeblogEntryData(
-                null, cat, website, "title2", null, "text2", "attributetest", 
+                null, cat, website, user, "title2", null, "text2", "attributetest", 
                 new Timestamp(0), new Timestamp(0), Boolean.FALSE);
         entry.save();
         assertNotNull(entry.getId());

@@ -1,6 +1,7 @@
     private void createCategoryPostsAndComments(
             int depth,
             WeblogManager wmgr,
+            UserData user,
             WebsiteData website,
             WeblogCategoryData rootCat) throws RollerException
     {
@@ -18,6 +19,7 @@
                  null,      // id
                  rootCat,    // category
                  website,    // websiteId
+                 user,
                  "Future Blog", // title
                  null,
                  "Blog to the Future", // text
@@ -43,6 +45,7 @@
                     null,      // id
                     rootCat,    // category
                     website,    // websiteId
+                    user,
                     rootCat.getName() + ":entry"+k, // title
                     null,
                     rootCat.getName() + ":entry"+k, // text
@@ -96,7 +99,7 @@
 
             if (depth < mCatDepth)
             {
-                createCategoryPostsAndComments(depth+1, wmgr, website, cat);
+                createCategoryPostsAndComments(depth+1, wmgr, user, website, cat);
             }
         }
     }

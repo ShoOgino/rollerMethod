@@ -5,7 +5,7 @@
      * <li> when website is deleted, permissions are deleted too </li>
      * </ul>
      */
-     public void testPermissionsRemoval() throws Exception
+     public void testRemoveWebsiteCascade() throws Exception
      {
          try 
          {
@@ -41,7 +41,8 @@
                  assertNull(getRoller().getPersistenceStrategy().load(
                          permsId, PermissionsData.class));                 
              }
-             getRoller().commit();    
+             getRoller().commit();   
+                         
          }
          catch (Exception e)
          {

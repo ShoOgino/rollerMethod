@@ -14,7 +14,7 @@
             "password3",
             "TestUser3",
             "testuser3@example.com",
-            new java.util.Date());
+            new java.util.Date(), Boolean.TRUE);
         umgr.storeUser( user );
 
         stored = new WebsiteData(
@@ -33,7 +33,8 @@
             Boolean.TRUE,
             Boolean.FALSE,
             null,
-            Boolean.TRUE);
+            Boolean.TRUE, 
+            "");
         umgr.storeWebsite(stored);
 
         FolderData rootFolder = getRoller().getBookmarkManager()

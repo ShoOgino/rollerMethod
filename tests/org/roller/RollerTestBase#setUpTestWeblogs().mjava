@@ -10,7 +10,7 @@
         {
             getRoller().begin(UserData.SYSTEM_USER);
 
-            UserData ud = createUser(umgr,
+            UserData ud = createUser(
                 "testuser"+i,         // userName
                 "password",           // password
                 "Test User #"+i,      // fullName
@@ -32,7 +32,7 @@
             getRoller().begin(UserData.SYSTEM_USER);
             website  = umgr.retrieveWebsite(website.getId());
             WeblogCategoryData rootCat = wmgr.getRootWeblogCategory(website);
-            createCategoryPostsAndComments(0, wmgr, website, rootCat);
+            createCategoryPostsAndComments(0, wmgr, ud, website, rootCat);
             getRoller().commit();
         }
 

@@ -8,21 +8,22 @@
         getRoller().begin(UserData.SYSTEM_USER);
         UserManager umgr = getRoller().getUserManager();
 
-        enabledUser = createUser(umgr,
-                                 enabledUserName,
+        enabledUser = createUser(enabledUserName,
                                  "password",
                                  "EnabledUser",
                                  "enabledUser@example.com"
         );
 
-        disabledUser = createUser(umgr,
-                                 disabledUserName,
+        disabledUser = createUser(disabledUserName,
                                  "password",
                                  "DisabledUser",
                                  "disabledUser@example.com"
         );
-        ((WebsiteData)umgr.getWebsites(disabledUser, null)
-                .get(0)).setIsEnabled(Boolean.FALSE);
+        enabledSite = ((WebsiteData)umgr.getWebsites(enabledUser, null).get(0));
+        enabledSite.setIsEnabled(Boolean.TRUE);
+        
+        disabledSite = ((WebsiteData)umgr.getWebsites(disabledUser, null).get(0));
+        disabledSite.setIsEnabled(Boolean.FALSE);
 
         getRoller().commit();
     }

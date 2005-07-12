@@ -5,7 +5,6 @@
     public void remove() throws RollerException
     {
         UserManager uMgr = RollerFactory.getRoller().getUserManager();
-        uMgr.removeUserWebsites(this);
         
         // remove user roles
         Iterator roles = uMgr.getUserRoles(this).iterator();
@@ -13,7 +12,6 @@
         {
             ((RoleData)roles.next()).remove();
         }
-        
         super.remove();
     }
 

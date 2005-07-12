@@ -11,12 +11,13 @@
             "password4",
             "TestUser4",
             "testuser4@example.com",
-            new java.util.Date());
+            new java.util.Date(), Boolean.TRUE);
         Map pages = new HashMap();
         pages.put("Weblog","Weblog page content");
         pages.put("_day","Day page content");
         pages.put("css","CSS page content");
-        umgr.addUser(user, pages, "basic", "en_US_WIN", "America/Los_Angeles");
+        umgr.addUser(user);
+        umgr.createWebsite(user, pages, "basic", "en_US_WIN", "America/Los_Angeles");
         getRoller().commit();
 
         // Verify that user has all the goodies

@@ -4,11 +4,18 @@
     {
         getRoller().begin(UserData.SYSTEM_USER);
         UserManager umgr = getRoller().getUserManager();
-        for (Iterator iter = mUsersCreated.iterator(); iter.hasNext();)
+        for (Iterator siteIter = mWebsites.iterator(); siteIter.hasNext();)
         {
-            UserData element = (UserData) iter.next();
-            element = umgr.retrieveUser(element.getId());
-            element.remove();
+            WebsiteData site = (WebsiteData) siteIter.next();
+            site = umgr.retrieveWebsite(site.getId());
+            if (site != null) site.remove();
+        }
+        
+        for (Iterator userIter = mUsersCreated.iterator(); userIter.hasNext();)
+        {
+            UserData user = (UserData) userIter.next();
+            user = umgr.retrieveUser(user.getId());
+            user.remove();
         }
         getRoller().commit();
     }

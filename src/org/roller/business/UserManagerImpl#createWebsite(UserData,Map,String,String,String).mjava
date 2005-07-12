@@ -1,57 +1,31 @@
-    /**
-     * Add a new Roller user. Store new User, Role, Website, Category, and a
-     * "first post" WeblogEntry in the database. Reads in files from a theme
-     * directory and adds them as Pages for the User's new Website.
-     * 
-     * @param ud  User object representing the new user.
-     * @param themeDir Directory containing the theme for this user
-     */
-    public void addUser(UserData ud, Map pages, String theme, 
-                        String locale, String timezone)
-        throws RollerException
-    {        
+    public WebsiteData createWebsite(
+            UserData ud, 
+            Map pages, 
+            String theme, 
+            String locale, 
+            String timezone) throws RollerException
+    {
         Roller mRoller = RollerFactory.getRoller();
         UserManager umgr = mRoller.getUserManager();
         WeblogManager wmgr = mRoller.getWeblogManager();
-        if (    umgr.getUser(ud.getUserName()) != null 
-             || umgr.getUser(ud.getUserName().toLowerCase()) != null) 
-        {
-            throw new RollerException("error.add.user.userNameInUse");
-        }
-        
-        boolean adminUser = false;
-        List users = this.getUsers();
-        if (users.size() == 0) 
-        {
-            // Make first user an admin
-            adminUser = true;
-        }
-        
-        mStrategy.store(ud);
-        
-        RoleData rd = new RoleData(null, ud, "editor");
-        mStrategy.store(rd);
-        
-        //
-        // CREATE WEBSITE AND CATEGORIES FOR USER
-        //
-        
+
         WebsiteData website = new WebsiteData(null,
             ud.getFullName()+"'s Weblog", // name
             ud.getUserName(),             // handle
             ud.getFullName()+"'s Weblog", // description
-            ud,                // userId
-            "dummy",           // defaultPageId
-            "dummy",           // weblogDayPageId
-            Boolean.TRUE,      // enableBloggerApi
-            null,                // bloggerCategory
-            null,                // defaultCategory
-            "editor-text.jsp", // editorPage
-            "",                // ignoreWords
-            Boolean.TRUE,      // allowComments  
-            Boolean.FALSE,     // emailComments
-            "",                // emailFromAddress
-            Boolean.TRUE);     // isEnabled
+            ud,                 // userId
+            "dummy",            // defaultPageId
+            "dummy",            // weblogDayPageId
+            Boolean.TRUE,       // enableBloggerApi
+            null,               // bloggerCategory
+            null,               // defaultCategory
+            "editor-text.jsp",  // editorPage
+            "",                 // ignoreWords
+            Boolean.TRUE,       // allowComments  
+            Boolean.FALSE,      // emailComments
+            "",                 // emailFromAddress
+            Boolean.TRUE,       // isEnabled
+            "dummy@example.com");  // emailAddress
         website.setEditorTheme(theme);
         website.setLocale(locale);
         website.setTimezone(timezone);
@@ -173,10 +147,15 @@
                 website.setWeblogDayPageId(pd.getId());                 
             }                
         }
-        
-        if (adminUser) ud.grantRole("admin");
-        
-        // Save website with blogger cat id, defauld page id and day id
         mStrategy.store(website); 
+        
+        
+        PermissionsData perms = new PermissionsData();
+        perms.setUser(ud);
+        perms.setWebsite(website);
+        perms.setPermissionMask(PermissionsData.ADMIN);
+        perms.save();
+
+        return website;
     }
 
