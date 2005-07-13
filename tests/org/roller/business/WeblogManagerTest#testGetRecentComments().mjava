@@ -4,7 +4,7 @@
         WeblogManager wmgr = getRoller().getWeblogManager();
         UserManager umgr = getRoller().getUserManager();
         
-        WebsiteData website = (WebsiteData)mWebsites.get(0);
+        WebsiteData website = (WebsiteData)mWebsitesCreated.get(0);
         website = umgr.retrieveWebsite(website.getId());
         List comments = wmgr.getRecentComments(website, 2);
         assertTrue(comments.size() > 1);

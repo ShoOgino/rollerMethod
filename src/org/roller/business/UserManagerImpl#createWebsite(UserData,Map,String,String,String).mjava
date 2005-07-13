@@ -149,10 +149,11 @@
         }
         mStrategy.store(website); 
         
-        
+        // Add user as member of website
         PermissionsData perms = new PermissionsData();
         perms.setUser(ud);
         perms.setWebsite(website);
+        perms.setPending(false);
         perms.setPermissionMask(PermissionsData.ADMIN);
         perms.save();
 

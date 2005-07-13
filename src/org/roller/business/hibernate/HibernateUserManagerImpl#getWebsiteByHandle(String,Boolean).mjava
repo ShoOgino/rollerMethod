@@ -1,7 +1,7 @@
     /** 
      * Return website specified by handle.
      */
-    public WebsiteData getWebsiteByHandle(String handle, boolean enabledOnly)
+    public WebsiteData getWebsiteByHandle(String handle, Boolean enabled)
                     throws RollerException
     {
         if (handle==null )
@@ -11,12 +11,12 @@
         {
             Session session = ((HibernateStrategy)mStrategy).getSession();
             Criteria criteria = session.createCriteria(WebsiteData.class);
-            if (enabledOnly) 
+            if (enabled != null) 
             {
                 criteria.add(
                    Expression.conjunction()
                        .add(new EqExpression("handle", handle, true))
-                       .add(Expression.eq("isEnabled", Boolean.TRUE)));
+                       .add(Expression.eq("isEnabled", enabled)));
             }
             else
             {

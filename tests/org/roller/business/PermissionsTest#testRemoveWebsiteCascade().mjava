@@ -12,12 +12,23 @@
              UserManager umgr = getRoller().getUserManager();
              String userName = "testuser0";
              String permsId = null;
+             UserData tuser = (UserData)mUsersCreated.get(0);       
+             WebsiteData tsite = (WebsiteData)mWebsitesCreated.get(0);
              
-             // Create add user to website
+             // first, remove existing permissions for tuser in tsite
              getRoller().begin();
              {
-                 UserData tuser = umgr.getUser(userName);       
-                 WebsiteData tsite = (WebsiteData)umgr.getWebsites(tuser, null).get(0);                
+                 tuser = umgr.retrieveUser(tuser.getId());
+                 tsite = umgr.retrieveWebsite(tsite.getId());
+                 umgr.retireUser(tsite, tuser);
+             }
+             getRoller().commit();  
+
+             // add user to website
+             getRoller().begin();
+             {
+                 tuser = umgr.retrieveUser(tuser.getId());
+                 tsite = umgr.retrieveWebsite(tsite.getId());
                  PermissionsData perms = new PermissionsData();
                  perms.setUser(tuser);
                  perms.setWebsite(tsite);
@@ -29,8 +40,7 @@
              // delete website
              getRoller().begin(UserData.SYSTEM_USER);
              {
-                 UserData tuser = umgr.getUser(userName);       
-                 WebsiteData tsite = (WebsiteData)umgr.getWebsites(tuser, null).get(0);
+                 tsite = umgr.retrieveWebsite(tsite.getId());
                  tsite.remove();                 
              }
              getRoller().commit(); 

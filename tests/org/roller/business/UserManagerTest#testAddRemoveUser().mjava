@@ -35,9 +35,10 @@
         assertEquals(3, pages1.size());
         getRoller().rollback();
 
-        // Remove the user
-
+        // Remove the website and user
         getRoller().begin(UserData.SYSTEM_USER);
+        website = umgr.retrieveWebsite(website.getId());
+        website.remove();
         user = umgr.retrieveUser(user.getId());
         user.remove();
         getRoller().commit();
@@ -46,9 +47,6 @@
         getRoller().begin(UserData.SYSTEM_USER);
         UserData user2 = umgr.retrieveUser(user.getId());
         assertNull(user2);
-
-        WebsiteData website2 = (WebsiteData)umgr.getWebsites(user, null).get(0);
-        assertNull(website2);
 
         assertNull(getRoller().getBookmarkManager().retrieveFolder(root.getId()));
 

@@ -16,12 +16,23 @@
             UserManager umgr = getRoller().getUserManager();
             String userName = "testuser0";
             String permsId;
+            UserData tuser = (UserData)mUsersCreated.get(0);       
+            WebsiteData tsite = (WebsiteData)mWebsitesCreated.get(0);
             
+            // first, remove existing permissions for tuser in tsite
+            getRoller().begin();
+            {
+                tuser = umgr.retrieveUser(tuser.getId());
+                tsite = umgr.retrieveWebsite(tsite.getId());
+                umgr.retireUser(tsite, tuser);
+            }
+            getRoller().commit();  
+
             // test invite user to website
             getRoller().begin();
             {
-                UserData tuser = umgr.getUser(userName);       
-                WebsiteData tsite = (WebsiteData)umgr.getWebsites(tuser, null).get(0);
+                tuser = umgr.retrieveUser(tuser.getId());
+                tsite = umgr.retrieveWebsite(tsite.getId());
                 PermissionsData perms = umgr.inviteUser(
                         tsite, tuser, PermissionsData.LIMITED);
                 permsId = perms.getId();
@@ -31,8 +42,8 @@
             // test user accepts invitation
             getRoller().begin();
             {
-                UserData tuser = umgr.getUser(userName);       
-                WebsiteData tsite = (WebsiteData)umgr.getWebsites(tuser, null).get(0);
+                tuser = umgr.retrieveUser(tuser.getId());
+                tsite = umgr.retrieveWebsite(tsite.getId());
                 
                 // can get pending permission object
                 PermissionsData perms = umgr.getPermissions(tsite, tuser);
@@ -58,8 +69,8 @@
             // test user is member of website, website has member user
             getRoller().begin();
             {
-                UserData tuser = umgr.getUser(userName);       
-                WebsiteData tsite = (WebsiteData)umgr.getWebsites(tuser, null).get(0);
+                tuser = umgr.retrieveUser(tuser.getId());
+                tsite = umgr.retrieveWebsite(tsite.getId());
 
                 // assert that invitation list is empty
                 assertTrue(umgr.getPendingPermissions(tuser).isEmpty());
@@ -83,15 +94,15 @@
             // test user can be retired from website
             getRoller().begin();
             {
-                UserData tuser = umgr.getUser(userName);       
-                WebsiteData tsite = (WebsiteData)umgr.getWebsites(tuser, null).get(0);
+                tuser = umgr.retrieveUser(tuser.getId());
+                tsite = umgr.retrieveWebsite(tsite.getId());
                 umgr.retireUser(tsite, tuser);
             }
             getRoller().commit();
             getRoller().begin();
             {
-                UserData tuser = umgr.getUser(userName);       
-                WebsiteData tsite = (WebsiteData)umgr.getWebsites(tuser, null).get(0);                
+                tuser = umgr.retrieveUser(tuser.getId());
+                tsite = umgr.retrieveWebsite(tsite.getId());
                 List websites = umgr.getWebsites(tuser, null);
                 assertEquals(0, websites.size());
                 List users = umgr.getUsers(tsite, null);

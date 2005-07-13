@@ -7,8 +7,9 @@
                 umgr.getUser(enabledUserName), Boolean.TRUE).size() > 0);
 
         // can't get testuser1, who is disabled
+        disabledUser = umgr.retrieveUser(disabledUser.getId());
         assertTrue(umgr.getWebsites(
-                umgr.getUser(disabledUserName), Boolean.TRUE).size() == 0);
+                disabledUser, Boolean.TRUE).size() == 0);
 
         // can get testuser1 with enabledOnly flag set to false
         assertTrue(umgr.getWebsites(

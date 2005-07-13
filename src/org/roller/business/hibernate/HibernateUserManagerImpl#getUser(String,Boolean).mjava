@@ -1,5 +1,5 @@
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -     
-    public UserData getUser(String userName, boolean enabledOnly) 
+    public UserData getUser(String userName, Boolean enabled) 
         throws RollerException
     {
         if (userName==null )
@@ -9,12 +9,12 @@
         {
             Session session = ((HibernateStrategy)mStrategy).getSession();
             Criteria criteria = session.createCriteria(UserData.class);
-            if (enabledOnly) 
+            if (enabled != null) 
             {
                 criteria.add(
                    Expression.conjunction()
                        .add(new EqExpression("userName", userName, true))
-                       .add(Expression.eq("isEnabled", Boolean.TRUE)));
+                       .add(Expression.eq("isEnabled", enabled)));
             }
             else
             {

@@ -54,7 +54,8 @@
         getRoller().begin(UserData.SYSTEM_USER);
         WebsiteData retrieved = umgr.retrieveWebsite(stored.getId());
         assertEquals(stored, retrieved);
-        getRoller().release();
+        retrieved.remove();
+        getRoller().commit();
 
         getRoller().begin(UserData.SYSTEM_USER);
         user = umgr.retrieveUser(user.getId());
