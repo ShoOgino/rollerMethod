@@ -24,6 +24,9 @@
         };
         String[] themenames = themesdir.list(filter);
         
+        if(themenames == null)
+            themenames = new String[0];
+        
         // now go through each theme and read all it's templates
         Theme theme = null;
         for(int i=0; i < themenames.length; i++) {
