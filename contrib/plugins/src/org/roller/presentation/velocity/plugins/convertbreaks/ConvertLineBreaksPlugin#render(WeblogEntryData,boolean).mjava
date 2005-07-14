@@ -1,0 +1,14 @@
+    /**
+     * Transform the given plain text into html text by inserting p and br
+     * tags around paragraphs and after line breaks.
+     */
+    public String render(WeblogEntryData entry, boolean skip) {
+        
+        mLogger.debug("Rendering weblog entry: "+entry.getTitle());
+        
+        if(!skip)
+            return this.render(entry.getText());
+        else
+            return entry.getText();
+    }
+
