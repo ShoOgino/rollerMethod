@@ -28,8 +28,8 @@
             // if we don't have a valid preview theme then
             // leave it up to our parent
             return super.handleRequest(request, response, ctx);
+            
         }
-        
         
         Template outty = null;
         Exception pageException = null;
@@ -62,15 +62,19 @@
             
             org.roller.model.Template page = null;
             
-            // If request specified the page, then go with that
             page = tmpWebsite.getDefaultPage();
+            
+            // Still no page ID ... probably someone with no templates
+            // trying to preview a "custom" theme
+            if ( page == null ) {
+                // lets just call it a 404 and return
+                response.sendError(404);
+                return null;
+            }
+            
+            // update our roller request object
             rreq.setPage(page);
             rreq.setWebsite(tmpWebsite);
-            
-            // Still no page ID, then we have a problem
-            if ( page == null ) {
-                throw new ResourceNotFoundException("Page not found");
-            }
 
             // this sets up the page we want to render
             outty = prepareForPageExecution(ctx, rreq, response, page);
