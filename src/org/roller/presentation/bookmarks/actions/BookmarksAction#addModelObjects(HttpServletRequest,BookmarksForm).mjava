@@ -7,7 +7,9 @@
         throws RollerException
     {
         RollerRequest rreq = RollerRequest.getRollerRequest(request);
-        WebsiteData wd = rreq.getWebsite();
+        //WebsiteData wd = rreq.getWebsite();
+        RollerSession rollerSession = RollerSession.getRollerSession(request);
+        WebsiteData wd = rollerSession.getCurrentWebsite();
         BookmarkManager bmgr = rreq.getRoller().getBookmarkManager();
 
         TreeSet allFolders = new TreeSet(new FolderPathComparator());

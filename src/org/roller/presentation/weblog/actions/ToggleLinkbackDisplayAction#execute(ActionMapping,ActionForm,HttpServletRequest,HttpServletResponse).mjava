@@ -25,7 +25,7 @@
                     
                     rreq.getRoller().commit();
                     
-                    PageCacheFilter.removeFromCache( req, rreq.getWebsite() );
+                    PageCacheFilter.removeFromCache( req, rreq.getCurrentWebsite() );
                 }                
             }
         }
@@ -41,7 +41,7 @@
 		{
 			RollerContext rctx = RollerContext.getRollerContext(
 				rreq.getServletContext());
-			url = rctx.getContextUrl( req, rreq.getWebsite());
+			url = rctx.getContextUrl( req, rreq.getCurrentWebsite());
 			res.sendRedirect(url);
 		}
 		catch (Exception e)

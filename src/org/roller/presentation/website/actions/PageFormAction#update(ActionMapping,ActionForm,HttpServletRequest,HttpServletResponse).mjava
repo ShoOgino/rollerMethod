@@ -18,7 +18,7 @@
                 data.save(); // should through exception if no save permission
                 form.copyTo(data, request.getLocale());
                 data.setUpdateTime( new java.util.Date() );
-                data.setWebsite( rreq.getWebsite() );
+                data.setWebsite( rreq.getCurrentWebsite() );
 
                 validateLink( data );
 
@@ -34,7 +34,7 @@
                                 data.getName()));
                 saveMessages(request, uiMessages);
 
-                PageCacheFilter.removeFromCache(request, rreq.getWebsite());
+                PageCacheFilter.removeFromCache(request, rreq.getCurrentWebsite());
             }
             else
             {

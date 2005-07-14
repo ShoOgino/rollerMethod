@@ -16,7 +16,7 @@
                 PageForm pf = (PageForm)actionForm;
                 pf.copyFrom(pd, request.getLocale());
 
-                PageCacheFilter.removeFromCache( request, rreq.getWebsite() );
+                PageCacheFilter.removeFromCache( request, rreq.getCurrentWebsite() );
                 
                 addModelObjects(rreq);
             }

@@ -14,12 +14,12 @@
             if ( rreq.isUserAuthorizedToEdit() )
             {   
                 req.setAttribute("pageHits",
-                    new Integer(refmgr.getDayHits(rreq.getWebsite())));
+                    new Integer(refmgr.getDayHits(rreq.getCurrentWebsite())));
                     
                 req.setAttribute("totalHits",
-                    new Integer(refmgr.getTotalHits(rreq.getWebsite())));
+                    new Integer(refmgr.getTotalHits(rreq.getCurrentWebsite())));
                     
-                List refs = refmgr.getTodaysReferers(rreq.getWebsite());
+                List refs = refmgr.getTodaysReferers(rreq.getCurrentWebsite());
                 req.setAttribute("referers",refs);        
             }
         }

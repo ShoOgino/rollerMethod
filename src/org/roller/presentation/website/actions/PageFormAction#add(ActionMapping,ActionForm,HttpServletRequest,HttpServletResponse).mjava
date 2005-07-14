@@ -14,7 +14,7 @@
                 PageForm form = (PageForm)actionForm;
                 PageData data = new PageData();
                 form.copyTo(data, request.getLocale());
-                WebsiteData hd = rreq.getWebsite();
+                WebsiteData hd = rreq.getCurrentWebsite();
 
                 data.setWebsite( hd );
                 data.setUpdateTime( new java.util.Date() );
@@ -32,7 +32,7 @@
                                 data.getName()));
                 saveMessages(request, uiMessages);
                 
-                PageCacheFilter.removeFromCache( request, rreq.getWebsite() );
+                PageCacheFilter.removeFromCache( request, rreq.getCurrentWebsite() );
                     
                 actionForm.reset(mapping,request);                
                 

@@ -14,7 +14,7 @@
 			RollerRequest rreq = RollerRequest.getRollerRequest(request);
 			if ( rreq.isUserAuthorizedToEdit() )
 			{
-				WebsiteData website = rreq.getWebsite();
+				WebsiteData website = rreq.getCurrentWebsite();
 				IndexManager manager = rreq.getRoller().getIndexManager();
 				manager.rebuildWebsiteIndex(website);
 				

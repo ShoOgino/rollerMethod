@@ -12,7 +12,7 @@
         req.setAttribute("allowCustomTargets", allowCustomTargets);
 
         List customPingTargets = allowCustomTargets.booleanValue() ?
-            pingTargetMgr.getCustomPingTargets(rreq.getWebsite()) : Collections.EMPTY_LIST;
+            pingTargetMgr.getCustomPingTargets(rreq.getCurrentWebsite()) : Collections.EMPTY_LIST;
 
         return customPingTargets;
     }

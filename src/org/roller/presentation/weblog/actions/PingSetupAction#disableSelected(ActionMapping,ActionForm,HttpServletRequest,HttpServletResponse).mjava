@@ -14,7 +14,7 @@
                 return mapping.findForward("access-denied");
             }
             PingTargetData pingTarget = select(rreq);
-            autoPingMgr.removeAutoPing(pingTarget, rreq.getWebsite());
+            autoPingMgr.removeAutoPing(pingTarget, rreq.getCurrentWebsite());
             rreq.getRoller().commit();
 
             return view(mapping, form, req, res);

@@ -10,7 +10,7 @@
             if ( rreq.isUserAuthorizedToEdit() )
             {
                 RefererManager refmgr = rreq.getRoller().getRefererManager();
-                WebsiteData website = rreq.getWebsite();
+                WebsiteData website = rreq.getCurrentWebsite();
 
                 String[] deleteIds = req.getParameterValues("id");
                 if (deleteIds != null)

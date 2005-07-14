@@ -8,7 +8,7 @@
             JspFactory.getDefaultFactory().getPageContext( 
                 this.getServlet(), request, response, "", true, 8192, true);
         Map params = new HashMap();
-        params.put( RollerRequest.WEBSITEHANDLE_KEY,  rreq.getWebsite().getHandle());
+        params.put( RollerRequest.WEBSITEHANDLE_KEY,  rreq.getCurrentWebsite().getHandle());
         params.put("rmik", "Files");
         String filesLink = RequestUtils.computeURL(
              pageContext, (String)null, (String)null, (String)null,

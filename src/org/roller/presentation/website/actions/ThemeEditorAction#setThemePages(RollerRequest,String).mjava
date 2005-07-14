@@ -22,7 +22,7 @@
                 UserManager umgr = rreq.getRoller().getUserManager();
                 WebsiteData website = rreq.getCurrentWebsite();
                 String handle = website.getHandle();
-                PageData page = umgr.getPageByName( rreq.getWebsite(), pageName );
+                PageData page = umgr.getPageByName( rreq.getCurrentWebsite(), pageName );
                 if (page != null)
                 {
                     PreviewResourceLoader.setTemplate(page.getId(),sb, handle);

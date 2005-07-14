@@ -9,7 +9,7 @@
 		try
 		{
 			UserManager mgr = rreq.getRoller().getUserManager();
-			WebsiteData wd = rreq.getWebsite();
+			WebsiteData wd = rreq.getCurrentWebsite();
 			String defaultPageId = wd.getDefaultPageId();
 			return mgr.retrievePage( defaultPageId );
 		}

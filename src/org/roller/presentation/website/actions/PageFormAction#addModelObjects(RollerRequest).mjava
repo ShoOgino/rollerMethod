@@ -9,7 +9,7 @@
         UserData user = rreq.getAuthenticatedUser();
         request.setAttribute("user",user);
 
-        WebsiteData wd = rreq.getWebsite();
+        WebsiteData wd = rreq.getCurrentWebsite();
         request.setAttribute("website", wd);
 
         List pages = mgr.getPages(wd);

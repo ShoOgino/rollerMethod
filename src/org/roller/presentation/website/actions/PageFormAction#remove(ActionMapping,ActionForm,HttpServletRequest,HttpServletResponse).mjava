@@ -20,7 +20,7 @@
                 mgr.removePageSafely( data.getId() );
                 rreq.getRoller().commit();
 
-                PageCacheFilter.removeFromCache( request, rreq.getWebsite() );
+                PageCacheFilter.removeFromCache( request, rreq.getCurrentWebsite() );
                     
                 addModelObjects(rreq);
 

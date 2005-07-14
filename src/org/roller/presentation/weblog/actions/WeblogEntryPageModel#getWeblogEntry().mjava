@@ -5,7 +5,7 @@
             weblogEntry = new WeblogEntryData();
             form.copyTo(weblogEntry, 
                     getRequest().getLocale(), getRequest().getParameterMap());
-            weblogEntry.setWebsite(rollerRequest.getWebsite());
+            weblogEntry.setWebsite(rollerRequest.getCurrentWebsite());
         }
         return weblogEntry;
     }

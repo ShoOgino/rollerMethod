@@ -31,7 +31,7 @@
                  RollerContext rollerContext = 
                                 RollerContext.getRollerContext( ctx );
                  
-                 WebsiteData website = rreq.getWebsite();
+                 WebsiteData website = rreq.getCurrentWebsite();
                 	
 				// load the template either from the Form
 				// or from the disk (if its a stock Theme).
@@ -65,7 +65,7 @@
                 setThemePages(rreq, theme);
 
 				// clear the page cache
-				PageCacheFilter.removeFromCache(request, rreq.getWebsite());
+				PageCacheFilter.removeFromCache(request, rreq.getCurrentWebsite());
 				teForm.setThemeName("Custom");
 			}
 			else
