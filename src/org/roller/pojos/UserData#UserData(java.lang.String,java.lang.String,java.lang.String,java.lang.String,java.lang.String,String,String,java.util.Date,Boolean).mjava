@@ -1,6 +1,8 @@
 	public UserData( java.lang.String id, java.lang.String userName,
                      java.lang.String password, java.lang.String fullName,
-                     java.lang.String emailAddress, java.util.Date dateCreated,
+                     java.lang.String emailAddress, 
+                     String locale, String timezone,
+                     java.util.Date dateCreated,
                      Boolean isEnabled)
 	{
          this.id = id;
@@ -9,6 +11,8 @@
          this.fullName = fullName;
          this.emailAddress = emailAddress;
          this.dateCreated = (Date)dateCreated.clone();
+         this.locale = locale;
+         this.timezone = timezone;
          this.isEnabled = isEnabled;
 	}
 

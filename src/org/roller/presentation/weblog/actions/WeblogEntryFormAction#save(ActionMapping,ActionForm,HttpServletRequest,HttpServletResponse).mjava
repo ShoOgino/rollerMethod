@@ -47,6 +47,9 @@
                 if (wf.getId() == null || wf.getId().trim().length()==0) 
                 {
                     entry = new WeblogEntryData();  
+                    UserData ud = userMgr.retrieveUser(
+                            rreq.getAuthenticatedUser().getId());
+                    entry.setCreator(ud);
                     entry.setWebsite( site );
                 }
                 else 
