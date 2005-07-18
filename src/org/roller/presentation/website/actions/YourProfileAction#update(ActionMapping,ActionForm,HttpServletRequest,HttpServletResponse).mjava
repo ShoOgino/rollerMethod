@@ -1,0 +1,80 @@
+    //-----------------------------------------------------------------------
+    /** Handle POST from user edit form */
+    public ActionForward update(
+        ActionMapping       mapping,
+        ActionForm          actionForm,
+        HttpServletRequest  request,
+        HttpServletResponse response)
+        throws IOException, ServletException
+    {
+        UserFormEx form = (UserFormEx)actionForm;
+        ActionForward forward = mapping.findForward("yourProfile.page");
+        ActionMessages msgs = new ActionMessages();
+        try
+        {
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            RollerSession rollerSession = RollerSession.getRollerSession(request);
+            if (rollerSession.isUserAuthorizedToEdit())
+            {
+                ActionMessages errors = validate(form, new ActionErrors());
+                if (errors.size() == 0)
+                {
+                    UserManager mgr = RollerFactory.getRoller().getUserManager();
+                    UserData data = mgr.getUser( form.getUserName() );
+                    
+                    // Need system user to update new user
+                    RollerFactory.getRoller().setUser(UserData.SYSTEM_USER);
+                    
+                    // Copy data from form to persistent object (won't copy over password)
+                    form.copyTo(data, request.getLocale());
+                    
+                    // If user set both password and passwordConfirm then reset password
+                    if (    !StringUtils.isEmpty(form.getPasswordText()) 
+                         && !StringUtils.isEmpty(form.getPasswordConfirm()))
+                    {
+                        try
+                        {
+                            data.resetPassword(RollerFactory.getRoller(), 
+                               form.getPasswordText(), 
+                               form.getPasswordConfirm());
+                        }
+                        catch (RollerException e)
+                        {
+                            msgs.add(ActionMessages.GLOBAL_MESSAGE, 
+                                new ActionMessage("userSettings.passwordResetError"));
+                        }
+                    } 
+                
+                    // ROLLER_2.0: user needs locale and timezone 
+                    
+//                    WebsiteData website = mgr.getWebsite(data.getUserName());
+//                    website.setEditorTheme(form.getTheme());
+//                    website.setLocale(form.getLocale());
+//                    website.setTimezone(form.getTimezone());
+    
+                    // Persist changes
+                    mgr.storeUser( data );
+                    //mgr.storeWebsite( website );
+                    RollerFactory.getRoller().commit();
+                    
+                    // Changing user no longer requires cache flush
+                    //PageCacheFilter.removeFromCache(request, data);
+    
+                    msgs.add(null, new ActionMessage("userSettings.saved"));
+                    saveMessages(request, msgs);
+                }
+                else 
+                {
+                    saveErrors(request, errors);
+                }
+                return edit(mapping, actionForm, request, response);
+            }
+            return mapping.findForward("access-denied");
+        }
+        catch (Exception e)
+        {
+            mLogger.error("ERROR in action",e);
+            throw new ServletException(e);
+        }
+    }
+

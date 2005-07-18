@@ -1,0 +1,14 @@
+    public ActionForward edit(
+            ActionMapping       mapping,
+            ActionForm          actionForm,
+            HttpServletRequest  request,
+            HttpServletResponse response)
+            throws Exception
+    {
+        request.setAttribute("model",
+                new YourWebsitesPageModel(request, response, mapping));
+        
+        ActionForward forward = mapping.findForward("yourWebsites.page");
+        return forward;
+    }
+

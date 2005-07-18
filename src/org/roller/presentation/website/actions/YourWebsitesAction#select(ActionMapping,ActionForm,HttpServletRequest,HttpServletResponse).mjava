@@ -1,0 +1,25 @@
+    public ActionForward select(
+            ActionMapping       mapping,
+            ActionForm          actionForm,
+            HttpServletRequest  request,
+            HttpServletResponse response)
+            throws Exception
+    {
+        YourWebsitesForm form = (YourWebsitesForm)actionForm;
+        Roller roller = RollerFactory.getRoller();
+        WebsiteData selectedWebsite = 
+            roller.getUserManager().retrieveWebsite(form.getWebsiteId());
+        RollerSession rollerSession = RollerSession.getRollerSession(request);
+        UserData user = rollerSession.getAuthenticatedUser();
+        if (selectedWebsite.hasUserPermissions(user, PermissionsData.LIMITED))
+        {
+            rollerSession.setCurrentWebsite(selectedWebsite);
+        }
+        
+        request.setAttribute("model",
+                new YourWebsitesPageModel(request, response, mapping));
+
+        ActionForward forward = mapping.findForward("yourWebsites.page");
+        return forward;
+    }
+
