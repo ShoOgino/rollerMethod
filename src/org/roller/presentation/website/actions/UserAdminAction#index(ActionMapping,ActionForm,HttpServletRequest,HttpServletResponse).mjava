@@ -12,12 +12,13 @@
 		try
 		{
 			RollerRequest rreq = RollerRequest.getRollerRequest(request);
-			if ( rreq.isUserAuthorizedToEdit() && rreq.isAdminUser() )
+             RollerSession rollerSession = RollerSession.getRollerSession(request);
+			if ( rollerSession.isUserAuthorizedToEdit() && rollerSession.isAdminUser() )
 			{
 				UserAdminForm uaf = (UserAdminForm)actionForm;
 				
 				// if admin requests an index be re-built, do it
-				IndexManager manager = rreq.getRoller().getIndexManager();								 
+				IndexManager manager = RollerFactory.getRoller().getIndexManager();								 
 				manager.rebuildWebsiteIndex();
  				request.getSession().setAttribute(
 					RollerSession.STATUS_MESSAGE,

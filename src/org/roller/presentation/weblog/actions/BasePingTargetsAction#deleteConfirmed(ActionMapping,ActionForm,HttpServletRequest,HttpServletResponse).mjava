@@ -14,7 +14,7 @@
     {
         RollerRequest rreq = RollerRequest.getRollerRequest(req);
         PingTargetForm pingTargetForm = (PingTargetForm) form;
-        PingTargetManager pingTargetMgr = rreq.getRoller().getPingTargetManager();
+        PingTargetManager pingTargetMgr = RollerFactory.getRoller().getPingTargetManager();
         try
         {
             if (!hasRequiredRights(rreq))
@@ -27,7 +27,7 @@
                 throw new RollerException("Missing ping target id.");
             }
             pingTargetMgr.removePingTarget(pingTargetId);
-            rreq.getRoller().commit();
+            RollerFactory.getRoller().commit();
             return view(mapping, form, req, res);
         }
         catch (Exception e)

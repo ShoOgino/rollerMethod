@@ -14,7 +14,7 @@
         
         if (null != form.getId()) 
         {
-            WeblogManager wmgr = rollerRequest.getRoller().getWeblogManager();
+            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
             comments = wmgr.getComments(form.getId(), false);
         }
     }

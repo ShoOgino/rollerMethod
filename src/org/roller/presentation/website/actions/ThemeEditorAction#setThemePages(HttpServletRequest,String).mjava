@@ -5,11 +5,11 @@
      * @param theme
      * @throws RollerException
      */
-    private void setThemePages( RollerRequest rreq, String theme )
+    private void setThemePages( HttpServletRequest request, String theme )
        throws RollerException
     {
         RollerContext rollerContext = 
-           RollerContext.getRollerContext(rreq.getRequest());
+           RollerContext.getRollerContext(request);
            
         try
         {        
@@ -19,10 +19,10 @@
             {
                 String pageName = (String) iter.next();
                 String sb = (String)pages.get( pageName );
-                UserManager umgr = rreq.getRoller().getUserManager();
-                WebsiteData website = rreq.getCurrentWebsite();
+                UserManager umgr = RollerFactory.getRoller().getUserManager();
+                WebsiteData website = RollerSession.getRollerSession(request).getCurrentWebsite();
                 String handle = website.getHandle();
-                PageData page = umgr.getPageByName( rreq.getCurrentWebsite(), pageName );
+                PageData page = umgr.getPageByName( RollerSession.getRollerSession(request).getCurrentWebsite(), pageName );
                 if (page != null)
                 {
                     PreviewResourceLoader.setTemplate(page.getId(),sb, handle);

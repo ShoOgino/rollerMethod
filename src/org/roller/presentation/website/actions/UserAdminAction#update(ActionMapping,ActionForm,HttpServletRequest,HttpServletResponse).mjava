@@ -14,13 +14,14 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rreq.isUserAuthorizedToEdit() && rreq.isAdminUser() )
+            RollerSession rollerSession = RollerSession.getRollerSession(request);
+            if ( rollerSession.isUserAuthorizedToEdit() && rollerSession.isAdminUser() )
             {
                 UserAdminForm userForm = (UserAdminForm)actionForm;
-                UserManager mgr = rreq.getRoller().getUserManager();
+                UserManager mgr = RollerFactory.getRoller().getUserManager();
                 
                 // Need system user to update user
-                rreq.getRoller().setUser(UserData.SYSTEM_USER);
+                RollerFactory.getRoller().setUser(UserData.SYSTEM_USER);
 
 			   UserData user = mgr.retrieveUser(userForm.getId());
                 userForm.copyTo(user, request.getLocale()); // doesn't copy password
@@ -42,7 +43,7 @@
                     {
                         try
                         {
-                            user.resetPassword(rreq.getRoller(), 
+                            user.resetPassword(RollerFactory.getRoller(), 
                                userForm.getPasswordText(), 
                                userForm.getPasswordConfirm());
                         }
@@ -55,7 +56,7 @@
                     
                     // Persist changes to user
                     mgr.storeUser( user );
-                    rreq.getRoller().commit(); 
+                    RollerFactory.getRoller().commit(); 
                     
                     msgs.add(ActionMessages.GLOBAL_MESSAGE,
                         new ActionMessage("userSettings.saved"));

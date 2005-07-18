@@ -2,7 +2,7 @@
 	    throws RollerException
 	{
         RollerRequest rreq = RollerRequest.getRollerRequest(request);
-        Roller roller = rreq.getRoller();
+        Roller roller = RollerFactory.getRoller();
         Date lastUpdated = roller.getPlanetManager().getLastUpdated();
         if (lastUpdated == null)
         {

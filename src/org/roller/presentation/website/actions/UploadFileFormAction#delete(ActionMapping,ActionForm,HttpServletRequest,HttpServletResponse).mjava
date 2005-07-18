@@ -14,8 +14,8 @@
         RollerRequest rreq = RollerRequest.getRollerRequest(request);
         try
         {
-            FileManager fmgr = rreq.getRoller().getFileManager();
-            WebsiteData website = rreq.getCurrentWebsite();
+            FileManager fmgr = RollerFactory.getRoller().getFileManager();
+            WebsiteData website = RollerSession.getRollerSession(request).getCurrentWebsite();
             String[] deleteFiles = theForm.getDeleteFiles();
             for (int i=0; i<deleteFiles.length; i++)
             {

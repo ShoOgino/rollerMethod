@@ -4,8 +4,9 @@
     protected PingTargetData createPingTarget(RollerRequest rreq, PingTargetForm pingTargetForm)
         throws RollerException
     {
-        PingTargetManager pingTargetMgr = rreq.getRoller().getPingTargetManager();
+        PingTargetManager pingTargetMgr = RollerFactory.getRoller().getPingTargetManager();
         return pingTargetMgr.createCustomPingTarget(
-            pingTargetForm.getName(), pingTargetForm.getPingUrl(), rreq.getCurrentWebsite());
+            pingTargetForm.getName(), pingTargetForm.getPingUrl(), 
+            RollerSession.getRollerSession(rreq.getRequest()).getCurrentWebsite());
     }
 

@@ -9,13 +9,13 @@
             UserData ud) throws RollerException
     {
         // remove user's Entries from Lucene index
-        IndexManager indexManager = rreq.getRoller().getIndexManager();
-        WebsiteData website = rreq.getCurrentWebsite();
+        IndexManager indexManager = RollerFactory.getRoller().getIndexManager();
+        WebsiteData website = RollerSession.getRollerSession(request).getCurrentWebsite();
         indexManager.removeWebsiteIndex(website); 
         
         // delete user from database
         ud.remove();
-        rreq.getRoller().commit();
+        RollerFactory.getRoller().commit();
         ud = null;
 
         request.getSession().setAttribute(

@@ -12,9 +12,9 @@
         String userName = auth.getAuthenticatedUserName(mRequest);
         if (userName != null)
         {
-            UserManager userMgr = getRoller().getUserManager();
+            UserManager userMgr = RollerFactory.getRoller().getUserManager();
             UserData currentUser = userMgr.getUser(userName);
-            getRoller().setUser(currentUser);
+            RollerFactory.getRoller().setUser(currentUser);
         }
 
         // path info may be null, (e.g. on JSP error page)

@@ -15,7 +15,7 @@
             // Get Roller request object for current thread
             RollerRequest rreq = RollerRequest.getRollerRequest();
             
-            UserManager userMgr = rreq.getRoller().getUserManager();
+            UserManager userMgr = RollerFactory.getRoller().getUserManager();
             user = userMgr.getUser(username);
             
             enabled = user.getIsEnabled().booleanValue();
@@ -36,7 +36,7 @@
                 authenticated = user.getPassword().equals(password);
                 if (authenticated)
                 {
-                    rreq.getRoller().setUser(user);
+                    RollerFactory.getRoller().setUser(user);
                 }
             }
         }

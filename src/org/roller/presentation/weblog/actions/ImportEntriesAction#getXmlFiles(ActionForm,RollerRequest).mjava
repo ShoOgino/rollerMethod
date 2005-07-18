@@ -2,7 +2,7 @@
     {
 		ServletContext app = this.getServlet().getServletConfig().getServletContext();
 		String dir = RollerContext.getUploadDir( app );
-		File d = new File(dir + rreq.getCurrentWebsite().getHandle());
+		File d = new File(dir + RollerSession.getRollerSession(rreq.getRequest()).getCurrentWebsite().getHandle());
 		ArrayList xmlFiles = new ArrayList();
 		if (d.mkdirs() || d.exists())
 		{

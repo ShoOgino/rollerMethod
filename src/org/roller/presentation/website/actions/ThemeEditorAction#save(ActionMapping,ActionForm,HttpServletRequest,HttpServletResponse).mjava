@@ -21,8 +21,9 @@
 		ActionForward forward = mapping.findForward("editTheme.page");
 		try
 		{
+             RollerSession rollerSession = RollerSession.getRollerSession(request);
 			RollerRequest rreq = RollerRequest.getRollerRequest(request);
-			if ( rreq.isUserAuthorizedToEdit() )
+			if ( rollerSession.isUserAuthorizedToEdit() )
 			{
                  loadThemes( rreq, errors, true);
                  ThemeEditorForm teForm = (ThemeEditorForm)form;
@@ -31,7 +32,7 @@
                  RollerContext rollerContext = 
                                 RollerContext.getRollerContext( ctx );
                  
-                 WebsiteData website = rreq.getCurrentWebsite();
+                 WebsiteData website = RollerSession.getRollerSession(request).getCurrentWebsite();
                 	
 				// load the template either from the Form
 				// or from the disk (if its a stock Theme).
@@ -53,8 +54,8 @@
                 request.getSession().removeAttribute(SESSION_TEMPLATE);
 
 				// store the template in the page
-				UserManager mgr = rreq.getRoller().getUserManager();
-				PageData page = getDefaultPage( rreq );
+				UserManager mgr = RollerFactory.getRoller().getUserManager();
+				PageData page = getDefaultPage( request );
 
 				page.setTemplate( template );
 				mgr.storePage( page);
@@ -62,10 +63,10 @@
                 saveThemePages( rreq, theme);
                 
                 // put them into the PreviewResourceLoader also
-                setThemePages(rreq, theme);
+                setThemePages(request, theme);
 
 				// clear the page cache
-				PageCacheFilter.removeFromCache(request, rreq.getCurrentWebsite());
+				PageCacheFilter.removeFromCache(request, RollerSession.getRollerSession(request).getCurrentWebsite());
 				teForm.setThemeName("Custom");
 			}
 			else

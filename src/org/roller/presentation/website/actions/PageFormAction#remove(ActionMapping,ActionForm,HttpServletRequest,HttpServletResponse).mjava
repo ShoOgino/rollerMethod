@@ -9,20 +9,20 @@
         ActionForward forward = mapping.findForward("editPages");
         try
         {
-            RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rreq.isUserAuthorizedToEdit() )
+            RollerSession rollerSession = RollerSession.getRollerSession(request);
+            if ( rollerSession.isUserAuthorizedToEdit() )
             {
                 PageForm form = (PageForm)actionForm;
                 PageData data = new PageData();
                 form.copyTo(data, request.getLocale());
 
-                UserManager mgr = rreq.getRoller().getUserManager();
+                UserManager mgr = RollerFactory.getRoller().getUserManager();
                 mgr.removePageSafely( data.getId() );
-                rreq.getRoller().commit();
+                RollerFactory.getRoller().commit();
 
-                PageCacheFilter.removeFromCache( request, rreq.getCurrentWebsite() );
+                PageCacheFilter.removeFromCache( request, RollerSession.getRollerSession(request).getCurrentWebsite() );
                     
-                addModelObjects(rreq);
+                addModelObjects(request);
 
                 actionForm.reset(mapping,request);
             }

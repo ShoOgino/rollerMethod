@@ -1,6 +1,7 @@
     public List getCategories() throws Exception
     {
-        return rollerRequest.getRoller().getWeblogManager()
-            .getWeblogCategories(rollerRequest.getCurrentWebsite(), false);
+        RollerSession rollerSession = RollerSession.getRollerSession(getRequest());
+        return RollerFactory.getRoller().getWeblogManager()
+            .getWeblogCategories(rollerSession.getCurrentWebsite(), false);
     }
 

@@ -8,9 +8,10 @@
         ActionForward forward = null;
         CategoryDeleteForm form = (CategoryDeleteForm)actionForm;
         RollerRequest rreq = RollerRequest.getRollerRequest(request);
-        WeblogManager wmgr = rreq.getRoller().getWeblogManager();
-        
-        if (rreq.isUserAuthorizedToEdit())
+        WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+        RollerSession rollerSession = RollerSession.getRollerSession(
+                rreq.getRequest());
+        if (rollerSession.isUserAuthorizedToEdit())
         {
             String catid = request.getParameter("catid");
             WeblogCategoryData catToDelete = 
@@ -23,7 +24,7 @@
             if (form.isDelete() == null)
             {
                 // Present CategoryDeleteOK? page to user
-                WebsiteData website = rreq.getCurrentWebsite();
+                WebsiteData website = RollerSession.getRollerSession(request).getCurrentWebsite();
                 WeblogCategoryData theCat = wmgr.retrieveWeblogCategory(catid);
                 Iterator allCats = 
                     wmgr.getWeblogCategories(website).iterator();
@@ -71,7 +72,7 @@
                 // move entries to destCat and remove catToDelete
                 catToDelete.remove(destCat);
                 
-                rreq.getRoller().commit();
+                RollerFactory.getRoller().commit();
                 
                 if (null != returnId) 
                 {

@@ -22,8 +22,9 @@
 		ActionForward forward = mapping.findForward("editTheme.page");
 		try
 		{
+             RollerSession rollerSession = RollerSession.getRollerSession(request);
 			RollerRequest rreq = RollerRequest.getRollerRequest(request);
-			if ( rreq.isUserAuthorizedToEdit() )
+			if ( rollerSession.isUserAuthorizedToEdit() )
 			{
                 HttpSession session = request.getSession();
 				ThemeEditorForm teForm = (ThemeEditorForm)form;
@@ -44,7 +45,7 @@
 					clearThemePages(rreq, 
 						(String) session.getAttribute(LAST_THEME)); 
 						                   
-                    setThemePages(rreq, theme);
+                    setThemePages(request, theme);
 					session.setAttribute(LAST_THEME, theme);
 				}
                 else
@@ -63,9 +64,9 @@
 
 				// put the template where PreviewServlet
 				// will be able to find it
-				PageData page = getDefaultPage( rreq );			
+				PageData page = getDefaultPage( request );			
 				PreviewResourceLoader.setTemplate(page.getId(), 
-					teForm.getThemeTemplate(), rreq.getCurrentWebsite().getHandle() );
+					teForm.getThemeTemplate(), RollerSession.getRollerSession(request).getCurrentWebsite().getHandle() );
 				
 				// save the template in session for later editing
 				session.setAttribute(SESSION_TEMPLATE,

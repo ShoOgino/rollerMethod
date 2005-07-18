@@ -12,9 +12,10 @@
         ActionForward forward = mapping.findForward("weblogEdit.page");
         ActionErrors errors = new ActionErrors();
         RollerRequest rreq = RollerRequest.getRollerRequest(request);
+        RollerSession rollerSession = RollerSession.getRollerSession(request);
         try
         {
-            if ( rreq.isUserAuthorizedToEdit() )
+            if ( rollerSession.isUserAuthorizedToEdit() )
             {
                 WeblogEntryData wd = rreq.getWeblogEntry();
                 if (wd == null || wd.getId() == null)
@@ -25,7 +26,7 @@
                 WeblogEntryFormEx form = (WeblogEntryFormEx)actionForm;
 
                 // If form indicates that comments should be deleted, then delete
-                WeblogManager mgr = rreq.getRoller().getWeblogManager();
+                WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
                 String[] deleteIds = form.getDeleteComments();
                 if (deleteIds != null && deleteIds.length > 0)
                 {
@@ -56,9 +57,9 @@
                     }
                 }
 
-                rreq.getRoller().commit();
+                RollerFactory.getRoller().commit();
                 
-                reindexEntry(rreq.getRoller(), wd);
+                reindexEntry(RollerFactory.getRoller(), wd);
                 
                 request.setAttribute("model",
                         new WeblogEntryPageModel(request, response, mapping, 

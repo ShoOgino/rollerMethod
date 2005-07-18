@@ -5,7 +5,9 @@
         String link = null;
         try
         {
-            if ( mRollerReq.isUserAuthorizedToEdit() )
+            RollerSession rollerSession = 
+                RollerSession.getRollerSession(mRollerReq.getRequest());
+            if ( rollerSession.isUserAuthorizedToEdit() )
             {
                 Hashtable params = new Hashtable();
                 params.put( RollerRequest.REFERERID_KEY, referer.getId());

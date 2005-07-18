@@ -13,7 +13,7 @@
             //   /username/pagelink/datestring
             //   /username/pagelink/anchor (specific entry)
             //   /username/pagelink/datestring/anchor (specific entry)
-            UserManager userMgr = getRoller().getUserManager();
+            UserManager userMgr = RollerFactory.getRoller().getUserManager();
             mWebsite = userMgr.getWebsiteByHandle(pathInfo[0]);
             if (mWebsite != null)
             {
@@ -54,7 +54,7 @@
                         // we have the /username/pagelink/anchor form of URL
                         try
                         {
-                            WeblogManager weblogMgr = getRoller().getWeblogManager();
+                            WeblogManager weblogMgr = RollerFactory.getRoller().getWeblogManager();
                             mWeblogEntry = weblogMgr.getWeblogEntryByAnchor(
                                 mWebsite, pathInfo[2]);
                             mDate = mWeblogEntry.getPubTime();
@@ -84,7 +84,7 @@
                     mIsDateSpecified = true;
 
                     // we have the /username/pagelink/date/anchor form of URL
-                    WeblogManager weblogMgr = getRoller().getWeblogManager();
+                    WeblogManager weblogMgr = RollerFactory.getRoller().getWeblogManager();
                     mWeblogEntry = weblogMgr.getWeblogEntryByAnchor(
                                     mWebsite, pathInfo[3]);
                 }                

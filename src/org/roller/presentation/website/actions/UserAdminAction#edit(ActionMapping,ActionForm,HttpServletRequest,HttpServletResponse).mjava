@@ -15,10 +15,11 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rreq.isUserAuthorizedToEdit() && rreq.isAdminUser() )
+            RollerSession rollerSession = RollerSession.getRollerSession(request);
+            if ( rollerSession.isUserAuthorizedToEdit() && rollerSession.isAdminUser() )
             {
                 UserAdminForm userForm = (UserAdminForm)actionForm;
-                UserManager mgr = rreq.getRoller().getUserManager();
+                UserManager mgr = RollerFactory.getRoller().getUserManager();
                 
                 if (userForm != null && userForm.getUserName() != null)
                 {

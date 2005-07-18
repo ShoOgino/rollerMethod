@@ -4,6 +4,7 @@
     protected boolean hasRequiredRights(RollerRequest rreq) throws RollerException
     {
         // This mimics the check in other admin actions, but not sure why the latter is not sufficient.
-        return (rreq.isUserAuthorizedToEdit() && rreq.isAdminUser());
+        RollerSession rollerSession = RollerSession.getRollerSession(rreq.getRequest());
+        return (rollerSession.isUserAuthorizedToEdit() && rollerSession.isAdminUser());
     }
 

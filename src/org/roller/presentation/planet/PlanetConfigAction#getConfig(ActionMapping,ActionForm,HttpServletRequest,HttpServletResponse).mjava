@@ -7,9 +7,9 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if (rreq.isUserAuthorizedToEdit())
+            if (RollerSession.getRollerSession(request).isUserAuthorizedToEdit())
             {
-                Roller roller = rreq.getRoller();
+                Roller roller = RollerFactory.getRoller();
                 PlanetManager planet = roller.getPlanetManager();
                 PlanetConfigData config = planet.getConfiguration();
                 PlanetConfigForm form = (PlanetConfigForm)actionForm;

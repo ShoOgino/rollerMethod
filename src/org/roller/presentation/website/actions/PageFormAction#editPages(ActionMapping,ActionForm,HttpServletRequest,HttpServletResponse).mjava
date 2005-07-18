@@ -9,10 +9,10 @@
         ActionForward forward = mapping.findForward("editPages.page");
         try
         {
-            RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rreq.isUserAuthorizedToEdit() )
+            RollerSession rollerSession = RollerSession.getRollerSession(request);
+            if ( rollerSession.isUserAuthorizedToEdit() )
             {
-                addModelObjects(rreq);
+                addModelObjects(request);
             }
             else
             {

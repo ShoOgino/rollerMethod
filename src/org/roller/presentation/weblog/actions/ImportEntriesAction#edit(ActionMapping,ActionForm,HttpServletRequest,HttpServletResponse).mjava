@@ -19,7 +19,9 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( !rreq.isUserAuthorizedToEdit() )
+            RollerSession rollerSession = RollerSession.getRollerSession(
+                    rreq.getRequest());
+            if ( !rollerSession.isUserAuthorizedToEdit() )
             {
                 forward = mapping.findForward("access-denied");
             }

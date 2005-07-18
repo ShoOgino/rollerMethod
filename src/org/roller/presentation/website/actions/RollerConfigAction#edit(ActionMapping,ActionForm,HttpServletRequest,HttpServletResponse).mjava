@@ -10,7 +10,8 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rreq.isUserAuthorizedToEdit() && rreq.isAdminUser() )
+            RollerSession rollerSession = RollerSession.getRollerSession(request);
+            if ( rollerSession.isUserAuthorizedToEdit() && rollerSession.isAdminUser() )
             {
                 RollerConfigData rollerConfig = RollerFactory.getRoller().getConfigManager().getRollerConfig();
                 RollerConfigFormEx rcForm = (RollerConfigFormEx)actionForm;

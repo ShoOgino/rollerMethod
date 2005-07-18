@@ -26,7 +26,7 @@
             {
                 if ( entryid != null )
                 {
-                    WeblogManager weblogMgr = getRoller().getWeblogManager();
+                    WeblogManager weblogMgr = RollerFactory.getRoller().getWeblogManager();
                     mWeblogEntry = weblogMgr.retrieveWeblogEntry(entryid);                
                 
                     // We can use entry to find the website, if we don't have one
@@ -37,7 +37,8 @@
                 } 
                 else if ( mWebsite != null && anchor != null )
                 {
-                    WeblogManager weblogMgr = getRoller().getWeblogManager();
+                    WeblogManager weblogMgr = 
+                        RollerFactory.getRoller().getWeblogManager();
                     mWeblogEntry = weblogMgr.getWeblogEntryByAnchor(
                         mWebsite,anchor);
                 }                             

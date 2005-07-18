@@ -8,7 +8,7 @@
             if (list == null)
             {
                 mLogger.debug("Refreshing pinned entries list");
-                Roller roller = RollerRequest.getRollerRequest(mRequest).getRoller();
+                Roller roller = RollerFactory.getRoller();
                 list = roller.getWeblogManager()
                     .getWeblogEntriesPinnedToMain(new Integer(num));  
                 mPinnedEntries.setObject(list);

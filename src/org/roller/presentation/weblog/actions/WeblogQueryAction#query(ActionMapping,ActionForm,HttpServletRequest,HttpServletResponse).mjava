@@ -13,13 +13,13 @@
     {
         WeblogQueryForm form = (WeblogQueryForm)actionForm;
         RollerRequest rreq = RollerRequest.getRollerRequest(request);
-        WeblogManager wmgr = rreq.getRoller().getWeblogManager();
+        WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
         
         request.setAttribute("model", new WeblogQueryPageModel(
            request, 
            response, 
            mapping,
-           rreq.getCurrentWebsite(),
+           RollerSession.getRollerSession(request).getCurrentWebsite(),
            form.getCategoryId(),
            form.getStartDateString(),
            form.getEndDateString(),

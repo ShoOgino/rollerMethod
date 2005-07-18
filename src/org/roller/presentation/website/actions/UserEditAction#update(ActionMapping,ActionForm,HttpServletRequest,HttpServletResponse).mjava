@@ -13,16 +13,17 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if (rreq.isUserAuthorizedToEdit())
+            RollerSession rollerSession = RollerSession.getRollerSession(request);
+            if (rollerSession.isUserAuthorizedToEdit())
             {
                 ActionMessages errors = validate(form, new ActionErrors());
                 if (errors.size() == 0)
                 {
-                    UserManager mgr = rreq.getRoller().getUserManager();
+                    UserManager mgr = RollerFactory.getRoller().getUserManager();
                     UserData data = mgr.getUser( form.getUserName() );
                     
                     // Need system user to update new user
-                    rreq.getRoller().setUser(UserData.SYSTEM_USER);
+                    RollerFactory.getRoller().setUser(UserData.SYSTEM_USER);
                     
                     // Copy data from form to persistent object (won't copy over password)
                     form.copyTo(data, request.getLocale());
@@ -33,7 +34,7 @@
                     {
                         try
                         {
-                            data.resetPassword(rreq.getRoller(), 
+                            data.resetPassword(RollerFactory.getRoller(), 
                                form.getPasswordText(), 
                                form.getPasswordConfirm());
                         }
@@ -54,7 +55,7 @@
                     // Persist changes
                     mgr.storeUser( data );
                     //mgr.storeWebsite( website );
-                    rreq.getRoller().commit();
+                    RollerFactory.getRoller().commit();
                     
                     // Changing user no longer requires cache flush
                     //PageCacheFilter.removeFromCache(request, data);

@@ -14,8 +14,8 @@
            
         try
         {
-            UserManager mgr = rreq.getRoller().getUserManager();
-            WebsiteData website = rreq.getCurrentWebsite();
+            UserManager mgr = RollerFactory.getRoller().getUserManager();
+            WebsiteData website = RollerSession.getRollerSession(rreq.getRequest()).getCurrentWebsite();
         
             HashMap pages = rollerContext.readThemeMacros(theme);
             Iterator iter = pages.keySet().iterator();
@@ -24,7 +24,8 @@
                 String pageName = (String) iter.next();
                 String pageContent = (String)pages.get( pageName );
     
-                PageData page = mgr.getPageByName( rreq.getCurrentWebsite(), pageName );
+                PageData page = mgr.getPageByName( 
+                        RollerSession.getRollerSession(rreq.getRequest()).getCurrentWebsite(), pageName );
                 if (page != null)
                 {
                     // User already has page by that name, so overwrite it.
@@ -44,7 +45,7 @@
                     mgr.storePage( page );
                 }
             }
-            rreq.getRoller().commit();
+            RollerFactory.getRoller().commit();
         }
         catch (Exception e)
         {

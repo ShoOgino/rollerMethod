@@ -13,20 +13,21 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rreq.isUserAuthorizedToEdit() )
+            RollerSession rollerSession = RollerSession.getRollerSession(request);
+            if ( rollerSession.isUserAuthorizedToEdit() )
             {
-                WeblogManager mgr = rreq.getRoller().getWeblogManager();
+                WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
                 WeblogEntryData wd = mgr.retrieveWeblogEntry(request.getParameter("id"));
                 
                 // Flush the page cache
-                PageCacheFilter.removeFromCache(request, rreq.getCurrentWebsite());
+                PageCacheFilter.removeFromCache(request, RollerSession.getRollerSession(request).getCurrentWebsite());
 
 				// remove the index for it
                 wd.setPublishEntry(Boolean.FALSE);
-		       reindexEntry(rreq.getRoller(), wd);
+		       reindexEntry(RollerFactory.getRoller(), wd);
 
                 wd.remove();
-                rreq.getRoller().commit();
+                RollerFactory.getRoller().commit();
 
                 ActionMessages uiMessages = new ActionMessages();
                 uiMessages.add(null, new ActionMessage("weblogEdit.entryRemoved"));

@@ -9,14 +9,15 @@
         ActionForward forward = mapping.findForward("removePage.page");
         try
         {
+            RollerSession rollerSession = RollerSession.getRollerSession(request);
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rreq.isUserAuthorizedToEdit() )
+            if ( rollerSession.isUserAuthorizedToEdit() )
             {
                 PageData cd = rreq.getPage();
                 PageForm pf = (PageForm)actionForm;
                 pf.copyFrom(cd, request.getLocale());
 
-                UserData ud = rreq.getAuthenticatedUser();
+                UserData ud = RollerSession.getRollerSession(request).getAuthenticatedUser();
                 request.setAttribute("user",ud);
             }
             else

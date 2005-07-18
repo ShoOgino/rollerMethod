@@ -2,7 +2,9 @@
     {
         try
         {
-            return mRollerReq.isUserAuthorizedToEdit();
+            RollerSession rollerSession = RollerSession.getRollerSession(
+                    mRollerReq.getRequest());
+            return rollerSession.isUserAuthorizedToEdit();
         }
         catch (Exception e)
         {

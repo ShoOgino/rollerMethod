@@ -13,7 +13,8 @@
                 try
                 {
                     mWeblogCategory = 
-                        getRoller().getWeblogManager().retrieveWeblogCategory(id);
+                        RollerFactory.getRoller()
+                            .getWeblogManager().retrieveWeblogCategory(id);
                 }
                 catch (RollerException e)
                 {
@@ -25,8 +26,9 @@
                 try
                 {
                     mWeblogCategory = 
-                        getRoller().getWeblogManager().getWeblogCategoryByPath(
-                            getWebsite(), null, id);
+                        RollerFactory.getRoller()
+                            .getWeblogManager().getWeblogCategoryByPath(
+                                    getWebsite(), null, id);
                 }
                 catch (RollerException e)
                 {

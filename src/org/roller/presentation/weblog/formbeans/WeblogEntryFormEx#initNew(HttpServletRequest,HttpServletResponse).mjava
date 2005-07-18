@@ -5,10 +5,10 @@
     public void initNew(HttpServletRequest request, HttpServletResponse response) 
     {
         RollerRequest rreq = RollerRequest.getRollerRequest(request);
-        if (rreq.getCurrentWebsite().getDefaultPlugins() != null)
+        if (RollerSession.getRollerSession(request).getCurrentWebsite().getDefaultPlugins() != null)
         {
             setPluginsArray(StringUtils.split(
-                    rreq.getCurrentWebsite().getDefaultPlugins(), ",") );
+                    RollerSession.getRollerSession(request).getCurrentWebsite().getDefaultPlugins(), ",") );
         }
         allowComments = Boolean.TRUE;
         updateTime = new Timestamp(new Date().getTime());

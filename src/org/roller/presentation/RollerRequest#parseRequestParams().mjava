@@ -7,7 +7,7 @@
             // No path info means that we need to parse request params
             
             // First, look for user in the request params
-            UserManager userMgr = getRoller().getUserManager();            
+            UserManager userMgr = RollerFactory.getRoller().getUserManager();            
             String userName = mRequest.getParameter(USERNAME_KEY);
             if ( userName == null )
             {

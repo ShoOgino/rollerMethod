@@ -21,8 +21,9 @@
 		ActionForward forward = mapping.findForward("editTheme.page");
 		try
 		{
+             RollerSession rollerSession = RollerSession.getRollerSession(request);
 			RollerRequest rreq = RollerRequest.getRollerRequest(request);
-			if ( rreq.isUserAuthorizedToEdit() )
+			if ( rollerSession.isUserAuthorizedToEdit() )
 			{
 				loadThemes( rreq, errors, true);
 				ThemeEditorForm teForm = (ThemeEditorForm)form;
@@ -64,7 +65,7 @@
 					(String)request.getSession(true).getAttribute(LAST_THEME)); 
                                 
 			     // load the current default page
-                PageData page = getDefaultPage( rreq );
+                PageData page = getDefaultPage( request );
 					teForm.setThemeTemplate( page.getTemplate() );
 					
 					

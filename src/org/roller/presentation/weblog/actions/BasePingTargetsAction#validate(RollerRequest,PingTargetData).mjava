@@ -10,7 +10,7 @@
     {
         ActionMessages errors = new ActionMessages();
 
-        PingTargetManager pingTargetMgr = rreq.getRoller().getPingTargetManager();
+        PingTargetManager pingTargetMgr = RollerFactory.getRoller().getPingTargetManager();
         if (!pingTargetMgr.isNameUnique(pingTarget))
         {
             errors.add(ActionMessages.GLOBAL_MESSAGE,

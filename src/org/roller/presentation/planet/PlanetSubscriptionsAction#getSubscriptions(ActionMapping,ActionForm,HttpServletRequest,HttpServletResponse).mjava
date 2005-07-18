@@ -6,10 +6,9 @@
         ActionForward forward = mapping.findForward("planetSubscriptions.page");
         try
         {
-            RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if (rreq.isUserAuthorizedToEdit())
+            if (RollerSession.getRollerSession(request).isUserAuthorizedToEdit())
             {
-                Roller roller = rreq.getRoller();
+                Roller roller = RollerFactory.getRoller();
                 PlanetManager planet = roller.getPlanetManager();
                 PlanetSubscriptionFormEx form = (PlanetSubscriptionFormEx)actionForm;
                 if (request.getParameter("feedUrl") != null)

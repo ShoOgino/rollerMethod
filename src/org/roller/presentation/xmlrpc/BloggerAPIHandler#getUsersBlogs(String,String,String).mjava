@@ -24,7 +24,7 @@
                 String contextUrl =
                     RollerContext.getRollerContext(req).getAbsoluteContextUrl(req);
                 
-                UserManager umgr = rreq.getRoller().getUserManager();
+                UserManager umgr = RollerFactory.getRoller().getUserManager();
                 UserData user = umgr.getUser(userid);
                 List websites = umgr.getWebsites(user, Boolean.TRUE);
                 Iterator iter = websites.iterator();

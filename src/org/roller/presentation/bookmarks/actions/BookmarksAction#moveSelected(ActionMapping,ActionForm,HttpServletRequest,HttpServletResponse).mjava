@@ -16,12 +16,12 @@
     {
         ActionMessages messages = new ActionMessages();
         ActionForward forward = mapping.findForward("BookmarksForm");
-        RollerRequest rreq = RollerRequest.getRollerRequest(request);
-        if (rreq.isUserAuthorizedToEdit())
+        Roller roller = RollerFactory.getRoller();
+        if (RollerSession.getRollerSession(request).isUserAuthorizedToEdit())
         {
             try 
             {
-                BookmarkManager bmgr = rreq.getRoller().getBookmarkManager();
+                BookmarkManager bmgr = roller.getBookmarkManager();
                 BookmarksForm form = (BookmarksForm)actionForm;
     
                 mLogger.debug("Moving folders and bookmarks to folder, id="
@@ -62,7 +62,7 @@
                         bd.save();
                     }
                 }
-                rreq.getRoller().commit();
+                roller.commit();
     
                 addModelObjects(request, (BookmarksForm)actionForm);
                 saveMessages(request, messages);

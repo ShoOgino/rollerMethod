@@ -10,15 +10,16 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rreq.isUserAuthorizedToEdit() )
+            RollerSession rollerSession = RollerSession.getRollerSession(request);
+            if ( rollerSession.isUserAuthorizedToEdit() )
             {
                 PageData pd = rreq.getPage();
                 PageForm pf = (PageForm)actionForm;
                 pf.copyFrom(pd, request.getLocale());
 
-                PageCacheFilter.removeFromCache( request, rreq.getCurrentWebsite() );
+                PageCacheFilter.removeFromCache( request, RollerSession.getRollerSession(request).getCurrentWebsite() );
                 
-                addModelObjects(rreq);
+                addModelObjects(request);
             }
             else
             {

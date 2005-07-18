@@ -1,0 +1,16 @@
+    /** 
+     * Is our authenticated user authorized to edit objects in the current website. 
+     */
+    public boolean isUserAuthorizedToEdit() 
+        throws RollerException
+    {
+        UserData user = getAuthenticatedUser();
+        WebsiteData website = getCurrentWebsite();
+        if (website != null && user != null) 
+        {
+            return website.hasUserPermissions(user, 
+                (short)(PermissionsData.AUTHOR | PermissionsData.ADMIN));
+        }
+        return false;
+    }
+

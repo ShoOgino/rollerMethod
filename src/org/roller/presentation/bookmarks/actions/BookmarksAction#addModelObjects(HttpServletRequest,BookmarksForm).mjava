@@ -10,7 +10,7 @@
         //WebsiteData wd = rreq.getWebsite();
         RollerSession rollerSession = RollerSession.getRollerSession(request);
         WebsiteData wd = rollerSession.getCurrentWebsite();
-        BookmarkManager bmgr = rreq.getRoller().getBookmarkManager();
+        BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
 
         TreeSet allFolders = new TreeSet(new FolderPathComparator());
 

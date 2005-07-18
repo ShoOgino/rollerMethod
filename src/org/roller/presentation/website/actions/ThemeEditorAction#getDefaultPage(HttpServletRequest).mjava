@@ -4,12 +4,12 @@
 	 * @param rreq
 	 * @return PageData
 	 */
-	private PageData getDefaultPage(RollerRequest rreq) throws RollerException
+	private PageData getDefaultPage(HttpServletRequest request) throws RollerException
 	{
 		try
 		{
-			UserManager mgr = rreq.getRoller().getUserManager();
-			WebsiteData wd = rreq.getCurrentWebsite();
+			UserManager mgr = RollerFactory.getRoller().getUserManager();
+			WebsiteData wd = RollerSession.getRollerSession(request).getCurrentWebsite();
 			String defaultPageId = wd.getDefaultPageId();
 			return mgr.retrievePage( defaultPageId );
 		}

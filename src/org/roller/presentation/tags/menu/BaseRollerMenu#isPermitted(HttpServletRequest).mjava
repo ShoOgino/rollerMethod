@@ -1,6 +1,7 @@
     /** Determine if menu  should be shown to use of specified request */
     public boolean isPermitted(HttpServletRequest req) throws RollerException
     {
+        // first, bail out if menu is disabled
         if (mEnabledProperty != null) 
         {
             String enabledProp = RollerConfig.getProperty(mEnabledProperty);
@@ -17,24 +18,58 @@
                 return false;
             }
         }
+        RollerSession rollerSession = RollerSession.getRollerSession(req);
+        RollerRequest rreq = RollerRequest.getRollerRequest(req);
+        boolean ret = false;
+   
+        // next, make sure that users role permits it
         if (mRoles != null && mRoles.size() > 0)
         {
             Iterator roles = mRoles.iterator();
             while (roles.hasNext())
             {
-                RollerRequest rreq = RollerRequest.getRollerRequest(req);
                 String role = (String)roles.next();
-                if (req.isUserInRole(role)) 
+                if (       role.equals("any") 
+                        || req.isUserInRole(role) 
+                        || (role.equals("admin") && rollerSession.isAdminUser()))  
                 {
-                    return true;
-                }
-                else if (role.equals("admin") && rreq.isAdminUser()) 
-                {
-                    return true;
+                    ret = true;
+                    break;
                 }
             }
-            return false;
         }
-        return true;
+        
+        // finally make sure that user has required website permissions
+        if (ret && mPerms != null && mPerms.size() > 0)
+        {
+            UserData user = rollerSession.getAuthenticatedUser();
+            WebsiteData website = RollerSession.getRollerSession(req).getCurrentWebsite();
+            PermissionsData permsData = null;
+            if (user != null && website != null) 
+            {
+                permsData =
+                    RollerFactory.getRoller().getUserManager().getPermissions(website, user);
+            }
+            ret = false;
+            Iterator perms = mPerms.iterator();
+            while (perms.hasNext())
+            {
+               String perm = (String)perms.next();
+               if (perm.equals("any")) 
+               {
+                   ret = true; // any permission will do (including none)
+                   break;
+               }
+               if (permsData != null && 
+                  ((perm.equals("admin")  && permsData.has(PermissionsData.ADMIN)) 
+               || (perm.equals("author")  && permsData.has(PermissionsData.AUTHOR))
+               || (perm.equals("limited") && permsData.has(PermissionsData.LIMITED))))                     
+               {
+                   ret = true; // user has one of the required permissions
+                   break;
+               }
+            }
+        }
+        return ret;
     }
 

@@ -29,10 +29,10 @@
         else try
         {
             // Add new user
-            UserManager mgr = rreq.getRoller().getUserManager(); 
+            UserManager mgr = RollerFactory.getRoller().getUserManager(); 
             
             // Need system user to add new user
-            rreq.getRoller().setUser(UserData.SYSTEM_USER);
+            RollerFactory.getRoller().setUser(UserData.SYSTEM_USER);
 
             UserData ud = new UserData();
             form.copyTo(ud, request.getLocale()); // doesn't copy password
@@ -44,7 +44,7 @@
             if (    !StringUtils.isEmpty(form.getPasswordText()) 
                  && !StringUtils.isEmpty(form.getPasswordConfirm()))
             {
-               ud.resetPassword(rreq.getRoller(), 
+               ud.resetPassword(RollerFactory.getRoller(), 
                   form.getPasswordText(), form.getPasswordConfirm());
             }
             
@@ -52,7 +52,7 @@
             HashMap pages = rollerContext.readThemeMacros(theme);
             mgr.addUser(ud);
             mgr.createWebsite(ud, pages, theme, form.getLocale(), form.getTimezone());
-            rreq.getRoller().commit();
+            RollerFactory.getRoller().commit();
 
 			// Flush cache so user will immediately appear on index page
             //PageCacheFilter.removeFromCache( request, ud );

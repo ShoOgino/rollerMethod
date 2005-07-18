@@ -9,7 +9,7 @@
             if (list == null)
             {
                 mLogger.debug("Refreshing recent entries list");
-                Roller roller = RollerRequest.getRollerRequest(mRequest).getRoller();			                       
+                Roller roller = RollerFactory.getRoller();		                      
                 list = roller.getWeblogManager().getWeblogEntries(
                     null,                   // userName
                     null,                   // startDate

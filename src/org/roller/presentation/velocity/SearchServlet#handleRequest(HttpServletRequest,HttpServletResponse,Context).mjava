@@ -34,7 +34,7 @@
             RollerRequest rreq = getRollerRequest(request, response);
             
             SearchOperation search = 
-                new SearchOperation(rreq.getRoller().getIndexManager());
+                new SearchOperation(RollerFactory.getRoller().getIndexManager());
             search.setTerm(request.getParameter("q"));
             ctx.put("term", request.getParameter("q"));
 
@@ -52,7 +52,7 @@
             }
 
             // execute search
-            executeSearch(rreq.getRoller(), search);
+            executeSearch(RollerFactory.getRoller(), search);
 
             Map searchResults = new TreeMap();
             if (search.getResultsCount() == -1)

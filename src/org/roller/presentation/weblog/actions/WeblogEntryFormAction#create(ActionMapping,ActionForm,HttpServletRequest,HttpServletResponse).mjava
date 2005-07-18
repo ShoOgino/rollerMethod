@@ -13,11 +13,12 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if (rreq.isUserAuthorizedToEdit())
+            RollerSession rollerSession = RollerSession.getRollerSession(request);
+            if (rollerSession.isUserAuthorizedToEdit())
             {
                 WeblogEntryFormEx form = (WeblogEntryFormEx)actionForm; 
                 form.initNew(request, response);
-                form.setCreatorId(rreq.getAuthenticatedUser().getId());
+                form.setCreatorId(rollerSession.getAuthenticatedUser().getId());
                 
                 request.setAttribute("model",
                         new WeblogEntryPageModel(request, response, mapping,

@@ -10,9 +10,10 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            WeblogManager wmgr = rreq.getRoller().getWeblogManager();
-            UserManager umgr = rreq.getRoller().getUserManager();
-            if ( rreq.isUserAuthorizedToEdit() )
+            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+            UserManager umgr = RollerFactory.getRoller().getUserManager();
+            RollerSession rollerSession = RollerSession.getRollerSession(request);
+            if ( rollerSession.isUserAuthorizedToEdit() )
             {
                 WebsiteFormEx form = (WebsiteFormEx)actionForm;
                 
@@ -54,8 +55,8 @@
                     }
                     
                     wd.save();
-                    rreq.getRoller().getRefererManager().applyRefererFilters(wd);                    
-                    rreq.getRoller().commit();
+                    RollerFactory.getRoller().getRefererManager().applyRefererFilters(wd);                    
+                    RollerFactory.getRoller().commit();
 
                     request.getSession().setAttribute(
                         RollerSession.STATUS_MESSAGE,

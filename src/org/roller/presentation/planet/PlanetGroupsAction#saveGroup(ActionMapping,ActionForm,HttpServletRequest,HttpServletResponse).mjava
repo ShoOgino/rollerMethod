@@ -7,10 +7,10 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if (rreq.isUserAuthorizedToEdit())
+            if (RollerSession.getRollerSession(request).isUserAuthorizedToEdit())
             {
                 PlanetGroupForm form = (PlanetGroupForm)actionForm;
-                Roller roller = rreq.getRoller();
+                Roller roller = RollerFactory.getRoller();
                 PlanetManager planet = roller.getPlanetManager();
                 ActionErrors errors = validate(planet, form);
                 if (errors.isEmpty())

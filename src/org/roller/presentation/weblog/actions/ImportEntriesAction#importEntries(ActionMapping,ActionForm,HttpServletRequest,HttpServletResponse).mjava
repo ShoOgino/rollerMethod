@@ -9,7 +9,8 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( !rreq.isUserAuthorizedToEdit() )
+            RollerSession rollerSession = RollerSession.getRollerSession(rreq.getRequest());
+            if ( !rollerSession.isUserAuthorizedToEdit() )
             {
                 forward = mapping.findForward("access-denied");
             }
@@ -20,7 +21,7 @@
                 if (StringUtils.isNotEmpty(form.getImportFileName()))
                 {
                     // "default" values
-                    WebsiteData website = rreq.getCurrentWebsite();
+                    WebsiteData website = RollerSession.getRollerSession(request).getCurrentWebsite();
 
                     // load selected file
                     ServletContext app = this.getServlet().getServletConfig().getServletContext();
@@ -29,7 +30,7 @@
                                       "/" + form.getImportFileName());
 
                     //ArchiveParser archiveParser =
-                        //new ArchiveParser(rreq.getRoller(), rreq.getWebsite(), f);
+                        //new ArchiveParser(RollerFactory.getRoller(), rreq.getWebsite(), f);
                     String parseMessages = null; // archiveParser.parse();
 
                     // buf will be non-zero if Entries were imported

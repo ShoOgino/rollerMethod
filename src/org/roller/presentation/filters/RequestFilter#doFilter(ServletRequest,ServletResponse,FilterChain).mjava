@@ -53,10 +53,10 @@
                 {
                     session.removeAttribute(RollerRequest.LOGIN_COOKIE);
 
-                    UserManager mgr = rreq.getRoller().getUserManager();
+                    UserManager mgr = RollerFactory.getRoller().getUserManager();
 
                     String loginCookie = mgr.createLoginCookie(username);
-                    rreq.getRoller().commit();
+                    RollerFactory.getRoller().commit();
                     RequestUtil.setCookie(response, RollerRequest.LOGIN_COOKIE,
                                           loginCookie, request.getContextPath());
                 }

@@ -20,8 +20,9 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            RollerSession rollerSession = RollerSession.getRollerSession(rreq.getRequest());
             WeblogQueryForm form = (WeblogQueryForm)actionForm;
-            if ( rreq.isUserAuthorizedToEdit() )
+            if ( rollerSession.isUserAuthorizedToEdit() )
             {               
                 request.setAttribute("model",
                                      new BasePageModel(request, response, mapping));
@@ -44,14 +45,14 @@
                 {
                     // this work should go into a Thread!
                     WeblogManager weblogMgr =
-                        rreq.getRoller().getWeblogManager();
+                        RollerFactory.getRoller().getWeblogManager();
                     
                     //List entries = weblogMgr.getWeblogEntriesInDateRange(
                         //rreq.getUser().getUserName(), null, startDate, endDate, false);
                     //System.out.println("Export: got " + entries.size() + " entries.");
                     
                     List entries = weblogMgr.getWeblogEntries(
-                                    rreq.getCurrentWebsite(), // userName
+                                    RollerSession.getRollerSession(request).getCurrentWebsite(), // userName
                                     startDate,         // startDate
                                     endDate,           // endDate
                                     null,              // catName
@@ -64,7 +65,7 @@
                     Map entryMap = seperateByPeriod(entries, form.getFileBy());
 
                     // now export each List in the entryMap
-                    ExportRss exporter = new ExportRss(rreq.getCurrentWebsite());
+                    ExportRss exporter = new ExportRss(RollerSession.getRollerSession(request).getCurrentWebsite());
                     String exportTo = form.getExportFormat().toLowerCase();
                     if ("atom".equals(exportTo))
                     {

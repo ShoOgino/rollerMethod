@@ -8,8 +8,9 @@
     {
         try
         {
+            RollerSession rollerSession = RollerSession.getRollerSession(request);
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rreq.isUserAuthorizedToEdit() )
+            if ( rollerSession.isUserAuthorizedToEdit() )
             {
                 HttpSession session = request.getSession(true);
                 WeblogEntryFormEx wf = (WeblogEntryFormEx)actionForm;

@@ -7,9 +7,9 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if (rreq.isUserAuthorizedToEdit())
+            if (RollerSession.getRollerSession(request).isUserAuthorizedToEdit())
             {
-                Roller roller = rreq.getRoller();
+                Roller roller = RollerFactory.getRoller();
                 RefreshEntriesTask task = new RefreshEntriesTask();
                 task.init(roller, "dummy");
                 roller.getThreadManager().executeInBackground(task);

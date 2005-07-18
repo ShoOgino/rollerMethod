@@ -10,7 +10,7 @@
         {
             WeblogCategoryFormEx form = (WeblogCategoryFormEx)actionForm;
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            WeblogManager wmgr = rreq.getRoller().getWeblogManager();
+            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
             
             WeblogCategoryData cd = null;
             if (null != form.getId() && !form.getId().trim().equals("")) 
@@ -21,14 +21,14 @@
             else 
             {
                 cd = wmgr.createWeblogCategory();
-                cd.setWebsite(rreq.getCurrentWebsite());
+                cd.setWebsite(RollerSession.getRollerSession(request).getCurrentWebsite());
                 
                 String parentId = form.getParentId();
                 cd.setParent(wmgr.retrieveWeblogCategory(parentId));
             }
             form.copyTo(cd, request.getLocale());
             cd.save();
-            rreq.getRoller().commit();
+            RollerFactory.getRoller().commit();
             
             request.setAttribute(
                 RollerRequest.WEBLOGCATEGORYID_KEY, cd.getParent().getId());         

@@ -8,13 +8,13 @@
         ActionForward forward = mapping.findForward("editPages.page");
         try
         {
-            RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rreq.isUserAuthorizedToEdit() )
+            RollerSession rollerSession = RollerSession.getRollerSession(request);
+            if ( rollerSession.isUserAuthorizedToEdit() )
             {
                 PageForm form = (PageForm)actionForm;
                 PageData data = new PageData();
                 form.copyTo(data, request.getLocale());
-                WebsiteData hd = rreq.getCurrentWebsite();
+                WebsiteData hd = RollerSession.getRollerSession(request).getCurrentWebsite();
 
                 data.setWebsite( hd );
                 data.setUpdateTime( new java.util.Date() );
@@ -22,9 +22,9 @@
                 data.setTemplate("");
                 validateLink( data );
 
-                UserManager mgr = rreq.getRoller().getUserManager();
+                UserManager mgr = RollerFactory.getRoller().getUserManager();
                 mgr.storePage( data );
-                rreq.getRoller().commit();
+                RollerFactory.getRoller().commit();
 
                 ActionMessages uiMessages = new ActionMessages();
                 uiMessages.add(ActionMessages.GLOBAL_MESSAGE, 
@@ -32,11 +32,11 @@
                                 data.getName()));
                 saveMessages(request, uiMessages);
                 
-                PageCacheFilter.removeFromCache( request, rreq.getCurrentWebsite() );
+                PageCacheFilter.removeFromCache( request, RollerSession.getRollerSession(request).getCurrentWebsite() );
                     
                 actionForm.reset(mapping,request);                
                 
-                addModelObjects(rreq);
+                addModelObjects(request);
             }
             else
             {

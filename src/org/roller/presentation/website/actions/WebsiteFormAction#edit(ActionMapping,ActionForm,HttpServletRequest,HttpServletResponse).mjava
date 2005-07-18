@@ -10,24 +10,25 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rreq.isUserAuthorizedToEdit() )
+            RollerSession rollerSession = RollerSession.getRollerSession(request);
+            if ( rollerSession.isUserAuthorizedToEdit() )
             {
-                UserData ud = rreq.getAuthenticatedUser();
+                UserData ud = RollerSession.getRollerSession(request).getAuthenticatedUser();
                 request.setAttribute("user",ud);
 
-                WebsiteData hd = rreq.getCurrentWebsite();
+                WebsiteData hd = RollerSession.getRollerSession(request).getCurrentWebsite();
                 WebsiteForm wf = (WebsiteFormEx)actionForm;
                 wf.copyFrom(hd, request.getLocale());
 
-                List cd = rreq.getRoller().getWeblogManager()
-                   .getWeblogCategories(rreq.getCurrentWebsite(), true);
+                List cd = RollerFactory.getRoller().getWeblogManager()
+                   .getWeblogCategories(RollerSession.getRollerSession(request).getCurrentWebsite(), true);
                 request.setAttribute("categories",cd);
 
-                List bcd = rreq.getRoller().getWeblogManager()
-                    .getWeblogCategories(rreq.getCurrentWebsite(), true);
+                List bcd = RollerFactory.getRoller().getWeblogManager()
+                    .getWeblogCategories(RollerSession.getRollerSession(request).getCurrentWebsite(), true);
                 request.setAttribute("bloggerCategories",bcd);
 
-                List pages = rreq.getRoller().getUserManager().getPages(rreq.getCurrentWebsite());
+                List pages = RollerFactory.getRoller().getUserManager().getPages(RollerSession.getRollerSession(request).getCurrentWebsite());
                 request.setAttribute("pages",pages);
 
                 ServletContext ctx = request.getSession().getServletContext();

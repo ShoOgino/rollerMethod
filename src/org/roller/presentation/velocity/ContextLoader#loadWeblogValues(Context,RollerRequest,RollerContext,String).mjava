@@ -10,7 +10,7 @@
     {
         // if there is an "_entry" page, only load it once
         WebsiteData website = 
-            rreq.getRoller().getUserManager().getWebsiteByHandle(handle);
+            RollerFactory.getRoller().getUserManager().getWebsiteByHandle(handle);
         PageModel pageModel = (PageModel)ctx.get("pageModel");
         if (website != null && pageModel != null) 
         {

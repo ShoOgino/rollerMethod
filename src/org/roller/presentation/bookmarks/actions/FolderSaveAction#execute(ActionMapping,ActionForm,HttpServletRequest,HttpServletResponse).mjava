@@ -9,7 +9,7 @@
         FolderFormEx form = (FolderFormEx)actionForm;
         RollerRequest rreq = RollerRequest.getRollerRequest(request);
         WebsiteData wd = rreq.getWebsite();
-        BookmarkManager bmgr = rreq.getRoller().getBookmarkManager();
+        BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
         
         FolderData fd = null;
         if (null != form.getId() && !form.getId().trim().equals("")) 
@@ -42,7 +42,7 @@
         {
             // Store object and commit
             fd.save();
-            rreq.getRoller().commit();
+            RollerFactory.getRoller().commit();
         }
         catch (RollerPermissionsException e)
         {
@@ -53,7 +53,7 @@
         }
         catch (RollerException re)
         {
-            rreq.getRoller().rollback();
+            RollerFactory.getRoller().rollback();
             ActionErrors errors = new ActionErrors();
             String msg = (null != re.getRootCause())
                 ? re.getRootCause().toString()

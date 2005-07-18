@@ -11,9 +11,10 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rreq.isUserAuthorizedToEdit() )
+            RollerSession rollerSession = RollerSession.getRollerSession(request);
+            if ( rollerSession.isUserAuthorizedToEdit() )
             {
-                UserData ud = rreq.getAuthenticatedUser();
+                UserData ud = RollerSession.getRollerSession(request).getAuthenticatedUser();
                 request.setAttribute("user",ud);
 
                 UserFormEx form = (UserFormEx)actionForm;

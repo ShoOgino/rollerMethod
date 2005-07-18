@@ -8,24 +8,25 @@
 	{
          
         RollerRequest rreq = RollerRequest.getRollerRequest(req);
+        RollerSession rollerSession = RollerSession.getRollerSession(req);
         try
         {
-            if ( rreq.isUserAuthorizedToEdit() )
+            if ( rollerSession.isUserAuthorizedToEdit() )
             {
                 String refid = req.getParameter(RollerRequest.REFERERID_KEY);
                 if ( refid != null )
                 {
                     RefererManager refmgr = 
-                        rreq.getRoller().getRefererManager();                        
+                        RollerFactory.getRoller().getRefererManager();                        
                     RefererData ref = refmgr.retrieveReferer(refid); 
                     boolean was = ref.getVisible()==null ? 
                                   false : ref.getVisible().booleanValue(); 
                     ref.setVisible(Boolean.valueOf( !was )); // what up, dog?                     
                     ref.save();
                     
-                    rreq.getRoller().commit();
+                    RollerFactory.getRoller().commit();
                     
-                    PageCacheFilter.removeFromCache( req, rreq.getCurrentWebsite() );
+                    PageCacheFilter.removeFromCache( req, RollerSession.getRollerSession(req).getCurrentWebsite() );
                 }                
             }
         }
@@ -41,7 +42,7 @@
 		{
 			RollerContext rctx = RollerContext.getRollerContext(
 				rreq.getServletContext());
-			url = rctx.getContextUrl( req, rreq.getCurrentWebsite());
+			url = rctx.getContextUrl( req, RollerSession.getRollerSession(req).getCurrentWebsite());
 			res.sendRedirect(url);
 		}
 		catch (Exception e)

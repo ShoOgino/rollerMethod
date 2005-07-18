@@ -1,5 +1,6 @@
     public UserData getUser()
     {
-        return rollerRequest.getAuthenticatedUser();
+        RollerSession rollerSession = RollerSession.getRollerSession(getRequest());
+        return rollerSession.getAuthenticatedUser();
     }
 

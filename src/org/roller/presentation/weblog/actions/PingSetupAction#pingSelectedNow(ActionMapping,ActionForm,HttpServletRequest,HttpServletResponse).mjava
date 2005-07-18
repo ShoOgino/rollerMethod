@@ -10,7 +10,7 @@
             RollerRequest rreq = RollerRequest.getRollerRequest(req);
             String absoluteUrl = RollerContext.getRollerContext(req).getAbsoluteContextUrl(req);
             PingTargetData pingTarget = select(rreq);
-            WebsiteData website = rreq.getCurrentWebsite();
+            WebsiteData website = RollerSession.getRollerSession(req).getCurrentWebsite();
             try
             {
                 if (!isAuthorized(rreq))

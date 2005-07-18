@@ -6,9 +6,10 @@
      */
     public List getRecentDraftEntries() throws RollerException
     {
-        return rollerRequest.getRoller().getWeblogManager()
+        RollerSession rollerSession = RollerSession.getRollerSession(getRequest());
+        return RollerFactory.getRoller().getWeblogManager()
             .getWeblogEntries(
-                rollerRequest.getCurrentWebsite(), 
+                rollerSession.getCurrentWebsite(), 
                 null,              // startDate
                 null,              // endDate
                 null,              // catName

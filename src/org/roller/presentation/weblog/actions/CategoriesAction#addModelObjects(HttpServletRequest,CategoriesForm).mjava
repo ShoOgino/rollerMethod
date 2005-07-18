@@ -7,8 +7,8 @@
         throws RollerException
     {
         RollerRequest rreq = RollerRequest.getRollerRequest(request);
-        WebsiteData wd = rreq.getCurrentWebsite();
-        WeblogManager wmgr = rreq.getRoller().getWeblogManager();
+        WebsiteData wd = RollerSession.getRollerSession(request).getCurrentWebsite();
+        WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
         
         TreeSet allCategories = new TreeSet(new CategoryPathComparator());
         

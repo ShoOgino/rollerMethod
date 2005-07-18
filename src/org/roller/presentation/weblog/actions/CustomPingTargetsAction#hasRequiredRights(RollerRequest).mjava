@@ -3,6 +3,7 @@
      */
     protected boolean hasRequiredRights(RollerRequest rreq) throws RollerException
     {
-        return (rreq.isUserAuthorizedToEdit() && !PingConfig.getDisallowCustomTargets());
+        RollerSession rollerSession = RollerSession.getRollerSession(rreq.getRequest());
+        return (rollerSession.isUserAuthorizedToEdit() && !PingConfig.getDisallowCustomTargets());
     }
 

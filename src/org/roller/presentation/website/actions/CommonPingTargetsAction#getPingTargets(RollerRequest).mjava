@@ -4,7 +4,7 @@
      */
     protected List getPingTargets(RollerRequest rreq) throws RollerException
     {
-        PingTargetManager pingTargetMgr = rreq.getRoller().getPingTargetManager();
+        PingTargetManager pingTargetMgr = RollerFactory.getRoller().getPingTargetManager();
         return pingTargetMgr.getCommonPingTargets();
     }
 

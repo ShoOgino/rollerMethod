@@ -10,13 +10,13 @@
         {
             BookmarkFormEx form = (BookmarkFormEx)actionForm;
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            BookmarkManager bmgr = rreq.getRoller().getBookmarkManager();
+            BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
             
             BookmarkData bd = null;
             if (null != form.getId() && !form.getId().trim().equals("")) 
             {
                 bd = bmgr.retrieveBookmark(form.getId());
-                bd.save(); // should throw if save not permitted
+                bd.startEditing(); // should throw if save not permitted
             }
             else 
             {
@@ -29,7 +29,7 @@
             }
             form.copyTo(bd, request.getLocale());
             bd.save();
-            rreq.getRoller().commit();
+            RollerFactory.getRoller().commit();
             
             request.setAttribute(
                 RollerRequest.FOLDERID_KEY,bd.getFolder().getId());  

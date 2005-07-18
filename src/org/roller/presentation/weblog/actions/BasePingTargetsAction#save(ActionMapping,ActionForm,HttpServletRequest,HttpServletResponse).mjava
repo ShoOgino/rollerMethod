@@ -13,7 +13,7 @@
         throws Exception
     {
         RollerRequest rreq = RollerRequest.getRollerRequest(req);
-        PingTargetManager pingTargetMgr = rreq.getRoller().getPingTargetManager();
+        PingTargetManager pingTargetMgr = RollerFactory.getRoller().getPingTargetManager();
         PingTargetForm pingTargetForm = (PingTargetForm) form;
         try
         {
@@ -45,7 +45,7 @@
 
             // Appears to be ok.  Save it, commit and return refreshed view of target list.
             pingTarget.save();
-            rreq.getRoller().commit();
+            RollerFactory.getRoller().commit();
             return view(mapping, form, req, res);
         }
         catch (Exception e)

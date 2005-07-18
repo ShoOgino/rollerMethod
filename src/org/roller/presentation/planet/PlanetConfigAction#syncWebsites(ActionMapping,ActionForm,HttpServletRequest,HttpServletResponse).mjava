@@ -7,9 +7,9 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if (rreq.isUserAuthorizedToEdit())
+            if (RollerSession.getRollerSession(request).isUserAuthorizedToEdit())
             {
-                Roller roller = (Roller)rreq.getRoller();
+                Roller roller = (Roller)RollerFactory.getRoller();
                 SyncWebsitesTask task = new SyncWebsitesTask();
                 task.init(roller, "dummy");
                 roller.getThreadManager().executeInBackground(task);

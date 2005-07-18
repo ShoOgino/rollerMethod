@@ -13,7 +13,8 @@
        try
        {
            RollerRequest rreq = RollerRequest.getRollerRequest(request);
-           if (rreq.isUserAuthorizedToEdit())
+           RollerSession rollerSession = RollerSession.getRollerSession(request);
+           if (rollerSession.isUserAuthorizedToEdit())
            {
                WeblogEntryFormEx form = (WeblogEntryFormEx)actionForm;
                String entryid = form.getId();
@@ -23,7 +24,7 @@
                }
 
                RollerContext rctx= RollerContext.getRollerContext(request);
-               WeblogManager wmgr= rreq.getRoller().getWeblogManager();
+               WeblogManager wmgr= RollerFactory.getRoller().getWeblogManager();
                entry = wmgr.retrieveWeblogEntry(entryid);
 
                String title = entry.getTitle();

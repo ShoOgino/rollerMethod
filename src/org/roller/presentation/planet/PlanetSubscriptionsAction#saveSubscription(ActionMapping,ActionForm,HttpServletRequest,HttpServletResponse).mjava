@@ -6,8 +6,7 @@
         ActionForward forward = mapping.findForward("planetSubscriptions.page");
         try
         {
-            RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            Roller roller = rreq.getRoller();
+            Roller roller = RollerFactory.getRoller();
             PlanetManager planet = roller.getPlanetManager();
             PlanetSubscriptionFormEx form = (PlanetSubscriptionFormEx)actionForm;
             
@@ -17,7 +16,7 @@
 
             PlanetGroupData targetGroup = planet.getGroup(groupHandle);
 
-            if (rreq.isUserAuthorizedToEdit())
+            if (RollerSession.getRollerSession(request).isUserAuthorizedToEdit())
             {
 
                 PlanetSubscriptionData sub = null;

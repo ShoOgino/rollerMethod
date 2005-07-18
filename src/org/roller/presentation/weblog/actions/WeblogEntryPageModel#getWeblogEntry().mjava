@@ -2,10 +2,11 @@
     {
         if (weblogEntry == null) 
         {
+            RollerSession rollerSession = RollerSession.getRollerSession(getRequest());
             weblogEntry = new WeblogEntryData();
             form.copyTo(weblogEntry, 
                     getRequest().getLocale(), getRequest().getParameterMap());
-            weblogEntry.setWebsite(rollerRequest.getCurrentWebsite());
+            weblogEntry.setWebsite(rollerSession.getCurrentWebsite());
         }
         return weblogEntry;
     }

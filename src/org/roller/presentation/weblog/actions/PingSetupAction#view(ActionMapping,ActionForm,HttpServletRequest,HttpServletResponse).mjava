@@ -7,8 +7,8 @@
     {
         ActionForward forward = mapping.findForward(PING_SETUP_PAGE);
         RollerRequest rreq = RollerRequest.getRollerRequest(req);
-        PingTargetManager pingTargetMgr = rreq.getRoller().getPingTargetManager();
-        WebsiteData website = rreq.getCurrentWebsite();
+        PingTargetManager pingTargetMgr = RollerFactory.getRoller().getPingTargetManager();
+        WebsiteData website = RollerSession.getRollerSession(req).getCurrentWebsite();
         try
         {
             if (!isAuthorized(rreq))

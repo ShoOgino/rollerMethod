@@ -5,7 +5,7 @@
 		RollerRequest rreq = RollerRequest.getRollerRequest(req);
 		try
 		{
-			UserData user = rreq.getAuthenticatedUser();
+			UserData user = RollerSession.getRollerSession(req).getAuthenticatedUser();
 			String fid = 
                 rreq.getFolder()==null ? null : rreq.getFolder().getId();
 			if ( user != null ) 

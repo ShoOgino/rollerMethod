@@ -9,7 +9,7 @@
 		try {
 			// if admin requests an index be re-built, do it
              RollerRequest rreq = RollerRequest.getRollerRequest(request);
-			IndexManager manager = rreq.getRoller().getIndexManager();
+			IndexManager manager = RollerFactory.getRoller().getIndexManager();
 										 
 			manager.rebuildWebsiteIndex();
 			request.getSession().setAttribute(

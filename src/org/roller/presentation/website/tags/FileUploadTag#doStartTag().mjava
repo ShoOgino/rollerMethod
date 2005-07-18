@@ -19,7 +19,7 @@
             HttpServletRequest request =
                 (HttpServletRequest)pageContext.getRequest();
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            WebsiteData website = rreq.getCurrentWebsite();
+            WebsiteData website = RollerSession.getRollerSession(request).getCurrentWebsite();
             
             String maxDir = RollerRuntimeConfig.getProperty("uploads.dir.maxsize");
             String maxFile = RollerRuntimeConfig.getProperty("uploads.file.maxsize");

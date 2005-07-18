@@ -5,8 +5,8 @@
     private Map buildIsEnabledMap(RollerRequest rreq, List commonPingTargets, List customPingTargets)
         throws RollerException
     {
-        AutoPingManager autoPingMgr = rreq.getRoller().getAutopingManager();
-        WebsiteData website = rreq.getCurrentWebsite();
+        AutoPingManager autoPingMgr = RollerFactory.getRoller().getAutopingManager();
+        WebsiteData website = RollerSession.getRollerSession(rreq.getRequest()).getCurrentWebsite();
 
         // Build isEnabled map (keyed by ping target id and values Boolean.TRUE/Boolean.FALSE)
         Map isEnabled = new HashMap();

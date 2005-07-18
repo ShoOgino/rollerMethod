@@ -9,21 +9,21 @@
         ActionForward forward = mapping.findForward("editPage.page");
         try
         {
-            RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rreq.isUserAuthorizedToEdit() )
+            RollerSession rollerSession = RollerSession.getRollerSession(request);
+            if ( rollerSession.isUserAuthorizedToEdit() )
             {
                 PageForm form = (PageForm)actionForm;
-                UserManager mgr = rreq.getRoller().getUserManager();
+                UserManager mgr = RollerFactory.getRoller().getUserManager();
                 PageData data = mgr.retrievePage(form.getId());
                 data.save(); // should through exception if no save permission
                 form.copyTo(data, request.getLocale());
                 data.setUpdateTime( new java.util.Date() );
-                data.setWebsite( rreq.getCurrentWebsite() );
+                data.setWebsite( RollerSession.getRollerSession(request).getCurrentWebsite() );
 
                 validateLink( data );
 
                 mgr.storePage( data );
-                rreq.getRoller().commit();
+                RollerFactory.getRoller().commit();
 
                 // set the (possibly) new link back into the Form bean
                 ((PageForm)actionForm).setLink( data.getLink() );
@@ -34,7 +34,7 @@
                                 data.getName()));
                 saveMessages(request, uiMessages);
 
-                PageCacheFilter.removeFromCache(request, rreq.getCurrentWebsite());
+                PageCacheFilter.removeFromCache(request, RollerSession.getRollerSession(request).getCurrentWebsite());
             }
             else
             {

@@ -19,11 +19,12 @@
 		ActionForward forward = mapping.findForward("editTheme");
 		try
 		{
+             RollerSession rollerSession = RollerSession.getRollerSession(request);
 			RollerRequest rreq = RollerRequest.getRollerRequest(request);
-			if ( rreq.isUserAuthorizedToEdit() )
+			if ( rollerSession.isUserAuthorizedToEdit() )
 			{
 				// clear the page cache
-				WebsiteData website = rreq.getCurrentWebsite();
+				WebsiteData website = RollerSession.getRollerSession(request).getCurrentWebsite();
 				PageCacheFilter.removeFromCache( request, website );
                  ThemeEditorForm teForm = (ThemeEditorForm)form;
 								

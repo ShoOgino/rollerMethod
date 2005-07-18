@@ -8,7 +8,7 @@
             if (list == null)
             {
                 mLogger.debug("Refreshing popular websites list");
-                Roller roller = RollerRequest.getRollerRequest(mRequest).getRoller();            
+                Roller roller = RollerFactory.getRoller();            
                 list = roller.getRefererManager().getDaysPopularWebsites(num);
                 mPopularWebsites.setObject(list);
             }

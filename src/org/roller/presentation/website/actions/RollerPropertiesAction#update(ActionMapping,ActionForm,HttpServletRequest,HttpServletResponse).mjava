@@ -11,7 +11,8 @@
         ActionErrors errors = new ActionErrors();
         try {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rreq.isUserAuthorizedToEdit() && rreq.isAdminUser() ) {
+            RollerSession rollerSession = RollerSession.getRollerSession(request);
+            if ( rollerSession.isUserAuthorizedToEdit() && rollerSession.isAdminUser() ) {
             
                 // just grab our properties map and put it in the request
                 Roller mRoller = RollerFactory.getRoller();

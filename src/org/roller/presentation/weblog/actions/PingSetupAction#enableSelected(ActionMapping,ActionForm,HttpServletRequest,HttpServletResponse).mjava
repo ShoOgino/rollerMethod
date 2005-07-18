@@ -6,7 +6,7 @@
         throws Exception
     {
         RollerRequest rreq = RollerRequest.getRollerRequest(req);
-        AutoPingManager autoPingMgr = rreq.getRoller().getAutopingManager();
+        AutoPingManager autoPingMgr = RollerFactory.getRoller().getAutopingManager();
         try
         {
             if (!isAuthorized(rreq))
@@ -14,9 +14,10 @@
                 return mapping.findForward("access-denied");
             }
             PingTargetData pingTarget = select(rreq);
-            AutoPingData autoPing = autoPingMgr.createAutoPing(pingTarget, rreq.getCurrentWebsite());
+            AutoPingData autoPing = autoPingMgr.createAutoPing(pingTarget, 
+                    RollerSession.getRollerSession(req).getCurrentWebsite());
             autoPingMgr.storeAutoPing(autoPing);
-            rreq.getRoller().commit();
+            RollerFactory.getRoller().commit();
 
             return view(mapping, form, req, res);
         }
