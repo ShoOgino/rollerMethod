@@ -1,11 +1,13 @@
-   /** Id of the User.
-     * Not remote since primary key may be extracted by other means.
-     * 
-     * @struts.validator type="required" msgkey="errors.required"
-     * @ejb:persistent-field 
-     * @hibernate.id column="id" type="string"
-     *  generator-class="uuid.hex" unsaved-value="null"
-     */
+   /** 
+    * Id of the User.
+    * Not remote since primary key may be extracted by other means.
+    *
+    * @roller.wrapPojoMethod type="simple"
+    * @struts.validator type="required" msgkey="errors.required"
+    * @ejb:persistent-field
+    * @hibernate.id column="id" type="string"
+    *  generator-class="uuid.hex" unsaved-value="null"
+    */
    public java.lang.String getId()
    {
       return this.id;
