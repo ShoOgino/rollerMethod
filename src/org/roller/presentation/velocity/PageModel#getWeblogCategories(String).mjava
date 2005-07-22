@@ -24,7 +24,18 @@
                 {
                     category = mRollerReq.getWebsite().getDefaultCategory();
                 }
-                ret = category.getWeblogCategories();
+                
+                List mRet = category.getWeblogCategories();
+                
+                // wrap pojos
+                ret = new ArrayList(mRet.size());
+                Iterator it = mRet.iterator();
+                int i=0;
+                while(it.hasNext()) {
+                    ret.add(i, WeblogCategoryDataWrapper.wrap((WeblogCategoryData) it.next()));
+                    i++;
+                }
+        
                 mCategories.put(categoryName, ret);
             }
             catch (RollerException e) 

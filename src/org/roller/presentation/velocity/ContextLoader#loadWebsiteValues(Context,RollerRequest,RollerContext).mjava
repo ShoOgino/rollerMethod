@@ -2,6 +2,8 @@
         Context ctx, RollerRequest rreq, RollerContext rollerCtx )
         throws RollerException
     {
+        mLogger.debug("Loading website values");
+        
         String userName = null;
         UserData user = null;
         WebsiteData website = null;
@@ -22,7 +24,7 @@
         if ( user != null )
         {
             userName = user.getUserName();
-            website = rreq.getRoller().getUserManager().getWebsite(userName);
+            website = RollerFactory.getRoller().getUserManager().getWebsite(userName);
             ctx.put("userName",      user.getUserName() );
             ctx.put("fullName",      user.getFullName() );
             ctx.put("emailAddress",  user.getEmailAddress() );
@@ -50,7 +52,7 @@
             ctx.put("locale", Locale.getDefault());
             ctx.put("timezone", TimeZone.getDefault());
         }
-        ctx.put("website", website );
+        ctx.put("website", WebsiteDataWrapper.wrap(website) );
 
         String siteName = ((RollerPropertyData)props.get("site.name")).getValue();
         if ("Roller-based Site".equals(siteName)) siteName = "Main";

@@ -23,10 +23,11 @@
         
         try
         {
-            mBookmarkMgr = rreq.getRoller().getBookmarkManager();
-            mRefererMgr  = rreq.getRoller().getRefererManager();
-            mUserMgr     = rreq.getRoller().getUserManager();
-            mWeblogMgr   = rreq.getRoller().getWeblogManager();
+            Roller mRoller = RollerFactory.getRoller();
+            mBookmarkMgr = mRoller.getBookmarkManager();
+            mRefererMgr  = mRoller.getRefererManager();
+            mUserMgr     = mRoller.getUserManager();
+            mWeblogMgr   = mRoller.getWeblogManager();
             
             /** 
              * Preload what we can for encapsulation.  What we cannot preload we
@@ -45,7 +46,7 @@
                 while (pageIter.hasNext())
                 {
                     Template page = (Template) pageIter.next();
-                    mPageMap.put(page.getName(), new TemplateWrapper(page));
+                    mPageMap.put(page.getName(), TemplateWrapper.wrap(page));
                 }
             }
             

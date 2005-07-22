@@ -2,13 +2,14 @@
         Context ctx, RollerRequest rreq, RollerContext rollerCtx, String username)
         throws RollerException
     {
-
+        mLogger.debug("Loading utility objects");
+        
         // date formatter for macro's
         // set this up with the Locale to make sure we can reuse it with other patterns
         // in the macro's
         Locale viewLocale = (Locale) ctx.get("viewLocale");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", viewLocale);
-        WebsiteData website = rreq.getRoller().getUserManager().getWebsite(username);
+        WebsiteData website = RollerFactory.getRoller().getUserManager().getWebsite(username);
         if (website != null)
         {
             sdf.setTimeZone(website.getTimeZoneInstance());
@@ -21,7 +22,7 @@
         // the Entry Day link.
         ctx.put("plainFormat", "yyyyMMdd");
 
-        ctx.put("page",            new TemplateWrapper(rreq.getPage()));
+        ctx.put("page",            TemplateWrapper.wrap(rreq.getPage()));
         ctx.put("utilities",       new Utilities() );
         ctx.put("stringUtils",     new StringUtils() );        
         ctx.put("rollerVersion",   rollerCtx.getRollerVersion() );

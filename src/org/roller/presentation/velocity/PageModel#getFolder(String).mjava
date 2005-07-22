@@ -1,10 +1,10 @@
     /** Encapsulates BookmarkManager.getFolder() */
-    public FolderData getFolder(String folderPath)
+    public FolderDataWrapper getFolder(String folderPath)
     {
         try
         {
-            return mBookmarkMgr.getFolder(
-                mWebsite, folderPath);
+            return FolderDataWrapper.wrap(
+                    mBookmarkMgr.getFolder(mWebsite, folderPath));
         }
         catch (RollerException e)
         {

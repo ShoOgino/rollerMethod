@@ -48,13 +48,29 @@
                 }
             }
             
-            ret = mRollerReq.getRoller().getWeblogManager().getWeblogEntryObjectMap(
+            Map mRet = RollerFactory.getRoller().getWeblogManager().getWeblogEntryObjectMap(
                             mRollerReq.getWebsite(),  
                             null,                     // startDate
                             day,                 // endDate
                             catParam,                 // catName
                             WeblogManager.PUB_ONLY,   // status
                             new Integer(maxEntries)); // maxEntries
+            
+            // need to wrap pojos
+            java.util.Date key = null;
+            Iterator days = mRet.keySet().iterator();
+            while(days.hasNext()) {
+                key = (java.util.Date)days.next();
+                
+                // now we need to go through each entry in a day and wrap
+                List wrappedEntries = new ArrayList();
+                List entries = (List) mRet.get(key);
+                for(int i=0; i < entries.size(); i++) {
+                    wrappedEntries.add(i, 
+                            WeblogEntryDataWrapper.wrap((WeblogEntryData)entries.get(i)));
+                }
+                ret.put(key, wrappedEntries);
+            }
             
             setFirstAndLastEntries( ret );
         }

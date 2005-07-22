@@ -18,7 +18,7 @@
             {
                 WeblogEntryFormEx wf = (WeblogEntryFormEx)actionForm;
                 WeblogEntryData wd = 
-                    rreq.getRoller().getWeblogManager().retrieveWeblogEntry(wf.getId());
+                    RollerFactory.getRoller().getWeblogManager().retrieveWeblogEntry(wf.getId());
                 wf.copyFrom(wd, request.getLocale());
                 if (wd == null || wd.getId() == null)
                 {

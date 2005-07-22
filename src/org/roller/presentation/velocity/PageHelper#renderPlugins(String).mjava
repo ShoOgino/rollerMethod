@@ -7,14 +7,21 @@
      */
     public String renderPlugins(String str)
     {
+        mLogger.debug("Rendering page plugins on String");
+        
         if (mPagePlugins != null)
         {
             Iterator iter = mPagePlugins.iterator();
+            PagePlugin plugin = null;
             while (iter.hasNext())
             {
-                str = ((PagePlugin)iter.next()).render(str);
+                plugin = (PagePlugin) iter.next();
+                
+                mLogger.debug("applying plugin - ");
+                str = plugin.render(str);
             }
         }
+        
         return str;
     }
 

@@ -25,7 +25,7 @@
                 WeblogEntryFormEx form = (WeblogEntryFormEx)actionForm;
 
                 // If form indicates that comments should be deleted, then delete
-                WeblogManager mgr = rreq.getRoller().getWeblogManager();
+                WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
                 String[] deleteIds = form.getDeleteComments();
                 if (deleteIds != null && deleteIds.length > 0)
                 {
@@ -56,9 +56,9 @@
                     }
                 }
 
-                rreq.getRoller().commit();
+                RollerFactory.getRoller().commit();
                 
-                reindexEntry(rreq.getRoller(), wd);
+                reindexEntry(RollerFactory.getRoller(), wd);
                 
                 request.setAttribute("model",
                         new WeblogEntryPageModel(request, response, mapping, 

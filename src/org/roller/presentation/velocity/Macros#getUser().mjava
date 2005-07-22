@@ -4,11 +4,11 @@
      * @see org.roller.pojos.UserData
      * @return User object.
      */
-    public UserData getUser()
+    public UserDataWrapper getUser()
     {
         try
         {
-            return getRollerRequest().getUser();
+            return UserDataWrapper.wrap(getRollerRequest().getUser());
         }
         catch (Exception e)
         {

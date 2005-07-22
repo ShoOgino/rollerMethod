@@ -15,17 +15,17 @@
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             if ( rreq.isUserAuthorizedToEdit() )
             {
-                WeblogManager mgr = rreq.getRoller().getWeblogManager();
+                WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
                 WeblogEntryData wd = mgr.retrieveWeblogEntry(request.getParameter("id"));
                 UserData user = rreq.getUser();
                 
 				// remove the index for it
                 wd.setPublishEntry(Boolean.FALSE);
-		        reindexEntry(rreq.getRoller(), wd);
+		        reindexEntry(RollerFactory.getRoller(), wd);
 
                 // remove entry itself
                 wd.remove();
-                rreq.getRoller().commit();
+                RollerFactory.getRoller().commit();
 
 				// flush caches
                 PageCacheFilter.removeFromCache(request, user);

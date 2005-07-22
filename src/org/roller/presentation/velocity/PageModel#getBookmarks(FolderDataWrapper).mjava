@@ -1,0 +1,16 @@
+    /** Encapsulates folder.getBookmarks() & sorting */
+    public Collection getBookmarks(FolderDataWrapper folder)
+    {
+        mLogger.debug("Getting bookmarks for folder : "+folder.getName());
+        
+        // since we already have a wrapped pojo we know the output
+        // will be wrapped as well :)
+        Collection bookmarks = folder.getBookmarks();
+        
+        // TODO: need to setup new BookmarkWrapperComparator
+        //List mBookmarks = new ArrayList(bookmarks);
+        //Collections.sort( mBookmarks, new BookmarkComparator() );
+        
+        return bookmarks;
+    }
+

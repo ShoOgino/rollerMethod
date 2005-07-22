@@ -1,4 +1,4 @@
-    public String showCommentsLink( WeblogEntryData entry )
+    public String showCommentsLink( WeblogEntryDataWrapper entry )
     {
         if (entry.getWebsite().getAllowComments().booleanValue())
         {
@@ -10,7 +10,7 @@
             try
             {
                 rreq = RollerRequest.getRollerRequest(request);
-                WeblogManager mgr = rreq.getRoller().getWeblogManager();
+                WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
                 List comments = mgr.getComments( entry.getId() );
                 commentCount = comments.size();
             }

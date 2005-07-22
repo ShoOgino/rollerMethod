@@ -5,12 +5,14 @@
      * @param str
      * @return
      */
-    public String renderPlugins(WeblogEntryData entry)
+    public String renderPlugins(WeblogEntryDataWrapper entry)
     {
+        mLogger.debug("Rendering page plugins on WeblogEntryData");
+        
         // we have to make a copy to temporarily store the
         // changes wrought by Plugins (otherwise they might
         // end up persisted!).
-        WeblogEntryData copy = new WeblogEntryData(entry);
+        WeblogEntryData copy = new WeblogEntryData(entry.getPojo());
         
         if (mPagePlugins != null)
         {
@@ -40,6 +42,7 @@
                 }
             }
         }
+        
         return copy.getText();
     }
 

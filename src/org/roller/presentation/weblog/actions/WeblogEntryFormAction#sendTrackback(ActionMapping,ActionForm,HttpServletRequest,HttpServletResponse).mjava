@@ -23,7 +23,7 @@
                }
 
                RollerContext rctx= RollerContext.getRollerContext(request);
-               WeblogManager wmgr= rreq.getRoller().getWeblogManager();
+               WeblogManager wmgr= RollerFactory.getRoller().getWeblogManager();
                entry = wmgr.retrieveWeblogEntry(entryid);
 
                String title = entry.getTitle();
@@ -31,7 +31,9 @@
                // Run entry through registered PagePlugins
                PageHelper pageHelper = PageHelper.createPageHelper(request, response);
                pageHelper.setSkipFlag(true); // don't process ReadMorePlugin
-               String excerpt = pageHelper.renderPlugins(entry);
+               // we have to wrap the entry for rendering because the
+               // page helper requires wrapped objects
+               String excerpt = pageHelper.renderPlugins(WeblogEntryDataWrapper.wrap(entry));
                excerpt = StringUtils.left( Utilities.removeHTML(excerpt),255 );
 
                String url = rctx.createEntryPermalink(entry, request, true);

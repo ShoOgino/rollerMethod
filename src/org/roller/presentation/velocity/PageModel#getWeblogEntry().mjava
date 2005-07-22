@@ -1,6 +1,11 @@
     /** Encapsulates RollerRequest.getWeblogEntry() */
-    public WeblogEntryData getWeblogEntry()
+    public WeblogEntryDataWrapper getWeblogEntry()
     {
-        return mRollerReq.getWeblogEntry();
+        WeblogEntryData entry = mRollerReq.getWeblogEntry();
+        
+        if(entry != null)
+            return WeblogEntryDataWrapper.wrap(entry);
+        else
+            return null;
     }
 

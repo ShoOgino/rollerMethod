@@ -32,7 +32,7 @@
             sb.append("excerpts</a>]");
             sb.append("<br />");
 
-			List cats = rreq.getRoller().getWeblogManager()
+			List cats = RollerFactory.getRoller().getWeblogManager()
                 .getWeblogCategories(rreq.getWebsite(), false);
 			for (Iterator wbcItr = cats.iterator(); wbcItr.hasNext();) {
 				WeblogCategoryData category = (WeblogCategoryData) wbcItr.next();

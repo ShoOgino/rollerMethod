@@ -17,8 +17,8 @@
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             if ( rreq.isUserAuthorizedToEdit() )
             {
-                UserManager userMgr = rreq.getRoller().getUserManager();
-                WeblogManager weblogMgr = rreq.getRoller().getWeblogManager();
+                UserManager userMgr = RollerFactory.getRoller().getUserManager();
+                WeblogManager weblogMgr = RollerFactory.getRoller().getWeblogManager();
 
                 UserData user = rreq.getUser();
                 WebsiteData site = userMgr.getWebsite( user.getUserName() );
@@ -74,12 +74,12 @@
                 entry.setUpdateTime(new Timestamp(new Date().getTime()));
                 mLogger.debug("Saving entry");
                 entry.save();
-                rreq.getRoller().commit();
+                RollerFactory.getRoller().commit();
 
                 mLogger.debug("Populating form");
                 wf.copyFrom(entry, request.getLocale());
                 
-                reindexEntry(rreq.getRoller(), entry);
+                reindexEntry(RollerFactory.getRoller(), entry);
                 
                 // open up a new session, because we will forward to the edit action
                 //rreq.getRoller().begin(); // begin already called by RequestFilter

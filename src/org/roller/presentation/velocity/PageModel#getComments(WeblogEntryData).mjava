@@ -1,14 +1,24 @@
     /** Get comments for weblog entry specified by request */
     public List getComments( WeblogEntryData entry )
     {
+        List comments = new ArrayList();
         try
         {
-            return mWeblogMgr.getComments( entry.getId() );
+            Collection mComments = mWeblogMgr.getComments( entry.getId() );
+            
+            // wrap pojos
+            comments = new ArrayList(mComments.size());
+            Iterator it = mComments.iterator();
+            int i=0;
+            while(it.hasNext()) {
+                comments.add(i, CommentDataWrapper.wrap((CommentData) it.next()));
+                i++;
+            }
         }
         catch (RollerException e)
         {
             mLogger.error("PageModel getComments()", e);
         }
-        return new ArrayList();
+        return comments;
     }
 

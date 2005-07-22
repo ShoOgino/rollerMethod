@@ -6,11 +6,11 @@
      * @see org.roller.pojos.WebsiteData
      * @return Website object.
      */
-    public WebsiteData getWebsite()
+    public WebsiteDataWrapper getWebsite()
     {
         try
         {
-            return getRollerRequest().getWebsite();
+            return WebsiteDataWrapper.wrap(getRollerRequest().getWebsite());
         }
         catch (Exception e)
         {
