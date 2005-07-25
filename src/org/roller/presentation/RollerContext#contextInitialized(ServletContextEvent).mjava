@@ -42,14 +42,14 @@
             //       remove these dependencies on the webapp context if possible
             RollerConfig.setContextPath(mContext.getRealPath("/"));
             
-            Roller roller = RollerFactory.getRoller();
+            // always upgrade database first
+            upgradeDatabaseIfNeeded();
             
+            Roller roller = RollerFactory.getRoller();
             roller.begin(UserData.SYSTEM_USER);
             
-            //setupRollerConfig();
             setupRollerProperties();
             roller.getThemeManager();
-            upgradeDatabaseIfNeeded();
             setupSpellChecker();
             setupPagePlugins();
             setupIndexManager(roller);

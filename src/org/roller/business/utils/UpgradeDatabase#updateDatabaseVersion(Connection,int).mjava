@@ -1,0 +1,18 @@
+    /**
+     * Update the existing database.version property
+     */
+    private static void updateDatabaseVersion(Connection con, int version) 
+        throws RollerException {
+        
+        try {
+            Statement stmt = con.createStatement();
+            stmt.executeUpdate("update roller_properties "+
+                    "set value = '"+version+"'"+
+                    "where name = '"+DBVERSION_PROP+"'");
+            
+            mLogger.debug("Updated database verstion to "+version);
+        } catch(SQLException se) {
+            throw new RollerException("Error setting database version.", se);
+        }
+    }
+
