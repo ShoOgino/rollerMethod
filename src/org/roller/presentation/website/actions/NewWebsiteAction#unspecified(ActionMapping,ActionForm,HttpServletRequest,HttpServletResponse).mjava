@@ -1,0 +1,15 @@
+    /** If method param is not specified, use HTTP verb to pick method to call */
+    public ActionForward unspecified(
+            ActionMapping       mapping,
+            ActionForm          actionForm,
+            HttpServletRequest  request,
+            HttpServletResponse response)
+            throws Exception
+    {
+        if (request.getMethod().equals("GET"))
+        {
+            return create(mapping, actionForm, request, response);
+        }
+        return save(mapping, actionForm, request, response);
+    }
+

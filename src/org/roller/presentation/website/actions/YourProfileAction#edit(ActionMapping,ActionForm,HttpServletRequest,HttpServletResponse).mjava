@@ -1,5 +1,4 @@
-    //-----------------------------------------------------------------------
-    /** Handle GET for user edit page */
+    /** Load form with authenticated user and forward to your-profile page */
     public ActionForward edit(
         ActionMapping       mapping,
         ActionForm          actionForm,
@@ -10,49 +9,36 @@
         ActionForward forward = mapping.findForward("yourProfile.page");
         try
         {
-            RollerRequest rreq = RollerRequest.getRollerRequest(request);
             RollerSession rollerSession = RollerSession.getRollerSession(request);
-            if ( rollerSession.isUserAuthorizedToEdit() )
-            {
-                UserData ud = RollerSession.getRollerSession(request).getAuthenticatedUser();
-                request.setAttribute("user",ud);
-
-                UserFormEx form = (UserFormEx)actionForm;
-                form.copyFrom(ud, request.getLocale());
-                
-                // User must set new password twice
-                form.setPasswordText(null);
-                form.setPasswordConfirm(null);
-
-                loadRequestObjects(request, rreq, ud, form);
-            }
-            else
-            {
-                forward = mapping.findForward("access-denied");
-            }
+            UserData ud = rollerSession.getAuthenticatedUser();
+            UserFormEx form = (UserFormEx)actionForm;
+            form.copyFrom(ud, request.getLocale());
+            form.setPasswordText(null);
+            form.setPasswordConfirm(null);
+            form.setLocale(ud.getLocale());
+            form.setTimeZone(ud.getTimeZone());
+            request.setAttribute(
+                    "model", new BasePageModel(request, response, mapping));
         }
         catch (Exception e)
         {
             mLogger.error("ERROR in action",e);
             throw new ServletException(e);
-        }
-        
+        }        
         // if user logged in with a cookie, display a warning that they
         // can't change passwords
         if (mLogger.isDebugEnabled()) 
         {
             log.debug("checking for cookieLogin...");
         }
-
         if (request.getSession().getAttribute("cookieLogin") != null) {
             ActionMessages messages = new ActionMessages();
 
             // add warning messages
             messages.add(ActionMessages.GLOBAL_MESSAGE,
-                         new ActionMessage("userSettings.cookieLogin"));
+                         new ActionMessage("yourProfile.cookieLogin"));
             saveMessages(request, messages);
         }
-        
         return forward;
     }
 

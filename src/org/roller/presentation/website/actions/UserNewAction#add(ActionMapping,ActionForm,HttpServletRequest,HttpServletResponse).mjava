@@ -48,10 +48,10 @@
                   form.getPasswordText(), form.getPasswordConfirm());
             }
             
-            String theme = form.getTheme();
-            HashMap pages = rollerContext.readThemeMacros(theme);
+            //String theme = form.getTheme();
+            //HashMap pages = rollerContext.readThemeMacros(theme);
             mgr.addUser(ud);
-            mgr.createWebsite(ud, pages, theme, form.getLocale(), form.getTimezone());
+            //mgr.createWebsite(ud, pages, theme, form.getLocale(), form.getTimezone());
             RollerFactory.getRoller().commit();
 
 			// Flush cache so user will immediately appear on index page

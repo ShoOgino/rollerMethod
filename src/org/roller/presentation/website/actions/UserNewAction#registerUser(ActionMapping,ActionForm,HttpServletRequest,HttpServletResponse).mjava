@@ -13,12 +13,12 @@
         try
         {
             UserFormEx userForm = (UserFormEx)actionForm;
-            loadRequestObjects(request, rreq, null, userForm);
-            userForm.setLocale(request.getLocale().toString());
-                
-            // User must set new password twice
+            userForm.setLocale( Locale.getDefault().getDisplayName() );
+            userForm.setTimeZone( TimeZone.getDefault().getID() );
             userForm.setPasswordText(null);
-            userForm.setPasswordConfirm(null);           
+            userForm.setPasswordConfirm(null);            
+            request.setAttribute(
+                    "model", new BasePageModel(request, response, mapping));
         }
         catch (Exception e)
         {

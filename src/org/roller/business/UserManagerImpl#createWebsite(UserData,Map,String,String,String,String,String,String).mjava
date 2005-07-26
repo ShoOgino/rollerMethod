@@ -1,0 +1,166 @@
+    public WebsiteData createWebsite(
+            UserData ud, 
+            Map pages, 
+            String handle,
+            String name, 
+            String description,
+            String theme, 
+            String locale, 
+            String timezone) throws RollerException
+    {
+        Roller mRoller = RollerFactory.getRoller();
+        UserManager umgr = mRoller.getUserManager();
+        WeblogManager wmgr = mRoller.getWeblogManager();
+        WebsiteData website = new WebsiteData(
+            null,                // id
+            name,                // name
+            handle,              // handle
+            description,         // description
+            ud,                  // userId
+            "dummy",             // defaultPageId
+            "dummy",             // weblogDayPageId
+            Boolean.TRUE,        // enableBloggerApi
+            null,                // bloggerCategory
+            null,                // defaultCategory
+            "editor-text.jsp",   // editorPage
+            "",                  // ignoreWords
+            Boolean.TRUE,        // allowComments  
+            Boolean.FALSE,       // emailComments
+            "",                  // emailFromAddress
+            Boolean.TRUE,        // isEnabled
+            "dummy@example.com", // emailAddress
+            new Date());
+        website.setEditorTheme(theme);
+        website.setLocale(locale);
+        website.setTimezone(timezone);
+        website.save();
+
+        WeblogCategoryData rootCat = wmgr.createWeblogCategory(
+            website, // websiteId
+            null,   // parent
+            "root",  // name
+            "root",  // description
+            null ); // image
+        rootCat.save();
+        
+        WeblogCategoryData generalCat = wmgr.createWeblogCategory(
+            website,         // websiteId
+            rootCat,
+            "General",       // name
+            "General",       // description
+            null );         // image
+        generalCat.save();
+            
+        WeblogCategoryData javaCat = wmgr.createWeblogCategory(
+            website,         // websiteId
+            rootCat,
+            "Java",          // name
+            "Java",          // description
+            null );          // image
+        javaCat.save();
+            
+        WeblogCategoryData musicCat = wmgr.createWeblogCategory(
+            website,         // websiteId
+            rootCat,
+            "Music",         // name
+            "Music",         // description
+            null );         // image
+        musicCat.save();
+        
+        website.setBloggerCategory(rootCat);
+        website.setDefaultCategory(rootCat);
+        
+        Integer zero = new Integer(0);
+        
+        BookmarkManager bmgr = mRoller.getBookmarkManager();
+                    
+        FolderData root = bmgr.createFolder(
+            null, "root", "root", website);
+        root.save();
+
+        FolderData blogroll = bmgr.createFolder(
+            root, "Blogroll", "Blogroll", website);
+        blogroll.save();
+
+        BookmarkData b1 = bmgr.createBookmark(
+            blogroll, "Dave Johnson", "",
+            "http://rollerweblogger.org/page/roller",
+            "http://rollerweblogger.org/rss/roller",
+            zero, zero, null);
+        b1.save();
+
+        BookmarkData b2 = bmgr.createBookmark(
+            blogroll, "Matt Raible", "",
+            "http://raibledesigns.com/page/rd",
+            "http://raibledesigns.com/rss/rd",
+            zero, zero, null);
+        b2.save();
+
+        BookmarkData b3 = bmgr.createBookmark(
+            blogroll, "Lance Lavandowska", "",
+            "http://brainopolis.dnsalias.com/roller/page/lance/",
+            "http://brainopolis.dnsalias.com/roller/rss/lance/",
+            zero, zero, null);
+        b3.save();
+        
+        
+        FolderData news = bmgr.createFolder(
+            root, "News", "News", website);
+        news.save();
+
+        BookmarkData b5 = bmgr.createBookmark(
+            news, "CNN", "",
+            "http://www.cnn.com",
+            "",
+            zero, zero, null);
+        b5.save();
+
+        BookmarkData b6 = bmgr.createBookmark(
+            news, "NY Times", "", 
+           "http://nytimes.com",
+           "",
+            zero, zero, null);
+        b6.save();
+
+        //
+        // READ THEME FILES AND CREATE PAGES FOR USER
+        //
+        Iterator iter = pages.keySet().iterator();
+        while ( iter.hasNext() )
+        {
+            String pageName = (String) iter.next();
+            String sb = (String)pages.get( pageName );
+              
+            // Store each Velocity template as a page
+            PageData pd = new PageData( null,
+                website,         // website
+                pageName,        // name
+                pageName,        // description
+                pageName,        // link
+                sb,              // template
+                new Date()       // updateTime                
+            );
+            mStrategy.store(pd);
+            
+            if ( pd.getName().equals("Weblog") )
+            {  
+                website.setDefaultPageId(pd.getId());                 
+            }
+            else if ( pd.getName().equals("_day") )
+            {
+                website.setWeblogDayPageId(pd.getId());                 
+            }                
+        }
+        mStrategy.store(website); 
+        
+        // Add user as member of website
+        PermissionsData perms = new PermissionsData();
+        perms.setUser(ud);
+        perms.setWebsite(website);
+        perms.setPending(false);
+        perms.setPermissionMask(PermissionsData.ADMIN);
+        perms.save();
+
+        return website;
+    }
+

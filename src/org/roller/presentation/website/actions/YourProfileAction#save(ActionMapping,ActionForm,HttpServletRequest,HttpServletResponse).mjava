@@ -1,0 +1,66 @@
+    /** Update user based on posted form data */
+    public ActionForward save(
+        ActionMapping       mapping,
+        ActionForm          actionForm,
+        HttpServletRequest  request,
+        HttpServletResponse response)
+        throws IOException, ServletException
+    {
+        UserFormEx form = (UserFormEx)actionForm;
+        ActionForward forward = mapping.findForward("yourProfile.page");
+        ActionMessages msgs = new ActionMessages();
+        try
+        {
+            ActionMessages errors = validate(form, new ActionErrors());
+            if (errors.size() == 0)
+            {
+                UserManager mgr = RollerFactory.getRoller().getUserManager();
+                UserData data = mgr.getUser( form.getUserName() );
+                
+                // Need system user to update user
+                RollerFactory.getRoller().setUser(UserData.SYSTEM_USER);
+                
+                // Copy data from form to object (won't copy over password)
+                form.copyTo(data, request.getLocale());
+                
+                // If user set both password and passwordConfirm then reset password
+                if (    !StringUtils.isEmpty(form.getPasswordText()) 
+                     && !StringUtils.isEmpty(form.getPasswordConfirm()))
+                {
+                    try
+                    {
+                        data.resetPassword(RollerFactory.getRoller(), 
+                           form.getPasswordText(), 
+                           form.getPasswordConfirm());
+                    }
+                    catch (RollerException e)
+                    {
+                        msgs.add(ActionMessages.GLOBAL_MESSAGE, 
+                            new ActionMessage("yourProfile.passwordResetError"));
+                    }
+                } 
+                RollerSession rses = RollerSession.getRollerSession(request);
+                rses.setAuthenticatedUser(data);
+                mgr.storeUser( data );
+                
+                RollerFactory.getRoller().commit();
+
+                request.setAttribute(
+                        "model", new BasePageModel(request, response, mapping));
+                
+                msgs.add(null, new ActionMessage("yourProfile.saved"));
+                saveMessages(request, msgs);
+            }
+            else 
+            {
+                saveErrors(request, errors);
+            }
+            return edit(mapping, actionForm, request, response);
+        }
+        catch (Exception e)
+        {
+            mLogger.error("ERROR in action",e);
+            throw new ServletException(e);
+        }
+    }
+
