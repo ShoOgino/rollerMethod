@@ -8,8 +8,7 @@
         WebsiteData website = getCurrentWebsite();
         if (website != null && user != null) 
         {
-            return website.hasUserPermissions(user, 
-                (short)(PermissionsData.AUTHOR | PermissionsData.ADMIN));
+            return website.hasUserPermissions(user, (short)(PermissionsData.AUTHOR));
         }
         return false;
     }

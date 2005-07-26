@@ -1,4 +1,4 @@
-    public ActionForward select(
+    public ActionForward accept(
             ActionMapping       mapping,
             ActionForm          actionForm,
             HttpServletRequest  request,
@@ -7,14 +7,13 @@
     {
         YourWebsitesForm form = (YourWebsitesForm)actionForm;
         Roller roller = RollerFactory.getRoller();
-        WebsiteData selectedWebsite = 
-            roller.getUserManager().retrieveWebsite(form.getWebsiteId());
-        RollerSession rollerSession = RollerSession.getRollerSession(request);
-        UserData user = rollerSession.getAuthenticatedUser();
-        if (selectedWebsite.hasUserPermissions(user, PermissionsData.LIMITED))
-        {
-            rollerSession.setCurrentWebsite(selectedWebsite);
-        }        
+        PermissionsData perms = 
+            roller.getUserManager().retrievePermissionsData(form.getInviteId());
+        
+        perms.setPending(false);
+        // ROLLER_2.0: notify inviter that invitee has accepted invitation  
+        roller.commit();
+        
         request.setAttribute("model",
                 new YourWebsitesPageModel(request, response, mapping));
         ActionForward forward = mapping.findForward("yourWebsites.page");
