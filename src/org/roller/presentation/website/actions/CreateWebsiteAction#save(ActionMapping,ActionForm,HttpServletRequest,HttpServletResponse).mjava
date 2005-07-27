@@ -1,0 +1,54 @@
+    /** Save new website created by user */    
+    public ActionForward save(
+            ActionMapping       mapping,
+            ActionForm          actionForm,
+            HttpServletRequest  request,
+            HttpServletResponse response)
+            throws IOException, ServletException
+    {
+        CreateWebsiteForm form = (CreateWebsiteForm)actionForm;
+        ActionMessages msgs = new ActionMessages();
+        ActionMessages errors = validate(form, new ActionErrors());
+        if (!errors.isEmpty())
+        {
+            saveErrors(request, errors);
+        }
+        else try
+        {
+            // Add new user
+            RollerContext rollerContext = RollerContext.getRollerContext(request);
+            UserData user = 
+                RollerSession.getRollerSession(request).getAuthenticatedUser();
+            UserManager mgr = RollerFactory.getRoller().getUserManager(); 
+            
+            // Need system user to add new user
+            RollerFactory.getRoller().setUser(UserData.SYSTEM_USER);
+            HashMap pages = rollerContext.readThemeMacros(form.getTheme());
+            WebsiteData website = mgr.createWebsite(
+               user, 
+               pages, 
+               form.getHandle(), 
+               form.getName(), 
+               form.getDescription(), 
+               form.getTheme(), 
+               form.getLocale(), 
+               form.getTimeZone());
+            RollerFactory.getRoller().commit();
+
+            // Flush cache so user will immediately appear on index page
+            //PageCacheFilter.removeFromCache( request, ud );
+            //MainPageAction.flushMainPageCache();
+            
+            request.setAttribute("model", 
+                    new CreateWebsitePageModel(request, response, mapping, website));                
+        }
+        catch (RollerException e)
+        {
+            errors.add(ActionErrors.GLOBAL_ERROR, new ActionError(e.getMessage()));
+            saveErrors(request,errors);          
+            mLogger.error("ERROR in createWebsite", e);
+        }
+        ActionForward forward = mapping.findForward("createWebsiteDone.page");
+        return forward;
+    }
+

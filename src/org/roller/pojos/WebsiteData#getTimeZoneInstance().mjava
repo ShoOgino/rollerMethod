@@ -1,11 +1,11 @@
     /**
-     * Return TimeZone instance for value of timezone,
+     * Return TimeZone instance for value of timeZone,
      * otherwise return system default instance.
      * @return TimeZone
      */
     public TimeZone getTimeZoneInstance()
     {
-    	if (timezone == null) 
+    	if (timeZone == null) 
         {
             if (TimeZone.getDefault() != null) 
             {
@@ -16,6 +16,6 @@
                 this.setTimezone("America/New_York");
             }
         }
-        return TimeZone.getTimeZone(timezone);
+        return TimeZone.getTimeZone(timeZone);
     }
 

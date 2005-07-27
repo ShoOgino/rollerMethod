@@ -1,0 +1,19 @@
+    /** Present new website form to user */
+    public ActionForward create(
+            ActionMapping       mapping,
+            ActionForm          actionForm,
+            HttpServletRequest  request,
+            HttpServletResponse response)
+            throws IOException, ServletException
+    {
+        CreateWebsiteForm form = (CreateWebsiteForm)actionForm;
+        form.setLocale( Locale.getDefault().toString() );
+        form.setTimeZone( TimeZone.getDefault().getID() );      
+
+        request.setAttribute("model", 
+            new CreateWebsitePageModel(request, response, mapping, null));
+        
+        ActionForward forward = mapping.findForward("createWebsite.page");
+        return forward;
+    }
+

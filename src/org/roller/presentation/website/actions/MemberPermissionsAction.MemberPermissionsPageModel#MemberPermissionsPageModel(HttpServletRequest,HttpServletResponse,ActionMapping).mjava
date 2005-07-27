@@ -1,11 +1,10 @@
-        public YourWebsitesPageModel(HttpServletRequest request,
+        public MemberPermissionsPageModel(HttpServletRequest request,
           HttpServletResponse response, ActionMapping mapping) throws RollerException
         {
             super(request, response, mapping);
             Roller roller = RollerFactory.getRoller();
             RollerSession rollerSession = RollerSession.getRollerSession(request);
-            UserData user = rollerSession.getAuthenticatedUser();
-            permissions = roller.getUserManager().getAllPermissions(user);
-            pendings = roller.getUserManager().getPendingPermissions(user);
+            WebsiteData website = rollerSession.getCurrentWebsite();
+            permissions = roller.getUserManager().getAllPermissions(website);
         }
 

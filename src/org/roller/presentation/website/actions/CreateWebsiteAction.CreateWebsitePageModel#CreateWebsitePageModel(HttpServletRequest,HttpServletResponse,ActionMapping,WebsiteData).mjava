@@ -1,0 +1,14 @@
+        public CreateWebsitePageModel(HttpServletRequest request,
+                HttpServletResponse response, ActionMapping mapping, WebsiteData wd)
+        {
+            super(request, response, mapping);
+            RollerContext rollerContext = RollerContext.getRollerContext(request);
+            themes = Arrays.asList(rollerContext.getThemeNames());
+            if (wd != null) 
+            {
+                contextURL = rollerContext.getAbsoluteContextUrl(request);
+                weblogURL = contextURL + "/page/" + wd.getHandle();   
+                rssURL =    contextURL + "/rss/" + wd.getHandle();         
+            }
+        }
+

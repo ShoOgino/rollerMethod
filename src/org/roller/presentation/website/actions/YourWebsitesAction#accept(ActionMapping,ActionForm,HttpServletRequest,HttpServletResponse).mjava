@@ -8,7 +8,7 @@
         YourWebsitesForm form = (YourWebsitesForm)actionForm;
         Roller roller = RollerFactory.getRoller();
         PermissionsData perms = 
-            roller.getUserManager().retrievePermissionsData(form.getInviteId());
+            roller.getUserManager().retrievePermissions(form.getInviteId());
         
         perms.setPending(false);
         // ROLLER_2.0: notify inviter that invitee has accepted invitation  

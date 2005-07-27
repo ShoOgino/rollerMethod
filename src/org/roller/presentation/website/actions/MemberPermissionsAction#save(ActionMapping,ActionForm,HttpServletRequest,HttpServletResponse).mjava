@@ -3,8 +3,26 @@
             ActionForm          actionForm,
             HttpServletRequest  request,
             HttpServletResponse response)
-            throws IOException, ServletException
+            throws Exception
     {
+        MemberPermissionsPageModel model = 
+            new MemberPermissionsPageModel(request, response, mapping);
+        Iterator iter = model.getPermissions().iterator();
+        while (iter.hasNext())
+        {
+            PermissionsData perms = (PermissionsData)iter.next();
+            String sval = request.getParameter("perm-" + perms.getId());
+            if (sval != null)
+            {
+                short val = Short.parseShort(sval);
+                if (val == -1) perms.remove();
+                else perms.setPermissionMask(val);
+                RollerFactory.getRoller().commit();
+            }
+        }
+        MemberPermissionsPageModel updatedModel = 
+            new MemberPermissionsPageModel(request, response, mapping);
+        request.setAttribute("model", updatedModel);
         ActionForward forward = mapping.findForward("memberPermissions.page");
         return forward;
     }

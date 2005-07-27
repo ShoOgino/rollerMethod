@@ -1,4 +1,4 @@
-    public ActionForward decline(
+    public ActionForward resign(
             ActionMapping       mapping,
             ActionForm          actionForm,
             HttpServletRequest  request,
@@ -7,12 +7,18 @@
     {
         YourWebsitesForm form = (YourWebsitesForm)actionForm;
         Roller roller = RollerFactory.getRoller();
+        RollerSession rses = RollerSession.getRollerSession(request);
+        UserData user = rses.getAuthenticatedUser();
+        WebsiteData website = 
+            roller.getUserManager().retrieveWebsite(form.getWebsiteId());
         PermissionsData perms = 
-            roller.getUserManager().retrievePermissions(form.getInviteId());
-        
-        perms.remove();
-        // ROLLER_2.0: notify inviter that invitee has declined invitation  
-        roller.commit();
+            roller.getUserManager().getPermissions(website, user);
+        if (perms != null) 
+        {
+            // ROLLER_2.0: notify website members that user has resigned  
+            perms.remove();
+            roller.commit();
+        }
         
         request.setAttribute("model",
                 new YourWebsitesPageModel(request, response, mapping));
