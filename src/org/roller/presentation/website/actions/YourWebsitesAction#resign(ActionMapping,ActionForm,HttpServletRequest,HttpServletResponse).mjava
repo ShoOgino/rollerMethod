@@ -20,6 +20,11 @@
             roller.commit();
         }
         
+        ActionMessages msgs = new ActionMessages();
+        msgs.add(null, new ActionMessage(
+                "yourWebsites.resigned", perms.getWebsite().getHandle()));
+        saveMessages(request, msgs);
+        
         request.setAttribute("model",
                 new YourWebsitesPageModel(request, response, mapping));
         ActionForward forward = mapping.findForward("yourWebsites.page");

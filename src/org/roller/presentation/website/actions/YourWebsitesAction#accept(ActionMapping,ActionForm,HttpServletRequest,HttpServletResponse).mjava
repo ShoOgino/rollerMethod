@@ -13,6 +13,11 @@
         perms.setPending(false);
         // ROLLER_2.0: notify inviter that invitee has accepted invitation  
         roller.commit();
+
+        ActionMessages msgs = new ActionMessages();
+        msgs.add(null, new ActionMessage(
+                "yourWebsites.accepted", perms.getWebsite().getHandle()));
+        saveMessages(request, msgs);
         
         request.setAttribute("model",
                 new YourWebsitesPageModel(request, response, mapping));

@@ -5,6 +5,7 @@
             HttpServletResponse response)
             throws Exception
     {
+        ActionForward forward = mapping.findForward("inviteMember.page");
         ActionMessages msgs = new ActionMessages();
         ActionMessages errors = new ActionErrors();
         InviteMemberForm form = (InviteMemberForm)actionForm;
@@ -13,7 +14,7 @@
         if (user == null)
         {
             errors.add(ActionErrors.GLOBAL_ERROR, 
-                new ActionError("inviteMembers.error.userNotFound"));
+                new ActionError("inviteMember.error.userNotFound"));
         }
         else 
         {
@@ -23,25 +24,25 @@
             if (perms != null && perms.isPending())
             {
                 errors.add(ActionErrors.GLOBAL_ERROR, 
-                    new ActionError("inviteMembers.error.userAlreadyInvited"));
+                    new ActionError("inviteMember.error.userAlreadyInvited"));
             }
             else if (perms != null)
             {
                 errors.add(ActionErrors.GLOBAL_ERROR, 
-                    new ActionError("inviteMembers.error.userAlreadyMember"));
+                    new ActionError("inviteMember.error.userAlreadyMember"));
             }
             else
             {
                 String mask = request.getParameter("permissionsMask");
                 umgr.inviteUser(website, user, Short.parseShort(mask));
+                request.setAttribute("user", user);
+                forward = mapping.findForward("inviteMemberDone.page");
                 // ROLLER_2.0: notify user by email of invitation
                 msgs.add(ActionMessages.GLOBAL_MESSAGE, 
-                    new ActionMessage("inviteMembers.userInvited"));
+                    new ActionMessage("inviteMember.userInvited"));
             }
         }
         if (!errors.isEmpty()) saveErrors(request, errors);
-        if (!msgs.isEmpty()) saveMessages(request, msgs);
-        ActionForward forward = mapping.findForward("inviteMembers.page");
         return forward; 
     }
 

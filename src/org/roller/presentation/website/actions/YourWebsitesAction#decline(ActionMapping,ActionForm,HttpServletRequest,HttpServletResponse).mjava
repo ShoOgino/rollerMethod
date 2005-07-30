@@ -14,6 +14,11 @@
         // ROLLER_2.0: notify inviter that invitee has declined invitation  
         roller.commit();
         
+        ActionMessages msgs = new ActionMessages();
+        msgs.add(null, new ActionMessage(
+                "yourWebsites.declined", perms.getWebsite().getHandle()));
+        saveMessages(request, msgs);
+        
         request.setAttribute("model",
                 new YourWebsitesPageModel(request, response, mapping));
         ActionForward forward = mapping.findForward("yourWebsites.page");
