@@ -11,7 +11,7 @@
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             RollerSession rollerSession = RollerSession.getRollerSession(request);
-            if ( rollerSession.isUserAuthorizedToEdit() )
+            if ( rollerSession.isUserAuthorizedToAdmin() )
             {
                 UserData ud = RollerSession.getRollerSession(request).getAuthenticatedUser();
                 request.setAttribute("user",ud);

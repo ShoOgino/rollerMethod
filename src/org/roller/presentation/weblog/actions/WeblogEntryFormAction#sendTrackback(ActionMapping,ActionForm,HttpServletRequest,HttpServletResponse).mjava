@@ -12,9 +12,8 @@
        WeblogEntryData entry = null;
        try
        {
-           RollerRequest rreq = RollerRequest.getRollerRequest(request);
            RollerSession rollerSession = RollerSession.getRollerSession(request);
-           if (rollerSession.isUserAuthorizedToEdit())
+           if (rollerSession.isUserAuthorizedToAuthor())
            {
                WeblogEntryFormEx form = (WeblogEntryFormEx)actionForm;
                String entryid = form.getId();

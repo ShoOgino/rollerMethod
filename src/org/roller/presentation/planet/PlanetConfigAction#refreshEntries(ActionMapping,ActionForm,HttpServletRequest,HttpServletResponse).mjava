@@ -7,7 +7,7 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if (RollerSession.getRollerSession(request).isUserAuthorizedToEdit())
+            if (RollerSession.getRollerSession(request).isAdminUser())
             {
                 Roller roller = RollerFactory.getRoller();
                 RefreshEntriesTask task = new RefreshEntriesTask();

@@ -15,7 +15,7 @@
         throws RollerException
     {
         Roller roller = RollerFactory.getRoller();
-        if (RollerSession.getRollerSession(request).isUserAuthorizedToEdit())
+        if (RollerSession.getRollerSession(request).isUserAuthorizedToAuthor())
         {
             BookmarkManager bmgr = roller.getBookmarkManager();
             BookmarksForm form = (BookmarksForm)actionForm;

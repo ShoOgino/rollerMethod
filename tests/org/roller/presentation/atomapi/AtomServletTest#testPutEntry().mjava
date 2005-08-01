@@ -10,7 +10,7 @@
         
         WeblogEntryData entry = (WeblogEntryData) 
             getRoller().getWeblogManager().getWeblogEntries(
-                website, null, null, null, WeblogManager.ALL, new Integer(1)).get(0);
+                website, null, null, null, null, new Integer(1)).get(0);
         
         // Fetch that entry using Atom
         Entry fetchedEntry = getEntry(user, entry.getId());

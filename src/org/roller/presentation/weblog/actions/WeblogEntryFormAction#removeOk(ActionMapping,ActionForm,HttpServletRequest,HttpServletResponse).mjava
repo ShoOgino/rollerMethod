@@ -13,13 +13,14 @@
         ActionForward forward = mapping.findForward("weblogEntryRemove.page");
         try
         {
-            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            Roller roller = RollerFactory.getRoller();
+            WeblogEntryFormEx wf = (WeblogEntryFormEx)actionForm;
+            WeblogEntryData wd = 
+                roller.getWeblogManager().retrieveWeblogEntry(wf.getId());
             RollerSession rollerSession = RollerSession.getRollerSession(request);
-            if ( rollerSession.isUserAuthorizedToEdit() )
+            if (     rollerSession.isUserAuthorizedToAuthor() 
+                 || (rollerSession.isUserAuthorized() && wd.isDraft()) )
             {
-                WeblogEntryFormEx wf = (WeblogEntryFormEx)actionForm;
-                WeblogEntryData wd = 
-                    RollerFactory.getRoller().getWeblogManager().retrieveWeblogEntry(wf.getId());
                 wf.copyFrom(wd, request.getLocale());
                 if (wd == null || wd.getId() == null)
                 {

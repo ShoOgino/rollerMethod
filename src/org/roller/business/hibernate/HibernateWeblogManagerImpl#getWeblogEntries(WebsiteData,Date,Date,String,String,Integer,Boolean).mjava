@@ -59,16 +59,10 @@
                 criteria.add(Expression.eq("category", cat));
             }
             
-            if (status != null && status.equals(DRAFT_ONLY))
+            if (status != null)
             {
-                criteria.add(
-                    Expression.eq("publishEntry", Boolean.FALSE));
+                criteria.add(Expression.eq("status", status));
             }        
-            else if (status != null && status.equals(PUB_ONLY))
-            {
-                criteria.add(
-                    Expression.eq("publishEntry", Boolean.TRUE));
-            }
 
             if (pinned != null)
             {

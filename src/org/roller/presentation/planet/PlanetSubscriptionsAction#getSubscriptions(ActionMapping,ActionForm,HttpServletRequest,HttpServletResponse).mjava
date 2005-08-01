@@ -6,7 +6,7 @@
         ActionForward forward = mapping.findForward("planetSubscriptions.page");
         try
         {
-            if (RollerSession.getRollerSession(request).isUserAuthorizedToEdit())
+            if (RollerSession.getRollerSession(request).isAdminUser())
             {
                 Roller roller = RollerFactory.getRoller();
                 PlanetManager planet = roller.getPlanetManager();

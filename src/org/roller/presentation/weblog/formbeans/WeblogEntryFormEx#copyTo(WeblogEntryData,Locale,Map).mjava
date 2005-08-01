@@ -24,20 +24,26 @@
         
         entry.setPlugins( StringUtils.join(this.pluginsArray,",") );
         
-        // checkboxes don't send a value for unchecked
-        if (entry.getPublishEntry() == null)
-        {
-            entry.setPublishEntry(Boolean.FALSE);
-        }
         if (getCategoryId() != null) 
         {
             entry.setCategoryId(getCategoryId());
         }       
-        
         if (getCreatorId() != null) 
         {
             entry.setCreatorId(getCreatorId());
         }       
+        if (getAllowComments() == null)
+        {
+            entry.setAllowComments(Boolean.FALSE);
+        }
+        if (getRightToLeft() == null)
+        {
+            entry.setRightToLeft(Boolean.FALSE);
+        }
+        if (getPinnedToMain() == null)
+        {
+            entry.setPinnedToMain(Boolean.FALSE);
+        }        
         
         Iterator params = paramMap.keySet().iterator();
         while (params.hasNext())

@@ -51,7 +51,15 @@
             entry.setPubTime(current);
             entry.setUpdateTime(current);
             entry.setWebsite(website);
-            entry.setPublishEntry(Boolean.valueOf(publish));
+            if (Boolean.valueOf(publish).booleanValue())
+            {
+                entry.setStatus(WeblogEntryData.PUBLISHED);
+            }
+            else
+            {
+                entry.setStatus(WeblogEntryData.DRAFT);
+            }
+
 
             if ( cat != null )
             {

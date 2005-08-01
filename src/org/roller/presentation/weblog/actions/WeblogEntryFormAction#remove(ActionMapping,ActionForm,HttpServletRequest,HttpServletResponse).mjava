@@ -12,18 +12,19 @@
     {
         try
         {
-            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+            WeblogEntryData wd = mgr.retrieveWeblogEntry(request.getParameter("id"));
             RollerSession rollerSession = RollerSession.getRollerSession(request);
-            if ( rollerSession.isUserAuthorizedToEdit() )
+            if (     rollerSession.isUserAuthorizedToAuthor() 
+                 || (rollerSession.isUserAuthorized() && wd.isDraft()) )
             {
-                WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
-                WeblogEntryData wd = mgr.retrieveWeblogEntry(request.getParameter("id"));
                 
                 // Flush the page cache
-                PageCacheFilter.removeFromCache(request, RollerSession.getRollerSession(request).getCurrentWebsite());
+                PageCacheFilter.removeFromCache(request, 
+                        RollerSession.getRollerSession(request).getCurrentWebsite());
 
 				// remove the index for it
-                wd.setPublishEntry(Boolean.FALSE);
+                wd.setStatus(WeblogEntryData.DRAFT);
 		       reindexEntry(RollerFactory.getRoller(), wd);
 
                 wd.remove();

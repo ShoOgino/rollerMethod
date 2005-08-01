@@ -15,7 +15,7 @@
         throws RollerException
     {
         RollerRequest rreq = RollerRequest.getRollerRequest(request);
-        if (RollerSession.getRollerSession(request).isUserAuthorizedToEdit())
+        if (RollerSession.getRollerSession(request).isUserAuthorizedToAuthor())
         {
             addModelObjects(request, (BookmarksForm)actionForm);
             return mapping.findForward("BookmarksForm");

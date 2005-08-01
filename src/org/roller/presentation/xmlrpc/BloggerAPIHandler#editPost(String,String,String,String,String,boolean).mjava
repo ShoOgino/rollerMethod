@@ -32,7 +32,14 @@
                 WeblogEntryData entry = weblogMgr.retrieveWeblogEntry(postid);
                 entry.setText(content);
                 entry.setUpdateTime(current);
-                entry.setPublishEntry(Boolean.valueOf(publish));
+                if (Boolean.valueOf(publish).booleanValue())
+                {
+                    entry.setStatus(WeblogEntryData.PUBLISHED);
+                }
+                else
+                {
+                    entry.setStatus(WeblogEntryData.DRAFT);
+                }
     
                 entry.save();
                 roller.commit();

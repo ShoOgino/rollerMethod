@@ -12,7 +12,7 @@
         try
         {
             RollerSession rollerSession = RollerSession.getRollerSession(request);
-			if ( rollerSession.isUserAuthorizedToEdit() )
+			if ( rollerSession.isUserAuthorizedToAdmin() )
 			{
 	            PageCacheFilter.removeFromCache(request, RollerSession.getRollerSession(request).getCurrentWebsite());
 

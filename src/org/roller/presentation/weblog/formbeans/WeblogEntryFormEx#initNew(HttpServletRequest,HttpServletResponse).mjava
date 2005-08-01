@@ -10,6 +10,7 @@
             setPluginsArray(StringUtils.split(
                     RollerSession.getRollerSession(request).getCurrentWebsite().getDefaultPlugins(), ",") );
         }
+        status = WeblogEntryData.DRAFT;
         allowComments = Boolean.TRUE;
         updateTime = new Timestamp(new Date().getTime());
         pubTime = updateTime;

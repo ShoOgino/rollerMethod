@@ -6,7 +6,7 @@
         ActionForward forward = mapping.findForward("planetGroups.page");
         try
         {
-            if (RollerSession.getRollerSession(request).isUserAuthorizedToEdit())
+            if (RollerSession.getRollerSession(request).isAdminUser())
             {
                 PlanetGroupForm form = (PlanetGroupForm)actionForm;              
                 form.doReset(mapping, request);

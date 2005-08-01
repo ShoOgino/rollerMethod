@@ -12,7 +12,7 @@
         RefererManager refmgr = RollerFactory.getRoller().getRefererManager();
         try
         {
-            if ( rollerSession.isUserAuthorizedToEdit() )
+            if ( rollerSession.isUserAuthorizedToAuthor() )
             {   
                 req.setAttribute("pageHits",
                     new Integer(refmgr.getDayHits(RollerSession.getRollerSession(req).getCurrentWebsite())));

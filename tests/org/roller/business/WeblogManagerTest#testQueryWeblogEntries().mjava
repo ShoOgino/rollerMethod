@@ -13,7 +13,7 @@
                         null,                    // startDate
                         new Date(),              // endDate
                         null,                    // catName
-                        WeblogManager.PUB_ONLY,  // status
+                        WeblogEntryData.PUBLISHED,  // status
                         null);                   // maxEntries
         assertEquals(mExpectedPublishedEntryCount, publishedEntries.size());
                     
@@ -23,7 +23,7 @@
                         null,                    // startDate
                         new Date(),              // endDate
                         null,                    // catName
-                        WeblogManager.DRAFT_ONLY,  // status
+                        WeblogEntryData.DRAFT,  // status
                         null);                   // maxEntries
         assertEquals(mExpectedEntryCount-mExpectedPublishedEntryCount, draftEntries.size());
                           
@@ -33,7 +33,7 @@
                         null,                    // startDate
                         new Date(),              // endDate
                         null,                    // catName
-                        WeblogManager.ALL,       // status
+                        null,       // status
                         null);                   // maxEntries
         assertEquals(mExpectedEntryCount, allEntries.size());
 

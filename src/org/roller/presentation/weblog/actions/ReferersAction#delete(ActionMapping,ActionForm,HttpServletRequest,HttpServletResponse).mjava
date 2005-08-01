@@ -8,7 +8,7 @@
         RollerSession rollerSession = RollerSession.getRollerSession(req);
         try
         {
-            if (rollerSession.isUserAuthorizedToEdit() )
+            if (rollerSession.isUserAuthorizedToAuthor() )
             {
                 RefererManager refmgr = RollerFactory.getRoller().getRefererManager();
                 WebsiteData website = RollerSession.getRollerSession(req).getCurrentWebsite();

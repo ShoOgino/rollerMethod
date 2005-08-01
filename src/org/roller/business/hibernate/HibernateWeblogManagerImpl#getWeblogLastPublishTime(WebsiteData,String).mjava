@@ -23,7 +23,7 @@
         
         Session session = ((HibernateStrategy)mStrategy).getSession();
         Criteria criteria = session.createCriteria(WeblogEntryData.class);
-        criteria.add(Expression.eq("publishEntry", Boolean.TRUE));
+        criteria.add(Expression.eq("status", WeblogEntryData.PUBLISHED));
         criteria.add(Expression.le("pubTime", new Date()));
 
         try

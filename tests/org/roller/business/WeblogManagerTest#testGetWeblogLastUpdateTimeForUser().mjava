@@ -17,14 +17,14 @@
         //System.out.println("# entries:" + lastEntryIndex);
         WeblogEntryData entry1 = null;
         //WeblogEntryData entry1 = (WeblogEntryData)mEntriesCreated.get(lastEntryIndex);
-        if (entry1 == null || !entry1.getPublishEntry().booleanValue()) // if not published, find one
+        if (entry1 == null || !entry1.isPublished()) // if not published, find one
         {
             for (int i=lastEntryIndex; i >= 0; i--)
             {
                 entry1 = (WeblogEntryData)        
                     mEntriesCreated.get(i); // last entry is newest
                 //System.out.println("entry " + i + "published:" + entry1.getPublishEntry());
-                if (entry1.getPublishEntry().booleanValue()) {
+                if (entry1.isPublished()) {
                     break;
                 }
             }

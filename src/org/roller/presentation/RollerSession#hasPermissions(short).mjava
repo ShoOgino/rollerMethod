@@ -1,0 +1,11 @@
+    private boolean hasPermissions(short mask) 
+    {
+        UserData user = getAuthenticatedUser();
+        WebsiteData website = getCurrentWebsite();
+        if (website != null && user != null) 
+        {
+            return website.hasUserPermissions(user, mask);
+        }
+        return false;
+    }
+

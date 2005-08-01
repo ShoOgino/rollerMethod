@@ -14,42 +14,23 @@
         ActionMessages uiMessages = new ActionMessages();
         try
         {
-            RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            RollerSession rollerSession = RollerSession.getRollerSession(request);
-            if ( rollerSession.isUserAuthorizedToEdit() )
-            {
-                UserManager userMgr = RollerFactory.getRoller().getUserManager();
-                WeblogManager weblogMgr = RollerFactory.getRoller().getWeblogManager();
-
-                WebsiteData site = RollerSession.getRollerSession(request).getCurrentWebsite();
-                WeblogEntryFormEx wf = (WeblogEntryFormEx)actionForm;
-                
-                // I was getting column 'x' cannot be null, so I fixed it here.
-                // A better solution might be to change the table so it allows
-                // nulls for these columns.
-                if (wf.getAllowComments() == null)
-                {
-                	wf.setAllowComments(Boolean.FALSE);
-                }
-                if (wf.getRightToLeft() == null)
-                {
-                    wf.setRightToLeft(Boolean.FALSE);
-                }
-                if (wf.getPinnedToMain() == null)
-                {
-                    wf.setPinnedToMain(Boolean.FALSE);
-                }
-                if (wf.getPublishEntry() == null)
-                {
-                    wf.setPublishEntry(Boolean.FALSE);
-                }
-               
-                WeblogEntryData entry = null;
+            WeblogEntryFormEx    wf = (WeblogEntryFormEx)actionForm;
+            Roller           roller = RollerFactory.getRoller();
+            RollerSession      rses = RollerSession.getRollerSession(request);
+            UserManager     userMgr = roller.getUserManager();
+            WeblogManager weblogMgr = roller.getWeblogManager();
+            WebsiteData        site = rses.getCurrentWebsite();
+            WeblogEntryData   entry = null;
+            
+            if ( rses.isUserAuthorizedToAuthor() 
+                 || (rses.isUserAuthorized() 
+                        && !wf.getStatus().equals(WeblogEntryData.PUBLISHED) ))
+            {                             
                 if (wf.getId() == null || wf.getId().trim().length()==0) 
                 {
                     entry = new WeblogEntryData();  
                     UserData ud = userMgr.retrieveUser(
-                            RollerSession.getRollerSession(request).getAuthenticatedUser().getId());
+                            rses.getAuthenticatedUser().getId());
                     entry.setCreator(ud);
                     entry.setWebsite( site );
                 }
@@ -72,7 +53,7 @@
                 {
                    mLogger.debug("Invalid MediaCast attributes");
                 }
-                
+
                 // Store value object (creates new or updates existing)
                 entry.setUpdateTime(new Timestamp(new Date().getTime()));
                 mLogger.debug("Saving entry");
@@ -105,9 +86,18 @@
                                 (WeblogEntryFormEx)actionForm,
                                 WeblogEntryPageModel.EDIT_MODE));
                 
-                uiMessages.add(null, new ActionMessage("weblogEdit.changesSaved"));
-                saveMessages(request, uiMessages);
-                
+                if (!rses.isUserAuthorizedToAuthor() && 
+                        rses.isUserAuthorized() && entry.isPending())
+                {
+                    uiMessages.add(null, 
+                            new ActionMessage("weblogEdit.submitedForReview"));
+                }
+                else 
+                {
+                    uiMessages.add(null, 
+                            new ActionMessage("weblogEdit.changesSaved"));
+                }
+                saveMessages(request, uiMessages);               
                 mLogger.debug("operation complete");
             }
             else

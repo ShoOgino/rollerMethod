@@ -35,7 +35,7 @@
         
         WeblogEntryData e1 = new WeblogEntryData(
             null, c1, wd, ud, "title1", null, "text", "anchor", 
-            new Timestamp(0), new Timestamp(0), Boolean.FALSE);
+            new Timestamp(0), new Timestamp(0), WeblogEntryData.DRAFT);
         e1.save();
         
         WeblogCategoryData c2 = wmgr.createWeblogCategory(); 
@@ -46,7 +46,7 @@
       
         WeblogEntryData e2 = new WeblogEntryData(
             null, c2, wd, ud, "title2", null, "text", "anchor", 
-            new Timestamp(0), new Timestamp(0), Boolean.FALSE);
+            new Timestamp(0), new Timestamp(0), WeblogEntryData.DRAFT);
         e2.save();
         
         WeblogCategoryData c3 = wmgr.createWeblogCategory(); 
@@ -57,7 +57,7 @@
         
         WeblogEntryData e3 = new WeblogEntryData(
             null, c3, wd, ud, "title3", null, "text", "anchor", 
-            new Timestamp(0), new Timestamp(0), Boolean.FALSE);
+            new Timestamp(0), new Timestamp(0), WeblogEntryData.DRAFT);
         e3.save();
         
         getRoller().commit(); 
