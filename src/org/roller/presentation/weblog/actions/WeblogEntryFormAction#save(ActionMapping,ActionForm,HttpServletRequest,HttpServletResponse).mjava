@@ -89,8 +89,10 @@
                 if (!rses.isUserAuthorizedToAuthor() && 
                         rses.isUserAuthorized() && entry.isPending())
                 {
+                    notifyWebsiteAuthorsOfPendingEntry(request, entry);
                     uiMessages.add(null, 
                             new ActionMessage("weblogEdit.submitedForReview"));
+                    
                 }
                 else 
                 {

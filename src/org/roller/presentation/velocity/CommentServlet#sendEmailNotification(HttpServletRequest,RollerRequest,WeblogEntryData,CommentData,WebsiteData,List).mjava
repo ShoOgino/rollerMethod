@@ -27,14 +27,17 @@
         }
 
         // Send e-mail to owner and subscribed users (if enabled)
-        boolean notify = RollerRuntimeConfig.getBooleanProperty("users.comments.emailnotify");
+        boolean notify = RollerRuntimeConfig.getBooleanProperty(
+                "users.comments.emailnotify");
         if (notify && site.getEmailComments().booleanValue())
         {
             // Determine message and addressing options from init parameters
             boolean separateMessages = 
-                    RollerConfig.getBooleanProperty("comment.notification.separateOwnerMessage");
+                    RollerConfig.getBooleanProperty(
+                            "comment.notification.separateOwnerMessage");
             boolean hideCommenterAddrs = 
-                    RollerConfig.getBooleanProperty("comment.notification.hideCommenterAddresses");
+                    RollerConfig.getBooleanProperty(
+                            "comment.notification.hideCommenterAddresses");
 
             //------------------------------------------
             // --- Determine the "from" address
@@ -78,12 +81,14 @@
 
             //------------------------------------------
             // --- Form the messages to be sent -
-            // For simplicity we always build separate owner and commenter messages even if sending a single one
+            // For simplicity we always build separate owner and commenter messages 
+            // even if sending a single one
             
             // Determine with mime type to use for e-mail
             StringBuffer msg = new StringBuffer();
             StringBuffer ownermsg = new StringBuffer();
-            boolean escapeHtml = RollerRuntimeConfig.getBooleanProperty("users.comments.escapehtml");
+            boolean escapeHtml = 
+                RollerRuntimeConfig.getBooleanProperty("users.comments.escapehtml");
                         
             if (!escapeHtml)
             {
@@ -188,22 +193,27 @@
                 {
                     // Send separate messages to owner and commenters
                     sendMessage(session, from,
-                        new String[]{website.getEmailAddress()}, null, null, subject, ownermsg.toString(), isHtml);
+                        new String[]{website.getEmailAddress()}, 
+                        null, null, subject, ownermsg.toString(), isHtml);
                     if (commenterAddrs.length > 0)
                     {
-                        // If hiding commenter addrs, they go in Bcc: otherwise in the To: of the second message
+                        // If hiding commenter addrs, they go in Bcc: otherwise in 
+                        // the To: of the second message
                         String[] to = hideCommenterAddrs ? null : commenterAddrs;
                         String[] bcc = hideCommenterAddrs ? commenterAddrs : null;
-                        sendMessage(session, from, to, null, bcc, subject, msg.toString(), isHtml);
+                        sendMessage(session, from, to, null, bcc, 
+                                subject, msg.toString(), isHtml);
 
                     }
                 }
                 else
                 {
-                    // Single message.  User in To: header, commenters in either cc or bcc depending on hiding option
+                    // Single message.  User in To: header, commenters in either cc 
+                    // or bcc depending on hiding option
                     String[] cc = hideCommenterAddrs ? null : commenterAddrs;
                     String[] bcc = hideCommenterAddrs ? commenterAddrs : null;
-                    sendMessage(session, from, new String[]{website.getEmailAddress()}, cc, bcc, subject,
+                    sendMessage(session, from, 
+                        new String[]{website.getEmailAddress()}, cc, bcc, subject,
                         ownermsg.toString(), isHtml);
                 }
             }
