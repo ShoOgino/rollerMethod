@@ -6,6 +6,8 @@
         HttpServletResponse response)
         throws IOException, ServletException
     {
+        ActionErrors errors = new ActionErrors();
+        ActionMessages messages = new ActionMessages();        
         ActionForward forward = mapping.findForward("editWebsite");
         try
         {
@@ -16,22 +18,7 @@
             if ( rollerSession.isUserAuthorizedToAdmin() )
             {
                 WebsiteFormEx form = (WebsiteFormEx)actionForm;
-                
-                // checkboxes return no value when not checked
-                if (form.getAllowComments() == null)
-                {
-                    form.setAllowComments( Boolean.FALSE );
-                }
-                if (form.getEmailComments() == null)
-                {
-                    form.setEmailComments( Boolean.FALSE );
-                }
-                if (form.getEnableBloggerApi() == null)
-                {
-                    form.setEnableBloggerApi( Boolean.FALSE );
-                }
-
-                if(!form.getDefaultPageId().equals(form.getWeblogDayPageId()))
+                if (!form.getDefaultPageId().equals(form.getWeblogDayPageId()))
                 {                    
                     WebsiteData wd = umgr.retrieveWebsite(form.getId());
                     wd.save(); // should throw if save not permitted
@@ -39,31 +26,16 @@
                     // ensure isEnabled can't be changed
                     form.setIsEnabled(wd.getIsEnabled());
                     form.copyTo(wd, request.getLocale());
-                    
-                    if (form.getDefaultCategoryId() != null) 
-                    {
-                        WeblogCategoryData defaultCat = 
-                            wmgr.retrieveWeblogCategory(form.getDefaultCategoryId());
-                        wd.setDefaultCategory(defaultCat);
-                    }
-                    
-                    if (form.getBloggerCategoryId() != null) 
-                    {
-                        WeblogCategoryData bloggerCat = 
-                            wmgr.retrieveWeblogCategory(form.getBloggerCategoryId());
-                        wd.setBloggerCategory(bloggerCat);
-                    }
-                    
+                                        
                     wd.save();
                     RollerFactory.getRoller().getRefererManager().applyRefererFilters(wd);                    
                     RollerFactory.getRoller().commit();
 
-                    request.getSession().setAttribute(
-                        RollerSession.STATUS_MESSAGE,
-                        "Successfully submitted new Weblog templates");
+                   messages.add(null, 
+                     new ActionMessage("websiteSettings.savedChanges"));
 
                     request.getSession().setAttribute(
-                        RollerRequest.WEBSITEID_KEY,form.getId());
+                        RollerRequest.WEBSITEID_KEY, form.getId());
 
                     // clear the page cache for this user
                     PageCacheFilter.removeFromCache(request, wd);
@@ -73,15 +45,15 @@
                     String editorPages = 
                         RollerRuntimeConfig.getProperty("users.editor.pages");
                 
-                    List epages = Arrays.asList(StringUtils.split(org.apache.commons.lang.StringUtils.deleteWhitespace(editorPages), ","));
+                    List epages = Arrays.asList(StringUtils.split(
+                        org.apache.commons.lang.StringUtils.deleteWhitespace(editorPages), ","));
                     request.setAttribute("editorPagesList", epages);                
                 }
                 else
                 {
-                    request.getSession().setAttribute(
-                        RollerSession.ERROR_MESSAGE,
-                        "CHANGES REJECTED: Cannot set default page template "
-                        +"and day template to same template");
+                    errors.add(null, 
+                        new ActionError("websiteSettings.error.sameTemplate"));                   
+                    saveErrors(request, errors);
                 }
             }
             else
@@ -93,9 +65,7 @@
         }
         catch (RollerPermissionsException e)
         {
-            ActionErrors errors = new ActionErrors();
             errors.add(null, new ActionError("error.permissions.deniedSave"));
-            saveErrors(request, errors);
             forward = mapping.findForward("access-denied");
         }
         catch (RollerException re)
@@ -108,6 +78,8 @@
             mLogger.error("Unexpected exception",e);
             throw new ServletException(e);
         }
+        if (errors.size() > 0) saveErrors(request, errors);
+        if (messages.size() > 0) saveMessages(request, messages);  
         return forward;
     }
 

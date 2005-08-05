@@ -10,33 +10,38 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            RollerSession rollerSession = RollerSession.getRollerSession(request);
-            if ( rollerSession.isUserAuthorizedToAdmin() )
+            RollerSession rses = RollerSession.getRollerSession(request);
+            if (rses.isUserAuthorizedToAdmin())
             {
-                UserData ud = RollerSession.getRollerSession(request).getAuthenticatedUser();
+                Roller roller = RollerFactory.getRoller();
+                UserManager umgr = roller.getUserManager();
+                WeblogManager wmgr = roller.getWeblogManager();
+                UserData ud = rses.getAuthenticatedUser();
                 request.setAttribute("user",ud);
 
-                WebsiteData hd = RollerSession.getRollerSession(request).getCurrentWebsite();
-                WebsiteForm wf = (WebsiteFormEx)actionForm;
-                wf.copyFrom(hd, request.getLocale());
+                WebsiteData website = 
+                    umgr.retrieveWebsite(rses.getCurrentWebsite().getId());
+                WebsiteFormEx wf = (WebsiteFormEx)actionForm;
+                wf.copyFrom(website, request.getLocale());
 
-                List cd = RollerFactory.getRoller().getWeblogManager()
-                   .getWeblogCategories(RollerSession.getRollerSession(request).getCurrentWebsite(), true);
+                List cd = wmgr.getWeblogCategories(website, true);
                 request.setAttribute("categories",cd);
 
-                List bcd = RollerFactory.getRoller().getWeblogManager()
-                    .getWeblogCategories(RollerSession.getRollerSession(request).getCurrentWebsite(), true);
+                List bcd = wmgr.getWeblogCategories(website, true);
                 request.setAttribute("bloggerCategories",bcd);
 
-                List pages = RollerFactory.getRoller().getUserManager().getPages(RollerSession.getRollerSession(request).getCurrentWebsite());
+                List pages = umgr.getPages(website);
                 request.setAttribute("pages",pages);
 
                 ServletContext ctx = request.getSession().getServletContext();
                 String editorPages = 
                         RollerRuntimeConfig.getProperty("users.editor.pages");
                 
-                List epages = Arrays.asList(StringUtils.split(StringUtils.deleteWhitespace(editorPages), ","));
+                List epages = Arrays.asList(StringUtils.split(
+                        StringUtils.deleteWhitespace(editorPages), ","));
                 request.setAttribute("editorPagesList", epages);
+                
+                rses.setCurrentWebsite(website);
             }
             else
             {

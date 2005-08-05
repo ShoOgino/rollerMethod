@@ -37,7 +37,7 @@
                 umgr.inviteUser(website, user, Short.parseShort(mask));
                 request.setAttribute("user", user);
                 forward = mapping.findForward("inviteMemberDone.page");
-                // ROLLER_2.0: notify user by email of invitation
+                notifyInvitee(request, website, user);
                 msgs.add(ActionMessages.GLOBAL_MESSAGE, 
                     new ActionMessage("inviteMember.userInvited"));
             }

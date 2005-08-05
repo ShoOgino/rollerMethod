@@ -3,7 +3,40 @@
      */
     public void copyTo(WebsiteData dataHolder, java.util.Locale locale) throws RollerException
     {
+        Date dateCreated = dataHolder.getDateCreated();
+        
         super.copyTo(dataHolder, locale);
+        
+        dataHolder.setDateCreated(dateCreated);        
         dataHolder.setDefaultPlugins( StringUtils.join(this.defaultPluginsArray,",") );
+                
+        // checkboxes return no value when not checked
+        if (getAllowComments() == null)
+        {
+            dataHolder.setAllowComments(Boolean.FALSE);
+        }
+        if (getEmailComments() == null)
+        {
+            dataHolder.setEmailComments(Boolean.FALSE);
+        }
+        if (getEnableBloggerApi() == null)
+        {
+            dataHolder.setEnableBloggerApi(Boolean.FALSE);
+        }
+        
+        WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+        if (getDefaultCategoryId() != null) 
+        {
+            WeblogCategoryData defaultCat = 
+                wmgr.retrieveWeblogCategory(getDefaultCategoryId());
+            dataHolder.setDefaultCategory(defaultCat);
+        }
+
+        if (getBloggerCategoryId() != null) 
+        {
+            WeblogCategoryData bloggerCat = 
+                wmgr.retrieveWeblogCategory(getBloggerCategoryId());
+            dataHolder.setBloggerCategory(bloggerCat);
+        }
     }
 
