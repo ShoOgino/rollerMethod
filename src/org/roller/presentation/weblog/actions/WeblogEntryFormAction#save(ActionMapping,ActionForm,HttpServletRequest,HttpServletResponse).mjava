@@ -39,7 +39,7 @@
                     entry = weblogMgr.retrieveWeblogEntry(wf.getId());
                     entry.save(); // should throw if save not permitted
                 }
-                wf.copyTo(entry, request.getLocale(), request.getParameterMap());
+                wf.copyTo(entry, request.getLocale(),request.getParameterMap());
 
                 // Fetch MediaCast content type and length
                 mLogger.debug("Checking MediaCast attributes");
@@ -62,25 +62,23 @@
 
                 mLogger.debug("Populating form");
                 wf.copyFrom(entry, request.getLocale());
-                
-                reindexEntry(RollerFactory.getRoller(), entry);
-                
-                // open up a new session, because we will forward to the edit action
-                //RollerFactory.getRoller().begin(); // begin already called by RequestFilter
-                
-                request.setAttribute(RollerRequest.WEBLOGENTRYID_KEY, entry.getId());
+                               
+                request.setAttribute(
+                        RollerRequest.WEBLOGENTRYID_KEY, entry.getId());
                  
-                // Flush the page cache
+                // Reindex entry, flush caches, etc.
+                reindexEntry(RollerFactory.getRoller(), entry);
                 mLogger.debug("Removing from cache");
-                PageCacheFilter.removeFromCache(request, RollerSession.getRollerSession(request).getCurrentWebsite());
-				// refresh the front page cache
+                PageCacheFilter.removeFromCache(request, 
+                   RollerSession.getRollerSession(request).getCurrentWebsite());
                 MainPageAction.flushMainPageCache();
 
-                // remove session objects that may be left over from spellchecking
+                // Clean up session objects we used
                 HttpSession session = request.getSession(true);
                 session.removeAttribute("spellCheckEvents");
                 session.removeAttribute("entryText");
-
+                
+                // Load up request with data for view
                 request.setAttribute("model",
                         new WeblogEntryPageModel(request, response, mapping,
                                 (WeblogEntryFormEx)actionForm,
@@ -89,15 +87,20 @@
                 if (!rses.isUserAuthorizedToAuthor() && 
                         rses.isUserAuthorized() && entry.isPending())
                 {
+                    // implies that entry just changed to pending
                     notifyWebsiteAuthorsOfPendingEntry(request, entry);
-                    uiMessages.add(null, 
-                            new ActionMessage("weblogEdit.submitedForReview"));
+                    uiMessages.add(null,
+                        new ActionMessage("weblogEdit.submitedForReview")); 
                     
+                    // so clear entry from editor
+                    actionForm = new WeblogEntryFormEx();
+                    request.setAttribute(mapping.getName(), actionForm);
+                    forward = create(mapping, actionForm, request, response);
                 }
                 else 
                 {
                     uiMessages.add(null, 
-                            new ActionMessage("weblogEdit.changesSaved"));
+                        new ActionMessage("weblogEdit.changesSaved"));
                 }
                 saveMessages(request, uiMessages);               
                 mLogger.debug("operation complete");

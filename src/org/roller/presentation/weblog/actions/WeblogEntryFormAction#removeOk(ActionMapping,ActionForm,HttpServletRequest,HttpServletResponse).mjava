@@ -17,7 +17,8 @@
             WeblogEntryFormEx wf = (WeblogEntryFormEx)actionForm;
             WeblogEntryData wd = 
                 roller.getWeblogManager().retrieveWeblogEntry(wf.getId());
-            RollerSession rollerSession = RollerSession.getRollerSession(request);
+            RollerSession rollerSession = 
+                RollerSession.getRollerSession(request);
             if (     rollerSession.isUserAuthorizedToAuthor() 
                  || (rollerSession.isUserAuthorized() && wd.isDraft()) )
             {

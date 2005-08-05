@@ -13,9 +13,19 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            RollerSession rollerSession = RollerSession.getRollerSession(request);
+            RollerSession rollerSession = 
+                RollerSession.getRollerSession(request);
             WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
             WeblogEntryData entry = rreq.getWeblogEntry();
+            
+            if (   rollerSession.getCurrentWebsite() == null
+                && entry.getWebsite().hasUserPermissions(
+                   rollerSession.getAuthenticatedUser(),PermissionsData.AUTHOR))
+            {
+                // user clicked on URL in email notification
+                rollerSession.setCurrentWebsite(entry.getWebsite());
+            }
+                
             if (     rollerSession.isUserAuthorizedToAuthor() 
                  || (rollerSession.isUserAuthorized() && entry.isDraft()))
             {

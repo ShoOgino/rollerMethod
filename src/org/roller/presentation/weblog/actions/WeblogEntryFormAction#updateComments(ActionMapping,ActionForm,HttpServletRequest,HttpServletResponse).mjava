@@ -20,20 +20,21 @@
                 WeblogEntryData wd = rreq.getWeblogEntry();
                 if (wd == null || wd.getId() == null)
                 {
-                  throw new NullPointerException("Unable to find WeblogEntry for "+
+                    throw new NullPointerException(
+                        "Unable to find WeblogEntry for "+
                         request.getParameter(RollerRequest.WEBLOGENTRYID_KEY));
                 }
                 WeblogEntryFormEx form = (WeblogEntryFormEx)actionForm;
 
-                // If form indicates that comments should be deleted, then delete
-                WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+                // If form indicates that comments should be deleted, delete
+                WeblogManager mgr= RollerFactory.getRoller().getWeblogManager();
                 String[] deleteIds = form.getDeleteComments();
                 if (deleteIds != null && deleteIds.length > 0)
                 {
                     mgr.removeComments( deleteIds );
                 }
 
-                List comments = mgr.getComments( wd.getId(), false ); // spam too
+                List comments = mgr.getComments(wd.getId(), false); // spam too
                 if (form.getSpamComments() != null)
                 {
                     // comments marked as spam

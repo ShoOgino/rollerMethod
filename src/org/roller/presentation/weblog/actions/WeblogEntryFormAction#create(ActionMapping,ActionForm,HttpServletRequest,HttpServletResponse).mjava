@@ -12,7 +12,8 @@
         ActionForward forward = mapping.findForward("weblogEdit.page");
         try
         {
-            RollerSession rollerSession = RollerSession.getRollerSession(request);
+            RollerSession rollerSession = 
+                RollerSession.getRollerSession(request);
             if (rollerSession.isUserAuthorized())
             {
                 WeblogEntryFormEx form = (WeblogEntryFormEx)actionForm; 

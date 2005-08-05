@@ -12,14 +12,15 @@
        WeblogEntryData entry = null;
        try
        {
-           RollerSession rollerSession = RollerSession.getRollerSession(request);
+           RollerSession rollerSession= RollerSession.getRollerSession(request);
            if (rollerSession.isUserAuthorizedToAuthor())
            {
                WeblogEntryFormEx form = (WeblogEntryFormEx)actionForm;
                String entryid = form.getId();
                if ( entryid == null )
                {
-                   entryid= request.getParameter(RollerRequest.WEBLOGENTRYID_KEY);
+                   entryid = 
+                       request.getParameter(RollerRequest.WEBLOGENTRYID_KEY);
                }
 
                RollerContext rctx= RollerContext.getRollerContext(request);
@@ -29,7 +30,8 @@
                String title = entry.getTitle();
 
                // Run entry through registered PagePlugins
-               PageHelper pageHelper = PageHelper.createPageHelper(request, response);
+               PageHelper pageHelper = 
+                   PageHelper.createPageHelper(request, response);
                pageHelper.setSkipFlag(true); // don't process ReadMorePlugin
                String excerpt = pageHelper.renderPlugins(entry);
                excerpt = StringUtils.left( Utilities.removeHTML(excerpt),255 );
@@ -69,14 +71,15 @@
                            wr.flush();
     
                            // Get the response
-                           rd = new BufferedReader(
-                                   new InputStreamReader(conn.getInputStream()));
+                           rd = new BufferedReader(new InputStreamReader(
+                               conn.getInputStream()));
     
                            String line;
                            StringBuffer resultBuff = new StringBuffer();
                            while ((line = rd.readLine()) != null)
                            {
-                               resultBuff.append(Utilities.escapeHTML(line, true));
+                               resultBuff.append(
+                                   Utilities.escapeHTML(line, true));
                                resultBuff.append("<br />");
                            }
                            

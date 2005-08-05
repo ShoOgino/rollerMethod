@@ -13,15 +13,17 @@
         try
         {
             WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
-            WeblogEntryData wd = mgr.retrieveWeblogEntry(request.getParameter("id"));
-            RollerSession rollerSession = RollerSession.getRollerSession(request);
+            WeblogEntryData wd = 
+                mgr.retrieveWeblogEntry(request.getParameter("id"));
+            RollerSession rollerSession = 
+                RollerSession.getRollerSession(request);
             if (     rollerSession.isUserAuthorizedToAuthor() 
                  || (rollerSession.isUserAuthorized() && wd.isDraft()) )
             {
                 
                 // Flush the page cache
                 PageCacheFilter.removeFromCache(request, 
-                        RollerSession.getRollerSession(request).getCurrentWebsite());
+                   RollerSession.getRollerSession(request).getCurrentWebsite());
 
 				// remove the index for it
                 wd.setStatus(WeblogEntryData.DRAFT);
@@ -31,7 +33,8 @@
                 RollerFactory.getRoller().commit();
 
                 ActionMessages uiMessages = new ActionMessages();
-                uiMessages.add(null, new ActionMessage("weblogEdit.entryRemoved"));
+                uiMessages.add(null, 
+                    new ActionMessage("weblogEdit.entryRemoved"));
                 saveMessages(request, uiMessages);
             }
             else

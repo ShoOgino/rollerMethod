@@ -27,7 +27,8 @@
                 
                 // list of enabled website authors and admins
                 ArrayList reviewers = new ArrayList();
-                List websiteUsers = umgr.getUsers(entry.getWebsite(), Boolean.TRUE);
+                List websiteUsers = 
+                        umgr.getUsers(entry.getWebsite(), Boolean.TRUE);
                 
                 // build list of reviewers (website users with author permission)
                 Iterator websiteUserIter = websiteUsers.iterator();
@@ -48,13 +49,15 @@
                 String rootURL = rc.getAbsoluteContextUrl(request);
                 if (rootURL == null || rootURL.trim().length()==0)
                 {
-                    rootURL = RequestUtils.serverURL(request) + request.getContextPath();
+                    rootURL = RequestUtils.serverURL(request) 
+                                  + request.getContextPath();
                 }               
                 String editURL = rootURL 
-                    + "/editor/weblog.do?method=edit&entryid=" + entry.getId(); 
+                    + "/editor/weblog.do?method=edit&entryid=" + entry.getId();
                 
                 ResourceBundle resources = ResourceBundle.getBundle(
-                    "ApplicationResources", entry.getWebsite().getLocaleInstance());
+                    "ApplicationResources", 
+                    entry.getWebsite().getLocaleInstance());
                 StringBuffer sb = new StringBuffer();
                 sb.append(
                     MessageFormat.format(
@@ -90,7 +93,8 @@
         }
         catch (RollerException e)
         {
-            throw new RuntimeException("FATAL ERROR: unable to find Roller object");
+            throw new RuntimeException(
+                    "FATAL ERROR: unable to find Roller object");
         }
     }
 
