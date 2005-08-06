@@ -1,1 +1,49 @@
-    public Template handleRequest(HttpServletRequest request,                                  HttpServletResponse response, Context context)    {        RollerRequest rreq = null;        try        {            rreq = RollerRequest.getRollerRequest(request, getServletContext());        }        catch (RollerException e)        {            // An error initializing the request is considered to be a 404            if (mLogger.isDebugEnabled())            {                mLogger.debug("RollerRequest threw Exception", e);            }            try            {                response.sendError(HttpServletResponse.SC_NOT_FOUND);            }            catch (IOException e1)            {                if (mLogger.isDebugEnabled())                {                    mLogger.debug("IOException sending error", e);                }            }            return null;        }        try        {            response.setContentType("application/rss+xml;charset=utf-8");            PlanetManager planet =                 RollerFactory.getRoller().getPlanetManager();            if (request.getParameter("group") != null)             {                context.put("groupName", request.getParameter("group"));            }            context.put("planet", planet);            context.put("date", new Date());            context.put("utilities", new Utilities());            return getTemplate("planetrss.vm");        }        catch (Exception e)        {            mLogger.error("ERROR in PlanetFeedServlet", e);        }        return null;    }
+    public Template handleRequest(HttpServletRequest request,
+                                  HttpServletResponse response, Context context)
+    {
+        RollerRequest rreq = null;
+        try
+        {
+            rreq = RollerRequest.getRollerRequest(request, getServletContext());
+        }
+        catch (RollerException e)
+        {
+            // An error initializing the request is considered to be a 404
+            if (mLogger.isDebugEnabled())
+            {
+                mLogger.debug("RollerRequest threw Exception", e);
+            }
+            try
+            {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            }
+            catch (IOException e1)
+            {
+                if (mLogger.isDebugEnabled())
+                {
+                    mLogger.debug("IOException sending error", e);
+                }
+            }
+            return null;
+        }
+        try
+        {
+            response.setContentType("application/rss+xml;charset=utf-8");
+            PlanetManager planet = 
+                RollerFactory.getRoller().getPlanetManager();
+            if (request.getParameter("group") != null) 
+            {
+                context.put("groupName", request.getParameter("group"));
+            }
+            context.put("planet", planet);
+            context.put("date", new Date());
+            context.put("utilities", new Utilities());
+            return getTemplate("planetrss.vm");
+        }
+        catch (Exception e)
+        {
+            mLogger.error("ERROR in PlanetFeedServlet", e);
+        }
+        return null;
+    }
+
