@@ -1,0 +1,35 @@
+    //-----------------------------------------------------------------------
+    public ActionForward removeOk(
+        ActionMapping       mapping,
+        ActionForm          actionForm,
+        HttpServletRequest  request,
+        HttpServletResponse response)
+        throws IOException, ServletException
+    {
+        ActionForward forward = mapping.findForward("removePage.page");
+        try
+        {
+            RollerSession rses = RollerSession.getRollerSession(request);
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            if ( rses.isUserAuthorizedToAdmin() )
+            {
+                WeblogTemplate cd = (WeblogTemplate) rreq.getPage();
+                WeblogTemplateForm pf = (WeblogTemplateForm)actionForm;
+                pf.copyFrom(cd, request.getLocale());
+
+                UserData ud = rses.getAuthenticatedUser();
+                request.setAttribute("user",ud);
+            }
+            else
+            {
+                forward = mapping.findForward("access-denied");
+            }
+        }
+        catch (Exception e)
+        {
+            mLogger.error("ERROR in action",e);
+            throw new ServletException(e);
+        }
+        return forward;
+    }
+

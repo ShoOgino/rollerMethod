@@ -5,15 +5,16 @@
     public void initNew(HttpServletRequest request, HttpServletResponse response) 
     {
         RollerRequest rreq = RollerRequest.getRollerRequest(request);
-        if (RollerSession.getRollerSession(request).getCurrentWebsite().getDefaultPlugins() != null)
+        RollerSession rses = RollerSession.getRollerSession(request); 
+        if (rses.getCurrentWebsite().getDefaultPlugins() != null)
         {
             setPluginsArray(StringUtils.split(
-                    RollerSession.getRollerSession(request).getCurrentWebsite().getDefaultPlugins(), ",") );
+                    rses.getCurrentWebsite().getDefaultPlugins(), ",") );
         }
         status = WeblogEntryData.DRAFT;
         allowComments = Boolean.TRUE;
         updateTime = new Timestamp(new Date().getTime());
         pubTime = updateTime;
-        initPubTimeDateString(request.getLocale());        
+        initPubTimeDateStrings(rses.getCurrentWebsite(), request.getLocale());        
     }
 

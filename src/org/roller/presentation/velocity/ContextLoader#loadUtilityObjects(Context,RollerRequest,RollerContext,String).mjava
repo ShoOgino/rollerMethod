@@ -2,7 +2,8 @@
         Context ctx, RollerRequest rreq, RollerContext rollerCtx, String handle)
         throws RollerException
     {
-
+        mLogger.debug("Loading utility objects");
+        
         // date formatter for macro's
         // set this up with the Locale to make sure we can reuse it with other patterns
         // in the macro's
@@ -21,7 +22,7 @@
         // the Entry Day link.
         ctx.put("plainFormat", "yyyyMMdd");
 
-        ctx.put("page",            rreq.getPage() );
+        ctx.put("page",            TemplateWrapper.wrap(rreq.getPage()));
         ctx.put("utilities",       new Utilities() );
         ctx.put("stringUtils",     new StringUtils() );        
         ctx.put("rollerVersion",   rollerCtx.getRollerVersion() );

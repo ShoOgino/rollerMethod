@@ -31,12 +31,16 @@
             // Get the pages, put into context & load map
             if (mWebsite != null)
             {
-                List pages = mUserMgr.getPages(mWebsite);
+                // if we have website from RollerRequest, use it
+                mWebsite = rreq.getWebsite();
+                
+                // Get the pages, put into context & load map
+                List pages = mWebsite.getPages();
                 Iterator pageIter = pages.iterator();
                 while (pageIter.hasNext())
                 {
-                    PageData page = (PageData) pageIter.next();
-                    mPageMap.put(page.getName(), page); 
+                    Template page = (Template) pageIter.next();
+                    mPageMap.put(page.getName(), TemplateWrapper.wrap(page));
                 }
             }
         }

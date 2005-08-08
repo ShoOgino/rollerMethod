@@ -11,7 +11,7 @@
         UserData testuser0 = umgr.getUser("testuser0");
         WebsiteData website0 = (WebsiteData)umgr.getWebsites(testuser0, null).get(0);
         assertNotNull(website0);
-        PageData page = (PageData)getRoller().getUserManager().getPages(website0).get(0);
+        WeblogTemplate page = (WeblogTemplate)getRoller().getUserManager().getPages(website0).get(0);
         assertNotNull(page);
         
         // and tries to save it

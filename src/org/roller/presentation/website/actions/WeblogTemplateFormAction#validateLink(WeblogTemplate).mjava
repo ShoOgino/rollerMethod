@@ -1,0 +1,30 @@
+    //-----------------------------------------------------------------------
+    /**
+     * Ensures that the page has a safe value for the link
+     * field.  "Safe" is defined as containing no html
+     * or any other non-alphanumeric characters.
+     * While this is overly strict (there are non-alphanum
+     * characters that are web-safe), this is a much easier
+     * test-and-correct.  Otherwise we would need a RegEx package.
+     */
+    private void validateLink( WeblogTemplate data )
+    {
+        // if data.getLink() is null or empty
+        // use the title ( data.getName() )
+        if ( StringUtils.isEmpty( data.getLink() ) )
+        {
+            data.setLink( data.getName() );
+        }
+
+        // if link contains any nonAlphanumeric, strip them
+        // first we must remove any html, as this is
+        // non-instructional markup.  Then do a straight
+        // removeNonAlphanumeric.
+        if ( !StringUtils.isAlphanumeric( data.getLink() ) )
+        {
+            String link = Utilities.removeHTML( data.getLink() );
+            link = Utilities.removeNonAlphanumeric( link );
+            data.setLink( link );
+        }
+    }
+

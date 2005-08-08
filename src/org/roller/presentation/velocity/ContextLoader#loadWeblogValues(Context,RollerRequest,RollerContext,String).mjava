@@ -8,22 +8,23 @@
        Context ctx, RollerRequest rreq, RollerContext rollerCtx, String handle)
        throws RollerException
     {
+        mLogger.debug("Loading weblog values");
+        
         // if there is an "_entry" page, only load it once
         WebsiteData website = 
             RollerFactory.getRoller().getUserManager().getWebsiteByHandle(handle);
-        PageModel pageModel = (PageModel)ctx.get("pageModel");
-        if (website != null && pageModel != null) 
+        if (website != null) 
         {
             /* alternative display pages - customization */
-            PageData entryPage = pageModel.getUsersPageByName(website, "_entry");
+            Template entryPage = website.getPageByName("_entry");
             if (entryPage != null)
             {
-                ctx.put("entryPage", entryPage);
+                ctx.put("entryPage", TemplateWrapper.wrap(entryPage));
             }
-            PageData descPage = pageModel.getUsersPageByName(website, "_desc");
+            Template descPage = website.getPageByName("_desc");
             if (descPage != null)
             {
-                ctx.put("descPage", descPage);
+                ctx.put("descPage", TemplateWrapper.wrap(descPage));
             }
         }
     }

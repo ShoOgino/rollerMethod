@@ -20,18 +20,21 @@
             if (     rollerSession.isUserAuthorizedToAuthor() 
                  || (rollerSession.isUserAuthorized() && wd.isDraft()) )
             {
-                
                 // Flush the page cache
                 PageCacheFilter.removeFromCache(request, 
                    RollerSession.getRollerSession(request).getCurrentWebsite());
-
 				// remove the index for it
                 wd.setStatus(WeblogEntryData.DRAFT);
-		       reindexEntry(RollerFactory.getRoller(), wd);
+		        reindexEntry(RollerFactory.getRoller(), wd);
 
+                // remove entry itself
                 wd.remove();
                 RollerFactory.getRoller().commit();
 
+				// flush caches
+                PageCacheFilter.removeFromCache(request, wd.getWebsite());
+                MainPageAction.flushMainPageCache();
+                
                 ActionMessages uiMessages = new ActionMessages();
                 uiMessages.add(null, 
                     new ActionMessage("weblogEdit.entryRemoved"));

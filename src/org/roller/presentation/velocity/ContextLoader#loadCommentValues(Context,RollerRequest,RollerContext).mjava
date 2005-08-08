@@ -2,6 +2,8 @@
        Context ctx, RollerRequest rreq, RollerContext rollerCtx ) 
        throws RollerException
     {
+        mLogger.debug("Loading comment values");
+        
         HttpServletRequest request = rreq.getRequest();
         
         String escapeHtml = RollerRuntimeConfig.getProperty("users.comments.escapehtml");
@@ -14,7 +16,7 @@
         
         // Make sure comment form object is available in context
         CommentFormEx commentForm = 
-            (CommentFormEx)request.getAttribute("commentForm");
+                (CommentFormEx) request.getAttribute("commentForm");
         if ( commentForm == null )
         {
             commentForm = new CommentFormEx();
@@ -33,10 +35,10 @@
             ArrayList list = new ArrayList();
             CommentData cd = new CommentData();
             commentForm.copyTo(cd, request.getLocale());
-            list.add(cd);
+            list.add(CommentDataWrapper.wrap(cd));
             ctx.put("previewComments",list);            
         }
         WeblogEntryData entry = rreq.getWeblogEntry();
-        ctx.put("entry",entry);            
+        ctx.put("entry", WeblogEntryDataWrapper.wrap(entry));            
     }   
 

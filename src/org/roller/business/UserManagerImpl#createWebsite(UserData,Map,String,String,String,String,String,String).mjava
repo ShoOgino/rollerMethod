@@ -121,37 +121,6 @@
            "",
             zero, zero, null);
         b6.save();
-
-        //
-        // READ THEME FILES AND CREATE PAGES FOR USER
-        //
-        Iterator iter = pages.keySet().iterator();
-        while ( iter.hasNext() )
-        {
-            String pageName = (String) iter.next();
-            String sb = (String)pages.get( pageName );
-              
-            // Store each Velocity template as a page
-            PageData pd = new PageData( null,
-                website,         // website
-                pageName,        // name
-                pageName,        // description
-                pageName,        // link
-                sb,              // template
-                new Date()       // updateTime                
-            );
-            mStrategy.store(pd);
-            
-            if ( pd.getName().equals("Weblog") )
-            {  
-                website.setDefaultPageId(pd.getId());                 
-            }
-            else if ( pd.getName().equals("_day") )
-            {
-                website.setWeblogDayPageId(pd.getId());                 
-            }                
-        }
-        mStrategy.store(website); 
         
         // Add user as member of website
         PermissionsData perms = new PermissionsData();

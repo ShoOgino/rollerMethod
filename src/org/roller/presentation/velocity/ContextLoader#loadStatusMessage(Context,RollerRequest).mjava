@@ -6,6 +6,8 @@
      */
     private static void loadStatusMessage(Context ctx, RollerRequest rreq)
     {
+        mLogger.debug("Loading status message");
+        
         HttpSession session = rreq.getRequest().getSession(false);
         String msg = null;
         if (session != null)

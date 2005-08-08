@@ -22,12 +22,12 @@
         ctx.put("locale", locale);
         
         // setup Timezone for future rendering
-        ctx.put("timeZone", website.getTimeZoneInstance());
+        ctx.put("timezone", website.getTimeZoneInstance());
 
         // date formats need to be run through the Localized
         // SimpleDateFormat and pulled back out as localized patterns.
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", locale);  
-        sdf.setTimeZone( (TimeZone)ctx.get("timeZone") );    
+        sdf.setTimeZone( (TimeZone)ctx.get("timezone") );    
         ctx.put("plainFormat",     sdf.toLocalizedPattern());
         
         sdf.applyPattern("EEEE MMMM dd, yyyy");

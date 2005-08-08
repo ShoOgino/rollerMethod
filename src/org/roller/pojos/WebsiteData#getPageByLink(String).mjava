@@ -1,0 +1,40 @@
+    /**
+     * Lookup a template for this website by link.
+     */
+    public Template getPageByLink(String link) throws RollerException {
+        
+        if(link == null)
+            return null;
+        
+        mLogger.debug("looking up template ["+link+"]");
+        
+        Template template = null;
+        
+        // first check if this user has selected a theme
+        // if so then return the proper theme template
+        if(this.editorTheme != null && !this.editorTheme.equals(Theme.CUSTOM)) {
+            
+            try {
+                ThemeManager themeMgr = RollerFactory.getRoller().getThemeManager();
+                Theme usersTheme = themeMgr.getTheme(this.editorTheme);
+                template = usersTheme.getTemplateByLink(link);
+
+            } catch(ThemeNotFoundException tnfe) {
+                // i sure hope not!
+                mLogger.error(tnfe);
+            }
+            
+        }
+        
+        // if we didn't get the Template from a theme then look in the db
+        if(template == null) {
+            UserManager userMgr = RollerFactory.getRoller().getUserManager();
+            template = userMgr.getPageByLink(this, link);
+        }
+        
+        if(template != null)
+            mLogger.debug("returning template ["+template.getId()+"]");
+        
+        return template;
+    }
+

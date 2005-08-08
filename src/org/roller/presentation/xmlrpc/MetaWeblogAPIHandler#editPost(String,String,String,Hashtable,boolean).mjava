@@ -29,6 +29,9 @@
         String title = (String)postcontent.get("title");
         if (title == null) title = "";
 
+        Date dateCreated = (Date)postcontent.get("dateCreated");
+        if (dateCreated == null) dateCreated = (Date)postcontent.get("pubDate");
+
         String cat = null;
         if ( postcontent.get("categories") != null )
         {
@@ -55,6 +58,11 @@
             {
                 entry.setStatus(WeblogEntryData.DRAFT);
             }
+            if (dateCreated != null) 
+            {
+                entry.setPubTime(new Timestamp(dateCreated.getTime()));
+            }
+
 
 
             if ( cat != null )

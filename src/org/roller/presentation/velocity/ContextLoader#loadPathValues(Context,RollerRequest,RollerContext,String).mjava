@@ -2,6 +2,8 @@
         Context ctx, RollerRequest rreq, RollerContext rollerCtx, String userName) 
         throws RollerException
     {
+        mLogger.debug("Loading path values");
+        
         HttpServletRequest request = rreq.getRequest();
         String url = null;
         if ( userName != null && !userName.equals("zzz_none_zzz"))

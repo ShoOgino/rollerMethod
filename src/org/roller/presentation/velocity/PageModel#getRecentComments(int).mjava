@@ -6,14 +6,24 @@
      */
     public List getRecentComments(int maxCount)
     {
+        List recentComments = new ArrayList();
         try
         {
-            return mWeblogMgr.getRecentComments(mRollerReq.getWebsite(), maxCount);
+            List recent = mWeblogMgr.getRecentComments(mRollerReq.getWebsite(), maxCount);
+            
+            // wrap pojos
+            recentComments = new ArrayList(recent.size());
+            Iterator it = recent.iterator();
+            int i=0;
+            while(it.hasNext()) {
+                recentComments.add(i, CommentDataWrapper.wrap((CommentData) it.next()));
+                i++;
+            }
         }
         catch (RollerException e)
         {
             mLogger.error(e);
-            return new ArrayList();
         }
+        return recentComments;
     }
 

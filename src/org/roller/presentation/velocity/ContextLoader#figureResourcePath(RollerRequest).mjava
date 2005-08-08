@@ -1,24 +1,5 @@
     private static String figureResourcePath( RollerRequest rreq )
-    {
-        /*  old way -- Allen G
-        HttpServletRequest request = rreq.getRequest();
-        RollerContext rCtx = RollerContext.getRollerContext( request );
-        RollerConfigData  rollerConfig = rCtx.getRollerConfig();
-    
-        StringBuffer sb = new StringBuffer();
-        String uploadPath = rollerConfig.getUploadPath();
-        if ( uploadPath != null && uploadPath.trim().length() > 0 )
-        {
-            sb.append( uploadPath );
-        }
-        else
-        {
-            sb.append( request.getContextPath() );
-            sb.append( RollerContext.USER_RESOURCES );
-        }
-        return sb.toString();
-        */
-        
+    {   
         String uploadurl = null;
         try {
             uploadurl = RollerFactory.getRoller().getFileManager().getUploadUrl();

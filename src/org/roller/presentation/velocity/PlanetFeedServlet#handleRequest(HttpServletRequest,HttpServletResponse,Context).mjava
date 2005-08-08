@@ -33,7 +33,8 @@
                 RollerFactory.getRoller().getPlanetManager();
             if (request.getParameter("group") != null) 
             {
-                context.put("groupName", request.getParameter("group"));
+                context.put("group", 
+                        planet.getGroup(request.getParameter("group")));
             }
             context.put("planet", planet);
             context.put("date", new Date());

@@ -20,16 +20,17 @@
             if ( pageId != null )
             {
                 mPage = userMgr.retrievePage(pageId);
-                
+                /*
                 // We can use page to find the user, if we don't have one yet
                 if ( mWebsite == null )
                 {
                     mWebsite = mPage.getWebsite();
-                }                    
+                }
+                 */                    
             }
             else if (mWebsite != null) 
             {
-                mPage = userMgr.retrievePage( mWebsite.getDefaultPageId() );
+                mPage = mWebsite.getDefaultPage();
             }
                                        
             // Look for day in request params 

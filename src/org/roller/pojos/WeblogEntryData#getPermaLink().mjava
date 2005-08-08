@@ -1,6 +1,8 @@
     /**
      * Convenience method for getPermalink(category)
      * where no category is necessary.
+     * 
+     * @roller.wrapPojoMethod type="simple"
      * @return
      */
     public String getPermaLink()
@@ -18,7 +20,7 @@
         
         WebsiteData website = this.getWebsite();
         String plink = "/page/" + website.getHandle() + 
-                "?anchor=" + lAnchor;
+                "?entry=" + lAnchor;
         
         return plink;
     }

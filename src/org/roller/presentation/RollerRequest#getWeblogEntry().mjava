@@ -17,6 +17,7 @@
         {        
             // Look for anchor or entry ID that identifies a specific entry 
             String anchor = mRequest.getParameter(ANCHOR_KEY);
+            if (anchor == null) anchor = mRequest.getParameter(ANCHOR_KEY_OLD);
             String entryid = mRequest.getParameter(WEBLOGENTRYID_KEY);
             if (entryid == null) 
             {

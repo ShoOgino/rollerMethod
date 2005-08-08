@@ -8,6 +8,8 @@
      */
     public static void initializePagePlugins(ServletContext mContext)
     {
+        mLogger.debug("Initializing page plugins");
+        
         String pluginStr = RollerConfig.getProperty("plugins.page");
         if (mLogger.isDebugEnabled()) mLogger.debug(pluginStr);
         if (pluginStr != null)

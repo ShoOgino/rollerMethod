@@ -1,0 +1,37 @@
+    //-----------------------------------------------------------------------
+    public ActionForward edit(
+        ActionMapping       mapping,
+        ActionForm          actionForm,
+        HttpServletRequest  request,
+        HttpServletResponse response)
+        throws IOException, ServletException
+    {
+        ActionForward forward = mapping.findForward("editPage.page");
+        try
+        {
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            RollerSession rses = RollerSession.getRollerSession(request);
+            if ( rses.isUserAuthorizedToAdmin() )
+            {
+                UserData ud = rses.getAuthenticatedUser();
+                WeblogTemplate pd = (WeblogTemplate) rreq.getPage();
+                WeblogTemplateForm pf = (WeblogTemplateForm)actionForm;
+                pf.copyFrom(pd, request.getLocale());
+
+                PageCacheFilter.removeFromCache( request, pd.getWebsite() );
+                
+                addModelObjects(rreq);
+            }
+            else
+            {
+                forward = mapping.findForward("access-denied");
+            }
+        }
+        catch (Exception e)
+        {
+            mLogger.error("ERROR in action",e);
+            throw new ServletException(e);
+        }
+        return forward;
+    }
+

@@ -24,7 +24,6 @@
             ctx.put("userName",      handle);
             ctx.put("fullName",      website.getName() );
             ctx.put("emailAddress",  website.getEmailAddress() );
-
             ctx.put("encodedEmail",  RegexUtil.encode(website.getEmailAddress()));
             ctx.put("obfuscatedEmail",  RegexUtil.obfuscateEmail(website.getEmailAddress()));
             
@@ -50,7 +49,7 @@
             ctx.put("timezone", TimeZone.getDefault());
             ctx.put("timeZone", TimeZone.getDefault());
         }
-        ctx.put("website", website );
+        ctx.put("website", WebsiteDataWrapper.wrap(website) );
 
         String siteName = ((RollerPropertyData)props.get("site.name")).getValue();
         if ("Roller-based Site".equals(siteName)) siteName = "Main";

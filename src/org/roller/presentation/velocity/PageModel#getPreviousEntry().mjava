@@ -1,12 +1,12 @@
     /**
      * Get the previous occurring Entry.
      */
-    public WeblogEntryData getPreviousEntry()
+    public WeblogEntryDataWrapper getPreviousEntry()
     {
-        WeblogEntryData currentEntry = getWeblogEntry();
+        WeblogEntryDataWrapper currentEntry = getWeblogEntry();
         if (mLastEntry != null) currentEntry = mLastEntry;
         if (mPreviousEntry == null && currentEntry != null )
-        {
+        {   
             String catName = null;
             if (mRollerReq.getWeblogCategory() != null)
             {
@@ -14,7 +14,11 @@
             }
             try
             {
-                mPreviousEntry = mWeblogMgr.getPreviousEntry(currentEntry, catName);
+                WeblogEntryData prevEntry = 
+                        mWeblogMgr.getPreviousEntry(currentEntry.getPojo(), catName);
+                
+                if(prevEntry != null)
+                    mPreviousEntry = WeblogEntryDataWrapper.wrap(prevEntry);
             }
             catch (RollerException e)
             {

@@ -8,7 +8,7 @@
             throw new RollerException("website is null");
                                                                       
         Session session = ((HibernateStrategy)mStrategy).getSession();
-        Criteria criteria = session.createCriteria(PageData.class);
+        Criteria criteria = session.createCriteria(WeblogTemplate.class);
         criteria.add(Expression.eq("website",website)); 
         criteria.addOrder(Order.asc("name"));
         try

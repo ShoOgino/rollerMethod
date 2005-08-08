@@ -1,0 +1,72 @@
+   public boolean equals( Object pOther )
+   {
+      if( pOther instanceof WeblogTemplate )
+      {
+         WeblogTemplate lTest = (WeblogTemplate) pOther;
+         boolean lEquals = true;
+
+         if( this.id == null )
+         {
+            lEquals = lEquals && ( lTest.id == null );
+         }
+         else
+         {
+            lEquals = lEquals && this.id.equals( lTest.id );
+         }
+         if( this.mWebsite == null )
+         {
+            lEquals = lEquals && ( lTest.mWebsite == null );
+         }
+         else
+         {
+            lEquals = lEquals && this.mWebsite.equals( lTest.mWebsite );
+         }
+         if( this.name == null )
+         {
+            lEquals = lEquals && ( lTest.name == null );
+         }
+         else
+         {
+            lEquals = lEquals && this.name.equals( lTest.name );
+         }
+         if( this.description == null )
+         {
+            lEquals = lEquals && ( lTest.description == null );
+         }
+         else
+         {
+            lEquals = lEquals && this.description.equals( lTest.description );
+         }
+         if( this.link == null )
+         {
+            lEquals = lEquals && ( lTest.link == null );
+         }
+         else
+         {
+            lEquals = lEquals && this.link.equals( lTest.link );
+         }
+         if( this.contents == null )
+         {
+            lEquals = lEquals && ( lTest.contents == null );
+         }
+         else
+         {
+            lEquals = lEquals && this.contents.equals( lTest.contents );
+         }
+         if( this.lastModified == null )
+         {
+            lEquals = lEquals && ( lTest.lastModified == null );
+         }
+         else
+         {
+            lEquals = lEquals && this.lastModified.equals( lTest.lastModified );
+         }
+
+         return lEquals;
+      }
+      else
+      {
+         return false;
+      }
+   }
+

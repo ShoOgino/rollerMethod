@@ -1,0 +1,71 @@
+    /**
+     * Helper method that copies down the pages from a given theme into a
+     * users weblog templates.
+     *
+     * @param rreq Request wrapper.
+     * @param theme Name of theme to save.
+     * @throws RollerException
+     */
+    private void saveThemePages(WebsiteData website, Theme theme)
+        throws RollerException {
+        
+        mLogger.debug("Setting custom templates for website: "+website.getName());
+        
+        try {
+            UserManager userMgr = RollerFactory.getRoller().getUserManager();
+            
+            Collection templates = theme.getTemplates();
+            Iterator iter = templates.iterator();
+            ThemeTemplate theme_template = null;
+            while ( iter.hasNext() ) {
+                theme_template = (ThemeTemplate) iter.next();
+                //String pageContent = (String) templates.get( pageName );
+                
+                WeblogTemplate template = 
+                        userMgr.getPageByName(website, theme_template.getName());
+                if (template != null) {
+                    // User already has page by that name, so overwrite it.
+                    template.setContents(theme_template.getContents());
+                    
+                } else {
+                    // User does not have page by that name, so create new page.
+                    template = new WeblogTemplate( null,
+                            website,                            // website
+                            theme_template.getName(),           // name
+                            theme_template.getDescription(),    // description
+                            theme_template.getName(),           // link
+                            theme_template.getContents(),       // contents
+                            new Date()                          // last mod
+                            );
+                    userMgr.storePage( template );
+                }
+            }
+            
+            // now update this website's theme to custom
+            website.setEditorTheme(Theme.CUSTOM);
+            
+            // if this is the first time someone is customizing a theme then
+            // we need to set a default page
+            if(website.getDefaultPageId() == null ||
+                    website.getDefaultPageId().equals("dummy")) {
+                // we have to go back to the db to figure out the id
+                WeblogTemplate template = userMgr.getPageByName(website, "Weblog");
+                if(template != null) {
+                    mLogger.debug("Setting default page to "+template.getId());
+                    website.setDefaultPageId(template.getId());
+                }
+            }
+            
+            // save our updated website
+            userMgr.storeWebsite(website);
+            
+            // commit?  i still don't understand when this is needed :/
+            RollerFactory.getRoller().commit();
+            
+        } catch (Exception e) {
+            mLogger.error("ERROR in action",e);
+            throw new RollerException( e );
+        }
+        
+    }
+

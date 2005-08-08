@@ -15,23 +15,13 @@
             {
                 baseUrl = getContextUrl(request);
             }
-
-            String dayString = DateUtil.format8chars(entry.getPubTime());
-
-            link =
-                Utilities.escapeHTML(
-                    baseUrl
-                        + "/page/"
-                        + entry.getWebsite().getHandle()
-                        + "/"
-                        + dayString
-                        + "#"
-                        + entry.getAnchor());
+            link = Utilities.escapeHTML(baseUrl + entry.getPermaLink());
         }
         catch (Exception e)
         {
             mLogger.error("Unexpected exception", e);
         }
+        
         return link;
     }
 

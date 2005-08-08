@@ -15,14 +15,14 @@
 
         try
         {
-            PageData page = getPage( name );
+            WeblogTemplate page = getPage( name );
             if (page == null)
             {
             	throw new ResourceNotFoundException(
 					"RollerResourceLoader: page \"" + 
 					name + "\" not found");
             }
-            return new ByteArrayInputStream( page.getTemplate().getBytes("UTF-8") );
+            return new ByteArrayInputStream( page.getContents().getBytes("UTF-8") );
         }
         catch (UnsupportedEncodingException uex)
         {

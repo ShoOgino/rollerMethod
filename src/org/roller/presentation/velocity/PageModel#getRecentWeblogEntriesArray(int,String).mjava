@@ -44,13 +44,22 @@
             //ret = mgr.getRecentWeblogEntriesArray( 
                 //name, day, catParam, maxEntries, true );
             
-            ret = mgr.getWeblogEntries(
+            List mEntries = mgr.getWeblogEntries(
                             mRollerReq.getWebsite(), 
                             null,                    // startDate
                             day,                      // endDate
                             catParam,                 // catName
                             WeblogEntryData.PUBLISHED,   // status
                             new Integer(maxEntries)); // maxEntries
+            
+            // wrap pojos
+            ret = new ArrayList(mEntries.size());
+            Iterator it = mEntries.iterator();
+            int i=0;
+            while(it.hasNext()) {
+                ret.add(i, WeblogEntryDataWrapper.wrap((WeblogEntryData) it.next()));
+                i++;
+            }
         }
         catch (Exception e)
         {
