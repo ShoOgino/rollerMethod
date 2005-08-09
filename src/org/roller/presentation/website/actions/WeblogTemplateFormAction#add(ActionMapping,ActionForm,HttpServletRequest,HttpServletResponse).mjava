@@ -15,7 +15,7 @@
                 WeblogTemplateForm form = (WeblogTemplateForm)actionForm;
                 WeblogTemplate data = new WeblogTemplate();
                 form.copyTo(data, request.getLocale());
-                WebsiteData hd = rreq.getWebsite();
+                WebsiteData hd = rses.getCurrentWebsite();
 
                 data.setWebsite( hd );
                 data.setLastModified( new java.util.Date() );

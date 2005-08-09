@@ -1,9 +1,12 @@
         public CreateWebsitePageModel(HttpServletRequest request,
-                HttpServletResponse response, ActionMapping mapping, WebsiteData wd)
+            HttpServletResponse response, ActionMapping mapping, WebsiteData wd)
+            throws RollerException
         {
             super(request, response, mapping);
             RollerContext rollerContext = RollerContext.getRollerContext(request);
-            // ROLLER_2.0: fix this: themes = Arrays.asList(rollerContext.getThemeNames());
+            Roller roller = RollerFactory.getRoller();
+            ThemeManager themeMgr = roller.getThemeManager();
+            themes = themeMgr.getEnabledThemesList();
             if (wd != null) 
             {
                 contextURL = rollerContext.getAbsoluteContextUrl(request);

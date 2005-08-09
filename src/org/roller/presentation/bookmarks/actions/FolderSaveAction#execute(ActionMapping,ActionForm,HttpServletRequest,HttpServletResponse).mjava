@@ -8,7 +8,8 @@
         ActionForward forward = mapping.findForward("Bookmarks");
         FolderFormEx form = (FolderFormEx)actionForm;
         RollerRequest rreq = RollerRequest.getRollerRequest(request);
-        WebsiteData wd = rreq.getWebsite();
+        RollerSession rses = RollerSession.getRollerSession(request);
+        WebsiteData wd = rses.getCurrentWebsite();
         BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
         
         FolderData fd = null;
