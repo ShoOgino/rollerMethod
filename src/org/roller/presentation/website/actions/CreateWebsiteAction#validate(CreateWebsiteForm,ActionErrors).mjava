@@ -1,5 +1,31 @@
     private ActionMessages validate(CreateWebsiteForm form, ActionErrors errors)
+        throws RollerException
     {
-        return new ActionMessages();
+        ActionMessages messages = new ActionMessages();        
+        String safeHandle = Utilities.replaceNonAlphanumeric(form.getHandle());
+        if (form.getHandle() == null || "".equals(form.getHandle().trim()))
+        {
+            errors.add( ActionErrors.GLOBAL_ERROR,
+               new ActionError("createWeblog.error.missingHandle"));
+        }
+        else if (!safeHandle.equals(form.getHandle()) )
+        {
+            errors.add( ActionErrors.GLOBAL_ERROR,
+               new ActionError("createWeblog.error.invalidHandle"));
+        }
+        
+        if (form.getEmailAddress() == null || "".equals(form.getEmailAddress().trim()))
+        {
+            errors.add( ActionErrors.GLOBAL_ERROR,
+               new ActionError("createWeblog.error.missingEmailAddress"));
+        }
+        
+        Roller roller = RollerFactory.getRoller();
+        if (roller.getUserManager().getWebsiteByHandle(form.getHandle()) != null) 
+        {
+            messages.add(ActionErrors.GLOBAL_ERROR, 
+                    new ActionError("createWeblog.error.handleExists"));
+        }
+        return messages;
     }
 

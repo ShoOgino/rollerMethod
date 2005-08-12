@@ -48,14 +48,14 @@
                 request.setAttribute(
                         "model", new BasePageModel(request, response, mapping));
                 
-                msgs.add(null, new ActionMessage("yourProfile.saved"));
+                //msgs.add(null, new ActionMessage("yourProfile.saved"));
                 saveMessages(request, msgs);
             }
             else 
             {
                 saveErrors(request, errors);
             }
-            return edit(mapping, actionForm, request, response);
+            return mapping.findForward("yourWebsites");
         }
         catch (Exception e)
         {

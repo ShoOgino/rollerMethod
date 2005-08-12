@@ -1,4 +1,4 @@
-    public ActionForward select(
+    public void selectWebsite(
             ActionMapping       mapping,
             ActionForm          actionForm,
             HttpServletRequest  request,
@@ -19,9 +19,5 @@
                     "yourWebsites.selected", selectedWebsite.getHandle()));
             saveMessages(request, msgs);
         }        
-        request.setAttribute("model",
-                new YourWebsitesPageModel(request, response, mapping));
-        ActionForward forward = mapping.findForward("yourWebsites.page");
-        return forward;
     }
 
