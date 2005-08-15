@@ -17,6 +17,10 @@
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             if ( rses.isUserAuthorizedToAdmin() ) {
                 
+                BasePageModel pageModel = 
+                        new BasePageModel(request, response, mapping);
+                request.setAttribute("model",pageModel);          
+                    
                 // get users current theme and our themes list
                 Roller roller = RollerFactory.getRoller();
                 ThemeManager themeMgr = roller.getThemeManager();

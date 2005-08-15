@@ -19,7 +19,7 @@
                 rreq.getRequest());
         if (rollerSession.isUserAuthorizedToAuthor())
         {
-            addModelObjects(request, (CategoriesForm)actionForm);
+            addModelObjects(request, response, mapping, (CategoriesForm)actionForm);
             return mapping.findForward("CategoriesForm");
         }
         else

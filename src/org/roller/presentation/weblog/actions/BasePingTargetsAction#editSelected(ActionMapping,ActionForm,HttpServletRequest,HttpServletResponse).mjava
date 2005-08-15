@@ -16,6 +16,8 @@
         RollerRequest rreq = RollerRequest.getRollerRequest(req);
         try
         {
+            BasePageModel pageModel = new BasePageModel(req, res, mapping);
+            req.setAttribute("model",pageModel);            
             if (!hasRequiredRights(rreq))
             {
                 return mapping.findForward(ACCESS_DENIED_PAGE);

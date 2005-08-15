@@ -20,6 +20,10 @@
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             if ( rses.isUserAuthorizedToAdmin() ) {
                 
+                BasePageModel pageModel = 
+                        new BasePageModel(request, response, mapping);
+                request.setAttribute("model",pageModel);          
+                    
                 // copy down current theme to weblog templates
                 Roller roller = RollerFactory.getRoller();
                 ThemeManager themeMgr = roller.getThemeManager();

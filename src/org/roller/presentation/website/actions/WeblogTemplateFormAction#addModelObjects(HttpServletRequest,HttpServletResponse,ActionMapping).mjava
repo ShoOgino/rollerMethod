@@ -1,11 +1,17 @@
     //-----------------------------------------------------------------------
-    private void addModelObjects( RollerRequest rreq ) 
-        throws RollerException {  
-            
-        HttpServletRequest request = rreq.getRequest();            
+    private void addModelObjects( 
+        HttpServletRequest  request,
+        HttpServletResponse response,
+        ActionMapping mapping)
+    throws RollerException 
+    {             
         UserManager mgr = RollerFactory.getRoller().getUserManager();        
-        RollerSession rses = RollerSession.getRollerSession(rreq.getRequest());
+        RollerSession rses = RollerSession.getRollerSession(request);
 
+        BasePageModel pageModel = 
+            new BasePageModel(request, response, mapping);
+        request.setAttribute("model",pageModel); 
+                
         UserData user = rses.getAuthenticatedUser();
         request.setAttribute("user",user);
 

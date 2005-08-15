@@ -3,7 +3,9 @@
      * @param request
      * @throws RollerException
      */
-    private void addModelObjects(HttpServletRequest request, BookmarksForm form)
+    private void addModelObjects(
+        HttpServletRequest request, HttpServletResponse response, 
+        ActionMapping mapping, BookmarksForm form)
         throws RollerException
     {
         RollerRequest rreq = RollerRequest.getRollerRequest(request);
@@ -14,6 +16,9 @@
 
         TreeSet allFolders = new TreeSet(new FolderPathComparator());
 
+        BasePageModel pageModel = new BasePageModel(request, response, mapping);
+        request.setAttribute("model",pageModel);
+        
         // Find folderid wherever it may be
         String folderId = (String)request.getAttribute(RollerRequest.FOLDERID_KEY);
         if (null == folderId)

@@ -22,6 +22,11 @@
                 Roller roller = RollerFactory.getRoller();
                 ThemeManager themeMgr = roller.getThemeManager();
                 
+                    
+                BasePageModel pageModel = 
+                        new BasePageModel(request, response, mapping);
+                request.setAttribute("model",pageModel);          
+                    
                 String username = rses.getAuthenticatedUser().getUserName();
                 WebsiteData website = rses.getCurrentWebsite();
                 String currentTheme = website.getEditorTheme();

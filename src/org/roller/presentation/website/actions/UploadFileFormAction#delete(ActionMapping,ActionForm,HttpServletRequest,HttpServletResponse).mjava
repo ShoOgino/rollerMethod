@@ -12,6 +12,8 @@
         UploadFileForm theForm = (UploadFileForm)actionForm;
         ActionForward fwd = mapping.findForward("uploadFiles.page");
         RollerRequest rreq = RollerRequest.getRollerRequest(request);
+        BasePageModel pageModel = new BasePageModel(request, response, mapping);
+        request.setAttribute("model", pageModel);
         try
         {
             FileManager fmgr = RollerFactory.getRoller().getFileManager();

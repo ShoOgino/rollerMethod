@@ -50,7 +50,10 @@
                 
                     List epages = Arrays.asList(StringUtils.split(
                         org.apache.commons.lang.StringUtils.deleteWhitespace(editorPages), ","));
-                    request.setAttribute("editorPagesList", epages);                
+                    request.setAttribute("editorPagesList", epages);   
+                    
+                    BasePageModel pageModel = new BasePageModel(request, response, mapping);
+                    request.setAttribute("model",pageModel);                
                 /*
                 }
                 else

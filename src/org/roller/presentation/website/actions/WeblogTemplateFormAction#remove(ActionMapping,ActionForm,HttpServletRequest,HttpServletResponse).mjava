@@ -25,8 +25,8 @@
                 UserData user = rses.getAuthenticatedUser();
                 PageCacheFilter.removeFromCache(request, template.getWebsite());
                     
-                addModelObjects(rreq);
-                actionForm.reset(mapping,request);
+                addModelObjects(request, response, mapping);
+                actionForm.reset(mapping, request);
             }
             else
             {

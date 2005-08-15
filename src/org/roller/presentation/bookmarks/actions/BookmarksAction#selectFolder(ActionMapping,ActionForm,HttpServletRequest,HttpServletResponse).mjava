@@ -17,7 +17,7 @@
         RollerRequest rreq = RollerRequest.getRollerRequest(request);
         if (RollerSession.getRollerSession(request).isUserAuthorizedToAuthor())
         {
-            addModelObjects(request, (BookmarksForm)actionForm);
+            addModelObjects(request, response, mapping, (BookmarksForm)actionForm);
             return mapping.findForward("BookmarksForm");
         }
         else

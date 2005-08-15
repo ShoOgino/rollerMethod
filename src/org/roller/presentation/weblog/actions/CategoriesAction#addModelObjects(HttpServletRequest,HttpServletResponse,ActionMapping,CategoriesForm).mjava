@@ -3,7 +3,9 @@
      * @param request
      * @throws RollerException
      */
-    private void addModelObjects(HttpServletRequest request, CategoriesForm form) 
+    private void addModelObjects(
+        HttpServletRequest request, HttpServletResponse response, 
+        ActionMapping mapping, CategoriesForm form) 
         throws RollerException
     {
         RollerRequest rreq = RollerRequest.getRollerRequest(request);
@@ -11,6 +13,9 @@
         WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
         
         TreeSet allCategories = new TreeSet(new CategoryPathComparator());
+        
+        BasePageModel pageModel = new BasePageModel(request, response, mapping);
+        request.setAttribute("model",pageModel);
         
         // Find catid wherever it may be
         String catId = (String)request.getAttribute(RollerRequest.WEBLOGCATEGORYID_KEY);

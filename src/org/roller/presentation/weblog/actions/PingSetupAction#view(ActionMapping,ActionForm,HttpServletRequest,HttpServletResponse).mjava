@@ -16,6 +16,9 @@
                 return mapping.findForward("access-denied");
             }
 
+            BasePageModel pageModel = new BasePageModel(req, res, mapping);
+            req.setAttribute("model",pageModel);
+        
             List commonPingTargets = pingTargetMgr.getCommonPingTargets();
             req.setAttribute("commonPingTargets", commonPingTargets);
 

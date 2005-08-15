@@ -41,6 +41,10 @@
                         StringUtils.deleteWhitespace(editorPages), ","));
                 request.setAttribute("editorPagesList", epages);
                 
+                    
+                BasePageModel pageModel = new BasePageModel(request, response, mapping);
+                request.setAttribute("model",pageModel);   
+                    
                 rses.setCurrentWebsite(website);
             }
             else

@@ -11,6 +11,8 @@
         RollerRequest rreq = null;
         ActionForward fwd = mapping.findForward("uploadFiles.page");
         WebsiteData website = null;
+        BasePageModel pageModel = new BasePageModel(request, response, mapping);
+        request.setAttribute("model", pageModel);
         RollerMessages msgs = new RollerMessages();
         try
         {

@@ -12,6 +12,8 @@
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             RollerSession rollerSession = RollerSession.getRollerSession(request);
+            BasePageModel pageModel = new BasePageModel(request, response, mapping);
+            request.setAttribute("model", pageModel);
             if ( !rollerSession.isUserAuthorizedToAuthor() )
             {
                 return mapping.findForward("access-denied");
