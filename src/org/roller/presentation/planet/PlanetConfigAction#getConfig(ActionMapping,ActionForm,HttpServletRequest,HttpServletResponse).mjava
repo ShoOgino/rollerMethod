@@ -9,6 +9,9 @@
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             if (RollerSession.getRollerSession(request).isAdminUser())
             {
+                BasePageModel pageModel = 
+                        new BasePageModel(request, response, mapping);
+                request.setAttribute("model",pageModel);                
                 Roller roller = RollerFactory.getRoller();
                 PlanetManager planet = roller.getPlanetManager();
                 PlanetConfigData config = planet.getConfiguration();

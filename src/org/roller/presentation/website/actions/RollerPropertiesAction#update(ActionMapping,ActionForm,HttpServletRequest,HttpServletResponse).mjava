@@ -12,6 +12,9 @@
         try {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             RollerSession rollerSession = RollerSession.getRollerSession(request);
+            BasePageModel pageModel = 
+                    new BasePageModel(request, response, mapping);
+            request.setAttribute("model",pageModel);                
             if ( rollerSession.isUserAuthorizedToAdmin() && rollerSession.isAdminUser() ) {
             
                 // just grab our properties map and put it in the request

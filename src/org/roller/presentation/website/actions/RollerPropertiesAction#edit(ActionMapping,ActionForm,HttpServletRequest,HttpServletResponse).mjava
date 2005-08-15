@@ -9,6 +9,9 @@
         
         ActionForward forward = mapping.findForward("rollerProperties.page");
         try {
+            BasePageModel pageModel = 
+                    new BasePageModel(request, response, mapping);
+            request.setAttribute("model",pageModel);                
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             RollerSession rollerSession = RollerSession.getRollerSession(request);
             if (rollerSession.isAdminUser() ) {
