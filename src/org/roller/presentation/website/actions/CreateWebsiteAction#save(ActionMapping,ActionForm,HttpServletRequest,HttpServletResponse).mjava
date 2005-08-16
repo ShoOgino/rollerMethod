@@ -15,13 +15,12 @@
         }
         else try
         {
-            // Add new user
             RollerContext rollerContext = RollerContext.getRollerContext(request);
             UserData user = 
                 RollerSession.getRollerSession(request).getAuthenticatedUser();
             UserManager mgr = RollerFactory.getRoller().getUserManager(); 
             
-            // Need system user to add new user
+            // Need system user to create website
             RollerFactory.getRoller().setUser(UserData.SYSTEM_USER);
             HashMap pages = null; //rollerContext.readThemeMacros(form.getTheme());
             WebsiteData website = mgr.createWebsite(
@@ -34,27 +33,21 @@
                form.getLocale(), 
                form.getTimeZone());
             RollerFactory.getRoller().commit();
-
-            // Flush cache so user will immediately appear on index page
-            //PageCacheFilter.removeFromCache( request, ud );
-            //MainPageAction.flushMainPageCache();
             
             request.setAttribute("model", 
-                    new CreateWebsitePageModel(request, response, mapping, website));                
+               new CreateWebsitePageModel(request, response, mapping, website));  
+            
+            msgs.add(ActionMessages.GLOBAL_MESSAGE, 
+               new ActionMessage("createWebsite.created", form.getHandle()));
+            saveMessages(request, msgs);     
         }
         catch (RollerException e)
         {
-            errors.add(ActionErrors.GLOBAL_ERROR, new ActionError(e.getMessage()));
-            saveErrors(request,errors);          
+            errors.add(ActionErrors.GLOBAL_ERROR, 
+                new ActionError(e.getMessage()));
+            saveErrors(request, errors);          
             mLogger.error("ERROR in createWebsite", e);
         }
-        if (errors.size() == 0) 
-        {
-            return mapping.findForward("createWebsiteDone.page");
-        }
-        else
-        {
-            return mapping.findForward("createWebsite.page");
-        }
+        return mapping.findForward("yourWebsites");
     }
 
