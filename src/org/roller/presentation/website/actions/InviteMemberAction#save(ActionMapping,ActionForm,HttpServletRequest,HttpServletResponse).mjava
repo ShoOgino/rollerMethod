@@ -36,13 +36,23 @@
                 String mask = request.getParameter("permissionsMask");
                 umgr.inviteUser(website, user, Short.parseShort(mask));
                 request.setAttribute("user", user);
-                forward = mapping.findForward("inviteMemberDone.page");
-                notifyInvitee(request, website, user);
+                try 
+                {
+                    notifyInvitee(request, website, user);
+                }
+                catch (RollerException e)
+                {
+                    errors.add(ActionErrors.GLOBAL_ERROR, 
+                        new ActionError("error.untranslated", e.getMessage()));                
+                }               
                 msgs.add(ActionMessages.GLOBAL_MESSAGE, 
                     new ActionMessage("inviteMember.userInvited"));
+                
+                forward = mapping.findForward("memberPermissions");                
             }
         }
-        if (!errors.isEmpty()) saveErrors(request, errors);
+        saveErrors(request, errors);
+        saveMessages(request, msgs);
         return forward; 
     }
 

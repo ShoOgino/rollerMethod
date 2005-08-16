@@ -3,7 +3,7 @@
      */
     private void notifyInvitee(
             HttpServletRequest request, WebsiteData website, UserData user) 
-            throws Exception
+            throws RollerException
     {
         try
         {
@@ -60,17 +60,17 @@
         }
         catch (NamingException e)
         {
-            mLogger.error("ERROR: Notification email(s) not sent, "
+            throw new RollerException("ERROR: Notification email(s) not sent, "
                     + "Roller's mail session not properly configured", e);
         }
         catch (MessagingException e)
         {
-            mLogger.error("ERROR: Notification email(s) not sent, "
-                    + "due to Roller configuration or mail server problem.", e);
+            throw new RollerException("ERROR: Notification email(s) not sent, "
+                + "due to Roller configuration or mail server problem.", e);
         }
         catch (MalformedURLException e)
         {
-            mLogger.error("ERROR: Notification email(s) not sent, "
+            throw new RollerException("ERROR: Notification email(s) not sent, "
                     + "Roller site URL is malformed?", e);
         }
         catch (RollerException e)
