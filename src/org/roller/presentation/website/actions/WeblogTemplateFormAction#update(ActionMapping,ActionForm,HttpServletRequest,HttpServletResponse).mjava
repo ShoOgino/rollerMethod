@@ -11,6 +11,8 @@
         {
             RollerSession rses = RollerSession.getRollerSession(request);
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            request.setAttribute("model", new BasePageModel(
+                "pageForm.title", request, response, mapping));
             if ( rses.isUserAuthorizedToAdmin() )
             {
                 WeblogTemplateForm form = (WeblogTemplateForm)actionForm;

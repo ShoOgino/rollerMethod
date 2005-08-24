@@ -16,7 +16,8 @@
         RollerRequest rreq = RollerRequest.getRollerRequest(req);
         try
         {
-            BasePageModel pageModel = new BasePageModel(req, res, mapping);
+            BasePageModel pageModel = 
+                new BasePageModel(getPingTargetsTitle(), req, res, mapping);
             req.setAttribute("model",pageModel);            
             if (!hasRequiredRights(rreq))
             {

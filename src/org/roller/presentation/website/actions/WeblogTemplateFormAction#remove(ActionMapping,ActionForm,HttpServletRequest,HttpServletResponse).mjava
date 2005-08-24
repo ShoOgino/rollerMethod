@@ -7,6 +7,8 @@
         throws IOException, ServletException
     {
         ActionForward forward = mapping.findForward("editPages");
+        request.setAttribute("model", new BasePageModel(
+            "pagesForm.title", request, response, mapping));
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);

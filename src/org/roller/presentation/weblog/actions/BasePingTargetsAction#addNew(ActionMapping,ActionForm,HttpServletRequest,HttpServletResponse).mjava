@@ -12,7 +12,8 @@
                                 HttpServletRequest req, HttpServletResponse res)
         throws Exception
     {
-        BasePageModel pageModel = new BasePageModel(req, res, mapping);
+        BasePageModel pageModel = 
+            new BasePageModel(getPingTargetEditTitle(), req, res, mapping);
         req.setAttribute("model",pageModel);            
         return mapping.findForward(PING_TARGET_EDIT_PAGE);
     }

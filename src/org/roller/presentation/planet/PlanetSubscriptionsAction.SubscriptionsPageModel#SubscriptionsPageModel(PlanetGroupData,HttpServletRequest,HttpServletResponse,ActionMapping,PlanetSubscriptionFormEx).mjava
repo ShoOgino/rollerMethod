@@ -2,9 +2,11 @@
                 PlanetGroupData group,
                 HttpServletRequest request,
                 HttpServletResponse response,
-                ActionMapping mapping) throws RollerException
+                ActionMapping mapping, 
+                PlanetSubscriptionFormEx form) throws RollerException
         {
-            super(request, response, mapping);
+            super("dummy", request, response, mapping);
+            this.form = form;
             if (group != null) 
             {
                 Set subsSet = group.getSubscriptions();

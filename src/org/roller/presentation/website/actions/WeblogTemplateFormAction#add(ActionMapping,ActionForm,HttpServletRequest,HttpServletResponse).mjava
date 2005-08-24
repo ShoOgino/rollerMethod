@@ -8,6 +8,8 @@
         ActionForward forward = mapping.findForward("editPages.page");
         try
         {
+            request.setAttribute("model", new BasePageModel(
+                "pagesForm.title", request, response, mapping));   
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             RollerSession rses = RollerSession.getRollerSession(request);
             if ( rses.isUserAuthorizedToAdmin() )

@@ -18,9 +18,9 @@
             RollerSession rollerSession = RollerSession.getRollerSession(request);
             if (rollerSession.isAdminUser() )
             {
-                 request.setAttribute(
-                    "model", new BasePageModel(request, response, mapping));
                 UserAdminForm userForm = (UserAdminForm)actionForm;
+                request.setAttribute("model", 
+                  new UserAdminPageModel(request, response, mapping, userForm));
                 UserManager mgr = RollerFactory.getRoller().getUserManager();                
                 if (userForm != null && userForm.getUserName() != null)
                 {

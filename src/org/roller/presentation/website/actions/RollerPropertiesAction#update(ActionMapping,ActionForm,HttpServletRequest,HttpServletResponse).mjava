@@ -12,8 +12,8 @@
         try {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             RollerSession rollerSession = RollerSession.getRollerSession(request);
-            BasePageModel pageModel = 
-                    new BasePageModel(request, response, mapping);
+            BasePageModel pageModel = new BasePageModel(
+                    "configForm.title", request, response, mapping);
             request.setAttribute("model",pageModel);                
             if (rollerSession.isAdminUser()) {
             

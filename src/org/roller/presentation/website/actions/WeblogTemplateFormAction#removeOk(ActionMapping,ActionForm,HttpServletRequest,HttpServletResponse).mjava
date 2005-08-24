@@ -7,6 +7,8 @@
         throws IOException, ServletException
     {
         ActionForward forward = mapping.findForward("removePage.page");
+        request.setAttribute("model", new BasePageModel(
+            "editPages.title.removeOK", request, response, mapping));
         try
         {
             RollerSession rses = RollerSession.getRollerSession(request);

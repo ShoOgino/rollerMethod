@@ -1,0 +1,14 @@
+        public String getTitle()
+        {
+            if (!form.getGroupHandle().equals("external")) 
+            {
+                return MessageFormat.format(
+                    bundle.getString("planetSubscriptions.titleGroup"), 
+                    new String[] {form.getGroupHandle()});
+            }
+            else 
+            {
+                return bundle.getString("planetSubscriptions.title");
+            }
+        }
+

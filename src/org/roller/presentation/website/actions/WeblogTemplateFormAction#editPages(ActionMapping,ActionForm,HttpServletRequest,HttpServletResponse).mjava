@@ -11,6 +11,8 @@
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             RollerSession rses = RollerSession.getRollerSession(request);
+            request.setAttribute("model", new BasePageModel(
+                "pagesForm.title", request, response, mapping));            
             if ( rses.isUserAuthorizedToAdmin() )
             {
                 addModelObjects(request, response, mapping);
