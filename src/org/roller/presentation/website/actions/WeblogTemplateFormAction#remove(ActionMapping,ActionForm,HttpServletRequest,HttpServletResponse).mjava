@@ -13,7 +13,8 @@
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             RollerSession rses = RollerSession.getRollerSession(request);
-            if ( rses.isUserAuthorizedToAdmin() )
+            WebsiteData website = rreq.getWebsite();
+            if ( rses.isUserAuthorizedToAdmin(website) )
             {
                 WeblogTemplateForm form = (WeblogTemplateForm)actionForm;
                 UserManager mgr = RollerFactory.getRoller().getUserManager();

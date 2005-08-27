@@ -7,7 +7,8 @@
         {
             RollerSession rollerSession = 
                 RollerSession.getRollerSession(mRollerReq.getRequest());
-            if ( rollerSession.isUserAuthorizedToAdmin() )
+            if ( mRollerReq.getWebsite() != null 
+              && rollerSession.isUserAuthorizedToAdmin(mRollerReq.getWebsite()))
             {
                 Hashtable params = new Hashtable();
                 params.put( RollerRequest.REFERERID_KEY, referer.getId());

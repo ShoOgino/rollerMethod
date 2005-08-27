@@ -12,12 +12,13 @@
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             RollerSession rollerSession = 
-                RollerSession.getRollerSession(request);
-            if ( rollerSession.isUserAuthorizedToAuthor() )
+              RollerSession.getRollerSession(request);
+            WeblogEntryPageModel pageModel = new WeblogEntryPageModel(
+              request, response, mapping, (WeblogEntryFormEx)actionForm, mode);
+            if (rollerSession.isUserAuthorizedToAuthor(
+                    pageModel.getWeblogEntry().getWebsite()))
             {
-                request.setAttribute("model",
-                   new WeblogEntryPageModel(request, response, mapping, 
-                           (WeblogEntryFormEx)actionForm, mode));
+                request.setAttribute("model", pageModel);                   
             }
             else
             {

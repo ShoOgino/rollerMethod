@@ -15,14 +15,14 @@
             WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
             WeblogEntryData wd = 
                 mgr.retrieveWeblogEntry(request.getParameter("id"));
-            RollerSession rollerSession = 
+            RollerSession rses = 
                 RollerSession.getRollerSession(request);
-            if (     rollerSession.isUserAuthorizedToAuthor() 
-                 || (rollerSession.isUserAuthorized() && wd.isDraft()) )
+            if (     rses.isUserAuthorizedToAuthor(wd.getWebsite()) 
+                 || (rses.isUserAuthorized(wd.getWebsite()) && wd.isDraft()) )
             {
                 // Flush the page cache
-                PageCacheFilter.removeFromCache(request, 
-                   RollerSession.getRollerSession(request).getCurrentWebsite());
+                PageCacheFilter.removeFromCache(
+                        request, wd.getWebsite());
 				// remove the index for it
                 wd.setStatus(WeblogEntryData.DRAFT);
 		        reindexEntry(RollerFactory.getRoller(), wd);

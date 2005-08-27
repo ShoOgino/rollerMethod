@@ -15,18 +15,22 @@
                 userName = mRequest.getRemoteUser(); 
             }
             
+            String handle = mRequest.getParameter(RollerRequest.WEBLOG_KEY);
+            String websiteid = mRequest.getParameter(RollerRequest.WEBSITEID_KEY);
+            if (handle != null && mWebsite == null) 
+            {
+                mWebsite = userMgr.getWebsiteByHandle(handle); 
+            }
+            else if (websiteid != null && mWebsite == null )
+            {
+                mWebsite = userMgr.retrieveWebsite(websiteid); 
+            }
+            
             // Look for page ID in request params
             String pageId = mRequest.getParameter(RollerRequest.PAGEID_KEY);                    
             if ( pageId != null )
             {
-                mPage = userMgr.retrievePage(pageId);
-                /*
-                // We can use page to find the user, if we don't have one yet
-                if ( mWebsite == null )
-                {
-                    mWebsite = mPage.getWebsite();
-                }
-                 */                    
+                mPage = userMgr.retrievePage(pageId);                 
             }
             else if (mWebsite != null) 
             {

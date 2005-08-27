@@ -1,9 +1,9 @@
     /** 
      * Is session's authenticated user authorized to post in current weblog?
      */
-    public boolean isUserAuthorizedToAuthor() 
+    public boolean isUserAuthorizedToAuthor(WebsiteData website) 
         throws RollerException
     {
-        return hasPermissions(PermissionsData.AUTHOR);
+        return hasPermissions(website, PermissionsData.AUTHOR);
     }
 

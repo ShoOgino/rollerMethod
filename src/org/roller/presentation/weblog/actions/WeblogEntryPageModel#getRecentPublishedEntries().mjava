@@ -9,7 +9,7 @@
         RollerSession rollerSession = RollerSession.getRollerSession(getRequest());
         return RollerFactory.getRoller().getWeblogManager()
             .getWeblogEntries(
-                rollerSession.getCurrentWebsite(), // userName
+                getWeblogEntry().getWebsite(), // userName
                 null,              // startDate
                 null,              // endDate
                 null,              // catName

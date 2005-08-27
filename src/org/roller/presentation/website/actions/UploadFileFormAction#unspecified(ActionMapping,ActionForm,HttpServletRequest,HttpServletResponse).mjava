@@ -15,7 +15,8 @@
             BasePageModel pageModel = 
              new BasePageModel("uploadFiles.title", request, response, mapping);
             request.setAttribute("model", pageModel);
-            if ( !rollerSession.isUserAuthorizedToAuthor() )
+            WebsiteData website = rreq.getWebsite();
+            if ( !rollerSession.isUserAuthorizedToAuthor(website) )
             {
                 return mapping.findForward("access-denied");
             }

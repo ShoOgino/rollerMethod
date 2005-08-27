@@ -20,9 +20,10 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            RollerSession rollerSession = RollerSession.getRollerSession(rreq.getRequest());
+            RollerSession rses = RollerSession.getRollerSession(rreq.getRequest());
             WeblogQueryForm form = (WeblogQueryForm)actionForm;
-            if ( rollerSession.isUserAuthorizedToAdmin() )
+            if ( rreq.getWebsite() != null 
+                    && rses.isUserAuthorizedToAdmin(rreq.getWebsite()) )
             {               
                 request.setAttribute("model",
                         new BasePageModel("", request, response, mapping));
@@ -52,7 +53,7 @@
                     //System.out.println("Export: got " + entries.size() + " entries.");
                     
                     List entries = weblogMgr.getWeblogEntries(
-                                    RollerSession.getRollerSession(request).getCurrentWebsite(), // userName
+                                    rreq.getWebsite(), // userName
                                     startDate,         // startDate
                                     endDate,           // endDate
                                     null,              // catName
@@ -65,7 +66,7 @@
                     Map entryMap = seperateByPeriod(entries, form.getFileBy());
 
                     // now export each List in the entryMap
-                    ExportRss exporter = new ExportRss(RollerSession.getRollerSession(request).getCurrentWebsite());
+                    ExportRss exporter = new ExportRss(rreq.getWebsite());
                     String exportTo = form.getExportFormat().toLowerCase();
                     if ("atom".equals(exportTo))
                     {

@@ -7,6 +7,6 @@
         PingTargetManager pingTargetMgr = RollerFactory.getRoller().getPingTargetManager();
         return pingTargetMgr.createCustomPingTarget(
             pingTargetForm.getName(), pingTargetForm.getPingUrl(), 
-            RollerSession.getRollerSession(rreq.getRequest()).getCurrentWebsite());
+            rreq.getWebsite());
     }
 

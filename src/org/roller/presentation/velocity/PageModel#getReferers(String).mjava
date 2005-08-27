@@ -7,7 +7,7 @@
         {
             List refs = 
                 mRefererMgr.getReferersToDate(mRollerReq.getWebsite(), date);
-            RollerSession rollerSession = 
+            RollerSession rses = 
                 RollerSession.getRollerSession(mRollerReq.getRequest());
             
             for (Iterator rdItr = refs.iterator(); rdItr.hasNext();) {
@@ -18,7 +18,7 @@
                     && StringUtils.isNotEmpty(excerpt) )
                 {
                     if (   referer.getVisible().booleanValue() 
-                        || rollerSession.isUserAuthorizedToAdmin() )
+                        || rses.isUserAuthorizedToAdmin(referer.getWebsite()) )
                     { 
                         referers.add(RefererDataWrapper.wrap(referer));
                     }

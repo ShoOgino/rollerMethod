@@ -11,11 +11,13 @@
 	{
 		try
 		{
-            RollerSession rollerSession = RollerSession.getRollerSession(request);
-			if (rollerSession.isUserAuthorizedToAdmin() )
+            RollerRequest rreq  = RollerRequest.getRollerRequest(request);
+            WebsiteData website = rreq.getWebsite();            
+            RollerSession rses = RollerSession.getRollerSession(request);
+			if (rses.isUserAuthorizedToAdmin(website) )
 			{
-				WebsiteData website = RollerSession.getRollerSession(request).getCurrentWebsite();
-				IndexManager manager = RollerFactory.getRoller().getIndexManager();
+				IndexManager manager = 
+                        RollerFactory.getRoller().getIndexManager();
 				manager.rebuildWebsiteIndex(website);
 				
                 ActionMessages messages = new ActionMessages();

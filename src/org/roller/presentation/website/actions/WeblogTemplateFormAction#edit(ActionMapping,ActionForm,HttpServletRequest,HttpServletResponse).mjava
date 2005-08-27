@@ -13,7 +13,8 @@
                 "pageForm.title", request, response, mapping));   
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             RollerSession rses = RollerSession.getRollerSession(request);
-            if ( rses.isUserAuthorizedToAdmin() )
+            WebsiteData website = rreq.getWebsite();
+            if ( rses.isUserAuthorizedToAdmin(website) )
             {
                 UserData ud = rses.getAuthenticatedUser();
                 WeblogTemplate pd = (WeblogTemplate) rreq.getPage();

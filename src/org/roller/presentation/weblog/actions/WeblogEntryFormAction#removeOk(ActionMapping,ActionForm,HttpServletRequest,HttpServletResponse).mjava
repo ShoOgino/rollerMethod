@@ -17,10 +17,10 @@
             WeblogEntryFormEx wf = (WeblogEntryFormEx)actionForm;
             WeblogEntryData wd = 
                 roller.getWeblogManager().retrieveWeblogEntry(wf.getId());
-            RollerSession rollerSession = 
+            RollerSession rses = 
                 RollerSession.getRollerSession(request);
-            if (     rollerSession.isUserAuthorizedToAuthor() 
-                 || (rollerSession.isUserAuthorized() && wd.isDraft()) )
+            if (     rses.isUserAuthorizedToAuthor(wd.getWebsite()) 
+                 || (rses.isUserAuthorized(wd.getWebsite()) && wd.isDraft()) )
             {
                 wf.copyFrom(wd, request.getLocale());
                 if (wd == null || wd.getId() == null)

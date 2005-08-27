@@ -11,6 +11,10 @@
         InviteMemberForm form = (InviteMemberForm)actionForm;
         UserManager umgr = RollerFactory.getRoller().getUserManager();
         UserData user = umgr.getUser(form.getUserName());
+        
+        request.setAttribute("model", new BasePageModel(
+            "inviteMember.title", request, response, mapping));
+
         if (user == null)
         {
             errors.add(ActionErrors.GLOBAL_ERROR, 
@@ -18,8 +22,8 @@
         }
         else 
         {
-            RollerSession rses = RollerSession.getRollerSession(request);
-            WebsiteData website = rses.getCurrentWebsite();
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            WebsiteData website = rreq.getWebsite();
             PermissionsData perms = umgr.getPermissions(website, user);
             if (perms != null && perms.isPending())
             {

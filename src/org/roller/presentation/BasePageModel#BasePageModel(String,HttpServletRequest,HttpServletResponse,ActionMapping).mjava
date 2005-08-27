@@ -10,5 +10,7 @@
         this.titleKey = titleKey;
         request.setAttribute("locales", StrutsUtil.getLocaleBeans());        
         request.setAttribute("timeZones", StrutsUtil.getTimeZoneBeans());        
+        RollerRequest rreq = RollerRequest.getRollerRequest(request);
+        website = rreq.getWebsite();
     }
 

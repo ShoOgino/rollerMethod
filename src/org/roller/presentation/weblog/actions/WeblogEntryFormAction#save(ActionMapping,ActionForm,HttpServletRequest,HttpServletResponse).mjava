@@ -19,18 +19,17 @@
             RollerSession      rses = RollerSession.getRollerSession(request);
             UserManager     userMgr = roller.getUserManager();
             WeblogManager weblogMgr = roller.getWeblogManager();
-            WebsiteData        site = rses.getCurrentWebsite();
-            WeblogEntryData   entry = null;
+            UserData           ud  = userMgr.retrieveUser(wf.getCreatorId());
+            WebsiteData       site = userMgr.retrieveWebsite(wf.getWebsiteId());
+            WeblogEntryData  entry = null;
             
-            if ( rses.isUserAuthorizedToAuthor() 
-                 || (rses.isUserAuthorized() 
+            if ( rses.isUserAuthorizedToAuthor(site) 
+                 || (rses.isUserAuthorized(site) 
                         && !wf.getStatus().equals(WeblogEntryData.PUBLISHED) ))
             {                             
                 if (wf.getId() == null || wf.getId().trim().length()==0) 
                 {
                     entry = new WeblogEntryData();  
-                    UserData ud = userMgr.retrieveUser(
-                            rses.getAuthenticatedUser().getId());
                     entry.setCreator(ud);
                     entry.setWebsite( site );
                 }
@@ -69,8 +68,8 @@
                 // Reindex entry, flush caches, etc.
                 reindexEntry(RollerFactory.getRoller(), entry);
                 mLogger.debug("Removing from cache");
-                PageCacheFilter.removeFromCache(request, 
-                   RollerSession.getRollerSession(request).getCurrentWebsite());
+                RollerRequest rreq = RollerRequest.getRollerRequest(request);
+                PageCacheFilter.removeFromCache(request, entry.getWebsite());
                 MainPageAction.flushMainPageCache();
 
                 // Clean up session objects we used
@@ -84,8 +83,8 @@
                                 (WeblogEntryFormEx)actionForm,
                                 WeblogEntryPageModel.EDIT_MODE));
                 
-                if (!rses.isUserAuthorizedToAuthor() && 
-                        rses.isUserAuthorized() && entry.isPending())
+                if (!rses.isUserAuthorizedToAuthor(site) && 
+                        rses.isUserAuthorized(site) && entry.isPending())
                 {
                     // implies that entry just changed to pending
                     notifyWebsiteAuthorsOfPendingEntry(request, entry);

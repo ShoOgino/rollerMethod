@@ -16,7 +16,8 @@
         try {
             RollerSession rses = RollerSession.getRollerSession(request);            
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rses.isUserAuthorizedToAdmin() ) {
+            WebsiteData website = rreq.getWebsite();
+            if ( rses.isUserAuthorizedToAdmin(website)) {
 
                 // get users current theme
                 Roller roller = RollerFactory.getRoller();
@@ -28,7 +29,6 @@
                 request.setAttribute("model",pageModel);          
                     
                 String username = rses.getAuthenticatedUser().getUserName();
-                WebsiteData website = rses.getCurrentWebsite();
                 String currentTheme = website.getEditorTheme();
                 List themes = themeMgr.getEnabledThemesList();
                 

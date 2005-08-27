@@ -11,10 +11,12 @@
     {
         try
         {
-            RollerSession rollerSession = RollerSession.getRollerSession(request);
-			if ( rollerSession.isUserAuthorizedToAdmin() )
+            RollerRequest rreq  = RollerRequest.getRollerRequest(request);
+            WebsiteData website = rreq.getWebsite();            
+            RollerSession rses = RollerSession.getRollerSession(request);
+			if ( rses.isUserAuthorizedToAdmin(website) )
 			{
-	            PageCacheFilter.removeFromCache(request, RollerSession.getRollerSession(request).getCurrentWebsite());
+	            PageCacheFilter.removeFromCache(request, website);
 
                  ActionMessages messages = new ActionMessages();
                  messages.add(null, new ActionMessage("maintenance.message.flushed"));

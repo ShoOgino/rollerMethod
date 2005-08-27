@@ -10,7 +10,7 @@
     {
         // remove user's Entries from Lucene index
         IndexManager indexManager = RollerFactory.getRoller().getIndexManager();
-        WebsiteData website = RollerSession.getRollerSession(request).getCurrentWebsite();
+        WebsiteData website = rreq.getWebsite();
         indexManager.removeWebsiteIndex(website); 
         
         // delete user from database

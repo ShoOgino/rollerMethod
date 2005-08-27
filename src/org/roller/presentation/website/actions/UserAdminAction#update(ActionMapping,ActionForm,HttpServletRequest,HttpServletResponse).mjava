@@ -15,7 +15,7 @@
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             RollerSession rollerSession = RollerSession.getRollerSession(request);
-            if (rollerSession.isAdminUser() )
+            if (rollerSession.isGlobalAdminUser() )
             {
                 UserAdminForm userForm = (UserAdminForm)actionForm;
                 UserManager mgr = RollerFactory.getRoller().getUserManager();

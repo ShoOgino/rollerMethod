@@ -12,21 +12,21 @@
        WeblogEntryData entry = null;
        try
        {
-           RollerSession rollerSession= RollerSession.getRollerSession(request);
-           if (rollerSession.isUserAuthorizedToAuthor())
+           WeblogEntryFormEx form = (WeblogEntryFormEx)actionForm;
+           String entryid = form.getId();
+           if ( entryid == null )
            {
-               WeblogEntryFormEx form = (WeblogEntryFormEx)actionForm;
-               String entryid = form.getId();
-               if ( entryid == null )
-               {
-                   entryid = 
-                       request.getParameter(RollerRequest.WEBLOGENTRYID_KEY);
-               }
+               entryid = 
+                   request.getParameter(RollerRequest.WEBLOGENTRYID_KEY);
+           }
 
-               RollerContext rctx= RollerContext.getRollerContext(request);
-               WeblogManager wmgr= RollerFactory.getRoller().getWeblogManager();
-               entry = wmgr.retrieveWeblogEntry(entryid);
+           RollerContext rctx= RollerContext.getRollerContext(request);
+           WeblogManager wmgr= RollerFactory.getRoller().getWeblogManager();
+           entry = wmgr.retrieveWeblogEntry(entryid);
 
+           RollerSession rses = RollerSession.getRollerSession(request);
+           if (rses.isUserAuthorizedToAuthor(entry.getWebsite()))
+           {
                String title = entry.getTitle();
 
                // Run entry through registered PagePlugins

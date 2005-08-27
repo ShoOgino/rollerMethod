@@ -1,9 +1,9 @@
     /** 
      * Is session's authenticated user authorized to admin current weblog?
      */
-    public boolean isUserAuthorizedToAdmin() 
+    public boolean isUserAuthorizedToAdmin(WebsiteData website) 
         throws RollerException
     {
-        return hasPermissions(PermissionsData.ADMIN);
+        return hasPermissions(website, PermissionsData.ADMIN);
     }
 

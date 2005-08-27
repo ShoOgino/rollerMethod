@@ -6,7 +6,7 @@
         throws RollerException
     {
         AutoPingManager autoPingMgr = RollerFactory.getRoller().getAutopingManager();
-        WebsiteData website = RollerSession.getRollerSession(rreq.getRequest()).getCurrentWebsite();
+        WebsiteData website = rreq.getWebsite();
 
         // Build isEnabled map (keyed by ping target id and values Boolean.TRUE/Boolean.FALSE)
         Map isEnabled = new HashMap();

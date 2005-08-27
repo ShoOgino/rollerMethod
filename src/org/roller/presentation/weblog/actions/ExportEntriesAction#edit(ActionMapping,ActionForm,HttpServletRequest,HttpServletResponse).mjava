@@ -20,8 +20,10 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            RollerSession rollerSession = RollerSession.getRollerSession(rreq.getRequest());
-            if ( !rollerSession.isUserAuthorizedToAdmin() )
+            RollerSession rses = 
+                    RollerSession.getRollerSession(rreq.getRequest());
+            if (     rreq.getWebsite() == null 
+                 || !rses.isUserAuthorizedToAdmin(rreq.getWebsite()))
             {
                 forward = mapping.findForward("access-denied");
             }

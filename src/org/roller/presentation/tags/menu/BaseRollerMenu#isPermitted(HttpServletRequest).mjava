@@ -32,7 +32,7 @@
                 if (    req.isUserInRole(role) || role.equals("any")
                      || (role.equals("admin") 
                              && rollerSession != null 
-                             && rollerSession.isAdminUser()))  
+                             && rollerSession.isGlobalAdminUser()))  
                 {
                     ret = true;
                     break;
@@ -45,7 +45,14 @@
         {
             UserData user = null;
             if (rollerSession != null) user = rollerSession.getAuthenticatedUser();
-            WebsiteData website = RollerSession.getRollerSession(req).getCurrentWebsite();
+            
+            WebsiteData website = rreq.getWebsite();
+            BasePageModel pageModel = (BasePageModel)req.getAttribute("model");
+            if (pageModel != null)
+            {
+                website = pageModel.getWebsite();
+            }            
+            
             PermissionsData permsData = null;
             if (user != null && website != null) 
             {

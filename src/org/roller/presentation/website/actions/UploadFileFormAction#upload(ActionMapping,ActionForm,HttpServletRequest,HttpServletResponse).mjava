@@ -10,7 +10,7 @@
     {
         RollerRequest rreq = null;
         ActionForward fwd = mapping.findForward("uploadFiles.page");
-        WebsiteData website = null;
+        WebsiteData website = website = rreq.getWebsite();;
         BasePageModel pageModel = 
             new BasePageModel("uploadFiles.title", request, response, mapping);
         request.setAttribute("model", pageModel);
@@ -19,11 +19,11 @@
         {
             rreq = RollerRequest.getRollerRequest(request);
             RollerSession rollerSession = RollerSession.getRollerSession(request);
-            if ( !rollerSession.isUserAuthorizedToAuthor() )
+            
+            if ( !rollerSession.isUserAuthorizedToAuthor(website) )
             {
                 return mapping.findForward("access-denied");
             }
-            website = RollerSession.getRollerSession(request).getCurrentWebsite();
         }
         catch (Exception e)
         {

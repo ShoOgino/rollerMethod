@@ -15,7 +15,7 @@
             }
             PingTargetData pingTarget = select(rreq);
             AutoPingData autoPing = autoPingMgr.createAutoPing(pingTarget, 
-                    RollerSession.getRollerSession(req).getCurrentWebsite());
+                    rreq.getWebsite());
             autoPingMgr.storeAutoPing(autoPing);
             RollerFactory.getRoller().commit();
 

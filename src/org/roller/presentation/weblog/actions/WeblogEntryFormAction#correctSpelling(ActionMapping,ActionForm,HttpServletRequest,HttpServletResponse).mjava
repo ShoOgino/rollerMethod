@@ -8,13 +8,14 @@
     {
         try
         {
-            RollerSession rollerSession = 
+            WeblogEntryFormEx wf = (WeblogEntryFormEx)actionForm;
+            UserManager umgr = RollerFactory.getRoller().getUserManager();
+            WebsiteData site = umgr.retrieveWebsite(wf.getWebsiteId());
+            RollerSession rses = 
                 RollerSession.getRollerSession(request);
-            RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rollerSession.isUserAuthorizedToAuthor() )
+            if (rses.isUserAuthorizedToAuthor(site))
             {
                 HttpSession session = request.getSession(true);
-                WeblogEntryFormEx wf = (WeblogEntryFormEx)actionForm;
                 // misspelt words have been submitted
                 if (wf.getReplacementWords() != null &&
                     wf.getReplacementWords().length > 0)

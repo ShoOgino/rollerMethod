@@ -1,7 +1,7 @@
     /** 
      * Does our authenticated user have the global admin role? 
      */
-    public boolean isAdminUser() throws RollerException
+    public boolean isGlobalAdminUser() throws RollerException
     {
         UserData user = getAuthenticatedUser();
         if (user != null && user.hasRole("admin")) return true;

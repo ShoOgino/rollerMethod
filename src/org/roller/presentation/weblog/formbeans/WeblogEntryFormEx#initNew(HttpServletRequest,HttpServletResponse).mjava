@@ -6,15 +6,15 @@
     {
         RollerRequest rreq = RollerRequest.getRollerRequest(request);
         RollerSession rses = RollerSession.getRollerSession(request); 
-        if (rses.getCurrentWebsite().getDefaultPlugins() != null)
+        if (rreq.getWebsite().getDefaultPlugins() != null)
         {
             setPluginsArray(StringUtils.split(
-                    rses.getCurrentWebsite().getDefaultPlugins(), ",") );
+                    rreq.getWebsite().getDefaultPlugins(), ",") );
         }
         status = WeblogEntryData.DRAFT;
         allowComments = Boolean.TRUE;
         updateTime = new Timestamp(new Date().getTime());
         pubTime = updateTime;
-        initPubTimeDateStrings(rses.getCurrentWebsite(), request.getLocale());        
+        initPubTimeDateStrings(rreq.getWebsite(), request.getLocale());        
     }
 

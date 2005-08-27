@@ -15,9 +15,9 @@
         RollerSession rollerSession = RollerSession.getRollerSession(request);
         try
         {
-            if ( rollerSession.isUserAuthorizedToAuthor() )
+            WeblogEntryData wd = rreq.getWeblogEntry();
+            if ( rollerSession.isUserAuthorizedToAuthor(wd.getWebsite()))
             {
-                WeblogEntryData wd = rreq.getWeblogEntry();
                 if (wd == null || wd.getId() == null)
                 {
                     throw new NullPointerException(

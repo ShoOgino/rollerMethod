@@ -7,16 +7,14 @@
             super("",  request, response, mapping);
             
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            //WebsiteData wd = rreq.getWebsite();
             RollerSession rollerSession = RollerSession.getRollerSession(request);
-            WebsiteData wd = rollerSession.getCurrentWebsite();
             BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
 
             allFolders = new TreeSet(new FolderPathComparator());
 
             // Find folderid wherever it may be
-            String folderId = (
-                    String)request.getAttribute(RollerRequest.FOLDERID_KEY);
+            String folderId = (String)
+                request.getAttribute(RollerRequest.FOLDERID_KEY);
             if (null == folderId)
             {
                 folderId = request.getParameter(RollerRequest.FOLDERID_KEY);
@@ -28,11 +26,13 @@
 
             if (null == folderId || folderId.equals("null"))
             {
-                folder = bmgr.getRootFolder(wd);
+                website = rreq.getWebsite();
+                folder = bmgr.getRootFolder(website);
             }
             else
             {
                 folder = bmgr.retrieveFolder(folderId);
+                website = folder.getWebsite();
             }
             form.setFolderId(folder.getId());
 
@@ -51,7 +51,7 @@
             }
 
             // Build list of all folders, except for current one, sorted by path.
-            Iterator iter = bmgr.getAllFolders(wd).iterator();
+            Iterator iter = bmgr.getAllFolders(website).iterator();
 
             // Build list of only children
             //Iterator iter = folder.getFolders().iterator();

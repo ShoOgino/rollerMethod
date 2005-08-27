@@ -13,21 +13,12 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            RollerSession rollerSession = 
-                RollerSession.getRollerSession(request);
+            RollerSession rses = RollerSession.getRollerSession(request);
             WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
-            WeblogEntryData entry = rreq.getWeblogEntry();
-            
-            if (   rollerSession.getCurrentWebsite() == null
-                && entry.getWebsite().hasUserPermissions(
-                   rollerSession.getAuthenticatedUser(),PermissionsData.AUTHOR))
-            {
-                // user clicked on URL in email notification
-                rollerSession.setCurrentWebsite(entry.getWebsite());
-            }
+            WeblogEntryData entry = rreq.getWeblogEntry();           
                 
-            if (     rollerSession.isUserAuthorizedToAuthor() 
-                 || (rollerSession.isUserAuthorized() && entry.isDraft()))
+            if (rses.isUserAuthorizedToAuthor(entry.getWebsite()) 
+            || (rses.isUserAuthorized(entry.getWebsite()) && entry.isDraft()))
             {
                 WeblogEntryFormEx form = (WeblogEntryFormEx)actionForm;
                 if (entry == null && form.getId() != null)

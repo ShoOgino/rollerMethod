@@ -18,7 +18,8 @@
         try {
             RollerSession rses = RollerSession.getRollerSession(request);
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rses.isUserAuthorizedToAdmin() ) {
+            WebsiteData website = rreq.getWebsite();
+            if ( rses.isUserAuthorizedToAdmin(website) ) {
                 
                 BasePageModel pageModel = new BasePageModel(
                         "themeEditor.title", request, response, mapping);
@@ -29,7 +30,6 @@
                 ThemeManager themeMgr = roller.getThemeManager();
                 
                 String username = rses.getAuthenticatedUser().getUserName();
-                WebsiteData website = rses.getCurrentWebsite();
                 
                 try {
                     Theme usersTheme = themeMgr.getTheme(website.getEditorTheme());

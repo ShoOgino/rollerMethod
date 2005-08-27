@@ -15,7 +15,11 @@
         throws RollerException
     {
         Roller roller = RollerFactory.getRoller();
-        if (RollerSession.getRollerSession(request).isUserAuthorizedToAuthor())
+        BookmarksPageModel pageModel = new BookmarksPageModel(
+            request, response, mapping, (BookmarksForm)actionForm);
+        request.setAttribute("model", pageModel);
+        if (RollerSession.getRollerSession(request).isUserAuthorizedToAuthor(
+            pageModel.getFolder().getWebsite()))
         {
             BookmarkManager bmgr = roller.getBookmarkManager();
             BookmarksForm form = (BookmarksForm)actionForm;
@@ -42,7 +46,6 @@
             }
             roller.commit();
 
-            addModelObjects(request, response, mapping, (BookmarksForm)actionForm);
             return mapping.findForward("BookmarksForm");
         }
         else

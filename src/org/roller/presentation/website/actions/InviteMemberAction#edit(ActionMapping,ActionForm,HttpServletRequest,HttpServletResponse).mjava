@@ -5,7 +5,9 @@
         HttpServletResponse response)
         throws IOException, ServletException
     {
-        ActionForward forward = mapping.findForward("inviteMember.page");
+        ActionForward forward = mapping.findForward("inviteMember.page");        
+        request.setAttribute("model", new BasePageModel(
+            "inviteMember.title", request, response, mapping));
         return forward; 
     }
 

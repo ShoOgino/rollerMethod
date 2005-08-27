@@ -7,11 +7,12 @@
     {             
         UserManager mgr = RollerFactory.getRoller().getUserManager();        
         RollerSession rses = RollerSession.getRollerSession(request);
+        RollerRequest rreq = RollerRequest.getRollerRequest(request);
                 
         UserData user = rses.getAuthenticatedUser();
         request.setAttribute("user",user);
 
-        WebsiteData wd = rses.getCurrentWebsite();
+        WebsiteData wd = rreq.getWebsite();
         request.setAttribute("website", wd);
 
         List pages = mgr.getPages(wd);

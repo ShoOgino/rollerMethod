@@ -14,12 +14,12 @@
         HttpServletResponse response)
         throws RollerException
     {
-        RollerRequest rreq = RollerRequest.getRollerRequest(request);
-        RollerSession rollerSession = RollerSession.getRollerSession(
-                rreq.getRequest());
-        if (rollerSession.isUserAuthorizedToAuthor())
+        CategoriesPageModel pageModel = new CategoriesPageModel(
+                request, response, mapping, (CategoriesForm)actionForm);
+        RollerSession rses = RollerSession.getRollerSession(request);
+        if (rses.isUserAuthorizedToAuthor(pageModel.getCategory().getWebsite()))
         {
-            addModelObjects(request, response, mapping, (CategoriesForm)actionForm);
+            request.setAttribute("model", pageModel);
             return mapping.findForward("CategoriesForm");
         }
         else

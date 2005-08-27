@@ -10,8 +10,9 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            WebsiteData website = rreq.getWebsite();
             RollerSession rses = RollerSession.getRollerSession(request);
-            if (rses.isUserAuthorizedToAdmin())
+            if (rses.isUserAuthorizedToAdmin(website))
             {
                 Roller roller = RollerFactory.getRoller();
                 UserManager umgr = roller.getUserManager();
@@ -19,8 +20,6 @@
                 UserData ud = rses.getAuthenticatedUser();
                 request.setAttribute("user",ud);
 
-                WebsiteData website = 
-                    umgr.retrieveWebsite(rses.getCurrentWebsite().getId());
                 WebsiteFormEx wf = (WebsiteFormEx)actionForm;
                 wf.copyFrom(website, request.getLocale());
 
@@ -45,8 +44,6 @@
                 BasePageModel pageModel = new BasePageModel(
                     "websiteSettings.title", request, response, mapping);
                 request.setAttribute("model",pageModel);   
-                    
-                rses.setCurrentWebsite(website);
             }
             else
             {

@@ -3,8 +3,9 @@
         {
             super("memberPermissions.title", request, response, mapping);
             Roller roller = RollerFactory.getRoller();
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
             RollerSession rollerSession = RollerSession.getRollerSession(request);
-            WebsiteData website = rollerSession.getCurrentWebsite();
+            WebsiteData website = rreq.getWebsite();
             permissions = roller.getUserManager().getAllPermissions(website);
         }
 
