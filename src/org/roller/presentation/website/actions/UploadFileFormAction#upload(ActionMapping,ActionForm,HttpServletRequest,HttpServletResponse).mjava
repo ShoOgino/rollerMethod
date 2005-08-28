@@ -8,19 +8,19 @@
         HttpServletResponse response)
         throws IOException, ServletException
     {
-        RollerRequest rreq = null;
         ActionForward fwd = mapping.findForward("uploadFiles.page");
-        WebsiteData website = website = rreq.getWebsite();;
-        BasePageModel pageModel = 
-            new BasePageModel("uploadFiles.title", request, response, mapping);
+        WebsiteData website = getWebsite(request);
+        
+        BasePageModel pageModel = new BasePageModel(
+                "uploadFiles.title", request, response, mapping);
         request.setAttribute("model", pageModel);
+        pageModel.setWebsite(website);
+                
         RollerMessages msgs = new RollerMessages();
         try
-        {
-            rreq = RollerRequest.getRollerRequest(request);
-            RollerSession rollerSession = RollerSession.getRollerSession(request);
-            
-            if ( !rollerSession.isUserAuthorizedToAuthor(website) )
+        {            
+            RollerSession rses = RollerSession.getRollerSession(request);            
+            if ( !rses.isUserAuthorizedToAuthor(website) )
             {
                 return mapping.findForward("access-denied");
             }
