@@ -20,11 +20,12 @@
         }
         RollerSession rollerSession = RollerSession.getRollerSession(req);
         RollerRequest rreq = RollerRequest.getRollerRequest(req);
-        boolean ret = false;
+        boolean ret = true;
    
         // next, make sure that users role permits it
         if (mRoles != null && mRoles.size() > 0)
         {
+            ret = false;
             Iterator roles = mRoles.iterator();
             while (roles.hasNext())
             {
