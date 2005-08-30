@@ -5,41 +5,42 @@
         HttpServletResponse response)
         throws Exception
     {
-        ActionForward forward = mapping.findForward("Categories");
-        try 
+        ActionForward forward = mapping.findForward("categories");
+        WeblogCategoryFormEx form = (WeblogCategoryFormEx)actionForm;
+        RollerRequest rreq = RollerRequest.getRollerRequest(request);
+        WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+
+        WeblogCategoryData cd = null;
+        if (null != form.getId() && !form.getId().trim().equals("")) 
         {
-            WeblogCategoryFormEx form = (WeblogCategoryFormEx)actionForm;
-            RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
-            
-            WeblogCategoryData cd = null;
-            if (null != form.getId() && !form.getId().trim().equals("")) 
-            {
-                cd = wmgr.retrieveWeblogCategory(form.getId());
-                cd.save(); // should throw if save not permitted
-            }
-            else 
-            {
-                cd = wmgr.createWeblogCategory();
-                cd.setWebsite(rreq.getWebsite());
-                
-                String parentId = form.getParentId();
-                cd.setParent(wmgr.retrieveWeblogCategory(parentId));
-            }
+            cd = wmgr.retrieveWeblogCategory(form.getId());
+        }
+        else 
+        {
+            cd = wmgr.createWeblogCategory();
+            String pid = form.getParentId();
+            WeblogCategoryData parentCat = wmgr.retrieveWeblogCategory(pid);
+            cd.setWebsite(parentCat.getWebsite());
+            cd.setParent(parentCat);
+        }
+
+        RollerSession rses = RollerSession.getRollerSession(request);
+        if (cd.getWebsite().hasUserPermissions(
+            rses.getAuthenticatedUser(), PermissionsData.AUTHOR))
+        {
             form.copyTo(cd, request.getLocale());
             cd.save();
             RollerFactory.getRoller().commit();
-            
-            request.setAttribute(
-                RollerRequest.WEBLOGCATEGORYID_KEY, cd.getParent().getId());         
         }
-        catch (RollerPermissionsException e)
+        else
         {
             ActionErrors errors = new ActionErrors();
             errors.add(null, new ActionError("error.permissions.deniedSave"));
             saveErrors(request, errors);
             forward = mapping.findForward("access-denied");
         }
+        request.setAttribute(
+            RollerRequest.WEBLOGCATEGORYID_KEY, cd.getParent().getId());         
         return forward;
     }
 

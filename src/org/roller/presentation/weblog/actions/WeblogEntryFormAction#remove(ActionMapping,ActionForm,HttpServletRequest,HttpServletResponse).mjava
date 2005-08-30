@@ -21,8 +21,8 @@
                  || (rses.isUserAuthorized(wd.getWebsite()) && wd.isDraft()) )
             {
                 // Flush the page cache
-                PageCacheFilter.removeFromCache(
-                        request, wd.getWebsite());
+                PageCacheFilter.removeFromCache(request, wd.getWebsite());
+                
 				// remove the index for it
                 wd.setStatus(WeblogEntryData.DRAFT);
 		        reindexEntry(RollerFactory.getRoller(), wd);
@@ -39,6 +39,8 @@
                 uiMessages.add(null, 
                     new ActionMessage("weblogEdit.entryRemoved"));
                 saveMessages(request, uiMessages);
+                
+                RollerRequest.getRollerRequest().setWebsite(wd.getWebsite());
             }
             else
             {
