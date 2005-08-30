@@ -5,8 +5,12 @@
             HttpServletResponse response)
             throws Exception
     {
-        request.setAttribute("model", 
-                new MemberPermissionsPageModel(request, response, mapping));
+        MemberPermissionsPageModel pageModel = 
+           new MemberPermissionsPageModel(request, response, mapping);
+        request.setAttribute("model", pageModel);
+        
+        MemberPermissionsForm form = (MemberPermissionsForm)actionForm;
+        form.setWebsiteId(pageModel.getWebsite().getId());
         ActionForward forward = mapping.findForward("memberPermissions.page");
         return forward;
     }

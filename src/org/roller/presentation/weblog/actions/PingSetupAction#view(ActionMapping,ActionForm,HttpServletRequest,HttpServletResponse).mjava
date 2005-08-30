@@ -11,7 +11,7 @@
         WebsiteData website = rreq.getWebsite();
         try
         {
-            if (!isAuthorized(rreq))
+            if (!isAuthorized(rreq, website))
             {
                 return mapping.findForward("access-denied");
             }

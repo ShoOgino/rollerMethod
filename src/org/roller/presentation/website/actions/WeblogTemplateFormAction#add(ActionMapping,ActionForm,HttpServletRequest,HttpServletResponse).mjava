@@ -18,7 +18,7 @@
                 WeblogTemplateForm form = (WeblogTemplateForm)actionForm;
                 WeblogTemplate data = new WeblogTemplate();
                 form.copyTo(data, request.getLocale());
-                data.setWebsite( website );
+                data.setWebsite(website);
                 data.setLastModified( new java.util.Date() );
                 data.setDescription("");
                 data.setContents("");
@@ -39,7 +39,7 @@
                     
                 actionForm.reset(mapping,request);                
                 
-                addModelObjects(request, response, mapping);
+                addModelObjects(request, response, mapping, website);
             }
             else
             {

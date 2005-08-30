@@ -2,7 +2,8 @@
     private void addModelObjects( 
         HttpServletRequest  request,
         HttpServletResponse response,
-        ActionMapping mapping)
+        ActionMapping mapping, 
+        WebsiteData website)
     throws RollerException 
     {             
         UserManager mgr = RollerFactory.getRoller().getUserManager();        
@@ -10,12 +11,12 @@
         RollerRequest rreq = RollerRequest.getRollerRequest(request);
                 
         UserData user = rses.getAuthenticatedUser();
-        request.setAttribute("user",user);
+        request.setAttribute("user", user);
 
         WebsiteData wd = rreq.getWebsite();
-        request.setAttribute("website", wd);
+        request.setAttribute("website", website);
 
-        List pages = mgr.getPages(wd);
-        request.setAttribute("pages",pages);
+        List pages = mgr.getPages(website);
+        request.setAttribute("pages", pages);
     }
 

@@ -8,22 +8,25 @@
     {
         ActionForward forward = mapping.findForward("editPage.page");
         try
-        {
-            request.setAttribute("model", new BasePageModel(
-                "pageForm.title", request, response, mapping));   
+        {            
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            RollerSession rses = RollerSession.getRollerSession(request);
-            WebsiteData website = rreq.getWebsite();
-            if ( rses.isUserAuthorizedToAdmin(website) )
+            WeblogTemplate pd = (WeblogTemplate)rreq.getPage();
+            
+            RollerSession rses = RollerSession.getRollerSession(request);            
+            if ( rses.isUserAuthorizedToAdmin(pd.getWebsite()) )
             {
+                BasePageModel pageModel = new BasePageModel(
+                    "pageForm.title", request, response, mapping);
+                pageModel.setWebsite(pd.getWebsite());
+                request.setAttribute("model", pageModel); 
+                
                 UserData ud = rses.getAuthenticatedUser();
-                WeblogTemplate pd = (WeblogTemplate) rreq.getPage();
                 WeblogTemplateForm pf = (WeblogTemplateForm)actionForm;
                 pf.copyFrom(pd, request.getLocale());
 
                 PageCacheFilter.removeFromCache( request, pd.getWebsite() );
                 
-                addModelObjects(request, response, mapping);
+                addModelObjects(request, response, mapping, pd.getWebsite());
             }
             else
             {

@@ -1,4 +1,5 @@
     //-----------------------------------------------------------------------
+    /** Send user to remove confirmation page */
     public ActionForward removeOk(
         ActionMapping       mapping,
         ActionForm          actionForm,
@@ -13,10 +14,10 @@
         {
             RollerSession rses = RollerSession.getRollerSession(request);
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            WebsiteData website = rreq.getWebsite();
+            WeblogTemplate cd = (WeblogTemplate) rreq.getPage();
+            WebsiteData website = cd.getWebsite();
             if ( rses.isUserAuthorizedToAdmin(website) )
             {
-                WeblogTemplate cd = (WeblogTemplate) rreq.getPage();
                 WeblogTemplateForm pf = (WeblogTemplateForm)actionForm;
                 pf.copyFrom(cd, request.getLocale());
 

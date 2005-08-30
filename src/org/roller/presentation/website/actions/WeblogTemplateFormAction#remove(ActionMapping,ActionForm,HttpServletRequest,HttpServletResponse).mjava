@@ -11,24 +11,22 @@
             "pagesForm.title", request, response, mapping));
         try
         {
-            RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            RollerSession rses = RollerSession.getRollerSession(request);
-            WebsiteData website = rreq.getWebsite();
+            UserManager mgr = RollerFactory.getRoller().getUserManager();
+            WeblogTemplateForm form = (WeblogTemplateForm)actionForm;
+            WeblogTemplate template = mgr.retrievePage(form.getId());
+            WebsiteData website = template.getWebsite();
+            
+            RollerSession rses = RollerSession.getRollerSession(request);          
             if ( rses.isUserAuthorizedToAdmin(website) )
             {
-                WeblogTemplateForm form = (WeblogTemplateForm)actionForm;
-                UserManager mgr = RollerFactory.getRoller().getUserManager();
-                
-                // fetch template to be deleted (we'll need its website)
-                WeblogTemplate template = mgr.retrievePage(form.getId());
-                
                 mgr.removePageSafely(template.getId());
                 RollerFactory.getRoller().commit();
 
                 UserData user = rses.getAuthenticatedUser();
                 PageCacheFilter.removeFromCache(request, template.getWebsite());
                     
-                addModelObjects(request, response, mapping);
+                addModelObjects(
+                        request, response, mapping, template.getWebsite());
                 actionForm.reset(mapping, request);
             }
             else

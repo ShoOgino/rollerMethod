@@ -13,7 +13,7 @@
             WebsiteData website = rreq.getWebsite();
             try
             {
-                if (!isAuthorized(rreq))
+                if (!isAuthorized(rreq, website))
                 {
                     return mapping.findForward("access-denied");
                 }
@@ -26,7 +26,8 @@
                 }
                 else
                 {
-                    WeblogUpdatePinger.PingResult pingResult = WeblogUpdatePinger.sendPing(absoluteUrl, pingTarget, website);
+                    WeblogUpdatePinger.PingResult pingResult = 
+                        WeblogUpdatePinger.sendPing(absoluteUrl, pingTarget, website);
                     if (pingResult.isError())
                     {
                         if (mLogger.isDebugEnabled()) mLogger.debug("Ping Result: " + pingResult);

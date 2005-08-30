@@ -7,8 +7,10 @@
     {
         ActionErrors errors = new ActionErrors();
         ActionMessages msgs = new ActionMessages();
+        
         MemberPermissionsPageModel model = 
             new MemberPermissionsPageModel(request, response, mapping);
+        
         Iterator iter = model.getPermissions().iterator();
         int removed = 0;
         int changed = 0;

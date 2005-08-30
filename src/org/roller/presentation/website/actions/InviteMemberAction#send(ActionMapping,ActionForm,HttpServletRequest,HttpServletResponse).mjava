@@ -1,4 +1,4 @@
-    public ActionForward save(
+    public ActionForward send(
             ActionMapping       mapping,
             ActionForm          actionForm,
             HttpServletRequest  request,
@@ -12,9 +12,6 @@
         UserManager umgr = RollerFactory.getRoller().getUserManager();
         UserData user = umgr.getUser(form.getUserName());
         
-        request.setAttribute("model", new BasePageModel(
-            "inviteMember.title", request, response, mapping));
-
         if (user == null)
         {
             errors.add(ActionErrors.GLOBAL_ERROR, 
@@ -29,11 +26,15 @@
             {
                 errors.add(ActionErrors.GLOBAL_ERROR, 
                     new ActionError("inviteMember.error.userAlreadyInvited"));
+                request.setAttribute("model", new BasePageModel(
+                    "inviteMember.title", request, response, mapping));
             }
             else if (perms != null)
             {
                 errors.add(ActionErrors.GLOBAL_ERROR, 
                     new ActionError("inviteMember.error.userAlreadyMember"));
+                request.setAttribute("model", new BasePageModel(
+                    "inviteMember.title", request, response, mapping));
             }
             else
             {
@@ -51,6 +52,9 @@
                 }               
                 msgs.add(ActionMessages.GLOBAL_MESSAGE, 
                     new ActionMessage("inviteMember.userInvited"));
+                
+                request.setAttribute("model", new BasePageModel(
+                    "inviteMemberDone.title", request, response, mapping));
                 
                 forward = mapping.findForward("memberPermissions");                
             }
