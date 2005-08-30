@@ -56,8 +56,7 @@
                     + "/editor/weblog.do?method=edit&entryid=" + entry.getId();
                 
                 ResourceBundle resources = ResourceBundle.getBundle(
-                    "ApplicationResources", 
-                    entry.getWebsite().getLocaleInstance());
+                    "ApplicationResources", request.getLocale());
                 StringBuffer sb = new StringBuffer();
                 sb.append(
                     MessageFormat.format(

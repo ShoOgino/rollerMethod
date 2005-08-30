@@ -21,8 +21,15 @@
             {
                 entry = wmgr.retrieveWeblogEntry(form.getId());
             }
-                
-            if (rses.isUserAuthorizedToAuthor(entry.getWebsite()) 
+            if (entry == null)
+            {   
+                ResourceBundle resources = ResourceBundle.getBundle(
+                    "ApplicationResources", request.getLocale());
+                request.setAttribute("javax.servlet.error.message", 
+                    resources.getString("weblogEntry.notFound"));  
+                forward = mapping.findForward("error");
+            }                
+            else if (rses.isUserAuthorizedToAuthor(entry.getWebsite()) 
               || (rses.isUserAuthorized(entry.getWebsite()) && entry.isDraft()))
             {
                 form.copyFrom(entry, request.getLocale());

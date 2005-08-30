@@ -25,9 +25,11 @@
                 wf.copyFrom(wd, request.getLocale());
                 if (wd == null || wd.getId() == null)
                 {
-                    throw new NullPointerException(
-                        "Unable to find WeblogEntry for " +
-                        request.getParameter(RollerRequest.WEBLOGENTRYID_KEY));
+                    ResourceBundle resources = ResourceBundle.getBundle(
+                        "ApplicationResources", request.getLocale());
+                    request.setAttribute("javax.servlet.error.message", 
+                        resources.getString("weblogEntry.notFound"));  
+                    forward = mapping.findForward("error");
                 }
             }
             else
