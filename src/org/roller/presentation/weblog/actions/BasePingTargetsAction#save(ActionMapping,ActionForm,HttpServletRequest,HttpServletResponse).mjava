@@ -21,7 +21,7 @@
             BasePageModel pageModel = 
                 new BasePageModel(getPingTargetEditTitle(), req, res, mapping);
             req.setAttribute("model",pageModel);            
-            if (!hasRequiredRights(rreq))
+            if (!hasRequiredRights(rreq, rreq.getWebsite()))
             {
                 return mapping.findForward(ACCESS_DENIED_PAGE);
             }

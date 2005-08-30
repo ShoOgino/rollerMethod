@@ -17,7 +17,7 @@
         PingTargetManager pingTargetMgr = RollerFactory.getRoller().getPingTargetManager();
         try
         {
-            if (!hasRequiredRights(rreq))
+            if (!hasRequiredRights(rreq, rreq.getWebsite()))
             {
                 return mapping.findForward(ACCESS_DENIED_PAGE);
             }
