@@ -14,17 +14,16 @@
         ActionMessages msgs = new ActionMessages();
         try
         {
+            UserData user = null;
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             RollerSession rollerSession = RollerSession.getRollerSession(request);
             if (rollerSession.isGlobalAdminUser() )
             {
                 UserAdminForm userForm = (UserAdminForm)actionForm;
-                request.setAttribute("model", 
-                  new UserAdminPageModel(request, response, mapping, userForm));
                 UserManager mgr = RollerFactory.getRoller().getUserManager();                
                 if (userForm != null && userForm.getUserName() != null)
                 {
-                    UserData user = mgr.getUser(userForm.getUserName(), null);                    
+                    user = mgr.getUser(userForm.getUserName(), null);                    
                     if (user != null)
                     {
                         userForm.copyFrom(user, request.getLocale());                        
@@ -39,6 +38,8 @@
                         userForm.setUserName("");
                     }
                 }
+                request.setAttribute("model", new UserAdminPageModel(
+                        request, response, mapping, userForm, user));
             }
             else
             {
