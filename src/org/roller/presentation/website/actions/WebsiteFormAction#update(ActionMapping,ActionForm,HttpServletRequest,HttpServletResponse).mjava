@@ -4,7 +4,7 @@
         ActionForm          actionForm,
         HttpServletRequest  request,
         HttpServletResponse response)
-        throws IOException, ServletException
+        throws Exception
     {
         ActionErrors errors = new ActionErrors();
         ActionMessages messages = new ActionMessages();        
@@ -56,8 +56,9 @@
                         org.apache.commons.lang.StringUtils.deleteWhitespace(editorPages), ","));
                     request.setAttribute("editorPagesList", epages);   
                     
-                    BasePageModel pageModel = new BasePageModel(
-                        "websiteSettings.title", request, response, mapping);
+                    WebsitePageModel pageModel = 
+                        new WebsitePageModel("websiteSettings.title", 
+                                request, response, mapping, wd);
                     request.setAttribute("model",pageModel);                
                 /*
                 }
