@@ -13,14 +13,14 @@
             {
                 criteria.add(
                    Expression.conjunction()
-                       .add(new EqExpression("userName", userName, true))
+                       .add(Expression.eq("userName", userName))
                        .add(Expression.eq("enabled", enabled)));
             }
             else
             {
                 criteria.add(
                     Expression.conjunction()
-                        .add(new EqExpression("userName", userName, true)));
+                        .add(Expression.eq("userName", userName)));
             }        
             return (UserData)criteria.uniqueResult();
         }

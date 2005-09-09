@@ -26,6 +26,7 @@
             if (obj.canSave()) 
             {
                 getSession().delete(obj);
+                getSession().flush();
             }
             else
             {

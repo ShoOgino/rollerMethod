@@ -14,6 +14,7 @@
             if (po.getId() != null) // no need to delete transient object
             {
                 getSession().delete(po);
+                getSession().flush();
             }
         }
         catch (HibernateException e)

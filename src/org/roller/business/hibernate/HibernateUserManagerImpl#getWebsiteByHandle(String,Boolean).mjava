@@ -15,14 +15,14 @@
             {
                 criteria.add(
                    Expression.conjunction()
-                       .add(new EqExpression("handle", handle, true))
+                       .add(Expression.eq("handle", handle))
                        .add(Expression.eq("enabled", enabled)));
             }
             else
             {
                 criteria.add(
                     Expression.conjunction()
-                        .add(new EqExpression("handle", handle, true)));
+                        .add(Expression.eq("handle", handle)));
             }        
             return (WebsiteData)criteria.uniqueResult();
         }

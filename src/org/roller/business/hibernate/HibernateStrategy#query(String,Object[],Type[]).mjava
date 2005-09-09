@@ -29,9 +29,11 @@
               {
                   query = query.replaceAll("\\$\\d+", "\\?");
               }
-              return getSession().find(query,args,types);
+              Query q = getSession().createQuery(query);
+              q.setParameters(args,types);
+              return q.list();
           }
-          catch (Exception e)
+          catch (Throwable e)
           {
               String msg = Messages.getString("HibernateStrategy.duringQuery");
               mLogger.error(msg, e);

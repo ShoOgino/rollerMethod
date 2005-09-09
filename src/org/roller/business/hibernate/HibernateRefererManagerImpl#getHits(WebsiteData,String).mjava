@@ -18,11 +18,12 @@
         List results;
         try
         {
-            results = session.find(
+            Query q = session.createQuery(
                "select sum(h.dayHits),sum(h.totalHits) from h in class " +
                "org.roller.pojos.RefererData " +
-               "where h.website.enabled=? and h.website.id=? ",
-               args, types);
+               "where h.website.enabled=? and h.website.id=? ");
+            q.setParameters(args, types);
+            results = q.list();
         }
         catch (HibernateException e)
         {

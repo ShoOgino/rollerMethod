@@ -7,7 +7,7 @@
                 "select count(*) from org.roller.pojos.PlanetSubscriptionData").uniqueResult();
             return count.intValue();
         }
-        catch (Exception e)
+        catch (Throwable e)
         {
             throw new RuntimeException(
                     "ERROR fetching subscription count", e);

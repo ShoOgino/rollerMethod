@@ -51,10 +51,9 @@
                  assertNull(getRoller().getPersistenceStrategy().load(
                          permsId, PermissionsData.class));                 
              }
-             getRoller().commit();   
-                         
+             getRoller().commit();                          
          }
-         catch (Exception e)
+         catch (Throwable e)
          {
              e.printStackTrace();
              fail();

@@ -21,8 +21,6 @@
             mWebsitesCreated.add(website);
             mUsersCreated.add(ud);
 
-            getRoller().commit();
-
             mLogger.debug("Created user "+ud.getUserName());
 
             // ensure that the first weblog entry created is the newest
@@ -30,10 +28,10 @@
             mCalendar.setTime(new Date());
 
             // create categories
-            getRoller().begin(UserData.SYSTEM_USER);
             website  = umgr.retrieveWebsite(website.getId());
             WeblogCategoryData rootCat = wmgr.getRootWeblogCategory(website);
             createCategoryPostsAndComments(0, wmgr, ud, website, rootCat);
+
             getRoller().commit();
         }
 

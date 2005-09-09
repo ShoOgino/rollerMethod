@@ -14,5 +14,7 @@
         UserManager umgr = getRoller().getUserManager();
         mWebsite = (WebsiteData)umgr.getWebsites(mUser, null).get(0);
         getRoller().commit();
+        
+        RollerConfig.setContextPath("./build/roller");
     }
 
