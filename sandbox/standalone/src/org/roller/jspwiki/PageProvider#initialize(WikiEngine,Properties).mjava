@@ -1,4 +1,4 @@
-	public void initialize(Properties properties)
+	public void initialize(WikiEngine engine, Properties properties)
 			throws NoRequiredPropertyException, IOException {
 		
 		String rollerPageDir = System.getProperty("rollerPageDir");
@@ -8,6 +8,6 @@
 			properties.put(PROP_PAGEDIR, rollerPageDir);
 		} 
 		
-		super.initialize(properties);
+		super.initialize(engine, properties);
 	}
 
