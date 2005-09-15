@@ -4,14 +4,17 @@
     public void copyTo(WeblogEntryData entry, Locale locale, Map paramMap) 
         throws RollerException
     {
+        mLogger.debug("copy to called");
+        
         super.copyTo(entry, locale);
         
         // First parts the date string from the calendar 
         final DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, locale);
-        final Date newDate;
+        Date newDate = null;
         try
         {
-            newDate = df.parse(getDateString());
+            if(getDateString() != null && !"0/0/0".equals(getDateString()))
+                newDate = df.parse(getDateString());
         }
         catch (ParseException e)
         {
@@ -19,13 +22,15 @@
         }
         
         // Now handle the time from the hour, minute and second combos
-        final Calendar cal = Calendar.getInstance(locale);
-        cal.setTime(newDate);
-        cal.setTimeZone(entry.getWebsite().getTimeZoneInstance());
-        cal.set(Calendar.HOUR_OF_DAY, getHours().intValue());
-        cal.set(Calendar.MINUTE, getMinutes().intValue());
-        cal.set(Calendar.SECOND, getSeconds().intValue());
-        entry.setPubTime(new Timestamp(cal.getTimeInMillis()));
+        if(newDate != null) {
+            final Calendar cal = Calendar.getInstance(locale);
+            cal.setTime(newDate);
+            cal.setTimeZone(entry.getWebsite().getTimeZoneInstance());
+            cal.set(Calendar.HOUR_OF_DAY, getHours().intValue());
+            cal.set(Calendar.MINUTE, getMinutes().intValue());
+            cal.set(Calendar.SECOND, getSeconds().intValue());
+            entry.setPubTime(new Timestamp(cal.getTimeInMillis()));
+        }
         
         entry.setPlugins( StringUtils.join(this.pluginsArray,",") );
         
