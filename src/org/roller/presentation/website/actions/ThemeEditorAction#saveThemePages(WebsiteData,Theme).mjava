@@ -47,6 +47,7 @@
             // if this is the first time someone is customizing a theme then
             // we need to set a default page
             if(website.getDefaultPageId() == null ||
+                    website.getDefaultPageId().trim().equals("") ||
                     website.getDefaultPageId().equals("dummy")) {
                 // we have to go back to the db to figure out the id
                 WeblogTemplate template = userMgr.getPageByName(website, "Weblog");
