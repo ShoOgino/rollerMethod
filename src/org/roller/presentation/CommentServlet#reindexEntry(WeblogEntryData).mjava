@@ -1,18 +1,16 @@
     /**
      * Re-index the WeblogEntry so that the new comment gets indexed.
-     * @param entry
      */
-    private void reindexEntry(Roller roller, WeblogEntryData entry) 
-    throws RollerException
-    {
-        IndexManager manager = roller.getIndexManager();
-
+    private void reindexEntry(WeblogEntryData entry) 
+        throws RollerException {
+        
+        IndexManager manager = RollerFactory.getRoller().getIndexManager();
+        
         // remove entry before (re)adding it, or in case it isn't Published
         manager.removeEntryIndexOperation(entry);
-
+        
         // if published, index the entry
-        if (entry.isPublished());
-        {
+        if (entry.isPublished()) {
             manager.addEntryIndexOperation(entry);
         }
     }
