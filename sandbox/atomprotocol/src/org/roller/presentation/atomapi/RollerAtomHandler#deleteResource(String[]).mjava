@@ -1,0 +1,21 @@
+    /**
+     * Delete resource specified by pathInfo.
+     * Expects pathInfo of form /blog-name/resources/name
+     */
+    public void deleteResource(String[] pathInfo) throws Exception {
+        // authenticated client posted a weblog entry
+        String handle = pathInfo[0];
+        WebsiteData website = mRoller.getUserManager().getWebsiteByHandle(handle);
+        if (canEdit(website) && pathInfo.length > 1) {
+            try {
+                FileManager fmgr = mRoller.getFileManager();
+                fmgr.deleteFile(website, pathInfo[2]);
+            } catch (Exception e) {
+                String msg = "ERROR in atom.deleteResource";
+                mLogger.error(msg,e);
+                throw new Exception(msg);
+            }
+        }
+        throw new Exception("ERROR not authorized to edit website");
+    }
+
