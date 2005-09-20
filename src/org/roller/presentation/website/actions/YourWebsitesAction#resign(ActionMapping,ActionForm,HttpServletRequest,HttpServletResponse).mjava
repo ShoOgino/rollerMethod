@@ -9,13 +9,13 @@
         Roller roller = RollerFactory.getRoller();
         RollerSession rses = RollerSession.getRollerSession(request);
         UserData user = rses.getAuthenticatedUser();
-        WebsiteData website = 
-            roller.getUserManager().retrieveWebsite(form.getWebsiteId());
+        RollerRequest rreq = RollerRequest.getRollerRequest(request);
+        WebsiteData website = rreq.getWebsite();
         PermissionsData perms = 
             roller.getUserManager().getPermissions(website, user);
         if (perms != null) 
         {
-            // ROLLER_2.0: notify website members that user has resigned  
+            // TODO: notify website members that user has resigned  
             perms.remove();
             roller.commit();
         }

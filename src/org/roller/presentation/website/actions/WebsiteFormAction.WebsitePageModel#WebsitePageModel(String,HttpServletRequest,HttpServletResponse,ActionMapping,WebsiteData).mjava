@@ -11,5 +11,7 @@
             RollerSession rollerSession = RollerSession.getRollerSession(request);
             UserData user = rollerSession.getAuthenticatedUser();
             permissions = roller.getUserManager().getAllPermissions(website);
+            groupBloggingEnabled = 
+                RollerConfig.getBooleanProperty("groupblogging.enabled");
         }
 
