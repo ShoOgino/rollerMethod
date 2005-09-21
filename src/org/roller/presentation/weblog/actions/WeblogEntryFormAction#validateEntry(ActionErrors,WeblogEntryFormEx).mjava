@@ -1,0 +1,9 @@
+    public ActionErrors validateEntry(ActionErrors errors, WeblogEntryFormEx form) {
+        if (errors == null) errors = new ActionErrors();
+        if (StringUtils.isEmpty(form.getTitle()) 
+            && StringUtils.isEmpty(form.getText())) {
+            errors.add(null, new ActionError("weblogEdit.error.incompleteEntry"));
+        }
+        return errors;
+    } 
+
