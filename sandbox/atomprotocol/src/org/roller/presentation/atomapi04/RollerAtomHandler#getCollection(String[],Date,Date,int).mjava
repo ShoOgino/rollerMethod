@@ -1,0 +1,27 @@
+    /**
+     * Returns collection specified by pathInfo, constrained by a date range and
+     * starting at an offset within the collection.Returns 20 items at a time.
+     * <pre>
+     * Supports these three collection URI forms:
+     *    /<blog-name>/entries
+     *    /<blog-name>/resources
+     *    /<blog-name>/categories
+     * </pre>
+     * @param pathInfo Path info from URI
+     * @param start    Don't include members updated before this date (null allowed)
+     * @param end      Don't include members updated after this date (null allowed)
+     * @param offset   Offset within collection (for paging)
+     */
+    public AtomCollection getCollection(
+            String[] pathInfo, Date start, Date end, int offset)
+            throws Exception {
+        if (pathInfo.length > 0 && pathInfo[1].equals("entries")) {
+            return getCollectionOfEntries(pathInfo, start, end, offset);
+        } else if (pathInfo.length > 0 && pathInfo[1].equals("resources")) {
+            return getCollectionOfResources(pathInfo, start, end, offset);
+        } else if (pathInfo.length > 0 && pathInfo[1].equals("categories")) {
+            return getCollectionOfCategories(pathInfo, start, end, offset);
+        }
+        throw new Exception("ERROR: bad URL in getCollection()");
+    }
+
