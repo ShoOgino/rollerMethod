@@ -89,6 +89,7 @@
         else 
         {
             res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            res.setHeader("WWW-Authenticate", "Basic realm=\"Protected Territory\"");
         }
     }
 

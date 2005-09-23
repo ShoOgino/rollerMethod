@@ -6,7 +6,7 @@
             WeblogEntryData entry, Date start, Date end, int offset) {
         SimpleDateFormat df = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssZ" );
         String absUrl = mRollerContext.getAbsoluteContextUrl();
-        String url = absUrl + "/atom/" + mUsername + "/entries/" + entry.getId();
+        String url = absUrl + ctx + mUsername + "/entries/" + entry.getId();
         if (offset != -1 && start != null && end != null) {
             url  = url + "?Range=" + df.format(start) + "/" + df.format(end);
         } else if (offset != -1 && start != null) {

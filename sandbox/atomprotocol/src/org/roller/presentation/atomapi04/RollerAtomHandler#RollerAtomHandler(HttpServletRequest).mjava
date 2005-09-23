@@ -9,7 +9,8 @@
         mRollerContext = RollerContext.getRollerContext(request);
         
         // TODO: decide what to do about authentication, is WSSE going to fly?
-        mUsername = authenticateWSSE(request);
+        mUsername = authenticateBASIC(request);
+        //mUsername = authenticateWSSE(request);
         
         if (mUsername != null) {
             try {

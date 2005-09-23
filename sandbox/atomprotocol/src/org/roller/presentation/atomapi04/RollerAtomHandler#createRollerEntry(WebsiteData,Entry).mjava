@@ -14,8 +14,8 @@
             updateTime = new Timestamp( entry.getUpdated().getTime() );
         }
         WeblogEntryData rollerEntry = new WeblogEntryData();
-        rollerEntry.setTitle(entry.getTitle());
-        rollerEntry.setText(entry.getContent().getValue());
+        if (entry.getTitle() != null) rollerEntry.setTitle(entry.getTitle());
+        if (entry.getContent() != null) rollerEntry.setText(entry.getContent().getValue());
         rollerEntry.setPubTime(pubTime);
         rollerEntry.setUpdateTime(updateTime);
         rollerEntry.setWebsite(website);

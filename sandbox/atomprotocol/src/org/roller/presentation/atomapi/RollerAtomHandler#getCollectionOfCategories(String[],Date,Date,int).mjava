@@ -10,7 +10,7 @@
         List items = wmgr.getWeblogCategories(website);
         if (canView(website)) {
             AtomCollection col = new AtomCollection();
-            Iterator iter = items.iterator();
+            /* Iterator iter = items.iterator();
             Date now = new Date();
             while (iter.hasNext()) {
                 WeblogCategoryData item = (WeblogCategoryData)iter.next();
@@ -22,7 +22,7 @@
                 member.setHref(absUrl + "/atom/"  
                     + website.getHandle() + "/category/" + item.getId());
                 col.addMember(member);
-            }
+            } */
             return col;
         }
         throw new Exception("ERROR: not authorized");

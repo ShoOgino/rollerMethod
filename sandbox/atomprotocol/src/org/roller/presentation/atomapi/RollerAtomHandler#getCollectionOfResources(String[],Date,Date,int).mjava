@@ -10,14 +10,14 @@
         File[] files = fmgr.getFiles(website);
         if (canView(website)) {
             AtomCollection col = new AtomCollection();
-            for (int i=0; i<files.length; i++) {
+            /* for (int i=0; i<files.length; i++) {
                 AtomCollection.Member member = new AtomCollection.Member();
                 member.setTitle(files[i].getName());
                 member.setUpdated(new Date(files[i].lastModified()));
                 member.setHref(absUrl
                         + "/atom/" + website.getHandle() + "/resource/" + files[i].getName() );
                 col.addMember(member);
-            }
+            } */
             return col;
         }
         throw new Exception("ERROR: not authorized");

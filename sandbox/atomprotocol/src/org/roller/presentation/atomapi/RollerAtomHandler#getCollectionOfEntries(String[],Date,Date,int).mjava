@@ -41,12 +41,12 @@
             
             // build collection
             AtomCollection col = new AtomCollection();
-            if (entries.size() > mMaxEntries) {
+            /* if (entries.size() > mMaxEntries) {
                 // there are more entries, so include next link
                 WeblogEntryData lastEntry =
                         (WeblogEntryData)entries.get(entries.size() - 1);
                 col.setNext(createNextLink(lastEntry, start, end, offset));
-            }
+            } 
             // add up to max entries to collection
             int count = 0;
             Iterator iter = entries.iterator();
@@ -58,7 +58,7 @@
                 member.setHref(absUrl
                         + "/atom/" + handle + "/entry/" + rollerEntry.getId());
                 col.addMember(member);
-            }
+            } */
             return col;
         }
         throw new Exception("ERROR: not authorized");

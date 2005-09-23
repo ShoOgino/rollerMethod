@@ -4,17 +4,18 @@
     {
         AtomCollection collection = new AtomCollection();
         Element root = document.getRootElement();
-//        if (root.getAttribute("next") != null)
-//        {
-//            collection.setNext(root.getAttribute("next").getValue());
-//        }
-//        List mems = root.getChildren("member", ns);
-//        Iterator iter = mems.iterator();
-//        while (iter.hasNext())
-//        {
-//            Element e = (Element) iter.next();
-//            collection.addMember(AtomCollection.elementToMember(e));
-//        }
+        List types = root.getChildren("member-type", ns);
+        for (Iterator i=types.iterator(); i.hasNext();)
+        {
+            Element e = (Element)i.next();
+            collection.addMemberType(e.getText());
+        }
+        List templates = root.getChildren("search-template", ns);
+        for (Iterator i=types.iterator(); i.hasNext();)
+        {
+            Element e = (Element)i.next();
+            collection.addMemberType(e.getText());
+        }
         return collection;
     }
 

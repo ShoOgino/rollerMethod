@@ -15,7 +15,7 @@
                 member.setTitle(files[i].getName());
                 member.setUpdated(new Date(files[i].lastModified()));
                 member.setHref(absUrl
-                        + "/atom/" + website.getHandle() + "/resource/" + files[i].getName() );
+                        + ctx + website.getHandle() + "/resource/" + files[i].getName() );
                 col.addMember(member);
             }
             return col;
