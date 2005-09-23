@@ -9,9 +9,12 @@
         CreateWebsiteForm form = (CreateWebsiteForm)actionForm;
         ActionMessages msgs = new ActionMessages();
         ActionMessages errors = validate(form, new ActionErrors());
+        ActionForward forward = mapping.findForward("yourWebsites");
+        WebsiteData website = null;
         if (!errors.isEmpty())
         {
             saveErrors(request, errors);
+            forward = mapping.findForward("createWebsite.page");
         }
         else try
         {
@@ -23,7 +26,7 @@
             // Need system user to create website
             RollerFactory.getRoller().setUser(UserData.SYSTEM_USER);
             HashMap pages = null; //rollerContext.readThemeMacros(form.getTheme());
-            WebsiteData website = mgr.createWebsite(
+            website = mgr.createWebsite(
                user, 
                pages, 
                form.getHandle(), 
@@ -49,6 +52,8 @@
             saveErrors(request, errors);          
             mLogger.error("ERROR in createWebsite", e);
         }
-        return mapping.findForward("yourWebsites");
+        request.setAttribute("model", 
+            new CreateWebsitePageModel(request, response, mapping, website));  
+        return forward; 
     }
 
