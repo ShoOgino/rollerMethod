@@ -1,0 +1,7 @@
+    /** Compare times ignoring milliseconds */
+    public void assertCloseEnough(Date d1, Date d2) {
+        long t1 = d1.getTime() - d1.getTime() % 1000;
+        long t2 = d2.getTime() - d2.getTime() % 1000;
+        assertEquals(t1, t2);
+    }
+

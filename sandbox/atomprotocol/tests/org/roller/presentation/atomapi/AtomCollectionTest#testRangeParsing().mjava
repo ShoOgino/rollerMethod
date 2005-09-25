@@ -1,0 +1,25 @@
+    public void testRangeParsing() throws Exception {
+        Date end = new Date(); // now 
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(end);
+        cal.add(Calendar.DATE, -1);
+        Date start = cal.getTime(); // one day ago
+        String startString = df.format(start);
+        String endString = df.format(end);
+        
+        String r1 = "Range: updated="+startString+"/"+endString;
+        AtomCollection.Range range = AtomCollection.parseRange(r1);
+        assertNotNull(range.start);
+        assertNotNull(range.end);
+        
+        String r2 = "Range: updated="+startString+"/";
+        range = AtomCollection.parseRange(r2);
+        assertNotNull(range.start);
+        assertNull(range.end);
+        
+        String r3 = "Range: updated="+"/"+endString;
+        range = AtomCollection.parseRange(r3);
+        assertNull(range.start);
+        assertNotNull(range.end);
+    }
+
