@@ -2,41 +2,28 @@
      * Read in the InputStream for rules.
      * @param txtStream
      */
-    private String readFromStream(InputStream txtStream, boolean saveStream)
-    {
+    private String readFromStream(InputStream txtStream, boolean saveStream) {
         String line;
         StringBuffer buf = new StringBuffer();
         BufferedReader in = null;
-        try
-        {
-            in = new BufferedReader( 
-                new InputStreamReader( txtStream, "UTF-8" ) );
-            while ((line = in.readLine()) != null)
-            {
-                if (line.startsWith("#"))
-                {
+        try {
+            in = new BufferedReader(
+                    new InputStreamReader( txtStream, "UTF-8" ) );
+            while ((line = in.readLine()) != null) {
+                if (line.startsWith("#")) {
                     readComment(line);
-                }
-                else
-                {
+                } else {
                     readRule(line);
                 }
                 
                 if (saveStream) buf.append(line).append("\n");
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             mLogger.error(e);
-        }
-        finally
-        {
-           try
-            {
-                 if (in != null) in.close();
-            }
-            catch (IOException e1)
-            {
+        } finally {
+            try {
+                if (in != null) in.close();
+            } catch (IOException e1) {
                 mLogger.error(e1);
             }
         }

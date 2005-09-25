@@ -1,13 +1,7 @@
     /**
-     * This will try to download a new set of Blacklist
-     * rules.  If no change has occurred then return
-     * current Blacklist.
-     * 
-     * @return New Blacklist if rules have changed,
-     * otherwise return current Blacklist.
+     * Updated MT blacklist if necessary.
      */
-    public static void checkForUpdate()
-    {
-        blacklist = blacklist.extractFromURL();
+    public static void checkForUpdate() {
+        getBlacklist().update();
     }
 
