@@ -1,0 +1,12 @@
+    private int useOffset(HttpServletRequest request) {
+        int offset = OFFSET;
+        if (request.getParameter("o") != null) {
+            try {
+                offset = Integer.valueOf(request.getParameter("o")).intValue();
+            } catch (NumberFormatException e) {
+                // Not a valid Integer
+            }
+        }
+        return offset;
+    }
+
