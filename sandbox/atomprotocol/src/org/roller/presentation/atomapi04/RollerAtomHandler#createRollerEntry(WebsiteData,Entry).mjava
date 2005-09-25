@@ -15,7 +15,10 @@
         }
         WeblogEntryData rollerEntry = new WeblogEntryData();
         if (entry.getTitle() != null) rollerEntry.setTitle(entry.getTitle());
-        if (entry.getContent() != null) rollerEntry.setText(entry.getContent().getValue());
+        if (entry.getContents() != null && entry.getContents().size() > 0) {
+            Content content = (Content)entry.getContents().get(0);
+            rollerEntry.setText(content.getValue());
+        }
         rollerEntry.setPubTime(pubTime);
         rollerEntry.setUpdateTime(updateTime);
         rollerEntry.setWebsite(website);

@@ -8,10 +8,12 @@
         Content content = new Content();
         content.setType(Content.HTML);
         content.setValue(entry.getText());
+        List contents = new ArrayList();
+        contents.add(content);
         
         atomEntry.setId(        entry.getId());
         atomEntry.setTitle(     entry.getTitle());
-        atomEntry.setContent(   content);
+        atomEntry.setContents(  contents);
         atomEntry.setPublished( entry.getPubTime());
         atomEntry.setUpdated(   entry.getUpdateTime());
         
@@ -26,7 +28,7 @@
         altlink.setRel("alternate");
         altlink.setHref(entry.getPermaLink());
         links.add(altlink);
-        atomEntry.setLinks(links);
+        atomEntry.setAlternateLinks(links);
         
         return atomEntry;
     }

@@ -10,7 +10,11 @@
                 rollerEntry.setTitle(entry.getTitle());
                 
                 // TODO: don't assume type is HTML or TEXT
-                rollerEntry.setText(entry.getContent().getValue());
+                List contents = entry.getContents();
+                if (contents != null && contents.size() > 0) {
+                    Content romeContent = (Content)contents.get(0);
+                    rollerEntry.setText(romeContent.getValue());
+                }
                 
                 rollerEntry.setUpdateTime(new Timestamp(new Date().getTime()));
                 if (entry.getPublished() != null) {
