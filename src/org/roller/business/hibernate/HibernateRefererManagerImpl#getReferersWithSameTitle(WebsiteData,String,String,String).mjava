@@ -2,14 +2,12 @@
      * Query for collection of referers.
      */
     protected List getReferersWithSameTitle(
-        WebsiteData website, 
-        String requestUrl, 
-        String title, 
-        String excerpt)
-        throws RollerException
-    {
-        try
-        {
+            WebsiteData website,
+            String requestUrl,
+            String title,
+            String excerpt)
+            throws RollerException {
+        try {
             Session session = ((HibernateStrategy)mStrategy).getSession();
             Criteria criteria = session.createCriteria(RefererData.class);
             
@@ -20,14 +18,12 @@
             Junction disjunction = Expression.conjunction();
             disjunction.add(Expression.eq("title", title));
             disjunction.add(Expression.eq("excerpt", excerpt));
-        
+            
             criteria.add(conjunction);
             criteria.add(disjunction);
             
             return criteria.list();
-        }
-        catch (HibernateException e)
-        {
+        } catch (HibernateException e) {
             throw new RollerException(e);
         }
     }

@@ -2,13 +2,11 @@
      * @see org.roller.pojos.RefererManager#getReferersToEntry(
      * java.lang.String, java.lang.String)
      */
-    public List getReferersToEntry(String entryid) throws RollerException
-    {
+    public List getReferersToEntry(String entryid) throws RollerException {
         if (null == entryid)
             throw new RollerException("entryid is null");
-
-        try
-        {
+        
+        try {
             Session session = ((HibernateStrategy)mStrategy).getSession();
             Criteria criteria = session.createCriteria(RefererData.class);
             criteria.createAlias("weblogEntry","e");
@@ -18,11 +16,9 @@
             criteria.add(Expression.isNotNull("excerpt"));
             
             criteria.addOrder(Order.desc("totalHits"));
-        
+            
             return criteria.list();
-        }
-        catch (HibernateException e)
-        {
+        } catch (HibernateException e) {
             throw new RollerException(e);
         }
     }

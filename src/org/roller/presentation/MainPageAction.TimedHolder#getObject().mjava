@@ -1,13 +1,9 @@
         /** Get object or null if object has expired */
-        public Object getObject()
-        {
+        public Object getObject() {
             long currentTime = new Date().getTime();
-            if ((currentTime - this.updated) > this.timeout)
-            {
+            if ((currentTime - this.updated) > this.timeout) {
                 return null;
-            }
-            else 
-            {
+            } else {
                 return this.obj;
             }
         }

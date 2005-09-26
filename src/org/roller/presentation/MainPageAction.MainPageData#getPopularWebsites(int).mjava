@@ -1,17 +1,15 @@
-        /** 
+        /**
          * Get list of most popular websites in terms of day hits.
          * @param num Number of entries to return (takes effect on next cache refresh)
          */
-        public List getPopularWebsites(int num) throws RollerException
-        {
+        public List getPopularWebsites(int num) throws RollerException {
             List list = (List)mPopularWebsites.getObject();
-            if (list == null)
-            {
+            if (list == null) {
                 mLogger.debug("Refreshing popular websites list");
-                Roller roller = RollerFactory.getRoller();            
+                Roller roller = RollerFactory.getRoller();
                 list = roller.getRefererManager().getDaysPopularWebsites(num);
                 mPopularWebsites.setObject(list);
             }
             return list;
-       }
+        }
 
