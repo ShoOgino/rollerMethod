@@ -17,7 +17,6 @@
         Roller roller = RollerFactory.getRoller();
         BookmarksPageModel pageModel = new BookmarksPageModel(
             request, response, mapping, (BookmarksForm)actionForm);
-        request.setAttribute("model", pageModel);
         if (RollerSession.getRollerSession(request).isUserAuthorizedToAuthor(
             pageModel.getFolder().getWebsite()))
         {
@@ -46,6 +45,10 @@
             }
             roller.commit();
 
+            // recreate model now that folder  is deleted
+            pageModel = new BookmarksPageModel(
+                request, response, mapping, (BookmarksForm)actionForm);
+            request.setAttribute("model", pageModel);
             return mapping.findForward("BookmarksForm");
         }
         else

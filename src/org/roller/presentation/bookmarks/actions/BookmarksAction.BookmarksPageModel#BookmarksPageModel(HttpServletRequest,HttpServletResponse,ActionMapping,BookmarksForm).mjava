@@ -28,6 +28,7 @@
             {
                 website = rreq.getWebsite();
                 folder = bmgr.getRootFolder(website);
+                folderId = folder.getId();
             }
             else
             {
@@ -52,23 +53,19 @@
 
             // Build list of all folders, except for current one, sorted by path.
             Iterator iter = bmgr.getAllFolders(website).iterator();
-
-            // Build list of only children
-            //Iterator iter = folder.getFolders().iterator();
-
-            //int max = 20, count = 0;
-            while (iter.hasNext()) // && count < max)
+            while (iter.hasNext())
             {
-                //count++;
                 FolderData fd = (FolderData) iter.next();
                 if (!fd.getId().equals(folderId))
                 {
                     allFolders.add(fd);
                 }
             }
-            
-            // for Struts tags
-            request.setAttribute("allFolders", allFolders);            
-            request.setAttribute("folder", folder);
+            if (allFolders.size() > 0) {
+                request.setAttribute("allFolders", allFolders); // for Struts tags
+            } else {
+                allFolders = null;
+            }
+            request.setAttribute("folder", folder); // for Struts tags          
         }
 
