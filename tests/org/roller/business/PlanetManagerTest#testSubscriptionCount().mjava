@@ -21,11 +21,17 @@
                 roller.begin();
                 assertEquals(2, planet.getSubscriptionCount());
                 roller.rollback();
+                
+                roller.begin();
+                planet.getSubscription(feed_url1).remove();
+                planet.getSubscription(feed_url2).remove();
+                roller.commit();
             }     
         }
         catch (Exception e) 
         {
             e.printStackTrace();
+            fail();
         }
     }
 
