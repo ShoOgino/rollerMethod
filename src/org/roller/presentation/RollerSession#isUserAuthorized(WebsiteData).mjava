@@ -4,6 +4,9 @@
     public boolean isUserAuthorized(WebsiteData website) 
         throws RollerException
     {
-        return hasPermissions(website, PermissionsData.LIMITED);
+        UserData user = getAuthenticatedUser();
+        if (user != null && user.getEnabled().booleanValue()) 
+            return hasPermissions(website, PermissionsData.LIMITED);
+        return false;
     }
 

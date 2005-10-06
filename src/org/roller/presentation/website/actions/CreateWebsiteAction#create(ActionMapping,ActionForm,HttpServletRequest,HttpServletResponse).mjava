@@ -6,6 +6,7 @@
             HttpServletResponse response)
             throws Exception
     {
+         ActionForward forward = mapping.findForward("createWebsite.page");
         CreateWebsiteForm form = (CreateWebsiteForm)actionForm;
         
         RollerSession rses = RollerSession.getRollerSession(request);
@@ -14,10 +15,18 @@
         form.setTimeZone(user.getTimeZone());         
         form.setEmailAddress(user.getEmailAddress());
 
-        request.setAttribute("model", 
-            new CreateWebsitePageModel(request, response, mapping, null));
-        
-        ActionForward forward = mapping.findForward("createWebsite.page");
+        if (!RollerConfig.getBooleanProperty("groupblogging.enabled")) {
+            Roller roller = RollerFactory.getRoller();            
+            List permissions = roller.getUserManager().getAllPermissions(user);
+            if (permissions.size() > 0) {
+                // sneaky user trying to get around 1 blog limit that applies
+                // only when group blogging is disabled
+                forward = mapping.findForward("access-denied");
+            }           
+        } else {
+            request.setAttribute("model", 
+                new CreateWebsitePageModel(request, response, mapping, null));
+        }
         return forward;
     }
 
