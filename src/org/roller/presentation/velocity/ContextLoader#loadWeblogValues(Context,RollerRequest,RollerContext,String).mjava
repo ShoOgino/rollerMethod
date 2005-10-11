@@ -27,5 +27,12 @@
                 ctx.put("descPage", TemplateWrapper.wrap(descPage));
             }
         }
+        
+        boolean commentsEnabled = 
+            RollerRuntimeConfig.getBooleanProperty("users.comments.enabled");
+        boolean trackbacksEnabled = 
+            RollerRuntimeConfig.getBooleanProperty("users.trackbacks.enabled");
+        ctx.put("commentsEnabled", new Boolean(commentsEnabled) );
+        ctx.put("trackbacksEnabled", new Boolean(trackbacksEnabled) );
     }
 
