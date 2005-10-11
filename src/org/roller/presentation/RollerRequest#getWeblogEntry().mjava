@@ -50,6 +50,11 @@
                 mLogger.error("anchor=" + anchor);
                 mLogger.error("entryid=" + entryid);
             }
+            if (mDate == null && mWeblogEntry != null)
+            {
+                mDate = mWeblogEntry.getPubTime();
+                mDateString = DateUtil.format8chars(mDate);
+            }
         }           
         return mWeblogEntry;
     }
