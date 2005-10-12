@@ -68,6 +68,12 @@
                         comment.save();
                         RollerFactory.getRoller().commit();
                         
+                        // Refresh user's entries in page cache
+                        PageCacheFilter.removeFromCache(req, entry.getWebsite());
+                    
+                        // Send email notifications
+                        CommentServlet.sendEmailNotification(req, rreq, entry, comment);
+                        
                         pw.println("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>");
                         pw.println("<response>");
                         pw.println("<error>0</error>");
