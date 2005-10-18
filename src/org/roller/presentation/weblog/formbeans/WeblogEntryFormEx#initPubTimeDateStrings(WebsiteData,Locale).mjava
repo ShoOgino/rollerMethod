@@ -18,6 +18,7 @@
             
             DateFormat df = DateFormat.getDateInstance(
                     DateFormat.SHORT, locale);
+            df.setTimeZone(website.getTimeZoneInstance());
             mDateString = df.format(getPubTime());
             
         } else {
