@@ -3,14 +3,11 @@
          * @param num Number of entries to return (takes effect on next cache refresh)
          */
         public List getWeblogEntriesPinnedToMain(int num) throws RollerException {
-            List list = (List)mPinnedEntries.getObject();
-            if (list == null) {
-                mLogger.debug("Refreshing pinned entries list");
-                Roller roller = RollerFactory.getRoller();
-                list = roller.getWeblogManager()
+            List list = null;
+            mLogger.debug("Refreshing pinned entries list");
+            Roller roller = RollerFactory.getRoller();
+            list = roller.getWeblogManager()
                 .getWeblogEntriesPinnedToMain(new Integer(num));
-                mPinnedEntries.setObject(list);
-            }
             return list;
         }
 

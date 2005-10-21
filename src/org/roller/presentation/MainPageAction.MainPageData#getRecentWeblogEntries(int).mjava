@@ -3,20 +3,17 @@
          * @param num Number of entries to return (takes effect on next cache refresh)
          */
         public List getRecentWeblogEntries(int num) throws RollerException {
-            List list = (List)mRecentEntries.getObject();
+            List list = null;
             try {
-                if (list == null) {
-                    mLogger.debug("Refreshing recent entries list");
-                    Roller roller = RollerFactory.getRoller();
-                    list = roller.getWeblogManager().getWeblogEntries(
-                            null,                   // userName
-                            null,                   // startDate
-                            new Date(),             // endDate
-                            null,                   // catName
-                            WeblogEntryData.PUBLISHED, // status
-                            new Integer(num));       // maxEntries
-                    mRecentEntries.setObject(list);
-                }
+                mLogger.debug("Refreshing recent entries list");
+                Roller roller = RollerFactory.getRoller();
+                list = roller.getWeblogManager().getWeblogEntries(
+                        null,                   // userName
+                        null,                   // startDate
+                        new Date(),             // endDate
+                        null,                   // catName
+                        WeblogEntryData.PUBLISHED, // status
+                        new Integer(num));       // maxEntries
             } catch (Exception e) {
                 mLogger.error(e);
             }
