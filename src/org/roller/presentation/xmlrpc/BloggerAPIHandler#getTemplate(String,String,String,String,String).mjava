@@ -19,11 +19,11 @@
         mLogger.info("     UserId: " + userid);
         mLogger.info("       Type: " + templateType);
 
-        validate(userid,password);
+        validate(blogid, userid,password);
 
         try
         {
-            Roller roller = RollerRequest.getRollerRequest().getRoller();
+            Roller roller = RollerFactory.getRoller(); 
             UserManager userMgr = roller.getUserManager();
             WeblogTemplate page = userMgr.retrievePage(templateType);
 

@@ -1,0 +1,14 @@
+        public String getTitle()
+        {
+            if (catPath == null || catPath.isEmpty()) 
+            {
+                return bundle.getString("categoriesForm.rootTitle");
+            }
+            else 
+            {
+                return MessageFormat.format(
+                        bundle.getString("categoriesForm.parent"),
+                        new String[] {cat.getName()});
+            }
+        }
+

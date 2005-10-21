@@ -9,14 +9,15 @@
             String status,
             Integer maxEntries) throws RollerException
     {
-        super(request, response, mapping);
+        super("weblogEntryQuery.title", request, response, mapping);
         rollerRequest = RollerRequest.getRollerRequest(request);
+        this.request = request;
         
         this.website = website;
         
         if (null != categoryId && !categoryId.equals("")) 
         {
-            WeblogManager wmgr = rollerRequest.getRoller().getWeblogManager();
+            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
             WeblogCategoryData cd = wmgr.retrieveWeblogCategory(categoryId);
             category = cd.getPath();          
         }

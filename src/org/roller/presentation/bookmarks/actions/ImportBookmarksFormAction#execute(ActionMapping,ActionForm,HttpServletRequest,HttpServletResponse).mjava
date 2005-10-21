@@ -64,10 +64,13 @@
                         RollerRequest rreq = 
                             RollerRequest.getRollerRequest(request);
                         BookmarkManager bm = 
-                            rreq.getRoller().getBookmarkManager();    
-                        bm.importBookmarks(rreq.getWebsite(), folderName, data);
+                            RollerFactory.getRoller().getBookmarkManager();
+                        RollerSession rses = 
+                            RollerSession.getRollerSession(request);
+                        bm.importBookmarks(
+                            rreq.getWebsite(), folderName, data);
                         
-                        rreq.getRoller().commit();
+                        RollerFactory.getRoller().commit();
                     }
                     else 
                     {

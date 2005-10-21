@@ -7,33 +7,41 @@
         boolean selected = false;
         HttpSession ses = req.getSession(false);
         
+        // try to get state from request param then attribute
         String menuKey = req.getParameter(RollerMenuModel.MENU_KEY );
         if (null == menuKey) 
         {
             menuKey = (String)req.getAttribute(RollerMenuModel.MENU_KEY);
         }
-        if (null == menuKey) 
-        {
-            menuKey = (String)ses.getAttribute(mMenuId+"_"+RollerMenuModel.MENU_KEY);
-        }
-
         if (menuKey != null && menuKey.equals(mName)) 
         {
             selected = true;
         }
-		else
+        // next, if submenu is selected, then we're selected
+        else if (getSelectedMenuItem(req, false) != null)
 		{
-			if ( getSelectedMenuItem( req, false ) != null ) 
+            selected = true;
+		}
+        // next, try to use Struts forward to determine state
+        else if (mForward != null)
+        {
+            ServletContext ctx = RollerContext.getServletContext();     
+			ModuleConfig mConfig = RequestUtils.getModuleConfig(req, ctx);
+			ForwardConfig fconfig = mConfig.findForwardConfig(mForward);
+            ActionMapping amapping = 
+                    (ActionMapping)req.getAttribute(Globals.MAPPING_KEY);            
+			if (fconfig != null && amapping != null)
 			{
-				selected = true;
+                String reqPath = amapping.getPath();
+                String fwdPath = fconfig.getPath();
+                int end = fwdPath.indexOf(".do");
+                fwdPath = (end == -1) ? fwdPath : fwdPath.substring(0, end);
+                if  (fwdPath.equals(reqPath))
+                {
+                    selected = true;
+                }
 			}
-		}
-
-		if ( ses != null && selected )
-		{
-			ses.setAttribute(mMenuId + "_" + RollerMenuModel.MENU_KEY, mName);
-		}
-
+        }
 		return selected;
 	}
 

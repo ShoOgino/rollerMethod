@@ -8,23 +8,25 @@
         ActionForward forward = mapping.findForward("editPages.page");
         try
         {
+            request.setAttribute("model", new BasePageModel(
+                "pagesForm.title", request, response, mapping));   
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rreq.isUserAuthorizedToEdit() )
+            RollerSession rses = RollerSession.getRollerSession(request);
+            WebsiteData website = rreq.getWebsite();
+            if ( rses.isUserAuthorizedToAdmin(website) )
             {
                 WeblogTemplateForm form = (WeblogTemplateForm)actionForm;
                 WeblogTemplate data = new WeblogTemplate();
                 form.copyTo(data, request.getLocale());
-                WebsiteData hd = rreq.getWebsite();
-
-                data.setWebsite( hd );
+                data.setWebsite(website);
                 data.setLastModified( new java.util.Date() );
                 data.setDescription("");
                 data.setContents("");
                 validateLink( data );
 
-                UserManager mgr = rreq.getRoller().getUserManager();
+                UserManager mgr = RollerFactory.getRoller().getUserManager();
                 mgr.storePage( data );
-                rreq.getRoller().commit();
+                RollerFactory.getRoller().commit();
 
                 ActionMessages uiMessages = new ActionMessages();
                 uiMessages.add(ActionMessages.GLOBAL_MESSAGE, 
@@ -32,12 +34,12 @@
                                 data.getName()));
                 saveMessages(request, uiMessages);
                 
-                UserData user = rreq.getUser();
-                PageCacheFilter.removeFromCache( request, user );
+                UserData user = rses.getAuthenticatedUser();
+                PageCacheFilter.removeFromCache( request, website );
                     
                 actionForm.reset(mapping,request);                
                 
-                addModelObjects(rreq);
+                addModelObjects(request, response, mapping, website);
             }
             else
             {

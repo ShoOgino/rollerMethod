@@ -1,8 +1,7 @@
     /**
      * @param str
      */
-    private void readRule(String str)
-    {
+    private void readRule(String str) {
         if (StringUtils.isEmpty(str)) return; // bad condition
         
         String rule = str.trim();
@@ -17,9 +16,7 @@
         {
             // pre-compile patterns since they will be frequently used
             blacklistRegex.add(Pattern.compile(rule));
-        }
-        else if (StringUtils.isNotEmpty(rule))
-        {    
+        } else if (StringUtils.isNotEmpty(rule)) {
             blacklistStr.add(rule);
         }
     }

@@ -12,11 +12,15 @@
         ActionForward forward = mapping.findForward("weblogEdit.page");
         try
         {
+            RollerSession rses = RollerSession.getRollerSession(request);
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rreq.isUserAuthorizedToEdit() )
+            if (rreq.getWebsite() != null 
+                    && rses.isUserAuthorized(rreq.getWebsite()))
             {
                 WeblogEntryFormEx form = (WeblogEntryFormEx)actionForm; 
                 form.initNew(request, response);
+                form.setCreatorId(rses.getAuthenticatedUser().getId());
+                form.setWebsiteId(rreq.getWebsite().getId()); 
                 
                 request.setAttribute("model",
                         new WeblogEntryPageModel(request, response, mapping,

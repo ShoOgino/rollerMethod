@@ -10,31 +10,36 @@
 
         user = new UserData(
             null,
-            "testWebsiteStorage",
+            "testWebsiteStorage3",
             "password3",
             "TestUser3",
             "testuser3@example.com",
-            new java.util.Date());
-        umgr.storeUser( user );
-
+            "en_US_WIN", "America/Los_Angeles",
+            new java.util.Date(), Boolean.TRUE);
+        umgr.storeUser(user);
+        
         stored = new WebsiteData(
-            null,
-            "testsite",
-            "Testsite",
-            user,
-            "dpid",
-            "wpid",
-            Boolean.FALSE,
-            null,
-            null,
-            "edit-weblog.jsp",
-            "ignore",
-            Boolean.TRUE,
-            Boolean.FALSE,
-            null,
-            Boolean.TRUE);
+            null,          // id
+            "testsite3",    // name
+            "testsite3",    // handle 
+            "Testsite3",    // description
+            user,          // creating user
+            "dpid",        // default page ID
+            "wpid",        // default day page ID
+            Boolean.FALSE, // enable blogger API
+            null,          // blogger category
+            null,          // default category
+            "edit-weblog.jsp", // editor page
+            "ignore",      // ignore words
+            Boolean.TRUE,  // allow comments
+            Boolean.FALSE, // email comments
+            null,          // email from address
+            Boolean.TRUE,  // enabled
+            "",            // email address
+            new Date());   // date created
+        stored.setEditorTheme("theme");
         umgr.storeWebsite(stored);
-
+        
         FolderData rootFolder = getRoller().getBookmarkManager()
             .createFolder(null, "root", "root", stored);
         rootFolder.save();
@@ -45,14 +50,14 @@
 
         stored.setBloggerCategory(rootCategory);
         stored.setDefaultCategory(rootCategory);
-        stored.save();
-
+        
         getRoller().commit();
 
         getRoller().begin(UserData.SYSTEM_USER);
         WebsiteData retrieved = umgr.retrieveWebsite(stored.getId());
         assertEquals(stored, retrieved);
-        getRoller().release();
+        retrieved.remove();
+        getRoller().commit();
 
         getRoller().begin(UserData.SYSTEM_USER);
         user = umgr.retrieveUser(user.getId());

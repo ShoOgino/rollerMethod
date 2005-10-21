@@ -5,19 +5,16 @@
     protected void setUp() throws Exception
     {
         super.setUp();
-        UserManager umgr = getRoller().getUserManager();
-
         getRoller().begin(UserData.SYSTEM_USER);
-
-        // create User
-        UserData user = createUser(umgr,
+        mUser = createUser(
                    testUsername,
                    "password",
                    "TestUser",
                    "testuser@example.com");
-
-        // get website
-        mWebsite = umgr.getWebsite(user.getUserName());
+        UserManager umgr = getRoller().getUserManager();
+        mWebsite = (WebsiteData)umgr.getWebsites(mUser, null).get(0);
         getRoller().commit();
+        
+        RollerConfig.setContextPath("./build/roller");
     }
 

@@ -14,13 +14,14 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rreq.isUserAuthorizedToEdit() && rreq.isAdminUser() )
+            RollerSession rollerSession = RollerSession.getRollerSession(request);
+            if (rollerSession.isGlobalAdminUser() )
             {
                 UserAdminForm userForm = (UserAdminForm)actionForm;
-                UserManager mgr = rreq.getRoller().getUserManager();
+                UserManager mgr = RollerFactory.getRoller().getUserManager();
                 
                 // Need system user to update user
-                rreq.getRoller().setUser(UserData.SYSTEM_USER);
+                RollerFactory.getRoller().setUser(UserData.SYSTEM_USER);
 
 			   UserData user = mgr.retrieveUser(userForm.getId());
                 userForm.copyTo(user, request.getLocale()); // doesn't copy password
@@ -28,7 +29,6 @@
                 if (userForm.getDelete())
                 {
                     // TODO: ask are you sure before deleting user
-                    PageCacheFilter.removeFromCache( request, user );
                     user = deleteUser(mapping, request, rreq, userForm, mgr, user);
                     
                     msgs.add(ActionMessages.GLOBAL_MESSAGE,
@@ -43,7 +43,7 @@
                     {
                         try
                         {
-                            user.resetPassword(rreq.getRoller(), 
+                            user.resetPassword(RollerFactory.getRoller(), 
                                userForm.getPasswordText(), 
                                userForm.getPasswordConfirm());
                         }
@@ -56,11 +56,7 @@
                     
                     // Persist changes to user
                     mgr.storeUser( user );
-                    rreq.getRoller().commit(); 
-                    
-                    // Flush both main page and regular page caches
-                    refreshIndexCache(request, rreq, userForm);      
-                    PageCacheFilter.removeFromCache( request, user );
+                    RollerFactory.getRoller().commit(); 
                     
                     msgs.add(ActionMessages.GLOBAL_MESSAGE,
                         new ActionMessage("userSettings.saved"));

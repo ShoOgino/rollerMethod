@@ -1,7 +1,7 @@
     //-----------------------------------------------------------------------
     /** 
-     * Show query for user page or, if userName specified in request, show
-     * the admin user page for the specified user.
+     * Show query for user page or, if userName specified in request, 
+     * show the admin user page for the specified user.
      */
     public ActionForward edit(
         ActionMapping       mapping,
@@ -14,27 +14,22 @@
         ActionMessages msgs = new ActionMessages();
         try
         {
+            UserData user = null;
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rreq.isUserAuthorizedToEdit() && rreq.isAdminUser() )
+            RollerSession rollerSession = RollerSession.getRollerSession(request);
+            if (rollerSession.isGlobalAdminUser() )
             {
                 UserAdminForm userForm = (UserAdminForm)actionForm;
-                UserManager mgr = rreq.getRoller().getUserManager();
-                
+                UserManager mgr = RollerFactory.getRoller().getUserManager();                
                 if (userForm != null && userForm.getUserName() != null)
                 {
-                    UserData user = mgr.getUser( userForm.getUserName(), false );                    
+                    user = mgr.getUser(userForm.getUserName(), null);                    
                     if (user != null)
                     {
-                        userForm.copyFrom(user, request.getLocale());
-                        
+                        userForm.copyFrom(user, request.getLocale());                        
                         // User must set new password twice
                         userForm.setPasswordText(null);
                         userForm.setPasswordConfirm(null);
-                        
-                        // Join in the website enabled field
-                        WebsiteData website = 
-                            mgr.getWebsite(userForm.getUserName(), false);
-                        userForm.setUserEnabled(website.getIsEnabled());
                     }
                     else
                     {
@@ -43,6 +38,8 @@
                         userForm.setUserName("");
                     }
                 }
+                request.setAttribute("model", new UserAdminPageModel(
+                        request, response, mapping, userForm, user));
             }
             else
             {

@@ -16,16 +16,20 @@
         ActionErrors errors = new ActionErrors();
         ActionForward forward = mapping.findForward("editTheme.page");
         try {
-            
+            RollerSession rses = RollerSession.getRollerSession(request);
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rreq.isUserAuthorizedToEdit() ) {
+            WebsiteData website = rreq.getWebsite();
+            if ( rses.isUserAuthorizedToAdmin(website) ) {
                 
+                BasePageModel pageModel = new BasePageModel(
+                        "themeEditor.title", request, response, mapping);
+                request.setAttribute("model",pageModel);          
+                    
                 // copy down current theme to weblog templates
                 Roller roller = RollerFactory.getRoller();
                 ThemeManager themeMgr = roller.getThemeManager();
                 
-                String username = rreq.getUser().getUserName();
-                WebsiteData website = roller.getUserManager().getWebsite(username);
+                String username = rses.getAuthenticatedUser().getUserName();
                 
                 try {
                     Theme usersTheme = themeMgr.getTheme(website.getEditorTheme());
@@ -41,7 +45,7 @@
                         }
                         
                         // make sure to flush the page cache so ppl can see the change
-                        PageCacheFilter.removeFromCache(request, rreq.getUser());
+                        PageCacheFilter.removeFromCache(request, website);
                     }
                     
                 } catch(ThemeNotFoundException tnfe) {

@@ -20,7 +20,7 @@
                 Session hses = mSessionFactory.openSession();
                 ses = new HibernatePersistenceSession(user, hses);
             }
-            catch (Exception e)
+            catch (Throwable e)
             {
                 mLogger.error(Messages.getString(
                     "HibernateStrategy.exceptionOpeningSession"));

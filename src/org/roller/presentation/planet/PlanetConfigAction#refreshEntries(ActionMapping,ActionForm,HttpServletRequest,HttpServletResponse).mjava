@@ -7,9 +7,12 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if (rreq.isUserAuthorizedToEdit())
+            if (RollerSession.getRollerSession(request).isGlobalAdminUser())
             {
-                Roller roller = rreq.getRoller();
+                BasePageModel pageModel = new BasePageModel(
+                    "planetConfig.pageTitle", request, response, mapping);
+                request.setAttribute("model",pageModel);                
+                Roller roller = RollerFactory.getRoller();
                 RefreshEntriesTask task = new RefreshEntriesTask();
                 task.init(roller, "dummy");
                 roller.getThreadManager().executeInBackground(task);

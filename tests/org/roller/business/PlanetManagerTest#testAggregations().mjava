@@ -64,9 +64,9 @@
                 List littleag = planet.getAggregation(group, 10);
                 assertEquals(littleag.size(), count);
                                   
+                planet.deleteGroup(group);
                 planet.deleteSubscription(sub1);
                 planet.deleteSubscription(sub2);
-                planet.deleteGroup(group);
                 
                 PlanetConfigData config = planet.getConfiguration();
                 config.remove();
@@ -76,6 +76,7 @@
         catch (Exception e)
         {
             e.printStackTrace();
+            fail();
         }
     }
 

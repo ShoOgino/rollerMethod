@@ -11,12 +11,16 @@
             "password4",
             "TestUser4",
             "testuser4@example.com",
-            new java.util.Date());
+            "en_US_WIN", "America/Los_Angeles",
+            new java.util.Date(), Boolean.TRUE);
         Map pages = new HashMap();
         pages.put("Weblog","Weblog page content");
         pages.put("_day","Day page content");
         pages.put("css","CSS page content");
-        umgr.addUser(user, pages, "basic", "en_US_WIN", "America/Los_Angeles");
+        umgr.addUser(user);
+        umgr.createWebsite(user, pages, 
+                user.getUserName(), user.getUserName(), user.getUserName(), 
+                "dummy@example.com","basic", "en_US_WIN", "America/Los_Angeles");
         getRoller().commit();
 
         // Verify that user has all the goodies
@@ -24,7 +28,7 @@
         UserData user1 = umgr.retrieveUser(user.getId());
         assertNotNull(user1);
 
-        WebsiteData website = umgr.getWebsite(user.getUserName());
+        WebsiteData website = (WebsiteData)umgr.getWebsites(user, null).get(0);
         assertNotNull(website);
 
         FolderData root = getRoller().getBookmarkManager().getRootFolder(website);
@@ -35,9 +39,10 @@
         assertEquals(0, pages1.size());
         getRoller().rollback();
 
-        // Remove the user
-
+        // Remove the website and user
         getRoller().begin(UserData.SYSTEM_USER);
+        website = umgr.retrieveWebsite(website.getId());
+        website.remove();
         user = umgr.retrieveUser(user.getId());
         user.remove();
         getRoller().commit();
@@ -46,9 +51,6 @@
         getRoller().begin(UserData.SYSTEM_USER);
         UserData user2 = umgr.retrieveUser(user.getId());
         assertNull(user2);
-
-        WebsiteData website2 = umgr.getWebsite(user.getUserName());
-        assertNull(website2);
 
         assertNull(getRoller().getBookmarkManager().retrieveFolder(root.getId()));
 

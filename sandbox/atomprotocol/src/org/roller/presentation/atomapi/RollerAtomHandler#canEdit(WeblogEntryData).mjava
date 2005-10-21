@@ -1,0 +1,12 @@
+    /**
+     * Return true if user is allowed to edit an entry.
+     */
+    private boolean canEdit(WeblogEntryData entry) {
+        try {
+            return entry.canSave();
+        } catch (Exception e) {
+            mLogger.error("ERROR: checking website.canSave()");
+        }
+        return false;
+    }
+

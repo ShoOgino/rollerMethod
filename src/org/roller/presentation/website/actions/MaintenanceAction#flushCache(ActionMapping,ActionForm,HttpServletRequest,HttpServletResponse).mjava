@@ -11,15 +11,16 @@
     {
         try
         {
-			RollerRequest rreq = RollerRequest.getRollerRequest(request);
-			if ( rreq.isUserAuthorizedToEdit() )
+            RollerRequest rreq  = RollerRequest.getRollerRequest(request);
+            WebsiteData website = rreq.getWebsite();            
+            RollerSession rses = RollerSession.getRollerSession(request);
+			if ( rses.isUserAuthorizedToAdmin(website) )
 			{
-				UserData user = rreq.getUser();
-	            PageCacheFilter.removeFromCache(request, user);
+	            PageCacheFilter.removeFromCache(request, website);
 
-                ActionMessages messages = new ActionMessages();
-                messages.add(null, new ActionMessage("maintenance.message.flushed"));
-                saveMessages(request, messages);
+                 ActionMessages messages = new ActionMessages();
+                 messages.add(null, new ActionMessage("maintenance.message.flushed"));
+                 saveMessages(request, messages);
             }
         }
         catch (Exception e)

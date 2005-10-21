@@ -21,7 +21,7 @@
         mLogger.info("    Publish: " + publish);
         mLogger.info("    Content:\n " + content);
 
-        WebsiteData website = validate(userid,password);
+        WebsiteData website = validate(blogid, userid,password);
 
         // extract the title from the content
         String title = "";
@@ -37,7 +37,7 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest();
-            Roller roller = rreq.getRoller();
+            Roller roller = RollerFactory.getRoller();
 
             Timestamp current = new Timestamp(System.currentTimeMillis());
 
@@ -47,12 +47,18 @@
             entry.setPubTime(current);
             entry.setUpdateTime(current);
             entry.setWebsite(website);
-            entry.setPublishEntry(Boolean.valueOf(publish));
             entry.setCategory(website.getBloggerCategory());
-
+            if (Boolean.valueOf(publish).booleanValue())
+            {
+                entry.setStatus(WeblogEntryData.PUBLISHED);
+            }
+            else
+            {
+                entry.setStatus(WeblogEntryData.DRAFT);
+            }
             entry.save();
             roller.commit();
-            flushPageCache(userid);
+            flushPageCache(entry.getWebsite());
 /*
             String blogUrl = Utilities.escapeHTML( 
                 RollerContext.getRollerContext(req).getAbsoluteContextUrl(req)

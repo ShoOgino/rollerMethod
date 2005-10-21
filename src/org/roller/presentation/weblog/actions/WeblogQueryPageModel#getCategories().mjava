@@ -1,7 +1,8 @@
     public List getCategories() throws Exception
     {
-        List categories = rollerRequest.getRoller().getWeblogManager()
-            .getWeblogCategories(rollerRequest.getWebsite());
+        RollerRequest rreq = RollerRequest.getRollerRequest(request);
+        List categories = RollerFactory.getRoller().getWeblogManager()
+            .getWeblogCategories(rreq.getWebsite());
         return categories;
     }
 

@@ -8,11 +8,14 @@
     {
         try
         {
-            RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rreq.isUserAuthorizedToEdit() )
+            WeblogEntryFormEx wf = (WeblogEntryFormEx)actionForm;
+            UserManager umgr = RollerFactory.getRoller().getUserManager();
+            WebsiteData site = umgr.retrieveWebsite(wf.getWebsiteId());
+            RollerSession rses = 
+                RollerSession.getRollerSession(request);
+            if (rses.isUserAuthorizedToAuthor(site))
             {
                 HttpSession session = request.getSession(true);
-                WeblogEntryFormEx wf = (WeblogEntryFormEx)actionForm;
                 // misspelt words have been submitted
                 if (wf.getReplacementWords() != null &&
                     wf.getReplacementWords().length > 0)
@@ -45,6 +48,11 @@
                     wf.setText( entryText.toString() );
 
                     return save(mapping, wf, request, response);
+                }
+                else 
+                {
+                    return display(WeblogEntryPageModel.EDIT_MODE, 
+                                mapping, actionForm, request, response);
                 }
             }
         }

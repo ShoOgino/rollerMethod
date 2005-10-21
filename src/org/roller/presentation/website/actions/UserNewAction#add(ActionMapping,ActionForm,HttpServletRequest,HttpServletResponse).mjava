@@ -29,33 +29,34 @@
         else try
         {
             // Add new user
-            UserManager mgr = rreq.getRoller().getUserManager(); 
+            UserManager mgr = RollerFactory.getRoller().getUserManager(); 
             
             // Need system user to add new user
-            rreq.getRoller().setUser(UserData.SYSTEM_USER);
+            RollerFactory.getRoller().setUser(UserData.SYSTEM_USER);
 
             UserData ud = new UserData();
             form.copyTo(ud, request.getLocale()); // doesn't copy password
             ud.setId(null);
             ud.setDateCreated(new java.util.Date());
+            ud.setEnabled(Boolean.TRUE);
 
             // If user set both password and passwordConfirm then reset password
             if (    !StringUtils.isEmpty(form.getPasswordText()) 
                  && !StringUtils.isEmpty(form.getPasswordConfirm()))
             {
-               ud.resetPassword(rreq.getRoller(), 
+               ud.resetPassword(RollerFactory.getRoller(), 
                   form.getPasswordText(), form.getPasswordConfirm());
             }
             
-            String theme = form.getTheme();
-            // this used to have theme pages before we had shared themes -- Allen G
-            HashMap pages = new HashMap();
-            mgr.addUser( ud, pages, theme, form.getLocale(), form.getTimezone() );
-            rreq.getRoller().commit();
+            //String theme = form.getTheme();
+            //HashMap pages = rollerContext.readThemeMacros(theme);
+            mgr.addUser(ud);
+            //mgr.createWebsite(ud, pages, theme, form.getLocale(), form.getTimezone());
+            RollerFactory.getRoller().commit();
 
 			// Flush cache so user will immediately appear on index page
-            PageCacheFilter.removeFromCache( request, ud );
-            MainPageAction.flushMainPageCache();
+            //PageCacheFilter.removeFromCache( request, ud );
+            //MainPageAction.flushMainPageCache();
 
             if (form.getAdminCreated()) 
             {

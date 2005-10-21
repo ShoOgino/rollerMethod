@@ -6,10 +6,10 @@
         ActionForward forward = mapping.findForward("planetSubscriptions.page");
         try
         {
-            RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if (rreq.isUserAuthorizedToEdit())
+            //RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            if (RollerSession.getRollerSession(request).isGlobalAdminUser())
             {
-                Roller roller = rreq.getRoller();
+                Roller roller = RollerFactory.getRoller();
                 PlanetManager planet = roller.getPlanetManager();
                 PlanetSubscriptionFormEx form = (PlanetSubscriptionFormEx)actionForm;
                 if (form.getId() != null)
@@ -34,7 +34,7 @@
                     form.setGroupHandle(groupHandle);
                     request.setAttribute("model", 
                         new SubscriptionsPageModel(
-                                targetGroup, request, response, mapping));
+                                targetGroup, request, response, mapping, form));
                     
                     ActionMessages messages = new ActionMessages();
                     messages.add(null, 

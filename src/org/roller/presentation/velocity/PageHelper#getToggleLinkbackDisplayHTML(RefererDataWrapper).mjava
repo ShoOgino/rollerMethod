@@ -5,11 +5,14 @@
         String link = null;
         try
         {
-            if ( mRollerReq.isUserAuthorizedToEdit() )
+            RollerSession rollerSession = 
+                RollerSession.getRollerSession(mRollerReq.getRequest());
+            if ( mRollerReq.getWebsite() != null 
+              && rollerSession.isUserAuthorizedToAdmin(mRollerReq.getWebsite()))
             {
                 Hashtable params = new Hashtable();
                 params.put( RollerRequest.REFERERID_KEY, referer.getId());
-                params.put( RollerRequest.USERNAME_KEY, mUsername);
+                params.put( RollerRequest.USERNAME_KEY, mWebsite.getHandle());
                 link = RequestUtils.computeURL( mPageContext,
                     "toggleLinkback", null, null, null, params,null,false);
                     

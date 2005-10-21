@@ -1,0 +1,18 @@
+        public CreateWebsitePageModel(HttpServletRequest request,
+            HttpServletResponse response, ActionMapping mapping, WebsiteData wd)
+            throws RollerException
+        {
+            super("createWebsite.title", request, response, mapping);
+            RollerContext rollerContext = RollerContext.getRollerContext(request);
+            Roller roller = RollerFactory.getRoller();
+            ThemeManager themeMgr = roller.getThemeManager();
+            themes = themeMgr.getEnabledThemesList();
+            if (wd != null) 
+            {
+                contextURL = rollerContext.getAbsoluteContextUrl(request);
+                weblogURL = contextURL + "/page/" + wd.getHandle();   
+                rssURL =    contextURL + "/rss/" + wd.getHandle();    
+                website = wd;
+            }
+        }
+

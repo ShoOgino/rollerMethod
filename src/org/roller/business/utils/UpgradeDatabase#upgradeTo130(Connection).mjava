@@ -25,7 +25,10 @@
             setCustomThemeStmt.setString(1, org.roller.pojos.Theme.CUSTOM);
             setCustomThemeStmt.executeUpdate();
             
+            if (!con.getAutoCommit()) con.commit();
+            
             mLogger.info("Upgrade to 130 complete.");
+            
         } catch (SQLException e) {
             mLogger.error("Problem upgrading database to version 130", e);
             throw new RollerException("Problem upgrading database to version 130", e);

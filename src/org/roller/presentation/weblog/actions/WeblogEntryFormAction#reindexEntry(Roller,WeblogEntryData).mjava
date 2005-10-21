@@ -4,7 +4,8 @@
      * is being deleted then mark it published = false.
      * @param entry
      */
-    private void reindexEntry(Roller roller, WeblogEntryData entry) throws RollerException
+    private void reindexEntry(Roller roller, WeblogEntryData entry) 
+    throws RollerException
     {
          IndexManager manager = roller.getIndexManager();
         
@@ -12,7 +13,7 @@
         //manager.removeEntryIndexOperation(entry); 
         
         // if published, index the entry
-        if (entry.getPublishEntry() == Boolean.TRUE) 
+        if (entry.isPublished()) 
         {
             manager.addEntryReIndexOperation(entry);
         }

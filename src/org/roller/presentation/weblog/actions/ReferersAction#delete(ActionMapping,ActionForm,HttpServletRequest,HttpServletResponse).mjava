@@ -5,11 +5,13 @@
     {
         //this.servlet.log("ReferersAction.delete()");
         RollerRequest rreq = RollerRequest.getRollerRequest(req);
+        RollerSession rollerSession = RollerSession.getRollerSession(req);
         try
         {
-            if ( rreq.isUserAuthorizedToEdit() )
+            if (rreq.getWebsite() != null 
+                 && rollerSession.isUserAuthorizedToAuthor(rreq.getWebsite()) )
             {
-                RefererManager refmgr = rreq.getRoller().getRefererManager();
+                RefererManager refmgr = RollerFactory.getRoller().getRefererManager();
                 WebsiteData website = rreq.getWebsite();
 
                 String[] deleteIds = req.getParameterValues("id");
@@ -19,7 +21,7 @@
                     {
                         refmgr.removeReferer(deleteIds[i]);
                     }
-                    rreq.getRoller().commit();
+                    RollerFactory.getRoller().commit();
                     ActionMessages messages = new ActionMessages();
                     messages.add(null, new ActionMessage("referers.deletedReferers"));
                     saveMessages(req, messages);

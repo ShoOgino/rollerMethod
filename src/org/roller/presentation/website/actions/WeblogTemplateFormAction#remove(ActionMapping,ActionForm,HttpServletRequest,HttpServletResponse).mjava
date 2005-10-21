@@ -7,25 +7,27 @@
         throws IOException, ServletException
     {
         ActionForward forward = mapping.findForward("editPages");
+        request.setAttribute("model", new BasePageModel(
+            "pagesForm.title", request, response, mapping));
         try
         {
-            RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rreq.isUserAuthorizedToEdit() )
+            UserManager mgr = RollerFactory.getRoller().getUserManager();
+            WeblogTemplateForm form = (WeblogTemplateForm)actionForm;
+            WeblogTemplate template = mgr.retrievePage(form.getId());
+            WebsiteData website = template.getWebsite();
+            
+            RollerSession rses = RollerSession.getRollerSession(request);          
+            if ( rses.isUserAuthorizedToAdmin(website) )
             {
-                WeblogTemplateForm form = (WeblogTemplateForm)actionForm;
-                WeblogTemplate data = new WeblogTemplate();
-                form.copyTo(data, request.getLocale());
+                mgr.removePageSafely(template.getId());
+                RollerFactory.getRoller().commit();
 
-                UserManager mgr = rreq.getRoller().getUserManager();
-                mgr.removePageSafely( data.getId() );
-                rreq.getRoller().commit();
-
-                UserData user = rreq.getUser();
-                PageCacheFilter.removeFromCache( request,user );
+                UserData user = rses.getAuthenticatedUser();
+                PageCacheFilter.removeFromCache(request, template.getWebsite());
                     
-                addModelObjects(rreq);
-
-                actionForm.reset(mapping,request);
+                addModelObjects(
+                        request, response, mapping, template.getWebsite());
+                actionForm.reset(mapping, request);
             }
             else
             {

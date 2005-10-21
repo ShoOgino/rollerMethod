@@ -1,12 +1,10 @@
-    //------------------------------------------------------------------------
     /** Create session's Roller instance */
     public void sessionCreated(HttpSessionEvent se)
     {
-        // put this in session, so that we get HttpSessionActivationListener callbacks
-        se.getSession().setAttribute( ROLLER_SESSION, this );
-        
-        RollerContext rctx = RollerContext.getRollerContext(
-            se.getSession().getServletContext());
+        RollerSession rollerSession = new RollerSession();
+        se.getSession().setAttribute(ROLLER_SESSION, rollerSession);
+        RollerContext rctx = 
+            RollerContext.getRollerContext(se.getSession().getServletContext());           
         rctx.sessionCreated(se);           
     }    
 

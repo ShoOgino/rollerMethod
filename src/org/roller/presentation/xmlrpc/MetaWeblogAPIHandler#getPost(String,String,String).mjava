@@ -13,14 +13,15 @@
         mLogger.info("     PostId: " + postid);
         mLogger.info("     UserId: " + userid);
 
-        validate(userid,password);
+        Roller roller = RollerFactory.getRoller(); 
+        WeblogManager weblogMgr = roller.getWeblogManager();
+        WeblogEntryData entry = weblogMgr.retrieveWeblogEntry(postid);
+        
+        validate(entry.getWebsite().getHandle(), userid,password);
 
         try
         {
-            Roller roller = RollerRequest.getRollerRequest().getRoller();
-            WeblogManager weblogMgr = roller.getWeblogManager();
-            WeblogEntryData entry = weblogMgr.retrieveWeblogEntry(postid);
-            return createPostStruct(entry);
+            return createPostStruct(entry, userid);
         }
         catch (Exception e)
         {

@@ -1,0 +1,40 @@
+    /**
+     * Create a Roller weblog entry based on a Rome Atom entry object
+     */
+    private WeblogEntryData createRollerEntry(WebsiteData website, Entry entry) 
+        throws RollerException {
+
+        Timestamp current = new Timestamp(System.currentTimeMillis());
+        Timestamp pubTime = current;
+        Timestamp updateTime = current;
+        if (entry.getPublished() != null) {
+            pubTime = new Timestamp( entry.getPublished().getTime() );
+        }
+        if (entry.getUpdated() != null) {
+            updateTime = new Timestamp( entry.getUpdated().getTime() );
+        }
+        WeblogEntryData rollerEntry = new WeblogEntryData();
+        if (entry.getTitle() != null) rollerEntry.setTitle(entry.getTitle());
+        if (entry.getContents() != null && entry.getContents().size() > 0) {
+            Content content = (Content)entry.getContents().get(0);
+            rollerEntry.setText(content.getValue());
+        }
+        rollerEntry.setPubTime(pubTime);
+        rollerEntry.setUpdateTime(updateTime);
+        rollerEntry.setWebsite(website);
+        rollerEntry.setStatus(WeblogEntryData.PUBLISHED);
+        
+        List categories = entry.getCategories();
+        if (categories != null && categories.size() > 0) {
+            Category cat = (Category)categories.get(0);
+            System.out.println(cat.getTerm());
+            WeblogCategoryData rollerCat = 
+                mRoller.getWeblogManager().getWeblogCategoryByPath(
+                    website, cat.getTerm());
+            rollerEntry.setCategory(rollerCat);
+        } else {
+            rollerEntry.setCategory(website.getBloggerCategory());
+        }
+        return rollerEntry;
+    }
+

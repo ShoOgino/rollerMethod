@@ -5,14 +5,16 @@
     {
         this.servlet.log("ReferersAction.reset()");
         RollerRequest rreq = RollerRequest.getRollerRequest(req);
+        RollerSession rollerSession = RollerSession.getRollerSession(req);
         try
         {
-            if ( rreq.isUserAuthorizedToEdit() )
+            if (rreq.getWebsite() != null 
+                  && rollerSession.isUserAuthorizedToAuthor(rreq.getWebsite()) )
             {
-                RefererManager refmgr = rreq.getRoller().getRefererManager();
+                RefererManager refmgr = RollerFactory.getRoller().getRefererManager();
                 WebsiteData website = rreq.getWebsite();
                 refmgr.forceTurnover(website.getId());
-                rreq.getRoller().commit();
+                RollerFactory.getRoller().commit();
             }
             this.servlet.log("ReferersAction.reset(): don't have permission");
         }

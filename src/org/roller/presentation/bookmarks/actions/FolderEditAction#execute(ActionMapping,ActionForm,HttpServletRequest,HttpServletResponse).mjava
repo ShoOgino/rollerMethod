@@ -6,7 +6,7 @@
         throws Exception
     {
         RollerRequest rreq = RollerRequest.getRollerRequest(request);
-        BookmarkManager bmgr = rreq.getRoller().getBookmarkManager();
+        BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
         FolderFormEx form = (FolderFormEx)actionForm;
         
         FolderData parentFolder = null;
@@ -19,6 +19,11 @@
             FolderData fd = rreq.getFolder();
             form.copyFrom(fd, request.getLocale());
             parentFolder = fd.getParent();
+            
+            BasePageModel pageModel = new BasePageModel(
+                "folderForm.add.title", request, response, mapping);
+            pageModel.setWebsite(parentFolder.getWebsite());
+            request.setAttribute("model", pageModel);
         }
         else if (null != request.getParameter("correct"))
         {
@@ -27,6 +32,11 @@
             
             String parentId = request.getParameter(RollerRequest.PARENTID_KEY);
             parentFolder = bmgr.retrieveFolder(parentId);
+            
+            BasePageModel pageModel = new BasePageModel(
+                "folderForm.correct.title", request, response, mapping);
+            pageModel.setWebsite(parentFolder.getWebsite());
+            request.setAttribute("model", pageModel);
         }
         else
         {
@@ -35,6 +45,11 @@
             
             String parentId = request.getParameter(RollerRequest.PARENTID_KEY);
             parentFolder = bmgr.retrieveFolder(parentId);
+            
+            BasePageModel pageModel = new BasePageModel(
+                "folderForm.add.title", request, response, mapping);
+            pageModel.setWebsite(parentFolder.getWebsite());
+            request.setAttribute("model", pageModel);
         }
         
         request.setAttribute(RollerRequest.PARENTID_KEY, parentFolder.getId());

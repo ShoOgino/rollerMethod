@@ -14,10 +14,12 @@
         HttpServletResponse response)
         throws RollerException
     {
-        RollerRequest rreq = RollerRequest.getRollerRequest(request);
-        if (rreq.isUserAuthorizedToEdit())
+        BookmarksPageModel pageModel = new BookmarksPageModel(
+            request, response, mapping, (BookmarksForm)actionForm);
+        if (RollerSession.getRollerSession(request).isUserAuthorizedToAuthor(
+                pageModel.getFolder().getWebsite()))
         {
-            addModelObjects(request, (BookmarksForm)actionForm);
+            request.setAttribute("model", pageModel);
             return mapping.findForward("BookmarksForm");
         }
         else

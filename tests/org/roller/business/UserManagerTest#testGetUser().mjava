@@ -10,7 +10,7 @@
         assertNull(getRoller().getUserManager().getUser(disabledUserName));
 
         // can get testuser1 with enabledOnly flag set to false
-        assertNotNull(getRoller().getUserManager().getUser(disabledUserName,false));
+        assertNotNull(getRoller().getUserManager().getUser(disabledUserName, null));
         
         getRoller().release();
     }

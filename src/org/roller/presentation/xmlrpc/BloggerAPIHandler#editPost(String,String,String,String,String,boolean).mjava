@@ -21,29 +21,38 @@
         mLogger.info("    Publish: " + publish);
         mLogger.info("     Content:\n " + content);
 
-        validate(userid,password);
-
-        try
+        if (validateUser(userid, password))
         {
-            Timestamp current = new Timestamp(System.currentTimeMillis());
-
-            Roller roller = RollerRequest.getRollerRequest().getRoller();
-            WeblogManager weblogMgr = roller.getWeblogManager();
-            WeblogEntryData entry = weblogMgr.retrieveWeblogEntry(postid);
-            entry.setText(content);
-            entry.setUpdateTime(current);
-            entry.setPublishEntry(Boolean.valueOf(publish));
-
-            entry.save();
-            roller.commit();
-            flushPageCache(userid);
-            return true;
+            try
+            {
+                Timestamp current = new Timestamp(System.currentTimeMillis());
+    
+                Roller roller = RollerFactory.getRoller(); 
+                WeblogManager weblogMgr = roller.getWeblogManager();
+                WeblogEntryData entry = weblogMgr.retrieveWeblogEntry(postid);
+                entry.setText(content);
+                entry.setUpdateTime(current);
+                if (Boolean.valueOf(publish).booleanValue())
+                {
+                    entry.setStatus(WeblogEntryData.PUBLISHED);
+                }
+                else
+                {
+                    entry.setStatus(WeblogEntryData.DRAFT);
+                }
+    
+                entry.save();
+                roller.commit();
+                flushPageCache(entry.getWebsite());
+                return true;
+            }
+            catch (Exception e)
+            {
+                String msg = "ERROR in BlooggerAPIHander.editPost";
+                mLogger.error(msg,e);
+                throw new XmlRpcException(UNKNOWN_EXCEPTION, msg);
+            }
         }
-        catch (Exception e)
-        {
-            String msg = "ERROR in BlooggerAPIHander.editPost";
-            mLogger.error(msg,e);
-            throw new XmlRpcException(UNKNOWN_EXCEPTION, msg);
-        }
+        return false;
     }
 

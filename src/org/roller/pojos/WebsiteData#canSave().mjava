@@ -5,7 +5,8 @@
         {
             return true;
         }
-        if (roller.getUser().equals(getUser()))
+        if (hasUserPermissions(roller.getUser(), 
+                (short)(PermissionsData.ADMIN|PermissionsData.AUTHOR)))
         {
             return true;
         }

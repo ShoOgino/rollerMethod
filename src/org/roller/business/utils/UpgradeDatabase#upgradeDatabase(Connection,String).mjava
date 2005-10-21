@@ -36,7 +36,7 @@
                     "select value from roller_properties where name = '"+DBVERSION_PROP+"'");
             
             if(rs.next()) {
-                dbversion = rs.getInt(1);
+                dbversion = Integer.parseInt(rs.getString(1));
                 
             } else {
                 // tough to know if this is an upgrade with no db version :/
@@ -70,10 +70,18 @@
         mLogger.info("Database is old, beginning upgrade to version "+myVersion);
         
         // iterate through each upgrade as needed
-        // to add to the upgrade sequence simply add a new "else if" statement
+        // to add to the upgrade sequence simply add a new "if" statement
         // for whatever version needed and then define a new method upgradeXXX()
-        if(dbversion < 130)
+        if(dbversion < 130) 
+        {
             UpgradeDatabase.upgradeTo130(con);
+            dbversion = 130;
+        }
+        if (dbversion < 200)
+        {
+            UpgradeDatabase.upgradeTo200(con);
+            dbversion = 200;
+        }
         
         // make sure the database version is the exact version
         // we are upgrading too.

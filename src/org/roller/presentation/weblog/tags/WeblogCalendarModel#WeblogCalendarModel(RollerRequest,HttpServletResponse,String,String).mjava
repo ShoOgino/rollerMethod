@@ -18,7 +18,15 @@
         }
         if ( catToUse != null )
         {
-            mCatName = "?"+catKey+"="+catToUse;
+            try 
+            {
+                mCatName = "?"+catKey+"="+URLEncoder.encode(catToUse, "UTF-8");
+            }
+            catch (Throwable shouldNeverHappen)
+            {
+                mLogger.error(shouldNeverHappen);
+                mCatName = "?"+catKey+"="+catToUse;
+            }
         }
         else
         {

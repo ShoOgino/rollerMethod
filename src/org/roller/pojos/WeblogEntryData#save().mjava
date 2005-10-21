@@ -9,10 +9,11 @@
         {
             setAnchor(createAnchor());
         }
-        if (getPublishEntry() != null && getPublishEntry().booleanValue()) {
+        super.save();
+        if (isPublished()) 
+        {
             // Queue applicable pings for this update.
             RollerFactory.getRoller().getAutopingManager().queueApplicableAutoPings(this);
         }
-        super.save();
     }
 

@@ -1,0 +1,34 @@
+    /** 
+     * Return website specified by handle.
+     */
+    public WebsiteData getWebsiteByHandle(String handle, Boolean enabled)
+                    throws RollerException
+    {
+        if (handle==null )
+            throw new RollerException("Handle cannot be null");
+
+        try
+        {
+            Session session = ((HibernateStrategy)mStrategy).getSession();
+            Criteria criteria = session.createCriteria(WebsiteData.class);
+            if (enabled != null) 
+            {
+                criteria.add(
+                   Expression.conjunction()
+                       .add(Expression.eq("handle", handle))
+                       .add(Expression.eq("enabled", enabled)));
+            }
+            else
+            {
+                criteria.add(
+                    Expression.conjunction()
+                        .add(Expression.eq("handle", handle)));
+            }        
+            return (WebsiteData)criteria.uniqueResult();
+        }
+        catch (HibernateException e)
+        {
+            throw new RollerException(e);
+        }
+    }
+

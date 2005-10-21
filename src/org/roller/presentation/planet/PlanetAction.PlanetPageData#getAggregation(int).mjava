@@ -3,8 +3,7 @@
          */
         public List getAggregation(int num) throws RollerException
         {
-            Roller roller = 
-                RollerRequest.getRollerRequest(mRequest).getRoller();            
+            Roller roller = RollerFactory.getRoller();           
             return roller.getPlanetManager().getAggregation(num);
         }
 

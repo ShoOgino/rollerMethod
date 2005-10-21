@@ -1,5 +1,5 @@
     protected static void loadUtilityObjects(
-        Context ctx, RollerRequest rreq, RollerContext rollerCtx, String username)
+        Context ctx, RollerRequest rreq, RollerContext rollerCtx, String handle)
         throws RollerException
     {
         mLogger.debug("Loading utility objects");
@@ -9,7 +9,7 @@
         // in the macro's
         Locale viewLocale = (Locale) ctx.get("viewLocale");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", viewLocale);
-        WebsiteData website = RollerFactory.getRoller().getUserManager().getWebsite(username);
+        WebsiteData website = rreq.getWebsite();
         if (website != null)
         {
             sdf.setTimeZone(website.getTimeZoneInstance());

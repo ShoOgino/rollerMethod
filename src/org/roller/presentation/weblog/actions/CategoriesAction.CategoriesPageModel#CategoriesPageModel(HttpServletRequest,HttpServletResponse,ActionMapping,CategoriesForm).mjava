@@ -1,0 +1,72 @@
+        public CategoriesPageModel(
+                HttpServletRequest request,
+                HttpServletResponse response,
+                ActionMapping mapping,
+                CategoriesForm form) throws RollerException
+        {
+            super("dummy",  request, response, mapping);
+            this.form = form;
+            
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+
+            allCategories = new TreeSet(new CategoryPathComparator());
+
+            // Find catid wherever it may be
+            String catId = (String)
+                request.getAttribute(RollerRequest.WEBLOGCATEGORYID_KEY);
+            if (null == catId) 
+            {
+                catId = request.getParameter(RollerRequest.WEBLOGCATEGORYID_KEY);
+            }  
+            if (null == catId)
+            {
+                catId = form.getId();     
+            }
+
+            cat = null;
+            if (null == catId || catId.equals("null"))
+            {
+                cat = wmgr.getRootWeblogCategory(website);
+            }
+            else 
+            {
+                cat = wmgr.retrieveWeblogCategory(catId);  
+                website = cat.getWebsite();
+            }
+            form.setId(cat.getId());
+
+            //request.setAttribute("categories", cat.getWeblogCategories());
+
+            if (null != cat.getParent())
+            {
+                catPath = new LinkedList();
+                catPath.add(0, cat);
+                WeblogCategoryData parent = cat.getParent();
+                while (parent != null) 
+                {
+                    catPath.add(0, parent);
+                    parent = parent.getParent();   
+                }
+                //request.setAttribute("categoryPath", catPath);
+
+                request.setAttribute(
+                    RollerRequest.PARENTID_KEY, cat.getParent().getId());
+            }
+
+            // Build collection of all Categories, except for current one, 
+            // sorted by path.
+            Iterator iter = wmgr.getWeblogCategories(website).iterator();
+            while (iter.hasNext())
+            {
+                WeblogCategoryData cd = (WeblogCategoryData) iter.next();
+                if (!cd.getId().equals(catId))
+                {
+                    allCategories.add(cd);
+                }
+            }
+            // For Struts tags
+            request.setAttribute("allCategories", allCategories);
+            request.setAttribute("category", cat);
+        }        
+

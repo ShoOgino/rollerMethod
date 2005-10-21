@@ -13,21 +13,34 @@
         ActionErrors errors = new ActionErrors();
         ActionForward forward = mapping.findForward("editTheme.page");
         try {
-            
+            RollerSession rses = RollerSession.getRollerSession(request);
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rreq.isUserAuthorizedToEdit() ) {
+            WebsiteData website = rreq.getWebsite();
+            if ( rses.isUserAuthorizedToAdmin(website) ) {
                 
+                BasePageModel pageModel = new BasePageModel(
+                        "themeEditor.title", request, response, mapping);
+                request.setAttribute("model",pageModel);          
+                    
                 // get users current theme and our themes list
                 Roller roller = RollerFactory.getRoller();
                 ThemeManager themeMgr = roller.getThemeManager();
                 
-                String username = rreq.getUser().getUserName();
-                WebsiteData website = roller.getUserManager().getWebsite(username);
+                String username = rses.getAuthenticatedUser().getUserName();
                 String currentTheme = website.getEditorTheme();
                 List themes = themeMgr.getEnabledThemesList();
                 
+                // this checks if the website has a default page template
+                // if not then we don't allow for a custom theme
+                boolean allowCustomTheme = true;
+                if(website.getDefaultPageId() == null
+                        || website.getDefaultPageId().equals("dummy")
+                        || website.getDefaultPageId().trim().equals(""))
+                    allowCustomTheme = false;
+                
                 // if we allow custom themes then add it to the end of the list
-                if(RollerRuntimeConfig.getBooleanProperty("themes.customtheme.allowed"))
+                if(RollerRuntimeConfig.getBooleanProperty("themes.customtheme.allowed")
+                        && allowCustomTheme)
                     themes.add(Theme.CUSTOM);
                 
                 // on the first pass just show a preview of the current theme

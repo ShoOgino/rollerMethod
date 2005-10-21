@@ -18,19 +18,7 @@
                 RefererData referer = (RefererData) iter.next();
                 referer.remove();
             }
-            
-            // remove comments
-            /*
-            Criteria commentQuery = session.createCriteria(RefererData.class);
-            commentQuery.add(Expression.eq("weblogEntry", entry));
-            List comments = commentQuery.list();
-            */
-            List comments = RollerFactory.getRoller().getWeblogManager().getComments(entry.getId(), false);
-            for (Iterator iter = comments.iterator(); iter.hasNext();) 
-            {
-                CommentData comment = (CommentData) iter.next();
-                comment.remove();
-            }
+            removeCommentsForEntry(entry.getId());
         }
         catch (HibernateException e)
         {

@@ -2,7 +2,8 @@
     {
         // Select editor page selected by user (simple text editor,
         // DHTML editor, Ekit Java applet, etc.
-        String editorPage = rollerRequest.getWebsite().getEditorPage();
+        RollerSession rollerSession = RollerSession.getRollerSession(getRequest());
+        String editorPage = weblogEntry.getWebsite().getEditorPage();
         if (StringUtils.isEmpty( editorPage ))
         {
             editorPage = "editor-text.jsp";

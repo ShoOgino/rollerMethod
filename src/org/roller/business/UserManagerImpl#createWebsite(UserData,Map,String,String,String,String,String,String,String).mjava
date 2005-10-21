@@ -1,0 +1,101 @@
+    public WebsiteData createWebsite(
+            UserData ud, 
+            Map pages, 
+            String handle,
+            String name, 
+            String description,
+            String email,
+            String theme, 
+            String locale, 
+            String timeZone) throws RollerException
+    {
+        Roller mRoller = RollerFactory.getRoller();
+        UserManager umgr = mRoller.getUserManager();
+        WeblogManager wmgr = mRoller.getWeblogManager();
+        WebsiteData website = new WebsiteData(
+            null,                // id
+            name,                // name
+            handle,              // handle
+            description,         // description
+            ud,                  // userId
+            "dummy",             // defaultPageId
+            "dummy",             // weblogDayPageId
+            Boolean.TRUE,        // enableBloggerApi
+            null,                // bloggerCategory
+            null,                // defaultCategory
+            "editor-text.jsp",   // editorPage
+            "",                  // ignoreWords
+            Boolean.TRUE,        // allowComments  
+            Boolean.FALSE,       // emailComments
+            "",                  // emailFromAddress
+            Boolean.TRUE,        // isEnabled
+            email,               // emailAddress
+            new Date());
+        website.setEditorTheme(theme);
+        website.setLocale(locale);
+        website.setTimeZone(timeZone);
+        website.save();
+
+        WeblogCategoryData rootCat = wmgr.createWeblogCategory(
+            website, // websiteId
+            null,   // parent
+            "root",  // name
+            "root",  // description
+            null ); // image
+        rootCat.save();
+
+        String cats = RollerConfig.getProperty("newuser.categories");
+        if (cats != null)
+        {
+            String[] splitcats = cats.split(",");
+            for (int i=0; i<splitcats.length; i++)
+            {
+                WeblogCategoryData c = wmgr.createWeblogCategory(
+                    website,         // website
+                    rootCat,         // parent
+                    splitcats[i],    // name
+                    splitcats[i],    // description
+                    null );          // image
+                c.save();
+            }
+        }        
+        website.setBloggerCategory(rootCat);
+        website.setDefaultCategory(rootCat);
+                
+        BookmarkManager bmgr = mRoller.getBookmarkManager();                    
+        FolderData root = bmgr.createFolder(
+            null, "root", "root", website);
+        root.save();
+
+        Integer zero = new Integer(0);
+        String blogroll = RollerConfig.getProperty("newuser.blogroll");
+        if (blogroll != null)
+        {
+            String[] splitroll = blogroll.split(",");
+            for (int i=0; i<splitroll.length; i++)
+            {
+                String[] rollitems = splitroll[i].split("\\|");
+                BookmarkData b = bmgr.createBookmark(
+                    root,                // parent
+                    rollitems[0],        // name
+                    "",                  // description
+                    rollitems[1].trim(), // url
+                    null,                // feedurl
+                    zero,                // weight
+                    zero,                // priority
+                    null);               // image
+                b.save();                    
+            }
+        }
+        
+        // Add user as member of website
+        PermissionsData perms = new PermissionsData();
+        perms.setUser(ud);
+        perms.setWebsite(website);
+        perms.setPending(false);
+        perms.setPermissionMask(PermissionsData.ADMIN);
+        perms.save();
+
+        return website;
+    }
+

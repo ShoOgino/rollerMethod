@@ -13,20 +13,31 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rreq.isUserAuthorizedToEdit() )
+            RollerSession rses = RollerSession.getRollerSession(request);
+            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+            WeblogEntryData entry = rreq.getWeblogEntry();           
+            WeblogEntryFormEx form = (WeblogEntryFormEx)actionForm;
+            if (entry == null && form.getId() != null)
             {
-                WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
-                WeblogEntryData entry = rreq.getWeblogEntry();
-                WeblogEntryFormEx form = (WeblogEntryFormEx)actionForm;
-                if (entry == null && form.getId() != null)
-                {
-                    entry= wmgr.retrieveWeblogEntry(form.getId());
-                }
+                entry = wmgr.retrieveWeblogEntry(form.getId());
+            }
+            if (entry == null)
+            {   
+                ResourceBundle resources = ResourceBundle.getBundle(
+                    "ApplicationResources", request.getLocale());
+                request.setAttribute("javax.servlet.error.message", 
+                    resources.getString("weblogEntry.notFound"));  
+                forward = mapping.findForward("error");
+            }                
+            else if (rses.isUserAuthorizedToAuthor(entry.getWebsite()) 
+              || (rses.isUserAuthorized(entry.getWebsite()) && !entry.isPublished()))
+            {
                 form.copyFrom(entry, request.getLocale());
-
-                request.setAttribute("model",
-                        new WeblogEntryPageModel(request, response, mapping,
-                                form, WeblogEntryPageModel.EDIT_MODE));
+                WeblogEntryPageModel pageModel = new WeblogEntryPageModel(
+                    request, response, mapping, form, 
+                        WeblogEntryPageModel.EDIT_MODE);
+                pageModel.setWebsite(entry.getWebsite());
+                request.setAttribute("model", pageModel);
             }
             else
             {

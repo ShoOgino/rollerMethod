@@ -16,7 +16,7 @@
             HttpServletRequest request =
                 (HttpServletRequest)pageContext.getRequest();
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            UserData user = rreq.getUser();
+            WebsiteData website = UploadFileFormAction.getWebsite(request);
 
             // for formatting the file size
             DecimalFormat format = (DecimalFormat) DecimalFormat.getInstance();
@@ -33,7 +33,7 @@
             // get the files
             String[] files = new String[0];
             int numFiles = 0;
-            File d = new File(dir + user.getUserName());
+            File d = new File(dir + website.getHandle());
             if (d.mkdirs() || d.exists())
             {
                 files = this.fileList(d);
@@ -52,7 +52,7 @@
                     // to PRIMARY
                     java.text.Collator locCollator =
                         java.text.Collator.getInstance(
-                            rreq.getWebsite().getLocaleInstance());
+                            website.getLocaleInstance());
                     locCollator.setStrength(Collator.PRIMARY);
                     java.util.Arrays.sort(files, locCollator);
 
@@ -73,7 +73,7 @@
                         fileLink = RequestUtils.printableURL(
                             RequestUtils.absoluteURL( request,
                                 RollerContext.getUploadPath( app ) +
-                                "/" + user.getUserName() + "/" + files[i] ) );
+                                "/" + website.getHandle() + "/" + files[i] ) );
                         pw.print("<td class=\"rollertable\"><a href=\"" +
                             fileLink + "\">" + files[i] + "</a></td>");
                         pw.print("<td class=\"rollertable\" align=\"right\">" +

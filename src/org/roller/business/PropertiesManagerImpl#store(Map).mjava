@@ -3,12 +3,19 @@
      */
     public void store(Map properties) throws RollerException
     {
+        UserData user = this.mStrategy.getUser();
+        if (!user.hasRole("admin") && !user.equals(UserData.SYSTEM_USER)) 
+        {
+            throw new RollerPermissionsException(
+                    "Only global admin or system user can save properties");
+        }
+                
         // just go through the list and store each property
         Iterator props = properties.values().iterator();
         while (props.hasNext())
         {
             try
-            {
+            {  
                 this.mStrategy.store((RollerPropertyData) props.next());
             }
             catch (RollerException re)

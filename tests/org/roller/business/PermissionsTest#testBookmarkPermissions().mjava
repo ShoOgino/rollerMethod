@@ -1,19 +1,18 @@
     public void testBookmarkPermissions() throws Exception
     {
         getRoller().begin(UserData.ANONYMOUS_USER);
+        UserManager umgr = getRoller().getUserManager();
         
         // evil testuser
-        UserData testuser = getRoller().getUserManager().getUser("testuser");       
+        UserData testuser = umgr.getUser("testuser0");       
         assertNotNull(testuser);
         
         // gets hold of testuser0's entry
-        WebsiteData website0 = getRoller().getUserManager().getWebsite("testuser0");
+        UserData testuser0 = umgr.getUser("testuser2");
+        WebsiteData website0 = (WebsiteData)umgr.getWebsites(testuser0, null).get(0);
         assertNotNull(website0);
-        List folders = getRoller().getBookmarkManager().getAllFolders(website0);
-        FolderData root = (FolderData)folders.get(0);
-        FolderData folder = (FolderData)root.getFolders().get(0);
-        
-        BookmarkData bookmark = (BookmarkData)(folder.getBookmarks().iterator().next());
+        FolderData root = getRoller().getBookmarkManager().getRootFolder(website0);
+        BookmarkData bookmark = (BookmarkData)root.getBookmarks().iterator().next();
         assertNotNull(bookmark);
         
         // and tries to save it
@@ -30,19 +29,6 @@
         }       
         assertTrue(denied);
         
-        getRoller().setUser(testuser);
-        denied = false; 
-        try 
-        {
-            folder.save();
-        }
-        catch (RollerPermissionsException e)
-        {
-            // permission denied!
-            denied = true;
-        }       
-        assertTrue(denied);
-       
         getRoller().rollback();
     }
 

@@ -10,32 +10,40 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rreq.isUserAuthorizedToEdit() )
+            WebsiteData website = rreq.getWebsite();
+            RollerSession rses = RollerSession.getRollerSession(request);
+            if (rses.isUserAuthorizedToAdmin(website))
             {
-                UserData ud = rreq.getUser();
+                Roller roller = RollerFactory.getRoller();
+                UserManager umgr = roller.getUserManager();
+                WeblogManager wmgr = roller.getWeblogManager();
+                UserData ud = rses.getAuthenticatedUser();
                 request.setAttribute("user",ud);
 
-                WebsiteData hd = rreq.getWebsite();
-                WebsiteForm wf = (WebsiteFormEx)actionForm;
-                wf.copyFrom(hd, request.getLocale());
+                WebsiteFormEx wf = (WebsiteFormEx)actionForm;
+                wf.copyFrom(website, request.getLocale());
 
-                List cd = rreq.getRoller().getWeblogManager()
-                   .getWeblogCategories(rreq.getWebsite(), true);
+                List cd = wmgr.getWeblogCategories(website, true);
                 request.setAttribute("categories",cd);
 
-                List bcd = rreq.getRoller().getWeblogManager()
-                    .getWeblogCategories(rreq.getWebsite(), true);
+                List bcd = wmgr.getWeblogCategories(website, true);
                 request.setAttribute("bloggerCategories",bcd);
 
-                List pages = rreq.getRoller().getUserManager().getPages(rreq.getWebsite());
+                List pages = umgr.getPages(website);
                 request.setAttribute("pages",pages);
 
                 ServletContext ctx = request.getSession().getServletContext();
                 String editorPages = 
                         RollerRuntimeConfig.getProperty("users.editor.pages");
                 
-                List epages = Arrays.asList(StringUtils.split(StringUtils.deleteWhitespace(editorPages), ","));
+                List epages = Arrays.asList(StringUtils.split(
+                        StringUtils.deleteWhitespace(editorPages), ","));
                 request.setAttribute("editorPagesList", epages);
+                
+                    
+                WebsitePageModel pageModel = new WebsitePageModel(
+                  "websiteSettings.title", request, response, mapping, website);
+                request.setAttribute("model",pageModel);   
             }
             else
             {

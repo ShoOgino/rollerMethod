@@ -9,11 +9,14 @@
         ActionForward forward = mapping.findForward("weblogEdit.page");
         try
         {
-            RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rreq.isUserAuthorizedToEdit() )
+            WeblogEntryFormEx wf = (WeblogEntryFormEx)actionForm;
+            UserManager umgr = RollerFactory.getRoller().getUserManager();
+            WebsiteData site = umgr.retrieveWebsite(wf.getWebsiteId());
+            RollerSession rses = 
+                RollerSession.getRollerSession(request);
+            if ( rses.isUserAuthorizedToAuthor(site) )
             {
                 HttpSession session = request.getSession(true);
-                WeblogEntryFormEx wf = (WeblogEntryFormEx)actionForm;
                 
                 // we need to save any new entries before SpellChecking
                 if (wf.getId() == null) 

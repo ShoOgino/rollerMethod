@@ -25,9 +25,9 @@
         Session ses = getSession();
         try
         {
-            obj = (PersistentObject)ses.load( clazz, id );
+            obj = (PersistentObject)ses.get( clazz, id );
         }
-        catch (Exception e)
+        catch (Throwable e)
         {
             if (mLogger.isDebugEnabled())
             {

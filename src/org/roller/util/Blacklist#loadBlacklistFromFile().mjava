@@ -1,0 +1,42 @@
+    /**
+     * Load the MT blacklist from the file system.
+     *
+     * We look for a previously downloaded version of the blacklist first and
+     * if it's not found then we load the default blacklist packed with Roller.
+     */
+    private void loadBlacklistFromFile() {
+        
+        InputStream txtStream = null;
+        try {
+            String path = this.uploadDir + File.separator + blacklistFile;
+            File blacklistFile = new File(path);
+            
+            // check our lastModified date to see if we need to re-read the file
+            if(this.lastModified != null &&
+                    this.lastModified.getTime() >= blacklistFile.lastModified()) {
+                
+                mLogger.debug("Blacklist is current, no need to load again");
+                return;
+            } else {
+                this.lastModified = new Date(blacklistFile.lastModified());
+            }
+            
+            txtStream = new FileInputStream(blacklistFile);
+            
+            mLogger.debug("Loading blacklist from "+path);
+        } catch (Exception e) {
+            // Roller keeps a copy in the webapp just in case
+            txtStream = getClass().getResourceAsStream("/"+blacklistFile);
+            
+            mLogger.debug("Couldn't find downloaded blacklist, "+
+                    "loading from classpath instead");
+        }
+        
+        if (txtStream != null) {
+            readFromStream(txtStream, false);
+        } else {
+            mLogger.error("couldn't load a blacklist file from anywhere, "+
+                    "this means blacklist checking is disabled for now.");
+        }
+    }
+

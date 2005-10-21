@@ -5,52 +5,47 @@
         try
         {
             String groupHandle = (group == null) ? NO_GROUP : group.getHandle();
-            ret = (List)aggregationsByGroup.get(groupHandle);
-            if (ret == null) 
+            long startTime = System.currentTimeMillis();
+            Session session = 
+                ((HibernateStrategy)strategy).getSession();
+            if (group != null)
             {
-                long startTime = System.currentTimeMillis();
-                Session session = 
-                    ((HibernateStrategy)strategy).getSession();
-                if (group != null)
-                {
-                    Query query = session.createQuery(
-                        "select entry from org.roller.pojos.PlanetEntryData entry "
-                        +"join entry.subscription.groupSubscriptionAssocs assoc "
-                        +"where assoc.group=:group order by entry.published desc");
-                    query.setEntity("group", group);
-                    query.setMaxResults(maxEntries);
-                    ret = query.list();
-                }
-                else
-                {
-                    Query query = session.createQuery(
-                       "select entry from org.roller.pojos.PlanetEntryData entry "
-                       +"join entry.subscription.groupSubscriptionAssocs assoc "
-                       +"where "
-                       +"assoc.group.handle='external' or assoc.group.handle='all'"
-                       +" order by entry.published desc");
-                    query.setMaxResults(maxEntries);
-                    ret = query.list();
-                }
-                Date retLastUpdated = null;
-                if (ret.size() > 0)
-                {
-                    PlanetEntryData entry = (PlanetEntryData)ret.get(0);
-                    retLastUpdated = entry.getPublished();
-                }
-                else 
-                {
-                    retLastUpdated = new Date();
-                }
-                aggregationsByGroup.put(groupHandle, ret);
-                lastUpdatedByGroup.put(groupHandle, retLastUpdated);
-
-                long endTime = System.currentTimeMillis();
-                logger.info("Generated aggregation in "
-                                    +((endTime-startTime)/1000.0)+" seconds");
+                Query query = session.createQuery(
+                    "select entry from org.roller.pojos.PlanetEntryData entry "
+                    +"join entry.subscription.groupSubscriptionAssocs assoc "
+                    +"where assoc.group=:group order by entry.published desc");
+                query.setEntity("group", group);
+                query.setMaxResults(maxEntries);
+                ret = query.list();
             }
+            else
+            {
+                Query query = session.createQuery(
+                   "select entry from org.roller.pojos.PlanetEntryData entry "
+                   +"join entry.subscription.groupSubscriptionAssocs assoc "
+                   +"where "
+                   +"assoc.group.handle='external' or assoc.group.handle='all'"
+                   +" order by entry.published desc");
+                query.setMaxResults(maxEntries);
+                ret = query.list();
+            }
+            Date retLastUpdated = null;
+            if (ret.size() > 0)
+            {
+                PlanetEntryData entry = (PlanetEntryData)ret.get(0);
+                retLastUpdated = entry.getPublished();
+            }
+            else 
+            {
+                retLastUpdated = new Date();
+            }
+            lastUpdatedByGroup.put(groupHandle, retLastUpdated);
+
+            long endTime = System.currentTimeMillis();
+            logger.info("Generated aggregation in "
+                                +((endTime-startTime)/1000.0)+" seconds");
         }
-        catch (Exception e)
+        catch (Throwable e)
         {
             logger.error("ERROR: building aggregation for: "+group, e);
             throw new RollerException(e);

@@ -1,0 +1,21 @@
+    /** Deserialize an Atom Collection XML document into an object */
+    public static AtomCollection documentToCollection(Document document)
+            throws Exception
+    {
+        AtomCollection collection = new AtomCollection();
+        Element root = document.getRootElement();
+        List types = root.getChildren("member-type", ns);
+        for (Iterator i=types.iterator(); i.hasNext();)
+        {
+            Element e = (Element)i.next();
+            collection.addMemberType(e.getText());
+        }
+        List templates = root.getChildren("search-template", ns);
+        for (Iterator i=types.iterator(); i.hasNext();)
+        {
+            Element e = (Element)i.next();
+            collection.addMemberType(e.getText());
+        }
+        return collection;
+    }
+

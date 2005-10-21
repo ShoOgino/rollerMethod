@@ -4,39 +4,39 @@
 		boolean selected = false;
         HttpSession ses = req.getSession(false);
         
+        // first look for menu state in request params, then attributes
         String itemKey = req.getParameter(RollerMenuModel.MENU_ITEM_KEY );
         if (null == itemKey) 
         {
             itemKey = (String)req.getAttribute(RollerMenuModel.MENU_ITEM_KEY);
         }
-        if (null == itemKey) 
-        {
-            itemKey = (String)ses.getAttribute(mMenuId+"_"+RollerMenuModel.MENU_ITEM_KEY);
-        }
-
+        
         if (itemKey != null && itemKey.equals(mName)) 
         {
             selected = true;
         }
-		else
+		else if (mForward != null) 
 		{
-			// Is this item's forward the one being requested?
+			// next, can we use Struts forward name to find menu state
             ServletContext ctx = RollerContext.getServletContext();     
-			ModuleConfig mConfig = RequestUtils.getModuleConfig(req,ctx);
-			ForwardConfig fConfig = mConfig.findForwardConfig(mForward);						
-			if (fConfig != null)
+			ModuleConfig mConfig = RequestUtils.getModuleConfig(req, ctx);
+			ForwardConfig fconfig = mConfig.findForwardConfig(mForward);
+            ActionMapping amapping = 
+                    (ActionMapping)req.getAttribute(Globals.MAPPING_KEY);            
+			if (fconfig != null && amapping != null)
 			{
-				// Is the forward path in the request's URL?
-				String url = req.getRequestURL().toString();
-				
-				if ( url.indexOf( fConfig.getPath() ) != -1 )
-				{
-					//  Yes it is, so return true - this item is selected
-					selected = true;
-				}
-				
+                String reqPath = amapping.getPath();
+                String fwdPath = fconfig.getPath();
+                int end = fwdPath.indexOf(".do");
+                fwdPath = (end == -1) ? fwdPath : fwdPath.substring(0, end);
+                if  (fwdPath.equals(reqPath))
+                {
+                    selected = true;
+                }
 			}
 		}
+        
+        // still not found, look for menu state in session attributes
 		if (ses != null && selected)
 		{
 			ses.setAttribute(mMenuId+"_"+RollerMenuModel.MENU_ITEM_KEY, mName);

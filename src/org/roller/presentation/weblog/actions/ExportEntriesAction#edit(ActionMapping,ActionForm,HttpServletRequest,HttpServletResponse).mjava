@@ -20,14 +20,17 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( !rreq.isUserAuthorizedToEdit() )
+            RollerSession rses = 
+                    RollerSession.getRollerSession(rreq.getRequest());
+            if (     rreq.getWebsite() == null 
+                 || !rses.isUserAuthorizedToAdmin(rreq.getWebsite()))
             {
                 forward = mapping.findForward("access-denied");
             }
             else
             {
                 request.setAttribute("model",
-                    new BasePageModel(request, response, mapping));
+                    new BasePageModel("", request, response, mapping));
             }
         }
         catch (Exception e)

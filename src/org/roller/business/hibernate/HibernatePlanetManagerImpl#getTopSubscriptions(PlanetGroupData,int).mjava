@@ -2,27 +2,23 @@
             PlanetGroupData group, int max) throws RollerException
     {
         String groupHandle = (group == null) ? NO_GROUP : group.getHandle();
-        List ret = (List)topSubscriptionsByGroup.get(groupHandle);
-        if (ret == null)
+        List ret = null;
+        try
         {
-            try
-            {
-                Session session = ((HibernateStrategy)strategy).getSession();
-                Query query = session.createQuery(
-                 "select sub from org.roller.pojos.PlanetSubscriptionData sub "
-                   +"join sub.groupSubscriptionAssocs assoc "
-                   +"where "
-                   +"assoc.group.handle=:groupHandle "
-                   +"order by sub.inboundblogs desc");
-                query.setString("groupHandle", group.getHandle());
-                query.setMaxResults(max);
-                ret = query.list();
-            }
-            catch (HibernateException e)
-            {
-                throw new RollerException(e);
-            }
-            topSubscriptionsByGroup.put(groupHandle, ret);
+            Session session = ((HibernateStrategy)strategy).getSession();
+            Query query = session.createQuery(
+             "select sub from org.roller.pojos.PlanetSubscriptionData sub "
+               +"join sub.groupSubscriptionAssocs assoc "
+               +"where "
+               +"assoc.group.handle=:groupHandle "
+               +"order by sub.inboundblogs desc");
+            query.setString("groupHandle", group.getHandle());
+            query.setMaxResults(max);
+            ret = query.list();
+        }
+        catch (HibernateException e)
+        {
+            throw new RollerException(e);
         }
         return ret;
     }

@@ -46,18 +46,7 @@
             currentAssoc = currentAssoc.getAncestor().getParentAssoc();
             count++;
         }
-        
-        // all descendents must also reset their ancestor links
-//        Query childQuery = 
-//            pstrategy.getQueryFactory().createQuery(getAssocClass());
-//        childQuery.setWhere(
-//            pstrategy.getQueryFactory().createCondition(                
-//                pstrategy.getQueryFactory().createCondition(
-//                    getAncestorPropertyName(), Query.EQ, this),
-//                Query.AND,                        
-//                pstrategy.getQueryFactory().createCondition(
-//                    "relation", Query.EQ, Assoc.PARENT)));
-//        
+
         Iterator children = getChildAssocs().iterator();
         while (children.hasNext())
         {
@@ -69,7 +58,7 @@
             // recursively...
             assoc.getObject().save();    
         }
-        
+    
         // Clear new parent now that new parent has been saved
         mNewParent = null;
     }

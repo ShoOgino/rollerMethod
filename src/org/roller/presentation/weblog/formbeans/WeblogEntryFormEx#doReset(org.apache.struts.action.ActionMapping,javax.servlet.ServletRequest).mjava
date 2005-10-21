@@ -3,10 +3,12 @@
             javax.servlet.ServletRequest request)
     {
         super.doReset(mapping, request);
+        mLogger.debug("reset called");
         
         pluginsArray = new String[0];
         
         // reset time fields to current time
+        /* we want the date fields to be empty by default now -- Allen G
         Calendar cal = Calendar.getInstance(request.getLocale());
         Date now = new Date();
         cal.setTime(now);        
@@ -15,5 +17,7 @@
         mSeconds = new Integer(cal.get(Calendar.SECOND));        
         DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, request.getLocale());
         mDateString = df.format(now);
+        */
+        mDateString = "0/0/0";
     }
 

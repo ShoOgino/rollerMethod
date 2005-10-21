@@ -13,18 +13,23 @@
         ActionForward forward = mapping.findForward("weblogEntryRemove.page");
         try
         {
-            RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rreq.isUserAuthorizedToEdit() )
+            Roller roller = RollerFactory.getRoller();
+            WeblogEntryFormEx wf = (WeblogEntryFormEx)actionForm;
+            WeblogEntryData wd = 
+                roller.getWeblogManager().retrieveWeblogEntry(wf.getId());
+            RollerSession rses = 
+                RollerSession.getRollerSession(request);
+            if (     rses.isUserAuthorizedToAuthor(wd.getWebsite()) 
+                 || (rses.isUserAuthorized(wd.getWebsite()) && wd.isDraft()) )
             {
-                WeblogEntryFormEx wf = (WeblogEntryFormEx)actionForm;
-                WeblogEntryData wd = 
-                    RollerFactory.getRoller().getWeblogManager().retrieveWeblogEntry(wf.getId());
                 wf.copyFrom(wd, request.getLocale());
                 if (wd == null || wd.getId() == null)
                 {
-                    throw new NullPointerException(
-                        "Unable to find WeblogEntry for " +
-                        request.getParameter(RollerRequest.WEBLOGENTRYID_KEY));
+                    ResourceBundle resources = ResourceBundle.getBundle(
+                        "ApplicationResources", request.getLocale());
+                    request.setAttribute("javax.servlet.error.message", 
+                        resources.getString("weblogEntry.notFound"));  
+                    forward = mapping.findForward("error");
                 }
             }
             else

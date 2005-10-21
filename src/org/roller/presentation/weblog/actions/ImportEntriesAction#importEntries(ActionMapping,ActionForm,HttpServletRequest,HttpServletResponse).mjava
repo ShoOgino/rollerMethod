@@ -9,27 +9,30 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( !rreq.isUserAuthorizedToEdit() )
+            RollerSession rollerSession = RollerSession.getRollerSession(rreq.getRequest());
+            if ( rreq.getWebsite() == null 
+                  || !rollerSession.isUserAuthorizedToAdmin(rreq.getWebsite()))
             {
                 forward = mapping.findForward("access-denied");
             }
             else
             {
-				getXmlFiles(actionForm, rreq);
+			   getXmlFiles(actionForm, rreq);
                 ImportEntriesForm form = (ImportEntriesForm)actionForm;
                 if (StringUtils.isNotEmpty(form.getImportFileName()))
                 {
                     // "default" values
-                    UserData user = rreq.getUser();
+                    WebsiteData website = rreq.getWebsite();
 
                     // load selected file
-                    ServletContext app = this.getServlet().getServletConfig().getServletContext();
+                    ServletContext app =
+                            getServlet().getServletConfig().getServletContext();
                     String dir = RollerContext.getUploadDir( app );
-                    File f = new File(dir + user.getUserName() +
+                    File f = new File(dir + website.getHandle() +
                                       "/" + form.getImportFileName());
 
                     //ArchiveParser archiveParser =
-                        //new ArchiveParser(rreq.getRoller(), rreq.getWebsite(), f);
+                        //new ArchiveParser(RollerFactory.getRoller(), rreq.getWebsite(), f);
                     String parseMessages = null; // archiveParser.parse();
 
                     // buf will be non-zero if Entries were imported
@@ -42,9 +45,7 @@
                         saveMessages(request, notices);
 
                         // Flush the page cache
-                        PageCacheFilter.removeFromCache( request, user );
-                        // refresh the front page cache
-                        MainPageAction.flushMainPageCache();
+                        PageCacheFilter.removeFromCache(request, website);
                     }
                     else
                     {

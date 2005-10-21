@@ -6,13 +6,9 @@
         ActionForward forward = mapping.findForward("planetGroups.page");
         try
         {
-            RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if (rreq.isUserAuthorizedToEdit())
+            if (RollerSession.getRollerSession(request).isGlobalAdminUser())
             {
-                Roller roller = rreq.getRoller();
-                PlanetManager planet = roller.getPlanetManager();
-                PlanetGroupForm form = (PlanetGroupForm)actionForm;
-                
+                PlanetGroupForm form = (PlanetGroupForm)actionForm;              
                 form.doReset(mapping, request);
                 
                 request.setAttribute("model", 

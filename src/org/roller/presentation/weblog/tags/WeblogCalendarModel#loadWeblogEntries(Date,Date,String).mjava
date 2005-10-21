@@ -6,13 +6,13 @@
     {
         try
         {
-            WeblogManager mgr = mRollerReq.getRoller().getWeblogManager();
+            WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
             mMonthMap = mgr.getWeblogEntryStringMap(
                             mRollerReq.getWebsite(), // userName
                             startDate,              // startDate
                             endDate,                // endDate
                             catName,                // catName
-                            WeblogManager.PUB_ONLY, // status
+                            WeblogEntryData.PUBLISHED, // status
                             null 
             );
         }

@@ -10,7 +10,7 @@
         
         // try getting the preview theme
         String themeName = request.getParameter("theme");
-        if(themeName != null) {
+        if (themeName != null) {
             try {
                 Roller roller = RollerFactory.getRoller();
                 ThemeManager themeMgr = roller.getThemeManager();
@@ -43,11 +43,13 @@
             UserManager userMgr = RollerFactory.getRoller().getUserManager();
             
             WebsiteData website = null;
-            if (request.getAttribute(RollerRequest.OWNING_USER) != null) {
+            if (request.getAttribute(RollerRequest.OWNING_WEBSITE) != null) 
+            {
                 UserData user = (UserData)
-                    request.getAttribute(RollerRequest.OWNING_USER);
-                website = userMgr.getWebsite(user.getUserName());
-            } else {
+                    request.getAttribute(RollerRequest.OWNING_WEBSITE);
+            } 
+            else 
+            {
                 website = rreq.getWebsite();
             }
             

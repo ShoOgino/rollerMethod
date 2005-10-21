@@ -14,9 +14,9 @@
         mLogger.info("     BlogId: " + blogid);
         mLogger.info("     UserId: " + userid);
 
-        WebsiteData website = validate(userid,password);
+        WebsiteData website = validate(blogid, userid,password);
         RollerRequest rreq = RollerRequest.getRollerRequest();
-        Roller roller = rreq.getRoller();
+        Roller roller = RollerFactory.getRoller();
         try
         {
             Hashtable result = new Hashtable();
@@ -24,7 +24,8 @@
             List cats = weblogMgr.getWeblogCategories(website, false);
             for (Iterator wbcItr = cats.iterator(); wbcItr.hasNext();) {
                 WeblogCategoryData category = (WeblogCategoryData) wbcItr.next();
-                result.put(category.getPath(), createCategoryStruct(category));
+                result.put(category.getPath(), 
+                           createCategoryStruct(category, userid));
             }
             return result;
         }

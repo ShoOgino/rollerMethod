@@ -1,0 +1,19 @@
+    /** 
+     * Get pending permissions for website
+     */
+    public List getPendingPermissions(WebsiteData website) throws RollerException
+    {
+        Session session = ((HibernateStrategy)mStrategy).getSession();
+        Criteria criteria = session.createCriteria(PermissionsData.class);            
+        criteria.add(Expression.eq("website", website));
+        criteria.add(Expression.eq("pending", Boolean.TRUE));
+        try
+        {
+            return criteria.list();
+        }
+        catch (HibernateException e)
+        {
+            throw new RollerException(e);
+        }
+    }
+

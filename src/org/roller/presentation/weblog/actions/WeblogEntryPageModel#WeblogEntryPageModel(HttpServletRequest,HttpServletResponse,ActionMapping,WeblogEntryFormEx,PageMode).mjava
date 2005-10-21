@@ -5,7 +5,7 @@
             WeblogEntryFormEx form,
             PageMode mode) throws RollerException
     {
-        super(request, response, mapping);
+        super("dummy", request, response, mapping);
         this.rollerRequest = RollerRequest.getRollerRequest(request);  
         this.form = form;
         this.mode = mode;
@@ -14,7 +14,7 @@
         
         if (null != form.getId()) 
         {
-            WeblogManager wmgr = rollerRequest.getRoller().getWeblogManager();
+            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
             comments = wmgr.getComments(form.getId(), false);
         }
     }

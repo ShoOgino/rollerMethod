@@ -2,54 +2,42 @@
      * Use raw SQL because Hibernate can't handle the query.
      */
     protected int getHits(WebsiteData website, String type)
-        throws RollerException
-    {
+    throws RollerException {
         int hits = 0;
-        if (mLogger.isDebugEnabled())
-        {
+        if (mLogger.isDebugEnabled()) {
             mLogger.debug("getHits: " + website.getName());
         }
-
-        //Question: why not use website.id instead to reduce joins?
-        Object[] args = { Boolean.TRUE, website.getUser().getUserName() };
+        
+        Object[] args = { Boolean.TRUE, website.getId() };
         Type[] types = { Hibernate.BOOLEAN, Hibernate.STRING };
-
+        
         // For a query like this, Hibernate returns a list of lists
         Session session = ((HibernateStrategy)mStrategy).getSession();
         List results;
-        try
-        {
-            results = session.find(
-               "select sum(h.dayHits),sum(h.totalHits) from h in class " +
-               "org.roller.pojos.RefererData " +
-               "where h.website.isEnabled=? and h.website.user.userName=? ",
-               args, types);
-        }
-        catch (HibernateException e)
-        {
+        try {
+            Query q = session.createQuery(
+                    "select sum(h.dayHits),sum(h.totalHits) from h in class " +
+                    "org.roller.pojos.RefererData " +
+                    "where h.website.enabled=? and h.website.id=? ");
+            q.setParameters(args, types);
+            results = q.list();
+        } catch (HibernateException e) {
             throw new RollerException(e);
         }
         Object[] resultsArray = (Object[]) results.get(0);
-
-        if (resultsArray.length > 0 && type.equals(DAYHITS))
-        {
-            if ( resultsArray[0] != null )
-            {
+        
+        if (resultsArray.length > 0 && type.equals(DAYHITS)) {
+            if ( resultsArray[0] != null ) {
                 hits = ((Integer) resultsArray[0]).intValue();
             }
-        }
-        else if ( resultsArray.length > 0 )
-        {
-            if ( resultsArray[0] != null )
-            {
+        } else if ( resultsArray.length > 0 ) {
+            if ( resultsArray[0] != null ) {
                 hits = ((Integer) resultsArray[1]).intValue();
             }
-        }
-        else
-        {
+        } else {
             hits = 0;
         }
-
+        
         return hits;
     }
 

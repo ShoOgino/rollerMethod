@@ -16,7 +16,10 @@
         RollerRequest rreq = RollerRequest.getRollerRequest(req);
         try
         {
-            if (!hasRequiredRights(rreq))
+            BasePageModel pageModel = 
+                new BasePageModel(getPingTargetsTitle(), req, res, mapping);
+            req.setAttribute("model",pageModel);            
+            if (!hasRequiredRights(rreq, rreq.getWebsite()))
             {
                 return mapping.findForward(ACCESS_DENIED_PAGE);
             }

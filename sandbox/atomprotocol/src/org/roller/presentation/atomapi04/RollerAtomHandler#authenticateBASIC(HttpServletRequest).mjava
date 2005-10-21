@@ -1,0 +1,27 @@
+    protected String authenticateBASIC(HttpServletRequest request) {
+        String authorization = request.getHeader("Authorization");
+        if (authorization != null) {
+            try { 
+                StringTokenizer toker = new StringTokenizer(authorization, " ");
+                String basic = toker.nextToken();
+                if (toker.hasMoreTokens()) {
+                    String digest = toker.nextToken();
+                    String pair = new String(WSSEUtilities.base64Decode(digest));
+                    toker = new StringTokenizer(pair,":");
+                    String pairName = toker.nextToken();
+                    UserData user = mRoller.getUserManager().getUser(pairName);
+                    if (user != null && toker.hasMoreTokens()) {
+                        String pairPass = toker.nextToken();
+                        if (user.getPassword().equals(pairPass)) {
+                            return pairName;
+                        }
+                    }
+                }
+            }
+            catch (Exception e) {
+                mLogger.error(e);
+            }
+        }
+        return null;
+    }
+

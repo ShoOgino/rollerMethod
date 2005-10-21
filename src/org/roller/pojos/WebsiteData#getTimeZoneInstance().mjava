@@ -1,5 +1,5 @@
     /**
-     * Return TimeZone instance for value of timezone,
+     * Return TimeZone instance for value of timeZone,
      * otherwise return system default instance.
      *
      * @roller.wrapPojoMethod type="simple"
@@ -7,17 +7,17 @@
      */
     public TimeZone getTimeZoneInstance()
     {
-    	if (timezone == null) 
+    	if (timeZone == null) 
         {
             if (TimeZone.getDefault() != null) 
             {
-                this.setTimezone( TimeZone.getDefault().getID() );
+                this.setTimeZone( TimeZone.getDefault().getID() );
             }
             else
             {
-                this.setTimezone("America/New_York");
+                this.setTimeZone("America/New_York");
             }
         }
-        return TimeZone.getTimeZone(timezone);
+        return TimeZone.getTimeZone(timeZone);
     }
 

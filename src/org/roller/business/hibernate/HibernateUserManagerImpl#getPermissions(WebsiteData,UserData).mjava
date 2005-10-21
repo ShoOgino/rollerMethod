@@ -1,0 +1,21 @@
+    /**
+     * Return permissions for specified user in website
+     */
+    public PermissionsData getPermissions(
+            WebsiteData website, UserData user) throws RollerException
+    {
+        Session session = ((HibernateStrategy)mStrategy).getSession();
+        Criteria criteria = session.createCriteria(PermissionsData.class);            
+        criteria.add(Expression.eq("website", website));
+        criteria.add(Expression.eq("user", user));
+        try
+        {
+            List list = criteria.list();
+            return list.size()!=0 ? (PermissionsData)list.get(0) : null;
+        }
+        catch (HibernateException e)
+        {
+            throw new RollerException(e);
+        }
+    }
+

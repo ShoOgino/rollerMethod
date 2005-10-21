@@ -8,20 +8,22 @@
         HttpServletResponse response)
         throws IOException, ServletException
     {
-        RollerRequest rreq = null;
         ActionForward fwd = mapping.findForward("uploadFiles.page");
-        UserData user = null;
-        WebsiteData website = null;
+        WebsiteData website = getWebsite(request);
+        
+        BasePageModel pageModel = new BasePageModel(
+                "uploadFiles.title", request, response, mapping);
+        request.setAttribute("model", pageModel);
+        pageModel.setWebsite(website);
+                
         RollerMessages msgs = new RollerMessages();
         try
-        {
-            rreq = RollerRequest.getRollerRequest(request);
-            if ( !rreq.isUserAuthorizedToEdit() )
+        {            
+            RollerSession rses = RollerSession.getRollerSession(request);            
+            if ( !rses.isUserAuthorizedToAuthor(website) )
             {
                 return mapping.findForward("access-denied");
             }
-            website = rreq.getWebsite();
-            user = website.getUser();
         }
         catch (Exception e)
         {
@@ -76,7 +78,7 @@
                     fileSize = files[i].getFileSize();
                     
                     //retrieve the file data
-                    FileManager fmgr = rreq.getRoller().getFileManager();
+                    FileManager fmgr = RollerFactory.getRoller().getFileManager();
                     if (fmgr.canSave(website, fileName, fileSize, msgs))
                     {
                         InputStream stream = files[i].getInputStream();

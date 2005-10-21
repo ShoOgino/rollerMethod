@@ -1,0 +1,34 @@
+    //------------------------------------------------------------------------------
+    /** 
+     * Test that DELETE on EditURI deletes entry. 
+     */
+    public void testDeleteEntry() throws Exception
+    {
+        UserData user = (UserData)mUsersCreated.get(0);
+        WebsiteData website = (WebsiteData)
+            getRoller().getUserManager().getWebsites(user, null).get(0);        
+
+        WeblogEntryData entry = (WeblogEntryData) 
+            getRoller().getWeblogManager().getWeblogEntries(
+                website, null, null, null, null, new Integer(1)).get(0);
+
+        Entry fetchedEntry = getEntry(user, entry.getId());
+        assertEquals(entry.getId(), fetchedEntry.getId());
+
+        // Use Atom DELETE to delete the entry
+        MockHttpServletRequest mockRequest2 = getMockFactory().getMockRequest();
+        mockRequest2.setContextPath("/atom");
+        mockRequest2.setPathInfo(user.getUserName() + "/entry/" + entry.getId());
+        mockRequest2.addHeader("X-WSSE", 
+                generateWSSEHeader(user.getUserName(), user.getPassword()));
+        getServletModule().doDelete();      
+        getRoller().release();
+        resetMocks();
+        try 
+        {
+            getEntry(user, entry.getId()).getId();
+            fail(); // no exception was thrown!
+        }
+        catch (Exception expected) {}
+    }
+

@@ -6,8 +6,7 @@
             List ret = new ArrayList();
             try 
             {
-                Roller roller = 
-                    RollerRequest.getRollerRequest(mRequest).getRoller();  
+                Roller roller = RollerFactory.getRoller();  
                 ret = roller.getPlanetManager().getTopSubscriptions(num);
             }
             catch (RollerException e) 

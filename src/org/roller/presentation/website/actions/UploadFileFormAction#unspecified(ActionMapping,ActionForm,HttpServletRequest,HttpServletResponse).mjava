@@ -10,8 +10,15 @@
     {       
         try
         {
-            RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( !rreq.isUserAuthorizedToEdit() )
+            WebsiteData website = getWebsite(request);
+            
+            BasePageModel pageModel = new BasePageModel(
+                "uploadFiles.title", request, response, mapping);
+            pageModel.setWebsite(website);
+            request.setAttribute("model", pageModel);
+            
+            RollerSession rses = RollerSession.getRollerSession(request);
+            if ( !rses.isUserAuthorizedToAuthor(website) )
             {
                 return mapping.findForward("access-denied");
             }

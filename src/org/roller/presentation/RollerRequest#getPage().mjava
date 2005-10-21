@@ -12,7 +12,8 @@
             {
                 try
                 {
-                    mPage = getRoller().getUserManager().retrievePage(id);
+                    mPage = RollerFactory.getRoller()
+                        .getUserManager().retrievePage(id);
                 }
                 catch (RollerException e)
                 {

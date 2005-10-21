@@ -6,13 +6,14 @@
      */
     public List getRecentPublishedEntries() throws RollerException
     {
-        return rollerRequest.getRoller().getWeblogManager()
+        RollerSession rollerSession = RollerSession.getRollerSession(getRequest());
+        return RollerFactory.getRoller().getWeblogManager()
             .getWeblogEntries(
-                rollerRequest.getWebsite(), // userName
+                getWeblogEntry().getWebsite(), // userName
                 null,              // startDate
                 null,              // endDate
                 null,              // catName
-                WeblogManager.PUB_ONLY, // status
+                WeblogEntryData.PUBLISHED, // status
                 new Integer(20));  // maxEntries
     }
 

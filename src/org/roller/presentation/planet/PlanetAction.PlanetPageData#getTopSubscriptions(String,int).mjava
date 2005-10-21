@@ -7,8 +7,7 @@
             List ret = new ArrayList();
             try 
             {
-                Roller roller = 
-                    RollerRequest.getRollerRequest(mRequest).getRoller();  
+                Roller roller = RollerFactory.getRoller(); 
                 PlanetGroupData group= roller.getPlanetManager().getGroup(name);
                 ret = roller.getPlanetManager().getTopSubscriptions(group,num);
             }

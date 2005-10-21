@@ -5,7 +5,11 @@
         {
             return true;
         }
-        if (roller.getUser().equals(getWebsite().getUser()))
+        boolean author = getWebsite().hasUserPermissions(
+                roller.getUser(), (short)(PermissionsData.AUTHOR));
+        boolean limited = getWebsite().hasUserPermissions(
+                roller.getUser(), (short)(PermissionsData.LIMITED));
+        if (author || (limited && isDraft()) || (limited && isPending()))
         {
             return true;
         }

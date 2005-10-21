@@ -5,16 +5,16 @@
         HttpServletResponse response)
         throws Exception
     {
-        ActionForward forward = null;
+        ActionForward forward = mapping.findForward("categories");
         CategoryDeleteForm form = (CategoryDeleteForm)actionForm;
-        RollerRequest rreq = RollerRequest.getRollerRequest(request);
-        WeblogManager wmgr = rreq.getRoller().getWeblogManager();
-        
-        if (rreq.isUserAuthorizedToEdit())
-        {
-            String catid = request.getParameter("catid");
-            WeblogCategoryData catToDelete = 
+        WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+
+        String catid = request.getParameter(RollerRequest.WEBLOGCATEGORYID_KEY);
+        WeblogCategoryData catToDelete = 
                 wmgr.retrieveWeblogCategory(catid);
+        RollerSession rses = RollerSession.getRollerSession(request);
+        if (rses.isUserAuthorizedToAuthor(catToDelete.getWebsite()))
+        {
             String returnId = null;
             if (catToDelete.getParent() != null)
             {
@@ -23,10 +23,10 @@
             if (form.isDelete() == null)
             {
                 // Present CategoryDeleteOK? page to user
-                WebsiteData website = rreq.getWebsite();
+                RollerRequest rreq = RollerRequest.getRollerRequest(request);
                 WeblogCategoryData theCat = wmgr.retrieveWeblogCategory(catid);
                 Iterator allCats = 
-                    wmgr.getWeblogCategories(website).iterator();
+                    wmgr.getWeblogCategories(theCat.getWebsite()).iterator();
                 List destCats = new LinkedList();
                 while (allCats.hasNext())
                 {
@@ -43,7 +43,7 @@
                 if (destCats.size() > 0)
                 {
                     form.setName(theCat.getName());
-                    form.setCatid(catid);
+                    form.setCategoryId(catid); 
                     form.setCats(destCats);
                     form.setInUse(Boolean.valueOf(catToDelete.isInUse()));
                     forward = mapping.findForward("CategoryDeleteOK");
@@ -56,7 +56,6 @@
                         request.setAttribute(
                                 RollerRequest.WEBLOGCATEGORYID_KEY, returnId);
                     }               
-                    forward = mapping.findForward("Categories");
                 }
             }
             else if (form.isDelete().booleanValue()) 
@@ -71,14 +70,13 @@
                 // move entries to destCat and remove catToDelete
                 catToDelete.remove(destCat);
                 
-                rreq.getRoller().commit();
+                RollerFactory.getRoller().commit();
                 
                 if (null != returnId) 
                 {
                     request.setAttribute(
                         RollerRequest.WEBLOGCATEGORYID_KEY, returnId);
                 }               
-                forward = mapping.findForward("Categories");
             }
             else 
             {
@@ -88,7 +86,6 @@
                     request.setAttribute(
                        RollerRequest.WEBLOGCATEGORYID_KEY, returnId);
                 }               
-                forward = mapping.findForward("Categories");   
             }
         }
         else

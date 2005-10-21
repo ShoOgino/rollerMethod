@@ -13,7 +13,7 @@
             WebsiteData website = rreq.getWebsite();
             try
             {
-                if (!isAuthorized(rreq))
+                if (!isAuthorized(rreq, website))
                 {
                     return mapping.findForward("access-denied");
                 }
@@ -26,13 +26,24 @@
                 }
                 else
                 {
-                    WeblogUpdatePinger.PingResult pingResult = WeblogUpdatePinger.sendPing(absoluteUrl, pingTarget, website);
+                    WeblogUpdatePinger.PingResult pingResult = 
+                        WeblogUpdatePinger.sendPing(absoluteUrl, pingTarget, website);
                     if (pingResult.isError())
                     {
                         if (mLogger.isDebugEnabled()) mLogger.debug("Ping Result: " + pingResult);
                         ActionMessages errors = new ActionMessages();
-                        errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("ping.transmittedButErrorReturned"));
-                        errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(pingResult.getMessage()));
+                        if (pingResult.getMessage() != null && pingResult.getMessage().trim().length() > 0)
+                        {
+                            errors.add(ActionMessages.GLOBAL_MESSAGE, 
+                                new ActionMessage("ping.transmittedButError"));
+                            errors.add(ActionMessages.GLOBAL_MESSAGE, 
+                                new ActionMessage(pingResult.getMessage()));
+                        }
+                        else
+                        {
+                            errors.add(ActionMessages.GLOBAL_MESSAGE, 
+                                new ActionMessage("ping.transmissionFailed"));
+                        }
                         saveErrors(req, errors);
                     }
                     else
@@ -59,7 +70,7 @@
                 addSpecificMessages(ex, errors);
                 saveErrors(req, errors);
             }
-            return mapping.findForward(PING_RESULT_PAGE);
+            return view(mapping, form , req, res);
         }
         catch (Exception ex)
         {

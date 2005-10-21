@@ -27,7 +27,7 @@
             {
                 if ( entryid != null )
                 {
-                    WeblogManager weblogMgr = getRoller().getWeblogManager();
+                    WeblogManager weblogMgr = RollerFactory.getRoller().getWeblogManager();
                     mWeblogEntry = weblogMgr.retrieveWeblogEntry(entryid);                
                 
                     // We can use entry to find the website, if we don't have one
@@ -38,7 +38,8 @@
                 } 
                 else if ( mWebsite != null && anchor != null )
                 {
-                    WeblogManager weblogMgr = getRoller().getWeblogManager();
+                    WeblogManager weblogMgr = 
+                        RollerFactory.getRoller().getWeblogManager();
                     mWeblogEntry = weblogMgr.getWeblogEntryByAnchor(
                         mWebsite,anchor);
                 }                             
@@ -46,9 +47,13 @@
             catch (RollerException e)
             {
                 mLogger.error("EXCEPTION getting weblog entry",e);
-                mLogger.error("user=" + mWebsite.getUser());
                 mLogger.error("anchor=" + anchor);
                 mLogger.error("entryid=" + entryid);
+            }
+            if (mDate == null && mWeblogEntry != null)
+            {
+                mDate = mWeblogEntry.getPubTime();
+                mDateString = DateUtil.format8chars(mDate);
             }
         }           
         return mWeblogEntry;

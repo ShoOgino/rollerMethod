@@ -9,10 +9,23 @@
         ActionForward forward = mapping.findForward("editPages.page");
         try
         {
+            WeblogTemplateForm form = (WeblogTemplateForm)actionForm;
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rreq.isUserAuthorizedToEdit() )
+            RollerSession rses = RollerSession.getRollerSession(request);
+            request.setAttribute("model", new BasePageModel(
+                "pagesForm.title", request, response, mapping)); 
+            
+            WebsiteData website = rreq.getWebsite();
+            if (website == null && form.getId()!=null) 
             {
-                addModelObjects(rreq);
+                UserManager mgr = RollerFactory.getRoller().getUserManager();                
+                WeblogTemplate template = mgr.retrievePage(form.getId());
+                website = template.getWebsite();
+            }
+            
+            if ( rses.isUserAuthorizedToAdmin(website))
+            {
+                addModelObjects(request, response, mapping, website);
             }
             else
             {

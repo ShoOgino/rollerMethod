@@ -12,7 +12,7 @@
         mLogger.debug("     UserId: " + userid);
         mLogger.debug("   Password: *********");
 
-        WebsiteData website = validate(userid, password);
+        WebsiteData website = validate(blogid, userid, password);
         try
         {
             String name = (String) struct.get("name");    
@@ -23,7 +23,7 @@
             
             byte[] bits = (byte[]) struct.get("bits");
 
-            Roller roller = RollerRequest.getRollerRequest().getRoller();
+            Roller roller = RollerFactory.getRoller(); 
             FileManager fmgr = roller.getFileManager();
             RollerMessages msgs = new RollerMessages();
             
@@ -40,7 +40,7 @@
                 // TODO: build URL to uploaded file should be done in FileManager
                 String uploadPath = RollerContext.getUploadPath(
                         request.getSession(true).getServletContext());
-                uploadPath += "/" + website.getUser().getUserName() + "/" + name;
+                uploadPath += "/" + website.getHandle() + "/" + name;
                 String fileLink = RequestUtils.printableURL(
                         RequestUtils.absoluteURL(request, uploadPath));
                 

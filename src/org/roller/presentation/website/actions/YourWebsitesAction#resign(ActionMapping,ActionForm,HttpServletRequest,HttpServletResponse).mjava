@@ -1,0 +1,33 @@
+    public ActionForward resign(
+            ActionMapping       mapping,
+            ActionForm          actionForm,
+            HttpServletRequest  request,
+            HttpServletResponse response)
+            throws Exception
+    {
+        YourWebsitesForm form = (YourWebsitesForm)actionForm;
+        Roller roller = RollerFactory.getRoller();
+        RollerSession rses = RollerSession.getRollerSession(request);
+        UserData user = rses.getAuthenticatedUser();
+        RollerRequest rreq = RollerRequest.getRollerRequest(request);
+        WebsiteData website = rreq.getWebsite();
+        PermissionsData perms = 
+            roller.getUserManager().getPermissions(website, user);
+        if (perms != null) 
+        {
+            // TODO: notify website members that user has resigned  
+            perms.remove();
+            roller.commit();
+        }
+        
+        ActionMessages msgs = new ActionMessages();
+        msgs.add(null, new ActionMessage(
+                "yourWebsites.resigned", perms.getWebsite().getHandle()));
+        saveMessages(request, msgs);
+        
+        request.setAttribute("model",
+                new YourWebsitesPageModel(request, response, mapping));
+        ActionForward forward = mapping.findForward("yourWebsites.page");
+        return forward;
+    }
+

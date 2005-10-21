@@ -1,0 +1,27 @@
+    /** Verify that user without global admin role cannot save config property */
+    public void testConfigPermissions() throws Exception
+    {
+        getRoller().begin(UserData.ANONYMOUS_USER);
+        
+        UserData testuser0 = getRoller().getUserManager().getUser("testuser0");       
+        assertNotNull(testuser0);
+        
+        Map config = getRoller().getPropertiesManager().getProperties();
+        assertNotNull(config);
+        
+        // and tries to save it
+        getRoller().setUser(testuser0);                
+        boolean denied = false; 
+        try 
+        {
+            getRoller().getPropertiesManager().store(config);
+        }
+        catch (RollerPermissionsException e)
+        {
+            // permission denied!
+            denied = true;
+        }       
+        assertTrue(denied);
+        getRoller().rollback();
+    }
+

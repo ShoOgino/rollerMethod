@@ -2,10 +2,9 @@
     {
         getRoller().begin(UserData.SYSTEM_USER);
         WeblogManager wmgr = getRoller().getWeblogManager();
-        WebsiteData website = (WebsiteData)mWebsites.get(0);
+        WebsiteData website = (WebsiteData)mWebsitesCreated.get(0);
         
-        Date lastPub = wmgr.getWeblogLastPublishTime(
-                           website.getUser().getUserName());
+        Date lastPub = wmgr.getWeblogLastPublishTime(website);
         //System.out.println(lastPub);
         assertTrue(lastPub.compareTo(new Date()) <= 0);
     }

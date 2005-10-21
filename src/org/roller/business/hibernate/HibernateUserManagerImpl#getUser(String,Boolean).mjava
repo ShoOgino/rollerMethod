@@ -1,0 +1,32 @@
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -     
+    public UserData getUser(String userName, Boolean enabled) 
+        throws RollerException
+    {
+        if (userName==null )
+            throw new RollerException("userName cannot be null");
+
+        try
+        {
+            Session session = ((HibernateStrategy)mStrategy).getSession();
+            Criteria criteria = session.createCriteria(UserData.class);
+            if (enabled != null) 
+            {
+                criteria.add(
+                   Expression.conjunction()
+                       .add(Expression.eq("userName", userName))
+                       .add(Expression.eq("enabled", enabled)));
+            }
+            else
+            {
+                criteria.add(
+                    Expression.conjunction()
+                        .add(Expression.eq("userName", userName)));
+            }        
+            return (UserData)criteria.uniqueResult();
+        }
+        catch (HibernateException e)
+        {
+            throw new RollerException(e);
+        }
+    }
+

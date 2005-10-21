@@ -1,0 +1,27 @@
+    public ActionForward decline(
+            ActionMapping       mapping,
+            ActionForm          actionForm,
+            HttpServletRequest  request,
+            HttpServletResponse response)
+            throws Exception
+    {
+        YourWebsitesForm form = (YourWebsitesForm)actionForm;
+        Roller roller = RollerFactory.getRoller();
+        PermissionsData perms = 
+            roller.getUserManager().retrievePermissions(form.getInviteId());
+        
+        perms.remove();
+        // ROLLER_2.0: notify inviter that invitee has declined invitation  
+        roller.commit();
+        
+        ActionMessages msgs = new ActionMessages();
+        msgs.add(null, new ActionMessage(
+                "yourWebsites.declined", perms.getWebsite().getHandle()));
+        saveMessages(request, msgs);
+        
+        request.setAttribute("model",
+                new YourWebsitesPageModel(request, response, mapping));
+        ActionForward forward = mapping.findForward("yourWebsites.page");
+        return forward;
+    }
+

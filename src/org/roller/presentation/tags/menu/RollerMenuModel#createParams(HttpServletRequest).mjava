@@ -5,18 +5,17 @@
 		RollerRequest rreq = RollerRequest.getRollerRequest(req);
 		try
 		{
-			UserData user = rreq.getUser();
-			String fid = 
-                rreq.getFolder()==null ? null : rreq.getFolder().getId();
-			if ( user != null ) 
-			{
-				params.put( RollerRequest.USERNAME_KEY, user.getUserName() );
-			}
-			if ( fid != null ) 
-			{
-				params.put( RollerRequest.FOLDERID_KEY, fid );
-			}
-		}
+            WebsiteData website = rreq.getWebsite();
+            BasePageModel pageModel = (BasePageModel)req.getAttribute("model");
+            if (website == null && pageModel != null) 
+            {
+                website = pageModel.getWebsite();              
+            }
+            if (website != null)
+            {
+                params.put(RollerRequest.WEBLOG_KEY, website.getHandle());
+            }
+        }
 		catch (Exception e)
 		{
 			mLogger.error("ERROR getting user in menu model", e);

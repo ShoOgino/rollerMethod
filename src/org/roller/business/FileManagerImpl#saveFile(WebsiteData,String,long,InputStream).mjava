@@ -16,9 +16,9 @@
         byte[] buffer = new byte[8192];
         int bytesRead = 0;
         String dir = this.upload_dir;
-        String userName = site.getUser().getUserName();
+        String handle = site.getHandle();
 
-        File dirPath = new File(dir + File.separator + userName);
+        File dirPath = new File(dir + File.separator + handle);
         if (!dirPath.exists())
         {
             dirPath.mkdirs();
@@ -48,7 +48,7 @@
         }
         if (mLogger.isDebugEnabled())
         {
-            mLogger.debug("The file has been written to \"" + dir + userName + "\"");
+            mLogger.debug("The file has been written to \"" + dir + handle + "\"");
         }
     }
 

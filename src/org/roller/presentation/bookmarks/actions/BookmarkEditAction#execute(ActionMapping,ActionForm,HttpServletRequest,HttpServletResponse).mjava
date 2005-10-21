@@ -6,8 +6,8 @@
         throws Exception
     {
         RollerRequest rreq = RollerRequest.getRollerRequest(request);
-        WebsiteData wd = rreq.getWebsite();
-        BookmarkManager bmgr = rreq.getRoller().getBookmarkManager();
+        RollerSession rses = RollerSession.getRollerSession(request);
+        BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
         BookmarkFormEx form = (BookmarkFormEx)actionForm;
         
         FolderData parentFolder = null;
@@ -21,6 +21,9 @@
                 
             // Pass bookmark's Folder on as attribute.                 
             parentFolder = bd.getFolder();
+
+            request.setAttribute("model", new BasePageModel(
+                "bookmarkForm.edit.title", request, response, mapping));
         }
         else if (null != request.getParameter("correct"))
         {
@@ -29,6 +32,9 @@
                 
             // Folder is specified by request param, pass it on as attribute.                 
             parentFolder = bmgr.retrieveFolder(rreq.getFolder().getId());        
+            
+            request.setAttribute("model", new BasePageModel(
+                "bookmarkForm.correct.title", request, response, mapping));
         }
         else
         {
@@ -36,7 +42,10 @@
             request.setAttribute("state","add");
             
             // Folder is specified by request param, pass it on as attribute.                 
-            parentFolder = bmgr.retrieveFolder(rreq.getFolder().getId());        
+            parentFolder = bmgr.retrieveFolder(rreq.getFolder().getId()); 
+            
+            request.setAttribute("model", new BasePageModel(
+                "bookmarkForm.add.title", request, response, mapping));
         }
         
         // Build folder path for display on page
@@ -55,8 +64,7 @@
             }
             request.setAttribute("parentFolder", parentFolder);
             request.setAttribute("folderPath", folderPath);
-        }
-
+        }        
         return mapping.findForward("BookmarkForm");
     }
 

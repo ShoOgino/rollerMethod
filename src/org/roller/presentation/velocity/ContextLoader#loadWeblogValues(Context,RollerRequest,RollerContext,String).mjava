@@ -5,14 +5,14 @@
      * @param userName
      */
     private static void loadWeblogValues(
-       Context ctx, RollerRequest rreq, RollerContext rollerCtx, String userName)
+       Context ctx, RollerRequest rreq, RollerContext rollerCtx, String handle)
        throws RollerException
     {
         mLogger.debug("Loading weblog values");
         
         // if there is an "_entry" page, only load it once
-        WebsiteData website = RollerFactory.getRoller().getUserManager().getWebsite(userName);
-        //PageModel pageModel = (PageModel)ctx.get("pageModel");
+        WebsiteData website = 
+            RollerFactory.getRoller().getUserManager().getWebsiteByHandle(handle);
         if (website != null) 
         {
             /* alternative display pages - customization */
@@ -27,5 +27,12 @@
                 ctx.put("descPage", TemplateWrapper.wrap(descPage));
             }
         }
+        
+        boolean commentsEnabled = 
+            RollerRuntimeConfig.getBooleanProperty("users.comments.enabled");
+        boolean trackbacksEnabled = 
+            RollerRuntimeConfig.getBooleanProperty("users.trackbacks.enabled");
+        ctx.put("commentsEnabled", new Boolean(commentsEnabled) );
+        ctx.put("trackbacksEnabled", new Boolean(trackbacksEnabled) );
     }
 

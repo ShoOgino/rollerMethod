@@ -6,8 +6,7 @@
             PlanetGroupData group = null;
             try 
             {
-                Roller roller = 
-                    RollerRequest.getRollerRequest(mRequest).getRoller();  
+                Roller roller = RollerFactory.getRoller();  
                 group = roller.getPlanetManager().getGroup(name);
             }
             catch (RollerException e) 

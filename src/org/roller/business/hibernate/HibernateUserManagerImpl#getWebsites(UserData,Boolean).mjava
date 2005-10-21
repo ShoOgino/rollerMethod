@@ -1,0 +1,27 @@
+    /**
+     * Get websites of a user
+     */
+    public List getWebsites(UserData user, Boolean enabled)  throws RollerException
+    {
+        try
+        {
+            Session session = ((HibernateStrategy)mStrategy).getSession();
+            Criteria criteria = session.createCriteria(WebsiteData.class);
+            if (user != null) 
+            {
+                criteria.createAlias("permissions","permissions");
+                criteria.add(Expression.eq("permissions.user", user));
+                criteria.add(Expression.eq("permissions.pending", Boolean.FALSE));
+            }
+            if (enabled != null)
+            {
+                criteria.add(Expression.eq("enabled", enabled));
+            }
+            return criteria.list();
+        }
+        catch (HibernateException e)
+        {
+            throw new RollerException(e);
+        }
+    }
+

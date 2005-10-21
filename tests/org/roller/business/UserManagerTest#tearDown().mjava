@@ -8,9 +8,15 @@
         getRoller().begin(UserData.SYSTEM_USER);
         UserManager umgr = getRoller().getUserManager();
 
+        enabledSite = umgr.retrieveWebsite(enabledSite.getId());
+        enabledSite.remove();
+        
         enabledUser = umgr.retrieveUser(enabledUser.getId());
         enabledUser.remove();
 
+        disabledSite = umgr.retrieveWebsite(disabledSite.getId());
+        disabledSite.remove();
+        
         disabledUser = umgr.retrieveUser(disabledUser.getId());
         disabledUser.remove();
 

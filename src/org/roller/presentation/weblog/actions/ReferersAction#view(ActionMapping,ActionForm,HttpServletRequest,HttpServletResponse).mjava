@@ -8,13 +8,16 @@
     {
         ActionForward forward = mapping.findForward("referers.page");
         RollerRequest rreq = RollerRequest.getRollerRequest(req);
-        RefererManager refmgr = rreq.getRoller().getRefererManager();
+        RollerSession rollerSession = RollerSession.getRollerSession(req);
+        RefererManager refmgr = RollerFactory.getRoller().getRefererManager();
         try
         {
-            if ( rreq.isUserAuthorizedToEdit() )
-            {
-                UserData ud = rreq.getUser();
-                
+            if (rreq.getWebsite() != null 
+                 && rollerSession.isUserAuthorizedToAuthor(rreq.getWebsite()) )
+            {   
+                BasePageModel pageModel = new BasePageModel(
+                        "referers.todaysReferers", req, res, mapping);
+                req.setAttribute("model", pageModel);
                 req.setAttribute("pageHits",
                     new Integer(refmgr.getDayHits(rreq.getWebsite())));
                     

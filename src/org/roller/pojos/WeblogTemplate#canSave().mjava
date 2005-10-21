@@ -5,7 +5,7 @@
        {
            return true;
        }
-       if (roller.getUser().equals(getWebsite().getUser()))
+       if (getWebsite().hasUserPermissions(roller.getUser(), PermissionsData.ADMIN))
        {
            return true;
        }

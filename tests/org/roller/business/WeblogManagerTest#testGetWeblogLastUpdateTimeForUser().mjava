@@ -5,6 +5,7 @@
      */
     public void testGetWeblogLastUpdateTimeForUser() throws Exception
     {
+        UserManager umgr = getRoller().getUserManager();
         WeblogManager wmgr = getRoller().getWeblogManager();
 
         /** 
@@ -16,22 +17,22 @@
         //System.out.println("# entries:" + lastEntryIndex);
         WeblogEntryData entry1 = null;
         //WeblogEntryData entry1 = (WeblogEntryData)mEntriesCreated.get(lastEntryIndex);
-        if (entry1 == null || !entry1.getPublishEntry().booleanValue()) // if not published, find one
+        if (entry1 == null || !entry1.isPublished()) // if not published, find one
         {
             for (int i=lastEntryIndex; i >= 0; i--)
             {
                 entry1 = (WeblogEntryData)        
                     mEntriesCreated.get(i); // last entry is newest
                 //System.out.println("entry " + i + "published:" + entry1.getPublishEntry());
-                if (entry1.getPublishEntry().booleanValue()) {
+                if (entry1.isPublished()) {
                     break;
                 }
             }
         }
         
         WebsiteData website = entry1.getWebsite();
-        UserData user = website.getUser();        
-        Date updateTime = wmgr.getWeblogLastPublishTime(user.getUserName());
+        UserData user = (UserData)umgr.getUsers(website, null).get(0);
+        Date updateTime = wmgr.getWeblogLastPublishTime(website);
                 
         assertEquals("THIS FAILS RANDOMLY, TRY AGAIN", entry1.getPubTime(),updateTime);
     }

@@ -4,7 +4,8 @@
         try
         {
             return FolderDataWrapper.wrap(
-                    mBookmarkMgr.getFolder(mWebsite, folderPath));
+                    mBookmarkMgr.getFolder( 
+                        mUserMgr.getWebsiteByHandle(mHandle), folderPath));
         }
         catch (RollerException e)
         {

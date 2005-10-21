@@ -15,7 +15,8 @@
     			}
     			else 
     			{
-    				Calendar expireCal = Calendar.getInstance(getWebsite().getLocaleInstance());
+    				Calendar expireCal = Calendar.getInstance(
+                            getWebsite().getLocaleInstance());
     				expireCal.setTime(getPubTime());
     				expireCal.add(Calendar.DATE, getCommentDays().intValue());
     				Date expireDay = expireCal.getTime();

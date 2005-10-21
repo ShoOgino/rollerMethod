@@ -15,10 +15,15 @@
         ActionErrors errors = new ActionErrors();
         ActionForward forward = mapping.findForward("editTheme.page");
         try {
-            
+            RollerSession rses = RollerSession.getRollerSession(request);
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rreq.isUserAuthorizedToEdit() ) {
+            WebsiteData website = rreq.getWebsite();
+            if ( rses.isUserAuthorizedToAdmin(website) ) {
                 
+                BasePageModel pageModel = new BasePageModel(
+                        "themeEditor.title", request, response, mapping);
+                request.setAttribute("model",pageModel);          
+                    
                 String newTheme = null;
                 
                 // lookup what theme the user wants first
@@ -51,8 +56,7 @@
                 if(newTheme != null) {
                     try {
                         Roller roller = RollerFactory.getRoller();
-                        String username = rreq.getUser().getUserName();
-                        WebsiteData website = roller.getUserManager().getWebsite(username);
+                        String username = rses.getAuthenticatedUser().getUserName();
                         website.setEditorTheme(newTheme);
                         website.save();
                         
@@ -60,7 +64,7 @@
                                 " for "+username);
                         
                         // make sure to flush the page cache so ppl can see the change
-                        PageCacheFilter.removeFromCache(request, rreq.getUser());
+                        PageCacheFilter.removeFromCache(request, website);
                 
                         // update complete ... now just send them back to edit
                         return this.edit(mapping, form, request, response);

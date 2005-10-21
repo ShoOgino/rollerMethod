@@ -6,7 +6,8 @@
             Roller mRoller = RollerFactory.getRoller();
             
             UserManager umgr = mRoller.getUserManager();
-            WebsiteData mWebsite = umgr.getWebsite("FileManagerTest_userName");
+            UserData user = umgr.getUser("FileManagerTest_userName");
+            WebsiteData mWebsite = (WebsiteData)umgr.getWebsites(user,null).get(0);
             
             if(mWebsite == null)
                 mWebsite = this.createTestUser();

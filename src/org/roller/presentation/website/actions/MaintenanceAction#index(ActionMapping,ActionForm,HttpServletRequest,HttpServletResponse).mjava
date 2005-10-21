@@ -11,12 +11,14 @@
 	{
 		try
 		{
-			RollerRequest rreq = RollerRequest.getRollerRequest(request);
-			if ( rreq.isUserAuthorizedToEdit() )
+            RollerRequest rreq  = RollerRequest.getRollerRequest(request);
+            WebsiteData website = rreq.getWebsite();            
+            RollerSession rses = RollerSession.getRollerSession(request);
+			if (rses.isUserAuthorizedToAdmin(website) )
 			{
-				UserData ud = rreq.getUser();
-				IndexManager manager = rreq.getRoller().getIndexManager();
-				manager.rebuildUserIndex();
+				IndexManager manager = 
+                        RollerFactory.getRoller().getIndexManager();
+				manager.rebuildWebsiteIndex(website);
 				
                 ActionMessages messages = new ActionMessages();
                 messages.add(null, new ActionMessage("maintenance.message.indexed"));

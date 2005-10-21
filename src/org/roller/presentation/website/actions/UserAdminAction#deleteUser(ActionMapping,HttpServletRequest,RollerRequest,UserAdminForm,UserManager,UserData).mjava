@@ -9,13 +9,13 @@
             UserData ud) throws RollerException
     {
         // remove user's Entries from Lucene index
-        IndexManager indexManager = rreq.getRoller().getIndexManager();
-        indexManager.removeUserIndex(ud); 
+        IndexManager indexManager = RollerFactory.getRoller().getIndexManager();
+        WebsiteData website = rreq.getWebsite();
+        indexManager.removeWebsiteIndex(website); 
         
         // delete user from database
         ud.remove();
-        rreq.getRoller().commit();
-        PageCacheFilter.removeFromCache( request, ud );
+        RollerFactory.getRoller().commit();
         ud = null;
 
         request.getSession().setAttribute(
@@ -24,7 +24,7 @@
 
         uaf.reset(mapping, request);
         
-        List users = mgr.getUsers(false);
+        List users = mgr.getUsers(null, null); 
         request.setAttribute("users", users);
         return ud;
     }

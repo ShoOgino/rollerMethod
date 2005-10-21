@@ -20,11 +20,13 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            RollerSession rses = RollerSession.getRollerSession(rreq.getRequest());
             WeblogQueryForm form = (WeblogQueryForm)actionForm;
-            if ( rreq.isUserAuthorizedToEdit() )
+            if ( rreq.getWebsite() != null 
+                    && rses.isUserAuthorizedToAdmin(rreq.getWebsite()) )
             {               
                 request.setAttribute("model",
-                                     new BasePageModel(request, response, mapping));
+                        new BasePageModel("", request, response, mapping));
                 
                 Locale locale = Locale.getDefault();//rreq.getWebsite().getLocaleInstance();
                 final DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, locale);
@@ -44,7 +46,7 @@
                 {
                     // this work should go into a Thread!
                     WeblogManager weblogMgr =
-                        rreq.getRoller().getWeblogManager();
+                        RollerFactory.getRoller().getWeblogManager();
                     
                     //List entries = weblogMgr.getWeblogEntriesInDateRange(
                         //rreq.getUser().getUserName(), null, startDate, endDate, false);
@@ -55,7 +57,7 @@
                                     startDate,         // startDate
                                     endDate,           // endDate
                                     null,              // catName
-                                    WeblogManager.ALL,  // status
+                                    null,  // status
                                     null);              // maxEntries
 
                     ActionMessages messages = writeSuccessMessage(request, response, rreq, form);

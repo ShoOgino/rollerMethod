@@ -1,0 +1,18 @@
+    public ActionForward edit(
+        ActionMapping       mapping,
+        ActionForm          actionForm,
+        HttpServletRequest  request,
+        HttpServletResponse response)
+        throws IOException, ServletException
+    {
+        ActionForward forward = mapping.findForward("inviteMember.page"); 
+        
+        BasePageModel pageModel = new BasePageModel(
+            "inviteMember.title", request, response, mapping);
+        request.setAttribute("model", pageModel);
+        
+        InviteMemberForm form = (InviteMemberForm)actionForm;
+        form.setWebsiteId(pageModel.getWebsite().getId());
+        return forward; 
+    }
+

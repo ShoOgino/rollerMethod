@@ -19,7 +19,7 @@
             temp = (WeblogEntryData)        
                 mEntriesCreated.get(i); // last entry is newest
             //System.out.println("entry " + i + "published:" + entry1.getPublishEntry());
-            if (temp.getPublishEntry().booleanValue()) 
+            if (temp.isPublished()) 
             {
                 if (entry1 ==  null || entry1.getPubTime().compareTo(temp.getPubTime()) < 0)
                 {   

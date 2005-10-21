@@ -17,10 +17,12 @@
                 if (con.getResponseCode() != 200) 
                 {
                     mLogger.debug("Response code indicates error");
-                    mLogger.error("ERROR "+con.getResponseCode()+" return from MediaCast URL");
+                    mLogger.error("ERROR " 
+                        + con.getResponseCode() + " return from MediaCast URL");
                     mLogger.debug(con.getContent().toString());
                 }
-                else if (con.getContentType()!=null && con.getContentLength()!=-1)
+                else if (con.getContentType()!=null 
+                        && con.getContentLength()!=-1)
                 {
                     mLogger.debug("Got good reponse and content info");
                     entry.putEntryAttribute(

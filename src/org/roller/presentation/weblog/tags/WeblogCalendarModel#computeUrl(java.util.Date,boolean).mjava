@@ -11,7 +11,7 @@
         {
             if ( day == null )
             {
-                url = mRes.encodeURL(mSelfUrl + mCatName);
+                url = mSelfUrl + mCatName;
             }
             else
             {            
@@ -21,13 +21,13 @@
                 if ( dateString != null )
                 {                
                     // append 8 char date string on end of selfurl
-                    url = mRes.encodeURL(mSelfUrl+"/"+dateString+mCatName);
+                    url = mSelfUrl+"/"+dateString+mCatName;
                 }
                 else if ( valid ) 
                 {
                     // Make the date yyyyMMdd and append it to URL
                     dateString = DateUtil.format8chars( day );
-                    url = mRes.encodeURL( mSelfUrl+"/"+dateString+mCatName);
+                    url = mSelfUrl+"/"+dateString+mCatName;
                 }
             }
         }

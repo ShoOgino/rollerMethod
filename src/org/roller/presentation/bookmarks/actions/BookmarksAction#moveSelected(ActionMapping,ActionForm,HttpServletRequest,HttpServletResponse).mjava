@@ -16,12 +16,16 @@
     {
         ActionMessages messages = new ActionMessages();
         ActionForward forward = mapping.findForward("BookmarksForm");
-        RollerRequest rreq = RollerRequest.getRollerRequest(request);
-        if (rreq.isUserAuthorizedToEdit())
+        Roller roller = RollerFactory.getRoller();
+        BookmarksPageModel pageModel = new BookmarksPageModel(
+            request, response, mapping, (BookmarksForm)actionForm);
+        request.setAttribute("model", pageModel);
+        if (RollerSession.getRollerSession(request).isUserAuthorizedToAuthor(
+            pageModel.getFolder().getWebsite()))
         {
             try 
             {
-                BookmarkManager bmgr = rreq.getRoller().getBookmarkManager();
+                BookmarkManager bmgr = roller.getBookmarkManager();
                 BookmarksForm form = (BookmarksForm)actionForm;
     
                 mLogger.debug("Moving folders and bookmarks to folder, id="
@@ -62,9 +66,7 @@
                         bd.save();
                     }
                 }
-                rreq.getRoller().commit();
-    
-                addModelObjects(request, (BookmarksForm)actionForm);
+                roller.commit();
                 saveMessages(request, messages);
             }
             catch (RollerException e)

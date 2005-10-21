@@ -1,0 +1,13 @@
+    /**
+     * Test CommentData to see if it is spam.
+     */
+    private boolean commentSpam(CommentData cd) {
+        
+        CommentSpamChecker checker = new CommentSpamChecker();
+        checker.testComment(cd);
+        if (cd.getSpam().booleanValue())
+            return true;
+        
+        return false;
+    }
+

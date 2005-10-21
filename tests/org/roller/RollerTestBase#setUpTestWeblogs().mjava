@@ -10,17 +10,16 @@
         {
             getRoller().begin(UserData.SYSTEM_USER);
 
-            UserData ud = createUser(umgr,
+            UserData ud = createUser(
                 "testuser"+i,         // userName
                 "password",           // password
                 "Test User #"+i,      // fullName
                 "test"+i+"@test.com"  // emailAddress
                 );
-            WebsiteData website = umgr.getWebsite(ud.getUserName());
-            mWebsites.add(website);
+            ud.setEnabled(new Boolean(i%2 == 0)); // half of users are disabled
+            WebsiteData website = (WebsiteData)umgr.getWebsites(ud, null).get(0);
+            mWebsitesCreated.add(website);
             mUsersCreated.add(ud);
-
-            getRoller().commit();
 
             mLogger.debug("Created user "+ud.getUserName());
 
@@ -29,10 +28,10 @@
             mCalendar.setTime(new Date());
 
             // create categories
-            getRoller().begin(UserData.SYSTEM_USER);
             website  = umgr.retrieveWebsite(website.getId());
             WeblogCategoryData rootCat = wmgr.getRootWeblogCategory(website);
-            createCategoryPostsAndComments(0, wmgr, website, rootCat);
+            createCategoryPostsAndComments(0, wmgr, ud, website, rootCat);
+
             getRoller().commit();
         }
 

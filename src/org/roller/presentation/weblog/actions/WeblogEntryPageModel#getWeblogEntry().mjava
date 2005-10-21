@@ -4,10 +4,10 @@
         if (weblogEntry == null) 
         {
             weblogEntry = new WeblogEntryData();
-            weblogEntry.setWebsite(rollerRequest.getWebsite());
+            weblogEntry.setWebsite(getWebsite());
             form.copyTo(weblogEntry, 
                     getRequest().getLocale(), getRequest().getParameterMap());
-            weblogEntry.setWebsite(rollerRequest.getWebsite());
+            weblogEntry.setWebsite(weblogEntry.getWebsite());
         }
         return weblogEntry;
     }

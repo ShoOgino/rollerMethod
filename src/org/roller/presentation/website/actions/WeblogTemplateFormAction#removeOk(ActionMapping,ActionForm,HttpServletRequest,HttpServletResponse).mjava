@@ -1,4 +1,5 @@
     //-----------------------------------------------------------------------
+    /** Send user to remove confirmation page */
     public ActionForward removeOk(
         ActionMapping       mapping,
         ActionForm          actionForm,
@@ -9,14 +10,23 @@
         ActionForward forward = mapping.findForward("removePage.page");
         try
         {
+            RollerSession rses = RollerSession.getRollerSession(request);
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            if ( rreq.isUserAuthorizedToEdit() )
+            WeblogTemplate page = (WeblogTemplate) rreq.getPage();
+            WebsiteData website = page.getWebsite();
+            if ( rses.isUserAuthorizedToAdmin(website) )
             {
-                WeblogTemplate cd = (WeblogTemplate) rreq.getPage();
-                WeblogTemplateForm pf = (WeblogTemplateForm)actionForm;
-                pf.copyFrom(cd, request.getLocale());
+                WeblogTemplateForm form = (WeblogTemplateForm)actionForm;
+                form.copyFrom(page, request.getLocale());
 
-                UserData ud = rreq.getUser();
+                addModelObjects(request, response, mapping, page.getWebsite());
+                
+                BasePageModel pageModel = new BasePageModel(
+                    "editPages.title.removeOK", request, response, mapping);
+                pageModel.setWebsite(website);
+                request.setAttribute("model", pageModel);
+
+                UserData ud = rses.getAuthenticatedUser();
                 request.setAttribute("user",ud);
             }
             else

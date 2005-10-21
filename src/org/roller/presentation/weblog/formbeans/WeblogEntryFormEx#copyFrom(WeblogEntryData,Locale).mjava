@@ -4,8 +4,12 @@
     public void copyFrom(WeblogEntryData entry, Locale locale) 
         throws RollerException
     {
+        mLogger.debug("copy from called");
+        
         super.copyFrom(entry, locale);
         mCategoryId = entry.getCategory().getId();
+        mCreatorId = entry.getCreator().getId();       
+        mWebsiteId = entry.getWebsite().getId();
         
         initPubTimeDateStrings(entry.getWebsite(), locale);
         

@@ -1,0 +1,43 @@
+    /**
+     * Update entry, URI like this /blog-name/entry/id
+     */
+    public Entry putEntry(String[] pathInfo, Entry entry) throws Exception {
+        if (pathInfo.length == 3) // URI is /blogname/entries/entryid
+        {
+            WeblogEntryData rollerEntry =
+                    mRoller.getWeblogManager().retrieveWeblogEntry(pathInfo[2]);
+            if (canEdit(rollerEntry)) {
+                rollerEntry.setTitle(entry.getTitle());
+                
+                // TODO: don't assume type is HTML or TEXT
+                List contents = entry.getContents();
+                if (contents != null && contents.size() > 0) {
+                    Content romeContent = (Content)contents.get(0);
+                    rollerEntry.setText(romeContent.getValue());
+                }
+
+                
+                rollerEntry.setUpdateTime(new Timestamp(new Date().getTime()));
+                if (entry.getPublished() != null) {
+                    rollerEntry.setPubTime(
+                        new Timestamp(entry.getPublished().getTime()));
+                }
+                if (entry.getCategories() != null
+                        && entry.getCategories().size() > 0) {
+                    Category atomCat = (Category)entry.getCategories().get(0);
+                    WeblogCategoryData cat = 
+                        mRoller.getWeblogManager().getWeblogCategoryByPath(
+                            rollerEntry.getWebsite(), atomCat.getTerm());
+                    if (cat != null) {
+                        rollerEntry.setCategory(cat);
+                    }
+                }
+                rollerEntry.save();
+                mRoller.commit();
+                return createAtomEntry(rollerEntry);
+            }
+            throw new Exception("ERROR not authorized to put entry");
+        }
+        throw new Exception("ERROR: bad URI");
+    }
+

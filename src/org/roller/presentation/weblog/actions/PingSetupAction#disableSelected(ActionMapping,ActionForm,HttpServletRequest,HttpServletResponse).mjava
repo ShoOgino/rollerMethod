@@ -6,17 +6,17 @@
         throws Exception
     {
         RollerRequest rreq = RollerRequest.getRollerRequest(req);
-        AutoPingManager autoPingMgr = rreq.getRoller().getAutopingManager();
+        AutoPingManager autoPingMgr = RollerFactory.getRoller().getAutopingManager();
+        PingTargetData pingTarget = select(rreq);
         try
         {
-            if (!isAuthorized(rreq))
+            if (!isAuthorized(rreq, rreq.getWebsite()))
             {
                 return mapping.findForward("access-denied");
             }
-            PingTargetData pingTarget = select(rreq);
             autoPingMgr.removeAutoPing(pingTarget, rreq.getWebsite());
-            rreq.getRoller().commit();
-
+            RollerFactory.getRoller().commit();
+        
             return view(mapping, form, req, res);
         }
         catch (Exception e)

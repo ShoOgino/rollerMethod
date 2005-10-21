@@ -14,10 +14,13 @@
         HttpServletResponse response)
         throws RollerException
     {
-        RollerRequest rreq = RollerRequest.getRollerRequest(request);
-        if (rreq.isUserAuthorizedToEdit())
+        Roller roller = RollerFactory.getRoller();
+        BookmarksPageModel pageModel = new BookmarksPageModel(
+            request, response, mapping, (BookmarksForm)actionForm);
+        if (RollerSession.getRollerSession(request).isUserAuthorizedToAuthor(
+            pageModel.getFolder().getWebsite()))
         {
-            BookmarkManager bmgr = rreq.getRoller().getBookmarkManager();
+            BookmarkManager bmgr = roller.getBookmarkManager();
             BookmarksForm form = (BookmarksForm)actionForm;
 
             mLogger.debug("Deleting folders and bookmarks.");
@@ -40,9 +43,12 @@
                     bmgr.removeBookmark(bookmarks[j]);
                 }
             }
-            rreq.getRoller().commit();
+            roller.commit();
 
-            addModelObjects(request, (BookmarksForm)actionForm);
+            // recreate model now that folder  is deleted
+            pageModel = new BookmarksPageModel(
+                request, response, mapping, (BookmarksForm)actionForm);
+            request.setAttribute("model", pageModel);
             return mapping.findForward("BookmarksForm");
         }
         else

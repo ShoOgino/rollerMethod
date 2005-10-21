@@ -14,11 +14,11 @@
         mLogger.info("     Appkey: " + appkey);
         mLogger.info("     UserId: " + userid);
 
-        validate(userid,password);
+        validateUser(userid, password);
 
         try
         {
-            Roller roller = RollerRequest.getRollerRequest().getRoller();
+            Roller roller = RollerFactory.getRoller(); 
             UserManager userMgr = roller.getUserManager();
             UserData user = userMgr.getUser(userid);
 

@@ -6,10 +6,10 @@
 
         // loop to remove all of my descendents and associations
         List toRemove = new LinkedList();
-        Iterator catIter = this.getAllDescendentAssocs().iterator();
-        while (catIter.hasNext())
+        List assocs = this.getAllDescendentAssocs();
+        for (int i=assocs.size()-1; i>=0; i--)
         {
-            Assoc assoc = (Assoc)catIter.next();
+            Assoc assoc = (Assoc)assocs.get(i);
             HierarchicalPersistentObject hpo = assoc.getObject();
             
             // remove my descendent's parent and grandparent associations
@@ -21,7 +21,7 @@
             }
             
             // remove decendent association and descendents
-            assoc.remove();
+            //assoc.remove();
             toRemove.add(hpo);
         }
         Iterator removeIterator = toRemove.iterator();

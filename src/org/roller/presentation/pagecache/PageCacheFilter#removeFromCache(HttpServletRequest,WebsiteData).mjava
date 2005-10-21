@@ -1,0 +1,13 @@
+    //-----------------------------------------------------------------------
+    /** Remove from cache for all handlers of this class */
+    public static void removeFromCache(HttpServletRequest req, WebsiteData website)
+    {
+        Iterator iter = mHandlers.iterator();
+        while (iter.hasNext())
+        {
+            FilterHandler handler = (FilterHandler)iter.next();
+            handler.removeFromCache(req, website);
+        }       
+        IfModifiedFilter.purgeDateCache(website);
+    }
+

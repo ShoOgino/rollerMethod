@@ -1,0 +1,13 @@
+	public void initialize(WikiEngine engine, Properties properties)
+			throws NoRequiredPropertyException, IOException {
+		
+		String rollerPageDir = System.getProperty("rollerPageDir");
+		if (rollerPageDir != null) {
+            System.out.println(getClass().getName() 
+               + " Using pageDir=" + rollerPageDir);
+			properties.put(PROP_PAGEDIR, rollerPageDir);
+		} 
+		
+		super.initialize(engine, properties);
+	}
+

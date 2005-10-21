@@ -12,17 +12,17 @@
 		try
 		{
 			RollerRequest rreq = RollerRequest.getRollerRequest(request);
-			if ( rreq.isUserAuthorizedToEdit() && rreq.isAdminUser() )
+             RollerSession rollerSession = RollerSession.getRollerSession(request);
+			if (rollerSession.isGlobalAdminUser() )
 			{
 				UserAdminForm uaf = (UserAdminForm)actionForm;
 				
 				// if admin requests an index be re-built, do it
-				IndexManager manager = rreq.getRoller().getIndexManager();								 
-				manager.rebuildUserIndex();
+				IndexManager manager = RollerFactory.getRoller().getIndexManager();								 
+				manager.rebuildWebsiteIndex();
  				request.getSession().setAttribute(
 					RollerSession.STATUS_MESSAGE,
-						"Successfully scheduled rebuild of index for '" 
-						+ uaf.getUserName() + "'");
+						"Successfully scheduled rebuild of index for");
 			}
 		}
 		catch (Exception e)
