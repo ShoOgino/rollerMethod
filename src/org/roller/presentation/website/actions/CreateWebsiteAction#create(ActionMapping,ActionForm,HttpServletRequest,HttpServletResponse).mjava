@@ -21,12 +21,13 @@
             if (permissions.size() > 0) {
                 // sneaky user trying to get around 1 blog limit that applies
                 // only when group blogging is disabled
-                forward = mapping.findForward("access-denied");
+                return mapping.findForward("access-denied");
             }           
-        } else {
-            request.setAttribute("model", 
-                new CreateWebsitePageModel(request, response, mapping, null));
         }
+        
+        request.setAttribute("model", 
+                new CreateWebsitePageModel(request, response, mapping, null));
+        
         return forward;
     }
 
