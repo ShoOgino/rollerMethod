@@ -5,6 +5,11 @@
             HttpServletResponse response)
             throws Exception
     {
+        // if group blogging is disabled then you can't change permissions
+        if (!RollerConfig.getBooleanProperty("groupblogging.enabled")) {
+            return mapping.findForward("access-denied");
+        }
+        
         ActionForward forward = mapping.findForward("inviteMember.page");
         ActionMessages msgs = new ActionMessages();
         ActionMessages errors = new ActionErrors();
