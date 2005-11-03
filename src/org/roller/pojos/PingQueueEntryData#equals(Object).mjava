@@ -8,11 +8,11 @@
 
         final PingQueueEntryData pingQueueEntryData = (PingQueueEntryData) o;
 
-        if (attempts != pingQueueEntryData.attempts) return false;
-        if (entryTime != null ? !entryTime.equals(pingQueueEntryData.entryTime) : pingQueueEntryData.entryTime != null) return false;
-        if (id != null ? !id.equals(pingQueueEntryData.id) : pingQueueEntryData.id != null) return false;
-        if (pingTarget != null ? !pingTarget.equals(pingQueueEntryData.pingTarget) : pingQueueEntryData.pingTarget != null) return false;
-        if (website != null ? !website.equals(pingQueueEntryData.website) : pingQueueEntryData.website != null) return false;
+        if (attempts != pingQueueEntryData.getAttempts()) return false;
+        if (entryTime != null ? !entryTime.equals(pingQueueEntryData.getEntryTime()) : pingQueueEntryData.getEntryTime() != null) return false;
+        if (id != null ? !id.equals(pingQueueEntryData.getId()) : pingQueueEntryData.getId() != null) return false;
+        if (pingTarget != null ? !pingTarget.equals(pingQueueEntryData.getPingTarget()) : pingQueueEntryData.getPingTarget() != null) return false;
+        if (website != null ? !website.equals(pingQueueEntryData.getWebsite()) : pingQueueEntryData.getWebsite() != null) return false;
 
         return true;
     }

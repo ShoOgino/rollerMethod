@@ -5,18 +5,18 @@
      */
     public List getWeblogCategories() throws RollerException
     {
-        if (mWeblogCategories == null)
+        if (weblogCategories == null)
         {
-            mWeblogCategories = new LinkedList();
+            weblogCategories = new LinkedList();
             List childAssocs = getChildAssocs();
             Iterator childIter = childAssocs.iterator();
             while (childIter.hasNext())
             {
                 WeblogCategoryAssoc assoc =
                     (WeblogCategoryAssoc) childIter.next();
-                mWeblogCategories.add(assoc.getCategory());
+                weblogCategories.add(assoc.getCategory());
             }
         }
-        return mWeblogCategories;
+        return weblogCategories;
     }
 

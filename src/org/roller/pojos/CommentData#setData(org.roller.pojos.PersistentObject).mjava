@@ -4,14 +4,15 @@
     public void setData(org.roller.pojos.PersistentObject otherData)
     {
         CommentData otherComment = (CommentData) otherData;
-        this.id = otherComment.id;
-        this.mWeblogEntry = otherComment.mWeblogEntry;
-        this.name = otherComment.name;
-        this.email = otherComment.email;
-        this.url = otherComment.url;
-        this.content = otherComment.content;
-        this.postTime = otherComment.postTime;
-        this.spam = otherComment.spam;
-        this.notify = otherComment.notify;
+        
+        this.id = otherComment.getId();
+        this.weblogEntry = otherComment.getWeblogEntry();
+        this.name = otherComment.getName();
+        this.email = otherComment.getEmail();
+        this.url = otherComment.getUrl();
+        this.content = otherComment.getContent();
+        this.postTime = otherComment.getPostTime();
+        this.spam = otherComment.getSpam();
+        this.notify = otherComment.getNotify();
     }
 

@@ -5,15 +5,15 @@
             CommentData lTest = (CommentData) pOther;
             boolean lEquals = true;
 
-            lEquals = PojoUtil.equals(lEquals, this.id, lTest.id);
-            lEquals = PojoUtil.equals(lEquals, this.mWeblogEntry, lTest.mWeblogEntry);
-            lEquals = PojoUtil.equals(lEquals, this.name, lTest.name);
-            lEquals = PojoUtil.equals(lEquals, this.email, lTest.email);
-            lEquals = PojoUtil.equals(lEquals, this.url, lTest.url);
-            lEquals = PojoUtil.equals(lEquals, this.content, lTest.content);
-            lEquals = PojoUtil.equals(lEquals, this.postTime, lTest.postTime);
-            lEquals = PojoUtil.equals(lEquals, this.spam, lTest.spam);
-            lEquals = PojoUtil.equals(lEquals, this.notify, lTest.notify);
+            lEquals = PojoUtil.equals(lEquals, this.id, lTest.getId());
+            lEquals = PojoUtil.equals(lEquals, this.weblogEntry, lTest.getWeblogEntry());
+            lEquals = PojoUtil.equals(lEquals, this.name, lTest.getName());
+            lEquals = PojoUtil.equals(lEquals, this.email, lTest.getEmail());
+            lEquals = PojoUtil.equals(lEquals, this.url, lTest.getUrl());
+            lEquals = PojoUtil.equals(lEquals, this.content, lTest.getContent());
+            lEquals = PojoUtil.equals(lEquals, this.postTime, lTest.getPostTime());
+            lEquals = PojoUtil.equals(lEquals, this.spam, lTest.getSpam());
+            lEquals = PojoUtil.equals(lEquals, this.notify, lTest.getNotify());
 
             return lEquals;
         }

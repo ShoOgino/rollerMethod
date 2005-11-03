@@ -8,12 +8,12 @@
 
         final PingTargetData pingTargetData = (PingTargetData) o;
 
-        if (conditionCode != pingTargetData.conditionCode) return false;
-        if (id != null ? !id.equals(pingTargetData.id) : pingTargetData.id != null) return false;
-        if (lastSuccess != null ? !lastSuccess.equals(pingTargetData.lastSuccess) : pingTargetData.lastSuccess != null) return false;
-        if (name != null ? !name.equals(pingTargetData.name) : pingTargetData.name != null) return false;
-        if (pingUrl != null ? !pingUrl.equals(pingTargetData.pingUrl) : pingTargetData.pingUrl != null) return false;
-        if (website != null ? !website.equals(pingTargetData.website) : pingTargetData.website != null) return false;
+        if (conditionCode != pingTargetData.getConditionCode()) return false;
+        if (id != null ? !id.equals(pingTargetData.getId()) : pingTargetData.getId() != null) return false;
+        if (lastSuccess != null ? !lastSuccess.equals(pingTargetData.getLastSuccess()) : pingTargetData.getLastSuccess() != null) return false;
+        if (name != null ? !name.equals(pingTargetData.getName()) : pingTargetData.getName() != null) return false;
+        if (pingUrl != null ? !pingUrl.equals(pingTargetData.getPingUrl()) : pingTargetData.getPingUrl() != null) return false;
+        if (website != null ? !website.equals(pingTargetData.getWebsite()) : pingTargetData.getWebsite() != null) return false;
 
         return true;
     }
