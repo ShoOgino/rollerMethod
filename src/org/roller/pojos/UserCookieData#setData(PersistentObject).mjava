@@ -6,6 +6,6 @@
         this.id = newData.getId();
         this.username = newData.getUsername();
         this.cookieId = newData.getCookieId();
-        this.dateCreated = newData.getDateCreated();
+        this.dateCreated = newData.getDateCreated()!=null ? (Date)newData.getDateCreated().clone() : null;
 	}
 
