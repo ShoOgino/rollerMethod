@@ -1,0 +1,54 @@
+    /**
+     * Helper method that returns collection of resources, called by getCollection().
+     */
+    public Feed getCollectionOfResources(
+            String[] pathInfo, int start, int end) throws Exception {
+        String handle = pathInfo[0];
+        String absUrl = mRollerContext.getAbsoluteContextUrl(mRequest);
+        WebsiteData website = mRoller.getUserManager().getWebsiteByHandle(handle);
+        FileManager fmgr = mRoller.getFileManager();
+        File[] files = fmgr.getFiles(website);
+        if (canView(website)) {
+            
+            Feed feed = new Feed();
+            List atomEntries = new ArrayList();
+            if (files != null && start < files.length) {
+                end = (end > files.length) ? files.length : end;
+                for (int i=start; i<end; i++) {
+                    
+                    Entry entry = new Entry();
+                    entry.setTitle(files[i].getName());
+                    entry.setUpdated(new Date(files[i].lastModified()));
+                    
+                    String href = absUrl
+                            + "/app/" + website.getHandle()
+                            + "/resource/" + files[i].getName();
+                    
+                    FileTypeMap map = FileTypeMap.getDefaultFileTypeMap();
+                    String contentType = map.getContentType(files[i]);
+                    
+                    Link editlink = new Link();
+                    editlink.setRel("edit");
+                    editlink.setHref(absUrl 
+                        + "/resource/" + website.getHandle() 
+                        + "/" + files[i].getName());
+                    List otherlinks = new ArrayList();
+                    otherlinks.add(editlink);
+                    entry.setOtherLinks(otherlinks);
+                    
+                    Content content = new Content();
+                    content.setSrc(href);
+                    content.setType(contentType);
+                    List contents = new ArrayList();
+                    contents.add(content);
+                    entry.setContents(contents);
+                    
+                    atomEntries.add(entry);
+                }
+            }
+            feed.setEntries(atomEntries);
+            return feed;
+        }
+        throw new Exception("ERROR: not authorized");
+    }
+

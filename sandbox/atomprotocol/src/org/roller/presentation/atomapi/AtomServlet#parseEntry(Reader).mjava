@@ -1,11 +1,10 @@
-    /** 
+    /**
      * Utility method to make up for a Rome shortcoming:
      * Rome can only parse Atom data with XML document root 'feed'
      */
-    public static Entry parseEntry(Reader rd) 
-        throws JDOMException, IOException, IllegalArgumentException, FeedException 
-    {
-        // Parse entry into JDOM tree        
+    public static Entry parseEntry(Reader rd)
+    throws JDOMException, IOException, IllegalArgumentException, FeedException {
+        // Parse entry into JDOM tree
         SAXBuilder builder = new SAXBuilder();
         Document entryDoc = builder.build(rd);
         Element fetchedEntryElement = entryDoc.getRootElement();
@@ -15,7 +14,7 @@
         Feed feed = new Feed();
         feed.setFeedType(FEED_TYPE);
         WireFeedOutput wireFeedOutput = new WireFeedOutput();
-        Document feedDoc = wireFeedOutput.outputJDom(feed); 
+        Document feedDoc = wireFeedOutput.outputJDom(feed);
         feedDoc.getRootElement().addContent(fetchedEntryElement);
         
         WireFeedInput input = new WireFeedInput();

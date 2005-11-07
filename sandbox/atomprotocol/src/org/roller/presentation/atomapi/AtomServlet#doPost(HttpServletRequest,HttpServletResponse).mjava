@@ -1,28 +1,24 @@
-    //-----------------------------------------------------------------------------  
+    //-----------------------------------------------------------------------------
     /**
      * Handles an Atom POST by calling handler to identify URI, reading/parsing
      * data, calling handler and writing results to response.
      */
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
-        throws ServletException, IOException
-    {
+    throws ServletException, IOException {
         AtomHandler handler = createAtomRequestHandler(req);
         String userName = handler.getAuthenticatedUsername();
-        if (userName != null) 
-        {
+        if (userName != null) {
             String[] pathInfo = getPathInfo(req);
-            try
-            {
-                if (handler.isEntryCollectionURI(pathInfo)) 
-                {
-                    /* // parse incoming entry                    
+            try {
+                if (handler.isEntryCollectionURI(pathInfo)) {
+                    // parse incoming entry
                     Entry unsavedEntry = parseEntry(
                         new InputStreamReader(req.getInputStream()));
-                    
+                     
                     // call handler to post it
                     Entry savedEntry = handler.postEntry(pathInfo, unsavedEntry);
-                    Iterator links = savedEntry.getLinks().iterator();
-                    
+                    Iterator links = savedEntry.getAlternateLinks().iterator();
+                     
                     // return alternate link as Location header
                     while (links.hasNext()) {
                         Link link = (Link) links.next();
@@ -30,38 +26,30 @@
                             res.addHeader("Location", link.getHref());
                             break;
                         }
-                    }                  
+                    }
                     // write entry back out to response
                     res.setStatus(HttpServletResponse.SC_CREATED);
-                    Writer writer = res.getWriter(); 
-                    serializeEntry(savedEntry, writer);                    
-                    writer.close(); */
-                }
-                else if (handler.isResourceCollectionURI(pathInfo)) 
-                {
+                    Writer writer = res.getWriter();
+                    serializeEntry(savedEntry, writer);
+                    writer.close(); 
+                } else if (handler.isMediaCollectionURI(pathInfo)) {
                     // get incoming file name from HTTP header
                     String name = req.getHeader("Name");
                     
                     // hand input stream of to hander to post file
-                    String location = handler.postResource(
-                       pathInfo, name, req.getContentType(), req.getInputStream());
+                    String location = handler.postMedia(
+                            pathInfo, name, req.getContentType(), req.getInputStream());
                     res.setStatus(HttpServletResponse.SC_CREATED);
                     res.setHeader("Location", location);
-                }
-                else
-                {
+                } else {
                     res.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 e.printStackTrace(res.getWriter());
                 mLogger.error(e);
             }
-        }
-        else 
-        {
+        } else {
             res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
     }

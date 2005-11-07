@@ -1,9 +1,9 @@
     /**
      * Create a Roller weblog entry based on a Rome Atom entry object
      */
-    private WeblogEntryData createRollerEntry(WebsiteData website, Entry entry) 
-        throws RollerException {
-
+    private WeblogEntryData createRollerEntry(WebsiteData website, Entry entry)
+    throws RollerException {
+        
         Timestamp current = new Timestamp(System.currentTimeMillis());
         Timestamp pubTime = current;
         Timestamp updateTime = current;
@@ -22,14 +22,23 @@
         rollerEntry.setPubTime(pubTime);
         rollerEntry.setUpdateTime(updateTime);
         rollerEntry.setWebsite(website);
-        rollerEntry.setStatus(WeblogEntryData.PUBLISHED);
+        
+        PubControlModule control = 
+            (PubControlModule)entry.getModule("http://purl.org/atom/app#");
+        if (control != null && control.getDraft() != null) {
+            if (!control.getDraft().booleanValue()) {
+                rollerEntry.setStatus(WeblogEntryData.PUBLISHED);
+            }
+        } else {
+            rollerEntry.setStatus(WeblogEntryData.DRAFT);
+        }
         
         List categories = entry.getCategories();
         if (categories != null && categories.size() > 0) {
             Category cat = (Category)categories.get(0);
             System.out.println(cat.getTerm());
-            WeblogCategoryData rollerCat = 
-                mRoller.getWeblogManager().getWeblogCategoryByPath(
+            WeblogCategoryData rollerCat =
+                    mRoller.getWeblogManager().getWeblogCategoryByPath(
                     website, cat.getTerm());
             rollerEntry.setCategory(rollerCat);
         } else {

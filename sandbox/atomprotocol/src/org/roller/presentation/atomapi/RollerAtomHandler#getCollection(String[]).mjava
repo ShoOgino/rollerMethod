@@ -1,8 +1,47 @@
     /**
-     * Returns collection specified by pathInfo with no date range specified.
-     * Just calls the other getCollection(), but with offset = -1.
+     * Returns collection specified by pathInfo, constrained by a date range and
+     * starting at an offset within the collection.Returns 20 items at a time.
+     * <pre>
+     * Supports these three collection URI forms:
+     *    /<blog-name>/entries/{index}
+     *    /<blog-name>/resources/{index}
+     *    /<blog-name>/categories/{index}
+     * </pre>
+     * @param pathInfo Path info from URI
+     * @param start    Don't include members updated before this date (null allowed)
+     * @param end      Don't include members updated after this date (null allowed)
+     * @param offset   Offset within collection (for paging)
      */
-    public AtomCollection getCollection(String[] pathInfo) throws Exception {
-        return getCollection(pathInfo, null, new Date(), -1);
+    public Feed getCollection(String[] pathInfo) throws Exception {
+        int start = 0;
+        int end = mMaxEntries;
+        if (pathInfo.length > 2) {
+            try { // parse int range in form M-N, either M or N may be omitted
+                String s = pathInfo[2].trim();
+                start = 0;
+                end = Integer.MAX_VALUE;
+                String[] range = s.split("-");
+                if (s.startsWith("-")) end = Integer.parseInt(range[1]);
+                else if (s.endsWith("-")) start = Integer.parseInt(range[0]);
+                else {
+                    start = Integer.parseInt(range[0]);
+                    end = Integer.parseInt(range[1]);
+                }
+                // never return more than mMaxEntries
+                if (end - start > mMaxEntries) {
+                    end = start + mMaxEntries;
+                }
+            } catch (Throwable t) {
+                mLogger.warn("Unparsable range: " + pathInfo[2]);
+            }
+        }
+        if (pathInfo.length > 0 && pathInfo[1].equals("entries")) {
+            return getCollectionOfEntries(pathInfo, start, end);
+        } else if (pathInfo.length > 0 && pathInfo[1].equals("resources")) {
+            return getCollectionOfResources(pathInfo, start, end);
+        } /* else if (pathInfo.length > 0 && pathInfo[1].equals("categories")) {
+            return getCollectionOfCategories(pathInfo, start, end);
+        }*/
+        throw new Exception("ERROR: bad URL in getCollection()");
     }
 

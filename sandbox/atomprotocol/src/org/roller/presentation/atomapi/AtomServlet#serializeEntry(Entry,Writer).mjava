@@ -1,10 +1,9 @@
-    /** 
+    /**
      * Utility method to make up for a Rome shortcoming:
      * Rome can only serialize entire feeds, not individual elements
      */
-    public static void serializeEntry(Entry entry, Writer writer) 
-        throws IllegalArgumentException, FeedException, IOException
-    {
+    public static void serializeEntry(Entry entry, Writer writer)
+    throws IllegalArgumentException, FeedException, IOException {
         // Build a feed containing only the entry
         List entries = new ArrayList();
         entries.add(entry);
@@ -23,7 +22,7 @@
         
         StringWriter sw = new StringWriter();  // DEBUG
         outputter.output(entryElement, sw);    // DEBUG
-        System.out.println(sw.toString());     // DEBUG    
+        System.out.println(sw.toString());     // DEBUG
         writer.write(sw.toString());           // DEBUG
         
         //outputter.output(entryElement, writer);

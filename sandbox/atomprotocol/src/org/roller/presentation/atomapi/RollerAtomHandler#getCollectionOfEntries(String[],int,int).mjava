@@ -1,0 +1,30 @@
+    /**
+     * Helper method that returns collection of entries, called by getCollection().
+     */
+    public Feed getCollectionOfEntries(
+            String[] pathInfo, int start, int end) throws Exception {
+        String handle = pathInfo[0];
+        String absUrl = mRollerContext.getAbsoluteContextUrl(mRequest);
+        WebsiteData website = mRoller.getUserManager().getWebsiteByHandle(handle);
+        List entries = null;
+        if (canView(website)) {
+            entries = mRoller.getWeblogManager().getWeblogEntries(
+                    website,  // website
+                    null,   // startDate
+                    null,   // endDate
+                    null,   // catName
+                    null,   // status
+                    start, // offset (for range paging)
+                    end);  // maxEntries
+            Feed feed = new Feed();
+            List atomEntries = new ArrayList();
+            for (Iterator iter = entries.iterator(); iter.hasNext();) {
+                WeblogEntryData rollerEntry = (WeblogEntryData)iter.next();
+                atomEntries.add(createAtomEntry(rollerEntry));
+            }
+            feed.setEntries(atomEntries);
+            return feed;
+        }
+        throw new Exception("ERROR: not authorized");
+    }
+

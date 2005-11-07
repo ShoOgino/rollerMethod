@@ -3,19 +3,15 @@
      * Handles an Atom GET by calling handler and writing results to response.
      */
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
-        throws ServletException, IOException
-    {
+    throws ServletException, IOException {
         AtomHandler handler = createAtomRequestHandler(req);
         String userName = handler.getAuthenticatedUsername();
-        if (userName != null) 
-        {
+        if (userName != null) {
             String[] pathInfo = getPathInfo(req);
-            try
-            {
-                if (handler.isIntrospectionURI(pathInfo)) 
-                {
+            try {
+                if (handler.isIntrospectionURI(pathInfo)) {
                     // return an Atom Service document
-                    AtomService service = handler.getIntrospection(pathInfo);                   
+                    AtomService service = handler.getIntrospection(pathInfo);
                     Document doc = AtomService.serviceToDocument(service);
                     Writer writer = res.getWriter();
                     XMLOutputter outputter = new XMLOutputter();
@@ -23,71 +19,40 @@
                     outputter.output(doc, writer);
                     writer.close();
                     res.setStatus(HttpServletResponse.SC_OK);
-                }
-                else if (handler.isCollectionURI(pathInfo))
-                {
+                } else if (handler.isCollectionURI(pathInfo)) {
                     // return a collection
-                    String ranges = req.getHeader("Range");
-                    if (ranges == null) req.getParameter("Range");
-                    AtomCollection col = null;
-                    if (ranges != null) 
-                    {
-                        /* // return a range of collection members
-                        AtomCollection.Range range = 
-                            AtomCollection.parseRange(req.getHeader("Range"));
-                        int offset = 0;
-                        String offsetString = req.getParameter("offset");
-                        if (offsetString != null) 
-                        {
-                            offset = Integer.parseInt(offsetString);
-                        }
-                        col= handler.getCollection(
-                            pathInfo, range.start, range.end, offset); */
-                    }
-                    else 
-                    {
-                        col= handler.getCollection(pathInfo);
-                    }
-                    // serialize collection to XML and write it out
-                    Document doc = AtomCollection.collectionToDocument(col);
+                    Feed col = handler.getCollection(pathInfo);
+                    col.setFeedType(FEED_TYPE);
+                    WireFeedOutput wireFeedOutput = new WireFeedOutput();
+                    Document feedDoc = wireFeedOutput.outputJDom(col);
                     Writer writer = res.getWriter();
                     XMLOutputter outputter = new XMLOutputter();
                     outputter.setFormat(Format.getPrettyFormat());
-                    outputter.output(doc, writer);
+                    outputter.output(feedDoc, writer);
                     writer.close();
                     res.setStatus(HttpServletResponse.SC_OK);
-                }
-                else if (handler.isEntryURI(pathInfo)) 
-                {
+                } else if (handler.isEntryURI(pathInfo)) {
                     // return an entry
-                    Entry entry = handler.getEntry(pathInfo);                    
-                    Writer writer = res.getWriter(); 
-                    serializeEntry(entry, writer);                    
+                    Entry entry = handler.getEntry(pathInfo);
+                    Writer writer = res.getWriter();
+                    serializeEntry(entry, writer);
                     writer.close();
-                }
-                else if (handler.isResourceURI(pathInfo))
-                {
+                } else if (handler.isMediaURI(pathInfo)) {
                     // return a resource
-                    String absPath = handler.getResourceFilePath(pathInfo);
+                    String absPath = handler.getMediaFilePath(pathInfo);
                     String type = getServletContext().getMimeType(absPath);
                     res.setContentType(type);
                     Utilities.copyInputToOutput(
                         new FileInputStream(absPath), res.getOutputStream());
-                }
-                else
-                {
+                } else {
                     res.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 }
-            }
-            catch (Exception e)
-            {
-                res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            } catch (Exception e) {
+                //res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 e.printStackTrace(res.getWriter());
                 mLogger.error(e);
             }
-        }
-        else 
-        {
+        } else {
             res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
     }

@@ -19,20 +19,22 @@
                     
                     AtomService.Collection entryCol = new AtomService.Collection();
                     entryCol.setTitle("Collection: Weblog Entries for " + handle);
-                    entryCol.setContents("entries");
-                    entryCol.setHref(absUrl + "/atom/"+handle+"/entries");
+                    entryCol.setMemberType("entry");
+                    entryCol.setHref(absUrl + "/app/"+handle+"/entries");
+                    entryCol.setListTemplate(absUrl + "/app/"+handle+"/entries/{index}");
                     workspace.addCollection(entryCol);
                     
-                    AtomService.Collection catCol = new AtomService.Collection();
+                    /*AtomService.Collection catCol = new AtomService.Collection();
                     catCol.setTitle("Collection: Categories for " + handle);
-                    catCol.setContents("categories");
-                    catCol.setHref(absUrl + "/atom/"+handle+"/categories");
-                    workspace.addCollection(catCol);
+                    catCol.setMemberType("entry");
+                    catCol.setHref(absUrl + "/app/"+handle+"/categories");
+                    workspace.addCollection(catCol);*/
                     
                     AtomService.Collection uploadCol = new AtomService.Collection();
-                    uploadCol.setTitle("Collection: File uploads for " + handle);
-                    uploadCol.setContents("generic");
-                    uploadCol.setHref(absUrl + "/atom/"+handle+"/resources");
+                    uploadCol.setTitle("Collection: Resources for " + handle);
+                    uploadCol.setMemberType("media");
+                    uploadCol.setHref(absUrl + "/app/"+handle+"/resources");
+                    uploadCol.setListTemplate(absUrl + "/app/"+handle+"/resources/{index}");
                     workspace.addCollection(uploadCol);
                 }
             }

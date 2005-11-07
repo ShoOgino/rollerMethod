@@ -3,39 +3,27 @@
      * Handle Atom DELETE by calling appropriate handler.
      */
     protected void doDelete(HttpServletRequest req, HttpServletResponse res)
-        throws ServletException, IOException
-    {
+    throws ServletException, IOException {
         AtomHandler handler = createAtomRequestHandler(req);
         String userName = handler.getAuthenticatedUsername();
-        if (userName != null) 
-        {
+        if (userName != null) {
             String[] pathInfo = getPathInfo(req);
-            try
-            {
-                if (handler.isEntryURI(pathInfo)) 
-                {
-                    handler.deleteEntry(pathInfo); 
+            try {
+                if (handler.isEntryURI(pathInfo)) {
+                    handler.deleteEntry(pathInfo);
                     res.setStatus(HttpServletResponse.SC_OK);
-                }
-                else if (handler.isResourceURI(pathInfo)) 
-                {
-                    handler.deleteResource(pathInfo); 
+                } else if (handler.isMediaURI(pathInfo)) {
+                    handler.deleteMedia(pathInfo);
                     res.setStatus(HttpServletResponse.SC_OK);
-                }
-                else
-                {
+                } else {
                     res.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 e.printStackTrace(res.getWriter());
                 mLogger.error(e);
             }
-        }
-        else 
-        {
+        } else {
             res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
     }

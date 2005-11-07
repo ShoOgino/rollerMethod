@@ -15,18 +15,26 @@
                     Content romeContent = (Content)contents.get(0);
                     rollerEntry.setText(romeContent.getValue());
                 }
-
                 
+                PubControlModule control = (PubControlModule)
+                    entry.getModule("http://purl.org/atom/app#");
+                if (control!=null && control.getDraft()!=null) {
+                    if (control.getDraft().booleanValue()) {
+                        rollerEntry.setStatus(WeblogEntryData.DRAFT);
+                    } else {
+                        rollerEntry.setStatus(WeblogEntryData.PUBLISHED);
+                    }
+                }    
                 rollerEntry.setUpdateTime(new Timestamp(new Date().getTime()));
                 if (entry.getPublished() != null) {
                     rollerEntry.setPubTime(
-                        new Timestamp(entry.getPublished().getTime()));
+                            new Timestamp(entry.getPublished().getTime()));
                 }
                 if (entry.getCategories() != null
                         && entry.getCategories().size() > 0) {
                     Category atomCat = (Category)entry.getCategories().get(0);
-                    WeblogCategoryData cat = 
-                        mRoller.getWeblogManager().getWeblogCategoryByPath(
+                    WeblogCategoryData cat =
+                            mRoller.getWeblogManager().getWeblogCategoryByPath(
                             rollerEntry.getWebsite(), atomCat.getTerm());
                     if (cat != null) {
                         rollerEntry.setCategory(cat);

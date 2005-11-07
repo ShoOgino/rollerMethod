@@ -1,0 +1,14 @@
+    public Module parse(Element elem) {
+        boolean foundSomething = false;
+        PubControlModule m = new PubControlModuleImpl();
+        Element e = elem.getChild("control", getContentNamespace());
+        if (e != null) {
+            Element draftElem = e.getChild("draft", getContentNamespace());
+            if (draftElem != null) {
+                if ("yes".equals(draftElem.getText())) m.setDraft(Boolean.TRUE); 
+                if ("no".equals(draftElem.getText())) m.setDraft(Boolean.FALSE);                
+            }
+        }
+        return m.getDraft()!=null ? m : null;
+    }
+

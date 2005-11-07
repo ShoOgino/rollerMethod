@@ -1,12 +1,10 @@
     /** Deserialize an Atom service XML document into an object */
-    public static AtomService documentToService(Document document)
-    {
+    public static AtomService documentToService(Document document) {
         AtomService service = new AtomService();
         Element root = document.getRootElement();
         List spaces = root.getChildren("workspace", ns);
         Iterator iter = spaces.iterator();
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             Element e = (Element) iter.next();
             service.addWorkspace(AtomService.elementToWorkspace(e));
         }

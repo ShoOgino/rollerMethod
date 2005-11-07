@@ -21,8 +21,8 @@
                             String realpassword = LoginServlet.getEncryptedPassword(
                                     request, user.getUserName(), user.getPassword());
                             password = userPass.substring(p+1);
-                            if (    (!userID.trim().equals(user.getUserName()))
-                            && (!password.trim().equals(realpassword))) {
+                            if (    (userID.trim().equals(user.getUserName()))
+                            && (password.trim().equals(realpassword))) {
                                 valid = true;
                             }
                         }
