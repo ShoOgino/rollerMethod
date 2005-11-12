@@ -11,7 +11,6 @@
         throws IOException, ServletException
     {
         ActionForward forward = mapping.findForward("adminUser.page");
-        ActionMessages msgs = new ActionMessages();
         try
         {
             UserData user = null;
@@ -20,9 +19,12 @@
             if (rollerSession.isGlobalAdminUser() )
             {
                 UserAdminForm userForm = (UserAdminForm)actionForm;
-                UserManager mgr = RollerFactory.getRoller().getUserManager();                
-                if (userForm != null && userForm.getUserName() != null)
+                UserManager mgr = RollerFactory.getRoller().getUserManager(); 
+                if (userForm!=null 
+                      && userForm.getUserName()!=null && !userForm.isNewUser())
                 {
+                    ActionMessages msgs = getErrors(request);
+                    msgs = (msgs == null) ? new ActionMessages() : msgs;
                     user = mgr.getUser(userForm.getUserName(), null);                    
                     if (user != null)
                     {
@@ -33,13 +35,21 @@
                     }
                     else
                     {
-                        msgs.add(ActionMessages.GLOBAL_MESSAGE,
+                        msgs.add(ActionErrors.GLOBAL_ERROR,
                             new ActionMessage("userAdmin.invalidNewUserName"));
                         userForm.setUserName("");
                     }
+                    if (request.getSession().getAttribute("cookieLogin")!=null) 
+                    {
+                        // TODO: make it possible to change passwords 
+                        // regardless of remember me
+                        msgs.add(ActionErrors.GLOBAL_ERROR, 
+                                new ActionMessage("userAdmin.cookieLogin"));
+                    }
+                    saveErrors(request, msgs);
                 }
                 request.setAttribute("model", new UserAdminPageModel(
-                        request, response, mapping, userForm, user));
+                    request, response, mapping, userForm, user));
             }
             else
             {
@@ -51,15 +61,6 @@
             mLogger.error("ERROR in action",e);
             throw new ServletException(e);
         }
-        
-        if (request.getSession().getAttribute("cookieLogin") != null) 
-        {
-            // TODO: make it possible to change passwords regardless of remember me
-            msgs.add(ActionMessages.GLOBAL_MESSAGE, 
-                    new ActionMessage("userAdmin.cookieLogin"));
-        }
-        
-         saveMessages(request, msgs);
-         return forward;
+        return forward;
     }
 
