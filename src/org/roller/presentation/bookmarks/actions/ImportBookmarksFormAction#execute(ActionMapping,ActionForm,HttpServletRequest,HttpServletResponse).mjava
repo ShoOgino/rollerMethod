@@ -71,6 +71,7 @@
                             rreq.getWebsite(), folderName, data);
                         
                         RollerFactory.getRoller().commit();
+                        PageCacheFilter.removeFromCache(request,rreq.getWebsite());
                     }
                     else 
                     {

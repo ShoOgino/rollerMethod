@@ -8,7 +8,7 @@
         RollerSession rollerSession = RollerSession.getRollerSession(req);
         try
         {
-            if (rreq.getWebsite() != null 
+            if (rreq.getWebsite() != null
                  && rollerSession.isUserAuthorizedToAuthor(rreq.getWebsite()) )
             {
                 RefererManager refmgr = RollerFactory.getRoller().getRefererManager();
@@ -22,11 +22,12 @@
                         refmgr.removeReferer(deleteIds[i]);
                     }
                     RollerFactory.getRoller().commit();
+                    PageCacheFilter.removeFromCache(req,website);
                     ActionMessages messages = new ActionMessages();
                     messages.add(null, new ActionMessage("referers.deletedReferers"));
                     saveMessages(req, messages);
                 }
-                else 
+                else
                 {
                     ActionErrors errors = new ActionErrors();
                     errors.add(null, new ActionError("referers.noReferersSpecified"));

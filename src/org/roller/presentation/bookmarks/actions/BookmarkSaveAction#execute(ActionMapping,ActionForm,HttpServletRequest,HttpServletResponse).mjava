@@ -28,7 +28,8 @@
         {
             form.copyTo(bd, request.getLocale());
             bd.save();
-            RollerFactory.getRoller().commit();            
+            RollerFactory.getRoller().commit();
+            PageCacheFilter.removeFromCache(request,bd.getWebsite());
             request.setAttribute(
                 RollerRequest.FOLDERID_KEY, bd.getFolder().getId());
         }

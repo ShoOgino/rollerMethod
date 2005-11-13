@@ -12,20 +12,20 @@
         RefererManager refmgr = RollerFactory.getRoller().getRefererManager();
         try
         {
-            if (rreq.getWebsite() != null 
+            if (rreq.getWebsite() != null
                  && rollerSession.isUserAuthorizedToAuthor(rreq.getWebsite()) )
-            {   
+            {
                 BasePageModel pageModel = new BasePageModel(
                         "referers.todaysReferers", req, res, mapping);
                 req.setAttribute("model", pageModel);
                 req.setAttribute("pageHits",
                     new Integer(refmgr.getDayHits(rreq.getWebsite())));
-                    
+
                 req.setAttribute("totalHits",
                     new Integer(refmgr.getTotalHits(rreq.getWebsite())));
-                    
+
                 List refs = refmgr.getTodaysReferers(rreq.getWebsite());
-                req.setAttribute("referers",refs);        
+                req.setAttribute("referers",refs);
             }
         }
         catch (Exception e)
@@ -33,7 +33,7 @@
             mLogger.error("ERROR in action",e);
             throw new ServletException(e);
         }
-        
+
         return forward;
     }
 

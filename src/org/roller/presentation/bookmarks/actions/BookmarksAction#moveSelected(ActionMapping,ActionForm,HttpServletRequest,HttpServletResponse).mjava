@@ -20,8 +20,9 @@
         BookmarksPageModel pageModel = new BookmarksPageModel(
             request, response, mapping, (BookmarksForm)actionForm);
         request.setAttribute("model", pageModel);
-        if (RollerSession.getRollerSession(request).isUserAuthorizedToAuthor(
-            pageModel.getFolder().getWebsite()))
+        WebsiteData website = pageModel.getFolder().getWebsite();
+
+        if (RollerSession.getRollerSession(request).isUserAuthorizedToAuthor(website))
         {
             try 
             {
@@ -67,6 +68,7 @@
                     }
                 }
                 roller.commit();
+                PageCacheFilter.removeFromCache(request,website);
                 saveMessages(request, messages);
             }
             catch (RollerException e)
