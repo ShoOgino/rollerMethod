@@ -12,6 +12,8 @@
 			HttpServletResponse response)
 			throws ServletException
 	{
+        request.setAttribute("model", new BasePageModel(
+           "maintenance.title", request, response, mapping));
 		return mapping.findForward("maintenance.page");
 	}
 

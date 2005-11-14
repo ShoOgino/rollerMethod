@@ -24,7 +24,9 @@
                 messages.add(null, new ActionMessage("maintenance.message.indexed"));
                 saveMessages(request, messages);
 			}
-		}
+            request.setAttribute("model", new BasePageModel(
+                "maintenance.title", request, response, mapping));
+        }
 		catch (RollerException re)
 		{
 			mLogger.error("Unexpected exception",re.getRootCause());

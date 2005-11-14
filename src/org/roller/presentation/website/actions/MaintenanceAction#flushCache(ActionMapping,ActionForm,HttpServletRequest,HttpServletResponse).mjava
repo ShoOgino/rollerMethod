@@ -21,7 +21,10 @@
                  ActionMessages messages = new ActionMessages();
                  messages.add(null, new ActionMessage("maintenance.message.flushed"));
                  saveMessages(request, messages);
+
             }
+            request.setAttribute("model", new BasePageModel(
+                "maintenance.title", request, response, mapping));
         }
         catch (Exception e)
         {
