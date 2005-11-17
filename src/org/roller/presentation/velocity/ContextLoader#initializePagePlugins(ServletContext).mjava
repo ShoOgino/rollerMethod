@@ -1,10 +1,8 @@
     /**
-     * Initialize PagePlugins declared in web.xml.  By using the full class
-     * name we also allow for the implementation of "external" Plugins
-     * (maybe even packaged seperately).  These classes are then later 
-     * instantiated by PageHelper.
-     * 
-     * @param mContext
+     * Initialize PagePlugins declared in web.xml, called once by RollerContext.
+     * By using the full class name we also allow for the implementation of 
+     * "external" Plugins (maybe even packaged seperately). These classes are 
+     * then later instantiated by PageHelper.
      */
     public static void initializePagePlugins(ServletContext mContext)
     {
@@ -24,7 +22,8 @@
                     Class pluginClass = Class.forName(plugins[i]);
                     if (isPagePlugin(pluginClass))
                     {
-                        mPagePlugins.add(pluginClass.newInstance());
+                        PagePlugin plugin = (PagePlugin)pluginClass.newInstance();
+                        mPagePlugins.put(plugin.getName(), pluginClass);
                     }
                     else
                     {

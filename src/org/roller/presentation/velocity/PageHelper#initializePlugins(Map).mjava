@@ -2,18 +2,19 @@
     /**
      * Create individual instances of the PagePlugins for use by this PageHelper.
      */
-    protected void initializePlugins(Collection pluginClasses) 
+    protected void initializePlugins(Map pluginClasses) 
     {
-        Iterator it = pluginClasses.iterator();
+        Iterator it = pluginClasses.values().iterator();
         while (it.hasNext()) 
         {
             try
             {
-                PagePlugin plugin = (PagePlugin)it.next();
+                Class pluginClass = (Class)it.next();
+                PagePlugin plugin = (PagePlugin)pluginClass.newInstance();
                 plugin.init(mRollerReq, mVelocityContext);
-                mPagePlugins.add(plugin);
+                mPagePlugins.put(plugin.getName(), plugin);
             }
-            catch (RollerException e)
+            catch (Exception e)
             {
                 mLogger.warn("Unable to init() PagePlugin: ", e    );
             }

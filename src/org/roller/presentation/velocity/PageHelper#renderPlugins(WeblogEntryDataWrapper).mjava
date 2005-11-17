@@ -30,13 +30,13 @@
                 // now loop over mPagePlugins, matching
                 // against Entry plugins (by name):
                 // where a match is found render Plugin.
-                Iterator iter = mPagePlugins.iterator();
-                PagePlugin pagePlugin = null;
+                Iterator iter = mPagePlugins.keySet().iterator();
                 while (iter.hasNext())
                 {
-                    pagePlugin = (PagePlugin)iter.next();
-                    if (entryPlugins.contains(pagePlugin.getName()))
+                    String key = (String)iter.next();
+                    if (entryPlugins.contains(key))
                     {
+                        PagePlugin pagePlugin = (PagePlugin)mPagePlugins.get(key);
                         copy.setText((pagePlugin).render(copy, mSkipFlag));
                     }
                 }
