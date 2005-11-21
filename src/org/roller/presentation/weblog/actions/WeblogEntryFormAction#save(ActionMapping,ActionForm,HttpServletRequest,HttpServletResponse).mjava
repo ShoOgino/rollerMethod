@@ -67,13 +67,10 @@
 
                 // Fetch MediaCast content type and length
                 mLogger.debug("Checking MediaCast attributes");
-                if (!checkMediaCast(entry)) {
+                if (!checkMediaCast(entry, uiMessages)) {
                    mLogger.debug("Invalid MediaCast attributes");
-                   uiMessages.add(null, 
-                     new ActionMessage("weblogEdit.message.mediaCastProblem"));
-                }
-                else if (mLogger.isDebugEnabled()) {
-                   mLogger.debug("Invalid MediaCast attributes");
+                } else {
+                   mLogger.debug("Validated MediaCast attributes");
                 }
 
                 // Store value object (creates new or updates existing)
@@ -110,7 +107,7 @@
                     // implies that entry just changed to pending
                     notifyWebsiteAuthorsOfPendingEntry(request, entry);
                     uiMessages.add(null,
-                        new ActionMessage("weblogEdit.submitedForReview")); 
+                        new ActionMessage("weblogEdit.submittedForReview"));
                     
                     // so clear entry from editor
                     actionForm = new WeblogEntryFormEx();

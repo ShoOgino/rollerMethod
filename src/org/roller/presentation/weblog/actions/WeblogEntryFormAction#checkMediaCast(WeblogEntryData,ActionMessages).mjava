@@ -1,4 +1,4 @@
-    private boolean checkMediaCast(WeblogEntryData entry)
+    private boolean checkMediaCast(WeblogEntryData entry, ActionMessages uiMessages)
     {
         boolean valid = false;
         String url = entry.findEntryAttribute("att_mediacast_url");
@@ -17,14 +17,21 @@
                 if (con.getResponseCode() != 200) 
                 {
                     mLogger.debug("Response code indicates error");
-                    mLogger.error("ERROR " 
-                        + con.getResponseCode() + " return from MediaCast URL");
-                    mLogger.debug(con.getContent().toString());
+                    mLogger.error("ERROR " + con.getResponseCode() + " return from MediaCast URL");
+                    uiMessages.add(null,new ActionMessage("weblogEdit.mediaCastResponseError"));
                 }
-                else if (con.getContentType()!=null 
-                        && con.getContentLength()!=-1)
+                else if (con.getContentType()==null || con.getContentLength()==-1)
                 {
-                    mLogger.debug("Got good reponse and content info");
+                    mLogger.debug("Content type + (" + con.getContentType()  + " is null or content length (" +
+                            con.getContentLength() + ") is -1 (indeterminate).");
+                    uiMessages.add(null,new ActionMessage("weblogEdit.mediaCastLacksContentTypeOrLength"));
+                }
+                else
+                {
+                    if (mLogger.isDebugEnabled()) {
+                        mLogger.debug("Got good response: Content type " +
+                                con.getContentType() + " [length = " + con.getContentLength() + "]" );
+                    }
                     entry.putEntryAttribute(
                         "att_mediacast_type", con.getContentType());
                     entry.putEntryAttribute(
@@ -32,11 +39,16 @@
                     valid = true;
                 }
             }
+            catch (MalformedURLException mfue) {
+                mLogger.debug("Malformed MediaCast url: " + url);
+                uiMessages.add(null, new ActionMessage("weblogEdit.mediaCastUrlMalformed"));
+            }
             catch (Exception e)
             {
-                mLogger.error("ERROR checking MediaCast URL");
+                mLogger.error("ERROR while checking MediaCast URL: " + url + ": " + e.getMessage());
+                uiMessages.add(null, new ActionMessage("weblogEdit.mediaCastFailedFetchingInfo"));
             }
-        } 
+        }
         else 
         {
             mLogger.debug("No MediaCast specified, but that is OK");
