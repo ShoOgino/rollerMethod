@@ -58,6 +58,14 @@
             setupPingQueueTask(roller);
             setupScheduledTasks(mContext, roller);
             
+            // call Spring's context ContextLoaderListener to initialize
+            // all the context files specified in web.xml. This is necessary
+            // because listeners don't initialize in the order specified in 
+            // 2.3 containers
+            super.contextInitialized(sce);
+        
+            initializeSecurityFeatures(mContext);
+            
             roller.commit();
             roller.release();
             
