@@ -36,7 +36,8 @@
                 saveMessages(request, uiMessages);
 
                 UserData user = rses.getAuthenticatedUser();
-                PageCacheFilter.removeFromCache(request, data.getWebsite());
+                //PageCacheFilter.removeFromCache(request, data.getWebsite());
+                CacheManager.invalidate(data);
                 
                 BasePageModel pageModel = new BasePageModel(
                     "pageForm.title", request, response, mapping);

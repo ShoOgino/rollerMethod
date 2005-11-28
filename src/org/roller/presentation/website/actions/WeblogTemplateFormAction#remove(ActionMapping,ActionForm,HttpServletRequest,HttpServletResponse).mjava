@@ -23,7 +23,8 @@
                 RollerFactory.getRoller().commit();
 
                 UserData user = rses.getAuthenticatedUser();
-                PageCacheFilter.removeFromCache(request, template.getWebsite());
+                //PageCacheFilter.removeFromCache(request, template.getWebsite());
+                CacheManager.invalidate(template);
                     
                 addModelObjects(
                         request, response, mapping, template.getWebsite());

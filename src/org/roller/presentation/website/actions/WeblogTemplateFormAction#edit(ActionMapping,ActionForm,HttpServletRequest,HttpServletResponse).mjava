@@ -24,7 +24,8 @@
                 WeblogTemplateForm pf = (WeblogTemplateForm)actionForm;
                 pf.copyFrom(pd, request.getLocale());
 
-                PageCacheFilter.removeFromCache( request, pd.getWebsite() );
+                //PageCacheFilter.removeFromCache( request, pd.getWebsite() );
+                //CacheManager.invalidate(pd);
                 
                 addModelObjects(request, response, mapping, pd.getWebsite());
             }
