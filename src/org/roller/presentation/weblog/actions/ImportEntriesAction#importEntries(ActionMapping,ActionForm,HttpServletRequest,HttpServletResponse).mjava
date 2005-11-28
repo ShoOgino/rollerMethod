@@ -45,7 +45,8 @@
                         saveMessages(request, notices);
 
                         // Flush the page cache
-                        PageCacheFilter.removeFromCache(request, website);
+                        //PageCacheFilter.removeFromCache(request, website);
+                        CacheManager.invalidate(website);
                     }
                     else
                     {

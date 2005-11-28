@@ -70,7 +70,8 @@
                         RollerFactory.getRoller().commit();
                         
                         // Refresh user's entries in page cache
-                        PageCacheFilter.removeFromCache(req, entry.getWebsite());
+                        //PageCacheFilter.removeFromCache(req, entry.getWebsite());
+                        CacheManager.invalidate(comment);
                     
                         // Send email notifications
                         CommentServlet.sendEmailNotification(req, rreq, entry, comment);

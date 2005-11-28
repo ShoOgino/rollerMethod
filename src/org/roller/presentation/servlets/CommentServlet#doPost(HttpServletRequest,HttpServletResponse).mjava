@@ -81,7 +81,8 @@
                     reindexEntry(entry);
                     
                     // Refresh user's entries in page cache
-                    PageCacheFilter.removeFromCache(request, website);
+                    //PageCacheFilter.removeFromCache(request, website);
+                    CacheManager.invalidate(comment);
                     
                     // Send email notifications
                     sendEmailNotification(request, rreq, entry, comment);

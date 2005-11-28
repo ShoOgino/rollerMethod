@@ -45,7 +45,8 @@
                         }
                         
                         // make sure to flush the page cache so ppl can see the change
-                        PageCacheFilter.removeFromCache(request, website);
+                        //PageCacheFilter.removeFromCache(request, website);
+                        CacheManager.invalidate(website);
                     }
                     
                 } catch(ThemeNotFoundException tnfe) {

@@ -42,6 +42,23 @@
                 JspFactory.getDefaultFactory().getPageContext(
                 this, request,  response, "", true, 8192, true);
             rreq.setPageContext(pageContext);
+            
+            // get update time before loading context
+            // TODO: this should really be handled elsewhere
+            if(rreq.getWebsite() != null) {
+                String catname =
+                        request.getParameter(RollerRequest.WEBLOGCATEGORYNAME_KEY);
+                
+                Roller roller = RollerFactory.getRoller();
+                UserManager umgr = roller.getUserManager();
+                WeblogManager wmgr = roller.getWeblogManager();
+                
+                Date updateTime = wmgr.getWeblogLastPublishTime(
+                        umgr.getWebsiteByHandle(rreq.getWebsite().getHandle()), catname);
+                
+                request.setAttribute("updateTime", updateTime);
+            }
+            
             ContextLoader.setupContext(ctx, rreq, response);
 
             final String useTemplate;

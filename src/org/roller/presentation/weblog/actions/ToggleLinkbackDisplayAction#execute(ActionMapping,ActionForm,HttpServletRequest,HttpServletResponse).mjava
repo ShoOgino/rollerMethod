@@ -27,7 +27,8 @@
                     
                     RollerFactory.getRoller().commit();
                     
-                    PageCacheFilter.removeFromCache( req, rreq.getWebsite() );
+                    //PageCacheFilter.removeFromCache( req, rreq.getWebsite() );
+                    CacheManager.invalidate(rreq.getWebsite());
                 }                
             }
         }

@@ -35,7 +35,8 @@
             form.copyTo(fd, request.getLocale());
             fd.save();
             RollerFactory.getRoller().commit();
-            PageCacheFilter.removeFromCache(request,website);
+            
+            CacheManager.invalidate(fd);
         }
         else
         {

@@ -44,7 +44,8 @@
                 }
             }
             roller.commit();
-            PageCacheFilter.removeFromCache(request,website);
+                
+            CacheManager.invalidate(website);
 
             // recreate model now that folder  is deleted
             pageModel = new BookmarksPageModel(
