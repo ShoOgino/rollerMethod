@@ -1,0 +1,10 @@
+    /**
+     * Determine if this cache entry has expired.
+     */
+    public boolean hasExpired() {
+        
+        long now = System.currentTimeMillis();
+        
+        return ((this.timeCached + this.timeout) < now);
+    }
+

@@ -1,0 +1,73 @@
+    /**
+     * Process filter.
+     */
+    public void doFilter(ServletRequest req,
+                        ServletResponse res,
+                        FilterChain chain)
+            throws IOException, ServletException {
+        
+        mLogger.debug("entering");
+        
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) res;
+        
+        WeblogFeedRequest feedRequest = null;
+        try {
+            feedRequest = new WeblogFeedRequest(request);
+        } catch(Exception e) {
+            // some kind of error parsing the request
+            mLogger.error("error creating weblog feed request", e);
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        
+        String key = "feedCache:"+this.generateKey(feedRequest);
+        
+        ResponseContent respContent = (ResponseContent) this.mFeedCache.get(key);
+        if (respContent == null) {
+            
+            mLogger.debug("MISS "+key);
+            this.misses++;
+            
+            try {
+                CacheHttpServletResponseWrapper cacheResponse =
+                        new CacheHttpServletResponseWrapper(response);
+                
+                chain.doFilter(request, cacheResponse);
+                
+                cacheResponse.flushBuffer();
+                
+                // only cache if there wasn't an exception
+                if (request.getAttribute("DisplayException") == null) {
+                    ResponseContent rc = cacheResponse.getContent();
+                    
+                    this.mFeedCache.put(key, rc);
+                } else {
+                    mLogger.error("Display exception "+key);
+                }
+                
+            } catch (java.net.SocketException se) {
+                // ignored
+            } catch (Exception e) {
+                // something unexpected and bad happened
+                mLogger.error("Error rendering feed "+key+" - "+e.getMessage());
+            }
+            
+        } else {
+            
+            mLogger.debug("HIT "+key);
+            this.hits++;
+            
+            try {
+                respContent.writeTo(response);
+            } catch (java.net.SocketException se) {
+                // ignored
+            } catch (Exception e) {
+                mLogger.error("Error with cached response "+key+" - "+e.getMessage());
+            }
+            
+        }
+        
+        mLogger.debug("exiting");
+    }
+

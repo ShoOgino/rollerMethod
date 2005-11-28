@@ -1,0 +1,18 @@
+    /**
+     * Register a CacheHandler to listen for object invalidations.
+     *
+     * This is here so that it's possible to to add classes which would respond
+     * to object invalidations without necessarily having to create a cache.
+     *
+     * An example would be a handler designed to notify other machines in a 
+     * cluster when an object has been invalidated, or possibly the search
+     * index management classes are interested in knowing when objects are
+     * invalidated.
+     */
+    public static void registerHandler(CacheHandler handler) {
+        
+        mLogger.debug("Registering handler "+handler);
+        
+        cacheHandlers.add(handler);
+    }
+

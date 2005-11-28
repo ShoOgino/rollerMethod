@@ -1,0 +1,102 @@
+    /**
+     * Process filter.
+     */
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+            throws IOException, ServletException {
+        
+        mLogger.debug("entering");
+        
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) res;
+        
+        String key = null;
+        Principal prince = null;
+        
+        String servlet = request.getServletPath();
+        if(servlet.equals("/main.do")) {
+            key = "main/page";
+        } else if(servlet.equals("/planet.do")) {
+            key = "planet/page";
+        } else {
+            // not a main page request
+            mLogger.warn("not a main page "+servlet);
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        
+        try {
+            // determine language
+            Locale locale = LanguageUtil.getViewLocale(request);
+            key += "/" + locale.getLanguage();
+            
+            // login status
+            prince = request.getUserPrincipal();
+            if(prince != null) {
+                key += "/user=" + prince.getName();
+            }
+            
+        } catch(Exception e) {
+            // problem getting language?
+            mLogger.error("problem parsing request", e);
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        
+        
+        ResponseContent respContent = null;
+        if(!this.excludeOwnerPages || prince == null) {
+            respContent = (ResponseContent) this.mPageCache.get(key);
+        }
+        
+        if (respContent == null) {
+            
+            mLogger.debug("MISS "+key);
+            this.misses++;
+            
+            try {
+                CacheHttpServletResponseWrapper cacheResponse =
+                        new CacheHttpServletResponseWrapper(response);
+                
+                chain.doFilter(request, cacheResponse);
+                
+                cacheResponse.flushBuffer();
+                
+                // only cache if we didn't get an exception
+                if (request.getAttribute("DisplayException") == null) {
+                    ResponseContent rc = cacheResponse.getContent();
+                    
+                    // only cache if this is not a logged in user?
+                    if(!this.excludeOwnerPages || prince == null) {
+                        this.mPageCache.put(key, rc);
+                    } else {
+                        mLogger.debug("SKIPPED "+key);
+                    }
+                } else {
+                    mLogger.error("Display exception "+key);
+                }
+                
+            } catch (java.net.SocketException se) {
+                // ignored
+            } catch (Exception e) {
+                // something unexpected and bad happened
+                mLogger.error("Error rendering page "+key, e);
+            }
+            
+        } else {
+            
+            mLogger.debug("HIT "+key);
+            this.hits++;
+            
+            try {
+                respContent.writeTo(response);
+            } catch (java.net.SocketException se) {
+                // ignored
+            } catch (Exception e) {
+                mLogger.error("Error with cached response "+key, e);
+            }
+            
+        }
+        
+        mLogger.debug("exiting");
+    }
+

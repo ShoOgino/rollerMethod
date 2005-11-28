@@ -1,0 +1,10 @@
+    public static void invalidate(UserData user) {
+        
+        mLogger.debug("invalidating user = "+user.getUserName());
+        
+        Iterator handlers = cacheHandlers.iterator();
+        while(handlers.hasNext()) {
+            ((CacheHandler) handlers.next()).invalidate(user);
+        }
+    }
+

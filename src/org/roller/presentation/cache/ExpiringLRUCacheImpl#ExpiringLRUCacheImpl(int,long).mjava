@@ -1,0 +1,10 @@
+    public ExpiringLRUCacheImpl(int maxsize, long timeout) {
+        
+        super(maxsize);
+        
+        // timeout is specified in seconds; only positive values allowed
+        if(timeout > 0) {
+            this.timeout = timeout * 1000;
+        }
+    }
+

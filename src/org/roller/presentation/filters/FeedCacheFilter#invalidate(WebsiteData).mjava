@@ -1,0 +1,33 @@
+    /**
+     * A weblog has changed.
+     */
+    public void invalidate(WebsiteData website) {
+        
+        mLogger.debug("invalidating website = "+website.getHandle());
+        
+        // we need to remove the following cached items if they exist
+        //   - the main feed
+        //   - the planet feed
+        //   - all weblog feeds
+        
+        Set removeSet = new HashSet();
+        
+        // TODO: it would be nice to be able to do this without iterating 
+        //       over the entire cache key set
+        String key = null;
+        Iterator allKeys = this.mFeedCache.keySet().iterator();
+        while(allKeys.hasNext()) {
+            key = (String) allKeys.next();
+            
+            if(key.startsWith("feedCache:main")) {
+                removeSet.add(key);
+            } else if(key.startsWith("feedCache:planet")) {
+                removeSet.add(key);
+            } else if(key.startsWith("feedCache:weblog/"+website.getHandle())) {
+                removeSet.add(key);
+            }
+        }
+        
+        this.mFeedCache.remove(removeSet);
+    }
+
