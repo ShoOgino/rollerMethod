@@ -63,6 +63,9 @@
                     }
 
                     RollerFactory.getRoller().commit();
+                    
+                    // notify cache manager
+                    CacheManager.invalidate(wd);
 
                     reindexEntry(RollerFactory.getRoller(), wd);
 

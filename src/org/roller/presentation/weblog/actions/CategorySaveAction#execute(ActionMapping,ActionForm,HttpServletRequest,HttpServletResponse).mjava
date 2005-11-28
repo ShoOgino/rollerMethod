@@ -31,6 +31,9 @@
             form.copyTo(cd, request.getLocale());
             cd.save();
             RollerFactory.getRoller().commit();
+            
+            // notify caches of object invalidation
+            CacheManager.invalidate(cd);
         }
         else
         {

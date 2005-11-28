@@ -22,7 +22,9 @@
                         refmgr.removeReferer(deleteIds[i]);
                     }
                     RollerFactory.getRoller().commit();
-                    PageCacheFilter.removeFromCache(req,website);
+                    
+                    CacheManager.invalidate(website);
+                    
                     ActionMessages messages = new ActionMessages();
                     messages.add(null, new ActionMessage("referers.deletedReferers"));
                     saveMessages(req, messages);

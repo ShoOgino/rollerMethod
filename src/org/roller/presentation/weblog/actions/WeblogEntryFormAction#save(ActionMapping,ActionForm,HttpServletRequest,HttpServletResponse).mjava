@@ -89,8 +89,9 @@
                 reindexEntry(RollerFactory.getRoller(), entry);
                 mLogger.debug("Removing from cache");
                 RollerRequest rreq = RollerRequest.getRollerRequest(request);
-                PageCacheFilter.removeFromCache(request, entry.getWebsite());
-
+                //PageCacheFilter.removeFromCache(request, entry.getWebsite());
+                CacheManager.invalidate(entry);
+                
                 // Clean up session objects we used
                 HttpSession session = request.getSession(true);
                 session.removeAttribute("spellCheckEvents");

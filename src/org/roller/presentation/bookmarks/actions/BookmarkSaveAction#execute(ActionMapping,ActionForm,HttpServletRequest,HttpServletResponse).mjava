@@ -29,7 +29,9 @@
             form.copyTo(bd, request.getLocale());
             bd.save();
             RollerFactory.getRoller().commit();
-            PageCacheFilter.removeFromCache(request,bd.getWebsite());
+            
+            CacheManager.invalidate(bd);
+            
             request.setAttribute(
                 RollerRequest.FOLDERID_KEY, bd.getFolder().getId());
         }

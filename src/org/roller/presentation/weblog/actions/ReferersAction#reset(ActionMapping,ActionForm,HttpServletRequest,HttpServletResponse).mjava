@@ -15,7 +15,8 @@
                 WebsiteData website = rreq.getWebsite();
                 refmgr.forceTurnover(website.getId());
                 RollerFactory.getRoller().commit();
-                PageCacheFilter.removeFromCache(req,website);
+                
+                CacheManager.invalidate(website);
             }
             this.servlet.log("ReferersAction.reset(): don't have permission");
         }

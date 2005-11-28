@@ -72,6 +72,9 @@
                 
                 RollerFactory.getRoller().commit();
                 
+                // notify caches of invalidated object
+                CacheManager.invalidate(catToDelete);
+                
                 if (null != returnId) 
                 {
                     request.setAttribute(
