@@ -42,7 +42,8 @@
             List comments = null;
             try {
                 WeblogManager wMgr = RollerFactory.getRoller().getWeblogManager();
-                comments = wMgr.getComments(entry.getId());
+                // get only approved, non spam comments
+                comments = entry.getComments(true, true); 
             } catch(RollerException re) {
                 // should never happen
                 comments = new ArrayList();
@@ -123,7 +124,7 @@
             ownermsg.append((escapeHtml) ? "\n" : "<br />");
             
             StringBuffer deleteURL = new StringBuffer(rootURL);
-            deleteURL.append("/editor/weblog.do?method=edit&entryid="+entry.getId());
+            deleteURL.append("/editor/commentManagement.do?method=query&entryid=" + entry.getId());
             
             if (escapeHtml) {
                 ownermsg.append(deleteURL.toString());

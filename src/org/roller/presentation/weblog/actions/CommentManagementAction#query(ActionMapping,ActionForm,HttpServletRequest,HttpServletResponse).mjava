@@ -1,0 +1,22 @@
+    public ActionForward query(
+            ActionMapping       mapping,
+            ActionForm          actionForm,
+            HttpServletRequest  request,
+            HttpServletResponse response) 
+            throws IOException, ServletException, RollerException {
+        
+        CommentManagementForm queryForm = (CommentManagementForm)actionForm;
+        RollerRequest rreq = RollerRequest.getRollerRequest(request);
+
+        if (rreq.getWeblogEntry() != null) {
+            queryForm.setEntryid(rreq.getWeblogEntry().getId());
+            queryForm.setWeblog(rreq.getWeblogEntry().getWebsite().getHandle());
+        }        
+        else if (rreq.getWebsite() != null) {
+            queryForm.setWeblog(rreq.getWebsite().getHandle());
+        }        
+        request.setAttribute("model", new CommentManagementPageModel(
+           "commentManagement.title", request, response, mapping, queryForm)); 
+        return mapping.findForward("commentManagement.page");
+    }
+

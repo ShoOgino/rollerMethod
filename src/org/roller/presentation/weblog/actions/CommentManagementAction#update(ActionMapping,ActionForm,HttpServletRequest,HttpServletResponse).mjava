@@ -1,0 +1,55 @@
+    public ActionForward update(
+            ActionMapping       mapping,
+            ActionForm          actionForm,
+            HttpServletRequest  request,
+            HttpServletResponse response) 
+            throws IOException, ServletException, RollerException {
+        
+        CommentManagementForm queryForm = (CommentManagementForm)actionForm;
+        RollerRequest rreq = RollerRequest.getRollerRequest(request);
+        RollerSession rollerSession = RollerSession.getRollerSession(request);
+        try {
+            if (rollerSession.isUserAuthorizedToAuthor(rreq.getWebsite())) { 
+                WeblogManager mgr= RollerFactory.getRoller().getWeblogManager();
+                String[] deleteIds = queryForm.getDeleteComments();
+                List deletedList = Arrays.asList(deleteIds); 
+                if (deleteIds != null && deleteIds.length > 0) {
+                    mgr.removeComments(deleteIds);
+                }                
+                String[] ids = Utilities.stringToStringArray(queryForm.getIds(),",");
+                for (int i=0; i<ids.length; i++) { 
+                    if (deletedList.contains(ids[i])) continue;
+                    CommentData comment = mgr.retrieveComment(ids[i]);
+                    List spamIds = Arrays.asList(queryForm.getSpamComments());
+                    List approvedIds = Arrays.asList(queryForm.getApprovedComments());
+                    if (spamIds.contains(ids[i])) {
+                        comment.setSpam(Boolean.TRUE);
+                    } else {
+                        comment.setSpam(Boolean.FALSE);
+                    }
+                    if (approvedIds.contains(ids[i])) {
+                        comment.setPending(Boolean.FALSE);
+                    } else {
+                        comment.setPending(Boolean.TRUE);
+                    }
+                    comment.save();
+                }               
+                RollerFactory.getRoller().commit();
+                ActionMessages msgs = new ActionMessages();
+                msgs.add(ActionMessages.GLOBAL_MESSAGE, 
+                    new ActionMessage("commentManagement.updateSuccess"));
+                saveMessages(request, msgs);
+            }
+        } catch (Exception e) {
+            ActionMessages errors = new ActionMessages();
+            errors.add(ActionErrors.GLOBAL_MESSAGE,
+                new ActionMessage("commentManagement.updateError", e.toString()));
+            saveErrors(request, errors);
+            logger.error("ERROR updating comments", e);       
+        }
+        CommentManagementPageModel model = new CommentManagementPageModel(
+           "commentManagement.title", request, response, mapping, queryForm);
+        request.setAttribute("model", model); 
+        return mapping.findForward("commentManagement.page");
+    }
+

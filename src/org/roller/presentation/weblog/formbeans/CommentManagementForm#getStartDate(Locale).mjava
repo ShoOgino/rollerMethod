@@ -1,0 +1,15 @@
+    public Date getStartDate(Locale locale) {
+        Date startDate = null;
+        final DateFormat df =
+            DateFormat.getDateInstance(DateFormat.SHORT, locale);
+        if (null != getStartDateString() && getStartDateString().trim().length() > 0) {
+            try {
+                startDate = DateUtil.getStartOfDay(df.parse(getStartDateString()));
+            } catch (ParseException e) {
+                // what!?! calendar widget handed us a bad date?
+                logger.debug("Parsing startDate", e);
+            }
+        }
+        return startDate;
+    }
+

@@ -60,21 +60,32 @@
             request.setAttribute("commentForm", cf);
             request.setAttribute("blogEntry", entry);
             
-            if(preview) {
+            if (preview) {
                 message = "This is a comment preview only";
                 request.setAttribute("previewComments", "dummy");
-                
                 mLogger.debug("Comment is a preview");
                 
-            } else if(!commentSpam(comment)) {
-                
-                // this is a real comment posting.
-                // lets authenticate it then save
+            } else {                
                 CommentAuthenticator commentAuth = 
                         RollerContext.getCommentAuthenticator();
                 if (commentAuth.authenticate(comment, request)) {
+                    mLogger.debug("Comment passed authentication");
                     
-                    mLogger.debug("Comment is valid ... saving it");
+                    // If comment contains blacklisted text, mark as spam
+                    SpamChecker checker = new SpamChecker();
+                    if (checker.checkComment(comment)) {
+                       error = bundle.getString("commentServlet.markedAsSpam");
+                       mLogger.debug("Comment marked as spam"); 
+                    }
+                     
+                    // If comment moderation is on, set comment as pending
+                    if (website.getModerateComments().booleanValue()) {
+                        comment.setPending(Boolean.TRUE);   
+                        comment.setApproved(Boolean.FALSE);
+                    } else { 
+                        comment.setPending(Boolean.FALSE);   
+                        comment.setApproved(Boolean.TRUE);
+                    }
                     
                     comment.save();
                     RollerFactory.getRoller().commit();
@@ -91,12 +102,7 @@
                     error = bundle.getString("error.commentAuthFailed");
                     mLogger.debug("Comment failed authentication");
                 }
-                
-            } else {
-                error = COMMENT_SPAM_MSG;
-                mLogger.debug("Comment marked as spam");
             }
-            
         } catch (RollerException re) {
             mLogger.error("ERROR posting comment", re);
             error = re.getMessage();
