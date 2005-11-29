@@ -82,6 +82,10 @@
             UpgradeDatabase.upgradeTo200(con);
             dbversion = 200;
         }
+        if(dbversion < 210) {
+            UpgradeDatabase.upgradeTo210(con);
+            dbversion = 210;
+        }
         
         // make sure the database version is the exact version
         // we are upgrading too.

@@ -1,0 +1,18 @@
+   /**
+    * Determine if this WeblogTemplate is required or not.
+    */
+   public boolean isRequired() {
+       /* 
+        * this is kind of hacky right now, but it's like that so we can be
+        * reasonably flexible while we migrate old blogs which may have some
+        * pretty strange customizations.
+        *
+        * my main goal starting now is to prevent further deviations from the
+        * standardized templates as we move forward.
+        *
+        * eventually, the required flag should probably be stored in the db
+        * and possibly applicable to any template.
+        */
+       return (requiredTemplates.contains(this.name) || "Weblog".equals(this.link));
+   }
+
