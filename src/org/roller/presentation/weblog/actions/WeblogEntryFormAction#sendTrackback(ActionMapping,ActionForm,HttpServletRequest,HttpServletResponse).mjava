@@ -19,27 +19,30 @@
                entryid = 
                    request.getParameter(RollerRequest.WEBLOGENTRYID_KEY);
            }
-
+           Roller roller = RollerFactory.getRoller();
            RollerContext rctx= RollerContext.getRollerContext(request);
-           WeblogManager wmgr= RollerFactory.getRoller().getWeblogManager();
+           WeblogManager wmgr= roller.getWeblogManager();
            entry = wmgr.retrieveWeblogEntry(entryid);
 
            RollerSession rses = RollerSession.getRollerSession(request);
            if (rses.isUserAuthorizedToAuthor(entry.getWebsite()))
            {
-               String title = entry.getTitle();
-
                // Run entry through registered PagePlugins
-               PageHelper pageHelper = 
-                   PageHelper.createPageHelper(request, response);
-               pageHelper.setSkipFlag(true); // don't process ReadMorePlugin
-               // we have to wrap the entry for rendering because the
-               // page helper requires wrapped objects
-               String excerpt = pageHelper.renderPlugins(WeblogEntryDataWrapper.wrap(entry));
+               PagePluginManager ppmgr = roller.getPagePluginManager();
+               Map plugins = ppmgr.createAndInitPagePlugins( 
+                   entry.getWebsite(),
+                   RollerContext.getRollerContext(request).getServletContext(),
+                   RollerContext.getRollerContext(request).getAbsoluteContextUrl(),
+                   new VelocityContext());
+               
+               WeblogEntryData applied = 
+                   ppmgr.applyPagePlugins(entry, plugins, true);
+               String title = applied.getTitle();
+               String excerpt = applied.getText();
                excerpt = StringUtils.left( Utilities.removeHTML(excerpt),255 );
 
-               String url = rctx.createEntryPermalink(entry, request, true);
-               String blog_name = entry.getWebsite().getName();
+               String url = rctx.createEntryPermalink(applied, request, true);
+               String blog_name = applied.getWebsite().getName();
 
                if (form.getTrackbackUrl() != null)
                {

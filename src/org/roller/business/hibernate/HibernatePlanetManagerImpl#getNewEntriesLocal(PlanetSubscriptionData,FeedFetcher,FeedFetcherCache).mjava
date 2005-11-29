@@ -1,0 +1,73 @@
+    protected Set getNewEntriesLocal(PlanetSubscriptionData sub,
+            FeedFetcher feedFetcher, FeedFetcherCache feedInfoCache)
+            throws RollerException {
+        
+        Set newEntries = new TreeSet();
+        try {
+            // for local feeds, sub.author = website.handle
+            if (sub.getFeedUrl().endsWith(sub.getAuthor())) {
+                
+                logger.debug("Getting LOCAL feed "+sub.getFeedUrl());
+            
+                // get corresponding website object
+                UserManager usermgr = roller.getUserManager();
+                WebsiteData website = usermgr.getWebsiteByHandle(sub.getAuthor());
+                
+                // figure website last update time
+                WeblogManager blogmgr = roller.getWeblogManager();
+                
+                // ISSUE: is this too expensive; can we use cached dates instead?
+                Date siteUpdated = blogmgr.getWeblogLastPublishTime(website);
+                
+                // if website last update time > subsciption last update time
+                List entries = new ArrayList();
+                if (sub.getLastUpdated() == null || siteUpdated.after(sub.getLastUpdated())) {
+                    int entryCount = RollerRuntimeConfig.getIntProperty(
+                        "site.newsfeeds.defaultEntries");    
+                     entries = blogmgr.getWeblogEntries(
+                        website, 
+                        null,                        // startDate
+                        new Date(),                  // endDate
+                        null,                        // catName
+                        WeblogEntryData.PUBLISHED,   // status
+                        new Integer(entryCount));    // maxEntries
+                    
+                    sub.setLastUpdated(siteUpdated);
+                    saveSubscription(sub);
+                    
+                } else {
+                    if (logger.isDebugEnabled()) {
+                        String msg = MessageFormat.format(
+                            "   Skipping ({0} / {1})", new Object[] {
+                            siteUpdated, sub.getLastUpdated()});
+                            logger.debug(msg);
+                    }
+                }  
+                // Populate subscription object with new entries
+                PagePluginManager ppmgr = roller.getPagePluginManager();
+                Map pagePlugins = ppmgr.createAndInitPagePlugins(
+                    website, 
+                    null,
+                    RollerRuntimeConfig.getProperty("site.absoluteurl"),
+                    new VelocityContext());
+                Iterator entryIter = entries.iterator();
+                while (entryIter.hasNext()) {
+                    try {
+                        WeblogEntryData rollerEntry = 
+                            (WeblogEntryData)entryIter.next();
+                        PlanetEntryData entry =
+                            new PlanetEntryData(rollerEntry, sub, pagePlugins);
+                        saveEntry(entry);
+                        newEntries.add(entry);
+                    } catch (Exception e) {
+                        logger.error("ERROR processing subscription entry", e);
+                    }
+                }
+                return newEntries;
+            }
+        } catch (Exception e) {
+            logger.warn("Problem reading local feed", e);
+        }
+        return getNewEntriesRemote(sub, feedFetcher, feedInfoCache);
+    }
+

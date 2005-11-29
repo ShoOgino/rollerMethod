@@ -1,16 +1,12 @@
-    public PlanetGroupData getGroup(String handle) throws RollerException
-    {
-        try
-        {
+    public PlanetGroupData getGroup(String handle) throws RollerException {
+        try {
             Session session = ((HibernateStrategy)strategy).getSession();
             Criteria criteria = session.createCriteria(PlanetGroupData.class);
             criteria.setMaxResults(1);
             criteria.add(Expression.eq("handle", handle));
             List list = criteria.list();
             return list.size()!=0 ? (PlanetGroupData)list.get(0) : null;
-        }
-        catch (HibernateException e)
-        {
+        } catch (HibernateException e) {
             throw new RollerException(e);
         }
     }

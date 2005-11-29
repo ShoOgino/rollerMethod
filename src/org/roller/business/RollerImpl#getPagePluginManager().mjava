@@ -1,0 +1,10 @@
+    /**
+     * @see org.roller.model.Roller#getPluginManager()
+     */
+    public PagePluginManager getPagePluginManager() throws RollerException {
+        if (mPluginManager == null) {
+            mPluginManager = new PagePluginManagerImpl();
+        }
+        return mPluginManager;
+    }
+

@@ -8,14 +8,7 @@
         super("dummy", request, response, mapping);
         this.rollerRequest = RollerRequest.getRollerRequest(request);  
         this.form = form;
-        this.mode = mode;
-        
+        this.mode = mode;       
         getRequest().setAttribute("leftPage","/weblog/WeblogEditSidebar.jsp");
-        
-        if (null != form.getId()) 
-        {
-            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
-            comments = wmgr.getComments(form.getId(), false);
-        }
     }
 

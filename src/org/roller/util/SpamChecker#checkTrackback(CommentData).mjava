@@ -1,0 +1,8 @@
+    /** Test trackback comment, applying blacklist if configured */
+    public boolean checkTrackback(CommentData comment) {
+        if (RollerConfig.getBooleanProperty("site.blacklist.enable.trackbacks")) {
+            return testComment(comment);
+        }
+        return false;
+    }
+

@@ -1,8 +1,6 @@
-    public PlanetConfigData getConfiguration() throws RollerException
-    {
+    public PlanetConfigData getConfiguration() throws RollerException {
         PlanetConfigData config = null;
-        try
-        {
+        try {
             Session session = ((HibernateStrategy)strategy).getSession();
             Criteria criteria = session.createCriteria(PlanetConfigData.class);
             criteria.setMaxResults(1);
@@ -11,14 +9,11 @@
             
             // We inject the cache dir into the config object here to maintain
             // compatibility with the standaline version of the aggregator.
-            if (config != null) 
-            {
+            if (config != null) {
                 config.setCacheDir(
-                    RollerConfig.getProperty("planet.aggregator.cache.dir"));
-            }                
-        }
-        catch (HibernateException e)
-        {
+                        RollerConfig.getProperty("planet.aggregator.cache.dir"));
+            }
+        } catch (HibernateException e) {
             throw new RollerException(e);
         }
         return config;

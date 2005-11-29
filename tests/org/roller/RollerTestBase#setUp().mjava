@@ -15,6 +15,31 @@
         mWebsite = (WebsiteData)umgr.getWebsites(mUser, null).get(0);
         getRoller().commit();
         
-        RollerConfig.setContextPath("./build/roller");
+        RollerConfig.setContextRealPath("./build/roller");
+        
+        getRoller().begin(UserData.SYSTEM_USER);
+        PropertiesManager propmgr = getRoller().getPropertiesManager();
+        Map props = propmgr.getProperties();
+        RollerPropertyData prop = 
+            (RollerPropertyData)props.get("site.absoluteurl");
+        prop.setValue("http://localhost:8080/roller");
+        propmgr.store(props);
+        getRoller().commit();
+        
+        getRoller().begin(UserData.SYSTEM_USER);
+        PlanetManager planet = getRoller().getPlanetManager();
+        PlanetConfigData config = config = new PlanetConfigData();
+        config.setCacheDir("");
+        config.setTitle("Test");
+        config.setAdminEmail("admin@example.com");
+        planet.saveConfiguration(config);
+        getRoller().commit();
+        
+        getRoller().begin(UserData.SYSTEM_USER);
+        PlanetGroupData group = new PlanetGroupData();
+        group.setHandle("external");
+        group.setTitle("external");
+        planet.saveGroup(group);
+        getRoller().commit();        
     }
 

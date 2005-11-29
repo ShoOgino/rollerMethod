@@ -28,9 +28,9 @@
         }
         
         // Add Velocity page helper to context
-        PageHelper pageHelper = new PageHelper(rreq, response, ctx);
-        pageHelper.initializePlugins(mPagePlugins);
-        ctx.put("pageHelper", pageHelper );
+        PageHelper pageHelper = new PageHelper(request, response, ctx);
+        Roller roller = RollerFactory.getRoller();
+        ctx.put("pageHelper", pageHelper);
 
         // Load standard Roller objects and values into the context 
         String handle = loadWebsiteValues(ctx, rreq, rollerCtx );

@@ -1,12 +1,8 @@
-    public void shutdown()
-    {
-        try 
-        {
+    public void shutdown() {
+        try {
             if (mIndexManager != null) mIndexManager.shutdown();
             if (mThreadManager != null) mThreadManager.shutdown();
-        } 
-        catch(Exception e) 
-        {
+        } catch(Exception e) {
             mLogger.warn(e);
         }
     }

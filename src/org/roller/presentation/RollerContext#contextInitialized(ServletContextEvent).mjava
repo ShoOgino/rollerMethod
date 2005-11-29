@@ -40,7 +40,7 @@
             //
             //       this is really not a best practice and we should try to
             //       remove these dependencies on the webapp context if possible
-            RollerConfig.setContextPath(mContext.getRealPath("/"));
+            RollerConfig.setContextRealPath(mContext.getRealPath("/"));
             
             // always upgrade database first
             upgradeDatabaseIfNeeded();
@@ -51,7 +51,6 @@
             setupRollerProperties();
             roller.getThemeManager();
             setupSpellChecker();
-            setupPagePlugins();
             setupIndexManager(roller);
             setupRefererManager(roller);
             initializePingFeatures(roller);

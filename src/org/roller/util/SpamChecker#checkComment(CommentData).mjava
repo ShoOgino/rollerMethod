@@ -1,0 +1,8 @@
+    /** Test comment, applying blacklist if configured */
+    public boolean checkComment(CommentData comment) {
+        if (RollerConfig.getBooleanProperty("site.blacklist.enable.comments")) {
+            return testComment(comment);
+        }
+        return false;
+    }
+

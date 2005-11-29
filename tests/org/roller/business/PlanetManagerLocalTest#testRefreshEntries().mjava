@@ -1,0 +1,23 @@
+    public void testRefreshEntries() {
+        try {      
+            PlanetManager planet = getRoller().getPlanetManager();
+            
+            // run sync task to fill aggregator with websites created by super
+            SyncWebsitesTask syncTask = new SyncWebsitesTask();
+            syncTask.init(getRoller(), "dummy");
+            syncTask.run();           
+            
+            RefreshEntriesTask refreshTask = new RefreshEntriesTask();
+            refreshTask.init(getRoller(), "dummy");
+            refreshTask.run();
+            
+            List agg = planet.getAggregation(10000);
+            int size = agg.size();
+            assertEquals(mBlogCount * mExpectedPublishedEntryCount, size);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+

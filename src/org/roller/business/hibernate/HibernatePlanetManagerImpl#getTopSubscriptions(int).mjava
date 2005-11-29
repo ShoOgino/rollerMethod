@@ -1,18 +1,14 @@
-    public synchronized List getTopSubscriptions(int max) throws RollerException
-    {
+    public synchronized List getTopSubscriptions(int max) throws RollerException {
         String groupHandle = NO_GROUP;
         List ret = null;
-        try
-        {
+        try {
             Session session = ((HibernateStrategy)strategy).getSession();
-            Criteria criteria = 
+            Criteria criteria =
                     session.createCriteria(PlanetSubscriptionData.class);
             criteria.setMaxResults(max);
             criteria.addOrder(Order.desc("inboundblogs"));
             ret = criteria.list();
-        }
-        catch (HibernateException e)
-        {
+        } catch (HibernateException e) {
             throw new RollerException(e);
         }
         return ret;
