@@ -1,24 +1,5 @@
     /** Get comments for weblog entry specified by request */
-    public List getComments( WeblogEntryData entry )
-    {
-        List comments = new ArrayList();
-        try
-        {
-            Collection mComments = mWeblogMgr.getComments( entry.getId() );
-            
-            // wrap pojos
-            comments = new ArrayList(mComments.size());
-            Iterator it = mComments.iterator();
-            int i=0;
-            while(it.hasNext()) {
-                comments.add(i, CommentDataWrapper.wrap((CommentData) it.next()));
-                i++;
-            }
-        }
-        catch (RollerException e)
-        {
-            mLogger.error("PageModel getComments()", e);
-        }
-        return comments;
+    public List getComments(WeblogEntryData entry) {
+        return getComments(entry, true, true);
     }
 

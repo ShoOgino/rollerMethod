@@ -1,0 +1,12 @@
+    /** Get comments for weblog entry specified by request */
+    public List getComments(WeblogEntryData entry, boolean noSpam, boolean approvedOnly) {
+        List comments = new ArrayList();
+        List unwrappped = entry.getComments(noSpam, approvedOnly);
+        comments = new ArrayList(unwrappped.size());
+        Iterator it = unwrappped.iterator();
+        while(it.hasNext()) {
+            comments.add(CommentDataWrapper.wrap((CommentData)it.next()));
+        }
+        return comments;
+    }
+
