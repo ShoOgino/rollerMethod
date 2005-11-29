@@ -1,0 +1,9 @@
+        public int getPendingCommentCount() {
+            int count = 0;
+            for (Iterator iter = comments.iterator(); iter.hasNext();) {
+                CommentData cd = (CommentData)iter.next();
+                if (cd.getPending().booleanValue()) count++;
+            }
+            return count;
+        }
+
