@@ -61,7 +61,7 @@
                     }
                     else
                     {
-                        // If referer URL contains spamWords or ignoreWords then don't log it.
+                        // If referer URL is blacklisted, don't log it
                         boolean isRefererSpam = checkForSpam(refererUrl, website);
                         if (isRefererSpam) return true;
                     }

@@ -12,13 +12,11 @@
                 if (matcher.find()) {
                     mLogger.debug(matcher.group() 
                          + " matched by " + testPattern.pattern());
-                    hit = true;
-                    break;
+                    return true;
                 }
             } else {
                 if (testPattern.matcher(str).find()) {
-                    hit = true;
-                    break;
+                    return true;
                 }
             }
         }

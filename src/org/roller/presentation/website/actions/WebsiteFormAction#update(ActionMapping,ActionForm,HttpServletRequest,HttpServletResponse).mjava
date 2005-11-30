@@ -1,16 +1,14 @@
     //-----------------------------------------------------------------------
     public ActionForward update(
-        ActionMapping       mapping,
-        ActionForm          actionForm,
-        HttpServletRequest  request,
-        HttpServletResponse response)
-        throws Exception
-    {
+            ActionMapping       mapping,
+            ActionForm          actionForm,
+            HttpServletRequest  request,
+            HttpServletResponse response)
+            throws Exception {
         ActionErrors errors = new ActionErrors();
-        ActionMessages messages = new ActionMessages();        
+        ActionMessages messages = new ActionMessages();
         ActionForward forward = mapping.findForward("editWebsite");
-        try
-        {
+        try {
             WebsiteFormEx form = (WebsiteFormEx)actionForm;
             WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
             UserManager umgr = RollerFactory.getRoller().getUserManager();
@@ -21,80 +19,59 @@
             RollerRequest.getRollerRequest(request).setWebsite(wd);
             
             RollerSession rollerSession = RollerSession.getRollerSession(request);
-            if ( rollerSession.isUserAuthorizedToAdmin(wd))
-            {
-
-                /* we don't need this check any longer -- Allen G
-                if(!form.getDefaultPageId().equals(form.getWeblogDayPageId()))
-                {
-                */               
-                    wd.save(); // should throw if save not permitted
-
+            if ( rollerSession.isUserAuthorizedToAdmin(wd)) {
+                checkBlacklist(errors, messages, form.getBlacklist());
+                if (errors.isEmpty()) {
                     // ensure getEnabled can't be changed
                     form.setEnabled(wd.getEnabled());
                     form.copyTo(wd, request.getLocale());
-                                        
+                    
                     wd.save();
-                    RollerFactory.getRoller().getRefererManager().applyRefererFilters(wd);                    
+                    RollerFactory.getRoller().getRefererManager().applyRefererFilters(wd);
                     RollerFactory.getRoller().commit();
-
-                   messages.add(null, 
-                     new ActionMessage("websiteSettings.savedChanges"));
-
+                    
+                    messages.add(null,
+                        new ActionMessage("websiteSettings.savedChanges"));
+                    
                     request.getSession().setAttribute(
-                        RollerRequest.WEBSITEID_KEY, form.getId());
-
-                    // clear the page cache for this user
-                    //PageCacheFilter.removeFromCache(request, wd);
+                            RollerRequest.WEBSITEID_KEY, form.getId());
+                    
+                    // Clear cache entries associated with website
                     CacheManager.invalidate(wd);
-
-                    // set the Editor Page list
-                    ServletContext ctx = request.getSession().getServletContext();
-                    String editorPages = 
+            
+                    actionForm.reset(mapping,request);
+                }
+                
+                // set the Editor Page list
+                ServletContext ctx = request.getSession().getServletContext();
+                String editorPages =
                         RollerRuntimeConfig.getProperty("users.editor.pages");
                 
-                    List epages = Arrays.asList(StringUtils.split(
+                List epages = Arrays.asList(StringUtils.split(
                         org.apache.commons.lang.StringUtils.deleteWhitespace(editorPages), ","));
-                    request.setAttribute("editorPagesList", epages);   
-                    
-                    WebsitePageModel pageModel = 
-                        new WebsitePageModel("websiteSettings.title", 
-                                request, response, mapping, wd);
-                    request.setAttribute("model",pageModel);                
-                /*
-                }
-                else
-                {
-                    errors.add(null, 
-                        new ActionError("websiteSettings.error.sameTemplate"));                   
-                    saveErrors(request, errors);
-                }
-                */
-            }
-            else
-            {
+                request.setAttribute("editorPagesList", epages);
+                
+                WebsitePageModel pageModel =
+                        new WebsitePageModel("websiteSettings.title",
+                        request, response, mapping, wd);
+                request.setAttribute("model",pageModel);
+                
+            } else {
                 forward = mapping.findForward("access-denied");
             }
-                    
-            actionForm.reset(mapping,request);            
-        }
-        catch (RollerPermissionsException e)
-        {
+            
+        } catch (RollerPermissionsException e) {
             errors.add(null, new ActionError("error.permissions.deniedSave"));
             forward = mapping.findForward("access-denied");
-        }
-        catch (RollerException re)
-        {
+        } catch (RollerException re) {
             mLogger.error("Unexpected exception",re.getRootCause());
             throw new ServletException(re);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             mLogger.error("Unexpected exception",e);
             throw new ServletException(e);
         }
         if (errors.size() > 0) saveErrors(request, errors);
-        if (messages.size() > 0) saveMessages(request, messages);  
+        if (messages.size() > 0) saveMessages(request, messages);
         return forward;
     }
 

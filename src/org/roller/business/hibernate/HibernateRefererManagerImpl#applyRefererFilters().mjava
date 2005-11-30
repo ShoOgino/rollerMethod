@@ -7,13 +7,13 @@
             Session session = ((HibernateStrategy)mStrategy).getSession();
             Criteria criteria = session.createCriteria(RefererData.class);
             
-            String spamwords = RollerRuntimeConfig.getProperty("spam.referers.ignorewords");
+            String spamwords = RollerRuntimeConfig.getProperty("spam.blacklist");
             
-            String[] ignoreWords = StringUtils.split(
+            String[] blacklist = StringUtils.split(
                     StringUtils.deleteWhitespace(spamwords),",");
             Junction or = Expression.disjunction();
-            for (int i=0; i<ignoreWords.length; i++) {
-                String ignoreWord = ignoreWords[i].trim();
+            for (int i=0; i<blacklist.length; i++) {
+                String ignoreWord = blacklist[i].trim();
                 or.add(Expression.ilike("refererUrl","%"+ignoreWord+"%"));
             }
             criteria.add(Expression.conjunction()

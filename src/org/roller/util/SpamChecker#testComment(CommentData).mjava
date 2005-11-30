@@ -1,29 +1,16 @@
-    /** Test comment against built in blacklist + ignoreWords */
+    /** Test comment against built in blacklist + blacklist */
     private boolean testComment(CommentData c) {
         boolean ret = false;
-        
-        String weblogWords = c.getWeblogEntry().getWebsite().getIgnoreWords();
-        weblogWords = (weblogWords == null) ? "" : weblogWords;
-        String siteWords = 
-                RollerRuntimeConfig.getProperty("spam.referers.ignorewords");
-        siteWords = (siteWords == null) ? "" : siteWords;
-        
         List stringRules = new ArrayList();
         List regexRules = new ArrayList();
-        StringTokenizer toker = new StringTokenizer(siteWords + weblogWords,"\n");
-        while (toker.hasMoreTokens()) {
-            String token = toker.nextToken();
-            if (token.startsWith("#")) continue;
-            if (token.startsWith("(")) {
-                regexRules.add(Pattern.compile(token));
-            } else {
-                stringRules.add(token);
-            }
-        }
+        WebsiteData website = c.getWeblogEntry().getWebsite();
+        populateSpamRules(
+            website.getBlacklist(), stringRules, regexRules, 
+            RollerRuntimeConfig.getProperty("spam.blacklist"));
         if (   blacklist.isBlacklisted(c.getUrl(),     stringRules, regexRules)
             || blacklist.isBlacklisted(c.getEmail(),   stringRules, regexRules)
+            || blacklist.isBlacklisted(c.getName(),    stringRules, regexRules)
             || blacklist.isBlacklisted(c.getContent(), stringRules, regexRules)) {
-            c.setSpam(Boolean.TRUE);
             ret = true;
         }
         return ret;
