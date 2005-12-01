@@ -1,12 +1,13 @@
     /** Test comment against built in blacklist + blacklist */
-    private boolean testComment(CommentData c) {
+    private static boolean testComment(CommentData c) {
         boolean ret = false;
         List stringRules = new ArrayList();
         List regexRules = new ArrayList();
         WebsiteData website = c.getWeblogEntry().getWebsite();
-        populateSpamRules(
+        Blacklist.populateSpamRules(
             website.getBlacklist(), stringRules, regexRules, 
             RollerRuntimeConfig.getProperty("spam.blacklist"));
+        Blacklist blacklist = Blacklist.getBlacklist();
         if (   blacklist.isBlacklisted(c.getUrl(),     stringRules, regexRules)
             || blacklist.isBlacklisted(c.getEmail(),   stringRules, regexRules)
             || blacklist.isBlacklisted(c.getName(),    stringRules, regexRules)
@@ -14,5 +15,5 @@
             ret = true;
         }
         return ret;
-    }
+    }        
 

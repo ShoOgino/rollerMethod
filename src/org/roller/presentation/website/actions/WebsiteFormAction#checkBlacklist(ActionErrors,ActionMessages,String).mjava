@@ -5,7 +5,7 @@
         List stringRules = new ArrayList();
         try {
             // just for testing/counting, this does not persist rules in any way
-            SpamChecker.populateSpamRules(blacklist, stringRules, regexRules, null);
+            Blacklist.populateSpamRules(blacklist, stringRules, regexRules, null);
             messages.add(null, new ActionMessage(
                 "websiteSettings.acceptedBlacklist",
                 new Integer(stringRules.size()), new Integer(regexRules.size())));
