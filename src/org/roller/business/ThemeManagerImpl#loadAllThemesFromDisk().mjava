@@ -30,10 +30,14 @@
         // now go through each theme and read all it's templates
         Theme theme = null;
         for(int i=0; i < themenames.length; i++) {
-            theme = this.loadThemeFromDisk(themenames[i], 
-                        themespath + File.separator + themenames[i]);
-            
-            themes.put(theme.getName(), theme);
+            try {
+                theme = this.loadThemeFromDisk(themenames[i], 
+                            themespath + File.separator + themenames[i]);            
+                themes.put(theme.getName(), theme);
+            } catch (Throwable unexpected) {
+                // shouldn't happen, so let's learn why it did
+                mLogger.error("Problem reading theme " + themenames[i], unexpected);
+            }
         }
         
         return themes;
