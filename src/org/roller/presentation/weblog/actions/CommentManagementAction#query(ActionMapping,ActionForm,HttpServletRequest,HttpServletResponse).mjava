@@ -16,7 +16,14 @@
             queryForm.setWeblog(rreq.getWebsite().getHandle());
         }        
         request.setAttribute("model", new CommentManagementPageModel(
-           "commentManagement.title", request, response, mapping, queryForm)); 
-        return mapping.findForward("commentManagement.page");
+           "commentManagement.title", request, response, mapping, queryForm));
+        if (request.getAttribute("commentManagementForm") == null) {
+            request.setAttribute("commentManagementForm", actionForm);
+        }
+        
+        if (rreq.getWebsite() != null) {
+            return mapping.findForward("commentManagement.page");
+        }
+        return mapping.findForward("commentManagementGlobal.page");
     }
 

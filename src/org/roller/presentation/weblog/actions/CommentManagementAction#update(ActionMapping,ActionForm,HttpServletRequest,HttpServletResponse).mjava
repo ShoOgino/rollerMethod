@@ -14,9 +14,10 @@
         else if (rreq.getWebsite() != null) {
             queryForm.setWeblog(rreq.getWebsite().getHandle());
         }    
-        RollerSession rollerSession = RollerSession.getRollerSession(request);
+        RollerSession rses = RollerSession.getRollerSession(request);
         try {
-            if (rollerSession.isUserAuthorizedToAuthor(rreq.getWebsite())) { 
+            if (rses.isGlobalAdminUser() 
+                || (rreq.getWebsite()!=null && rses.isUserAuthorizedToAuthor(rreq.getWebsite())) ) { 
                 WeblogManager mgr= RollerFactory.getRoller().getWeblogManager();
                 
                 // delete all comments with delete box checked
@@ -37,8 +38,13 @@
                     } else {
                         comment.setSpam(Boolean.FALSE);
                     }
-                    // all comments have been reviewed, so they're no longer pending
-                    comment.setPending(Boolean.FALSE);
+                    
+                    // Only change pending status in website specific view, because
+                    // we don't want global admins changing pending status of posts.
+                    if (rreq.getWebsite() != null) {
+                        // all comments reviewed, so they're no longer pending
+                        comment.setPending(Boolean.FALSE);
+                    }
                     comment.save();
                 }               
                 RollerFactory.getRoller().commit();
@@ -57,6 +63,13 @@
         CommentManagementPageModel model = new CommentManagementPageModel(
            "commentManagement.title", request, response, mapping, queryForm);
         request.setAttribute("model", model); 
-        return mapping.findForward("commentManagement.page");
+        if (request.getAttribute("commentManagementForm") == null) {
+            request.setAttribute("commentManagementForm", actionForm);
+        }
+        
+        if (rreq.getWebsite() != null) {
+            return mapping.findForward("commentManagement.page");
+        }
+        return mapping.findForward("commentManagementGlobal.page");
     }
 
