@@ -1,29 +1,34 @@
-    /** 
-     * Loop through all subscriptions get get Technorati rankings for each 
+    /**
+     * Loop through all subscriptions get get Technorati rankings for each
      */
-    private void rankSubscriptions()
-    {       
+    private void rankSubscriptions() {
         int count = 0;
         int errorCount = 0;
-        try
-        {
+        try {
             roller.begin(UserData.SYSTEM_USER);
             PlanetManager planet = roller.getPlanetManager();
             PlanetConfigData config = planet.getConfiguration();
             Technorati technorati = null;
-            if (config.getProxyHost()!=null && config.getProxyPort() != -1)
-            {
-                technorati = new Technorati(
-                        config.getProxyHost(), config.getProxyPort());
+            try {
+                if (config.getProxyHost()!=null && config.getProxyPort() != -1) {
+                    technorati = new Technorati(
+                            config.getProxyHost(), config.getProxyPort());
+                } else {
+                    technorati = new Technorati();
+                }
+            } catch (IOException e) {
+                logger.error("Aborting collection of Technorati rankings.\n"
+                +"technorati.license not found at root of classpath.\n"
+                +"Get license at http://technorati.com/developers/apikey.html\n"
+                +"Put the license string in a file called technorati.license.\n"
+                +"And place that file at the root of Roller's classpath.\n"
+                +"For example, in the /WEB-INF/classes directory.");
+                return;
             }
-            else 
-            {
-                technorati = new Technorati();
-            }                
             UserManager userManager = roller.getUserManager();
-            try 
-            {
+            try {
                 // Technorati API allows only 500 queries per-day
+                // TODO: make this configurable
                 int limit = 500;
                 int userCount = planet.getSubscriptionCount();
                 int mod = (userCount / limit) + 1;
@@ -34,49 +39,40 @@
                 
                 int start = (day % mod) * limit;
                 int end = start + limit;
-                end = end > userCount ? userCount : end; 
+                end = end > userCount ? userCount : end;
                 logger.info("Updating subscriptions ["+start+":"+end+"]");
                 
                 Iterator subs = planet.getAllSubscriptions();
-                while (subs.hasNext())
-                {
-                    PlanetSubscriptionData sub = 
+                while (subs.hasNext()) {
+                    PlanetSubscriptionData sub =
                             (PlanetSubscriptionData)subs.next();
-                    if (count >= start && count < end)
-                    {
-                        try
-                        {
-                            Technorati.Result result = 
+                    if (count >= start && count < end) {
+                        try {
+                            Technorati.Result result =
                                     technorati.getBloginfo(sub.getSiteUrl());
-                            if (result != null && result.getWeblog() != null)
-                            {
-                              sub.setInboundblogs(
-                                      result.getWeblog().getInboundblogs());
-                              sub.setInboundlinks(
-                                      result.getWeblog().getInboundlinks());
-                              logger.debug("Adding rank for "
-                                      +sub.getFeedUrl()+" ["+count+"|"
-                                      +sub.getInboundblogs()+"|"
-                                      +sub.getInboundlinks()+"]");
-                            }
-                            else 
-                            {
-                              logger.debug(
-                                "No ranking available for "
-                                      +sub.getFeedUrl()+" ["+count+"]");
-                              sub.setInboundlinks(0);
-                              sub.setInboundblogs(0);
+                            if (result != null && result.getWeblog() != null) {
+                                sub.setInboundblogs(
+                                        result.getWeblog().getInboundblogs());
+                                sub.setInboundlinks(
+                                        result.getWeblog().getInboundlinks());
+                                logger.debug("Adding rank for "
+                                        +sub.getFeedUrl()+" ["+count+"|"
+                                        +sub.getInboundblogs()+"|"
+                                        +sub.getInboundlinks()+"]");
+                            } else {
+                                logger.debug(
+                                        "No ranking available for "
+                                        +sub.getFeedUrl()+" ["+count+"]");
+                                sub.setInboundlinks(0);
+                                sub.setInboundblogs(0);
                             }
                             planet.saveSubscription(sub);
-                        }
-                        catch (Exception e) 
-                        {
+                        } catch (Exception e) {
                             logger.warn("WARN ranking subscription ["
-                                        + count + "]: " + e.getMessage());
-                            if (errorCount++ > 5)
-                            {
+                                    + count + "]: " + e.getMessage());
+                            if (errorCount++ > 5) {
                                 logger.warn(
-                                    "   Stopping ranking, too many errors");
+                                        "   Stopping ranking, too many errors");
                                 break;
                             }
                         }
@@ -84,14 +80,10 @@
                     count++;
                 }
                 roller.commit();
-            }
-            finally
-            {
+            } finally {
                 roller.release();
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             logger.error("ERROR ranking subscriptions", e);
         }
     }

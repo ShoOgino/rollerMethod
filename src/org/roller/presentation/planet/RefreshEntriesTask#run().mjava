@@ -1,14 +1,10 @@
-    public void run()
-    {
-        try
-        {
+    public void run() {
+        try {
             roller.begin(UserData.SYSTEM_USER);
             roller.getPlanetManager().refreshEntries();
             roller.commit();
             roller.release();
-        }
-        catch (RollerException e)
-        {
+        } catch (RollerException e) {
             logger.error("ERROR refreshing entries", e);
         }
     }
