@@ -1,5 +1,6 @@
     /** Get comments for weblog entry specified by request */
-    public List getComments(WeblogEntryData entry, boolean noSpam, boolean approvedOnly) {
+    public List getComments(WeblogEntryDataWrapper wrapper, boolean noSpam, boolean approvedOnly) {
+        WeblogEntryData entry = wrapper.getPojo();
         List comments = new ArrayList();
         List unwrappped = entry.getComments(noSpam, approvedOnly);
         comments = new ArrayList(unwrappped.size());

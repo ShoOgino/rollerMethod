@@ -1,6 +1,7 @@
     /** Encapsulates UserManager.getPageByName() */
-    public TemplateWrapper getUsersPageByName(WebsiteData website, String pageName)
+    public TemplateWrapper getUsersPageByName(WebsiteDataWrapper wrapper, String pageName)
     {
+        WebsiteData website = wrapper.getPojo();
         TemplateWrapper page = null;
         try
         {
