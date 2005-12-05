@@ -1,0 +1,21 @@
+    /**
+     * Clear referrer dayhits and remove referrers without excerpts.
+     */
+    public void clearReferrers(WebsiteData website) throws RollerException {
+
+        if (mLogger.isDebugEnabled()) {
+            mLogger.debug("clearReferrers");
+        }       
+        try {
+            Session session = ((HibernateStrategy)mStrategy).getSession();
+            String reset = "update RefererData set dayHits=0 where website=:site";
+            session.createQuery(reset)
+                .setParameter("site",website).executeUpdate();
+            String delete = "delete RefererData where website=:site and excerpt is null";
+            session.createQuery(delete)
+                .setParameter("site",website).executeUpdate();
+        } catch (Exception e) {
+            mLogger.error("EXCEPTION resetting referers",e);
+        }
+    }  
+
