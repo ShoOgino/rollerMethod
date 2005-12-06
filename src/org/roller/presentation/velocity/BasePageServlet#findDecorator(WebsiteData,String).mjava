@@ -3,7 +3,7 @@
      * decorator then the default decorator is applied.
      */
     protected Template findDecorator(WebsiteData website, String decorator_name)
-        throws Exception {
+            throws ResourceNotFoundException, RollerException {
         
         Template decorator = null;
         org.roller.pojos.Template decorator_template = null;
@@ -29,7 +29,15 @@
         
         // couldn't find Template, load default "no-op" decorator
         if (decorator == null) {
-            decorator = getTemplate("/themes/noop_decorator.vm", "UTF-8");
+            try {
+                decorator = getTemplate("/themes/noop_decorator.vm", "UTF-8");
+            } catch (ResourceNotFoundException ex) {
+                // just rethrow
+                throw ex;
+            } catch (Exception ex) {
+                // wrap as a RollerException
+                throw new RollerException("error getting no-op decorator", ex);
+            }
         }
         
         return decorator;

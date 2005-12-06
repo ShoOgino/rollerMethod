@@ -2,11 +2,10 @@
      * Process a request for a Weblog page.
      */
     public Template handleRequest(HttpServletRequest request,
-                            HttpServletResponse response, Context ctx)
-        throws Exception {
+                                HttpServletResponse response, 
+                                Context ctx) {
         
         Template outty = null;
-        Exception pageException = null;
         
         try {
             PageContext pageContext =
@@ -73,16 +72,19 @@
                 outty = findDecorator(website, (String) ctx.get("decorator"));
             }
             
-        } catch( Exception e ) {
-            pageException = e;
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        }
-        
-        if (pageException != null) {
-            mLogger.error(pageException.getClass() 
+        } catch(ResourceNotFoundException rnfe ) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            request.setAttribute("DisplayException", rnfe);
+            
+            mLogger.error(rnfe.getClass().getName() 
                 + " processing URL: " + request.getRequestURL());
-            mLogger.debug(pageException);
-            request.setAttribute("DisplayException", pageException);
+            mLogger.debug(rnfe);
+            
+        } catch(Exception e) {
+            
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            request.setAttribute("DisplayException", e);
+            mLogger.error("EXCEPTION: in RollerServlet", e);
         }
         
         return outty;

@@ -3,9 +3,11 @@
      * and populating velocity context.
      */
     protected Template prepareForPageExecution(Context ctx,
-            RollerRequest rreq,
-            HttpServletResponse response,
-            org.roller.pojos.Template page) throws Exception {
+                                            RollerRequest rreq,
+                                            HttpServletResponse response,
+                                            org.roller.pojos.Template page) 
+            
+            throws ResourceNotFoundException, RollerException {
         
         Template outty = null;
         
@@ -20,6 +22,16 @@
         // Made it this far, populate the Context
         ContextLoader.setupContext( ctx, rreq, response );
         
-        return getTemplate( page.getId(), "UTF-8" );
+        try {
+            outty = getTemplate( page.getId(), "UTF-8" );
+        } catch (ResourceNotFoundException ex) {
+            // just rethrow
+            throw ex;
+        } catch (Exception ex) {
+            // wrap this as a roller exception
+            throw new RollerException("Error getting velocity template", ex);
+        }
+        
+        return outty;
     }
 
