@@ -1,14 +1,10 @@
     /** Encapsulates BookmarkManager.getFolder() */
-    public FolderDataWrapper getFolder(String folderPath)
-    {
-        try
-        {
+    public FolderDataWrapper getFolder(String folderPath) {
+        try {
             return FolderDataWrapper.wrap(
-                    mBookmarkMgr.getFolder( 
-                        mUserMgr.getWebsiteByHandle(mHandle), folderPath));
-        }
-        catch (RollerException e)
-        {
+                    mBookmarkMgr.getFolder(
+                    mUserMgr.getWebsiteByHandle(mHandle), folderPath));
+        } catch (RollerException e) {
             mLogger.error("PageModel getFolder()", e);
         }
         return null;

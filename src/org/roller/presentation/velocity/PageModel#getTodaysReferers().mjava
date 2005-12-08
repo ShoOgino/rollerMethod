@@ -1,9 +1,7 @@
     /** Encapsulates RefererManager */
-    public List getTodaysReferers()
-    {
+    public List getTodaysReferers() {
         List referers = null;
-        try
-        {
+        try {
             List mReferers = mRefererMgr.getTodaysReferers(mRollerReq.getWebsite());
             
             // wrap pojos
@@ -14,10 +12,8 @@
                 referers.add(i, RefererDataWrapper.wrap((RefererData) it.next()));
                 i++;
             }
-         
-        }
-        catch (RollerException e)
-        {
+            
+        } catch (RollerException e) {
             mLogger.error("PageModel getTodaysReferers()", e);
         }
         return (referers == null ? Collections.EMPTY_LIST : referers);

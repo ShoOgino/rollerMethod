@@ -1,15 +1,11 @@
-    public FolderDataWrapper getFolderByPath(String path)
-    {
-        try
-        {
+    public FolderDataWrapper getFolderByPath(String path) {
+        try {
             FolderData folder = mBookmarkMgr.getFolderByPath(
-                mWebsite, null, path);
+                    mWebsite, null, path);
             
             if(folder != null)
                 return FolderDataWrapper.wrap(folder);
-        }
-        catch (RollerException e)
-        {
+        } catch (RollerException e) {
             mLogger.error(e);
         }
         

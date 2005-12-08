@@ -1,11 +1,9 @@
     /** Get top level bookmark folders. */
-    public Collection getTopLevelFolders()
-    {
+    public Collection getTopLevelFolders() {
         List tops = null;
-        try
-        {
+        try {
             Collection mTops = mBookmarkMgr.getRootFolder(
-                mUserMgr.getWebsiteByHandle(mHandle)).getFolders();
+                    mUserMgr.getWebsiteByHandle(mHandle)).getFolders();
             
             // wrap pojos
             tops = new ArrayList(mTops.size());
@@ -15,9 +13,7 @@
                 tops.add(i, FolderDataWrapper.wrap((FolderData) it.next()));
                 i++;
             }
-        }
-        catch (RollerException e)
-        {
+        } catch (RollerException e) {
             tops = new ArrayList();
         }
         return tops;

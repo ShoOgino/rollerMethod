@@ -1,60 +1,53 @@
-    /** 
-     * Returns a map of up to 100 recent weblog entries for the user and day 
-     * specified in the request, filtered by the category specified by the 
-     * request, limited by the 'maxEntries' argument, and sorted by reverse 
+    /**
+     * Returns a map of up to 100 recent weblog entries for the user and day
+     * specified in the request, filtered by the category specified by the
+     * request, limited by the 'maxEntries' argument, and sorted by reverse
      * chronological order.
-     * 
+     *
      * <p>This method will look for a category name in the following places
      * and in the following order:</p>
      * <ul>
      * <li>The request via RollerRequest.getWeblogCategory().</li>
      * <li>The categoryName argument to this method.</li>
-     * <li>The default category for the website specified by the request via 
+     * <li>The default category for the website specified by the request via
      *     RollerRequest.getWebsite().getDefaultCategory().</li>
      * <li></li>
      * </ul>
-     * 
+     *
      * @param maxEntries Maximum number of entries to be returned.
-     * @param categoryName Only return entries from this category and it's 
+     * @param categoryName Only return entries from this category and it's
      *         subcategories. If null, returns all categories of entry.
      * @return Map of Lists of WeblogEntryData, keyed by 8-char date strings.
      */
-    public Map getRecentWeblogEntries(int maxEntries, String categoryName)
-    {
+    public Map getRecentWeblogEntries(int maxEntries, String categoryName) {
         if (VELOCITY_NULL.equals(categoryName)) categoryName = null;
         Map ret = new HashMap();
-        try
-        {
+        try {
             Date day = mRollerReq.getDate();
             if (day == null) day = new Date();
             
             // If request specifies a category, then use that
             String catParam = null;
-            if (mRollerReq.getWeblogCategory() != null)
-            {
+            if (mRollerReq.getWeblogCategory() != null) {
                 catParam = mRollerReq.getWeblogCategory().getPath();
-            }
-            else if (categoryName != null)
-            {
+            } else if (categoryName != null) {
                 // use category argument instead
                 catParam = categoryName;
-            }
-            else if (mRollerReq.getWebsite() != null) // MAIN
+            } else if (mRollerReq.getWebsite() != null) // MAIN
             {
                 catParam = mRollerReq.getWebsite().getDefaultCategory().getPath();
-                if (catParam.equals("/"))
-                {
+                if (catParam.equals("/")) {
                     catParam = null;
                 }
             }
             
             Map mRet = RollerFactory.getRoller().getWeblogManager().getWeblogEntryObjectMap(
-                            mRollerReq.getWebsite(),  
-                            null,                     // startDate
-                            day,                 // endDate
-                            catParam,                 // catName
-                            WeblogEntryData.PUBLISHED,   // status
-                            new Integer(maxEntries)); // maxEntries
+                    mRollerReq.getWebsite(),
+                    null,                     // startDate
+                    day,                 // endDate
+                    catParam,                 // catName
+                    WeblogEntryData.PUBLISHED,   // status
+                    new Integer(maxEntries)); // maxEntries
             
             // need to wrap pojos
             java.util.Date key = null;
@@ -66,18 +59,16 @@
                 List wrappedEntries = new ArrayList();
                 List entries = (List) mRet.get(key);
                 for(int i=0; i < entries.size(); i++) {
-                    wrappedEntries.add(i, 
+                    wrappedEntries.add(i,
                             WeblogEntryDataWrapper.wrap((WeblogEntryData)entries.get(i)));
                 }
                 mRet.put(key, wrappedEntries);
             }
-
-	    ret = mRet;
+            
+            ret = mRet;
             
             setFirstAndLastEntries( ret );
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             mLogger.error("PageModel getRecentWeblogEntries()", e);
         }
         return ret;
