@@ -5,11 +5,10 @@
         stats.put("startTime", this.startTime);
         stats.put("hits", new Double(this.hits));
         stats.put("misses", new Double(this.misses));
-        stats.put("purges", new Double(this.purges));
         stats.put("skips", new Double(this.skips));
         
         // calculate efficiency
-        if((misses - purges) > 0) {
+        if(misses > 0) {
             double efficiency = hits / (misses + hits);
             stats.put("efficiency", new Double(efficiency * 100));
         }
