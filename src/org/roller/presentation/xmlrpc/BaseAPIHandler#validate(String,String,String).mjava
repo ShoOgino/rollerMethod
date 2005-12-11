@@ -9,7 +9,10 @@
     throws Exception
     {
         boolean authenticated = false;
-        boolean enabled = false;
+        boolean userEnabled = false;
+        boolean weblogEnabled = false;
+        boolean apiEnabled = false;
+        boolean weblogFound = false;
         WebsiteData website = null;
         UserData user = null;
         try
@@ -18,13 +21,17 @@
             RollerRequest rreq = RollerRequest.getRollerRequest();
             
             UserManager userMgr = RollerFactory.getRoller().getUserManager();
-            website = userMgr.getWebsiteByHandle(blogid);
             user = userMgr.getUser(username);
+            userEnabled = user.getEnabled().booleanValue();
             
-            enabled = website.getEnableBloggerApi().booleanValue() 
-                   && website.getEnabled().booleanValue() 
-                      && user.getEnabled().booleanValue();
-            if (enabled)
+            website = userMgr.getWebsiteByHandle(blogid);
+            if (website != null) {
+                weblogFound = true;
+                weblogEnabled = website.getEnabled().booleanValue();
+                apiEnabled = website.getEnableBloggerApi().booleanValue();
+            }
+            
+            if (user != null)
             {    
                 // are passwords encrypted?
                 RollerContext rollerContext = 
@@ -50,17 +57,31 @@
             mLogger.error("ERROR internal error validating user", e);
         }
         
-        if ( !enabled )
-        {
-            throw new XmlRpcException(
-                BLOGGERAPI_DISABLED, BLOGGERAPI_DISABLED_MSG);
-        }
-        
         if ( !authenticated )
         {
             throw new XmlRpcException(
                 AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
+        if ( !userEnabled )
+        {
+            throw new XmlRpcException(
+                USER_DISABLED, USER_DISABLED_MSG);
+        }        
+        if ( !weblogEnabled )
+        {
+            throw new XmlRpcException(
+                WEBLOG_DISABLED, WEBLOG_DISABLED_MSG);
+        }        
+        if ( !weblogFound )
+        {
+            throw new XmlRpcException(
+                WEBLOG_NOT_FOUND, WEBLOG_NOT_FOUND_MSG);
+        }        
+        if ( !apiEnabled )
+        {
+            throw new XmlRpcException(
+                BLOGGERAPI_DISABLED, BLOGGERAPI_DISABLED_MSG);
+        }        
         return website;
     }
 
