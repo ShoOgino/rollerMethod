@@ -1,7 +1,7 @@
     /**
      * Construct the WeblogFeedRequest by parsing the incoming url
      */
-    public WeblogFeedRequest(HttpServletRequest request) throws Exception {
+    public WeblogFeedRequest(HttpServletRequest request) throws InvalidRequestException {
         
         super(request);
         
@@ -21,8 +21,10 @@
                 this.flavor = servlet;
             } else {
                 // not a request to a feed servlet
-                throw new RollerException("not a weblog feed request, "+request.getRequestURL());
+                throw new InvalidRequestException("not a weblog feed request, "+request.getRequestURL());
             }
+        } else {
+            throw new InvalidRequestException("not a weblog feed request, "+request.getRequestURL());
         }
         
         // parse the path info
@@ -40,17 +42,10 @@
             // no path info means this was a non-weblog request
             // we handle a few exceptions for this which include
             //   /rss - main rss feed
-            //   /planetrss - main planet rss feed
             //   /atom - main atom feed
             //   /flavor - main flavor feed
-            if(servlet.equals("rss") || servlet.equals("atom") || 
-                    servlet.equals("flavor")) {
-                
-                this.context = "main";
-            } else if(servlet.equals("planetrss")) {
-                
-                this.context = "planet";
-            }
+            
+            this.context = "main";
         }
         
         /* 
