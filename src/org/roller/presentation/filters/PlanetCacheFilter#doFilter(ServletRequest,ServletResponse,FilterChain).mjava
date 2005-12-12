@@ -9,42 +9,22 @@
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
         
-        String key = null;
-        Principal prince = null;
-        
-        String servlet = request.getServletPath();
-        if(servlet.equals("/main.do")) {
-            key = "main/page";
-        } else {
-            // not a main page request
-            mLogger.warn("not a main page "+servlet);
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            return;
-        }
-        
+        PlanetRequest planetRequest = null;
         try {
-            // determine language
-            Locale locale = LanguageUtil.getViewLocale(request);
-            key += "/" + locale.getLanguage();
-            
-            // login status
-            prince = request.getUserPrincipal();
-            if(prince != null) {
-                key += "/user=" + prince.getName();
-            }
-            
+            planetRequest = new PlanetRequest(request);
         } catch(Exception e) {
-            // problem getting language?
-            mLogger.error("problem parsing request", e);
+            // some kind of error parsing the request
+            mLogger.error("error creating planet request", e);
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
         
+        String key = "planetCache:"+this.generateKey(planetRequest);
         
         try {
             ResponseContent respContent = null;
-            if(!this.excludeOwnerPages || prince == null) {
-                respContent = (ResponseContent) this.mPageCache.get(key);
+            if(!this.excludeOwnerPages || !planetRequest.isLoggedIn()) {
+                respContent = (ResponseContent) this.mCache.get(key);
             }
             
             if(respContent == null) {
@@ -64,8 +44,8 @@
                     ResponseContent rc = cacheResponse.getContent();
                     
                     // only cache if this is not a logged in user?
-                    if(!this.excludeOwnerPages || prince == null) {
-                        this.mPageCache.put(key, rc);
+                    if(!this.excludeOwnerPages || !planetRequest.isLoggedIn()) {
+                        this.mCache.put(key, rc);
                     } else {
                         mLogger.debug("SKIPPED "+key);
                         this.skips++;

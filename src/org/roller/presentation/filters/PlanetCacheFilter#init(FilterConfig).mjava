@@ -1,0 +1,41 @@
+    /**
+     * Init method for this filter
+     */
+    public void init(FilterConfig filterConfig) {
+        
+        mLogger.info("Initializing planet cache");
+        
+        String factory = RollerConfig.getProperty("cache.planet.factory");
+        String size = RollerConfig.getProperty("cache.planet.size");
+        String timeout = RollerConfig.getProperty("cache.planet.timeout");
+        this.excludeOwnerPages = 
+                RollerConfig.getBooleanProperty("cache.planet.excludeOwnerEditPages");
+        
+        int cacheSize = 20;
+        try {
+            cacheSize = Integer.parseInt(size);
+        } catch (Exception e) {
+            mLogger.warn("Invalid cache size ["+size+"], using default");
+        }
+        
+        long cacheTimeout = 30 * 60;
+        try {
+            cacheTimeout = Long.parseLong(timeout);
+        } catch (Exception e) {
+            mLogger.warn("Invalid cache timeout ["+timeout+
+                    "], using default");
+        }
+        
+        
+        Map props = new HashMap();
+        props.put("timeout", ""+cacheTimeout);
+        props.put("size", ""+cacheSize);
+        
+        if(factory != null && factory.trim().length() > 0)
+            props.put("cache.factory", factory);
+        
+        mLogger.info(props);
+        
+        mCache = CacheManager.constructCache(this, props);
+    }
+
