@@ -1,7 +1,7 @@
     /**
      * A weblog entry has changed.
      */
-    public void invalidate(WeblogEntryData entry) {
+    public synchronized void invalidate(WeblogEntryData entry) {
         
         mLogger.debug("invalidating entry = "+entry.getAnchor());
         
