@@ -1,5 +1,5 @@
     protected LRUCacheImpl() {
         
-        this.cache = new LRULinkedHashMap(100);
+        this.cache = Collections.synchronizedMap(new LRULinkedHashMap(100));
     }
 
