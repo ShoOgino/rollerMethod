@@ -3,6 +3,12 @@
      */
     protected void error( HttpServletRequest req, HttpServletResponse res,
             Exception e) throws ServletException, IOException {
-        mLogger.warn("ERROR in VelocityServlet",e);
+        
+        if(e instanceof SocketException) {
+            // ignore socket exceptions
+            mLogger.debug("Some kind of SocketException", e);
+        } else {
+            mLogger.warn("ERROR in VelocityServlet",e);
+        }
     }
 
