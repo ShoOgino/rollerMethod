@@ -1,0 +1,10 @@
+    /**
+     * @see org.roller.model.Roller#getPingTargetManager()
+     */
+    public AutoPingManager getAutopingManager() throws RollerException {
+        if (mAutoPingManager == null) {
+            mAutoPingManager = new JDOAutoPingManagerImpl(mStrategy);
+        }
+        return mAutoPingManager;
+    }
+

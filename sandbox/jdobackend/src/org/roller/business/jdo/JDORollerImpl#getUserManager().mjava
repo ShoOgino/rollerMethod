@@ -1,0 +1,10 @@
+    /**
+     * @see org.roller.model.Roller#getUserManager()
+     */
+    public UserManager getUserManager() throws RollerException {
+        if (mUserManager == null) {
+            mUserManager = new JDOUserManagerImpl(mStrategy);
+        }
+        return mUserManager;
+    }
+

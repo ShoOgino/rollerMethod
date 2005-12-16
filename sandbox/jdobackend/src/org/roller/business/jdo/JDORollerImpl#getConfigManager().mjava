@@ -1,0 +1,10 @@
+    /**
+     * @see org.roller.model.Roller#getConfigManager()
+     */
+    public ConfigManager getConfigManager() throws RollerException {
+        if (mConfigManager == null) {
+            mConfigManager = new JDOConfigManagerImpl(mStrategy);
+        }
+        return mConfigManager;
+    }
+

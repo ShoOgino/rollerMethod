@@ -1,0 +1,10 @@
+    /**
+     * @see org.roller.model.Roller#getPlanetManager()
+     */
+    public PlanetManager getPlanetManager() throws RollerException {
+        if (planetManager == null) {
+            planetManager = new JDOPlanetManagerImpl(mStrategy, this);
+        }
+        return planetManager;
+    }
+

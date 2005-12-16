@@ -1,0 +1,10 @@
+    /**
+     * @see org.roller.model.Roller#getBookmarkManager()
+     */
+    public BookmarkManager getBookmarkManager() throws RollerException {
+        if (mBookmarkManager == null) {
+            mBookmarkManager = new JDOBookmarkManagerImpl(mStrategy);
+        }
+        return mBookmarkManager;
+    }
+
