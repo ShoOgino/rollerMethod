@@ -10,21 +10,32 @@
         entry1 = getRoller().getWeblogManager().retrieveWeblogEntry(
             entry1.getId());
         
-        CommentData comment = new CommentData(
-            null, 
-            entry1, 
-            "TestCommentUser", 
-            "test@test.com", 
-            "", 
-            "This is a test", 
-            new Timestamp(new Date().getTime()), 
-            Boolean.FALSE,   // spam
-            Boolean.FALSE);  // notify
-            
+        CommentData comment = new CommentData();
+        comment.setWeblogEntry(entry1);
+        comment.setName("TestCommentUser");
+        comment.setEmail("test@test.com");
+        comment.setContent("");
+        comment.setPostTime(new java.sql.Timestamp(new Date().getTime()));
+        comment.setSpam(Boolean.FALSE);
+        comment.setNotify(Boolean.FALSE);
+        comment.setNotify(Boolean.FALSE);
+        comment.setApproved(Boolean.TRUE);
+        comment.setPending(Boolean.FALSE);
         comment.save();
         getRoller().commit();
         
-        List comments = wmgr.getComments(entry1.getId());
+        List comments = wmgr.getComments(
+                null,   // website
+                entry1, // weblogEntry
+                null,   // search
+                null,   // start
+                null,   // end
+                null,   // approved
+                null,   // pending
+                null,   // spam
+                true,   // reverseChrono
+                0,      // offset
+                -1);    // length
         assertTrue(comments.size() > mCommentCount);
         
         getRoller().begin(UserData.SYSTEM_USER);

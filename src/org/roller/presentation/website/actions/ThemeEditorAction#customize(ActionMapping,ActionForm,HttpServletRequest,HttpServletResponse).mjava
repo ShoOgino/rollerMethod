@@ -37,7 +37,9 @@
                     // only if custom themes are allowed
                     if(RollerRuntimeConfig.getBooleanProperty("themes.customtheme.allowed")) {
                         try {
-                            this.saveThemePages(website, usersTheme);
+                            roller.begin(UserData.SYSTEM_USER);
+                            themeMgr.saveThemePages(website, usersTheme);
+                            roller.commit();
                         } catch(RollerException re) {
                             mLogger.error(re);
                             errors.add(null, new ActionMessage("Error customizing theme"));

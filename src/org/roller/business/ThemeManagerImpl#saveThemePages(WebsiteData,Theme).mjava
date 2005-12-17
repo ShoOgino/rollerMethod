@@ -6,7 +6,7 @@
      * @param theme Name of theme to save.
      * @throws RollerException
      */
-    private void saveThemePages(WebsiteData website, Theme theme)
+    public void saveThemePages(WebsiteData website, Theme theme)
         throws RollerException {
         
         mLogger.debug("Setting custom templates for website: "+website.getName());
@@ -79,13 +79,9 @@
             // save our updated website
             userMgr.storeWebsite(website);
             
-            // commit?  i still don't understand when this is needed :/
-            RollerFactory.getRoller().commit();
-            
         } catch (Exception e) {
             mLogger.error("ERROR in action",e);
             throw new RollerException( e );
-        }
-        
+        }       
     }
 

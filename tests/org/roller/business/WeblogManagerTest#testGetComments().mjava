@@ -3,7 +3,18 @@
         getRoller().begin(UserData.SYSTEM_USER);
         WeblogEntryData entry0 = (WeblogEntryData)mEntriesCreated.get(0);
         WeblogManager wmgr = getRoller().getWeblogManager();
-        assertEquals(mCommentCount, wmgr.getComments(entry0.getId()).size());
+        assertEquals(mCommentCount, wmgr.getComments(
+                null,   // website
+                entry0, // weblogEntry
+                null,   // search
+                null,   // start
+                null,   // end
+                null,   // approved
+                null,   // pending
+                null,   // spam
+                true,   // reverseChrono
+                0, -1     // offset, size
+                ).size());        
         getRoller().commit();
     }
 

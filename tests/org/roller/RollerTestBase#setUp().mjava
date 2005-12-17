@@ -2,26 +2,37 @@
     /**
      * @see TestCase#setUp()
      */
-    protected void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         super.setUp();
+
+        String buildDir = System.getProperty("ro.build");
+        assertNotNull("ro.build not null", buildDir);
+        assertTrue("ro.build not zero length", buildDir.trim().length() > 0);
+        if (!buildDir.startsWith("/")) buildDir = "..";
+        File file = new File(buildDir);
+        assertTrue("buildDir exists", file.exists());
+        assertTrue("buildDir is directory", file.isDirectory());
+        
+        assertTrue(new File(buildDir + "/roller/themes/basic").exists());
+        
+        RollerConfig.setContextRealPath(buildDir + "/roller");
+        RollerConfig.setUploadsDir(buildDir + "/tests/roller_data/uploads");
+        
         getRoller().begin(UserData.SYSTEM_USER);
         mUser = createUser(
-                   testUsername,
-                   "password",
-                   "TestUser",
-                   "testuser@example.com");
+                testUsername,
+                "password",
+                "TestUser",
+                "testuser@example.com");
         UserManager umgr = getRoller().getUserManager();
         mWebsite = (WebsiteData)umgr.getWebsites(mUser, null).get(0);
         getRoller().commit();
         
-        RollerConfig.setContextRealPath("./build/roller");
-        
         getRoller().begin(UserData.SYSTEM_USER);
         PropertiesManager propmgr = getRoller().getPropertiesManager();
         Map props = propmgr.getProperties();
-        RollerPropertyData prop = 
-            (RollerPropertyData)props.get("site.absoluteurl");
+        RollerPropertyData prop =
+                (RollerPropertyData)props.get("site.absoluteurl");
         prop.setValue("http://localhost:8080/roller");
         propmgr.store(props);
         getRoller().commit();
@@ -40,6 +51,6 @@
         group.setHandle("external");
         group.setTitle("external");
         planet.saveGroup(group);
-        getRoller().commit();        
+        getRoller().commit();
     }
 

@@ -1,18 +1,15 @@
     //-----------------------------------------------------------------------
     /** Tear down weblogs created in setupTestWeblogs() */
-    public void tearDownTestWeblogs() throws Exception
-    {
+    public void tearDownTestWeblogs() throws Exception {
         getRoller().begin(UserData.SYSTEM_USER);
         UserManager umgr = getRoller().getUserManager();
-        for (Iterator siteIter = mWebsitesCreated.iterator(); siteIter.hasNext();)
-        {
+        for (Iterator siteIter = mWebsitesCreated.iterator(); siteIter.hasNext();) {
             WebsiteData site = (WebsiteData) siteIter.next();
             site = umgr.retrieveWebsite(site.getId());
             if (site != null) site.remove();
         }
         
-        for (Iterator userIter = mUsersCreated.iterator(); userIter.hasNext();)
-        {
+        for (Iterator userIter = mUsersCreated.iterator(); userIter.hasNext();) {
             UserData user = (UserData) userIter.next();
             user = umgr.retrieveUser(user.getId());
             if (user != null) user.remove();

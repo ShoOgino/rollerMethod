@@ -3,17 +3,16 @@
      *
      * @throws RollerException
      */
-    private void deleteWebsite(String deleteMe) throws RollerException
-    {
+    private void deleteWebsite(String deleteMe) throws RollerException {
         mLogger.debug("try to delete " + deleteMe);
         getRoller().begin(UserData.SYSTEM_USER);
         UserManager umgr = getRoller().getUserManager();
         
         UserData user = umgr.getUser(deleteMe);
-
+        
         WebsiteData website = (WebsiteData)umgr.getWebsites(user, null).get(0);
         website.remove();
-
+        
         user.remove();
         
         getRoller().commit();

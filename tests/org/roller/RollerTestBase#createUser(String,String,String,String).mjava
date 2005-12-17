@@ -1,35 +1,32 @@
     //-----------------------------------------------------------------------
     protected UserData createUser(
-                    String username,
-                    String password,
-                    String fullName,
-                    String email) throws RollerException
-    {
+            String username,
+            String password,
+            String fullName,
+            String email) throws RollerException {
         UserManager umgr = getRoller().getUserManager();
         WeblogManager wmgr = getRoller().getWeblogManager();
-
+        
         // Create and add new new user
         UserData ud = new UserData(null,
-            username,      // userName
-            password,      // password
-            fullName,      // fullName
-            email,         // emailAddress
-            "en_US_WIN", 
-            "America/Los_Angeles",
-            new java.util.Date(), // dateCreated
-            Boolean.TRUE);
+                username,      // userName
+                password,      // password
+                fullName,      // fullName
+                email,         // emailAddress
+                "en_US_WIN",
+                "America/Los_Angeles",
+                new java.util.Date(), // dateCreated
+                Boolean.TRUE);
         umgr.addUser(ud);
-
-        // Create list of pages to be loaded into website
-        Map pages = new HashMap();
-        pages.put("Weblog","Weblog page content");
-        pages.put("_day","Day page content");
-        pages.put("css","CSS page content");
         
         // Create website for user with those pages
-        umgr.createWebsite(
-           ud, pages, username, username, username,"dummy@example.com","basic", 
-           "en_US_WIN", "America/Los_Angeles");
+        WebsiteData website = umgr.createWebsite(
+           ud, new HashMap(), username, username, username,"dummy@example.com",
+           "basic","en_US_WIN", "America/Los_Angeles");
+        
+        ThemeManager themeMgr = getRoller().getThemeManager();
+        Theme usersTheme = themeMgr.getTheme(website.getEditorTheme());
+        themeMgr.saveThemePages(website, usersTheme);
         
         return ud;
     }

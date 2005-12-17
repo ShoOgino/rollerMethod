@@ -6,7 +6,17 @@
         
         WebsiteData website = (WebsiteData)mWebsitesCreated.get(0);
         website = umgr.retrieveWebsite(website.getId());
-        List comments = wmgr.getRecentComments(website, 2);
+        List comments = wmgr.getComments(
+                website, // website
+                null,    // weblogEntry
+                null,    // search
+                null,    // start
+                null,    // end
+                null,    // approved
+                null,    // pending
+                null,    // spam
+                true,    // reverseChrono
+                0, 2);   // offset, size
         assertTrue(comments.size() > 1);
         // Comment 0 should be named 'name1' and Comment 1 'name0'
         /*
