@@ -44,7 +44,8 @@
                 // save the new blacklist
                 InputStream instream = connection.getInputStream();
                 
-                String path = this.uploadDir + File.separator + blacklistFile;
+                String uploadDir = RollerConfig.getProperty("uploads.dir");
+                String path = uploadDir + File.separator + blacklistFile;
                 FileOutputStream outstream = new FileOutputStream(path);
                 
                 mLogger.debug("writing updated MT blacklist to "+path);

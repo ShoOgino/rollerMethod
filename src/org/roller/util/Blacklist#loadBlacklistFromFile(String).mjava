@@ -2,16 +2,21 @@
      * Load the MT blacklist from the file system.
      * We look for a previously downloaded version of the blacklist first and
      * if it's not found then we load the default blacklist packed with Roller.
+     * Only public for purposes of unit testing.
      */
-    private void loadBlacklistFromFile() {
+    public void loadBlacklistFromFile(String blacklistFilePath) {
         
         InputStream txtStream = null;
         try {
-            String path = this.uploadDir + File.separator + blacklistFile;
+            String path = blacklistFilePath;
+            if (path == null) {
+                String uploadDir = RollerConfig.getProperty("uploads.dir");
+                path = uploadDir + File.separator + blacklistFile;
+            }
             File blacklistFile = new File(path);
             
             // check our lastModified date to see if we need to re-read the file
-            if(this.lastModified != null &&
+            if (this.lastModified != null &&
                     this.lastModified.getTime() >= blacklistFile.lastModified()) {               
                 mLogger.debug("Blacklist is current, no need to load again");
                 return;
