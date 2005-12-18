@@ -3,7 +3,6 @@
         HttpServletRequest req = (HttpServletRequest)
         servletModule.getFilteredRequest();
         assertTrue(req.getAttribute("folder") instanceof FolderData);
-        assertTrue(req.getAttribute("folders") instanceof List);
-        assertTrue(req.getAttribute("bookmarks") instanceof Set);
+        assertTrue(req.getAttribute("model") instanceof BasePageModel);
     }
 

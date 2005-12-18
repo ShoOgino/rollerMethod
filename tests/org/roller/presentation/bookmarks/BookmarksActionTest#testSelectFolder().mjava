@@ -28,10 +28,18 @@
         MockActionMapping mapping = strutsModule.getMockActionMapping();
         mapping.setupForwards(new String[] {"access-denied","BookmarksForm"});
         mapping.setParameter("method");        
+        strutsModule.addRequestParameter("weblog",mWebsite.getHandle()); 
         strutsModule.addRequestParameter("method","selectFolder"); 
-        
-        strutsModule.actionPerform(BookmarksAction.class, form);        
-        
+                
+        try {
+            RollerRequest rreq = new RollerRequest(strutsModule.getMockPageContext());
+            rreq.setWebsite(mWebsite);
+            strutsModule.setRequestAttribute(RollerRequest.ROLLER_REQUEST, rreq);
+            strutsModule.actionPerform(BookmarksAction.class, form);        
+        } catch (Throwable e) {
+            e.printStackTrace();
+            fail();
+        }
         // Test for success
         strutsModule.verifyNoActionMessages();
         strutsModule.verifyForward("BookmarksForm");
