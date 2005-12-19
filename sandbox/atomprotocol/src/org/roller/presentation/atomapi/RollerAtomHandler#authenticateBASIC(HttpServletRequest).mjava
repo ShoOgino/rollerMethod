@@ -18,8 +18,7 @@
                         if (p != -1) {
                             userID = userPass.substring(0, p);
                             UserData user = mRoller.getUserManager().getUser(userID);
-                            String realpassword = LoginServlet.getEncryptedPassword(
-                                    request, user.getUserName(), user.getPassword());
+                            String realpassword = user.getPassword();
                             password = userPass.substring(p+1);
                             if (    (userID.trim().equals(user.getUserName()))
                             && (password.trim().equals(realpassword))) {

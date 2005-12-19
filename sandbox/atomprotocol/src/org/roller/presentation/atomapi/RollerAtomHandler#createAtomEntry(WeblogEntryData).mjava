@@ -11,7 +11,9 @@
         List contents = new ArrayList();
         contents.add(content);
         
-        atomEntry.setId(        entry.getId());
+        String absUrl = mRollerContext.getAbsoluteContextUrl(mRequest);
+        
+        atomEntry.setId(        absUrl + entry.getPermaLink());
         atomEntry.setTitle(     entry.getTitle());
         atomEntry.setContents(  contents);
         atomEntry.setPublished( entry.getPubTime());
@@ -30,7 +32,6 @@
         altlinks.add(altlink);
         atomEntry.setAlternateLinks(altlinks);
         
-        String absUrl = mRollerContext.getAbsoluteContextUrl(mRequest);
         Link editlink = new Link();
         editlink.setRel("edit");
         editlink.setHref(absUrl + "/app/"

@@ -15,7 +15,7 @@
                     null,   // catName
                     null,   // status
                     start, // offset (for range paging)
-                    end);  // maxEntries
+                    end - start + 1);  // maxEntries
             Feed feed = new Feed();
             List atomEntries = new ArrayList();
             for (Iterator iter = entries.iterator(); iter.hasNext();) {
