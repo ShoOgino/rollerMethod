@@ -19,7 +19,7 @@
             PlanetGroupData group = planet.getGroup("test_handle");
             assertEquals("test_group_desc",group.getDescription());
             assertEquals("test_title",group.getTitle());
-            assertEquals(1, planet.getGroupHandles().size());
+            assertTrue(planet.getGroupHandles().size() > 0);
             roller.rollback();
         }
         {   // remove group
