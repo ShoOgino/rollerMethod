@@ -10,7 +10,7 @@
             {   
                 roller.begin();
                 PlanetConfigData config = new PlanetConfigData();
-                config.setCacheDir("/tmp"); // TODO use real temp dir
+                //config.setCacheDir(cacheDir); 
                 config.setTitle("test_title");
                 config.setAdminEmail("test_admin_email");
                 planet.saveConfiguration(config);
@@ -37,7 +37,7 @@
                 
                 roller.begin();
                 PlanetSubscriptionData sub = planet.getSubscription(feed_url1);
-                assertTrue(sub.getEntries().size() > 0);
+                int entriesSize = sub.getEntries().size();
           
                 PlanetGroupData group = planet.getGroup("test_handle");
                 assertNotNull(group);
@@ -48,6 +48,8 @@
                 PlanetConfigData config = planet.getConfiguration();
                 config.remove();
                 roller.commit();
+
+                assertTrue(entriesSize > 0);
             }
         }
         catch (Exception e) 

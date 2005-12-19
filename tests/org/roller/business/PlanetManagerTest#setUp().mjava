@@ -1,0 +1,12 @@
+    /**
+     * @see TestCase#setUp()
+     */
+    protected void setUp() throws Exception
+    {
+        super.setUp();        
+        RollerConfig.setPlanetCachePath(
+            System.getProperty("ro.build") 
+            + File.separator + "tests" 
+            + File.separator + "planet-cache");
+    }
+

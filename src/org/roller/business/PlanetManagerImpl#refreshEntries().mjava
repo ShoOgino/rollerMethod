@@ -35,7 +35,7 @@
             Set newEntries = null;
             int count = 0;
             PlanetSubscriptionData sub = (PlanetSubscriptionData)subs.next();
-            if (sub.getFeedUrl().startsWith(localURL)) {
+            if (!StringUtils.isEmpty(localURL) && sub.getFeedUrl().startsWith(localURL)) {
                 newEntries = getNewEntriesLocal(sub, feedFetcher, feedInfoCache);
             } else {
                 newEntries = getNewEntriesRemote(sub, feedFetcher, feedInfoCache);
