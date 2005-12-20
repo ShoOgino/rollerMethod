@@ -4,7 +4,7 @@
 
         String answer = "";
         
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(true);
         if (session.getAttribute("mathAnswer") == null) {
             // starting a new test
             int value1 = (int)(Math.random()*10.0);
