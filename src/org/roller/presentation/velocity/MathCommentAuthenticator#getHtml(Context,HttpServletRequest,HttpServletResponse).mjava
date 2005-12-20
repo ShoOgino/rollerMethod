@@ -1,12 +1,11 @@
-    public String getHtml(
-                        Context context,
-                        HttpServletRequest request, 
-                        HttpServletResponse response)
-    {
+    public String getHtml(Context context, 
+                    HttpServletRequest request, 
+                    HttpServletResponse response) {
+
         String answer = "";
+        
         HttpSession session = request.getSession();
-        if (session.getAttribute("mathAnswer") == null)
-        {
+        if (session.getAttribute("mathAnswer") == null) {
             // starting a new test
             int value1 = (int)(Math.random()*10.0);
             int value2 = (int)(Math.random()*100.0);
@@ -14,19 +13,15 @@
             session.setAttribute("mathValue1", new Integer(value1));
             session.setAttribute("mathValue2", new Integer(value2));
             session.setAttribute("mathAnswer", new Integer(sum));
-        }
-        else
-        {
+        } else {
             // preserve user's answer
             answer = request.getParameter("answer");
             answer = (answer == null) ? "" : answer;
         }
-
+        
         // pull existing values out of session
-        Integer value1o = 
-            (Integer)request.getSession().getAttribute("mathValue1");
-        Integer value2o = 
-            (Integer)request.getSession().getAttribute("mathValue2");
+        Integer value1o = (Integer)request.getSession().getAttribute("mathValue1");
+        Integer value2o = (Integer)request.getSession().getAttribute("mathValue2");
         
         StringBuffer sb = new StringBuffer();
         
