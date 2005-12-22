@@ -4,38 +4,25 @@
     public void init(FilterConfig filterConfig) {
         
         mLogger.info("Initializing weblog page cache");
-        
-        String factory = RollerConfig.getProperty("cache.weblogpage.factory");
-        String size = RollerConfig.getProperty("cache.weblogpage.size");
-        String timeout = RollerConfig.getProperty("cache.weblogpage.timeout");
+
         this.excludeOwnerPages = 
                 RollerConfig.getBooleanProperty("cache.weblogpage.excludeOwnerEditPages");
         
-        int cacheSize = 100;
-        try {
-            cacheSize = Integer.parseInt(size);
-        } catch (Exception e) {
-            mLogger.warn("Invalid page cache size ["+size+"], using default");
+        Map cacheProps = new HashMap();
+        Enumeration allProps = RollerConfig.keys();
+        String prop = null;
+        while(allProps.hasMoreElements()) {
+            prop = (String) allProps.nextElement();
+            
+            // we are only interested in props for this cache
+            if(prop.startsWith(CACHE_ID+".")) {
+                cacheProps.put(prop.substring(CACHE_ID.length()+1), 
+                        RollerConfig.getProperty(prop));
+            }
         }
         
-        long cacheTimeout = 30 * 60;
-        try {
-            cacheTimeout = Long.parseLong(timeout);
-        } catch (Exception e) {
-            mLogger.warn("Invalid page cache timeout ["+timeout+
-                    "], using default");
-        }
+        mLogger.info(cacheProps);
         
-        
-        Map props = new HashMap();
-        props.put("timeout", ""+cacheTimeout);
-        props.put("size", ""+cacheSize);
-        
-        if(factory != null && factory.trim().length() > 0)
-            props.put("cache.factory", factory);
-        
-        mLogger.info(props);
-        
-        mPageCache = CacheManager.constructCache(this, props);
+        mCache = CacheManager.constructCache(this, cacheProps);
     }
 

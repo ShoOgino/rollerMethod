@@ -16,8 +16,8 @@
         //       over the entire cache key set
         String key = null;
         
-        synchronized(mFeedCache) {
-            Iterator allKeys = this.mFeedCache.keySet().iterator();
+        synchronized(mCache) {
+            Iterator allKeys = this.mCache.keySet().iterator();
             while(allKeys.hasNext()) {
                 key = (String) allKeys.next();
                 
@@ -31,7 +31,7 @@
             }
         }
         
-        this.mFeedCache.remove(removeSet);
+        this.mCache.remove(removeSet);
         this.purges += removeSet.size();
     }
 

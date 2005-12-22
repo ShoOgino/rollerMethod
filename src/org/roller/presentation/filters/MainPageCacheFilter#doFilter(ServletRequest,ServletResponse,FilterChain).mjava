@@ -44,7 +44,7 @@
         try {
             ResponseContent respContent = null;
             if(!this.excludeOwnerPages || prince == null) {
-                respContent = (ResponseContent) this.mPageCache.get(key);
+                respContent = (ResponseContent) this.mCache.get(key);
             }
             
             if(respContent == null) {
@@ -65,7 +65,7 @@
                     
                     // only cache if this is not a logged in user?
                     if(!this.excludeOwnerPages || prince == null) {
-                        this.mPageCache.put(key, rc);
+                        this.mCache.put(key, rc);
                     } else {
                         mLogger.debug("SKIPPED "+key);
                         this.skips++;

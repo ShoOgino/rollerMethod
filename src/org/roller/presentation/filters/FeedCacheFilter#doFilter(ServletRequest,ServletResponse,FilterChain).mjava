@@ -24,7 +24,7 @@
         String key = "feedCache:"+this.generateKey(feedRequest);
         
         try {
-            ResponseContent respContent = (ResponseContent) this.mFeedCache.get(key);
+            ResponseContent respContent = (ResponseContent) this.mCache.get(key);
             if (respContent == null) {
                 
                 mLogger.debug("MISS "+key);
@@ -41,7 +41,7 @@
                 if (request.getAttribute("DisplayException") == null) {
                     ResponseContent rc = cacheResponse.getContent();
                     
-                    this.mFeedCache.put(key, rc);
+                    this.mCache.put(key, rc);
                 } else {
                     // it is expected that whoever caught this display exception
                     // is the one who reported it to the logs
