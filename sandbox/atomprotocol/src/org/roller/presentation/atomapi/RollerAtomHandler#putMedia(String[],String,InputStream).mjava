@@ -2,11 +2,11 @@
      * Update resource specified by pathInfo using data from input stream.
      * Expects pathInfo of form /blog-name/resources/name
      */
-    public void putMedia(String[] pathInfo,
+    public Entry putMedia(String[] pathInfo,
             String contentType, InputStream is) throws Exception {
         if (pathInfo.length > 2) {
             String name = pathInfo[2];
-            postMedia(pathInfo, name, contentType, is);
+            return postMedia(pathInfo, name, contentType, is);
         }
         throw new Exception("ERROR: bad pathInfo");
     }

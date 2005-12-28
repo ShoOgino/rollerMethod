@@ -33,14 +33,20 @@
             rollerEntry.setStatus(WeblogEntryData.DRAFT);
         }
         
+        // Atom supports multiple cats, Roller supports one/entry
+        // so here we take accept the first category that exists
         List categories = entry.getCategories();
         if (categories != null && categories.size() > 0) {
-            Category cat = (Category)categories.get(0);
-            System.out.println(cat.getTerm());
-            WeblogCategoryData rollerCat =
+            for (int i=0; i<categories.size(); i++) {
+                Category cat = (Category)categories.get(i);
+                WeblogCategoryData rollerCat =
                     mRoller.getWeblogManager().getWeblogCategoryByPath(
                     website, cat.getTerm());
-            rollerEntry.setCategory(rollerCat);
+                if (rollerCat != null) {
+                    rollerEntry.setCategory(rollerCat);
+                    break;
+                }
+            }
         } else {
             rollerEntry.setCategory(website.getBloggerCategory());
         }

@@ -5,13 +5,13 @@
         if (pathInfo.length == 3) // URI is /blogname/entries/entryid
         {
             WeblogEntryData entry =
-                    mRoller.getWeblogManager().retrieveWeblogEntry(pathInfo[2]);
-            if (!canView(entry)) {
+                mRoller.getWeblogManager().retrieveWeblogEntry(pathInfo[2]);
+            if (entry != null && !canView(entry)) {
                 throw new Exception("ERROR not authorized to view entry");
             } else if (entry != null) {
                 return createAtomEntry(entry);
             }
-            throw new Exception("ERROR: entry not found");
+            return null;
         }
         throw new Exception("ERROR: bad URI");
     }

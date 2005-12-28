@@ -17,10 +17,10 @@
             // (MySQL timestamp has 1 sec resolution, damnit)
             Thread.sleep(1000);
             
-            // TODO: ping the appropriate ping
-            // TODO: flush the cache on Atom post
-            //flushPageCache(mRequest);
-            
+            CacheManager.invalidate(website);
+            if (rollerEntry.isPublished()) {
+                mRoller.getIndexManager().addEntryReIndexOperation(rollerEntry);
+            }            
             return createAtomEntry(rollerEntry);
         }
         throw new Exception("ERROR not authorized to edit website");

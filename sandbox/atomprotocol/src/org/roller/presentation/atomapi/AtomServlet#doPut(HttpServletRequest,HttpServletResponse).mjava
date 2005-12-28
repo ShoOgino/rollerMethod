@@ -23,10 +23,15 @@
                     serializeEntry(updatedEntry, writer);
                     res.setStatus(HttpServletResponse.SC_OK);
                     writer.close();
-                } else if (handler.isMediaCollectionURI(pathInfo)) {
-                    // handle input stream to handler
-                    handler.putMedia(
-                            pathInfo, req.getContentType(), req.getInputStream());
+                } else if (handler.isMediaURI(pathInfo)) {
+                    // hand input stream to handler
+                    Entry updatedEntry = handler.putMedia(
+                        pathInfo, req.getContentType(), req.getInputStream());
+                                        
+                    // write entry back out to response
+                    Writer writer = res.getWriter();
+                    serializeEntry(updatedEntry, writer);
+                    writer.close();
                     res.setStatus(HttpServletResponse.SC_OK);
                 } else {
                     res.setStatus(HttpServletResponse.SC_NOT_FOUND);

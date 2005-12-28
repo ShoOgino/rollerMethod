@@ -37,10 +37,15 @@
                     String name = req.getHeader("Name");
                     
                     // hand input stream of to hander to post file
-                    String location = handler.postMedia(
-                            pathInfo, name, req.getContentType(), req.getInputStream());
+                    Entry resource = handler.postMedia(
+                        pathInfo, name, req.getContentType(), req.getInputStream());
                     res.setStatus(HttpServletResponse.SC_CREATED);
-                    res.setHeader("Location", location);
+                    com.sun.syndication.feed.atom.Content content = 
+                        (com.sun.syndication.feed.atom.Content)resource.getContents().get(0);
+                    res.setHeader("Location", content.getSrc());
+                    Writer writer = res.getWriter();
+                    serializeEntry(resource, writer);
+                    writer.close(); 
                 } else {
                     res.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 }

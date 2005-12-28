@@ -4,23 +4,22 @@
      * TODO: do we need to handle mutli-part MIME uploads?
      * TODO: use Jakarta Commons File-upload?
      */
-    public String postMedia(String[] pathInfo,
+    public Entry postMedia(String[] pathInfo, 
             String name, String contentType, InputStream is)
             throws Exception {
         // authenticated client posted a weblog entry
+        File tempFile = null;
+        RollerMessages msgs = new RollerMessages();
         String handle = pathInfo[0];
         WebsiteData website = mRoller.getUserManager().getWebsiteByHandle(handle);
         if (canEdit(website) && pathInfo.length > 1) {
+            // save to temp file
+            if (name == null) {
+                throw new Exception("ERROR[postResource]: No 'name' present in HTTP headers");
+            }
             try {
                 FileManager fmgr = mRoller.getFileManager();
-                RollerMessages msgs = new RollerMessages();
-                
-                // save to temp file
-                if (name == null) {
-                    throw new Exception(
-                            "ERROR[postResource]: No 'name' present in HTTP headers");
-                }
-                File tempFile = File.createTempFile(name,"tmp");
+                tempFile = File.createTempFile(name,"tmp");
                 FileOutputStream fos = new FileOutputStream(tempFile);
                 Utilities.copyInputToOutput(is, fos);
                 fos.close();
@@ -32,21 +31,18 @@
                     fmgr.saveFile(website, name, tempFile.length(), fis);
                     fis.close();
                     
-                    // TODO: build URL to uploaded file should be done in FileManager
-                    String uploadPath = RollerContext.getUploadPath(
-                            mRequest.getSession(true).getServletContext());
-                    uploadPath += "/" + website.getHandle() + "/" + name;
-                    return RequestUtils.printableURL(
-                            RequestUtils.absoluteURL(mRequest, uploadPath));
+                    File resource = new File(fmgr.getUploadDir() + File.separator + name);
+                    return createAtomResourceEntry(website, resource);
                 }
-                tempFile.delete();
-                throw new Exception("File upload denied because:" + msgs.toString());
+
             } catch (Exception e) {
                 String msg = "ERROR in atom.postResource";
                 mLogger.error(msg,e);
                 throw new Exception(msg);
+            } finally {
+                if (tempFile != null) tempFile.delete();
             }
         }
-        throw new Exception("ERROR not authorized to edit website");
+        throw new Exception("File upload denied because:" + msgs.toString());
     }
 

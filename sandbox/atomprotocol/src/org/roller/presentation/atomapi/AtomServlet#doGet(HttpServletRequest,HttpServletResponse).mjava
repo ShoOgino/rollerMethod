@@ -34,21 +34,28 @@
                 } else if (handler.isEntryURI(pathInfo)) {
                     // return an entry
                     Entry entry = handler.getEntry(pathInfo);
-                    Writer writer = res.getWriter();
-                    serializeEntry(entry, writer);
-                    writer.close();
+                    if (entry != null) {
+                        Writer writer = res.getWriter();
+                        serializeEntry(entry, writer);
+                        writer.close();
+                    } else {
+                        res.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                    }
                 } else if (handler.isMediaURI(pathInfo)) {
-                    // return a resource
-                    String absPath = handler.getMediaFilePath(pathInfo);
-                    String type = getServletContext().getMimeType(absPath);
-                    res.setContentType(type);
-                    Utilities.copyInputToOutput(
-                        new FileInputStream(absPath), res.getOutputStream());
+                    // return a resource entry
+                    Entry entry = handler.getMedia(pathInfo);
+                    if (entry != null) {
+                        Writer writer = res.getWriter();
+                        serializeEntry(entry, writer);
+                        writer.close();
+                    } else {
+                        res.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                    }
                 } else {
                     res.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 }
             } catch (Exception e) {
-                //res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 e.printStackTrace(res.getWriter());
                 mLogger.error(e);
             }

@@ -7,41 +7,20 @@
             WeblogEntryData rollerEntry =
                     mRoller.getWeblogManager().retrieveWeblogEntry(pathInfo[2]);
             if (canEdit(rollerEntry)) {
-                rollerEntry.setTitle(entry.getTitle());
-                
-                // TODO: don't assume type is HTML or TEXT
-                List contents = entry.getContents();
-                if (contents != null && contents.size() > 0) {
-                    Content romeContent = (Content)contents.get(0);
-                    rollerEntry.setText(romeContent.getValue());
-                }
-                
-                PubControlModule control = (PubControlModule)
-                    entry.getModule("http://purl.org/atom/app#");
-                if (control!=null && control.getDraft()!=null) {
-                    if (control.getDraft().booleanValue()) {
-                        rollerEntry.setStatus(WeblogEntryData.DRAFT);
-                    } else {
-                        rollerEntry.setStatus(WeblogEntryData.PUBLISHED);
-                    }
-                }    
-                rollerEntry.setUpdateTime(new Timestamp(new Date().getTime()));
-                if (entry.getPublished() != null) {
-                    rollerEntry.setPubTime(
-                            new Timestamp(entry.getPublished().getTime()));
-                }
-                if (entry.getCategories() != null
-                        && entry.getCategories().size() > 0) {
-                    Category atomCat = (Category)entry.getCategories().get(0);
-                    WeblogCategoryData cat =
-                            mRoller.getWeblogManager().getWeblogCategoryByPath(
-                            rollerEntry.getWebsite(), atomCat.getTerm());
-                    if (cat != null) {
-                        rollerEntry.setCategory(cat);
-                    }
-                }
+                String id = rollerEntry.getId();
+                UserData creator = rollerEntry.getCreator();
+                WeblogEntryData updated = 
+                    createRollerEntry(rollerEntry.getWebsite(), entry);
+                rollerEntry.setData(updated);
+                rollerEntry.setId(id);
+                rollerEntry.setCreator(creator);
                 rollerEntry.save();
                 mRoller.commit();
+                
+                CacheManager.invalidate(rollerEntry.getWebsite());
+                if (rollerEntry.isPublished()) {
+                    mRoller.getIndexManager().addEntryReIndexOperation(rollerEntry);
+                }   
                 return createAtomEntry(rollerEntry);
             }
             throw new Exception("ERROR not authorized to put entry");
