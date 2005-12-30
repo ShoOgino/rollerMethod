@@ -11,6 +11,7 @@
             String[] pathInfo = getPathInfo(req);
             try {
                 if (handler.isEntryCollectionURI(pathInfo)) {
+                            
                     // parse incoming entry
                     Entry unsavedEntry = parseEntry(
                         new InputStreamReader(req.getInputStream()));
@@ -29,6 +30,7 @@
                     }
                     // write entry back out to response
                     res.setStatus(HttpServletResponse.SC_CREATED);
+                    res.setContentType("application/atom+xml; charset=utf8");
                     Writer writer = res.getWriter();
                     serializeEntry(savedEntry, writer);
                     writer.close(); 
