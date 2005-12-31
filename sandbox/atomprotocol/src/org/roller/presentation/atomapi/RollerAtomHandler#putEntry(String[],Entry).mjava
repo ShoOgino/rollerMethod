@@ -7,13 +7,13 @@
             WeblogEntryData rollerEntry =
                     mRoller.getWeblogManager().retrieveWeblogEntry(pathInfo[2]);
             if (canEdit(rollerEntry)) {
-                String id = rollerEntry.getId();
-                UserData creator = rollerEntry.getCreator();
-                WeblogEntryData updated = 
-                    createRollerEntry(rollerEntry.getWebsite(), entry);
-                rollerEntry.setData(updated);
-                rollerEntry.setId(id);
-                rollerEntry.setCreator(creator);
+                WeblogEntryData rawUpdate = createRollerEntry(rollerEntry.getWebsite(), entry);
+                rollerEntry.setPubTime(rawUpdate.getPubTime());
+                rollerEntry.setUpdateTime(rawUpdate.getUpdateTime());
+                rollerEntry.setText(rawUpdate.getText());
+                rollerEntry.setStatus(rawUpdate.getStatus());
+                rollerEntry.setCategory(rawUpdate.getCategory());
+                rollerEntry.setTitle(rawUpdate.getTitle());
                 rollerEntry.save();
                 mRoller.commit();
                 

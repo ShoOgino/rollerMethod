@@ -27,7 +27,7 @@
         
         Link altlink = new Link();
         altlink.setRel("alternate");
-        altlink.setHref(entry.getPermaLink());
+        altlink.setHref(absUrl + entry.getPermaLink());
         List altlinks = new ArrayList();
         altlinks.add(altlink);
         atomEntry.setAlternateLinks(altlinks);
@@ -35,7 +35,7 @@
         Link editlink = new Link();
         editlink.setRel("edit");
         editlink.setHref(absUrl + "/app/"
-                + entry.getWebsite().getHandle() + "/entry/" + entry.getId());
+            + entry.getWebsite().getHandle() + "/entry/" + entry.getId());
         List otherlinks = new ArrayList();
         otherlinks.add(editlink);
         atomEntry.setOtherLinks(otherlinks);
