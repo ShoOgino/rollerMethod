@@ -20,7 +20,7 @@
                     count++;
                 }
             }
-            if (start + count > files.length) { // add next link
+            if (start + count < files.length) { // add next link
                 int nextOffset = start + mMaxEntries; 
                 String url = absUrl + "/app/" + website.getHandle() + "/resources/" + nextOffset;
                 Link nextLink = new Link();

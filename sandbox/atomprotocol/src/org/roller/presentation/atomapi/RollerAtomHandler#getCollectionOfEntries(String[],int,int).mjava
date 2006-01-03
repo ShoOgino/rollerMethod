@@ -19,10 +19,9 @@
             Feed feed = new Feed();
             List atomEntries = new ArrayList();
             int count = 0;
-            for (Iterator iter = entries.iterator(); iter.hasNext();) {
+            for (Iterator iter = entries.iterator(); iter.hasNext() && count < mMaxEntries; count++) {
                 WeblogEntryData rollerEntry = (WeblogEntryData)iter.next();
                 atomEntries.add(createAtomEntry(rollerEntry));
-                count++;
             }
             if (count > start - end) { // add next link
                 int nextOffset = start + mMaxEntries; 
