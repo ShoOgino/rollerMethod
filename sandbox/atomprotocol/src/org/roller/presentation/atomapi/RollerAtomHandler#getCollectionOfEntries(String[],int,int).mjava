@@ -15,12 +15,34 @@
                     null,   // catName
                     null,   // status
                     start, // offset (for range paging)
-                    end - start + 1);  // maxEntries
+                    end - start + 2);  // maxEntries
             Feed feed = new Feed();
             List atomEntries = new ArrayList();
+            int count = 0;
             for (Iterator iter = entries.iterator(); iter.hasNext();) {
                 WeblogEntryData rollerEntry = (WeblogEntryData)iter.next();
                 atomEntries.add(createAtomEntry(rollerEntry));
+                count++;
+            }
+            if (count > start - end) { // add next link
+                int nextOffset = start + mMaxEntries; 
+                String url = absUrl + "/app/" + website.getHandle() + "/entries/" + nextOffset;
+                Link nextLink = new Link();
+                nextLink.setRel("next");
+                nextLink.setHref(url);
+                List next = new ArrayList();
+                next.add(nextLink);
+                feed.setOtherLinks(next);
+            }
+            if (start > 0) { // add previous link
+                int prevOffset = start > mMaxEntries ? start - mMaxEntries : 0;
+                String url = absUrl + "/app/" +website.getHandle() + "/entries/" + prevOffset;
+                Link prevLink = new Link();
+                prevLink.setRel("previous");
+                prevLink.setHref(url);
+                List prev = new ArrayList();
+                prev.add(prevLink);
+                feed.setOtherLinks(prev);
             }
             feed.setEntries(atomEntries);
             return feed;
