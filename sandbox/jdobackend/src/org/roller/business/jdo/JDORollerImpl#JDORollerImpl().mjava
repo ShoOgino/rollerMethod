@@ -1,4 +1,6 @@
     protected JDORollerImpl() throws RollerException {
-        mStrategy = new JDOStrategy();
+        PersistenceManagerFactory pmf = 
+                JDOHelper.getPersistenceManagerFactory("JDOPMF.properties");
+        mStrategy = new JDOStrategy(pmf);
     }
 
