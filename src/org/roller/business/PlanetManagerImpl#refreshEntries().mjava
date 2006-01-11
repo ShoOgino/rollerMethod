@@ -23,9 +23,7 @@
         //FeedFetcher feedFetcher = new HttpClientFeedFetcher(feedInfoCache);
         feedFetcher.setUsingDeltaEncoding(false);
         feedFetcher.setUserAgent("RollerPlanetAggregator");
-        
-        String localURL = RollerRuntimeConfig.getProperty("site.absoluteurl");
-        
+                
         // Loop through all subscriptions in the system
         Iterator subs = getAllSubscriptions();
         while (subs.hasNext()) {
