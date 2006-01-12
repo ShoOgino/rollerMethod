@@ -8,10 +8,16 @@
         MemberPermissionsPageModel pageModel = 
            new MemberPermissionsPageModel(request, response, mapping);
         request.setAttribute("model", pageModel);
+        RollerSession rses = RollerSession.getRollerSession(request);
         
-        MemberPermissionsForm form = (MemberPermissionsForm)actionForm;
-        form.setWebsiteId(pageModel.getWebsite().getId());
-        ActionForward forward = mapping.findForward("memberPermissions.page");
-        return forward;
+        // Ensure use has admin perms for this weblog
+        if (pageModel.getWebsite() != null && rses.isUserAuthorizedToAdmin(pageModel.getWebsite())) {
+            MemberPermissionsForm form = (MemberPermissionsForm)actionForm;
+            form.setWebsiteId(pageModel.getWebsite().getId());
+            ActionForward forward = mapping.findForward("memberPermissions.page");
+            return forward;
+        } else {
+            return mapping.findForward("access-denied");
+        }
     }
 
