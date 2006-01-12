@@ -1,15 +1,8 @@
     public Template handleRequest(HttpServletRequest request,
-        HttpServletResponse response, Context ctx) {
-        
+            HttpServletResponse response, Context ctx) {
+
         Template outty = null;
         try {
-            // Note: Removed request character encoding here; was too late; 
-            // it is now set uniformly in CharEncodingFilter. See ROL-760.
-
-            String enabled = RollerConfig.getProperty("search.enabled");
-            if("false".equalsIgnoreCase(enabled))
-                this.searchEnabled = false;
-
             if(! this.searchEnabled) {
                 Exception pageException = null;
                 try {
