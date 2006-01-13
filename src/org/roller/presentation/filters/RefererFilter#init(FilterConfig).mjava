@@ -2,8 +2,16 @@
      * init
      */
     public void init(FilterConfig filterConfig) throws ServletException {
-        mFilterConfig = filterConfig;
         
+        this.mFilterConfig = filterConfig;
+        
+        // see if built-in referrer processing is enabled
+        this.processingEnabled = 
+                RollerConfig.getBooleanProperty("referrers.processing.enabled");
+        
+        mLogger.info("Referrer processing enabled = "+this.processingEnabled);
+        
+        // check for possible robot pattern
         String robotPatternStr = RollerConfig.getProperty(ROBOT_PATTERN_PROP_NAME);
         if (robotPatternStr != null && robotPatternStr.length() >0) {
             // Parse the pattern, and store the compiled form.
