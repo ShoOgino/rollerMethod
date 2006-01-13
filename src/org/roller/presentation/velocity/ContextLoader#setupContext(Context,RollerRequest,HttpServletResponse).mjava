@@ -2,28 +2,24 @@
      * Setup the a Velocity context by loading it with objects, values, and
      * RollerPagePlugins needed for Roller page execution.
      */
-    public static void setupContext( Context ctx, 
-        RollerRequest rreq, HttpServletResponse response ) 
-        throws RollerException
-    {
+    public static void setupContext(Context ctx, RollerRequest rreq, HttpServletResponse response )
+            throws RollerException {
+        
         mLogger.debug("setupContext( ctx = "+ctx+")");
         
         HttpServletRequest request = rreq.getRequest();
         RollerContext rollerCtx = RollerContext.getRollerContext( request );
         
-        try 
-        {    
-            // Add page model object to context 
-            String pageModelClassName = 
-                RollerConfig.getProperty("velocity.pagemodel.classname");
+        try {
+            // Add page model object to context
+            String pageModelClassName =
+                    RollerConfig.getProperty("velocity.pagemodel.classname");
             Class pageModelClass = Class.forName(pageModelClassName);
             PageModel pageModel = (PageModel)pageModelClass.newInstance();
             pageModel.init(rreq);
             ctx.put("pageModel", pageModel );
             ctx.put("pages", pageModel.getPages());
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new RollerException("ERROR creating Page Model",e);
         }
         
@@ -31,23 +27,22 @@
         PageHelper pageHelper = new PageHelper(request, response, ctx);
         Roller roller = RollerFactory.getRoller();
         ctx.put("pageHelper", pageHelper);
-
-        // Load standard Roller objects and values into the context 
+        
+        // Load standard Roller objects and values into the context
         String handle = loadWebsiteValues(ctx, rreq, rollerCtx );
-        loadWeblogValues( ctx, rreq, rollerCtx, handle );            
-        loadPathValues( ctx, rreq, rollerCtx, handle );                                         
-        loadRssValues( ctx, rreq, handle );                        
-        loadUtilityObjects( ctx, rreq, rollerCtx, handle ); 
+        loadWeblogValues( ctx, rreq, rollerCtx, handle );
+        loadPathValues( ctx, rreq, rollerCtx, handle );
+        loadRssValues( ctx, rreq, handle );
+        loadUtilityObjects( ctx, rreq, rollerCtx, handle );
         loadRequestParamKeys(ctx);
         loadStatusMessage( ctx, rreq );
         
         // If single entry is specified, load comments too
-        if ( rreq.getWeblogEntry() != null )
-        {
+        if ( rreq.getWeblogEntry() != null ) {
             loadCommentValues( ctx, rreq, rollerCtx );
         }
         
         // add Velocity Toolbox tools to context
-        loadToolboxContext(request, response, ctx);        
+        loadToolboxContext(request, response, ctx);
     }
 

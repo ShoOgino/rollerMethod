@@ -1,25 +1,20 @@
-    protected static String loadWebsiteValues(
-        Context ctx, RollerRequest rreq, RollerContext rollerCtx )
-        throws RollerException
-    {
+    protected static String loadWebsiteValues(Context ctx, RollerRequest rreq, RollerContext rollerCtx )
+            throws RollerException {
+        
         String handle = null;
         WebsiteData website = null;
         
         Roller mRoller = RollerFactory.getRoller();
         Map props = mRoller.getPropertiesManager().getProperties();
         
-        if ( rreq.getRequest().getAttribute(RollerRequest.OWNING_WEBSITE) != null)
-        {
+        if ( rreq.getRequest().getAttribute(RollerRequest.OWNING_WEBSITE) != null) {
             website = (WebsiteData)
-                rreq.getRequest().getAttribute(RollerRequest.OWNING_WEBSITE);
-        }
-        else if ( rreq.getWebsite() != null )
-        {
+            rreq.getRequest().getAttribute(RollerRequest.OWNING_WEBSITE);
+        } else if ( rreq.getWebsite() != null ) {
             website = rreq.getWebsite();
         }
         
-        if ( website != null )
-        {
+        if ( website != null ) {
             handle = website.getHandle();
             ctx.put("userName",      handle);
             ctx.put("fullName",      website.getName() );
@@ -29,13 +24,11 @@
             
             // setup Locale for future rendering
             ctx.put("locale", website.getLocaleInstance());
-           
+            
             // setup Timezone for future rendering
             ctx.put("timezone", website.getTimeZoneInstance());
             ctx.put("timeZone", website.getTimeZoneInstance());
-        }
-        else
-        {
+        } else {
             website = new WebsiteData();
             website.setName(((RollerPropertyData)props.get("site.name")).getValue());
             website.setAllowComments(Boolean.FALSE);
@@ -44,26 +37,26 @@
             ctx.put("userName", handle );
             ctx.put("fullName","zzz_none_zzz");
             ctx.put("emailAddress",
-                ((RollerPropertyData)props.get("site.adminemail")).getValue());
+                    ((RollerPropertyData)props.get("site.adminemail")).getValue());
             ctx.put("locale", Locale.getDefault());
             ctx.put("timezone", TimeZone.getDefault());
             ctx.put("timeZone", TimeZone.getDefault());
         }
         ctx.put("website", WebsiteDataWrapper.wrap(website) );
-
+        
         String siteName = ((RollerPropertyData)props.get("site.name")).getValue();
         if ("Roller-based Site".equals(siteName)) siteName = "Main";
-        ctx.put("siteName", siteName);        
-
+        ctx.put("siteName", siteName);
+        
         String siteShortName = ((RollerPropertyData)props.get("site.shortName")).getValue();
-        ctx.put("siteShortName", siteShortName);        
-
+        ctx.put("siteShortName", siteShortName);
+        
         // add language of the session (using locale of viewer set by Struts)
         ctx.put(
-            "viewLocale",
-            LanguageUtil.getViewLocale(rreq.getRequest()));
+                "viewLocale",
+                LanguageUtil.getViewLocale(rreq.getRequest()));
         mLogger.debug("context viewLocale = "+ctx.get( "viewLocale"));
-
+        
         return handle;
     }
 
