@@ -74,10 +74,8 @@
                 request.setAttribute("previewComments", "dummy");
                 mLogger.debug("Comment is a preview");
                 
-            } else {                
-                CommentAuthenticator commentAuth = 
-                        RollerContext.getCommentAuthenticator();
-                if (commentAuth.authenticate(comment, request)) {
+            } else {
+                if (this.authenticator.authenticate(comment, request)) {
                     mLogger.debug("Comment passed authentication");
                     
                     // If comment contains blacklisted text, mark as spam
