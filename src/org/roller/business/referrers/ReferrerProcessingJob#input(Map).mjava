@@ -1,0 +1,14 @@
+    /**
+     * Set input.
+     */
+    public void input(Map input) {
+        this.inputs = input;
+        
+        // we are looking for the "referrer" key
+        Object ref = input.get("referrer");
+        
+        if(ref instanceof IncomingReferrer) {
+            this.referrer = (IncomingReferrer) ref;
+        }
+    }
+

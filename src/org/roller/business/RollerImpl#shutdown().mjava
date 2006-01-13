@@ -1,5 +1,6 @@
      public void shutdown() {
         try {
+            if(getReferrerQueueManager() != null) getReferrerQueueManager().shutdown();
             if (mIndexManager != null) mIndexManager.shutdown();
             if (mThreadManager != null) mThreadManager.shutdown();
         } catch(Exception e) {

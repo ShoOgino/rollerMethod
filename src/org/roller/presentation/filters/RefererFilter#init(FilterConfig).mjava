@@ -3,6 +3,7 @@
      */
     public void init(FilterConfig filterConfig) throws ServletException {
         mFilterConfig = filterConfig;
+        
         String robotPatternStr = RollerConfig.getProperty(ROBOT_PATTERN_PROP_NAME);
         if (robotPatternStr != null && robotPatternStr.length() >0) {
             // Parse the pattern, and store the compiled form.

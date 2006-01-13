@@ -1,0 +1,48 @@
+    // private because we are a singleton
+    private ReferrerQueueManagerImpl() {
+        mLogger.info("Initializing Referrer Queue Manager");
+        
+        // lookup config options
+        this.asyncMode = RollerConfig.getBooleanProperty("referrers.asyncProcessing.enabled");
+        
+        mLogger.info("Asynchronous referrer processing = "+this.asyncMode);
+        
+        if(this.asyncMode) {
+            
+            
+            String num = RollerConfig.getProperty("referrers.queue.numWorkers");
+            String sleep = RollerConfig.getProperty("referrers.queue.sleepTime");
+            
+            try {
+                this.numWorkers = Integer.parseInt(num);
+                
+                if(numWorkers < 1)
+                    this.numWorkers = 1;
+                
+            } catch(NumberFormatException nfe) {
+                mLogger.warn("Invalid num workers ["+num+"], using default");
+            }
+            
+            try {
+                // multiply by 1000 because we expect input in seconds
+                this.sleepTime = Integer.parseInt(sleep) * 1000;
+            } catch(NumberFormatException nfe) {
+                mLogger.warn("Invalid sleep time ["+sleep+"], using default");
+            }
+            
+            // create the processing queue
+            this.referrerQueue = Collections.synchronizedList(new ArrayList());
+            
+            // start up workers
+            this.workers = new ArrayList();
+            ContinuousWorkerThread worker = null;
+            QueuedReferrerProcessingJob job = null;
+            for(int i=0; i < this.numWorkers; i++) {
+                job = new QueuedReferrerProcessingJob();
+                worker = new ContinuousWorkerThread("ReferrerWorker"+i, job, this.sleepTime);
+                workers.add(worker);
+                worker.start();
+            }
+        }
+    }
+

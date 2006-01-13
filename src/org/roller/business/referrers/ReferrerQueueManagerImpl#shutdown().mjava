@@ -1,0 +1,19 @@
+    /**
+     * clean up.
+     */
+    public void shutdown() {
+        
+        if(this.workers.size() > 0) {
+            mLogger.info("stopping all ReferrerQueue worker threads");
+            
+            // kill all of our threads
+            WorkerThread worker = null;
+            Iterator it = this.workers.iterator();
+            while(it.hasNext()) {
+                worker = (WorkerThread) it.next();
+                worker.interrupt();
+            }
+        }
+        
+    }
+
