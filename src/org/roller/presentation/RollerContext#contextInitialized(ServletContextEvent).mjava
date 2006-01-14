@@ -1,18 +1,16 @@
-    //-----------------------------------------------------------------------
     /**
      * Responds to context initialization event by processing context
      * paramters for easy access by the rest of the application.
      */
-    public void contextInitialized(ServletContextEvent sce)
-    {
+    public void contextInitialized(ServletContextEvent sce) {
+        
         mLogger.debug("RollerContext initializing");
-
+        
         // Save context in self and self in context
         mContext = sce.getServletContext();
         mContext.setAttribute(ROLLER_CONTEXT, this);
-
-        try
-        {
+        
+        try {
             // get the *real* path to <context>/resources
             String ctxPath = mContext.getRealPath("/");
             if(!ctxPath.endsWith(File.separator))
@@ -55,25 +53,22 @@
             
             // call Spring's context ContextLoaderListener to initialize
             // all the context files specified in web.xml. This is necessary
-            // because listeners don't initialize in the order specified in 
+            // because listeners don't initialize in the order specified in
             // 2.3 containers
             super.contextInitialized(sce);
-        
+            
             initializeSecurityFeatures(mContext);
             
             roller.commit();
             roller.release();
             
             String flag = RollerConfig.getProperty("debug.memory.enabled");
-            if (flag != null && !flag.equalsIgnoreCase("false"))
-            {
+            if (flag != null && !flag.equalsIgnoreCase("false")) {
                 mMemDebug = true;
             }
-
+            
             mLogger.debug("RollerContext initialization complete");
-        }
-        catch (Throwable t)
-        {
+        } catch (Throwable t) {
             mLogger.fatal("RollerContext initialization failed", t);
         }
     }

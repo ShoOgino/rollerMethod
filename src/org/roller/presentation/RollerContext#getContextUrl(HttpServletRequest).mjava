@@ -1,10 +1,7 @@
-    //-----------------------------------------------------------------------
     /** Get absolute URL of Roller context */
-    public String getContextUrl(HttpServletRequest request)
-    {
+    public String getContextUrl(HttpServletRequest request) {
         String url = request.getContextPath();
-        if (url.endsWith("/"))
-        {
+        if (url.endsWith("/")) {
             url = url.substring(0, url.length() - 1);
         }
         return url;

@@ -1,24 +1,17 @@
     public String createEntryPermalink(
-        WeblogEntryData entry,
-        HttpServletRequest request,
-        boolean absolute)
-    {
+            WeblogEntryData entry,
+            HttpServletRequest request,
+            boolean absolute) {
         String link = null;
-        try
-        {
+        try {
             String baseUrl = null;
-            if (absolute)
-            {
+            if (absolute) {
                 baseUrl = getAbsoluteContextUrl(request);
-            }
-            else
-            {
+            } else {
                 baseUrl = getContextUrl(request);
             }
             link = Utilities.escapeHTML(baseUrl + entry.getPermaLink());
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             mLogger.error("Unexpected exception", e);
         }
         
