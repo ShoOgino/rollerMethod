@@ -13,7 +13,9 @@
         }
         
         try {
-            WeblogTemplate page = getPage( name );
+            WeblogTemplate page = 
+                    RollerFactory.getRoller().getUserManager().retrievePage(name);
+            
             if (page == null) {
                 throw new ResourceNotFoundException(
                         "RollerResourceLoader: page \"" +

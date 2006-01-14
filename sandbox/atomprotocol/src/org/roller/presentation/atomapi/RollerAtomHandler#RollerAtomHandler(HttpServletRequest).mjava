@@ -5,7 +5,7 @@
      */
     public RollerAtomHandler(HttpServletRequest request) {
         mRequest = request;
-        mRoller = RollerContext.getRoller(request);
+        mRoller = RollerFactory.getRoller();
         mRollerContext = RollerContext.getRollerContext(request);
         
         // TODO: decide what to do about authentication, is WSSE going to fly?

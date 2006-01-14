@@ -9,7 +9,7 @@
         
         mLogger.debug("Entered PersistenceSessionFilter");
         
-        Roller roller = RollerContext.getRoller((HttpServletRequest)request);
+        Roller roller = RollerFactory.getRoller();
         try {
             chain.doFilter(request, response);
         } finally {

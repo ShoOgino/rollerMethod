@@ -13,7 +13,8 @@
          */
         String name = resource.getName();
         try {
-            WeblogTemplate page = getPage( name );
+            WeblogTemplate page = 
+                    RollerFactory.getRoller().getUserManager().retrievePage(name);
             
             if (mLogger.isDebugEnabled()) {
                 mLogger.debug(name + ": resource=" + resource.getLastModified() +

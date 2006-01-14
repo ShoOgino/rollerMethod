@@ -5,10 +5,7 @@
      */
     public void contextInitialized(ServletContextEvent sce)
     {
-        if (mLogger.isDebugEnabled())
-        {
-            mLogger.debug("RollerContext initializing");
-        }
+        mLogger.debug("RollerContext initializing");
 
         // Save context in self and self in context
         mContext = sce.getServletContext();
@@ -73,10 +70,7 @@
                 mMemDebug = true;
             }
 
-            if (mLogger.isDebugEnabled())
-            {
-                mLogger.debug("RollerContext initialization complete");
-            }
+            mLogger.debug("RollerContext initialization complete");
         }
         catch (Throwable t)
         {
