@@ -1,7 +1,6 @@
-    public WeblogTemplate getPage(String id) throws RollerException
-    {
-    	if (getRoller() == null) throw new RollerException(
-			"RollerResourceLoader.getRoller() returned NULL");
+    public WeblogTemplate getPage(String id) throws RollerException {
+        if (getRoller() == null) throw new RollerException(
+                "RollerResourceLoader.getRoller() returned NULL");
         return getRoller().getUserManager().retrievePage(id); //retrievePageReadOnly( id );
     }
 
