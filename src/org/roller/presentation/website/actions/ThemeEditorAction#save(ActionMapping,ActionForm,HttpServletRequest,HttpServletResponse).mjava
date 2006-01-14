@@ -59,6 +59,7 @@
                         String username = rses.getAuthenticatedUser().getUserName();
                         website.setEditorTheme(newTheme);
                         website.save();
+                        roller.commit();
                         
                         mLogger.debug("Saved theme "+newTheme+
                                 " for "+username);
