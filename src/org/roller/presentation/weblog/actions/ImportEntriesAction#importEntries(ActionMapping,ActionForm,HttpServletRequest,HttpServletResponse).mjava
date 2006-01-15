@@ -25,9 +25,7 @@
                     WebsiteData website = rreq.getWebsite();
 
                     // load selected file
-                    ServletContext app =
-                            getServlet().getServletConfig().getServletContext();
-                    String dir = RollerContext.getUploadDir( app );
+                    String dir = RollerFactory.getRoller().getFileManager().getUploadDir();
                     File f = new File(dir + website.getHandle() +
                                       "/" + form.getImportFileName());
 

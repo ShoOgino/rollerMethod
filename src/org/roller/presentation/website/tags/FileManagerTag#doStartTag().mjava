@@ -8,11 +8,10 @@
         JspWriter pw = pageContext.getOut();
         try
         {
-            ServletContext app = pageContext.getServletContext();
-
             // get the root of the /resource directory
-            String dir = RollerContext.getUploadDir( app );
-
+            String uploadDir = RollerFactory.getRoller().getFileManager().getUploadDir();
+            String uploadPath = RollerFactory.getRoller().getFileManager().getUploadUrl();
+            
             HttpServletRequest request =
                 (HttpServletRequest)pageContext.getRequest();
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
@@ -33,7 +32,7 @@
             // get the files
             String[] files = new String[0];
             int numFiles = 0;
-            File d = new File(dir + website.getHandle());
+            File d = new File(uploadDir + website.getHandle());
             if (d.mkdirs() || d.exists())
             {
                 files = this.fileList(d);
@@ -72,7 +71,7 @@
 
                         fileLink = RequestUtils.printableURL(
                             RequestUtils.absoluteURL( request,
-                                RollerContext.getUploadPath( app ) +
+                                uploadPath +
                                 "/" + website.getHandle() + "/" + files[i] ) );
                         pw.print("<td class=\"rollertable\"><a href=\"" +
                             fileLink + "\">" + files[i] + "</a></td>");

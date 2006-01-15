@@ -1,7 +1,12 @@
     private void getXmlFiles(ActionForm actionForm, RollerRequest rreq)
     {
-		ServletContext app = this.getServlet().getServletConfig().getServletContext();
-		String dir = RollerContext.getUploadDir( app );
+		String dir = null;
+                try {
+                    RollerFactory.getRoller().getFileManager().getUploadDir();
+                } catch(RollerException re) {
+                    // shouldn't happen
+                }
+                
 		File d = new File(dir + rreq.getWebsite().getHandle());
 		ArrayList xmlFiles = new ArrayList();
 		if (d.mkdirs() || d.exists())
