@@ -1,13 +1,8 @@
     public void sessionDestroyed(HttpSessionEvent se) {
-        if (mMemDebug) {
-            mSessionCount.decrement();
-            mContext.log(
-                    "Roller:SESSION_DESTROY:count="
-                    + mSessionCount
-                    + ":freemem="
-                    + Runtime.getRuntime().freeMemory()
-                    + ":totalmem="
-                    + Runtime.getRuntime().totalMemory());
-        }
+        mSessionCount.decrement();
+        
+        mLogger.debug("sessions=" + mSessionCount
+                    + ":freemem=" + Runtime.getRuntime().freeMemory()
+                    + ":totalmem=" + Runtime.getRuntime().totalMemory());
     }
 
