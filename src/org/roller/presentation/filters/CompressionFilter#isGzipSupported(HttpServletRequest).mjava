@@ -1,8 +1,6 @@
-	private boolean isGzipSupported(HttpServletRequest req)
-	{
-		String browserEncodings = req.getHeader("Accept-Encoding");
-		return (
-			(browserEncodings != null)
-				&& (browserEncodings.indexOf("gzip") != -1));
-	}
+    private boolean isGzipSupported(HttpServletRequest req) {
+        String browserEncodings = req.getHeader("Accept-Encoding");
+        return ((browserEncodings != null)
+                    && (browserEncodings.indexOf("gzip") != -1));
+    }
 
