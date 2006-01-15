@@ -2,7 +2,7 @@
     {
         RollerRequest rreq = RollerRequest.getRollerRequest();
         HttpServletRequest req = rreq.getRequest();
-        String contextUrl = RollerContext.getRollerContext(req).getAbsoluteContextUrl(req);
+        String contextUrl = RollerContext.getRollerContext().getAbsoluteContextUrl(req);
 
         Hashtable struct = new Hashtable();
         struct.put("description", category.getPath());

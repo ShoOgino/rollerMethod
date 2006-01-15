@@ -20,7 +20,7 @@
                    request.getParameter(RollerRequest.WEBLOGENTRYID_KEY);
            }
            Roller roller = RollerFactory.getRoller();
-           RollerContext rctx= RollerContext.getRollerContext(request);
+           RollerContext rctx= RollerContext.getRollerContext();
            WeblogManager wmgr= roller.getWeblogManager();
            entry = wmgr.retrieveWeblogEntry(entryid);
 
@@ -31,8 +31,8 @@
                PagePluginManager ppmgr = roller.getPagePluginManager();
                Map plugins = ppmgr.createAndInitPagePlugins( 
                    entry.getWebsite(),
-                   RollerContext.getRollerContext(request).getServletContext(),
-                   RollerContext.getRollerContext(request).getAbsoluteContextUrl(),
+                   RollerContext.getRollerContext().getServletContext(),
+                   RollerContext.getRollerContext().getAbsoluteContextUrl(),
                    new VelocityContext());
                
                WeblogEntryData applied = 
