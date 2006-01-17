@@ -21,10 +21,27 @@
             return;
         }
         
-        String key = "feedCache:"+this.generateKey(feedRequest);
+        String key = this.CACHE_ID+":"+this.generateKey(feedRequest);
         
         try {
-            ResponseContent respContent = (ResponseContent) this.mCache.get(key);
+            ResponseContent respContent = null;
+            
+            // we need the last expiration time for the given weblog
+            long lastExpiration = 0;
+            Date lastExpirationDate =
+                    (Date) CacheManager.getLastExpiredDate(feedRequest.getWeblogHandle());
+            if(lastExpirationDate != null)
+                lastExpiration = lastExpirationDate.getTime();
+            
+            LazyExpiringCacheEntry entry =
+                    (LazyExpiringCacheEntry) this.mCache.get(key);
+            if(entry != null) {
+                respContent = (ResponseContent) entry.getValue(lastExpiration);
+                
+                if(respContent == null)
+                    mLogger.debug("HIT-INVALID "+key);
+            }
+                
             if (respContent == null) {
                 
                 mLogger.debug("MISS "+key);
@@ -41,7 +58,7 @@
                 if (request.getAttribute("DisplayException") == null) {
                     ResponseContent rc = cacheResponse.getContent();
                     
-                    this.mCache.put(key, rc);
+                    this.mCache.put(key, new LazyExpiringCacheEntry(rc));
                 } else {
                     // it is expected that whoever caught this display exception
                     // is the one who reported it to the logs

@@ -10,6 +10,7 @@
         //   - the weblog entry permalink page
         //   - the weblog archive pages
         
+        /*
         String handle = entry.getWebsite().getHandle();
         String keyBase = "pageCache:weblog/"+handle+"/page";
         
@@ -37,5 +38,8 @@
 
         this.mCache.remove(removeSet);
         this.purges += removeSet.size();
+        */
+        
+        this.invalidate(entry.getWebsite());
     }
 

@@ -19,12 +19,26 @@
             return;
         }
         
-        String key = "pageCache:"+this.generateKey(pageRequest);
+        String key = this.CACHE_ID+":"+this.generateKey(pageRequest);
         
         try {
             ResponseContent respContent = null;
             if(!this.excludeOwnerPages || !pageRequest.isLoggedIn()) {
-                respContent = (ResponseContent) this.mCache.get(key);
+                // we need the last expiration time for the given weblog
+                long lastExpiration = 0;
+                Date lastExpirationDate = 
+                        (Date) CacheManager.getLastExpiredDate(pageRequest.getWeblogHandle());
+                if(lastExpirationDate != null)
+                    lastExpiration = lastExpirationDate.getTime();
+                
+                LazyExpiringCacheEntry entry = 
+                        (LazyExpiringCacheEntry) this.mCache.get(key);
+                if(entry != null) {
+                    respContent = (ResponseContent) entry.getValue(lastExpiration);
+                    
+                    if(respContent == null)
+                        mLogger.debug("HIT-INVALID "+key);
+                }
             }
             
             if (respContent == null) {
@@ -47,8 +61,8 @@
                     // only cache if this is not a logged in user?
                     if (!this.excludeOwnerPages || !pageRequest.isLoggedIn()) {
                         if (rc != null && rc.getSize() > 0) {
-                            this.mCache.put(key, rc);
-                        } else if (mLogger.isDebugEnabled()) {
+                            this.mCache.put(key, new LazyExpiringCacheEntry(rc));
+                        } else {
                             mLogger.debug("Not caching zero length content for key: " + key);
                         }
                     } else {

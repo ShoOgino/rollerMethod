@@ -2,6 +2,8 @@
         
         mLogger.debug("invalidating website = "+website.getHandle());
         
+        lastExpiredCache.put(website.getHandle(), new Date());
+        
         Iterator handlers = cacheHandlers.iterator();
         while(handlers.hasNext()) {
             ((CacheHandler) handlers.next()).invalidate(website);
