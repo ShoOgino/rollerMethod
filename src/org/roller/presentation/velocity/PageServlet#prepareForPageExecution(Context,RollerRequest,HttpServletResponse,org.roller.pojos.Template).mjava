@@ -23,11 +23,11 @@
         ContextLoader.setupContext( ctx, rreq, response );
         
         try {
-            outty = getTemplate( page.getId(), "UTF-8" );
-        } catch (ResourceNotFoundException ex) {
+            outty = getTemplate(page.getId(), "UTF-8");
+        } catch(ResourceNotFoundException ex) {
             // just rethrow
             throw ex;
-        } catch (Exception ex) {
+        } catch(Exception ex) {
             // wrap this as a roller exception
             throw new RollerException("Error getting velocity template", ex);
         }
