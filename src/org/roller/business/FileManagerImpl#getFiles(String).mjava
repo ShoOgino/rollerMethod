@@ -3,9 +3,8 @@
      * @param site Website
      * @return Collection of files in website's resource directory
      */
-    public File[] getFiles(WebsiteData site) throws RollerException
-    {
-        String dir = this.upload_dir + site.getHandle();
+    public File[] getFiles(String weblogHandle) throws RollerException {
+        String dir = this.upload_dir + weblogHandle;
         File uploadDir = new File(dir);
         return uploadDir.listFiles();
     }

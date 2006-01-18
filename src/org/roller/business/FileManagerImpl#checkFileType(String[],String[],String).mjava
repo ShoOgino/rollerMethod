@@ -1,5 +1,5 @@
     /**
-     * Return true if file is allowed to be uplaoded given specified allowed and 
+     * Return true if file is allowed to be uplaoded given specified allowed and
      * forbidden file types.
      * @param allowFiles  File types (i.e. extensions) that are allowed
      * @param forbidFiles File types that are forbidden
@@ -7,8 +7,7 @@
      * @return True if file is allowed to be uploaded
      */
     private boolean checkFileType(
-            String[] allowFiles, String[] forbidFiles, String fileName)
-    {
+            String[] allowFiles, String[] forbidFiles, String fileName) {
         // default to false
         boolean allowFile = false;
         
@@ -18,13 +17,10 @@
             allowFile = true;
         
         // check for allowed types
-        if (allowFiles != null && allowFiles.length > 0)
-        {
-            for (int y=0; y<allowFiles.length; y++)
-            {
+        if (allowFiles != null && allowFiles.length > 0) {
+            for (int y=0; y<allowFiles.length; y++) {
                 if (fileName.toLowerCase().endsWith(
-                        allowFiles[y].toLowerCase()))
-                {
+                        allowFiles[y].toLowerCase())) {
                     allowFile = true;
                     break;
                 }
@@ -32,19 +28,16 @@
         }
         
         // check for forbidden types ... this overrides any allows
-        if (forbidFiles != null && forbidFiles.length > 0)
-        {
-            for (int x=0; x<forbidFiles.length; x++)
-            {
+        if (forbidFiles != null && forbidFiles.length > 0) {
+            for (int x=0; x<forbidFiles.length; x++) {
                 if (fileName.toLowerCase().endsWith(
-                        forbidFiles[x].toLowerCase()))
-                {
+                        forbidFiles[x].toLowerCase())) {
                     allowFile = false;
                     break;
                 }
             }
-        } 
-
+        }
+        
         return allowFile;
     }
 

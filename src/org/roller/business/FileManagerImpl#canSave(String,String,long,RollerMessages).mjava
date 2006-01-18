@@ -2,9 +2,8 @@
      * Determine if file can be saved given current RollerConfig settings.
      */
     public boolean canSave(
-            WebsiteData site, String name, long size, RollerMessages messages)
-            throws RollerException
-    {
+            String weblogHandle, String name, long size, RollerMessages messages)
+            throws RollerException {
         Roller mRoller = RollerFactory.getRoller();
         Map config = mRoller.getPropertiesManager().getProperties();
         
@@ -25,7 +24,7 @@
         BigDecimal maxDirMB = new BigDecimal(
                 ((RollerPropertyData)config.get("uploads.dir.maxsize")).getValue());
         int maxDirBytes = (int)(1024000 * maxDirMB.doubleValue());
-        int userDirSize = getWebsiteDirSize(site.getHandle(), this.upload_dir);
+        int userDirSize = getWebsiteDirSize(weblogHandle, this.upload_dir);
         if (userDirSize + size > maxDirBytes) {
             messages.addError("error.upload.dirmax", maxDirMB.toString());
             return false;

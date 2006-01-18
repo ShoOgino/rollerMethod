@@ -5,50 +5,37 @@
      * @param size Size of file to be saved
      * @param is Read file from input stream
      */
-    public void saveFile(WebsiteData site, String name, long size, InputStream is)
-            throws RollerException
-    {
-        if (!canSave(site, name, size, new RollerMessages())) 
-        {
+    public void saveFile(String weblogHandle, String name, long size, InputStream is)
+    throws RollerException {
+        if (!canSave(weblogHandle, name, size, new RollerMessages())) {
             throw new RollerException("ERROR: upload denied");
         }
         
         byte[] buffer = new byte[8192];
         int bytesRead = 0;
         String dir = this.upload_dir;
-        String handle = site.getHandle();
-
-        File dirPath = new File(dir + File.separator + handle);
-        if (!dirPath.exists())
-        {
+        
+        File dirPath = new File(dir + File.separator + weblogHandle);
+        if (!dirPath.exists()) {
             dirPath.mkdirs();
         }
         OutputStream bos = null;
-        try
-        {
+        try {
             bos = new FileOutputStream(
                     dirPath.getAbsolutePath() + File.separator + name);
-            while ((bytesRead = is.read(buffer, 0, 8192)) != -1)
-            {
+            while ((bytesRead = is.read(buffer, 0, 8192)) != -1) {
                 bos.write(buffer, 0, bytesRead);
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new RollerException("ERROR uploading file", e);
-        }
-        finally 
-        {
-            try 
-            {
+        } finally {
+            try {
                 bos.flush();
                 bos.close();
-            } 
-            catch (Exception ignored) {}
+            } catch (Exception ignored) {}
         }
-        if (mLogger.isDebugEnabled())
-        {
-            mLogger.debug("The file has been written to \"" + dir + handle + "\"");
+        if (mLogger.isDebugEnabled()) {
+            mLogger.debug("The file has been written to \"" + dir + weblogHandle + "\"");
         }
     }
 
