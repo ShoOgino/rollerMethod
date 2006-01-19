@@ -1,32 +1,25 @@
     //-----------------------------------------------------------------------
     private ActionForward display(
-        WeblogEntryPageModel.PageMode mode,
-        ActionMapping       mapping,
-        ActionForm          actionForm,
-        HttpServletRequest  request,
-        HttpServletResponse response)
-        throws IOException, ServletException
-    {
+            WeblogEntryPageModel.PageMode mode,
+            ActionMapping       mapping,
+            ActionForm          actionForm,
+            HttpServletRequest  request,
+            HttpServletResponse response)
+            throws IOException, ServletException {
         ActionForward forward = mapping.findForward("weblogEdit.page");
-        try
-        {
+        try {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            RollerSession rollerSession = 
-              RollerSession.getRollerSession(request);
+            RollerSession rollerSession =
+                    RollerSession.getRollerSession(request);
             WeblogEntryPageModel pageModel = new WeblogEntryPageModel(
-              request, response, mapping, (WeblogEntryFormEx)actionForm, mode);
+                    request, response, mapping, (WeblogEntryFormEx)actionForm, mode);
             if (rollerSession.isUserAuthorizedToAuthor(
-                    pageModel.getWeblogEntry().getWebsite()))
-            {
-                request.setAttribute("model", pageModel);                   
-            }
-            else
-            {
+                    pageModel.getWeblogEntry().getWebsite())) {
+                request.setAttribute("model", pageModel);
+            } else {
                 forward = mapping.findForward("access-denied");
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             request.getSession().getServletContext().log("ERROR",e);
             throw new ServletException(e);
         }

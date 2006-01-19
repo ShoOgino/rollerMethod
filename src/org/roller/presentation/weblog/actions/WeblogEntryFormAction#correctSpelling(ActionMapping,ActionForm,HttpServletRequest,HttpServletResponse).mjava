@@ -1,31 +1,27 @@
     //-----------------------------------------------------------------------
     public ActionForward correctSpelling(
-        ActionMapping       mapping,
-        ActionForm          actionForm,
-        HttpServletRequest  request,
-        HttpServletResponse response)
-        throws IOException, ServletException
-    {
-        try
-        {
+            ActionMapping       mapping,
+            ActionForm          actionForm,
+            HttpServletRequest  request,
+            HttpServletResponse response)
+            throws IOException, ServletException {
+        try {
             WeblogEntryFormEx wf = (WeblogEntryFormEx)actionForm;
             UserManager umgr = RollerFactory.getRoller().getUserManager();
             WebsiteData site = umgr.retrieveWebsite(wf.getWebsiteId());
-            RollerSession rses = 
-                RollerSession.getRollerSession(request);
-            if (rses.isUserAuthorizedToAuthor(site))
-            {
+            RollerSession rses =
+                    RollerSession.getRollerSession(request);
+            if (rses.isUserAuthorizedToAuthor(site)) {
                 HttpSession session = request.getSession(true);
                 // misspelt words have been submitted
                 if (wf.getReplacementWords() != null &&
-                    wf.getReplacementWords().length > 0)
-                {
+                        wf.getReplacementWords().length > 0) {
                     // replace misspelt words with chosen replacement
                     String[] replacementWords = wf.getReplacementWords();
                     StringBuffer entryText = new StringBuffer(wf.getText());
-
+                    
                     ArrayList events =
-                        (ArrayList) session.getAttribute("spellCheckEvents");
+                            (ArrayList) session.getAttribute("spellCheckEvents");
                     SpellCheckEvent event = null;
                     String oldWord = null;
                     String newWord = null;
@@ -33,33 +29,27 @@
                     int end = -1;
                     int count = replacementWords.length;
                     for(ListIterator it=events.listIterator(events.size());
-                        it.hasPrevious();)
-                    {
+                    it.hasPrevious();) {
                         event = (SpellCheckEvent)it.previous();
                         oldWord = event.getInvalidWord();
                         newWord = replacementWords[ --count ];
-                        if (!oldWord.equals(newWord))
-                        {
+                        if (!oldWord.equals(newWord)) {
                             start = event.getWordContextPosition();
                             end = start + oldWord.length();
                             entryText.replace( start, end, newWord );
                         }
                     }
                     wf.setText( entryText.toString() );
-
+                    
                     return save(mapping, wf, request, response);
-                }
-                else 
-                {
-                    return display(WeblogEntryPageModel.EDIT_MODE, 
-                                mapping, actionForm, request, response);
+                } else {
+                    return display(WeblogEntryPageModel.EDIT_MODE,
+                            mapping, actionForm, request, response);
                 }
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new ServletException(e);
         }
         return mapping.findForward("access-denied");
-    }    
+    }
 

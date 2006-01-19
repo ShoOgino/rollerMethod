@@ -4,52 +4,45 @@
      * Removes the specified weblog entry and flushes the cache.
      */
     public ActionForward remove(
-        ActionMapping       mapping,
-        ActionForm          actionForm,
-        HttpServletRequest  request,
-        HttpServletResponse response)
-        throws IOException, ServletException
-    {
-        try
-        {
+            ActionMapping       mapping,
+            ActionForm          actionForm,
+            HttpServletRequest  request,
+            HttpServletResponse response)
+            throws IOException, ServletException {
+        try {
             WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
-            WeblogEntryData wd = 
-                mgr.retrieveWeblogEntry(request.getParameter("id"));
-            RollerSession rses = 
-                RollerSession.getRollerSession(request);
-            if (     rses.isUserAuthorizedToAuthor(wd.getWebsite()) 
-                 || (rses.isUserAuthorized(wd.getWebsite()) && wd.isDraft()) )
-            {
+            WeblogEntryData wd =
+                    mgr.retrieveWeblogEntry(request.getParameter("id"));
+            RollerSession rses =
+                    RollerSession.getRollerSession(request);
+            if (     rses.isUserAuthorizedToAuthor(wd.getWebsite())
+            || (rses.isUserAuthorized(wd.getWebsite()) && wd.isDraft()) ) {
                 // Flush the page cache
                 //PageCacheFilter.removeFromCache(request, wd.getWebsite());
                 //CacheManager.invalidate(wd);
                 
-				// remove the index for it
+                // remove the index for it
                 wd.setStatus(WeblogEntryData.DRAFT);
-		        reindexEntry(RollerFactory.getRoller(), wd);
-
+                reindexEntry(RollerFactory.getRoller(), wd);
+                
                 // remove entry itself
                 wd.remove();
                 RollerFactory.getRoller().commit();
-
-				// flush caches
+                
+                // flush caches
                 //PageCacheFilter.removeFromCache(request, wd.getWebsite());
                 CacheManager.invalidate(wd);
                 
                 ActionMessages uiMessages = new ActionMessages();
-                uiMessages.add(null, 
-                    new ActionMessage("weblogEdit.entryRemoved"));
+                uiMessages.add(null,
+                        new ActionMessage("weblogEdit.entryRemoved"));
                 saveMessages(request, uiMessages);
                 
                 RollerRequest.getRollerRequest().setWebsite(wd.getWebsite());
-            }
-            else
-            {
+            } else {
                 return mapping.findForward("access-denied");
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new ServletException(e);
         }
         

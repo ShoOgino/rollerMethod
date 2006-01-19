@@ -3,49 +3,39 @@
      * Allow user to edit a weblog entry.
      */
     public ActionForward edit(
-        ActionMapping       mapping,
-        ActionForm          actionForm,
-        HttpServletRequest  request,
-        HttpServletResponse response)
-        throws IOException, ServletException
-    {
+            ActionMapping       mapping,
+            ActionForm          actionForm,
+            HttpServletRequest  request,
+            HttpServletResponse response)
+            throws IOException, ServletException {
         ActionForward forward = mapping.findForward("weblogEdit.page");
-        try
-        {
+        try {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             RollerSession rses = RollerSession.getRollerSession(request);
             WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
-            WeblogEntryData entry = rreq.getWeblogEntry();           
+            WeblogEntryData entry = rreq.getWeblogEntry();
             WeblogEntryFormEx form = (WeblogEntryFormEx)actionForm;
-            if (entry == null && form.getId() != null)
-            {
+            if (entry == null && form.getId() != null) {
                 entry = wmgr.retrieveWeblogEntry(form.getId());
             }
-            if (entry == null)
-            {   
+            if (entry == null) {
                 ResourceBundle resources = ResourceBundle.getBundle(
-                    "ApplicationResources", request.getLocale());
-                request.setAttribute("javax.servlet.error.message", 
-                    resources.getString("weblogEntry.notFound"));  
+                        "ApplicationResources", request.getLocale());
+                request.setAttribute("javax.servlet.error.message",
+                        resources.getString("weblogEntry.notFound"));
                 forward = mapping.findForward("error");
-            }                
-            else if (rses.isUserAuthorizedToAuthor(entry.getWebsite()) 
-              || (rses.isUserAuthorized(entry.getWebsite()) && !entry.isPublished()))
-            {
+            } else if (rses.isUserAuthorizedToAuthor(entry.getWebsite())
+            || (rses.isUserAuthorized(entry.getWebsite()) && !entry.isPublished())) {
                 form.copyFrom(entry, request.getLocale());
                 WeblogEntryPageModel pageModel = new WeblogEntryPageModel(
-                    request, response, mapping, form, 
+                        request, response, mapping, form,
                         WeblogEntryPageModel.EDIT_MODE);
                 pageModel.setWebsite(entry.getWebsite());
                 request.setAttribute("model", pageModel);
-            }
-            else
-            {
+            } else {
                 forward = mapping.findForward("access-denied");
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             request.getSession().getServletContext().log("ERROR",e);
             throw new ServletException(e);
         }
