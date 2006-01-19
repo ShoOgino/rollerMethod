@@ -10,15 +10,18 @@
         
         ActionForward fwd = mapping.findForward("access-denied"); 
         WebsiteData website = getWebsite(request);
-        RollerMessages msgs = new RollerMessages();
+        RollerMessages rollerMessages = new RollerMessages();
         RollerSession rses = RollerSession.getRollerSession(request);
+        List lastUploads = new ArrayList();
         
         if ( rses.isUserAuthorizedToAuthor(website)) {
             
+            FileManager fmgr = RollerFactory.getRoller().getFileManager();
             fwd = mapping.findForward("uploadFiles.page");
+            ActionMessages messages = new ActionMessages();
             ActionErrors errors = new ActionErrors();
             UploadFileForm theForm = (UploadFileForm)actionForm;
-            if ( theForm.getUploadedFile() != null ) {
+            if (theForm.getUploadedFiles().length > 0) {
                 ServletContext app = servlet.getServletConfig().getServletContext();
 
                 boolean uploadEnabled =
@@ -39,8 +42,7 @@
                 }
 
                 //retrieve the file representation
-                //FormFile[] files = theForm.getUploadedFiles();
-                FormFile[] files = new FormFile[]{theForm.getUploadedFile()};
+                FormFile[] files = theForm.getUploadedFiles();
                 int fileSize = 0;
                 try {
                     for (int i=0; i<files.length; i++) {
@@ -57,12 +59,12 @@
                         fileSize = files[i].getFileSize();
 
                         //retrieve the file data
-                        FileManager fmgr = RollerFactory.getRoller().getFileManager();
-                        if (fmgr.canSave(website.getHandle(), fileName, fileSize, msgs)) {
+                        if (fmgr.canSave(website.getHandle(), fileName, fileSize, rollerMessages)) {
                             InputStream stream = files[i].getInputStream();
                             fmgr.saveFile(website.getHandle(), fileName, fileSize, stream);
+                            lastUploads.add(fileName);
                         }
-
+                        
                         //destroy the temporary file created
                         files[i].destroy();
                     }
@@ -72,16 +74,27 @@
                 }
             }        
             UploadFilePageModel pageModel = new UploadFilePageModel(
-                request, response, mapping, website.getHandle());
+                request, response, mapping, website.getHandle(), lastUploads);
             request.setAttribute("model", pageModel);
             pageModel.setWebsite(website);
+            
+            RollerContext rctx = RollerContext.getRollerContext();
+		    String baseURL = rctx.getAbsoluteContextUrl(request);
+            String resourcesBaseURL = baseURL + fmgr.getUploadUrl() + "/" + website.getHandle();
+            Iterator uploads = lastUploads.iterator();
+            while (uploads.hasNext()) {                
+                messages.add(ActionMessages.GLOBAL_MESSAGE, 
+                    new ActionMessage("uploadFiles.uploadedFile", 
+                        resourcesBaseURL + "/" + (String)uploads.next()));
+            }
+            saveMessages(request, messages);
 
-            Iterator iter = msgs.getErrors();
+            Iterator iter = rollerMessages.getErrors();
             while (iter.hasNext()) {
                 RollerMessages.RollerMessage error =
-                        (RollerMessages.RollerMessage) iter.next();
+                    (RollerMessages.RollerMessage)iter.next();
                 errors.add(ActionErrors.GLOBAL_ERROR,
-                        new ActionError(error.getKey(), error.getArgs()));
+                    new ActionError(error.getKey(), error.getArgs()));
             }
             saveErrors(request, errors);
         }

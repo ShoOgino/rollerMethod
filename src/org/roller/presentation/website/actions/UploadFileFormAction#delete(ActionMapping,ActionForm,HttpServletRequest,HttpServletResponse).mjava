@@ -8,11 +8,13 @@
             HttpServletResponse response)
             throws Exception {
 
+        ActionMessages messages = new ActionMessages();
         ActionErrors errors = new ActionErrors();
         UploadFileForm theForm = (UploadFileForm)actionForm;
         ActionForward fwd = mapping.findForward("access-denied");        
         WebsiteData website = getWebsite(request);
 
+        int count = 0;
         RollerSession rses = RollerSession.getRollerSession(request);
         if (rses.isUserAuthorizedToAuthor(website)) {
             fwd = mapping.findForward("uploadFiles.page"); 
@@ -26,6 +28,7 @@
                         // ignore absolute paths, or paths that contiain '..'
                     } else {
                         fmgr.deleteFile(website.getHandle(), deleteFiles[i]);
+                        count++;
                     }
                 }
             } catch (Exception e) {
@@ -33,6 +36,11 @@
                         new ActionError("error.upload.file",e.toString()));
                 saveErrors(request,errors);
             }
+            
+            messages.add(ActionMessages.GLOBAL_MESSAGE, 
+                new ActionMessage("uploadFiles.deletedFiles", new Integer(count)));
+            saveMessages(request, messages);
+            
             UploadFilePageModel pageModel = new UploadFilePageModel(
                 request, response, mapping, website.getHandle());
             pageModel.setWebsite(website);
