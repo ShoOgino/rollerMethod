@@ -5,35 +5,9 @@
         
         mLogger.debug("invalidating website = "+website.getHandle());
         
-        // we need to remove the following cached items if they exist
-        //   - the main feed
-        //   - the planet feed
-        //   - all weblog feeds
-        
-        /*
-        Set removeSet = new HashSet();
-        
-        // TODO: it would be nice to be able to do this without iterating 
-        //       over the entire cache key set
-        String key = null;
-        
-        synchronized(mCache) {
-            Iterator allKeys = this.mCache.keySet().iterator();
-            while(allKeys.hasNext()) {
-                key = (String) allKeys.next();
-                
-                if(key.startsWith("feedCache:main")) {
-                    removeSet.add(key);
-                } else if(key.startsWith("feedCache:planet")) {
-                    removeSet.add(key);
-                } else if(key.startsWith("feedCache:weblog/"+website.getHandle())) {
-                    removeSet.add(key);
-                }
-            }
+        // update our main feed last expiration date
+        synchronized(this) {
+            this.mainLastExpiredDate = new Date();
         }
-        
-        this.mCache.remove(removeSet);
-        this.purges += removeSet.size();
-        */
     }
 

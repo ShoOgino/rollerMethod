@@ -25,13 +25,20 @@
         
         try {
             ResponseContent respContent = null;
-            
-            // we need the last expiration time for the given weblog
             long lastExpiration = 0;
-            Date lastExpirationDate =
-                    (Date) CacheManager.getLastExpiredDate(feedRequest.getWeblogHandle());
-            if(lastExpirationDate != null)
-                lastExpiration = lastExpirationDate.getTime();
+            
+            // first, we need to determine the last time the specified feed was expired.
+            // if this is a weblog specific feed then ask the CacheManager for
+            // the last expired time of the weblog.  otherwise this is a main feed and we
+            // keep that last expired time ourselves
+            if(feedRequest.getWeblogHandle() != null) {
+                Date lastExpirationDate =
+                        (Date) CacheManager.getLastExpiredDate(feedRequest.getWeblogHandle());
+                if(lastExpirationDate != null)
+                    lastExpiration = lastExpirationDate.getTime();
+            } else {
+                lastExpiration = this.mainLastExpiredDate.getTime();
+            }
             
             LazyExpiringCacheEntry entry =
                     (LazyExpiringCacheEntry) this.mCache.get(key);
