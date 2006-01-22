@@ -6,7 +6,7 @@
 		HttpServletRequest req, HttpServletResponse res)
 		throws Exception
 	{
-         
+        WeblogEntryData entry = null;
         RollerRequest rreq = RollerRequest.getRollerRequest(req);
         RollerSession rollerSession = RollerSession.getRollerSession(req);
         try
@@ -20,6 +20,7 @@
                     RefererManager refmgr = 
                         RollerFactory.getRoller().getRefererManager();                        
                     RefererData ref = refmgr.retrieveReferer(refid); 
+                    entry = ref.getWeblogEntry();
                     boolean was = ref.getVisible()==null ? 
                                   false : ref.getVisible().booleanValue(); 
                     ref.setVisible(Boolean.valueOf( !was )); // what up, dog?                     
@@ -38,13 +39,17 @@
             throw new ServletException(e);
         }
         
-        // forward to user's website URL
+        // forward back to entry or to blog if we have no entry
 		String url = null;
 		try
 		{
 			RollerContext rctx = RollerContext.getRollerContext();
-			url = rctx.getContextUrl( req, rreq.getWebsite());
-			res.sendRedirect(url);
+            if (entry != null) {
+                url = rctx.createEntryPermalink(entry, req, true);
+            } else {
+    			url = rctx.getContextUrl(req, rreq.getWebsite());
+            }
+            res.sendRedirect(url);
 		}
 		catch (Exception e)
 		{

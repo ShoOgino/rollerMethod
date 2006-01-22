@@ -86,20 +86,6 @@
         } catch (Throwable pe) {
             mLogger.error(msg, pe);
             throw new RollerException(msg, pe);
-        }
-        
-// Don't close connection, Hibernate is holding it
-//        finally
-//        {
-//            try
-//            {
-//                if (con != null) con.close();
-//            }
-//            catch (Throwable t)
-//            {
-//                mLogger.error("Closing connection",t);
-//            }
-//        }
-        
+        }        
     }
 

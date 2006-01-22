@@ -1,11 +1,15 @@
-    public void processReferrer(String requestUrl, String referrerUrl,
-                                    String weblogHandle, String entryAnchor, 
-                                    String dateString) {
+    public void processReferrer(
+            String requestUrl, 
+            String queryString, 
+            String referrerUrl,
+            String weblogHandle, 
+            String entryAnchor, 
+            String dateString) {
         
         mLogger.debug("processing referrer ["+referrerUrl+
                 "] accessing ["+requestUrl+"]");
         
-        if(weblogHandle == null)
+        if (weblogHandle == null)
             return;
         
         String selfSiteFragment = "/page/"+weblogHandle;
@@ -15,17 +19,15 @@
         // lookup the weblog now
         try {
             UserManager userMgr = RollerFactory.getRoller().getUserManager();
-            weblog = userMgr.getWebsiteByHandle(weblogHandle);
-            
-            if(weblog == null)
-                return;
+            weblog = userMgr.getWebsiteByHandle(weblogHandle);            
+            if (weblog == null) return;
             
             // now lookup weblog entry if possible
-            if(entryAnchor != null) {
+            if (entryAnchor != null) {
                 WeblogManager weblogMgr = RollerFactory.getRoller().getWeblogManager();
                 entry = weblogMgr.getWeblogEntryByAnchor(weblog, entryAnchor);
             }
-        } catch(RollerException re) {
+        } catch (RollerException re) {
             // problem looking up website, gotta bail
             mLogger.error("Error looking up website object", re);
             return;
@@ -75,20 +77,15 @@
                 mStrategy.commit();
                 
             } else if (matchRef.size() == 0) {
-                /* TODO: change "" for excerpt column back to null
-                 * I changed to an empty string to avoid the bug in Derby found
-                 * http://issues.apache.org/jira/browse/DERBY-628
-                 *
-                 * We need to either wait for the fix to change it back,
-                 * or leave it as is if it doesn't affect anything else.
-                 *
-                 * Elias
-                 */
                 
                 // Referer was not found in database, so new Referer object
+                String requrl = requestUrl;
+                if (queryString != null && queryString.length() > 0) {
+                    requestUrl = requestUrl + "?" + queryString;
+                }
                 Integer one = new Integer(1);
                 RefererData ref =
-                        new RefererData(
+                    new RefererData(
                         null,
                         weblog,
                         entry,
@@ -111,13 +108,13 @@
                 
                 // If not a direct or search engine then search for linkback
                 if (doLinkbackExtraction
-                && dateString != null
+                && entry != null
                 && !refurl.equals("direct")
                 && !refurl.startsWith("http://google")
                 && !refurl.startsWith("http://www.google")
                 && !refurl.startsWith("http://search.netscape")
                 && !refurl.startsWith("http://www.blinkpro")
-                && !refurl.startsWith("http://auto.search.msn")
+                && !refurl.startsWith("http://search.msn")
                 && !refurl.startsWith("http://search.yahoo")
                 && !refurl.startsWith("http://uk.search.yahoo")
                 && !refurl.startsWith("http://www.javablogs.com")
@@ -128,7 +125,7 @@
                     try {
                         Roller mRoller = RollerFactory.getRoller();
                         mRoller.getThreadManager().executeInBackground(
-                                new LinkbackExtractorRunnable(ref) );
+                            new LinkbackExtractorRunnable(ref));
                     } catch (InterruptedException e) {
                         mLogger.warn("Interrupted during linkback extraction",e);
                     }

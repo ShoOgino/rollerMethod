@@ -10,7 +10,7 @@
             Session session = ((HibernateStrategy)mStrategy).getSession();
             String reset = "update RefererData set dayHits=0";
             session.createQuery(reset).executeUpdate();
-            String delete = "delete RefererData where excerpt is null";
+            String delete = "delete RefererData where excerpt is null or excerpt=''";
             session.createQuery(delete).executeUpdate();
         } catch (Exception e) {
             mLogger.error("EXCEPTION resetting referers",e);
