@@ -25,10 +25,10 @@
                 fos.close();
                 
                 // If save is allowed by Roller system-wide policies
-                if (fmgr.canSave(website, name, tempFile.length(), msgs)) {
+                if (fmgr.canSave(website.getHandle(), name, tempFile.length(), msgs)) {
                     // Then save the file
                     FileInputStream fis = new FileInputStream(tempFile);
-                    fmgr.saveFile(website, name, tempFile.length(), fis);
+                    fmgr.saveFile(website.getHandle(), name, tempFile.length(), fis);
                     fis.close();
                     
                     File resource = new File(fmgr.getUploadDir() + File.separator + name);

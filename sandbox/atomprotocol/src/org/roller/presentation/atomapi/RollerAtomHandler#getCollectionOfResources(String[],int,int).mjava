@@ -7,7 +7,7 @@
         String absUrl = mRollerContext.getAbsoluteContextUrl(mRequest);
         WebsiteData website = mRoller.getUserManager().getWebsiteByHandle(handle);
         FileManager fmgr = mRoller.getFileManager();
-        File[] files = fmgr.getFiles(website);
+        File[] files = fmgr.getFiles(website.getHandle());
         if (canView(website)) {            
             Feed feed = new Feed();
             List atomEntries = new ArrayList();

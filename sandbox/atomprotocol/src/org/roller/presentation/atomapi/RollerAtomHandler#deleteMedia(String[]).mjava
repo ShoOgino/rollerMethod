@@ -9,7 +9,7 @@
         if (canEdit(website) && pathInfo.length > 1) {
             try {
                 FileManager fmgr = mRoller.getFileManager();
-                fmgr.deleteFile(website, pathInfo[2]);
+                fmgr.deleteFile(website.getHandle(), pathInfo[2]);
             } catch (Exception e) {
                 String msg = "ERROR in atom.deleteResource";
                 mLogger.error(msg,e);
