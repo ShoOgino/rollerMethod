@@ -1,14 +1,3 @@
-    /**
-     * Edits a given post. Optionally, will publish the blog after making the edit
-     *
-     * @param postid Unique identifier of the post to be changed
-     * @param userid Login for a MetaWeblog user who has permission to post to the blog
-     * @param password Password for said username
-     * @param struct Contents of the post
-     * @param publish If true, the blog will be published immediately after the post is made
-     * @throws org.apache.xmlrpc.XmlRpcException
-     * @return
-     */
     public boolean editPost(String postid, String userid, String password,
                             Hashtable struct, boolean publish)
                      throws Exception
@@ -62,8 +51,6 @@
             {
                 entry.setPubTime(new Timestamp(dateCreated.getTime()));
             }
-
-
 
             if ( cat != null )
             {
