@@ -65,6 +65,10 @@
                 try {
                     UserManager userMgr = RollerFactory.getRoller().getUserManager();
                     weblog = userMgr.getWebsiteByHandle(handle);
+                    
+                    if(weblog == null) {
+                        throw new RollerException("invalid website: "+handle);
+                    }
                 } catch(Exception e) {
                     // if we can't get the WebsiteData object we can't continue
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
