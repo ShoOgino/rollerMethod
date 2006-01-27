@@ -23,7 +23,7 @@
             
             FileManager fmgr = new FileManagerImpl();
             RollerMessages msgs = new RollerMessages();
-            assertFalse(fmgr.canSave(mWebsite, "test.gif", 2500000, msgs));
+            assertFalse(fmgr.canSave(mWebsite.getHandle(), "test.gif", 2500000, msgs));
             //assertEquals(4, msgs.getErrorCount());
         }
         catch (Exception e)
