@@ -16,6 +16,10 @@
                         "Worker = "+this.id+", "+
                         "Job = "+this.job.getClass().getName(), t);
             }
+            
+            // since this is a thread we have to make sure that we tidy up ourselves
+            Roller roller = RollerFactory.getRoller();
+            roller.release();
         }
         
     }
