@@ -1,38 +1,35 @@
     /**
-     * Allows user to post a binary object, a file, to Roller. If the file is 
-     * allowed by the RollerConfig file-upload settings, then the file will be 
+     * Allows user to post a binary object, a file, to Roller. If the file is
+     * allowed by the RollerConfig file-upload settings, then the file will be
      * placed in the user's upload diretory.
      */
-    public Object newMediaObject(
-            String blogid, String userid, String password, Hashtable struct) 
-        throws Exception
-    {
+    public Object newMediaObject(String blogid, String userid, String password, 
+                                    Hashtable struct) throws Exception {
+        
         mLogger.debug("newMediaObject() Called =[ SUPPORTED ]=====");
         mLogger.debug("     BlogId: " + blogid);
         mLogger.debug("     UserId: " + userid);
         mLogger.debug("   Password: *********");
-
+        
         WebsiteData website = validate(blogid, userid, password);
-        try
-        {
-            String name = (String) struct.get("name");    
+        try {
+            String name = (String) struct.get("name");
             name = name.replaceAll("/","_");
             String type = (String) struct.get("type");
             mLogger.debug("newMediaObject name: " + name);
             mLogger.debug("newMediaObject type: " + type);
             
             byte[] bits = (byte[]) struct.get("bits");
-
-            Roller roller = RollerFactory.getRoller(); 
+            
+            Roller roller = RollerFactory.getRoller();
             FileManager fmgr = roller.getFileManager();
             RollerMessages msgs = new RollerMessages();
             
             // If save is allowed by Roller system-wide policies
-            if (fmgr.canSave(website.getHandle(), name, bits.length, msgs)) 
-            {
+            if (fmgr.canSave(website.getHandle(), name, bits.length, msgs)) {
                 // Then save the file
                 fmgr.saveFile(
-                    website.getHandle(), name, bits.length, new ByteArrayInputStream(bits));
+                        website.getHandle(), name, bits.length, new ByteArrayInputStream(bits));
                 
                 RollerRequest rreq = RollerRequest.getRollerRequest();
                 HttpServletRequest request = rreq.getRequest();
@@ -47,11 +44,9 @@
                 returnStruct.put("url", fileLink);
                 return returnStruct;
             }
-            throw new XmlRpcException(UPLOAD_DENIED_EXCEPTION, 
-                "File upload denied because:" + msgs.toString());
-        }
-        catch (RollerException e)
-        {
+            throw new XmlRpcException(UPLOAD_DENIED_EXCEPTION,
+                    "File upload denied because:" + msgs.toString());
+        } catch (RollerException e) {
             String msg = "ERROR in BlooggerAPIHander.newMediaObject";
             mLogger.error(msg,e);
             throw new XmlRpcException(UNKNOWN_EXCEPTION, msg);

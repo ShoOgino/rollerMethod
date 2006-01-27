@@ -8,29 +8,26 @@
      * @return
      */
     public Object getCategories(String blogid, String userid, String password)
-                         throws Exception
-    {
+            throws Exception {
+        
         mLogger.info("getCategories() Called =====[ SUPPORTED ]=====");
         mLogger.info("     BlogId: " + blogid);
         mLogger.info("     UserId: " + userid);
-
+        
         WebsiteData website = validate(blogid, userid,password);
         RollerRequest rreq = RollerRequest.getRollerRequest();
         Roller roller = RollerFactory.getRoller();
-        try
-        {
+        try {
             Hashtable result = new Hashtable();
             WeblogManager weblogMgr = roller.getWeblogManager();
             List cats = weblogMgr.getWeblogCategories(website, false);
             for (Iterator wbcItr = cats.iterator(); wbcItr.hasNext();) {
                 WeblogCategoryData category = (WeblogCategoryData) wbcItr.next();
-                result.put(category.getPath(), 
-                           createCategoryStruct(category, userid));
+                result.put(category.getPath(),
+                        createCategoryStruct(category, userid));
             }
             return result;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             String msg = "ERROR in MetaWeblogAPIHandler.getCategories";
             mLogger.error(msg,e);
             throw new XmlRpcException(UNKNOWN_EXCEPTION, msg);

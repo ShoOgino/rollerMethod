@@ -10,34 +10,28 @@
      * @return
      */
     public String getTemplate(String appkey, String blogid, String userid,
-                              String password, String templateType)
-                       throws Exception
-    {
+                                String password, String templateType)
+            throws Exception {
+        
         mLogger.info("getTemplate() Called =====[ SUPPORTED ]=====");
         mLogger.info("     Appkey: " + appkey);
         mLogger.info("     BlogId: " + blogid);
         mLogger.info("     UserId: " + userid);
         mLogger.info("       Type: " + templateType);
-
+        
         validate(blogid, userid,password);
-
-        try
-        {
-            Roller roller = RollerFactory.getRoller(); 
+        
+        try {
+            Roller roller = RollerFactory.getRoller();
             UserManager userMgr = roller.getUserManager();
             WeblogTemplate page = userMgr.retrievePage(templateType);
-
-            if ( null == page )
-            {
+            
+            if ( null == page ) {
                 throw new XmlRpcException(UNKNOWN_EXCEPTION,"Template not found");
-            }
-            else
-            {
+            } else {
                 return page.getContents();
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             String msg = "ERROR in BlooggerAPIHander.getTemplate";
             mLogger.error(msg,e);
             throw new XmlRpcException(UNKNOWN_EXCEPTION,msg);

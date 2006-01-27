@@ -10,28 +10,24 @@
      * @return
      */
     public boolean deletePost(String appkey, String postid, String userid,
-                              String password, boolean publish)
-                       throws Exception
-    {
+                            String password, boolean publish) throws Exception {
+        
         mLogger.info("deletePost() Called =====[ SUPPORTED ]=====");
         mLogger.info("     Appkey: " + appkey);
         mLogger.info("     PostId: " + postid);
         mLogger.info("     UserId: " + userid);
-
-        Roller roller = RollerFactory.getRoller(); 
+        
+        Roller roller = RollerFactory.getRoller();
         WeblogManager weblogMgr = roller.getWeblogManager();
         WeblogEntryData entry = weblogMgr.retrieveWeblogEntry(postid);
-
+        
         validate(entry.getWebsite().getHandle(), userid, password);
-
-        try
-        {
+        
+        try {
             entry.remove();
             roller.commit();
             flushPageCache(entry.getWebsite());
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             String msg = "ERROR in blogger.deletePost: "+e.getClass().getName();
             mLogger.error(msg,e);
             e.printStackTrace();

@@ -12,38 +12,34 @@
      * @return
      */
     public boolean setTemplate(String appkey, String blogid, String userid,
-                               String password, String templateData,
-                               String templateType) throws Exception
-    {
+                                String password, String templateData,
+                                String templateType) throws Exception {
+        
         mLogger.info("setTemplate() Called =====[ SUPPORTED ]=====");
         mLogger.info("     Appkey: " + appkey);
         mLogger.info("     BlogId: " + blogid);
         mLogger.info("     UserId: " + userid);
         mLogger.info("   Template: " + templateData);
         mLogger.info("       Type: " + templateType);
-
+        
         validate(blogid, userid, password);
-
-        if (! templateType.equals("main"))
-        {
+        
+        if (! templateType.equals("main")) {
             throw new XmlRpcException(
-                UNKNOWN_EXCEPTION, "Roller only supports main template");
+                    UNKNOWN_EXCEPTION, "Roller only supports main template");
         }
-
-        try
-        {
-            Roller roller = RollerFactory.getRoller(); 
+        
+        try {
+            Roller roller = RollerFactory.getRoller();
             UserManager userMgr = roller.getUserManager();
-
+            
             WeblogTemplate page = userMgr.retrievePage(templateType);
             page.setContents(templateData);
             userMgr.storePage(page);
             flushPageCache(page.getWebsite());
-
+            
             return true;
-        }
-        catch (RollerException e)
-        {
+        } catch (RollerException e) {
             String msg = "ERROR in BlooggerAPIHander.setTemplate";
             mLogger.error(msg,e);
             throw new XmlRpcException(UNKNOWN_EXCEPTION,msg);

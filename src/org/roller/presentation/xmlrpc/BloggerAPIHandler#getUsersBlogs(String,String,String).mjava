@@ -8,38 +8,33 @@
      * @return
      */
     public Object getUsersBlogs(String appkey, String userid, String password)
-                         throws Exception
-    {
+            throws Exception {
+        
         mLogger.info("getUsersBlogs() Called ===[ SUPPORTED ]=======");
         mLogger.info("     Appkey: " + appkey);
         mLogger.info("     UserId: " + userid);
         
         Vector result = new Vector();
-        if (validateUser(userid, password))
-        {
-            try
-            {
+        if (validateUser(userid, password)) {
+            try {
                 RollerRequest rreq = RollerRequest.getRollerRequest();
                 HttpServletRequest req = rreq.getRequest();
                 String contextUrl =
-                    RollerContext.getRollerContext().getAbsoluteContextUrl(req);
+                        RollerContext.getRollerContext().getAbsoluteContextUrl(req);
                 
                 UserManager umgr = RollerFactory.getRoller().getUserManager();
                 UserData user = umgr.getUser(userid);
                 List websites = umgr.getWebsites(user, Boolean.TRUE);
                 Iterator iter = websites.iterator();
-                while (iter.hasNext())
-                {
+                while (iter.hasNext()) {
                     WebsiteData website = (WebsiteData)iter.next();
                     Hashtable blog = new Hashtable(3);
                     blog.put("url", contextUrl+"/page/"+website.getHandle());
                     blog.put("blogid", website.getHandle());
-                    blog.put("blogName", website.getName());   
-                    result.add(blog);                    
+                    blog.put("blogName", website.getName());
+                    result.add(blog);
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 String msg = "ERROR in BlooggerAPIHander.getUsersBlogs";
                 mLogger.error(msg,e);
                 throw new XmlRpcException(UNKNOWN_EXCEPTION, msg);

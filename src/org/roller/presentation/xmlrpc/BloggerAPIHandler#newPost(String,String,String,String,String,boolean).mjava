@@ -11,36 +11,34 @@
      * @return
      */
     public String newPost(String appkey, String blogid, String userid,
-                          String password, String content, boolean publish)
-                   throws Exception
-    {
+                            String password, String content, boolean publish)
+            throws Exception {
+        
         mLogger.info("newPost() Called ===========[ SUPPORTED ]=====");
         mLogger.info("     Appkey: " + appkey);
         mLogger.info("     BlogId: " + blogid);
         mLogger.info("     UserId: " + userid);
         mLogger.info("    Publish: " + publish);
         mLogger.info("    Content:\n " + content);
-
+        
         WebsiteData website = validate(blogid, userid,password);
-
+        
         // extract the title from the content
         String title = "";
-
-        if (content.indexOf("<title>") != -1)
-        {
+        
+        if (content.indexOf("<title>") != -1) {
             title =
-                content.substring(content.indexOf("<title>") + 7,
-                                  content.indexOf("</title>"));
+                    content.substring(content.indexOf("<title>") + 7,
+                    content.indexOf("</title>"));
             content = StringUtils.replace(content, "<title>"+title+"</title>", "");
         }
-
-        try
-        {
+        
+        try {
             RollerRequest rreq = RollerRequest.getRollerRequest();
             Roller roller = RollerFactory.getRoller();
-
+            
             Timestamp current = new Timestamp(System.currentTimeMillis());
-
+            
             WeblogEntryData entry = new WeblogEntryData();
             entry.setTitle(title);
             entry.setText(content);
@@ -49,29 +47,24 @@
             entry.setCreator(roller.getUser());
             entry.setWebsite(website);
             entry.setCategory(website.getBloggerCategory());
-            if (Boolean.valueOf(publish).booleanValue())
-            {
+            if (Boolean.valueOf(publish).booleanValue()) {
                 entry.setStatus(WeblogEntryData.PUBLISHED);
-            }
-            else
-            {
+            } else {
                 entry.setStatus(WeblogEntryData.DRAFT);
             }
             entry.save();
             roller.commit();
             flushPageCache(entry.getWebsite());
 /*
-            String blogUrl = Utilities.escapeHTML( 
+            String blogUrl = Utilities.escapeHTML(
                 RollerContext.getRollerContext(req).getAbsoluteContextUrl(req)
                 + "/page/" + userid);
             RollerXmlRpcClient.sendWeblogsPing(
                 blogUrl,
                 entry.getWebsite().getName());
-*/
+ */
             return entry.getId();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             String msg = "ERROR in BlooggerAPIHander.newPost";
             mLogger.error(msg,e);
             throw new XmlRpcException(UNKNOWN_EXCEPTION, msg);

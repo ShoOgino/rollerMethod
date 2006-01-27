@@ -1,44 +1,40 @@
-    public String newPost(
-        String blogid, String userid, String password, Hashtable struct, boolean publish)
-        throws Exception
-    {
+    public String newPost(String blogid, String userid, String password, 
+                            Hashtable struct, boolean publish) throws Exception {
+        
         mLogger.info("newPost() Called ===========[ SUPPORTED ]=====");
         mLogger.info("     BlogId: " + blogid);
         mLogger.info("     UserId: " + userid);
         mLogger.info("    Publish: " + publish);
-
+        
         WebsiteData website = validate(blogid, userid, password);
-
+        
         Hashtable postcontent = struct;
         String description = (String)postcontent.get("description");
         String title = (String)postcontent.get("title");
         if (title == null) title = "";
-
+        
         Date dateCreated = (Date)postcontent.get("dateCreated");
         if (dateCreated == null) dateCreated = (Date)postcontent.get("pubDate");
         if (dateCreated == null) dateCreated = new Date();
-
+        
         String cat = null;
-        if ( postcontent.get("categories") != null )
-        {
+        if ( postcontent.get("categories") != null ) {
             Vector cats = (Vector)postcontent.get("categories");
-            if (cats.size() > 0) 
-            {
+            if (cats.size() > 0) {
                 // only use the first category passed in
                 cat = (String)cats.elementAt(0);
             }
         }
         mLogger.info("      Title: " + title);
         mLogger.info("   Category: " + cat);
-
-        try
-        {
-            Roller roller = RollerFactory.getRoller(); 
+        
+        try {
+            Roller roller = RollerFactory.getRoller();
             WeblogManager weblogMgr = roller.getWeblogManager();
             UserData user = roller.getUserManager().getUser(userid);
             Timestamp current =
-                new Timestamp(System.currentTimeMillis());
-
+                    new Timestamp(System.currentTimeMillis());
+            
             WeblogEntryData entry = new WeblogEntryData();
             entry.setTitle(title);
             entry.setText(description);
@@ -46,41 +42,33 @@
             entry.setUpdateTime(current);
             entry.setWebsite(website);
             entry.setCreator(user);
-            if (Boolean.valueOf(publish).booleanValue())
-            {
+            if (Boolean.valueOf(publish).booleanValue()) {
                 entry.setStatus(WeblogEntryData.PUBLISHED);
-            }
-            else
-            {
+            } else {
                 entry.setStatus(WeblogEntryData.DRAFT);
             }
-
-
-            if ( cat != null )
-            {
+            
+            
+            if ( cat != null ) {
                 // Use first category specified by request
-                WeblogCategoryData cd = 
-                    weblogMgr.getWeblogCategoryByPath(website, cat);
+                WeblogCategoryData cd =
+                        weblogMgr.getWeblogCategoryByPath(website, cat);
                 entry.setCategory(cd);
-            }
-            else
-            {
+            } else {
                 // Use Blogger API category from user's weblog config
                 entry.setCategory(website.getBloggerCategory());
             }
-
+            
             entry.save();
             roller.commit();
             flushPageCache(entry.getWebsite());
-
+            
             // TODO: Roller timestamps need better than 1 second accuracy
             // Until then, we can't allow more than one post per second
             Thread.sleep(1000);
-
+            
             return entry.getId();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             String msg = "ERROR in MetaWeblogAPIHandler.newPost";
             mLogger.error(msg,e);
             throw new XmlRpcException(UNKNOWN_EXCEPTION, msg);

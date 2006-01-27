@@ -8,49 +8,42 @@
      * @throws XmlRpcException
      * @return
      */
-    public Object getRecentPosts(
-        String blogid, String userid, String password, int numposts)
-        throws Exception
-    {
+    public Object getRecentPosts(String blogid, String userid, String password, 
+                                    int numposts) throws Exception {
+        
         mLogger.info("getRecentPosts() Called ===========[ SUPPORTED ]=====");
         mLogger.info("     BlogId: " + blogid);
         mLogger.info("     UserId: " + userid);
         mLogger.info("     Number: " + numposts);
-
+        
         WebsiteData website = validate(blogid, userid,password);
-
-        try
-        {
+        
+        try {
             Vector results = new Vector();
-
-            Roller roller = RollerFactory.getRoller(); 
+            
+            Roller roller = RollerFactory.getRoller();
             WeblogManager weblogMgr = roller.getWeblogManager();
-            if (website != null)
-            {
+            if (website != null) {
                 Map entries = weblogMgr.getWeblogEntryObjectMap(
-                                website,                // userName
-                                null,                   // startDate
-                                new Date(),             // endDate
-                                null,                   // catName
-                                null,      // status
-                                new Integer(numposts)); // maxEntries 
+                        website,                // userName
+                        null,                   // startDate
+                        new Date(),             // endDate
+                        null,                   // catName
+                        null,      // status
+                        new Integer(numposts)); // maxEntries
                 
                 Iterator iter = entries.values().iterator();
-                while (iter.hasNext())
-                {
+                while (iter.hasNext()) {
                     ArrayList list = (ArrayList) iter.next();
                     Iterator entryIter = list.iterator();
-                    while (entryIter.hasNext())
-                    {
+                    while (entryIter.hasNext()) {
                         WeblogEntryData entry = (WeblogEntryData)entryIter.next();
                         results.addElement(createPostStruct(entry, userid));
                     }
                 }
             }
             return results;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             String msg = "ERROR in BlooggerAPIHander.getRecentPosts";
             mLogger.error(msg,e);
             throw new XmlRpcException(UNKNOWN_EXCEPTION, msg);

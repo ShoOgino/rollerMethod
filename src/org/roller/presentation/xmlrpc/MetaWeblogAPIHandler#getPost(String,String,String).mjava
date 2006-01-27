@@ -7,24 +7,21 @@
      * @throws Exception
      */
     public Object getPost(String postid, String userid, String password)
-                   throws Exception
-    {
+            throws Exception {
+        
         mLogger.info("getPost() Called =========[ SUPPORTED ]=====");
         mLogger.info("     PostId: " + postid);
         mLogger.info("     UserId: " + userid);
-
-        Roller roller = RollerFactory.getRoller(); 
+        
+        Roller roller = RollerFactory.getRoller();
         WeblogManager weblogMgr = roller.getWeblogManager();
         WeblogEntryData entry = weblogMgr.retrieveWeblogEntry(postid);
         
         validate(entry.getWebsite().getHandle(), userid,password);
-
-        try
-        {
+        
+        try {
             return createPostStruct(entry, userid);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             String msg = "ERROR in MetaWeblogAPIHandler.getPost";
             mLogger.error(msg,e);
             throw new XmlRpcException(UNKNOWN_EXCEPTION, msg);
