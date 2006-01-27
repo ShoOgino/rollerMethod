@@ -1,10 +1,10 @@
     public boolean editPost(String postid, String userid, String password,
             Hashtable struct, boolean publish) throws Exception {
         
-        mLogger.info("editPost() Called ========[ SUPPORTED ]=====");
-        mLogger.info("     PostId: " + postid);
-        mLogger.info("     UserId: " + userid);
-        mLogger.info("    Publish: " + publish);
+        mLogger.debug("editPost() Called ========[ SUPPORTED ]=====");
+        mLogger.debug("     PostId: " + postid);
+        mLogger.debug("     UserId: " + userid);
+        mLogger.debug("    Publish: " + publish);
         
         Roller roller = RollerFactory.getRoller();
         WeblogManager weblogMgr = roller.getWeblogManager();
@@ -25,8 +25,8 @@
             Vector cats = (Vector)postcontent.get("categories");
             cat = (String)cats.elementAt(0);
         }
-        mLogger.info("      Title: " + title);
-        mLogger.info("   Category: " + cat);
+        mLogger.debug("      Title: " + title);
+        mLogger.debug("   Category: " + cat);
         
         try {
             

@@ -1,10 +1,10 @@
     public String newPost(String blogid, String userid, String password, 
                             Hashtable struct, boolean publish) throws Exception {
         
-        mLogger.info("newPost() Called ===========[ SUPPORTED ]=====");
-        mLogger.info("     BlogId: " + blogid);
-        mLogger.info("     UserId: " + userid);
-        mLogger.info("    Publish: " + publish);
+        mLogger.debug("newPost() Called ===========[ SUPPORTED ]=====");
+        mLogger.debug("     BlogId: " + blogid);
+        mLogger.debug("     UserId: " + userid);
+        mLogger.debug("    Publish: " + publish);
         
         WebsiteData website = validate(blogid, userid, password);
         
@@ -25,8 +25,8 @@
                 cat = (String)cats.elementAt(0);
             }
         }
-        mLogger.info("      Title: " + title);
-        mLogger.info("   Category: " + cat);
+        mLogger.debug("      Title: " + title);
+        mLogger.debug("   Category: " + cat);
         
         try {
             Roller roller = RollerFactory.getRoller();
