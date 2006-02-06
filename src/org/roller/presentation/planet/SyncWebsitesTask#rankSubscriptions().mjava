@@ -27,9 +27,8 @@
             }
             UserManager userManager = roller.getUserManager();
             try {
-                // Technorati API allows only 500 queries per-day
-                // TODO: make this configurable
-                int limit = 500;
+                int limit = RollerConfig.getIntProperty(
+                    "planet.aggregator.technorati.limit", 500);
                 int userCount = planet.getSubscriptionCount();
                 int mod = (userCount / limit) + 1;
                 
