@@ -1,0 +1,12 @@
+        private String getQueryLink() {
+            StringBuffer sb = new StringBuffer();
+            sb.append(request.getContextPath());
+            sb.append("/editor/weblogEntryManagement.do"); // TODO: get path from Struts
+            sb.append("?method=query");
+            sb.append("&weblog=");
+            sb.append(getWebsite().getHandle());
+            sb.append("&count=");
+            sb.append(queryForm.getCount());
+            return sb.toString();
+        }
+

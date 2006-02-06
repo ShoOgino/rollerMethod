@@ -1,0 +1,10 @@
+    public String getPrevLink() {
+        if (queryForm.getOffset() > 0) {
+            int offset = queryForm.getOffset() - queryForm.getCount();
+            offset = (offset < 0) ? 0 : offset;
+            return getQueryLink() + "&offset=" + offset;
+        } else {
+            return null;
+        }
+    }
+

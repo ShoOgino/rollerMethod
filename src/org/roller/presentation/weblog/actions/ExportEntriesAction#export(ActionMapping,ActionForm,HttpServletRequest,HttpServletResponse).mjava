@@ -21,7 +21,7 @@
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             RollerSession rses = RollerSession.getRollerSession(rreq.getRequest());
-            WeblogQueryForm form = (WeblogQueryForm)actionForm;
+            WeblogEntryManagementForm form = (WeblogEntryManagementForm)actionForm;
             if ( rreq.getWebsite() != null 
                     && rses.isUserAuthorizedToAdmin(rreq.getWebsite()) )
             {               
@@ -57,8 +57,9 @@
                                     startDate,         // startDate
                                     endDate,           // endDate
                                     null,              // catName
-                                    null,  // status
-                                    null);              // maxEntries
+                                    null,              // status
+                                    null,              // sortby (null for pubtime)
+                                    null);             // maxEntries
 
                     ActionMessages messages = writeSuccessMessage(request, response, rreq, form);
 

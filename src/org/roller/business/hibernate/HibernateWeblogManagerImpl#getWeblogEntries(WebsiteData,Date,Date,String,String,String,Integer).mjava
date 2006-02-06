@@ -4,8 +4,8 @@
                     Date    endDate, 
                     String  catName, 
                     String  status, 
-                    Integer maxEntries,
-                    Boolean pinned) throws RollerException
+                    String  sortby,
+                    Integer maxEntries) throws RollerException
     {
         WeblogCategoryData cat = null;        
         if (StringUtils.isNotEmpty(catName) && website != null)
@@ -54,19 +54,21 @@
             {
                 criteria.add(Expression.eq("status", status));
             }        
-
-            if (pinned != null)
+                    
+            if (sortby != null && sortby.equals("updateTime"))
             {
-                criteria.add(Expression.eq("pinnedToMain", pinned));
+                criteria.addOrder(Order.desc("updateTime"));
             }
-                            
-            criteria.addOrder(Order.desc("pubTime"));
+            else
+            {
+                criteria.addOrder(Order.desc("pubTime"));
+            }
             
             if (maxEntries != null) 
             {
                 criteria.setMaxResults(maxEntries.intValue());
             }            
-            return criteria.list();
+            return criteria.list();                                             
         }
         catch (HibernateException e)
         {

@@ -39,11 +39,12 @@
             
             List mEntries = mgr.getWeblogEntries(
                     mRollerReq.getWebsite(),
-                    null,                    // startDate
-                    day,                      // endDate
-                    catParam,                 // catName
+                    null,                        // startDate
+                    day,                         // endDate
+                    catParam,                    // catName
                     WeblogEntryData.PUBLISHED,   // status
-                    new Integer(maxEntries)); // maxEntries
+                    null,                        // sortby (null for pubTime)
+                    new Integer(maxEntries));    // maxEntries
             
             // wrap pojos
             ret = new ArrayList(mEntries.size());
