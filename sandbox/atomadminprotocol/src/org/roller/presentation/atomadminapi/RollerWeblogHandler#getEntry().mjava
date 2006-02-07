@@ -1,0 +1,11 @@
+    private EntrySet getEntry() throws Exception {
+        WebsiteData wd = getRoller().getUserManager().getWebsiteByHandle(getUri().getEntryId());
+        if (wd == null) {
+            throw new Exception("ERROR: Unknown weblog handle: " + getUri().getEntryId());
+        }
+        WebsiteData[] wds = new WebsiteData[] { wd };
+        EntrySet c = new WeblogEntrySet(wds, getUrlPrefix());
+        
+        return c;
+    }
+

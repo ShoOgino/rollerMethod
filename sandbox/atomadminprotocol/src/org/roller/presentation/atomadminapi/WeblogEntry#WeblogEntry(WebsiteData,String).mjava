@@ -1,0 +1,14 @@
+    public WeblogEntry(WebsiteData wd, String urlPrefix) {
+        String href = urlPrefix + "/" + EntrySet.Types.WEBLOGS + "/" + wd.getHandle();
+        
+        setHref(href);
+        setHandle(wd.getHandle());
+        setName(wd.getName());
+        setDescription(wd.getDescription());
+        setLocale(wd.getLocale());
+        setTimezone(wd.getTimeZone());
+        setCreatingUser(wd.getCreator().getUserName());
+        setEmailAddress(wd.getEmailAddress());        
+        setDateCreated(wd.getDateCreated());
+    }
+

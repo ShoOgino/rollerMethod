@@ -1,0 +1,25 @@
+    private EntrySet deleteEntry() throws Exception {
+        MemberURI muri = (MemberURI)getUri();
+        
+        String handle = muri.getHandle();
+        String username = muri.getUsername();
+       
+        if (username == null) {
+            throw new Exception("ERROR: No user name supplied in URI");
+        }
+        
+        try {
+            getRoller().setUser(UserData.SYSTEM_USER);
+            PermissionsData pd = getPermissionsData(handle, username);
+            PermissionsData[] pds = new PermissionsData[] { pd };               
+            EntrySet es = new MemberEntrySet(pds, getUrlPrefix());
+        
+            pd.remove();
+            getRoller().commit();
+
+            return es;            
+        } catch (RollerException re) {
+            throw new Exception(re);
+        }
+    }
+

@@ -1,0 +1,39 @@
+    public boolean authenticate() {
+        boolean valid = false;
+        String id = null;
+        String password = null;
+        try {
+            String authHeader = getRequest().getHeader("Authorization");
+            if (authHeader != null) {
+                StringTokenizer st = new StringTokenizer(authHeader);
+                if (st.hasMoreTokens()) {
+                    String basic = st.nextToken();
+                    if (basic.equalsIgnoreCase("Basic")) {
+                        String credentials = st.nextToken();
+                        String userPass = new String(Base64.decode(credentials));
+                        int p = userPass.indexOf(":");
+                        if (p != -1) {
+                            id = userPass.substring(0, p);
+                            UserData user = getRoller().getUserManager().getUser(id);
+                            String realpassword = user.getPassword();
+                            password = userPass.substring(p+1);
+                            if (    (id.trim().equals(user.getUserName()))
+                            && (password.trim().equals(realpassword))) {
+                                valid = true;
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) { //TODO: not good to be catching "Exception"
+            logger.debug(e);
+        }        
+        if (valid) { 
+            setUserId(id);
+        } else {
+            // clear out old value, if second call
+            setUserId(null); 
+        }
+        return valid;
+    }
+

@@ -1,0 +1,20 @@
+    public WeblogEntrySet(UserData[] users, String urlPrefix) {
+        if (users == null) {
+            throw new NullPointerException("null users not allowed");
+        }
+        
+        List entries = new ArrayList();        
+        for (int i = 0; i < users.length; i++) {
+            UserData ud = users[i];
+            List permissions = ud.getPermissions();
+            for (Iterator j = permissions.iterator(); j.hasNext(); ) {
+                PermissionsData pd = (PermissionsData)j.next();
+                WebsiteData wd = pd.getWebsite();
+                WeblogEntry entry = new WeblogEntry(wd, urlPrefix);
+                entries.add(entry);
+            }
+        }
+        setEntries((Entry[])entries.toArray(new Entry[0]));
+        setHref(urlPrefix + "/" + Types.WEBLOGS);
+    }
+

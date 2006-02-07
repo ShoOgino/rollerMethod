@@ -1,0 +1,16 @@
+    /** Construct based on an array of Roller UserData objects. */
+    public UserEntrySet(UserData[] users, String urlPrefix) {
+        if (users == null) {
+            throw new NullPointerException("ERROR: Null users not allowed");
+        }
+        
+        List entries = new ArrayList();        
+        for (int i = 0; i < users.length; i++) {
+            UserData ud = users[i];
+            Entry entry = new UserEntry(ud, urlPrefix);
+            entries.add(entry);            
+        }
+        setEntries((Entry[])entries.toArray(new Entry[0]));
+        setHref(urlPrefix + "/" + Types.USERS);
+    }
+

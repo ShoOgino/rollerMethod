@@ -1,0 +1,11 @@
+    private EntrySet getEntry() throws Exception {
+        UserData ud = getRoller().getUserManager().getUser(getUri().getEntryId());
+        if (ud == null) {
+            throw new Exception("ERROR: Unknown user name: " + getUri().getEntryId());
+        }
+        UserData[] uds = new UserData[] { ud };
+        EntrySet c = new UserEntrySet(uds, getUrlPrefix());
+        
+        return c;
+    }
+

@@ -1,0 +1,18 @@
+    private void updateMembers(MemberEntrySet c) throws Exception {
+        try {
+            getRoller().setUser(UserData.SYSTEM_USER);
+            for (int i = 0; i < c.getEntries().length; i++) {
+                MemberEntry entry = (MemberEntry)c.getEntries()[i];
+                PermissionsData pd = getPermissionsData(entry);
+                if (pd == null) {
+                    throw new Exception("ERROR: Permissions do not exist for weblog handle: " + entry.getHandle() + ", user name: " + entry.getName());
+                }
+                updatePermissionsData(pd, entry);
+                pd.save();
+            }
+            getRoller().commit();
+        } catch (RollerException re) {
+            throw new Exception(re);
+        }
+    }
+

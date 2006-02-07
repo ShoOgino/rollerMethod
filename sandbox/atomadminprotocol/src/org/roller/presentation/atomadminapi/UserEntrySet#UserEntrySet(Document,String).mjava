@@ -1,0 +1,20 @@
+    /** Construct based on a JDOM Document object. */
+    public UserEntrySet(Document d, String urlPrefix) throws Exception {
+        Element root = d.getRootElement();
+        String rootName = root.getName();
+        if (!rootName.equals(Tags.USERS)) {
+            throw new Exception("ERROR: Expected root name: " + Tags.USERS + ", root name was: " + rootName);
+        }
+        List users = root.getChildren(UserEntry.Tags.USER, NAMESPACE);
+        if (users != null) {
+            List entries = new ArrayList();
+            for (Iterator i = users.iterator(); i.hasNext(); ) {
+                Element user = (Element)i.next();
+                UserEntry entry = new UserEntry(user, urlPrefix);
+                entries.add(entry);
+            }
+            setEntries((Entry[])entries.toArray(new Entry[0]));
+        }
+        setHref(urlPrefix + "/" + Types.USERS);
+    }
+

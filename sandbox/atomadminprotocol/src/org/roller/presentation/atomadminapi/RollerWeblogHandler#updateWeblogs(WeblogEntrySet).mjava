@@ -1,0 +1,22 @@
+    private void updateWeblogs(WeblogEntrySet c) throws Exception {
+        try {
+            UserManager mgr = getRoller().getUserManager();
+            
+            //TODO: group blogging check?
+            
+            // Need system user to create website
+            getRoller().setUser(UserData.SYSTEM_USER);
+            HashMap pages = null;
+            
+            for (int i = 0; i < c.getEntries().length; i++) {
+                WeblogEntry entry = (WeblogEntry)c.getEntries()[i];
+                WebsiteData wd = mgr.getWebsiteByHandle(entry.getHandle());
+                updateWebsiteData(wd, entry);
+                wd.save();
+            }
+            getRoller().commit();
+        } catch (RollerException re) {
+            throw new Exception(re);
+        }
+    }
+

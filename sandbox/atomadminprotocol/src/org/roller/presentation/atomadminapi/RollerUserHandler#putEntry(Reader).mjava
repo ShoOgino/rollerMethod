@@ -1,0 +1,20 @@
+    private EntrySet putEntry(Reader r) throws Exception {
+        SAXBuilder builder = new SAXBuilder();
+        Document collectionDoc = builder.build(r);
+        EntrySet c = new UserEntrySet(collectionDoc, getUrlPrefix());
+        
+        if (c.getEntries().length > 1) {
+            throw new Exception("ERROR: Cannot put >1 entries per request");
+        }
+        if (c.getEntries().length > 0) {
+            UserEntry entry = (UserEntry)c.getEntries()[0];
+            if (entry.getName() != null && !entry.getName().equals(getUri().getEntryId())) {
+                throw new Exception("ERROR: Content name does not match URI name");
+            }
+            entry.setName(getUri().getEntryId());
+            updateUsers((UserEntrySet)c);
+        }
+        
+        return c;
+    }
+

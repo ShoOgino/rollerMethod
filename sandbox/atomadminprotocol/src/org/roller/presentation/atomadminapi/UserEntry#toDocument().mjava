@@ -1,0 +1,55 @@
+    public Document toDocument() {
+        Element user = new Element(Tags.USER, NAMESPACE);
+        Document doc = new Document(user);
+        
+        // href
+        user.setAttribute(Attributes.HREF, getHref());
+               
+        // name
+        Element name = new Element(Tags.NAME, AtomAdminService.NAMESPACE);
+        Text nameText = new Text(getName());
+        name.addContent(nameText);
+        user.addContent(name);
+       
+        // full name
+        Element fullName = new Element(Tags.FULL_NAME, NAMESPACE);
+        Text fullNameText = new Text(getFullName());
+        fullName.addContent(fullNameText);
+        user.addContent(fullName);
+        
+        // password
+        Element password = new Element(Tags.PASSWORD, NAMESPACE);
+        Text passwordText = new Text(getPassword());
+        password.addContent(passwordText);
+        user.addContent(password);
+        
+        // locale
+        Element locale = new Element(Tags.LOCALE, AtomAdminService.NAMESPACE);
+        Text localeText = new Text(getLocale());
+        locale.addContent(localeText);
+        user.addContent(locale);
+        
+        // timezone
+        Element tz = new Element(Tags.TIMEZONE, AtomAdminService.NAMESPACE);
+        Text tzText = new Text(getTimezone());
+        tz.addContent(tzText);
+        user.addContent(tz);
+                
+        // email address
+        Element email = new Element(Tags.EMAIL_ADDRESS, AtomAdminService.NAMESPACE);
+        Text emailText = new Text(String.valueOf(getEmailAddress()));
+        email.addContent(emailText);
+        user.addContent(email);
+        
+        // creation date (optional)
+        Element created = new Element(Tags.DATE_CREATED, AtomAdminService.NAMESPACE);
+        Date datedCreated = getDateCreated();
+        if (getDateCreated() != null) {
+            Text createdText = new Text(String.valueOf(getDateCreated().getTime()));
+            created.addContent(createdText);
+            user.addContent(created);
+        }
+        
+        return doc;
+    }
+

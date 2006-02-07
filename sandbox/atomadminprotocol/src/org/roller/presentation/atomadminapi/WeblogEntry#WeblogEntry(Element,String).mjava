@@ -1,0 +1,59 @@
+    public WeblogEntry(Element e, String urlPrefix) throws Exception {
+        // handle
+        Element handleElement = e.getChild(Tags.HANDLE, AtomAdminService.NAMESPACE);
+        if (handleElement == null) {
+            throw new Exception("ERROR: Missing element: " + Tags.HANDLE);
+        }
+        setHandle(handleElement.getText());
+        String href = urlPrefix + "/" + EntrySet.Types.WEBLOGS + "/" + getHandle();        
+        setHref(href);        
+        
+        // name
+        Element nameElement = e.getChild(Tags.NAME, AtomAdminService.NAMESPACE);
+        if (nameElement == null) {
+            throw new Exception("ERROR: Missing element: " + Tags.NAME);
+        }
+        setName(nameElement.getText());
+        
+        // description
+        Element descElement = e.getChild(Tags.DESCRIPTION, AtomAdminService.NAMESPACE);
+        if (descElement == null) {
+            throw new Exception("ERROR: Missing element: " + Tags.DESCRIPTION);
+        }
+        setDescription(descElement.getText());
+        
+        // locale
+        Element localeElement = e.getChild(Tags.LOCALE, AtomAdminService.NAMESPACE);
+        if (localeElement == null) {
+            throw new Exception("ERROR: Missing element: " + Tags.LOCALE);
+        }
+        setLocale(localeElement.getText());
+        
+        // timezone
+        Element tzElement = e.getChild(Tags.TIMEZONE, AtomAdminService.NAMESPACE);
+        if (tzElement == null) {
+            throw new Exception("ERROR: Missing element: " + Tags.TIMEZONE);
+        }
+        setTimezone(tzElement.getText());
+        
+        // creator
+        Element creatorElement = e.getChild(Tags.CREATING_USER, AtomAdminService.NAMESPACE);
+        if (creatorElement == null) {
+            throw new Exception("ERROR: Missing element: " + Tags.CREATING_USER);
+        }
+        setCreatingUser(creatorElement.getText());
+        
+        // email address
+        Element emailElement = e.getChild(Tags.EMAIL_ADDRESS, AtomAdminService.NAMESPACE);
+        if (emailElement == null) {
+            throw new Exception("ERROR: Missing element: " + Tags.EMAIL_ADDRESS);
+        }
+        setEmailAddress(emailElement.getText());        
+        
+        // created (optional)
+        Element createdElement = e.getChild(Tags.DATE_CREATED, AtomAdminService.NAMESPACE);
+        if (createdElement != null) {
+            setDateCreated(new Date(Long.valueOf(createdElement.getText()).longValue()));
+        }              
+    }
+

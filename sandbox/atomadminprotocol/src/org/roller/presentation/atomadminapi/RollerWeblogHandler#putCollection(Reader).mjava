@@ -1,0 +1,9 @@
+    private EntrySet putCollection(Reader r) throws Exception {
+        SAXBuilder builder = new SAXBuilder();
+        Document collectionDoc = builder.build(r);
+        EntrySet c = new WeblogEntrySet(collectionDoc, getUrlPrefix());
+        updateWeblogs((WeblogEntrySet)c);
+        
+        return c;
+    }
+

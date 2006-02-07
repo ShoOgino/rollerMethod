@@ -1,0 +1,30 @@
+    private EntrySet getEntry() throws Exception {
+        MemberURI muri = (MemberURI)getUri();
+        String handle = muri.getHandle();
+        String username = muri.getUsername();
+               
+        List perms;
+        if (username == null) {
+            //get all entries for the given website handle
+            WebsiteData wd = getRoller().getUserManager().getWebsiteByHandle(handle);
+            if (wd == null) {
+                throw new Exception("ERROR: Unknown weblog handle: " + handle);
+            }
+            perms = getRoller().getUserManager().getAllPermissions(wd);
+        } else {
+            //get all entries for the given website handle & username
+            WebsiteData wd = getRoller().getUserManager().getWebsiteByHandle(handle);
+            if (wd == null) {
+                throw new Exception("ERROR: Unknown weblog handle: " + handle);
+            }
+            UserData ud = getRoller().getUserManager().getUser(username);
+            if (ud == null) {
+                throw new Exception("ERROR: Unknown user name: " + username);
+            }
+            perms = Collections.singletonList(getRoller().getUserManager().getPermissions(wd, ud));
+        }
+        
+        EntrySet es = new MemberEntrySet((PermissionsData[])perms.toArray(new PermissionsData[0]), getUrlPrefix());
+        return es;
+    }
+

@@ -1,0 +1,19 @@
+    private void updateUsers(UserEntrySet c) throws Exception {
+        try {
+            UserManager mgr = getRoller().getUserManager();
+            
+            // Need system user to create user
+            getRoller().setUser(UserData.SYSTEM_USER);
+            
+            for (int i = 0; i < c.getEntries().length; i++) {
+                UserEntry entry = (UserEntry)c.getEntries()[i];
+                UserData ud = mgr.getUser(entry.getName());
+                updateUserData(ud, entry);
+                ud.save();
+            }
+            getRoller().commit();
+        } catch (RollerException re) {
+            throw new Exception(re);
+        }
+    }
+

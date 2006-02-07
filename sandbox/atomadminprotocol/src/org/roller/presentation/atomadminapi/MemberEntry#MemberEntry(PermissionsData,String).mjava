@@ -1,0 +1,9 @@
+    public MemberEntry(PermissionsData pd, String urlPrefix) {
+        String href = urlPrefix + "/" + EntrySet.Types.MEMBERS + "/" + pd.getWebsite().getHandle() + "/" + pd.getUser().getUserName();
+        
+        setHref(href);
+        setName(pd.getUser().getUserName());
+        setHandle(pd.getWebsite().getHandle());
+        setPermission(maskToString(pd.getPermissionMask()));        
+    }
+

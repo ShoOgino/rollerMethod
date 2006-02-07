@@ -1,0 +1,16 @@
+    private EntrySet getCollection() throws Exception {
+        // get all permissions: for all users, for all websites
+        List users = getRoller().getUserManager().getUsers();
+        List perms = new ArrayList();
+        for (Iterator i = users.iterator(); i.hasNext(); ) {
+            UserData user = (UserData)i.next();
+            List permissions = getRoller().getUserManager().getAllPermissions(user);
+            for (Iterator j = permissions.iterator(); j.hasNext(); ) {
+                PermissionsData pd = (PermissionsData)j.next();
+                perms.add(pd);
+            }
+        }
+        EntrySet es = new MemberEntrySet((PermissionsData[])perms.toArray(new PermissionsData[0]), getUrlPrefix());
+        return es;
+    }
+

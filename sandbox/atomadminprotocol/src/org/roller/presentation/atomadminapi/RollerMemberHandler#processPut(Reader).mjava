@@ -1,0 +1,10 @@
+    public EntrySet processPut(Reader r) throws Exception {
+        if (getUri().isCollection()) {
+            return putCollection(r);
+        } else if (getUri().isEntry()) {
+            return putEntry(r);
+        } else {
+            throw new Exception("ERROR: Unknown PUT URI type");
+        }
+    }
+

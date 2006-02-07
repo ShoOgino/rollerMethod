@@ -1,0 +1,13 @@
+    private PermissionsData getPermissionsData(String handle, String username) throws Exception {
+        try {
+            UserManager mgr = getRoller().getUserManager();
+            UserData ud = mgr.getUser(username);
+            WebsiteData wd = mgr.getWebsiteByHandle(handle);
+            PermissionsData pd = mgr.getPermissions(wd, ud);
+            
+            return pd;
+        } catch (RollerException re) {
+            throw new Exception(re);
+        }        
+    }    
+

@@ -1,0 +1,14 @@
+        public URI(HttpServletRequest request) {
+            String pathInfo = request.getPathInfo();
+            pathInfo = (pathInfo!=null) ? pathInfo : "";
+            String[] elements = StringUtils.split(pathInfo,"/");
+            
+            if (elements.length > 0) {
+                type = elements[0];
+            }
+            if (elements.length > 1) {
+                entryIds = new String[elements.length-1];
+                System.arraycopy(elements, 1, entryIds, 0, entryIds.length);
+            }
+        }
+

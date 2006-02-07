@@ -1,0 +1,18 @@
+    private EntrySet deleteEntry() throws Exception {
+        try {
+            getRoller().setUser(UserData.SYSTEM_USER);
+            UserManager mgr = getRoller().getUserManager();
+            UserData ud = mgr.getUser(getUri().getEntryId());
+            
+            UserData[] uds = new UserData[] { ud };
+            EntrySet es = new UserEntrySet(uds, getUrlPrefix());
+            
+            ud.remove();
+            getRoller().commit();
+            
+            return es;
+        } catch (RollerException re) {
+            throw new Exception(re);
+        }
+    }
+

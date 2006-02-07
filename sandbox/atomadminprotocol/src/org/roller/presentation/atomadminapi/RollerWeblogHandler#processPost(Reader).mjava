@@ -1,0 +1,8 @@
+    public EntrySet processPost(Reader r) throws Exception {
+        if (getUri().isCollection()) {
+            return postCollection(r);
+        } else {
+            throw new Exception("ERROR: Unknown POST URI type");
+        }        
+    }
+

@@ -1,0 +1,7 @@
+    private EntrySet getCollection() throws Exception {
+        List users = getRoller().getUserManager().getUsers();
+        EntrySet c = new WeblogEntrySet((UserData[])users.toArray(new UserData[0]), getUrlPrefix());
+        
+        return c;
+    }
+

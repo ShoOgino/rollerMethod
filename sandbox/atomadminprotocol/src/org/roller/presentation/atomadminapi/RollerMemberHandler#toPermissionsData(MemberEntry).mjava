@@ -1,0 +1,17 @@
+    private PermissionsData toPermissionsData(MemberEntry entry) throws Exception {
+        try {
+            UserManager mgr = getRoller().getUserManager();
+            UserData ud = mgr.getUser(entry.getName());
+            WebsiteData wd = mgr.getWebsiteByHandle(entry.getHandle());
+            PermissionsData pd = new PermissionsData();
+            pd.setUser(ud);
+            pd.setWebsite(wd);
+            pd.setPermissionMask(entry.getPermissionMask());
+            pd.setPending(false);
+            
+            return pd;
+        } catch (RollerException re) {
+            throw new Exception(re);
+        }
+    }
+

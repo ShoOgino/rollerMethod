@@ -1,0 +1,34 @@
+    private AtomAdminService getIntrospection(HttpServletRequest req) throws Exception {
+        String href = getUrlPrefix();
+        AtomAdminService service = new AtomAdminService(href);
+        
+        AtomAdminService.Workspace workspace = new AtomAdminService.Workspace();
+        workspace.setTitle("Workspace: Collections for administration");
+        workspace.setHref(service.getHref());
+        service.setEntries(new Entry[] { workspace });
+        
+        List workspaceCollections = new ArrayList();
+        
+        AtomAdminService.WorkspaceCollection weblogCol = new AtomAdminService.WorkspaceCollection();
+        weblogCol.setTitle("Collection: Weblog administration entries");
+        weblogCol.setMemberType(org.roller.presentation.atomadminapi.Entry.Types.WEBLOG);
+        weblogCol.setHref(service.getHref() + "/" + org.roller.presentation.atomadminapi.EntrySet.Types.WEBLOGS);
+        workspaceCollections.add(weblogCol);
+        
+        AtomAdminService.WorkspaceCollection userCol = new AtomAdminService.WorkspaceCollection();
+        userCol.setTitle("Collection: User administration entries");
+        userCol.setMemberType("user");
+        userCol.setHref(service.getHref() + "/" + org.roller.presentation.atomadminapi.EntrySet.Types.USERS);
+        workspaceCollections.add(userCol);
+        
+        AtomAdminService.WorkspaceCollection memberCol = new AtomAdminService.WorkspaceCollection();
+        memberCol.setTitle("Collection: Member administration entries");
+        memberCol.setMemberType("member");
+        memberCol.setHref(service.getHref() + "/" + org.roller.presentation.atomadminapi.EntrySet.Types.MEMBERS);
+        workspaceCollections.add(memberCol);
+        
+        workspace.setEntries((Entry[])workspaceCollections.toArray(new Entry[0]));
+        
+        return service;
+    }
+

@@ -1,0 +1,8 @@
+        public MemberURI(HttpServletRequest req) {
+            super(req);           
+            setHandle(getEntryId());
+            if (getEntryIds() != null && getEntryIds().length > 1) {
+                setUsername(getEntryIds()[1]);
+            }
+        }
+
