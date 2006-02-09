@@ -8,9 +8,8 @@
             return mapping.findForward("main");
         }           
         // search model executes search, makes results available to page
-        SearchResultsPageModel model = new SearchResultsPageModel(
-                "search.title", request, response, mapping);
-        request.setAttribute("searchResults", model);
+        PageModel model = new PageModel("search.title", request, response, mapping);
+        request.setAttribute("model", model);
         return mapping.findForward("search.page");
     }
 

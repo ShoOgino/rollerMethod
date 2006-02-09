@@ -1,4 +1,4 @@
-   /**
+    /**
      * Iterate over Hits and build sets of WeblogEntryData
      * objects, placed into Date buckets (in reverse order).
      * @param rreq
@@ -56,7 +56,7 @@
             // maybe null if search result returned inactive user
             // or entry's user is not the requested user.
             if (entry != null) {
-                addToSearchResults(searchResults, entry);
+                addToSearchResults(searchResults, WeblogEntryDataWrapper.wrap(entry));
             }
         }
         rreq.getRequest().setAttribute("categories", categories);
