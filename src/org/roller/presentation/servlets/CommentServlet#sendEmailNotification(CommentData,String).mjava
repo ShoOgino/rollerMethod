@@ -3,16 +3,12 @@
      *
      * TODO: Make the addressing options configurable on a per-website basis.
      */
-    static void sendEmailNotification(HttpServletRequest request,
-                        RollerRequest rreq,
-                        WeblogEntryData entry,
-                        CommentData cd) 
-            throws MalformedURLException {
+    public static void sendEmailNotification(CommentData cd, String rootURL) {
         
-        RollerContext rc = RollerContext.getRollerContext();
-        ResourceBundle resources = ResourceBundle.getBundle(
-                "ApplicationResources",LanguageUtil.getViewLocale(request));
+        // Send commment notifications in locale of server
+        ResourceBundle resources = ResourceBundle.getBundle("ApplicationResources");
 
+        WeblogEntryData entry = cd.getWeblogEntry();
         WebsiteData site = entry.getWebsite();
         UserData user = entry.getCreator();
         
@@ -98,12 +94,7 @@
                     : "<br /><br /><hr /><span style=\"font-size: 11px\">");
             msg.append(resources.getString("email.comment.respond") + ": ");
             msg.append((escapeHtml) ? "\n" : "<br />");
-            
-            String rootURL = rc.getAbsoluteContextUrl(request);
-            if (rootURL == null || rootURL.trim().length()==0) {
-                rootURL = RequestUtils.serverURL(request) + request.getContextPath();
-            }
-            
+
             // Build link back to comment
             StringBuffer commentURL = new StringBuffer(rootURL);
             commentURL.append(entry.getPermaLink());

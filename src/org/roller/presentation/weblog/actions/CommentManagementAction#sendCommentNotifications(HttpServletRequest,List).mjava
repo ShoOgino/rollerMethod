@@ -1,0 +1,26 @@
+    private void sendCommentNotifications(
+        HttpServletRequest req, List comments) throws RollerException {
+        
+        RollerContext rc = RollerContext.getRollerContext();                             
+        String rootURL = rc.getAbsoluteContextUrl(req);
+        try {
+            if (rootURL == null || rootURL.trim().length()==0) {
+                rootURL = RequestUtils.serverURL(req) + req.getContextPath();
+            } 
+        } catch (MalformedURLException e) {
+            logger.error("ERROR: determining URL of site");
+            return;
+        }
+
+        Iterator iter = comments.iterator();
+        while (iter.hasNext()) {
+            CommentData comment = (CommentData)iter.next();
+            
+            // Send email notifications because a new comment has been approved
+            CommentServlet.sendEmailNotification(comment, rootURL);
+            
+            // Send approval notification to author of approved comment
+            CommentServlet.sendEmailApprovalNotification(comment, rootURL);
+        }
+    }
+

@@ -107,7 +107,12 @@
                     CacheManager.invalidate(comment);
                     
                     // Send email notifications
-                    sendEmailNotification(request, rreq, entry, comment);
+                    RollerContext rc = RollerContext.getRollerContext();                                
+                    String rootURL = rc.getAbsoluteContextUrl(request);
+                    if (rootURL == null || rootURL.trim().length()==0) {
+                        rootURL = RequestUtils.serverURL(request) + request.getContextPath();
+                    }            
+                    sendEmailNotification(comment, rootURL);
                     
                 } else {
                     error = bundle.getString("error.commentAuthFailed");

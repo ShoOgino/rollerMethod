@@ -25,7 +25,12 @@
                 List deletedList = Arrays.asList(deleteIds); 
                 if (deleteIds != null && deleteIds.length > 0) {
                     mgr.removeComments(deleteIds);
-                }    
+                }
+                
+                // Collect comments approved for first time, so we can send
+                // out comment approved notifications later
+                List approvedComments = new ArrayList();
+                
                 // loop through IDs of all comments displayed on page
                 String[] ids = Utilities.stringToStringArray(queryForm.getIds(),",");
                 List flushList = new ArrayList();
@@ -48,13 +53,17 @@
                     if (rreq.getWebsite() != null) {
                         
                         // all comments reviewed, so they're no longer pending
-                        comment.setPending(Boolean.FALSE);
+                        if (comment.getPending() != null && comment.getPending().booleanValue()) {
+                            comment.setPending(Boolean.FALSE);
+                            approvedComments.add(comment);
+                        }
                         
                         // apply pending checkbox
                         List approvedIds = 
                             Arrays.asList(queryForm.getApprovedComments());
                         if (approvedIds.contains(ids[i])) {
                             comment.setApproved(Boolean.TRUE);
+                            
                         } else {
                             comment.setApproved(Boolean.FALSE);
                         }
@@ -66,6 +75,9 @@
                 for (Iterator comments=flushList.iterator(); comments.hasNext();) {
                     CacheManager.invalidate((CommentData)comments.next());
                 }
+                
+                sendCommentNotifications(request, approvedComments);
+                
                 ActionMessages msgs = new ActionMessages();
                 msgs.add(ActionMessages.GLOBAL_MESSAGE, 
                     new ActionMessage("commentManagement.updateSuccess"));

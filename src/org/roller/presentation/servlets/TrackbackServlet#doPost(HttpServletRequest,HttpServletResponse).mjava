@@ -100,7 +100,12 @@
                         CacheManager.invalidate(comment);
 
                         // Send email notifications
-                        CommentServlet.sendEmailNotification(req, rreq, entry, comment);
+                        RollerContext rc = RollerContext.getRollerContext();                                
+                        String rootURL = rc.getAbsoluteContextUrl(req);
+                        if (rootURL == null || rootURL.trim().length()==0) {
+                            rootURL = RequestUtils.serverURL(req) + req.getContextPath();
+                        } 
+                        CommentServlet.sendEmailNotification(comment, rootURL);
 
                         pw.println("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>");
                         pw.println("<response>");
