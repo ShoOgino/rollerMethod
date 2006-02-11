@@ -1,14 +1,20 @@
-    protected static void loadPathValues(Context ctx, RollerRequest rreq, 
-                                        RollerContext rollerCtx, String userName)
+    /**
+     * Load URL paths useful in page templates.
+     */
+    protected static void loadPathValues(
+            Context ctx,  RollerRequest rreq, 
+            RollerContext rollerCtx, 
+            WebsiteData   website)
             throws RollerException {
         
         mLogger.debug("Loading path values");
         
         HttpServletRequest request = rreq.getRequest();
         String url = null;
-        if ( userName != null && !userName.equals("zzz_none_zzz")) {
+        if (website != null) {
             url = Utilities.escapeHTML(
-                    rollerCtx.getAbsoluteContextUrl(request)+"/page/"+userName);
+                      rollerCtx.getAbsoluteContextUrl(request) 
+                          + "/page/" + website.getHandle());
         } else {
             url= Utilities.escapeHTML(rollerCtx.getAbsoluteContextUrl(request));
         }

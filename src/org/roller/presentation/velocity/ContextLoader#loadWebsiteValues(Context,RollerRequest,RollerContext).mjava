@@ -1,25 +1,29 @@
-    protected static String loadWebsiteValues(Context ctx, RollerRequest rreq, RollerContext rollerCtx )
+    /**
+     * Load website object and related objects.
+     */
+    protected static WebsiteData loadWebsiteValues(
+            Context ctx, 
+            RollerRequest rreq, 
+            RollerContext rollerCtx )
             throws RollerException {
-        
-        String handle = null;
-        WebsiteData website = null;
-        
+                
         Roller mRoller = RollerFactory.getRoller();
         Map props = mRoller.getPropertiesManager().getProperties();
         
-        if ( rreq.getRequest().getAttribute(RollerRequest.OWNING_WEBSITE) != null) {
-            website = (WebsiteData)
-            rreq.getRequest().getAttribute(RollerRequest.OWNING_WEBSITE);
-        } else if ( rreq.getWebsite() != null ) {
-            website = rreq.getWebsite();
+        WebsiteData website = rreq.getWebsite();            
+        if (website == null && rreq.getRequest().getParameter("entry") != null) {
+            String handle = rreq.getRequest().getParameter("entry");
+            website = RollerFactory.getRoller().getUserManager().getWebsiteByHandle(handle);
         }
+        if (website == null && rreq.getRequest().getAttribute(RollerRequest.OWNING_WEBSITE) != null) {
+            website = (WebsiteData)rreq.getRequest().getAttribute(RollerRequest.OWNING_WEBSITE);
+        } 
         
-        if ( website != null ) {
-            handle = website.getHandle();
-            ctx.put("userName",      handle);
-            ctx.put("fullName",      website.getName() );
-            ctx.put("emailAddress",  website.getEmailAddress() );
-            ctx.put("encodedEmail",  RegexUtil.encode(website.getEmailAddress()));
+        if (website != null) {
+            ctx.put("userName",         website.getHandle());
+            ctx.put("fullName",         website.getName() );
+            ctx.put("emailAddress",     website.getEmailAddress() );
+            ctx.put("encodedEmail",     RegexUtil.encode(website.getEmailAddress()));
             ctx.put("obfuscatedEmail",  RegexUtil.obfuscateEmail(website.getEmailAddress()));
             
             // setup Locale for future rendering
@@ -30,17 +34,20 @@
             ctx.put("timeZone", website.getTimeZoneInstance());
         } else {
             website = new WebsiteData();
-            website.setName(((RollerPropertyData)props.get("site.name")).getValue());
             website.setAllowComments(Boolean.FALSE);
-            website.setDescription(((RollerPropertyData)props.get("site.description")).getValue());
-            handle = "zzz_none_zzz";
-            ctx.put("userName", handle );
-            ctx.put("fullName","zzz_none_zzz");
-            ctx.put("emailAddress",
-                    ((RollerPropertyData)props.get("site.adminemail")).getValue());
-            ctx.put("locale", Locale.getDefault());
+            website.setHandle("zzz_none_zzz");
+            website.setName(
+                ((RollerPropertyData)props.get("site.name")).getValue());
+            website.setDescription(
+                ((RollerPropertyData)props.get("site.description")).getValue());
+            ctx.put("handle",   website.getHandle() );
+            ctx.put("userName", website.getHandle() );
+            ctx.put("fullName", website.getHandle());
+            ctx.put("locale",   Locale.getDefault());
             ctx.put("timezone", TimeZone.getDefault());
             ctx.put("timeZone", TimeZone.getDefault());
+            ctx.put("emailAddress",
+                ((RollerPropertyData)props.get("site.adminemail")).getValue());
         }
         ctx.put("website", WebsiteDataWrapper.wrap(website) );
         
@@ -52,11 +59,10 @@
         ctx.put("siteShortName", siteShortName);
         
         // add language of the session (using locale of viewer set by Struts)
-        ctx.put(
-                "viewLocale",
+        ctx.put("viewLocale",
                 LanguageUtil.getViewLocale(rreq.getRequest()));
         mLogger.debug("context viewLocale = "+ctx.get( "viewLocale"));
         
-        return handle;
+        return website;
     }
 

@@ -1,4 +1,10 @@
-    protected static void loadRssValues(Context ctx, RollerRequest rreq, String handle) 
+    /**
+     * Load objects needed for RSS and Atom newsfeed generation.
+     */
+    protected static void loadRssValues(
+            Context ctx, 
+            RollerRequest rreq, 
+            WebsiteData website) 
             throws RollerException {
         
         mLogger.debug("Loading rss values");
@@ -12,17 +18,16 @@
         }
         ctx.put("entryLength",  new Integer(entryLength));
         
-        int entryCount = 15;
-        String sCount = request.getParameter("count");
-        if ( sCount!=null && sExcerpts!=null && sExcerpts.trim().equals("")) {
-            try {
-                entryCount = Integer.parseInt(sCount);
-            } catch (NumberFormatException e) {
-                mLogger.warn("Improperly formatted count parameter");
-            }
-            if ( entryCount > 50 ) entryCount = 50;
-            if ( entryCount < 0 ) entryCount = 15;
-        }
+        // Display same number of entries in feed as displayed on page
+        int entryCount = website.getEntryDisplayCount();
+        
+        // But don't exceed installation-wide maxEntries settings
+        int maxEntries = 
+            RollerRuntimeConfig.getIntProperty("site.newsfeeds.maxEntries");
+        int defaultEntries = 
+            RollerRuntimeConfig.getIntProperty("site.newsfeeds.defaultEntries");
+        if (entryCount < 1) entryCount = defaultEntries;
+        if (entryCount > maxEntries) entryCount = maxEntries;
         ctx.put("entryCount",  new Integer(entryCount));
         
         String catname = null;
