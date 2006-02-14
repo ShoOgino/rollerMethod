@@ -37,7 +37,11 @@
                         // we have the /username/datestring form of URL
                         mDateString = pathInfo[1];
                         mPage = mWebsite.getDefaultPage();
-                        mIsDateSpecified = true;
+                        if (pathInfo[1].length() == 8) {
+                            mIsDaySpecified = true;
+                        } else {
+                            mIsMonthSpecified = true;
+                        }
                     }               
                 }
                 else if ( pathInfo.length == 3 )
@@ -55,17 +59,20 @@
                             mWeblogEntry = weblogMgr.getWeblogEntryByAnchor(
                                 mWebsite, pathInfo[2]);
                         }
-                        catch (Exception damn)
+                        catch (Exception e)
                         {
-                            // doesn't really matter, we've got the Page anyway
-                            mLogger.debug("Damn", damn);
+                            mLogger.debug("Can't find entry by anchor", e);
                         }
                     }
                     else
                     {
                         // we have the /username/pagelink/datestring form of URL
                         mDateString = pathInfo[2];
-                        mIsDateSpecified = true;
+                        if (pathInfo[1].length() == 8) {
+                            mIsDaySpecified = true;
+                        } else {
+                            mIsMonthSpecified = true;
+                        }
                     }
                 }
                 else if ( pathInfo.length == 4 )
@@ -76,7 +83,11 @@
                     
                     mDate = parseDate(pathInfo[2]);
                     mDateString = pathInfo[2];
-                    mIsDateSpecified = true;
+                    if (pathInfo[1].length() == 8) {
+                        mIsDaySpecified = true;
+                    } else {
+                        mIsMonthSpecified = true;
+                    }
 
                     // we have the /username/pagelink/date/anchor form of URL
                     WeblogManager weblogMgr = RollerFactory.getRoller().getWeblogManager();
@@ -87,7 +98,7 @@
             if (mDate == null && mWeblogEntry != null)
             {
                 mDate = mWeblogEntry.getPubTime();
-                mDateString = DateUtil.format8chars(mDate);
+                //mDateString = DateUtil.format8chars(mDate);
             }
         }
         catch ( Exception ignored )
@@ -95,10 +106,11 @@
             mLogger.debug("Exception parsing pathInfo",ignored);
         }
         
-        if ( mWebsite==null || mPage==null )
-        {            
-            String msg = "Invalid pathInfo: "+StringUtils.join(pathInfo,"|");
-            throw new RollerException(msg);
-        }
+        // NOTE: let the caller handle missing website/page instead
+        //if ( mWebsite==null || mPage==null )
+        //{            
+            //String msg = "Invalid pathInfo: "+StringUtils.join(pathInfo,"|");
+            //throw new RollerException(msg);
+        //}
     }       
 

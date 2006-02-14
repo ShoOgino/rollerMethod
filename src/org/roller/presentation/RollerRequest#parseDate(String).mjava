@@ -6,7 +6,7 @@
             && StringUtils.isNumeric(dateString) )
         {
             ParsePosition pos = new ParsePosition(0);
-            ret = mFmt.parse( dateString, pos );
+            ret = m8charDateFormat.parse( dateString, pos );
             
             // make sure the requested date is not in the future
             Date today = getToday();
@@ -14,6 +14,20 @@
             
             // since a specific date was requested set time to end of day
             ret = DateUtil.getEndOfDay(ret);
+        } 
+        if (   dateString!=null 
+            && dateString.length()==6
+            && StringUtils.isNumeric(dateString) )
+        {
+            ParsePosition pos = new ParsePosition(0);
+            ret = m6charDateFormat.parse( dateString, pos );
+            
+            // make sure the requested date is not in the future
+            Date today = getToday();
+            if (ret.after(today)) ret = today;
+            
+            // since a specific date was requested set time to end of day
+            ret = DateUtil.getEndOfMonth(ret); 
         }
         return ret;
     }

@@ -4,8 +4,9 @@
         Calendar nextCal = getCalendar();
         nextCal.setTime( mDay );
         nextCal.add( Calendar.MONTH, 1 );
-        Date nextMonth = getLastDayOfMonth(nextCal).getTime();
-        String nextMonthUrl = computeUrl(nextMonth, true);            
-        return nextMonthUrl;
+        String nextMonth = computeUrl(nextCal.getTime(), true);            
+        
+        // and strip off last two digits to get a month URL
+        return nextMonth.substring(0, nextMonth.length() - 2);
     }
 
