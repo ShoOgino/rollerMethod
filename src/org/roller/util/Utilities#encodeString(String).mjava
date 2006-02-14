@@ -9,11 +9,10 @@
      * @return String
      * @throws IOException
      */
-    public static String encodeString(String str) throws IOException 
-    {
+    public static String encodeString(String str) throws IOException {
         sun.misc.BASE64Encoder encoder = new sun.misc.BASE64Encoder();
         String encodedStr = encoder.encodeBuffer(str.getBytes());
-
+        
         return (encodedStr.trim());
     }
 

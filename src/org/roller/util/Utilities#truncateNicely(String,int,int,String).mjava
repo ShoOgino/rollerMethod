@@ -3,15 +3,14 @@
      * http://cvs.apache.org/viewcvs/jakarta-taglibs/string/src/org/apache/taglibs/string/util/StringW.java?rev=1.16&content-type=text/vnd.viewcvs-markup
      * Copyright (c) 1999 The Apache Software Foundation.
      * Author: Henri Yandell bayard@generationjava.com
-     * 
+     *
      * @param str
      * @param lower
      * @param upper
      * @param appendToEnd
      * @return
      */
-    public static String truncateNicely(String str, int lower, int upper, String appendToEnd)
-    {
+    public static String truncateNicely(String str, int lower, int upper, String appendToEnd) {
         // strip markup from the string
         String str2 = removeHTML(str, false);
         boolean diff = (str2.length() < str.length());
@@ -19,14 +18,14 @@
         // quickly adjust the upper if it is set lower than 'lower'
         if(upper < lower) {
             upper = lower;
-        }       
+        }
         
         // now determine if the string fits within the upper limit
         // if it does, go straight to return, do not pass 'go' and collect $200
         if(str2.length() > upper) {
             // the magic location int
             int loc;
-        
+            
             // first we determine where the next space appears after lower
             loc = str2.lastIndexOf(' ', upper);
             
@@ -41,8 +40,7 @@
             }
             
             // HTML was removed from original str
-            if (diff)
-            {
+            if (diff) {
                 
                 // location of last space in truncated string
                 loc = str2.lastIndexOf(' ', loc);
@@ -66,13 +64,11 @@
                 // append the appendToEnd String and
                 // add extracted HTML back onto truncated string
                 str = str2 + appendToEnd + str3;
-            }
-            else
-            {
-                // the string was truncated, so we append the appendToEnd String                
+            } else {
+                // the string was truncated, so we append the appendToEnd String
                 str = str2 + appendToEnd;
             }
-    
+            
         }
         
         return str;

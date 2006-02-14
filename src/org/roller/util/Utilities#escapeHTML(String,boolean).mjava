@@ -4,11 +4,9 @@
      * @param escapseAmpersand Optionally escape
      * ampersands (&amp;).
      */
-    public static String escapeHTML(String s, boolean escapeAmpersand)
-    {
+    public static String escapeHTML(String s, boolean escapeAmpersand) {
         // got to do amp's first so we don't double escape
-        if (escapeAmpersand)
-        {
+        if (escapeAmpersand) {
             s = stringReplace(s, "&", "&amp;");
         }
         s = stringReplace(s, "&nbsp;", " ");
