@@ -13,7 +13,7 @@
                                  "EnabledUser",
                                  "enabledUser@example.com");
         enabledUser.setEnabled(Boolean.TRUE);
-        enabledSite = ((WebsiteData)umgr.getWebsites(enabledUser, null).get(0));
+        enabledSite = ((WebsiteData)umgr.getWebsites(enabledUser, null, null).get(0));
         enabledSite.setEnabled(Boolean.TRUE);       
 
         disabledUser = createUser(disabledUserName,
@@ -22,7 +22,7 @@
                                  "disabledUser@example.com");
                 
         disabledUser.setEnabled(Boolean.FALSE);
-        disabledSite = ((WebsiteData)umgr.getWebsites(disabledUser, null).get(0));
+        disabledSite = ((WebsiteData)umgr.getWebsites(disabledUser, null, null).get(0));
         disabledSite.setEnabled(Boolean.FALSE);  
 
         getRoller().commit();

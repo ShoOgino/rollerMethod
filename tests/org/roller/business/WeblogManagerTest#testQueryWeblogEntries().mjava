@@ -9,12 +9,13 @@
 
         // PUBLISHISHED ONLY
         List publishedEntries = wmgr.getWeblogEntries(
-                        website,                 // userName
-                        null,                    // startDate
-                        new Date(),              // endDate
-                        null,                    // catName
+                        website,                    // userName
+                        null,                       // startDate
+                        new Date(),                 // endDate
+                        null,                       // catName
                         WeblogEntryData.PUBLISHED,  // status
-                        null);                   // maxEntries
+                        null,                       // sortby
+                        null);                      // maxEntries
         assertEquals(mExpectedPublishedEntryCount, publishedEntries.size());
                     
         // DRAFT ONLY
@@ -23,7 +24,8 @@
                         null,                    // startDate
                         new Date(),              // endDate
                         null,                    // catName
-                        WeblogEntryData.DRAFT,  // status
+                        WeblogEntryData.DRAFT,   // status
+                        null,                    // sortby
                         null);                   // maxEntries
         assertEquals(mExpectedEntryCount-mExpectedPublishedEntryCount, draftEntries.size());
                           
@@ -33,7 +35,8 @@
                         null,                    // startDate
                         new Date(),              // endDate
                         null,                    // catName
-                        null,       // status
+                        null,                    // status
+                        null,                    // sortby
                         null);                   // maxEntries
         assertEquals(mExpectedEntryCount, allEntries.size());
 
@@ -44,6 +47,7 @@
                         new Date(),              // endDate
                         null,                    // catName
                         null,                    // status
+                        null,                    // sortby
                         null);                   // maxEntries
         assertEquals(mExpectedEntryCount, allEntries2.size());
                                             

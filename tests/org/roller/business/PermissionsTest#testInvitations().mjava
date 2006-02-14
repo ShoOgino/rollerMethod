@@ -80,7 +80,7 @@
                 assertFalse(umgr.getPermissions(tsite, tuser).isPending());
                 
                 // assert that user has website
-                List websites = umgr.getWebsites(tuser, null);
+                List websites = umgr.getWebsites(tuser, null, null);
                 assertEquals( tsite.getId(), 
                               ((WebsiteData)websites.get(0)).getId());
                 
@@ -103,7 +103,7 @@
             {
                 tuser = umgr.retrieveUser(tuser.getId());
                 tsite = umgr.retrieveWebsite(tsite.getId());
-                List websites = umgr.getWebsites(tuser, null);
+                List websites = umgr.getWebsites(tuser, null, null);
                 assertEquals(0, websites.size());
                 List users = umgr.getUsers(tsite, null);
                 assertEquals(0, users.size());

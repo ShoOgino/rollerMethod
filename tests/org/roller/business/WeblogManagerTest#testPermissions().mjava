@@ -9,14 +9,15 @@
         
         // gets hold of testuser0's entry
         WebsiteData website0 = (WebsiteData)umgr.getWebsites(
-                umgr.getUser("testuser2"), null).get(0);
+                umgr.getUser("testuser2"), null, null).get(0);
         assertNotNull(website0);
         List entries = getRoller().getWeblogManager().getWeblogEntries(
                 website0,
                 null,       // start
                 new Date(), // end
                 null,       // cat
-                null,
+                null,       // status
+                null,       // sortby
                 new Integer(1));
         WeblogEntryData entry = (WeblogEntryData)entries.get(0);
         assertNotNull(entry);

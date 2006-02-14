@@ -3,7 +3,7 @@
     {
         UserManager umgr = getRoller().getUserManager();
         WebsiteData wd0 = (WebsiteData)umgr.getWebsites(
-                umgr.getUser(enabledUserName), null).get(0);
+                umgr.getUser(enabledUserName), null, null).get(0);
         assertNotNull(wd0.getPageByLink("Weblog"));
     }
 

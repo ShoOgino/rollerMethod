@@ -7,7 +7,7 @@
             
             UserManager umgr = mRoller.getUserManager();
             UserData user = umgr.getUser("FileManagerTest_userName");
-            WebsiteData mWebsite = (WebsiteData)umgr.getWebsites(user,null).get(0);
+            WebsiteData mWebsite = (WebsiteData)umgr.getWebsites(user,null, null).get(0);
             
             if(mWebsite == null)
                 mWebsite = this.createTestUser();

@@ -9,7 +9,7 @@
         
         // gets hold of testuser0's entry
         UserData testuser0 = umgr.getUser("testuser2");
-        WebsiteData website0 = (WebsiteData)umgr.getWebsites(testuser0, null).get(0);
+        WebsiteData website0 = (WebsiteData)umgr.getWebsites(testuser0, null, null).get(0);
         assertNotNull(website0);
         FolderData root = getRoller().getBookmarkManager().getRootFolder(website0);
         BookmarkData bookmark = (BookmarkData)root.getBookmarks().iterator().next();

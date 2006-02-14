@@ -4,15 +4,15 @@
         
         // can get testuser0 who is enabled
         assertTrue(umgr.getWebsites(
-                umgr.getUser(enabledUserName), Boolean.TRUE).size() > 0);
+                umgr.getUser(enabledUserName), Boolean.TRUE, null).size() > 0);
 
         // can't get testuser1, who is disabled
         disabledUser = umgr.retrieveUser(disabledUser.getId());
         assertTrue(umgr.getWebsites(
-                disabledUser, Boolean.TRUE).size() == 0);
+                disabledUser, Boolean.TRUE, null).size() == 0);
 
         // can get testuser1 with enabledOnly flag set to false
         assertTrue(umgr.getWebsites(
-                umgr.getUser(disabledUserName), Boolean.FALSE).size() == 1);
+                umgr.getUser(disabledUserName), Boolean.FALSE, null).size() == 1);
     }
 

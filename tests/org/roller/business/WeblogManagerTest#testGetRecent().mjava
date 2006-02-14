@@ -69,11 +69,12 @@
         
         List entries = wmgr.getWeblogEntries(
                         wd,
-                        null,                       // startDate
-                        new Date(),                 // endDate
-                        "toplevel1",                 // catName
-                        null,           // status
-                        new Integer(15));           // maxEntries
+                        null,             // startDate
+                        new Date(),       // endDate
+                        "toplevel1",      // catName
+                        null,             // status
+                        null,             // sortby
+                        new Integer(15)); // maxEntries
 
         assertEquals(4, entries.size());
         
