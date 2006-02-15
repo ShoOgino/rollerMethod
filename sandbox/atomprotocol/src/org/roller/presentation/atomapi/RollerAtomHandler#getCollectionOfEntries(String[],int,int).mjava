@@ -2,7 +2,7 @@
      * Helper method that returns collection of entries, called by getCollection().
      */
     public Feed getCollectionOfEntries(
-            String[] pathInfo, int start, int end) throws Exception {
+            String[] pathInfo, int start, int max) throws Exception {
         String handle = pathInfo[0];
         String absUrl = mRollerContext.getAbsoluteContextUrl(mRequest);
         WebsiteData website = mRoller.getUserManager().getWebsiteByHandle(handle);
@@ -16,7 +16,7 @@
                     null,              // status
                     "updateTime",      // sortby
                     start,             // offset (for range paging)
-                    end - start + 2);  // maxEntries
+                    max + 1);          // maxEntries
             Feed feed = new Feed();
             List atomEntries = new ArrayList();
             int count = 0;
@@ -24,8 +24,8 @@
                 WeblogEntryData rollerEntry = (WeblogEntryData)iter.next();
                 atomEntries.add(createAtomEntry(rollerEntry));
             }
-            if (count > start - end) { // add next link
-                int nextOffset = start + mMaxEntries; 
+            if (count > max) { // add next link
+                int nextOffset = start + max; 
                 String url = absUrl + "/app/" + website.getHandle() + "/entries/" + nextOffset;
                 Link nextLink = new Link();
                 nextLink.setRel("next");
@@ -35,7 +35,7 @@
                 feed.setOtherLinks(next);
             }
             if (start > 0) { // add previous link
-                int prevOffset = start > mMaxEntries ? start - mMaxEntries : 0;
+                int prevOffset = start > max ? start - max : 0;
                 String url = absUrl + "/app/" +website.getHandle() + "/entries/" + prevOffset;
                 Link prevLink = new Link();
                 prevLink.setRel("previous");

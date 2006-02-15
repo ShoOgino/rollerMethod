@@ -10,20 +10,18 @@
      */
     public Feed getCollection(String[] pathInfo) throws Exception {
         int start = 0;
-        int end = mMaxEntries;
         if (pathInfo.length > 2) {
             try { 
                 String s = pathInfo[2].trim();
                 start = Integer.parseInt(s);
-                if (start > 0) end = start + mMaxEntries;
             } catch (Throwable t) {
                 mLogger.warn("Unparsable range: " + pathInfo[2]);
             }
         }
         if (pathInfo.length > 0 && pathInfo[1].equals("entries")) {
-            return getCollectionOfEntries(pathInfo, start, end);
+            return getCollectionOfEntries(pathInfo, start, mMaxEntries);
         } else if (pathInfo.length > 0 && pathInfo[1].equals("resources")) {
-            return getCollectionOfResources(pathInfo, start, end);
+            return getCollectionOfResources(pathInfo, start, mMaxEntries);
         }
         throw new Exception("ERROR: bad URL in getCollection()");
     }
