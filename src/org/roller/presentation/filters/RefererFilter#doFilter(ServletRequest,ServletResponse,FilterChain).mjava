@@ -23,19 +23,16 @@
         WeblogPageRequest pageRequest = null;
         try {
             pageRequest = new WeblogPageRequest(request);
-            String handle = pageRequest.getWeblogHandle();
             UserManager userMgr = RollerFactory.getRoller().getUserManager();
-            weblog = userMgr.getWebsiteByHandle(handle);
-      
-        } catch(Exception e) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            mLogger.warn("ERROR processing request: "+request.getRequestURL());
-            return;
-        }
-        
-        // ReferrerManager only cares about weblog referrers
-        if (weblog == null) {             
-            chain.doFilter(req, res);
+            weblog = userMgr.getWebsiteByHandle(pageRequest.getWeblogHandle());
+            
+            if(weblog == null) {
+                throw new Exception("no weblog named "+pageRequest.getWeblogHandle());
+            }
+            
+        } catch(Exception ex) {
+            // bad url or couldn't obtain weblog
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
         
