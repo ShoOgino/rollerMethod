@@ -89,7 +89,10 @@
             }
             
             msg.append((escapeHtml) ? "\n\n" : "<br /><br />");
-            msg.append(cd.getContent());
+                        
+            msg.append((escapeHtml) ? Utilities.escapeHTML(cd.getContent()) 
+                : Utilities.transformToHTMLSubset(Utilities.escapeHTML(cd.getContent())));
+            
             msg.append((escapeHtml) ? "\n\n----\n"
                     : "<br /><br /><hr /><span style=\"font-size: 11px\">");
             msg.append(resources.getString("email.comment.respond") + ": ");
