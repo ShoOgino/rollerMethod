@@ -13,7 +13,7 @@
             List atomEntries = new ArrayList();
             int count = 0;
             if (files != null && start < files.length) {
-                for (int i=start; i<(start + max); i++) {                   
+                for (int i=start; i<(start + max) && i<(files.length); i++) {                   
                     Entry entry = createAtomResourceEntry(website, files[i]);
                     atomEntries.add(entry);
                     count++;
