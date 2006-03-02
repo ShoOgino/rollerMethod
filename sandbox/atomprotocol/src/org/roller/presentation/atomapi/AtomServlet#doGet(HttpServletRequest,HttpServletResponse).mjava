@@ -64,6 +64,7 @@
                 mLogger.error(e);
             }
         } else {
+            res.setHeader("WWW-Authenticate", "Roller realm");
             res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
     }

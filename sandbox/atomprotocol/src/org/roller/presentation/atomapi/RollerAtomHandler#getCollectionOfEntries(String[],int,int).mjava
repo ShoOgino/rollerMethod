@@ -18,6 +18,7 @@
                     start,             // offset (for range paging)
                     max + 1);          // maxEntries
             Feed feed = new Feed();
+            feed.setTitle("Entries for blog[" + handle + "]");
             List atomEntries = new ArrayList();
             int count = 0;
             for (Iterator iter = entries.iterator(); iter.hasNext() && count < mMaxEntries; count++) {

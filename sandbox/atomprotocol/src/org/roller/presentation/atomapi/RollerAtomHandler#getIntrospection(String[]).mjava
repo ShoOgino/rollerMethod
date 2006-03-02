@@ -14,7 +14,7 @@
                     PermissionsData perm = (PermissionsData)iter.next();
                     String handle = perm.getWebsite().getHandle();
                     AtomService.Workspace workspace = new AtomService.Workspace();
-                    workspace.setTitle("Weblog: " + handle);
+                    workspace.setTitle(Utilities.removeHTML(perm.getWebsite().getName()));
                     service.addWorkspace(workspace);
                     
                     AtomService.Collection entryCol = new AtomService.Collection();

@@ -1,11 +1,12 @@
     /**
-     * Return true if user is allowed to edit a website.
+     * Return true if user is allowed to create/edit entries and resources in weblog.
      */
     private boolean canEdit(WebsiteData website) {
         try {
-            return website.canSave();
+            UserData user = mRoller.getUser();
+            return website.hasUserPermissions(user, PermissionsData.AUTHOR);
         } catch (Exception e) {
-            mLogger.error("ERROR: checking website.canSave()");
+            mLogger.error("ERROR: checking website.hasUserPermissions()");
         }
         return false;
     }
