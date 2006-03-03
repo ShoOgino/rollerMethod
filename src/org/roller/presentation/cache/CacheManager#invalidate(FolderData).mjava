@@ -2,7 +2,7 @@
         
         mLogger.debug("invalidating folder = "+folder.getId());
         
-        lastExpiredCache.put(folder.getWebsite().getHandle(), new Date());
+        setLastExpiredDate(folder.getWebsite().getHandle());
         
         Iterator handlers = cacheHandlers.iterator();
         while(handlers.hasNext()) {

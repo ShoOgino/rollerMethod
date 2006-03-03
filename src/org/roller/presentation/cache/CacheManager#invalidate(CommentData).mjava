@@ -2,7 +2,7 @@
         
         mLogger.debug("invalidating comment = "+comment.getId());
         
-        lastExpiredCache.put(comment.getWeblogEntry().getWebsite().getHandle(), new Date());
+        setLastExpiredDate(comment.getWeblogEntry().getWebsite().getHandle());
         
         Iterator handlers = cacheHandlers.iterator();
         while(handlers.hasNext()) {

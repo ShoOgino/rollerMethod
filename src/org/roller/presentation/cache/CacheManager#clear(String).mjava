@@ -4,12 +4,7 @@
     public static void clear(String handlerClass) {
         
         // update all expired dates
-        Iterator it = lastExpiredCache.keySet().iterator();
-        String key = null;
-        while(it.hasNext()) {
-            key = (String) it.next();
-            lastExpiredCache.put(key, new Date());
-        }
+        lastExpiredCache.clear();
         
         // loop through all handlers to find the one we want
         CacheHandler handler = null;

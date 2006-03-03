@@ -2,7 +2,7 @@
         
         mLogger.debug("invalidating template = "+template.getId());
         
-        lastExpiredCache.put(template.getWebsite().getHandle(), new Date());
+        setLastExpiredDate(template.getWebsite().getHandle());
         
         Iterator handlers = cacheHandlers.iterator();
         while(handlers.hasNext()) {

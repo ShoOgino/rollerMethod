@@ -48,7 +48,9 @@
         }
         
         // register the handler for this new cache
-        cacheHandlers.add(handler);
+        if(handler != null) {
+            cacheHandlers.add(handler);
+        }
         
         return cache;
     }

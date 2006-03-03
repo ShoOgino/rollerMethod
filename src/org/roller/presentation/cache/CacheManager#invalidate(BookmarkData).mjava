@@ -2,7 +2,7 @@
         
         mLogger.debug("invalidating bookmark = "+bookmark.getId());
         
-        lastExpiredCache.put(bookmark.getWebsite().getHandle(), new Date());
+        setLastExpiredDate(bookmark.getWebsite().getHandle());
         
         Iterator handlers = cacheHandlers.iterator();
         while(handlers.hasNext()) {

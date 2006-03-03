@@ -2,7 +2,7 @@
         
         mLogger.debug("invalidating category = "+category.getId());
         
-        lastExpiredCache.put(category.getWebsite().getHandle(), new Date());
+        setLastExpiredDate(category.getWebsite().getHandle());
         
         Iterator handlers = cacheHandlers.iterator();
         while(handlers.hasNext()) {
