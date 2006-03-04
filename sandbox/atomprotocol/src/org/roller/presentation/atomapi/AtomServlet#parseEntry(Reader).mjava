@@ -1,6 +1,5 @@
     /**
-     * Utility method to make up for a Rome shortcoming:
-     * Rome can only parse Atom data with XML document root 'feed'
+     * Parse entry from reader.
      */
     public static Entry parseEntry(Reader rd)
     throws JDOMException, IOException, IllegalArgumentException, FeedException {
@@ -16,6 +15,15 @@
         WireFeedOutput wireFeedOutput = new WireFeedOutput();
         Document feedDoc = wireFeedOutput.outputJDom(feed);
         feedDoc.getRootElement().addContent(fetchedEntryElement);
+        
+        // Check for our special namespaced element. If it's there, then we 
+        // know that client is not preserving foreign markup.
+        Namespace ns = Namespace.getNamespace(
+            "http://rollerweblogger.org/namespaces/app");
+        Element rollerElement = fetchedEntryElement.getChild("atom-draft", ns);
+        if (rollerElement == null) {
+            mLogger.debug("Client is NOT preserving foreign markup");
+        }
         
         WireFeedInput input = new WireFeedInput();
         Feed parsedFeed = (Feed)input.build(feedDoc);
