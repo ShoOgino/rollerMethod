@@ -1,0 +1,12 @@
+    private UserEntry toUserEntry(UserData ud) {
+        UserEntry ue = new UserEntry(ud.getUserName(), getUrlPrefix());
+        ue.setFullName(ud.getFullName());
+        ue.setPassword(ud.getPassword());
+        ue.setLocale(ud.getLocale());
+        ue.setTimezone(ud.getTimeZone());
+        ue.setEmailAddress(ud.getEmailAddress());
+        ue.setDateCreated(ud.getDateCreated());        
+        
+        return ue;
+    }
+

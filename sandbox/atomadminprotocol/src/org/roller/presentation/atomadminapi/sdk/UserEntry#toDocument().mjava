@@ -1,0 +1,76 @@
+    public Document toDocument() {
+        Element userElement = new Element(Tags.USER, NAMESPACE);
+        Document doc = new Document(userElement);
+        
+        // href
+        String href = getHref();
+        if (href != null) {
+            userElement.setAttribute(Attributes.HREF, href);
+        }
+        
+        // name
+        String name = getName();
+        if (name != null) {
+            Element nameElement = new Element(Tags.NAME, Service.NAMESPACE);
+            Text nameText = new Text(getName());
+            nameElement.addContent(nameText);
+            userElement.addContent(nameElement);
+        }
+        
+        // full name
+        String fullName = getFullName();
+        if (fullName != null) {
+            Element fullNameElement = new Element(Tags.FULL_NAME, NAMESPACE);
+            Text fullNameText = new Text(getFullName());
+            fullNameElement.addContent(fullNameText);
+            userElement.addContent(fullNameElement);
+        }
+        
+        // password
+        String password = getPassword();
+        if (password != null) {
+            Element passwordElement = new Element(Tags.PASSWORD, NAMESPACE);
+            Text passwordText = new Text(getPassword());
+            passwordElement.addContent(passwordText);
+            userElement.addContent(passwordElement);
+        }
+        
+        // locale
+        String locale = getLocale();
+        if (locale != null ) {
+            Element localeElement = new Element(Tags.LOCALE, Service.NAMESPACE);
+            Text localeText = new Text(getLocale());
+            localeElement.addContent(localeText);
+            userElement.addContent(localeElement);
+        }
+        
+        // timezone
+        String timezone = getTimezone();
+        if (timezone != null) {
+            Element timezoneElement = new Element(Tags.TIMEZONE, Service.NAMESPACE);
+            Text timezoneText = new Text(timezone);
+            timezoneElement.addContent(timezoneText);
+            userElement.addContent(timezoneElement);
+        }
+        
+        // email address
+        String emailAddress = getEmailAddress();
+        if (emailAddress != null) {
+            Element emailAddressElement = new Element(Tags.EMAIL_ADDRESS, Service.NAMESPACE);
+            Text emailAddressText = new Text(String.valueOf(emailAddress));
+            emailAddressElement.addContent(emailAddressText);
+            userElement.addContent(emailAddressElement);
+        }
+        
+        // creation date (optional)
+        Date datedCreated = getDateCreated();
+        if (dateCreated != null) {
+            Element dateCreatedElement = new Element(Tags.DATE_CREATED, Service.NAMESPACE);
+            Text dateCreatedText = new Text(String.valueOf(dateCreated.getTime()));
+            dateCreatedElement.addContent(dateCreatedText);
+            userElement.addContent(dateCreatedElement);
+        }
+        
+        return doc;
+    }
+

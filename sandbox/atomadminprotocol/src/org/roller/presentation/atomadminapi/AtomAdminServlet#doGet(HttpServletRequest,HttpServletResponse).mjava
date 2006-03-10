@@ -11,16 +11,13 @@
             }
             
             EntrySet c = handler.processGet();
-            Document doc = c.toDocument();
             
+            res.setStatus(HttpServletResponse.SC_OK);            
             res.setContentType("application/xml; charset=utf8");
+            String s = c.toString();
             Writer writer = res.getWriter();
-            XMLOutputter outputter = new XMLOutputter();
-            outputter.setFormat(Format.getPrettyFormat());
-            outputter.output(doc, writer);
-            writer.close();
-            
-            res.setStatus(HttpServletResponse.SC_OK);
+            writer.write(s);            
+            writer.close();            
         } catch (Exception e) {
             res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             e.printStackTrace(res.getWriter());

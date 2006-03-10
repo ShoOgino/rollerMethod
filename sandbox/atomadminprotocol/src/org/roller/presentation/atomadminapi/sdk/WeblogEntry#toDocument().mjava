@@ -1,0 +1,61 @@
+    public Document toDocument() {        
+        Element weblog = new Element(Tags.WEBLOG, Service.NAMESPACE);
+        Document doc = new Document(weblog);
+        
+        // link
+        weblog.setAttribute(Attributes.HREF, getHref());
+        
+        // handle
+        Element handle = new Element(Tags.HANDLE, Service.NAMESPACE);
+        Text handleText = new Text(getHandle());
+        handle.addContent(handleText);
+        weblog.addContent(handle);
+        
+        // name
+        Element name = new Element(Tags.NAME, Service.NAMESPACE);
+        Text nameText = new Text(getName());
+        name.addContent(nameText);
+        weblog.addContent(name);
+        
+        // description
+        Element desc = new Element(Tags.DESCRIPTION, Service.NAMESPACE);
+        Text descText = new Text(getDescription());
+        desc.addContent(descText);
+        weblog.addContent(desc);
+        
+        // locale
+        Element locale = new Element(Tags.LOCALE, Service.NAMESPACE);
+        Text localeText = new Text(getLocale());
+        locale.addContent(localeText);
+        weblog.addContent(locale);
+        
+        // timezone
+        Element tz = new Element(Tags.TIMEZONE, Service.NAMESPACE);
+        Text tzText = new Text(getTimezone());
+        tz.addContent(tzText);
+        weblog.addContent(tz);
+        
+        // creating user
+        Element creator = new Element(Tags.CREATING_USER, Service.NAMESPACE);
+        Text creatorText = new Text(String.valueOf(getCreatingUser()));
+        creator.addContent(creatorText);
+        weblog.addContent(creator);
+        
+        // email address
+        Element email = new Element(Tags.EMAIL_ADDRESS, Service.NAMESPACE);
+        Text emailText = new Text(String.valueOf(getEmailAddress()));
+        email.addContent(emailText);
+        weblog.addContent(email);        
+        
+        // creation date (optional)
+        Element created = new Element(Tags.DATE_CREATED, Service.NAMESPACE);
+        Date datedCreated = getDateCreated();
+        if (dateCreated != null) {
+            Text createdText = new Text(String.valueOf(dateCreated.getTime()));
+            created.addContent(createdText);
+            weblog.addContent(created);
+        }
+        
+        return doc;
+    }    
+

@@ -1,0 +1,28 @@
+    public Document toDocument() {
+        Element member = new Element(Tags.MEMBER, NAMESPACE);
+        Document doc = new Document(member);
+        
+        // href
+        member.setAttribute(Attributes.HREF, getHref());
+               
+        // name
+        Element name = new Element(Tags.NAME, Service.NAMESPACE);
+        Text nameText = new Text(getName());
+        name.addContent(nameText);
+        member.addContent(name);
+       
+        // handle
+        Element handle = new Element(Tags.HANDLE, NAMESPACE);
+        Text handleText = new Text(getHandle());
+        handle.addContent(handleText);
+        member.addContent(handle);
+        
+        // permission
+        Element permission = new Element(Tags.PERMISSION, NAMESPACE);
+        Text permissionText = new Text(getPermission());
+        permission.addContent(permissionText);
+        member.addContent(permission);
+                
+        return doc;
+    }
+

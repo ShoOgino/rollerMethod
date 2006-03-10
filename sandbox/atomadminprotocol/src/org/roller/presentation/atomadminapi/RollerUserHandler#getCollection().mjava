@@ -1,6 +1,6 @@
     private EntrySet getCollection() throws Exception {
         List users = getRoller().getUserManager().getUsers();
-        EntrySet es = new UserEntrySet((UserData[])users.toArray(new UserData[0]), getUrlPrefix());
+        EntrySet es = toUserEntrySet((UserData[])users.toArray(new UserData[0]));
         
         return es;
     }

@@ -4,7 +4,7 @@
             throw new Exception("ERROR: Unknown user name: " + getUri().getEntryId());
         }
         UserData[] uds = new UserData[] { ud };
-        EntrySet c = new UserEntrySet(uds, getUrlPrefix());
+        EntrySet c = toUserEntrySet(uds);
         
         return c;
     }

@@ -4,7 +4,7 @@
             throw new Exception("ERROR: Unknown weblog handle: " + getUri().getEntryId());
         }
         WebsiteData[] wds = new WebsiteData[] { wd };
-        EntrySet c = new WeblogEntrySet(wds, getUrlPrefix());
+        EntrySet c = toWeblogEntrySet(wds);
         
         return c;
     }

@@ -1,0 +1,7 @@
+    public MemberEntrySet(InputStream stream, String urlPrefix) throws Exception {               
+        SAXBuilder sb = new SAXBuilder();
+        Document d = sb.build(stream);
+
+        populate(d, urlPrefix);        
+    }    
+

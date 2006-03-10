@@ -4,11 +4,18 @@
             UserManager mgr = getRoller().getUserManager();
             UserData ud = mgr.getUser(getUri().getEntryId());
             
+            // don't allow deletion of the currently authenticated user
+            if (ud.getUserName().equals(getUsername())) {
+                throw new Exception("ERROR: Can't delete authenticated user: " + getUsername());
+            }
+            
             UserData[] uds = new UserData[] { ud };
-            EntrySet es = new UserEntrySet(uds, getUrlPrefix());
+            EntrySet es = toUserEntrySet(uds);
             
             ud.remove();
             getRoller().commit();
+            
+            CacheManager.invalidate(ud);
             
             return es;
         } catch (RollerException re) {

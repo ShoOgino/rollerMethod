@@ -11,10 +11,12 @@
             }
             
             WebsiteData[] wds = new WebsiteData[] { wd };            
-            EntrySet es = new WeblogEntrySet(wds, getUrlPrefix());            
+            EntrySet es = toWeblogEntrySet(wds);            
             
             wd.remove();
             getRoller().commit();
+            
+            CacheManager.invalidate(wd);
             
             return es;
         } catch (RollerException re) {

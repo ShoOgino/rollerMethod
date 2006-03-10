@@ -12,11 +12,16 @@
             getRoller().setUser(UserData.SYSTEM_USER);
             PermissionsData pd = getPermissionsData(handle, username);
             PermissionsData[] pds = new PermissionsData[] { pd };               
-            EntrySet es = new MemberEntrySet(pds, getUrlPrefix());
+            EntrySet es = toMemberEntrySet(pds);
         
             pd.remove();
             getRoller().commit();
 
+            UserData ud = getRoller().getUserManager().getUser(username);            
+            CacheManager.invalidate(ud);
+            WebsiteData wd = getRoller().getUserManager().getWebsiteByHandle(handle);
+            CacheManager.invalidate(wd);
+            
             return es;            
         } catch (RollerException re) {
             throw new Exception(re);

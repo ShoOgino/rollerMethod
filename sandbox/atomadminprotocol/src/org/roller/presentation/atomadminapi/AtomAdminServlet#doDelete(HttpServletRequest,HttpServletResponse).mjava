@@ -1,5 +1,5 @@
     /**
-     * Handle Atom DELETE by calling appropriate handler.
+     * Handle Atom Admin DELETE by calling appropriate handler.
      */
     protected void doDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         try {
@@ -11,16 +11,13 @@
             }
             
             EntrySet es = handler.processDelete();
-            Document doc = es.toDocument();
             
+            res.setStatus(HttpServletResponse.SC_OK);                        
             res.setContentType("application/xml; charset=utf8");
+            String s = es.toString();
             Writer writer = res.getWriter();
-            XMLOutputter outputter = new XMLOutputter();
-            outputter.setFormat(Format.getPrettyFormat());
-            outputter.output(doc, writer);
-            writer.close();
-            
-            res.setStatus(HttpServletResponse.SC_OK);            
+            writer.write(s);            
+            writer.close();                        
         } catch (Exception e) {
             res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             e.printStackTrace(res.getWriter());

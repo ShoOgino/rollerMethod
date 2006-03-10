@@ -1,0 +1,13 @@
+    private WeblogEntry toWeblogEntry(WebsiteData wd) {
+        WeblogEntry we = new WeblogEntry(wd.getHandle(), getUrlPrefix());
+        we.setName(wd.getName());
+        we.setDescription(wd.getDescription());
+        we.setLocale(wd.getLocale());
+        we.setTimezone(wd.getTimeZone());
+        we.setCreatingUser(wd.getCreator().getUserName());
+        we.setEmailAddress(wd.getEmailAddress());        
+        we.setDateCreated(wd.getDateCreated());
+        
+        return we;
+    }
+

@@ -7,7 +7,7 @@
             
             for (int i = 0; i < c.getEntries().length; i++) {
                 UserEntry entry = (UserEntry)c.getEntries()[i];
-                UserData user = entry.toUserData();
+                UserData user = toUserData(entry);
                 mgr.addUser(user);
             }
             getRoller().commit();
