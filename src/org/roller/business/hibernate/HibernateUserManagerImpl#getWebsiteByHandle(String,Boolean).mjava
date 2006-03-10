@@ -11,11 +11,11 @@
         {
             Session session = ((HibernateStrategy)mStrategy).getSession();
             Criteria criteria = session.createCriteria(WebsiteData.class);
-            if (enabled != null) 
+            if (enabled != null)
             {
                 criteria.add(
                    Expression.conjunction()
-                       .add(Expression.eq("handle", handle))
+                       .add(new IgnoreCaseEqExpression("handle", handle))
                        .add(Expression.eq("enabled", enabled)));
             }
             else
@@ -24,7 +24,8 @@
                     Expression.conjunction()
                         .add(Expression.eq("handle", handle)));
             }        
-            return (WebsiteData)criteria.uniqueResult();
+            WebsiteData website = (WebsiteData)criteria.uniqueResult();
+            return website;
         }
         catch (HibernateException e)
         {
