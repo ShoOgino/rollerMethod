@@ -12,12 +12,17 @@
         contents.add(content);
         
         String absUrl = mRollerContext.getAbsoluteContextUrl(mRequest);
-        
         atomEntry.setId(        absUrl + entry.getPermaLink());
         atomEntry.setTitle(     entry.getTitle());
         atomEntry.setContents(  contents);
         atomEntry.setPublished( entry.getPubTime());
-        atomEntry.setUpdated(   entry.getUpdateTime());
+        atomEntry.setUpdated(   entry.getUpdateTime());        
+
+        UserData creator = entry.getCreator();        
+        Person author = new Person();
+        author.setName(         creator.getUserName());   
+        author.setEmail(        creator.getEmailAddress());                        
+        atomEntry.setAuthors(   Collections.singletonList(author));
         
         List categories = new ArrayList();
         Category atomCat = new Category();
