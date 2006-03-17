@@ -55,9 +55,12 @@
             
             // maybe null if search result returned inactive user
             // or entry's user is not the requested user.
-            if (entry != null) {
-                addToSearchResults(searchResults, WeblogEntryDataWrapper.wrap(entry));
-            }
+            if (entry != null && useWrappers) {
+                addEntryWrapperToSearchResults(searchResults, WeblogEntryDataWrapper.wrap(entry));
+            } 
+            else if (entry != null && !useWrappers) {
+                addEntryToSearchResults(searchResults, entry);
+            } 
         }
         rreq.getRequest().setAttribute("categories", categories);
         return searchResults;

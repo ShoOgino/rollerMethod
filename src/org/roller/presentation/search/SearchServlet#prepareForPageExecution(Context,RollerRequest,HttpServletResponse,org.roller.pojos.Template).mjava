@@ -11,7 +11,7 @@
         
         // search model executes search, makes results available to page
         SearchResultsPageModel model = 
-            new SearchResultsPageModel(rreq.getRequest());
+            new SearchResultsPageModel(rreq.getRequest(), true);
         ctx.put("searchResults", model);
         return super.prepareForPageExecution(ctx, rreq, response, page);
     }
