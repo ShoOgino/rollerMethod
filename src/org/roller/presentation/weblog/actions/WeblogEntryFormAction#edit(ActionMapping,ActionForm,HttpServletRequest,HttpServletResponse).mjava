@@ -24,7 +24,7 @@
                 request.setAttribute("javax.servlet.error.message",
                         resources.getString("weblogEntry.notFound"));
                 forward = mapping.findForward("error");
-            } else if (rses.isUserAuthorizedToAuthor(entry.getWebsite())
+            } else if (rses.isUserAuthorized(entry.getWebsite())
             || (rses.isUserAuthorized(entry.getWebsite()) && !entry.isPublished())) {
                 form.copyFrom(entry, request.getLocale());
                 WeblogEntryPageModel pageModel = new WeblogEntryPageModel(

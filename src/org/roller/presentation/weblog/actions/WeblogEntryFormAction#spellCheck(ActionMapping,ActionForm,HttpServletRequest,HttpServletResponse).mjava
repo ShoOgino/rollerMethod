@@ -12,7 +12,7 @@
             WebsiteData site = umgr.retrieveWebsite(wf.getWebsiteId());
             RollerSession rses =
                     RollerSession.getRollerSession(request);
-            if ( rses.isUserAuthorizedToAuthor(site) ) {
+            if ( rses.isUserAuthorized(site) ) {
                 HttpSession session = request.getSession(true);
                 
                 // we need to save any new entries before SpellChecking

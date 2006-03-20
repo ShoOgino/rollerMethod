@@ -13,7 +13,7 @@
                     RollerSession.getRollerSession(request);
             WeblogEntryPageModel pageModel = new WeblogEntryPageModel(
                     request, response, mapping, (WeblogEntryFormEx)actionForm, mode);
-            if (rollerSession.isUserAuthorizedToAuthor(
+            if (rollerSession.isUserAuthorized(
                     pageModel.getWeblogEntry().getWebsite())) {
                 request.setAttribute("model", pageModel);
             } else {
