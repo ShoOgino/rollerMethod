@@ -14,7 +14,10 @@
             con = ses.connection();
             
             final PreparedStatement stmt;
-            if (con.getMetaData().getDriverName().startsWith("HSQL")) {
+            
+            Dialect currentDialect = ((SessionFactoryImplementor)ses.getSessionFactory()).getDialect();
+            
+            if (currentDialect instanceof HSQLDialect) {
                 // special handling for HSQLDB
                 stmt = con.prepareStatement(
                     "select top ? w.id, w.name, w.handle, sum(r.dayhits) as s "+
@@ -24,7 +27,7 @@
                 stmt.setInt(1, max);
                 stmt.setBoolean(2, true);
                 stmt.setBoolean(3, true);
-            } else if(con.getMetaData().getDriverName().startsWith("Apache Derby")) {
+            } else if(currentDialect instanceof DerbyDialect) {
 	           // special handling for Derby
 				stmt = con.prepareStatement(
 				    "select w.id, w.name, w.handle, sum(r.dayhits) as s "+
@@ -34,7 +37,7 @@
 				stmt.setBoolean(1, true);				
                 stmt.setBoolean(2, true);
                 stmt.setMaxRows(max);
-            } else if(con.getMetaData().getDriverName().startsWith("IBM DB2")) {
+            } else if(currentDialect instanceof DB2Dialect) {
                 // special handling for IBM DB2
                 stmt = con.prepareStatement(
                     "select w.id, w.name, w.handle, sum(r.dayhits) as s "+
@@ -44,7 +47,7 @@
                     Integer.toString(max) + " rows only");
                 stmt.setBoolean(1, true);
                 stmt.setBoolean(2, true);
-            } else if (con.getMetaData().getDriverName().startsWith("Oracle")) {
+            } else if (currentDialect instanceof OracleDialect) {
 				stmt = con.prepareStatement(
                     "select w.id, w.name, w.handle, sum(r.dayhits) as s "+
                     "from website w, referer r "+
@@ -52,7 +55,13 @@
                     "group by w.name, w.handle, w.id order by s desc");
 				stmt.setBoolean(1, true);
 				stmt.setBoolean(2, true);
-				stmt.setInt(3, max );				
+				stmt.setInt(3, max );
+            } else if (currentDialect instanceof SQLServerDialect) {
+            	stmt = con.prepareStatement("select top " + max + " w.id, w.name, w.handle, sum(r.dayhits) as s " +
+            	     "from website as w, referer as r where r.websiteid=w.id and w.isenabled=? and w.isactive=? " +
+            	     "group by w.name, w.handle, w.id order by s desc");
+            	stmt.setBoolean(1, true);
+                stmt.setBoolean(2, true);
             } else { // for MySQL and PostgreSQL
                 stmt = con.prepareStatement(
                     "select w.id, w.name, w.handle, sum(r.dayhits) as s "+
