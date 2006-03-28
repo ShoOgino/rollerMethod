@@ -1,7 +1,14 @@
-    private EntrySet getCollection() throws Exception {
-        List users = getRoller().getUserManager().getUsers();
-        EntrySet c = toWeblogEntrySet(users);
-        
-        return c;
+    private EntrySet getCollection() throws HandlerException {
+        try {
+            List users = getRoller().getUserManager().getUsers();
+            if (users == null) {
+                users = Collections.EMPTY_LIST;
+            }
+            EntrySet c = toWeblogEntrySet(users);
+            
+            return c;
+        } catch (RollerException re) {
+            throw new InternalException("ERROR: Could not get weblog collection", re);
+        }
     }
 

@@ -1,8 +1,8 @@
-    public EntrySet processDelete() throws Exception {
+    public EntrySet processDelete() throws HandlerException {
         if (getUri().isEntry()) {
             return deleteEntry();
         } else {
-            throw new Exception("ERROR: Unknown DELETE URI type");
+            throw new BadRequestException("ERROR: Unknown DELETE URI type");
         }
-    }    
+    }
 

@@ -1,30 +1,38 @@
-    private EntrySet getEntry() throws Exception {
+    private EntrySet getEntry() throws HandlerException {
         MemberURI muri = (MemberURI)getUri();
         String handle = muri.getHandle();
         String username = muri.getUsername();
-               
-        List perms;
-        if (username == null) {
-            //get all entries for the given website handle
-            WebsiteData wd = getRoller().getUserManager().getWebsiteByHandle(handle);
-            if (wd == null) {
-                throw new Exception("ERROR: Unknown weblog handle: " + handle);
-            }
-            perms = getRoller().getUserManager().getAllPermissions(wd);
-        } else {
-            //get all entries for the given website handle & username
-            WebsiteData wd = getRoller().getUserManager().getWebsiteByHandle(handle);
-            if (wd == null) {
-                throw new Exception("ERROR: Unknown weblog handle: " + handle);
-            }
-            UserData ud = getRoller().getUserManager().getUser(username);
-            if (ud == null) {
-                throw new Exception("ERROR: Unknown user name: " + username);
-            }
-            perms = Collections.singletonList(getRoller().getUserManager().getPermissions(wd, ud));
-        }
         
-        EntrySet es = toMemberEntrySet((PermissionsData[])perms.toArray(new PermissionsData[0]));
-        return es;
+        try {
+            List perms;
+            if (username == null) {
+                //get all entries for the given website handle
+                WebsiteData wd = getRoller().getUserManager().getWebsiteByHandle(handle);
+                if (wd == null) {
+                    throw new NotFoundException("ERROR: Unknown weblog handle: " + handle);
+                }
+                perms = getRoller().getUserManager().getAllPermissions(wd);
+            } else {
+                //get all entries for the given website handle & username
+                WebsiteData wd = getRoller().getUserManager().getWebsiteByHandle(handle);
+                if (wd == null) {
+                    throw new NotFoundException("ERROR: Unknown weblog handle: " + handle);
+                }
+                UserData ud = getRoller().getUserManager().getUser(username);
+                if (ud == null) {
+                    throw new NotFoundException("ERROR: Unknown user name: " + username);
+                }
+                PermissionsData pd = getRoller().getUserManager().getPermissions(wd, ud);
+                if (pd == null) {
+                    throw new NotFoundException("ERROR: Could not get permissions for user name: " + username + ", handle: " + handle);
+                }
+                perms = Collections.singletonList(pd);
+            }
+            
+            EntrySet es = toMemberEntrySet((PermissionsData[])perms.toArray(new PermissionsData[0]));
+            return es;
+        } catch (RollerException re) {
+            throw new InternalException("ERROR: Could not get entry for handle: " + handle + ", username: " + username, re);
+        }
     }
 

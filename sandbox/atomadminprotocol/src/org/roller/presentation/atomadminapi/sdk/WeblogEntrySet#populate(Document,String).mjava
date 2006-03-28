@@ -1,8 +1,8 @@
-    private void populate(Document d, String urlPrefix) throws Exception {
+    private void populate(Document d, String urlPrefix) throws MissingElementException, UnexpectedRootElementException {
         Element root = d.getRootElement();
         String rootName = root.getName();
         if (!rootName.equals(Tags.WEBLOGS)) {
-            throw new Exception("ERROR: Expected root name: " + Tags.WEBLOGS + ", root name was: " + rootName);
+            throw new UnexpectedRootElementException("ERROR: Unexpected root element", Tags.WEBLOGS, rootName);
         }
         List weblogs = root.getChildren(WeblogEntry.Tags.WEBLOG, Service.NAMESPACE);
         if (weblogs != null) {

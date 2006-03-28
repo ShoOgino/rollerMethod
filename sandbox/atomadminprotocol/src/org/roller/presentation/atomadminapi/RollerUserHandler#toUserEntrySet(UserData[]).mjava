@@ -2,15 +2,15 @@
         if (uds == null) {
             throw new NullPointerException("ERROR: Null user data not allowed");
         }
-        UserEntrySet ues = new UserEntrySet(getUrlPrefix());        
+        UserEntrySet ues = new UserEntrySet(getUrlPrefix());
         
-        List entries = new ArrayList();        
+        List entries = new ArrayList();
         for (int i = 0; i < uds.length; i++) {
             UserData ud = uds[i];
             Entry entry = toUserEntry(ud);
-            entries.add(entry);            
+            entries.add(entry);
         }
-        ues.setEntries((Entry[])entries.toArray(new Entry[0]));  
+        ues.setEntries((Entry[])entries.toArray(new Entry[0]));
         
         return ues;
     }

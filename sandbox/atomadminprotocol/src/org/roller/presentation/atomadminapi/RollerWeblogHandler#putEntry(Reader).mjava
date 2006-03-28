@@ -1,20 +1,30 @@
-    private EntrySet putEntry(Reader r) throws Exception {
-        SAXBuilder builder = new SAXBuilder();
-        Document collectionDoc = builder.build(r);
-        EntrySet c = new WeblogEntrySet(collectionDoc, getUrlPrefix());
-        
-        if (c.getEntries().length > 1) {
-            throw new Exception("ERROR: Cannot put >1 entries per request");
-        }
-        if (c.getEntries().length > 0) {
-            WeblogEntry entry = (WeblogEntry)c.getEntries()[0];
-            if (entry.getHandle() != null && !entry.getHandle().equals(getUri().getEntryId())) {
-                throw new Exception("ERROR: Content handle does not match URI handle");
+    private EntrySet putEntry(Reader r) throws HandlerException {
+        try {
+            SAXBuilder builder = new SAXBuilder();
+            Document collectionDoc = builder.build(r);
+            EntrySet c = new WeblogEntrySet(collectionDoc, getUrlPrefix());
+            
+            if (c.getEntries().length > 1) {
+                throw new BadRequestException("ERROR: Cannot put >1 entries per request");
             }
-            entry.setHandle(getUri().getEntryId());
-            updateWeblogs((WeblogEntrySet)c);
+            if (c.getEntries().length > 0) {
+                WeblogEntry entry = (WeblogEntry)c.getEntries()[0];
+                if (entry.getHandle() != null && !entry.getHandle().equals(getUri().getEntryId())) {
+                    throw new BadRequestException("ERROR: Content handle does not match URI handle");
+                }
+                entry.setHandle(getUri().getEntryId());
+                updateWeblogs((WeblogEntrySet)c);
+            }
+            
+            return c;
+        } catch (JDOMException je) {
+            throw new InternalException("ERROR: Could not post collection", je);
+        } catch (IOException ioe) {
+            throw new InternalException("ERROR: Could not post collection", ioe);
+        } catch (MissingElementException mee) {
+            throw new InternalException("ERROR: Could not post collection", mee);
+        } catch (UnexpectedRootElementException uree) {
+            throw new InternalException("ERROR: Could not post collection", uree);            
         }
-        
-        return c;
     }
 

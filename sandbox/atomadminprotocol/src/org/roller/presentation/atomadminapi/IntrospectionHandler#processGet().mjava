@@ -1,8 +1,8 @@
-    public EntrySet processGet() throws Exception {
+    public EntrySet processGet() throws HandlerException {
         if (getUri().isIntrospection()) {
             return getIntrospection(getRequest());
         } else {
-            throw new Exception("ERROR: Unknown GET URI type");
+            throw new BadRequestException("ERROR: Unknown GET URI type");
         }
     }
 

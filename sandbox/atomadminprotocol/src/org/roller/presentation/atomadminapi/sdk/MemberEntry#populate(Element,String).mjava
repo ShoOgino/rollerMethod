@@ -1,15 +1,15 @@
-    private void populate(Element e, String urlPrefix) throws Exception {
+    private void populate(Element e, String urlPrefix) throws MissingElementException {
         // name
         Element nameElement = e.getChild(Tags.NAME, NAMESPACE);
         if (nameElement == null) {
-            throw new Exception("ERROR: Missing element: " + Tags.NAME);
+            throw new MissingElementException("ERROR: Missing element", e.getName(), Tags.NAME);
         }
         setName(nameElement.getText());
                 
         // handle
         Element handleElement = e.getChild(Tags.HANDLE, NAMESPACE);
         if (handleElement == null) {
-            throw new Exception("ERROR: Missing element: " + Tags.HANDLE);
+            throw new MissingElementException("ERROR: Missing element", e.getName(), Tags.HANDLE);
         }
         setHandle(handleElement.getText());
 
@@ -19,7 +19,7 @@
         // password
         Element permissionElement = e.getChild(Tags.PERMISSION, NAMESPACE);
         if (permissionElement == null) {
-            throw new Exception("ERROR: Missing element: " + Tags.PERMISSION);
+            throw new MissingElementException("ERROR: Missing element", e.getName(), Tags.PERMISSION);
         }
         setPermission(permissionElement.getText());
     }

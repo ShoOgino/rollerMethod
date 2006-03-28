@@ -1,5 +1,5 @@
     /** Get a Handler object implementation based on the given request. */
-    public static Handler getHandler(HttpServletRequest req) throws Exception {
+    public static Handler getHandler(HttpServletRequest req) throws HandlerException {
          URI uri = new URI(req);
          Handler handler;
          
@@ -14,10 +14,10 @@
              } else if (type.equals(EntrySet.Types.MEMBERS)) {
                  handler = new RollerMemberHandler(req);                  
              } else {
-                 throw new Exception("ERROR: Unknown type: " + uri.getType());
+                 throw new BadRequestException("ERROR: Unknown type: " + uri.getType());
              }
          } else {
-             throw new Exception("ERROR: Unknown URI type");
+             throw new BadRequestException("ERROR: Unknown URI type");
          }
     
          return handler;

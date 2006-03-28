@@ -1,8 +1,20 @@
-    private void updatePermissionsData(PermissionsData pd, MemberEntry entry) {
+    private void updatePermissionsData(PermissionsData pd, MemberEntry entry) throws HandlerException {
         // only permission can be updated
         
         if (entry.getPermission() != null) {
             pd.setPermissionMask(stringToMask(entry.getPermission()));
         }
+        
+        try {
+            UserData ud = getRoller().getUserManager().getUser(entry.getName());
+            CacheManager.invalidate(ud);
+            WebsiteData wd = getRoller().getUserManager().getWebsiteByHandle(entry.getHandle());
+            CacheManager.invalidate(wd);
+            
+            pd.save();
+        } catch (RollerException re) {
+            throw new InternalException("ERROR: Could not update permissions data", re);
+        }
+        
     }
 

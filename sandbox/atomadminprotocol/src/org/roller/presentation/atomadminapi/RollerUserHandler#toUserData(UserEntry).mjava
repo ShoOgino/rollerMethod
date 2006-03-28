@@ -1,5 +1,8 @@
     /** This object, as a Roller UserData object. */
     public UserData toUserData(UserEntry ue) {
+        if (ue == null) {
+            throw new NullPointerException("ERROR: Null user entry not allowed");
+        }
         UserData ud = new UserData();
         ud.setUserName(ue.getName());
         ud.setFullName(ue.getFullName());
@@ -10,5 +13,5 @@
         ud.setDateCreated(ue.getDateCreated());
         
         return ud;
-    }    
+    }
 

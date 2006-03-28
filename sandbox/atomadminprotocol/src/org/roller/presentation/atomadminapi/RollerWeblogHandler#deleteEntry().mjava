@@ -1,4 +1,4 @@
-    private EntrySet deleteEntry() throws Exception {
+    private EntrySet deleteEntry() throws HandlerException {
         try {
             UserManager mgr = getRoller().getUserManager();
             
@@ -7,11 +7,11 @@
             
             WebsiteData wd = mgr.getWebsiteByHandle(getUri().getEntryId());
             if (wd == null) {
-                throw new Exception("ERROR: Uknown weblog handle: " + getUri().getEntryId());
+                throw new NotFoundException("ERROR: Uknown weblog handle: " + getUri().getEntryId());
             }
             
-            WebsiteData[] wds = new WebsiteData[] { wd };            
-            EntrySet es = toWeblogEntrySet(wds);            
+            WebsiteData[] wds = new WebsiteData[] { wd };
+            EntrySet es = toWeblogEntrySet(wds);
             
             wd.remove();
             getRoller().commit();
@@ -20,7 +20,7 @@
             
             return es;
         } catch (RollerException re) {
-            throw new Exception(re);
+            throw new InternalException("ERROR: Could not delete entry: " + getUri().getEntryId(),re);
         }
     }
 

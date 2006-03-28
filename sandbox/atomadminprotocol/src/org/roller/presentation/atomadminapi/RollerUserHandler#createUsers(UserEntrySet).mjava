@@ -1,4 +1,4 @@
-    private void createUsers(UserEntrySet c) throws Exception {
+    private void createUsers(UserEntrySet c) throws HandlerException {
         try {
             UserManager mgr = getRoller().getUserManager();
             
@@ -12,7 +12,7 @@
             }
             getRoller().commit();
         } catch (RollerException re) {
-            throw new Exception(re);
+            throw new InternalException("ERROR: Could not create users: " + c, re);
         }
     }
 

@@ -3,7 +3,7 @@
             throw new NullPointerException("ERROR: Null website datas not allowed");
         }
         
-        WeblogEntrySet wes = new WeblogEntrySet(getUrlPrefix());        
+        WeblogEntrySet wes = new WeblogEntrySet(getUrlPrefix());
         List entries = new ArrayList();
         for (int i = 0; i < wds.length; i++) {
             WeblogEntry we = toWeblogEntry(wds[i]);
@@ -12,5 +12,5 @@
         wes.setEntries((Entry[])entries.toArray(new Entry[0]));
         
         return wes;
-    }    
+    }
 

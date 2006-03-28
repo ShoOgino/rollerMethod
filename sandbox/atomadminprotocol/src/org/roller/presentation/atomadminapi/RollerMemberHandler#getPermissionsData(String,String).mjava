@@ -1,4 +1,4 @@
-    private PermissionsData getPermissionsData(String handle, String username) throws Exception {
+    private PermissionsData getPermissionsData(String handle, String username) throws HandlerException {
         try {
             UserManager mgr = getRoller().getUserManager();
             UserData ud = mgr.getUser(username);
@@ -7,7 +7,7 @@
             
             return pd;
         } catch (RollerException re) {
-            throw new Exception(re);
-        }        
-    }    
+            throw new InternalException("ERROR: Could not get permissions data", re);
+        }
+    }
 

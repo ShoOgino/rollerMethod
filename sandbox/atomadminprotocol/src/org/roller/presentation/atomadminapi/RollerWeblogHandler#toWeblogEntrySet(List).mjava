@@ -4,7 +4,7 @@
         }
         
         WeblogEntrySet wes = new WeblogEntrySet(getUrlPrefix());
-        List entries = new ArrayList();        
+        List entries = new ArrayList();
         for (Iterator i = uds.iterator(); i.hasNext(); ) {
             UserData ud = (UserData)i.next();
             List permissions = ud.getPermissions();
@@ -16,7 +16,7 @@
             }
         }
         wes.setEntries((Entry[])entries.toArray(new Entry[0]));
-
+        
         return wes;
     }
 

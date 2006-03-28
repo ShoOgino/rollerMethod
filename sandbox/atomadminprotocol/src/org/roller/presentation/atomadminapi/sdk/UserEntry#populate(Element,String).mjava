@@ -1,8 +1,8 @@
-    private void populate(Element e, String urlPrefix) throws Exception {
+    private void populate(Element e, String urlPrefix) throws MissingElementException {
         // name
         Element nameElement = e.getChild(Tags.NAME, NAMESPACE);
         if (nameElement == null) {
-            throw new Exception("ERROR: Missing element: " + Tags.NAME);
+            throw new MissingElementException("ERROR: Missing element", e.getName(), Tags.NAME);
         }
         setName(nameElement.getText());
         
@@ -13,35 +13,35 @@
         // full name
         Element fullNameElement = e.getChild(Tags.FULL_NAME, NAMESPACE);
         if (fullNameElement == null) {
-            throw new Exception("ERROR: Missing element: " + Tags.FULL_NAME);
+            throw new MissingElementException("ERROR: Missing element", e.getName(), Tags.FULL_NAME);
         }
         setFullName(fullNameElement.getText());
         
         // password
         Element passwordElement = e.getChild(Tags.PASSWORD, NAMESPACE);
         if (passwordElement == null) {
-            throw new Exception("ERROR: Missing element: " + Tags.PASSWORD);
+            throw new MissingElementException("ERROR: Missing element", e.getName(), Tags.PASSWORD);
         }
         setPassword(passwordElement.getText());
         
         // locale
         Element localeElement = e.getChild(Tags.LOCALE, Service.NAMESPACE);
         if (localeElement == null) {
-            throw new Exception("ERROR: Missing element: " + Tags.LOCALE);
+            throw new MissingElementException("ERROR: Missing element", e.getName(), Tags.LOCALE);
         }
         setLocale(localeElement.getText());
         
         // timezone
         Element tzElement = e.getChild(Tags.TIMEZONE, Service.NAMESPACE);
         if (tzElement == null) {
-            throw new Exception("ERROR: Missing element: " + Tags.TIMEZONE);
+            throw new MissingElementException("ERROR: Missing element", e.getName(), Tags.TIMEZONE);
         }
         setTimezone(tzElement.getText());
         
         // email address
         Element emailElement = e.getChild(Tags.EMAIL_ADDRESS, Service.NAMESPACE);
         if (emailElement == null) {
-            throw new Exception("ERROR: Missing element: " + Tags.EMAIL_ADDRESS);
+            throw new MissingElementException("ERROR: Missing element", e.getName(), Tags.EMAIL_ADDRESS);
         }
         setEmailAddress(emailElement.getText());
         

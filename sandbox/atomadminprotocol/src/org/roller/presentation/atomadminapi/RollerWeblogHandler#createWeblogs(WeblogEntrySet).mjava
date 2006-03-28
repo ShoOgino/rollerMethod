@@ -1,4 +1,4 @@
-    private void createWeblogs(WeblogEntrySet c) throws Exception {
+    private void createWeblogs(WeblogEntrySet c) throws HandlerException {
         try {
             UserManager mgr = getRoller().getUserManager();
             
@@ -12,11 +12,11 @@
                 WeblogEntry entry = (WeblogEntry)c.getEntries()[i];
                 UserData user = mgr.getUser(entry.getCreatingUser());
                 WebsiteData wd = mgr.createWebsite(user, pages, entry.getHandle(), entry.getName(), entry.getDescription(), entry.getEmailAddress(), DEFAULT_THEME, entry.getLocale(), entry.getTimezone());
-                wd.save();                
+                wd.save();
             }
             getRoller().commit();
         } catch (RollerException re) {
-            throw new Exception(re);
+            throw new InternalException("ERROR: Could not create weblogs: " + c, re);
         }
     }
 
