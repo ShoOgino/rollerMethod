@@ -1,7 +1,7 @@
     /** Get a Handler object implementation based on the given request. */
     public static Handler getHandler(HttpServletRequest req) throws HandlerException {
         
-         boolean enabled = RollerRuntimeConfig.getBooleanProperty(
+         boolean enabled = RollerConfig.getBooleanProperty(
               "webservices.adminprotocol.enable");
          if (!enabled) { 
               throw new NotAllowedException("ERROR: Admin protocol not enabled");    
