@@ -1,0 +1,22 @@
+    public String applyPagePlugins(
+        WeblogEntryData entry, Map pagePlugins, String str, boolean singleEntry) { 
+        String ret = str;
+        WeblogEntryData copy = new WeblogEntryData(entry);        
+        List entryPlugins = copy.getPluginsList();
+        if (entryPlugins != null && !entryPlugins.isEmpty()) {    
+            Iterator iter = entryPlugins.iterator();
+            while (iter.hasNext()) {
+                String key = (String)iter.next();
+                PagePlugin pagePlugin = (PagePlugin)pagePlugins.get(key);
+                if (pagePlugin != null) {
+                    if (!(singleEntry && pagePlugin.getSkipOnSingleEntry())) {
+                        ret = pagePlugin.render(entry, ret);
+                    }
+                } else {
+                    mLogger.error("ERROR: plugin not found: " + key);
+                }
+            }
+        }
+        return ret;
+    }
+
