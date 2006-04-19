@@ -26,7 +26,15 @@
                     form.setEnabled(wd.getEnabled());
                     form.copyTo(wd, request.getLocale());
                     
-                    umgr.saveWebsite(wd);
+                    // ROL-485: comments not be allowed on inactive weblogs
+                    wd.setAllowComments(wd.getActive());
+                    
+                    // ROL-1050: apply comment defaults to existing entries
+                    boolean applyCommentDefaults = form.isApplyCommentDefaults();
+                        //BooleanUtils.toBoolean(form.isApplyCommentDefaults());
+                    
+                    umgr.saveWebsite(wd, applyCommentDefaults);  
+                    
                     RollerFactory.getRoller().getRefererManager().applyRefererFilters(wd);
                     
                     RollerFactory.getRoller().flush();
@@ -35,7 +43,7 @@
                         new ActionMessage("websiteSettings.savedChanges"));
                     
                     request.getSession().setAttribute(
-                            RollerRequest.WEBSITEID_KEY, form.getId());
+                        RollerRequest.WEBSITEID_KEY, form.getId());
                     
                     // Clear cache entries associated with website
                     CacheManager.invalidate(wd);
