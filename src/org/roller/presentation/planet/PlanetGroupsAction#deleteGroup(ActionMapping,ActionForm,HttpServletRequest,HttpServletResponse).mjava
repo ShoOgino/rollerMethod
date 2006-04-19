@@ -16,10 +16,10 @@
                 {
                     PlanetGroupData group = planet.getGroup(form.getHandle());
                     planet.deleteGroup(group);
-                    roller.commit();
+                    roller.flush();
+                    // TODO: why release here?
                     roller.release();
                     
-                    roller.begin();
                     form.doReset(mapping, request);
                     
                     request.setAttribute("model", 

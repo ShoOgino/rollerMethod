@@ -25,7 +25,7 @@
         // if we didn't get the Template from a theme then look in the db
         if(template == null) {
             UserManager userMgr = RollerFactory.getRoller().getUserManager();
-            template = userMgr.retrievePage(this.defaultPageId);
+            template = userMgr.getPage(this.defaultPageId);
         }
         
         if(template != null)

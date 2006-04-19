@@ -1,12 +1,16 @@
     /** 
-     * Retrieve all properties 
+     * Retrieve all properties.
+     *
+     * Properties are returned in a Map to make them easy to lookup.  The Map
+     * uses the property name as the key and the RollerPropertyData object
+     * as the value.
      */
     public Map getProperties() throws RollerException {
         
         HashMap props = new HashMap();
         
         try {
-            Session session = ((HibernateStrategy) mStrategy).getSession();
+            Session session = strategy.getSession();
             Criteria criteria = session.createCriteria(RollerPropertyData.class);
             List list = criteria.list();
             

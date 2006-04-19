@@ -1,10 +1,9 @@
-    /** 
-     * @hibernate.set lazy="false" inverse="true" cascade="delete" 
+    /**
+     * @hibernate.set lazy="false" inverse="true" cascade="all-delete-orphan"
      * @hibernate.collection-key column="userid"
      * @hibernate.collection-one-to-many class="org.roller.pojos.RoleData"
      */
-    public Set getRoles() 
-    {
+    public Set getRoles() {
         return roles;
     }
 

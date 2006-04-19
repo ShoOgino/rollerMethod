@@ -8,7 +8,7 @@
         
         Roller roller = RollerFactory.getRoller();
         WeblogManager weblogMgr = roller.getWeblogManager();
-        WeblogEntryData entry = weblogMgr.retrieveWeblogEntry(postid);
+        WeblogEntryData entry = weblogMgr.getWeblogEntry(postid);
         
         validate(entry.getWebsite().getHandle(), userid,password);
         
@@ -52,8 +52,11 @@
                 entry.setCategory(cd);
             }
             
-            entry.save();
-            roller.commit();
+            // save the entry
+            weblogMgr.saveWeblogEntry(entry);
+            roller.flush();
+            
+            // notify cache
             flushPageCache(entry.getWebsite());
             
             // TODO: Roller timestamps need better than 1 second accuracy

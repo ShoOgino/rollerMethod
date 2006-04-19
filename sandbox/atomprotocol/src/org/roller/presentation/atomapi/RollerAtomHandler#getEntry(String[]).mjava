@@ -5,7 +5,7 @@
         if (pathInfo.length == 3) // URI is /blogname/entries/entryid
         {
             WeblogEntryData entry =
-                mRoller.getWeblogManager().retrieveWeblogEntry(pathInfo[2]);
+                mRoller.getWeblogManager().getWeblogEntry(pathInfo[2]);
             if (entry != null && !canView(entry)) {
                 throw new Exception("ERROR not authorized to view entry");
             } else if (entry != null) {

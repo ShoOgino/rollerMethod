@@ -1,8 +1,0 @@
-    public void removeWeblogEntry(String id) throws RollerException
-    {
-        Roller mRoller = RollerFactory.getRoller();
-		mRoller.getRefererManager().removeReferersForEntry(id);
-		removeCommentsForEntry( id );
-        mStrategy.remove(id, WeblogEntryData.class);
-    }
-

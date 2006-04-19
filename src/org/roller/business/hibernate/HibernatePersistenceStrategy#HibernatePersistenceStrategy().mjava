@@ -1,0 +1,13 @@
+    /**
+     * Construct using Hibernate Session Factory.
+     */
+    public HibernatePersistenceStrategy() throws Exception {
+        
+        log.debug("Initializing Hibernate SessionFactory");
+        
+        Configuration config = new Configuration();
+        config.configure("/hibernate.cfg.xml");
+        this.sessionFactory = config.buildSessionFactory();
+        
+    }
+

@@ -20,7 +20,7 @@
             Roller roller = RollerFactory.getRoller();
             RollerContext rctx= RollerContext.getRollerContext();
             WeblogManager wmgr= roller.getWeblogManager();
-            entry = wmgr.retrieveWeblogEntry(entryid);
+            entry = wmgr.getWeblogEntry(entryid);
             
             RollerSession rses = RollerSession.getRollerSession(request);
             if (rses.isUserAuthorizedToAuthor(entry.getWebsite())) {

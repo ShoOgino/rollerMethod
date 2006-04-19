@@ -24,7 +24,7 @@
         try {
             Roller roller = RollerFactory.getRoller();
             UserManager userMgr = roller.getUserManager();
-            WeblogTemplate page = userMgr.retrievePage(templateType);
+            WeblogTemplate page = userMgr.getPage(templateType);
             
             if ( null == page ) {
                 throw new XmlRpcException(UNKNOWN_EXCEPTION,"Template not found");

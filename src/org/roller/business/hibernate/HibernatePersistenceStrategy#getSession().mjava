@@ -1,0 +1,18 @@
+    /**
+     * Get persistence session on current thread.
+     *
+     * This will open a new Session if one is not already open, otherwise
+     * it will return the already open Session.
+     */
+    protected Session getSession() {
+        
+        log.debug("Opening Hibernate Session");
+        
+        // get Hibernate Session and make sure we are in a transaction
+        // this will join existing Session/Transaction if they exist
+        Session session = sessionFactory.getCurrentSession();
+        session.beginTransaction();
+        
+        return session;
+    }
+

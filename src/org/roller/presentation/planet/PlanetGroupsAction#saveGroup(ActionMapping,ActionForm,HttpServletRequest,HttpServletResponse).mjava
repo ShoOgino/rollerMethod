@@ -25,8 +25,8 @@
                         group = planet.getGroupById(form.getId());
                     }                
                     form.copyTo(group, request.getLocale());
-                    planet.saveGroup(group);           
-                    roller.commit();
+                    planet.saveGroup(group);  
+                    roller.flush();
 
                     ActionMessages messages = new ActionMessages();
                     messages.add(null, 

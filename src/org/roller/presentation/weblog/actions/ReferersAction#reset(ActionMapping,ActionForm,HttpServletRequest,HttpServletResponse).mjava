@@ -14,7 +14,7 @@
                 RefererManager refmgr = RollerFactory.getRoller().getRefererManager();
                 WebsiteData website = rreq.getWebsite();
                 refmgr.clearReferrers(website);
-                RollerFactory.getRoller().commit();
+                RollerFactory.getRoller().flush();
                 
                 CacheManager.invalidate(website);
             }

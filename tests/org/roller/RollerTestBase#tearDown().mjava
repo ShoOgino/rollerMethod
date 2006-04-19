@@ -7,13 +7,10 @@
      */
     public void tearDown() throws Exception {
         try {
-            getRoller().begin(UserData.SYSTEM_USER);
             PlanetManager planet = getRoller().getPlanetManager();
             PlanetConfigData config = planet.getConfiguration();
             PlanetGroupData group = planet.getGroup("external");
-            group.remove();
-            config.remove();
-            getRoller().commit();
+            planet.deleteGroup(group);
             
             deleteWebsite(testUsername);
         } catch (RollerException e) {

@@ -6,7 +6,6 @@
         
         // Loop to create weblogs
         for (int i=0; i<mBlogCount; i++) {
-            getRoller().begin(UserData.SYSTEM_USER);
             
             UserData ud = createUser(
                     "testuser"+i,         // userName
@@ -26,11 +25,10 @@
             mCalendar.setTime(new Date());
             
             // create categories
-            website  = umgr.retrieveWebsite(website.getId());
+            website  = umgr.getWebsite(website.getId());
             WeblogCategoryData rootCat = wmgr.getRootWeblogCategory(website);
             createCategoryPostsAndComments(0, wmgr, ud, website, rootCat);
             
-            getRoller().commit();
         }
         
         // commit all the objects

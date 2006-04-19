@@ -1,20 +1,22 @@
     /**
      * Use raw SQL because Hibernate can't handle the query.
      */
-    protected int getHits(WebsiteData website, String type)
-    throws RollerException {
+    protected int getHits(WebsiteData website, String type) throws RollerException {
         int hits = 0;
-        if (mLogger.isDebugEnabled()) {
-            mLogger.debug("getHits: " + website.getName());
+        if (log.isDebugEnabled()) {
+            log.debug("getHits: " + website.getName());
         }
         
         Object[] args = { Boolean.TRUE, website.getId() };
         Type[] types = { Hibernate.BOOLEAN, Hibernate.STRING };
         
         // For a query like this, Hibernate returns a list of lists
-        Session session = ((HibernateStrategy)mStrategy).getSession();
+        Session session = ((HibernatePersistenceStrategy)strategy).getSession();
         List results;
         try {
+            // begin transaction
+            this.strategy.getSession().beginTransaction();
+            
             Query q = session.createQuery(
                     "select sum(h.dayHits),sum(h.totalHits) from h in class " +
                     "org.roller.pojos.RefererData " +

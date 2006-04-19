@@ -1,14 +1,11 @@
-    public List getAllQueueEntries() throws RollerException
-    {
-        Session session = ((HibernateStrategy) persistenceStrategy).getSession();
-        Criteria criteria = session.createCriteria(PingQueueEntryData.class);
-        criteria.addOrder(Order.asc("entryTime"));
-        try
-        {
+    public List getAllQueueEntries() throws RollerException {
+        try {
+            Session session = ((HibernatePersistenceStrategy) strategy).getSession();
+            Criteria criteria = session.createCriteria(PingQueueEntryData.class);
+            criteria.addOrder(Order.asc("entryTime"));
+            
             return criteria.list();
-        }
-        catch (HibernateException e)
-        {
+        } catch (HibernateException e) {
             throw new RollerException("ERROR retrieving queue entries.", e);
         }
     }

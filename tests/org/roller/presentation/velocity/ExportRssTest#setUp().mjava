@@ -4,14 +4,7 @@
      */
     public void setUp() throws Exception
     {
-        super.setUp();
-
-        getRoller().begin(UserData.SYSTEM_USER);
-        //RollerConfigData  rollerConfig = rollerContext.getRollerConfig();
-        //oldUploadPath = rollerConfig.getUploadPath();
-        //rollerConfig.setUploadPath("build/junk");
-        //rollerConfig.save();
-        getRoller().commit();        
+        super.setUp();       
 
         MockServletContext mContext = getMockFactory().getMockServletContext();
         mContext.setRealPath("build/junk", "./build/junk");

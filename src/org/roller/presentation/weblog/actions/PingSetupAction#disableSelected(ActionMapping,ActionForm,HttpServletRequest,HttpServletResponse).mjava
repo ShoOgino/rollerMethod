@@ -15,7 +15,7 @@
                 return mapping.findForward("access-denied");
             }
             autoPingMgr.removeAutoPing(pingTarget, rreq.getWebsite());
-            RollerFactory.getRoller().commit();
+            RollerFactory.getRoller().flush();
         
             return view(mapping, form, req, res);
         }

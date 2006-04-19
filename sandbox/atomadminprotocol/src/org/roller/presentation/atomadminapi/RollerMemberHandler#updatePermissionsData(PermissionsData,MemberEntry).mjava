@@ -11,7 +11,9 @@
             WebsiteData wd = getRoller().getUserManager().getWebsiteByHandle(entry.getHandle());
             CacheManager.invalidate(wd);
             
-            pd.save();
+            UserManager mgr = getRoller().getUserManager();
+            mgr.storePermissions(pd);
+            
         } catch (RollerException re) {
             throw new InternalException("ERROR: Could not update permissions data", re);
         }

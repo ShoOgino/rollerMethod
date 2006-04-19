@@ -1,19 +1,15 @@
-    //------------------------------------------------------------------------
-    public void importBookmarks(String fileName) throws Exception
-    {
-        getRoller().begin(UserData.SYSTEM_USER);
+    public void importBookmarks(String fileName) throws Exception {
+        
         InputStream fis = this.getClass().getResourceAsStream(fileName);
         getRoller().getBookmarkManager().importBookmarks(
-            mWebsite, "ZZZ_imports_ZZZ", fileToString(fis));
-        getRoller().commit();
-        getRoller().release();
-
+                testWeblog, "ZZZ_imports_ZZZ", fileToString(fis));
+        TestUtils.endSession(true);
+        
         FolderData fd = null;
-
-        getRoller().begin(UserData.SYSTEM_USER);
-        fd = getRoller().getBookmarkManager().getFolder(mWebsite, "ZZZ_imports_ZZZ");
+        
+        fd = getRoller().getBookmarkManager().getFolder(testWeblog, "ZZZ_imports_ZZZ");
         assertTrue("no bookmarks found", fd.retrieveBookmarks(true).size() > 0 );
-        fd.remove();
-        getRoller().commit();
+        getRoller().getBookmarkManager().removeFolder(fd);
+        TestUtils.endSession(true);
     }
 

@@ -1,0 +1,8 @@
+    public BookmarkData getBookmark(String id) throws RollerException {
+        BookmarkData bd = (BookmarkData)
+        strategy.load(id, BookmarkData.class);
+        // TODO: huh?  why do we do this?
+        if (bd != null) bd.setBookmarkManager(this);
+        return bd;
+    }
+

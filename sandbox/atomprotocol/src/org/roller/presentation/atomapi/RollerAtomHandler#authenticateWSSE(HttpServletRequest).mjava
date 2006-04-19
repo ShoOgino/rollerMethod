@@ -31,7 +31,7 @@
         }
         String digest = null;
         try {
-            UserData user = mRoller.getUserManager().getUser(userName);
+            UserData user = mRoller.getUserManager().getUserByUsername(userName);
             digest = WSSEUtilities.generateDigest(
                     WSSEUtilities.base64Decode(nonce),
                     created.getBytes("UTF-8"),

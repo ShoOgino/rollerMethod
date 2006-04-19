@@ -1,78 +1,61 @@
     public List getWeblogEntries(
-                    WebsiteData website, 
-                    Date    startDate, 
-                    Date    endDate, 
-                    String  catName, 
-                    String  status, 
-                    String  sortby,
-                    Integer maxEntries) throws RollerException
-    {
-        WeblogCategoryData cat = null;        
-        if (StringUtils.isNotEmpty(catName) && website != null)
-        {    
-           cat = getWeblogCategoryByPath(website, catName);
-           if (cat == null) catName = null;
+            WebsiteData website,
+            Date    startDate,
+            Date    endDate,
+            String  catName,
+            String  status,
+            String  sortby,
+            Integer maxEntries) throws RollerException {
+        WeblogCategoryData cat = null;
+        if (StringUtils.isNotEmpty(catName) && website != null) {
+            cat = getWeblogCategoryByPath(website, catName);
+            if (cat == null) catName = null;
         }
-        if (catName != null && catName.trim().equals("/"))
-        {
+        if (catName != null && catName.trim().equals("/")) {
             catName = null;
         }
-                    
-        try
-        {
-            Session session = ((HibernateStrategy)mStrategy).getSession();
+        
+        try {
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
             Criteria criteria = session.createCriteria(WeblogEntryData.class);
             
-            if (website != null)
-            {
+            if (website != null) {
                 criteria.add(Expression.eq("website", website));
-            }
-            else 
-            {
+            } else {
                 criteria.createAlias("website","w");
                 criteria.add(Expression.eq("w.enabled", Boolean.TRUE));
             }
-    
-            if (startDate != null)
-            {
+            
+            if (startDate != null) {
                 criteria.add(
-                    Expression.ge("pubTime", startDate));
+                        Expression.ge("pubTime", startDate));
             }
             
-            if (endDate != null)
-            {
+            if (endDate != null) {
                 criteria.add(
-                    Expression.le("pubTime", endDate));
+                        Expression.le("pubTime", endDate));
             }
-                            
-            if (cat != null && website != null)
-            {
+            
+            if (cat != null && website != null) {
                 criteria.add(Expression.eq("category", cat));
             }
             
-            if (status != null)
-            {
+            if (status != null) {
                 criteria.add(Expression.eq("status", status));
-            }        
-                    
-            if (sortby != null && sortby.equals("updateTime"))
-            {
-                criteria.addOrder(Order.desc("updateTime"));
             }
-            else
-            {
+            
+            if (sortby != null && sortby.equals("updateTime")) {
+                criteria.addOrder(Order.desc("updateTime"));
+            } else {
                 criteria.addOrder(Order.desc("pubTime"));
             }
             
-            if (maxEntries != null) 
-            {
+            if (maxEntries != null) {
                 criteria.setMaxResults(maxEntries.intValue());
-            }            
-            return criteria.list();                                             
-        }
-        catch (HibernateException e)
-        {
-            mLogger.error(e);
+            }
+            return criteria.list();
+        } catch (HibernateException e) {
+            log.error(e);
             throw new RollerException(e);
         }
     }

@@ -10,12 +10,11 @@
         
         // TODO: decide what to do about authentication, is WSSE going to fly?
         //mUsername = authenticateWSSE(request);
-        mUsername = authenticateBASIC(request);
+        String mUsername = authenticateBASIC(request);
         
         if (mUsername != null) {
             try {
-                UserData user = mRoller.getUserManager().getUser(mUsername);
-                mRoller.setUser(user);
+                this.user = mRoller.getUserManager().getUserByUsername(mUsername);
             } catch (Exception e) {
                 mLogger.error("ERROR: setting user", e);
             }

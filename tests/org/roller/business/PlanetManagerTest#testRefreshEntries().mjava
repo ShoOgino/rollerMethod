@@ -1,61 +1,39 @@
-    public void testRefreshEntries()
-    {
-        try 
+    public void testRefreshEntries() throws Exception {
+        
+        PlanetManager planet = RollerFactory.getRoller().getPlanetManager();
+        
+        String feed_url1 = "http://rollerweblogger.org/rss/roller";
+        
         {
-            Roller roller = getRoller();
-            assertNotNull(roller);       
-            PlanetManager planet = roller.getPlanetManager();
-            assertNotNull(planet);     
-            String feed_url1 = "http://rollerweblogger.org/rss/roller";
-            {   
-                roller.begin();
-                PlanetConfigData config = new PlanetConfigData();
-                //config.setCacheDir(cacheDir); 
-                config.setTitle("test_title");
-                config.setAdminEmail("test_admin_email");
-                planet.saveConfiguration(config);
-                
-                PlanetGroupData group = new PlanetGroupData();
-                group.setDescription("test_group_desc");
-                group.setHandle("test_handle");
-                group.setTitle("test_title");
-                planet.saveGroup(group);
-                
-                PlanetSubscriptionData sub = new PlanetSubscriptionData();
-                sub.setFeedUrl(feed_url1);
-                planet.saveSubscription(sub);
-                
-                group.addSubscription(sub); 
-                planet.saveGroup(group);
-                
-                roller.commit();
-            }        
-            {   
-                roller.begin();
-                planet.refreshEntries();
-                roller.commit();
-                
-                roller.begin();
-                PlanetSubscriptionData sub = planet.getSubscription(feed_url1);
-                int entriesSize = sub.getEntries().size();
-          
-                PlanetGroupData group = planet.getGroup("test_handle");
-                assertNotNull(group);
-                
-                planet.deleteGroup(group);
-                planet.deleteSubscription(sub);
-                
-                PlanetConfigData config = planet.getConfiguration();
-                config.remove();
-                roller.commit();
-
-                assertTrue(entriesSize > 0);
-            }
+            PlanetGroupData group = new PlanetGroupData();
+            group.setDescription("test_group_desc");
+            group.setHandle("test_handle");
+            group.setTitle("test_title");
+            planet.saveGroup(group);
+            
+            PlanetSubscriptionData sub = new PlanetSubscriptionData();
+            sub.setFeedUrl(feed_url1);
+            planet.saveSubscription(sub);
+            
+            group.addSubscription(sub);
+            planet.saveGroup(group);
+            TestUtils.endSession(true);
         }
-        catch (Exception e) 
         {
-            e.printStackTrace();
-            fail();
+            planet.refreshEntries();
+            TestUtils.endSession(true);
+            
+            PlanetSubscriptionData sub = planet.getSubscription(feed_url1);
+            int entriesSize = sub.getEntries().size();
+            
+            PlanetGroupData group = planet.getGroup("test_handle");
+            assertNotNull(group);
+            
+            planet.deleteGroup(group);
+            planet.deleteSubscription(sub);
+            TestUtils.endSession(true);
+            
+            assertTrue(entriesSize > 0);
         }
     }
 

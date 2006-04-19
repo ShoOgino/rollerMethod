@@ -5,13 +5,12 @@
         // authenticated client posted a weblog entry
         String handle = pathInfo[0];
         WebsiteData website = mRoller.getUserManager().getWebsiteByHandle(handle);
-        UserData creator = mRoller.getUserManager().getUser(mUsername);
         if (canEdit(website)) {
             // Save it and commit it
+            WeblogManager mgr = mRoller.getWeblogManager();
             WeblogEntryData rollerEntry = createRollerEntry(website, entry);
-            rollerEntry.setCreator(creator);
-            rollerEntry.save();
-            mRoller.commit();
+            rollerEntry.setCreator(this.user);
+            mgr.saveWeblogEntry(rollerEntry);
             
             // Throttle one entry per second
             // (MySQL timestamp has 1 sec resolution, damnit)

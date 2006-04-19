@@ -26,8 +26,9 @@
             {
                 throw new RollerException("Missing ping target id.");
             }
-            pingTargetMgr.removePingTarget(pingTargetId);
-            RollerFactory.getRoller().commit();
+            PingTargetData ping = pingTargetMgr.getPingTarget(pingTargetId);
+            pingTargetMgr.removePingTarget(ping);
+            RollerFactory.getRoller().flush();
             return view(mapping, form, req, res);
         }
         catch (Exception e)

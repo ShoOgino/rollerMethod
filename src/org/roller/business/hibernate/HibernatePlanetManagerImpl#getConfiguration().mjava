@@ -1,7 +1,7 @@
     public PlanetConfigData getConfiguration() throws RollerException {
         PlanetConfigData config = null;
         try {
-            Session session = ((HibernateStrategy)strategy).getSession();
+            Session session = ((HibernatePersistenceStrategy)strategy).getSession();
             Criteria criteria = session.createCriteria(PlanetConfigData.class);
             criteria.setMaxResults(1);
             List list = criteria.list();

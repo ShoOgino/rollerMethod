@@ -8,8 +8,11 @@
         while (entries.hasNext())
         {
             BookmarkData bookmark = (BookmarkData) entries.next();
-            bookmark.setFolder(dest);
-            bookmark.save();
+            
+            // just add bookmarks to new folder
+            // this breaks the old folder/bkmrk relationship
+            // so it's not necessary to explicitly remove
+            dest.addBookmark(bookmark);
         }
     }
 

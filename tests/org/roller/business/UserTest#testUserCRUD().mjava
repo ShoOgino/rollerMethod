@@ -1,0 +1,54 @@
+    /**
+     * Test basic persistence operations ... Create, Update, Delete.
+     */
+    public void testUserCRUD() throws Exception {
+        
+        UserManager mgr = RollerFactory.getRoller().getUserManager();
+        UserData user = null;
+        
+        UserData testUser = new UserData();
+        testUser.setUserName("testUser");
+        testUser.setPassword("password");
+        testUser.setFullName("Test User");
+        testUser.setEmailAddress("TestUser@dev.null");
+        testUser.setLocale("en_US");
+        testUser.setTimeZone("America/Los_Angeles");
+        testUser.setDateCreated(new java.util.Date());
+        testUser.setEnabled(Boolean.TRUE);
+        
+        // make sure test user does not exist
+        user = mgr.getUserByUsername(testUser.getUserName());
+        assertNull(user);
+        
+        // add test user
+        mgr.addUser(testUser);
+        String id = testUser.getId();
+        TestUtils.endSession(true);
+        
+        // make sure test user exists
+        user = null;
+        user = mgr.getUser(id);
+        assertNotNull(user);
+        assertEquals(testUser, user);
+        
+        // modify user and save
+        user.setFullName("testtesttest");
+        mgr.saveUser(user);
+        TestUtils.endSession(true);
+        
+        // make sure changes were saved
+        user = null;
+        user = mgr.getUser(id);
+        assertNotNull(user);
+        assertEquals("testtesttest", user.getFullName());
+        
+        // remove test user
+        mgr.removeUser(user);
+        TestUtils.endSession(true);
+        
+        // make sure user no longer exists
+        user = null;
+        user = mgr.getUser(id);
+        assertNull(user);
+    }
+

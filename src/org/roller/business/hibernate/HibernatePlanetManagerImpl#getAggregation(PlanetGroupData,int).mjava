@@ -1,11 +1,13 @@
     public synchronized List getAggregation(PlanetGroupData group, int maxEntries)
-    throws RollerException {
+            throws RollerException {
+        
         List ret = null;
         try {
             String groupHandle = (group == null) ? NO_GROUP : group.getHandle();
             long startTime = System.currentTimeMillis();
             Session session =
-                    ((HibernateStrategy)strategy).getSession();
+                    ((HibernatePersistenceStrategy)strategy).getSession();
+            
             if (group != null) {
                 Query query = session.createQuery(
                         "select entry from org.roller.pojos.PlanetEntryData entry "
@@ -34,10 +36,10 @@
             lastUpdatedByGroup.put(groupHandle, retLastUpdated);
             
             long endTime = System.currentTimeMillis();
-            logger.info("Generated aggregation in "
+            log.info("Generated aggregation in "
                     +((endTime-startTime)/1000.0)+" seconds");
         } catch (Throwable e) {
-            logger.error("ERROR: building aggregation for: "+group, e);
+            log.error("ERROR: building aggregation for: "+group, e);
             throw new RollerException(e);
         }
         return ret;

@@ -3,25 +3,22 @@
      * Note: there should only be one!
      * @see org.roller.model.ConfigManager#getRollerConfig()
      */
-    public RollerConfigData getRollerConfig() throws RollerException
-    {
-        mLogger.error("Someone is trying to use the old config!!\n"+
+    public RollerConfigData getRollerConfig() throws RollerException {
+        
+        log.error("Someone is trying to use the old config!!\n"+
                 "This configuration mechanism has been deprecated\n"+
                 "You should see this message only once when you first upgrade\n"+
                 "your installation to roller 1.2\n\n"+
                 "If you continue to see this message please shoot us an email\n"+
-                "at roller-development@lists.sourceforge.net with some output\n"+
+                "at roller-dev@incubator.apache.org with some output\n"+
                 "from your log files.\n");
-        try
-        {
-            Session session = ((HibernateStrategy)mStrategy).getSession();
+        
+        try {
+            Session session = this.strategy.getSession();
             Criteria criteria = session.createCriteria(RollerConfigData.class);
             criteria.setMaxResults(1);
-            List list = criteria.list();
-            return list.size()!=0 ? (RollerConfigData)list.get(0) : null;
-        }
-        catch (HibernateException e)
-        {
+            return (RollerConfigData) criteria.uniqueResult();
+        } catch (HibernateException e) {
             throw new RollerException(e);
         }
     }

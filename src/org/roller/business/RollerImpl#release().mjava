@@ -1,23 +1,10 @@
     public void release() {
-        if (mFileManager != null) mFileManager.release();
-        if (mThreadManager != null) mThreadManager.release();
-        if (mPluginManager != null) mPluginManager.release();
-        if (mBookmarkManager != null) mBookmarkManager.release();
-        if (mRefererManager != null) mRefererManager.release();
-        if (mUserManager != null) mUserManager.release();
-        if (mWeblogManager != null) mWeblogManager.release();
-        if (mPingTargetManager != null) mPingTargetManager.release();
-        if (mPingQueueManager != null) mPingQueueManager.release();
-        if (mAutoPingManager != null) mAutoPingManager.release();
-        
-        try
-        {
-            if (mStrategy != null) mStrategy.release(); 
-        }
-        catch (Throwable e)
-        {
-            mLogger.error(
-            "Exception with mSupport.release() [" + e + "]", e);
+        try {
+            if (fileManager != null) fileManager.release();
+            if (threadManager != null) threadManager.release();
+            if (pluginManager != null) pluginManager.release();
+        } catch(Throwable e) {
+            mLogger.error("Error calling Roller.release()", e);
         }
     }
 

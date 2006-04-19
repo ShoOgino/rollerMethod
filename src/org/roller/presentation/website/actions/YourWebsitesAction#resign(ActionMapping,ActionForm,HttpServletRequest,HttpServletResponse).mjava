@@ -6,18 +6,21 @@
             throws Exception
     {
         YourWebsitesForm form = (YourWebsitesForm)actionForm;
-        Roller roller = RollerFactory.getRoller();
+        
         RollerSession rses = RollerSession.getRollerSession(request);
         UserData user = rses.getAuthenticatedUser();
         RollerRequest rreq = RollerRequest.getRollerRequest(request);
         WebsiteData website = rreq.getWebsite();
-        PermissionsData perms = 
-            roller.getUserManager().getPermissions(website, user);
+        
+        UserManager userMgr = RollerFactory.getRoller().getUserManager();
+        PermissionsData perms = userMgr.getPermissions(website, user);
+        
         if (perms != null) 
         {
-            // TODO: notify website members that user has resigned  
-            perms.remove();
-            roller.commit();
+            // TODO ROLLER_2.0: notify website members that user has resigned
+            // TODO EXCEPTIONS: better exception handling
+            userMgr.removePermissions(perms);
+            RollerFactory.getRoller().flush();
         }
         
         ActionMessages msgs = new ActionMessages();

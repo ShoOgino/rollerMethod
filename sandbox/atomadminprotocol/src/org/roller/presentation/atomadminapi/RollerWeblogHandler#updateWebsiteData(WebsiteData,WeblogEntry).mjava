@@ -16,7 +16,9 @@
         }
         
         try {
-            wd.save();
+            UserManager mgr = getRoller().getUserManager();
+            mgr.storeWebsite(wd);
+            
             CacheManager.invalidate(wd);
         } catch (RollerException re) {
             throw new InternalException("ERROR: Could not update website data", re);

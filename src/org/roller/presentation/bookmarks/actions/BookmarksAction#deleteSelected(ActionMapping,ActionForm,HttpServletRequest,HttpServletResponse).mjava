@@ -30,20 +30,22 @@
             {
                 for (int i = 0; i < folders.length; i++)
                 {
-                    FolderData fd = bmgr.retrieveFolder(folders[i]);
-                    fd.remove(); // removes child folders and bookmarks too
+                    FolderData fd = bmgr.getFolder(folders[i]);
+                    bmgr.removeFolder(fd); // removes child folders and bookmarks too
                 }
             }
-
+            
+            BookmarkData bookmark = null;
             String bookmarks[] = form.getSelectedBookmarks();
             if (null != bookmarks)
             {
                 for (int j = 0; j < bookmarks.length; j++)
                 {
-                    bmgr.removeBookmark(bookmarks[j]);
+                    bookmark = bmgr.getBookmark(bookmarks[j]);
+                    bmgr.removeBookmark(bookmark);
                 }
             }
-            roller.commit();
+            RollerFactory.getRoller().flush();
                 
             CacheManager.invalidate(website);
 

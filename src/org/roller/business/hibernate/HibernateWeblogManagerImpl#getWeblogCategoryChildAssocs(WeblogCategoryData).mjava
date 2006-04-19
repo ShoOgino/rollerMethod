@@ -1,16 +1,12 @@
-    public List getWeblogCategoryChildAssocs(WeblogCategoryData cat) 
-        throws RollerException
-    {
-        try
-        {
-            Session session = ((HibernateStrategy)mStrategy).getSession();
+    public List getWeblogCategoryChildAssocs(WeblogCategoryData cat)
+    throws RollerException {
+        try {
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
             Criteria criteria = session.createCriteria(WeblogCategoryAssoc.class);
             criteria.add(Expression.eq("ancestorCategory", cat));
             criteria.add(Expression.eq("relation", Assoc.PARENT));
             return criteria.list();
-        }
-        catch (HibernateException e)
-        {
+        } catch (HibernateException e) {
             throw new RollerException(e);
         }
     }

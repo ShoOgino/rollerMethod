@@ -12,7 +12,7 @@
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             WeblogTemplateForm form = (WeblogTemplateForm)actionForm;
             UserManager mgr = RollerFactory.getRoller().getUserManager();
-            WeblogTemplate data = mgr.retrievePage(form.getId());
+            WeblogTemplate data = mgr.getPage(form.getId());
             WebsiteData website = data.getWebsite();
             
             RollerSession rses = RollerSession.getRollerSession(request);
@@ -23,9 +23,9 @@
 
                 validateLink( data );
 
-                mgr.storePage( data );
-                RollerFactory.getRoller().commit();
-
+                mgr.savePage( data );
+                RollerFactory.getRoller().flush();
+                
                 // set the (possibly) new link back into the Form bean
                 ((WeblogTemplateForm)actionForm).setLink( data.getLink() );
 
@@ -35,8 +35,6 @@
                                 data.getName()));
                 saveMessages(request, uiMessages);
 
-                UserData user = rses.getAuthenticatedUser();
-                //PageCacheFilter.removeFromCache(request, data.getWebsite());
                 CacheManager.invalidate(data);
                 
                 BasePageModel pageModel = new BasePageModel(

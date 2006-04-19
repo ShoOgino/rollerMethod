@@ -31,7 +31,7 @@
         try {
             Roller roller = RollerFactory.getRoller();
             WeblogManager weblogMgr = roller.getWeblogManager();
-            UserData user = roller.getUserManager().getUser(userid);
+            UserData user = roller.getUserManager().getUserByUsername(userid);
             Timestamp current =
                     new Timestamp(System.currentTimeMillis());
             
@@ -59,8 +59,11 @@
                 entry.setCategory(website.getBloggerCategory());
             }
             
-            entry.save();
-            roller.commit();
+            // save the entry
+            weblogMgr.saveWeblogEntry(entry);
+            roller.flush();
+            
+            // notify cache
             flushPageCache(entry.getWebsite());
             
             // TODO: Roller timestamps need better than 1 second accuracy

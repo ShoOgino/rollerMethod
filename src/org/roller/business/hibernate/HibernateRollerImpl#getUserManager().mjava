@@ -1,12 +1,10 @@
-    /** 
+    /**
      * @see org.roller.model.Roller#getUserManager()
      */
-    public UserManager getUserManager() throws RollerException
-    {
-        if ( mUserManager == null ) 
-        {
-            mUserManager = new HibernateUserManagerImpl(mStrategy);
+    public UserManager getUserManager() throws RollerException {
+        if ( userManager == null ) {
+            userManager = new HibernateUserManagerImpl(strategy);
         }
-        return mUserManager;
+        return userManager;
     }
 

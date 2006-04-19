@@ -1,5 +1,11 @@
-    public void tearDown() throws Exception
-    {
-        // No need to clean up, we are using mocks
+    public void tearDown() throws Exception {
+        
+        try {
+            TestUtils.teardownWeblog(testWeblog.getId());
+            TestUtils.teardownUser(testUser.getId());
+            TestUtils.endSession(true);
+        } catch (Exception ex) {
+            log.error(ex);
+        }
     }
 

@@ -13,7 +13,7 @@
             WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
             UserManager umgr = RollerFactory.getRoller().getUserManager();
             
-            WebsiteData wd = umgr.retrieveWebsite(form.getId());
+            WebsiteData wd = umgr.getWebsite(form.getId());
             
             // Set website in request, so subsequent action gets it
             RollerRequest.getRollerRequest(request).setWebsite(wd);
@@ -26,9 +26,10 @@
                     form.setEnabled(wd.getEnabled());
                     form.copyTo(wd, request.getLocale());
                     
-                    wd.save();
+                    umgr.saveWebsite(wd);
                     RollerFactory.getRoller().getRefererManager().applyRefererFilters(wd);
-                    RollerFactory.getRoller().commit();
+                    
+                    RollerFactory.getRoller().flush();
                     
                     messages.add(null,
                         new ActionMessage("websiteSettings.savedChanges"));

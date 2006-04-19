@@ -1,12 +1,10 @@
     public WeblogCategoryData getRootWeblogCategory(WebsiteData website)
-        throws RollerException
-    {
+    throws RollerException {
         if (website == null)
             throw new RollerException("website is null");
-
-        try
-        {
-            Session session = ((HibernateStrategy)mStrategy).getSession();
+        
+        try {
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
             Criteria criteria = session.createCriteria(WeblogCategoryAssoc.class);
             criteria.createAlias("category","c");
             
@@ -14,13 +12,11 @@
             criteria.add(Expression.isNull("ancestorCategory"));
             criteria.add(Expression.eq("relation", WeblogCategoryAssoc.PARENT));
             
-            criteria.setMaxResults(1);    
+            criteria.setMaxResults(1);
             
             List list = criteria.list();
             return ((WeblogCategoryAssoc)list.get(0)).getCategory();
-        }
-        catch (HibernateException e)
-        {
+        } catch (HibernateException e) {
             throw new RollerException(e);
         }
     }

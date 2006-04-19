@@ -8,7 +8,7 @@
             throws Exception {
         WebsiteFormEx form = (WebsiteFormEx)actionForm;
         UserManager umgr = RollerFactory.getRoller().getUserManager();
-        WebsiteData website = umgr.retrieveWebsite(form.getId());
+        WebsiteData website = umgr.getWebsite(form.getId());
         ActionForward forward = mapping.findForward("removeWebsite.page");
         request.setAttribute("model", new WebsitePageModel(
                 "websiteRemove.title", request, response, mapping, website));

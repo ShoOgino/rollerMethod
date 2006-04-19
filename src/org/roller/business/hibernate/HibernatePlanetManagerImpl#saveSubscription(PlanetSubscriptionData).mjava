@@ -1,8 +1,7 @@
-    public void saveSubscription(PlanetSubscriptionData sub)
-    throws RollerException {
+    public void saveSubscription(PlanetSubscriptionData sub) throws RollerException {
         PlanetSubscriptionData existing = getSubscription(sub.getFeedUrl());
         if (existing == null || (existing.getId().equals(sub.getId()))) {
-            sub.save();
+            this.strategy.store(sub);
         } else {
             throw new RollerException("ERROR: duplicate feed URLs not allowed");
         }

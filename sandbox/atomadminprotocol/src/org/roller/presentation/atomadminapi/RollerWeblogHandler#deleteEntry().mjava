@@ -2,9 +2,6 @@
         try {
             UserManager mgr = getRoller().getUserManager();
             
-            // Need system user to create website
-            getRoller().setUser(UserData.SYSTEM_USER);
-            
             WebsiteData wd = mgr.getWebsiteByHandle(getUri().getEntryId());
             if (wd == null) {
                 throw new NotFoundException("ERROR: Uknown weblog handle: " + getUri().getEntryId());
@@ -13,8 +10,7 @@
             WebsiteData[] wds = new WebsiteData[] { wd };
             EntrySet es = toWeblogEntrySet(wds);
             
-            wd.remove();
-            getRoller().commit();
+            mgr.removeWebsite(wd);
             
             CacheManager.invalidate(wd);
             

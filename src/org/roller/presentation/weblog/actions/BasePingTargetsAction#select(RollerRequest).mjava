@@ -14,7 +14,7 @@
             throw new RollerException("Missing ping target id: " + pingTargetId);
         }
 
-        PingTargetData pingTarget = pingTargetMgr.retrievePingTarget(pingTargetId);
+        PingTargetData pingTarget = pingTargetMgr.getPingTarget(pingTargetId);
         if (pingTarget == null)
         {
             throw new RollerException("No such ping target id: " + pingTargetId);

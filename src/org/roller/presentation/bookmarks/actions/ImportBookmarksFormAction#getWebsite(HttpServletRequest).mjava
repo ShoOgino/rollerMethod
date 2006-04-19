@@ -9,7 +9,7 @@
         String folderid = request.getParameter(RollerRequest.FOLDERID_KEY);
         if (website == null && folderid != null) { 
             BookmarkManager bm = RollerFactory.getRoller().getBookmarkManager();
-            FolderData folder = bm.retrieveFolder(folderid);     
+            FolderData folder = bm.getFolder(folderid);     
             website = folder.getWebsite();
         }           
         if (website != null) {

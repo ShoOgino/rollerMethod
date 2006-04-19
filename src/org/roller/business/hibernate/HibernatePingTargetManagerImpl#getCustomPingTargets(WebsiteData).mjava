@@ -1,18 +1,14 @@
     /**
      * @see org.roller.model.PingTargetManager#getCustomPingTargets(org.roller.pojos.WebsiteData)
      */
-    public List getCustomPingTargets(WebsiteData website) throws RollerException
-    {
-        try
-        {
-            Session session = ((HibernateStrategy) persistenceStrategy).getSession();
+    public List getCustomPingTargets(WebsiteData website) throws RollerException {
+        try {
+            Session session = ((HibernatePersistenceStrategy) strategy).getSession();
             Criteria criteria = session.createCriteria(PingTargetData.class);
             criteria.add(Expression.eq("website", website));
             criteria.addOrder(Order.asc("name"));
             return criteria.list();
-        }
-        catch (HibernateException e)
-        {
+        } catch (HibernateException e) {
             throw new RollerException(e);
         }
     }

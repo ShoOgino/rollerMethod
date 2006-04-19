@@ -30,7 +30,7 @@
             String pingTargetId = pingTargetForm.getId();
             if (pingTargetId != null && pingTargetId.length() > 0)
             {
-                pingTarget = pingTargetMgr.retrievePingTarget(
+                pingTarget = pingTargetMgr.getPingTarget(
                         pingTargetForm.getId());
                 if (pingTarget == null) 
                     throw new RollerException(
@@ -52,8 +52,8 @@
 
             // Appears to be ok.  
             // Save it, commit and return refreshed view of target list.
-            pingTarget.save();
-            RollerFactory.getRoller().commit();
+            pingTargetMgr.savePingTarget(pingTarget);
+            RollerFactory.getRoller().flush();
             
             ActionMessages msgs = new ActionMessages();
             msgs.add(ActionMessages.GLOBAL_MESSAGE, 

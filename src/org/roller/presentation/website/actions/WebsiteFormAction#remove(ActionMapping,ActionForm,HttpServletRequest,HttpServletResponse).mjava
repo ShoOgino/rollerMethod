@@ -9,14 +9,15 @@
         try {
             UserManager umgr = RollerFactory.getRoller().getUserManager();
             WebsiteFormEx form = (WebsiteFormEx)actionForm;
-            WebsiteData website = umgr.retrieveWebsite(form.getId());
+            WebsiteData website = umgr.getWebsite(form.getId());
             
             RollerSession rses = RollerSession.getRollerSession(request);
             if ( rses.isUserAuthorizedToAdmin(website) ) {
-                website.remove();
-                RollerFactory.getRoller().commit();
                 
-                //PageCacheFilter.removeFromCache(request, website);
+                // remove website
+                umgr.removeWebsite(website);
+                RollerFactory.getRoller().flush();
+                
                 CacheManager.invalidate(website);
                 
                 actionForm.reset(mapping, request);

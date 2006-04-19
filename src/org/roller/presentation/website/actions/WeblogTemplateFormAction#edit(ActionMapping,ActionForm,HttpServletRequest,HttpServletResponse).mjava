@@ -20,12 +20,8 @@
                 pageModel.setWebsite(pd.getWebsite());
                 request.setAttribute("model", pageModel); 
                 
-                UserData ud = rses.getAuthenticatedUser();
                 WeblogTemplateForm pf = (WeblogTemplateForm)actionForm;
                 pf.copyFrom(pd, request.getLocale());
-
-                //PageCacheFilter.removeFromCache( request, pd.getWebsite() );
-                //CacheManager.invalidate(pd);
                 
                 addModelObjects(request, response, mapping, pd.getWebsite());
             }

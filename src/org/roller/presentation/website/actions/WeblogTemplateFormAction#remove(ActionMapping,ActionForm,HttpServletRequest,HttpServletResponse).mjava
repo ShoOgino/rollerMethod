@@ -13,19 +13,25 @@
         {
             UserManager mgr = RollerFactory.getRoller().getUserManager();
             WeblogTemplateForm form = (WeblogTemplateForm)actionForm;
-            WeblogTemplate template = mgr.retrievePage(form.getId());
+            WeblogTemplate template = mgr.getPage(form.getId());
             WebsiteData website = template.getWebsite();
             
             RollerSession rses = RollerSession.getRollerSession(request);          
             if ( rses.isUserAuthorizedToAdmin(website) )
             {
-                mgr.removePageSafely(template.getId());
-                RollerFactory.getRoller().commit();
-
-                UserData user = rses.getAuthenticatedUser();
-                //PageCacheFilter.removeFromCache(request, template.getWebsite());
-                CacheManager.invalidate(template);
+                if(!template.isRequired()) {
                     
+                    mgr.removePage(template);
+                    RollerFactory.getRoller().flush();
+                    
+                    // notify cache
+                    CacheManager.invalidate(template);
+                } else {
+                    
+                    // someone trying to remove a required template
+                    throw new RollerException("Cannot remove required page");
+                }
+                
                 addModelObjects(
                         request, response, mapping, template.getWebsite());
                 actionForm.reset(mapping, request);

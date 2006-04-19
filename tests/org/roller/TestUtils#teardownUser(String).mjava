@@ -1,0 +1,13 @@
+    /**
+     * Convenience method for removing a user.
+     */
+    public static void teardownUser(String id) throws Exception {
+        
+        // lookup the user
+        UserManager mgr = RollerFactory.getRoller().getUserManager();
+        UserData user = mgr.getUser(id);
+        
+        // remove the user
+        mgr.removeUser(user);
+    }
+

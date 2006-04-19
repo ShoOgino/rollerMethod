@@ -9,7 +9,7 @@
         try {
             WeblogEntryFormEx wf = (WeblogEntryFormEx)actionForm;
             UserManager umgr = RollerFactory.getRoller().getUserManager();
-            WebsiteData site = umgr.retrieveWebsite(wf.getWebsiteId());
+            WebsiteData site = umgr.getWebsite(wf.getWebsiteId());
             RollerSession rses =
                     RollerSession.getRollerSession(request);
             if ( rses.isUserAuthorized(site) ) {

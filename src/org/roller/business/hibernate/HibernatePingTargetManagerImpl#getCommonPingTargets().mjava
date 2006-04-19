@@ -1,20 +1,16 @@
     /**
      * @see org.roller.model.PingTargetManager#getCommonPingTargets()
      */
-    public List getCommonPingTargets() throws RollerException
-    {
-        try
-        {
-            Session session = ((HibernateStrategy) persistenceStrategy).getSession();
+    public List getCommonPingTargets() throws RollerException {
+        try {
+            Session session = ((HibernatePersistenceStrategy) strategy).getSession();
             Criteria criteria = session.createCriteria(PingTargetData.class);
             criteria.add(Expression.isNull("website"));
             criteria.addOrder(Order.asc("name"));
             return criteria.list();
-        }
-        catch (HibernateException e)
-        {
+        } catch (HibernateException e) {
             throw new RollerException(e);
         }
-
+        
     }
 

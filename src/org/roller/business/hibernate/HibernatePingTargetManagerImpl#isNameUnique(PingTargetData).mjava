@@ -1,0 +1,28 @@
+    public boolean isNameUnique(PingTargetData pingTarget) throws RollerException {
+        String name = pingTarget.getName();
+        if (name == null || name.trim().length() == 0) return false;
+        
+        String id = pingTarget.getId();
+        
+        // Determine the set of "brother" targets (custom or common) among which this name should be unique.
+        List brotherTargets = null;
+        WebsiteData website = pingTarget.getWebsite();
+        if (website == null) {
+            brotherTargets = getCommonPingTargets();
+        } else {
+            brotherTargets = getCustomPingTargets(website);
+        }
+        
+        // Within that set of targets, fail if there is a target with the same name and that target doesn't
+        // have the same id.
+        for (Iterator i = brotherTargets.iterator(); i.hasNext();) {
+            PingTargetData brother = (PingTargetData) i.next();
+            // Fail if it has the same name but not the same id.
+            if (brother.getName().equals(name) && (id == null || !brother.getId().equals(id))) {
+                return false;
+            }
+        }
+        // No conflict found
+        return true;
+    }
+

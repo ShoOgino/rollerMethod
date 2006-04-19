@@ -19,20 +19,23 @@
         
         Roller roller = RollerFactory.getRoller();
         WeblogManager weblogMgr = roller.getWeblogManager();
-        WeblogEntryData entry = weblogMgr.retrieveWeblogEntry(postid);
+        WeblogEntryData entry = weblogMgr.getWeblogEntry(postid);
         
         validate(entry.getWebsite().getHandle(), userid, password);
         
         try {
-            entry.remove();
-            roller.commit();
+            // delete the entry
+            weblogMgr.removeWeblogEntry(entry);
+            roller.flush();
+            
+            // notify cache
             flushPageCache(entry.getWebsite());
         } catch (Exception e) {
             String msg = "ERROR in blogger.deletePost: "+e.getClass().getName();
             mLogger.error(msg,e);
-            e.printStackTrace();
             throw new XmlRpcException(UNKNOWN_EXCEPTION, msg);
         }
+        
         return true;
     }
 

@@ -16,7 +16,7 @@
             WeblogEntryData entry = rreq.getWeblogEntry();
             WeblogEntryFormEx form = (WeblogEntryFormEx)actionForm;
             if (entry == null && form.getId() != null) {
-                entry = wmgr.retrieveWeblogEntry(form.getId());
+                entry = wmgr.getWeblogEntry(form.getId());
             }
             if (entry == null) {
                 ResourceBundle resources = ResourceBundle.getBundle(

@@ -1,28 +1,19 @@
-    public Assoc getWeblogCategoryParentAssoc(WeblogCategoryData cat) 
-        throws RollerException
-    {
-        try
-        {
-            Session session = ((HibernateStrategy)mStrategy).getSession();
+    public Assoc getWeblogCategoryParentAssoc(WeblogCategoryData cat)
+    throws RollerException {
+        try {
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
             Criteria criteria = session.createCriteria(WeblogCategoryAssoc.class);
             criteria.add(Expression.eq("category", cat));
             criteria.add(Expression.eq("relation", Assoc.PARENT));
             List parents = criteria.list();
-            if (parents.size() > 1)
-            {
+            if (parents.size() > 1) {
                 throw new RollerException("ERROR: more than one parent");
-            }
-            else if (parents.size() == 1)
-            {
+            } else if (parents.size() == 1) {
                 return (Assoc) parents.get(0);
-            }
-            else
-            {
+            } else {
                 return null;
             }
-        }
-        catch (HibernateException e)
-        {
+        } catch (HibernateException e) {
             throw new RollerException(e);
         }
     }

@@ -9,7 +9,6 @@
         }
         
         try {
-            getRoller().setUser(UserData.SYSTEM_USER);
             PermissionsData pd = getPermissionsData(handle, username);
             PermissionsData[] pds;
             if (pd == null) {
@@ -17,8 +16,8 @@
             }
             pds = new PermissionsData[] { pd };
             
-            pd.remove();
-            getRoller().commit();
+            UserManager mgr = getRoller().getUserManager();
+            mgr.removePermissions(pd);
             
             UserData ud = getRoller().getUserManager().getUser(username);
             CacheManager.invalidate(ud);

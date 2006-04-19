@@ -1,0 +1,48 @@
+    /**
+     * Test lookup mechanisms ... id, all common, all custom for weblog
+     */
+    public void testPingTargetLookups() throws Exception {
+        
+        PingTargetManager mgr = RollerFactory.getRoller().getPingTargetManager();
+        PingTargetData ping = null;
+        
+        // create common ping
+        mgr.savePingTarget(testCommonPing);
+        String commonId = testCommonPing.getId();
+        TestUtils.endSession(true);
+        
+        // create custom ping
+        testCustomPing.setWebsite(testWeblog);
+        mgr.savePingTarget(testCustomPing);
+        String customId = testCustomPing.getId();
+        TestUtils.endSession(true);
+        
+        // lookup by id
+        ping = null;
+        ping = mgr.getPingTarget(commonId);
+        assertNotNull(ping);
+        assertEquals(testCommonPing.getName(), ping.getName());
+        
+        // lookup all common pings
+        List commonPings = mgr.getCommonPingTargets();
+        assertNotNull(commonPings);
+        assertEquals(1, commonPings.size());
+        
+        // lookup all custom pings for weblog
+        List customPings = mgr.getCustomPingTargets(testWeblog);
+        assertNotNull(customPings);
+        assertEquals(1, customPings.size());
+        
+        // delete common ping
+        ping = null;
+        ping = mgr.getPingTarget(commonId);
+        mgr.removePingTarget(ping);
+        TestUtils.endSession(true);
+        
+        // delete custom ping
+        ping = null;
+        ping = mgr.getPingTarget(customId);
+        mgr.removePingTarget(ping);
+        TestUtils.endSession(true);
+    }
+

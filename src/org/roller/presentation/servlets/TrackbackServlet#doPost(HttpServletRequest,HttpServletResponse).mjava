@@ -93,8 +93,9 @@
                         } 
 
                         // save, commit, send response
-                        comment.save();
-                        RollerFactory.getRoller().commit();
+                        WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+                        mgr.saveComment(comment);
+                        RollerFactory.getRoller().flush();
 
                         // Clear all caches associated with comment
                         CacheManager.invalidate(comment);

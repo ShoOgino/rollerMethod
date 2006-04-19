@@ -1,19 +1,14 @@
-    public void testSubscriptionEntryStorage() throws Exception
-    {
-        Roller roller = getRoller();
-        assertNotNull(roller);       
-        PlanetManager planet = roller.getPlanetManager();
-        assertNotNull(planet);        
+    public void testSubscriptionEntryStorage() throws Exception {
+        
+        PlanetManager planet = RollerFactory.getRoller().getPlanetManager();
         
         {   // save subscription
-            roller.begin();
             PlanetSubscriptionData sub = new PlanetSubscriptionData();
             sub.setFeedUrl("test_url");
             planet.saveSubscription(sub);
-            roller.commit();
+            TestUtils.endSession(true);
         }
         {   // retrieve subscription and add entries
-            roller.begin();
             PlanetSubscriptionData sub = planet.getSubscription("test_url");
             assertNotNull(sub);
             
@@ -22,7 +17,6 @@
             entry1.setCategoriesString("test,test2");
             entry1.setSubscription(sub);
             entry1.setPublished(new Date());
-            entry1.save();
             sub.addEntry(entry1);
             
             PlanetEntryData entry2 = new PlanetEntryData();
@@ -30,23 +24,53 @@
             entry2.setCategoriesString("test_cat1,test_cat2,test_cat3");
             entry2.setSubscription(sub);
             entry2.setPublished(new Date());
-            entry2.save();
             sub.addEntry(entry2);
             
-            roller.commit();
-        }
-        {   // get sub and check it's entries, remove it
-            roller.begin();
-            PlanetSubscriptionData sub = planet.getSubscription("test_url");
+            // save entries
+            planet.saveSubscription(sub);
+            TestUtils.endSession(true);
+            
+            // get sub and check it's entries
+            sub = planet.getSubscription("test_url");
             assertEquals(2, sub.getEntries().size());
-            planet.deleteSubscription(sub);
-            roller.commit();
         }
-        {   // make sure sub is gone
-            roller.begin();
+        {
+            // add a single entry
             PlanetSubscriptionData sub = planet.getSubscription("test_url");
+            assertNotNull(sub);
+            
+            PlanetEntryData entry3 = new PlanetEntryData();
+            entry3.setPermalink("test_entry3");
+            entry3.setCategoriesString("test,test3");
+            entry3.setSubscription(sub);
+            entry3.setPublished(new Date());
+            planet.saveEntry(entry3);
+            TestUtils.endSession(true);
+            
+            // verify entry was added
+            sub = planet.getSubscription("test_url");
+            assertEquals(3, sub.getEntries().size());
+        }
+        {
+            // purge entries
+            PlanetSubscriptionData sub = planet.getSubscription("test_url");
+            sub.purgeEntries();
+            planet.saveSubscription(sub);
+            TestUtils.endSession(true);
+            
+            // make sure they were removed
+            sub = planet.getSubscription("test_url");
+            assertEquals(0, sub.getEntries().size());
+        }
+        {
+            // remove test subscription
+            PlanetSubscriptionData sub = planet.getSubscription("test_url");
+            planet.deleteSubscription(sub);
+            TestUtils.endSession(true);
+            
+            // make sure sub is gone
+            sub = planet.getSubscription("test_url");
             assertNull(sub);
-            roller.rollback();
         }
     }
 

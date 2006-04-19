@@ -25,18 +25,14 @@
                 validateLink( data );
 
                 UserManager mgr = RollerFactory.getRoller().getUserManager();
-                mgr.storePage( data );
-                RollerFactory.getRoller().commit();
-
+                mgr.savePage( data );
+                RollerFactory.getRoller().flush();
+                
                 ActionMessages uiMessages = new ActionMessages();
                 uiMessages.add(ActionMessages.GLOBAL_MESSAGE, 
                         new ActionMessage("pagesForm.addNewPage.success", 
                                 data.getName()));
                 saveMessages(request, uiMessages);
-                
-                UserData user = rses.getAuthenticatedUser();
-                //PageCacheFilter.removeFromCache( request, website );
-                //CacheManager.invalidate(data);
                     
                 actionForm.reset(mapping,request);                
                 

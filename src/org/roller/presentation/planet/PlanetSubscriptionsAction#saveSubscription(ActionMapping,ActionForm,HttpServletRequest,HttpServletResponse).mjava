@@ -45,7 +45,7 @@
                     form.setGroupHandle(groupHandle);
                     planet.saveSubscription(sub);
                     planet.saveGroup(targetGroup);
-                    roller.commit();
+                    roller.flush();
                     
                     messages.add(null,
                             new ActionMessage("planetSubscription.success.saved"));

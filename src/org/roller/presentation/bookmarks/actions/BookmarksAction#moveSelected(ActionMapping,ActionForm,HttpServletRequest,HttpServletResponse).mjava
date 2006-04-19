@@ -34,19 +34,19 @@
     
                 // Move subfolders to new folder.
                 String folders[] = form.getSelectedFolders();
-                FolderData parent = bmgr.retrieveFolder(form.getMoveToFolderId());
+                FolderData parent = bmgr.getFolder(form.getMoveToFolderId());
                 if (null != folders)
                 {
                     for (int i = 0; i < folders.length; i++)
                     {
-                        FolderData fd = bmgr.retrieveFolder(folders[i]);
+                        FolderData fd = bmgr.getFolder(folders[i]);
     
                         // Don't move folder into itself.
                         if (    !fd.getId().equals(parent.getId())
                              && !parent.descendentOf(fd))
                         {
                             fd.setParent(parent);
-                            fd.save();
+                            bmgr.saveFolder(fd);
                         }
                         else 
                         {
@@ -62,16 +62,22 @@
                 {
                     for (int j = 0; j < bookmarks.length; j++)
                     {
-                        BookmarkData bd = bmgr.retrieveBookmark(bookmarks[j]);
+                        // maybe we should be using folder.addBookmark()?
+                        BookmarkData bd = bmgr.getBookmark(bookmarks[j]);
                         bd.setFolder(parent);
-                        bd.save();
+                        bmgr.saveBookmark(bd);
                     }
                 }
-                roller.commit();
+                RollerFactory.getRoller().flush();
 
                 CacheManager.invalidate(website);
                 
                 saveMessages(request, messages);
+                
+                // recreate model now that folder is altered
+                pageModel = new BookmarksPageModel(
+                        request, response, mapping, (BookmarksForm)actionForm);
+                request.setAttribute("model", pageModel);
             }
             catch (RollerException e)
             {

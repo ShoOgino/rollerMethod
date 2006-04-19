@@ -18,8 +18,8 @@
             RollerSession      rses = RollerSession.getRollerSession(request);
             UserManager     userMgr = roller.getUserManager();
             WeblogManager weblogMgr = roller.getWeblogManager();
-            UserData           ud  = userMgr.retrieveUser(form.getCreatorId());
-            WebsiteData       site = userMgr.retrieveWebsite(form.getWebsiteId());
+            UserData           ud  = userMgr.getUser(form.getCreatorId());
+            WebsiteData       site = userMgr.getWebsite(form.getWebsiteId());
             WeblogEntryData  entry = null;
             
             if ( rses.isUserAuthorizedToAuthor(site)
@@ -41,7 +41,7 @@
                     entry.setCreator(ud);
                     entry.setWebsite( site );
                 } else {
-                    entry = weblogMgr.retrieveWeblogEntry(form.getId());
+                    entry = weblogMgr.getWeblogEntry(form.getId());
                 }
                 
                 mLogger.debug("setting update time now");
@@ -75,9 +75,15 @@
                 
                 // Store value object (creates new or updates existing)
                 entry.setUpdateTime(new Timestamp(new Date().getTime()));
+                
+                // make sure we have an anchor value set
+                if(entry.getAnchor() == null || entry.getAnchor().trim().equals("")) {
+                    entry.setAnchor(weblogMgr.createAnchor(entry));
+                }
+
                 mLogger.debug("Saving entry");
-                entry.save();
-                RollerFactory.getRoller().commit();
+                weblogMgr.saveWeblogEntry(entry);
+                RollerFactory.getRoller().flush();
                 
                 mLogger.debug("Populating form");
                 form.copyFrom(entry, request.getLocale());
@@ -91,6 +97,11 @@
                 RollerRequest rreq = RollerRequest.getRollerRequest(request);
                 //PageCacheFilter.removeFromCache(request, entry.getWebsite());
                 CacheManager.invalidate(entry);
+                
+                // Queue applicable pings for this update.
+                if(entry.isPublished()) {
+                    RollerFactory.getRoller().getAutopingManager().queueApplicableAutoPings(entry);
+                }
                 
                 // Clean up session objects we used
                 HttpSession session = request.getSession(true);

@@ -1,92 +1,85 @@
-    /** 
-     * @see org.roller.model.UserManager#removeWebsiteContents(org.roller.pojos.WebsiteData)
+    /**
+     * convenience method for removing contents of a weblog.
+     *
+     * TODO BACKEND: use manager methods instead of queries here
      */
-    public void removeWebsiteContents(WebsiteData website) 
-        throws RollerException
-    {
-        try
-        {
-            Session session = ((HibernateStrategy)mStrategy).getSession();
-
-            //UserManager umgr = RollerFactory.getRoller().getUserManager();
-            BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
-            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
-            
-            // remove entries
-            Criteria entryQuery = session.createCriteria(WeblogEntryData.class);
-            entryQuery.add(Expression.eq("website", website));
-            List entries = entryQuery.list();
-            for (Iterator iter = entries.iterator(); iter.hasNext();) 
-            {
-                WeblogEntryData entry = (WeblogEntryData) iter.next();
-                System.out.println("Removing entry: " + entry.getId());
-                entry.remove();
-            }
-            
-            // remove folders (takes bookmarks with it)
-            FolderData rootFolder = bmgr.getRootFolder(website);
-            if (null != rootFolder)
-            { 
-                rootFolder.remove();
-                // Still cannot get all Bookmarks cleared!                
-                Iterator allFolders = bmgr.getAllFolders(website).iterator();
-                while (allFolders.hasNext()) 
-                {
-                    FolderData aFolder = (FolderData)allFolders.next();
-                    bmgr.deleteFolderContents(aFolder);
-                    aFolder.remove();
-                }
-            }
-                        
-            // remove associated pages
-            Criteria pageQuery = session.createCriteria(WeblogTemplate.class);
-            pageQuery.add(Expression.eq("website", website));
-            List pages = pageQuery.list();
-            for (Iterator iter = pages.iterator(); iter.hasNext();) 
-            {
-                WeblogTemplate page = (WeblogTemplate) iter.next();
-                page.remove();
-            }
-            
-            // remove associated referers
-            Criteria refererQuery = session.createCriteria(RefererData.class);
-            refererQuery.add(Expression.eq("website", website));
-            List referers = refererQuery.list();
-            for (Iterator iter = referers.iterator(); iter.hasNext();) 
-            {
-                RefererData referer = (RefererData) iter.next();
-                referer.remove();
-            }
-            
-            // remove categories
-            WeblogCategoryData rootCat = wmgr.getRootWeblogCategory(website);
-            if (null != rootCat)
-            {
-                rootCat.remove();
-//                Iterator it = wmgr.getWeblogCategories(website).iterator();
-//                while (it.hasNext()) 
-//                {
-//                     ((WeblogCategoryData)it.next()).remove();
-//                }
-            }
-
-            // Remove the website's ping queue entries
-            PingQueueManager pingQueueMgr = RollerFactory.getRoller().getPingQueueManager();
-            pingQueueMgr.removeQueueEntriesByWebsite(website);
-
-            // Remove the website's custom ping targets
-            PingTargetManager pingTargetMgr = RollerFactory.getRoller().getPingTargetManager();
-            pingTargetMgr.removeCustomPingTargets(website);
-
-            // Remove the website's auto ping configurations
-            AutoPingManager autoPingMgr = RollerFactory.getRoller().getAutopingManager();
-            List autopings = autoPingMgr.getAutoPingsByWebsite(website);
-            autoPingMgr.removeAutoPings(autopings);
-
+    private void removeWebsiteContents(WebsiteData website) 
+            throws HibernateException, RollerException {
+        
+        Session session = this.strategy.getSession();
+        
+        BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
+        WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+        
+        // Remove the website's ping queue entries
+        Criteria criteria = session.createCriteria(PingQueueEntryData.class);
+        criteria.add(Expression.eq("website", website));
+        List queueEntries = criteria.list();
+        
+        // Remove the website's auto ping configurations
+        AutoPingManager autoPingMgr = RollerFactory.getRoller().getAutopingManager();
+        List autopings = autoPingMgr.getAutoPingsByWebsite(website);
+        Iterator it = autopings.iterator();
+        while(it.hasNext()) {
+            this.strategy.remove((AutoPingData) it.next());
         }
-        catch (HibernateException e)
-        {
-            throw new RollerException(e);
+        
+        // Remove the website's custom ping targets
+        PingTargetManager pingTargetMgr = RollerFactory.getRoller().getPingTargetManager();
+        List pingtargets = pingTargetMgr.getCustomPingTargets(website);
+        it = pingtargets.iterator();
+        while(it.hasNext()) {
+            this.strategy.remove((PingTargetData) it.next());
         }
+        
+        // remove entries
+        Criteria entryQuery = session.createCriteria(WeblogEntryData.class);
+        entryQuery.add(Expression.eq("website", website));
+        List entries = entryQuery.list();
+        for (Iterator iter = entries.iterator(); iter.hasNext();) {
+            WeblogEntryData entry = (WeblogEntryData) iter.next();
+            
+            this.strategy.remove(entry);
+        }
+        
+        // remove associated referers
+        Criteria refererQuery = session.createCriteria(RefererData.class);
+        refererQuery.add(Expression.eq("website", website));
+        List referers = refererQuery.list();
+        for (Iterator iter = referers.iterator(); iter.hasNext();) {
+            RefererData referer = (RefererData) iter.next();
+            this.strategy.remove(referer);
+        }
+        
+                
+        // remove associated pages
+        Criteria pageQuery = session.createCriteria(WeblogTemplate.class);
+        pageQuery.add(Expression.eq("website", website));
+        List pages = pageQuery.list();
+        for (Iterator iter = pages.iterator(); iter.hasNext();) {
+            WeblogTemplate page = (WeblogTemplate) iter.next();
+            this.strategy.remove(page);
+        }
+        
+        // remove folders (including bookmarks)
+        FolderData rootFolder = bmgr.getRootFolder(website);
+        if (null != rootFolder) {
+            this.strategy.remove(rootFolder);
+            
+            // Still cannot get all Bookmarks cleared!
+            Iterator allFolders = bmgr.getAllFolders(website).iterator();
+            while (allFolders.hasNext()) {
+                FolderData aFolder = (FolderData)allFolders.next();
+                bmgr.removeFolderContents(aFolder);
+                this.strategy.remove(aFolder);
+            }
+        }
+        
+        // remove categories
+        WeblogCategoryData rootCat = wmgr.getRootWeblogCategory(website);
+        if (null != rootCat) {
+            this.strategy.remove(rootCat);
+        }
+        
     }
 

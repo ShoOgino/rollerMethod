@@ -14,10 +14,9 @@
             {
                 return mapping.findForward("access-denied");
             }
-            AutoPingData autoPing = autoPingMgr.createAutoPing(pingTarget, 
-                    rreq.getWebsite());
-            autoPingMgr.storeAutoPing(autoPing);
-            RollerFactory.getRoller().commit();
+            AutoPingData autoPing = new AutoPingData(null, pingTarget, rreq.getWebsite());
+            autoPingMgr.saveAutoPing(autoPing);
+            RollerFactory.getRoller().flush();
 
             return view(mapping, form, req, res);
         }

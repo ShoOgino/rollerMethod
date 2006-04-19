@@ -33,9 +33,9 @@
             Roller roller = RollerFactory.getRoller();
             UserManager userMgr = roller.getUserManager();
             
-            WeblogTemplate page = userMgr.retrievePage(templateType);
+            WeblogTemplate page = userMgr.getPage(templateType);
             page.setContents(templateData);
-            userMgr.storePage(page);
+            userMgr.savePage(page);
             flushPageCache(page.getWebsite());
             
             return true;

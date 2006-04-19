@@ -3,7 +3,6 @@
      */
     private void syncWebsites() {
         try {
-            roller.begin(UserData.SYSTEM_USER);
             List liveUserFeeds = new ArrayList();
             String baseURL = RollerRuntimeConfig.getProperty("site.absoluteurl");
             if (baseURL == null || baseURL.trim().length()==0) {
@@ -18,7 +17,7 @@
                     group.setHandle("all");
                     group.setTitle("all");
                     planet.saveGroup(group);
-                    roller.commit();
+                    roller.flush();
                 }
                 try {
                     String baseFeedURL = baseURL + "/rss/";
@@ -59,10 +58,10 @@
                         }
                     }
                     planet.saveGroup(group);
-                    roller.commit();
+                    roller.flush();
                     roller.release();
                     
-                    roller.begin();
+                    // TODO: new planet manager method deleteSubs(list)
                     group = group = planet.getGroup("all");
                     Iterator subs = group.getSubscriptions().iterator();
                     while (subs.hasNext()) {
@@ -73,7 +72,7 @@
                             planet.deleteSubscription(sub);
                         }
                     }
-                    roller.commit();
+                    roller.flush();
                 } finally {
                     roller.release();
                 }

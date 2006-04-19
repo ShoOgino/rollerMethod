@@ -1,0 +1,42 @@
+    private Map getWeblogEntryMap(
+            WebsiteData website,
+            Date    startDate,
+            Date    endDate,
+            String  catName,
+            String  status,
+            Integer maxEntries,
+            boolean stringsOnly) throws RollerException {
+        TreeMap map = new TreeMap(reverseComparator);
+        
+        List entries = getWeblogEntries(
+                website,
+                startDate,
+                endDate,
+                catName,
+                status,
+                null,
+                maxEntries);
+        
+        Calendar cal = Calendar.getInstance();
+        if (website != null) {
+            cal.setTimeZone(website.getTimeZoneInstance());
+        }
+        
+        for (Iterator wbItr = entries.iterator(); wbItr.hasNext();) {
+            WeblogEntryData entry = (WeblogEntryData) wbItr.next();
+            Date sDate = DateUtil.getNoonOfDay(entry.getPubTime(), cal);
+            if (stringsOnly) {
+                if (map.get(sDate) == null)
+                    map.put(sDate, formatter.format(sDate));
+            } else {
+                List dayEntries = (List) map.get(sDate);
+                if (dayEntries == null) {
+                    dayEntries = new ArrayList();
+                    map.put(sDate, dayEntries);
+                }
+                dayEntries.add(entry);
+            }
+        }
+        return map;
+    }
+

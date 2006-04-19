@@ -1,18 +1,16 @@
     /**
      * Get all permissions of a website (pendings not including)
      */
-    public List getAllPermissions(WebsiteData website) throws RollerException
-    {
-        Session session = ((HibernateStrategy)mStrategy).getSession();
-        Criteria criteria = session.createCriteria(PermissionsData.class);            
-        criteria.add(Expression.eq("website", website));
-        criteria.add(Expression.eq("pending", Boolean.FALSE));
-        try
-        {
+    public List getAllPermissions(WebsiteData website) throws RollerException {
+        
+        try {
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
+            Criteria criteria = session.createCriteria(PermissionsData.class);
+            criteria.add(Expression.eq("website", website));
+            criteria.add(Expression.eq("pending", Boolean.FALSE));
+            
             return criteria.list();
-        }
-        catch (HibernateException e)
-        {
+        } catch (HibernateException e) {
             throw new RollerException(e);
         }
     }

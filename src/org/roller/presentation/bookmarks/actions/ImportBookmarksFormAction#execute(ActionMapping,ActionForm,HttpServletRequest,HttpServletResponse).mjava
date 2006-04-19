@@ -61,8 +61,8 @@
                         
                         // Use Roller BookmarkManager to import bookmarks
 
-                        bm.importBookmarks(website, folderName, data);                        
-                        RollerFactory.getRoller().commit();                        
+                        bm.importBookmarks(website, folderName, data);  
+                        RollerFactory.getRoller().flush();
                         CacheManager.invalidate(website);
                         
                         ActionMessages messages = new ActionMessages();

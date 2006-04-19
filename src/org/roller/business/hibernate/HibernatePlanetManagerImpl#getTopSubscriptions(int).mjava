@@ -2,7 +2,7 @@
         String groupHandle = NO_GROUP;
         List ret = null;
         try {
-            Session session = ((HibernateStrategy)strategy).getSession();
+            Session session = ((HibernatePersistenceStrategy)strategy).getSession();
             Criteria criteria =
                     session.createCriteria(PlanetSubscriptionData.class);
             criteria.setMaxResults(max);

@@ -1,0 +1,9 @@
+    public void saveFolder(FolderData folder) throws RollerException {
+        
+        if(isDuplicateFolderName(folder)) {
+            throw new RollerException("Duplicate folder name");
+        }
+        
+        this.strategy.store(folder);
+    }
+

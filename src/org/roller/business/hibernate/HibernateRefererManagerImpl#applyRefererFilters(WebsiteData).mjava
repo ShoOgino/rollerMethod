@@ -1,13 +1,13 @@
-    //-----------------------------------------------------------------------
     /**
      * Apply ignoreWord/spam filters to all referers in website.
      */
     public void applyRefererFilters(WebsiteData website) throws RollerException {
+        
         if (null == website) throw new RollerException("website is null");
         if (null == website.getBlacklist()) return;
         
         try {
-            Session session = ((HibernateStrategy)mStrategy).getSession();
+            Session session = ((HibernatePersistenceStrategy)strategy).getSession();
             Criteria criteria = session.createCriteria(RefererData.class);
             
             String[] blacklist = StringUtils.split(
@@ -25,10 +25,11 @@
             .add(or)
             );
             
-            Iterator referers = criteria.list().iterator();
-            while (referers.hasNext()) {
-                removeReferer( ((RefererData)referers.next()).getId() );
+            Iterator referer = criteria.list().iterator();
+            while (referer.hasNext()) {
+                this.strategy.remove((RefererData) referer.next());
             }
+            
         } catch (HibernateException e) {
             throw new RollerException(e);
         }

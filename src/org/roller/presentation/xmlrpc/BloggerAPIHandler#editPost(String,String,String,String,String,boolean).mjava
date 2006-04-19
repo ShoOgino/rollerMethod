@@ -27,7 +27,7 @@
                 
                 Roller roller = RollerFactory.getRoller();
                 WeblogManager weblogMgr = roller.getWeblogManager();
-                WeblogEntryData entry = weblogMgr.retrieveWeblogEntry(postid);
+                WeblogEntryData entry = weblogMgr.getWeblogEntry(postid);
                 entry.setText(content);
                 entry.setUpdateTime(current);
                 if (Boolean.valueOf(publish).booleanValue()) {
@@ -36,9 +36,13 @@
                     entry.setStatus(WeblogEntryData.DRAFT);
                 }
                 
-                entry.save();
-                roller.commit();
+                // save the entry
+                weblogMgr.saveWeblogEntry(entry);
+                roller.flush();
+                
+                // notify cache
                 flushPageCache(entry.getWebsite());
+                
                 return true;
             } catch (Exception e) {
                 String msg = "ERROR in BlooggerAPIHander.editPost";

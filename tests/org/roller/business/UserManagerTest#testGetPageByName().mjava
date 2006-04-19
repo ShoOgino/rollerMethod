@@ -1,9 +1,0 @@
-    /** Each website should be able to return a page named Weblog */
-    public void testGetPageByName() throws RollerException
-    {
-        UserManager umgr = getRoller().getUserManager();
-        WebsiteData wd0 = (WebsiteData)umgr.getWebsites(
-                umgr.getUser(enabledUserName), null, null).get(0);
-        assertNotNull(wd0.getPageByName("Weblog"));
-    }
-

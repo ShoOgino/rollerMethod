@@ -19,10 +19,31 @@
                 Boolean.TRUE);
         umgr.addUser(ud);
         
-        // Create website for user with those pages
-        WebsiteData website = umgr.createWebsite(
-           ud, new HashMap(), username, username, username,"dummy@example.com",
-           "basic","en_US_WIN", "America/Los_Angeles");
+        WebsiteData website = new WebsiteData(
+                    null,                // id
+                    username,                // name
+                    username,              // handle
+                    username,         // description
+                    ud,                // userId
+                    "dummy",             // defaultPageId
+                    "dummy",             // weblogDayPageId
+                    Boolean.TRUE,        // enableBloggerApi
+                    null,                // bloggerCategory
+                    null,                // defaultCategory
+                    "editor-text.jsp",   // editorPage
+                    "",                  // blacklist
+                    Boolean.TRUE,        // allowComments
+                    Boolean.FALSE,       // emailComments
+                    "",                  // emailFromAddress
+                    Boolean.TRUE,        // isEnabled
+                    "dummy@example.com",               // emailAddress
+                    new Date(),          // dateCreated
+                    Boolean.TRUE,        // defaultAllowComments
+                    0,                   // defaultCommentDays
+                    Boolean.FALSE);      // moderateComments
+            website.setEditorTheme("basic");
+            website.setLocale("en_US_WIN");
+            website.setTimeZone("America/Los_Angeles");
         
         ThemeManager themeMgr = getRoller().getThemeManager();
         Theme usersTheme = themeMgr.getTheme(website.getEditorTheme());

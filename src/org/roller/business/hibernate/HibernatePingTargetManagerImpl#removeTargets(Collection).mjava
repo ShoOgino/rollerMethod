@@ -1,11 +1,10 @@
     // Private helper to remove a collection of targets.
-    private void removeTargets(Collection customTargets)
-        throws RollerException
-    {
-        for (Iterator i = customTargets.iterator(); i.hasNext();)
-        {
-            PingTargetData pt = (PingTargetData) i.next();
-            pt.remove();
+    private void removeTargets(Collection customTargets) throws RollerException {
+        
+        // just go through the list and remove each auto ping
+        Iterator targets = customTargets.iterator();
+        while (targets.hasNext()) {
+            this.strategy.remove((PingTargetData) targets.next());
         }
     }
 

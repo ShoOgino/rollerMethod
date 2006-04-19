@@ -1,33 +1,32 @@
     public List getComments(
-        WebsiteData     website, 
-        WeblogEntryData entry, 
-        String          searchString,
-        Date            startDate, 
-        Date            endDate, 
-        Boolean         pending,
-        Boolean         approved,
-        Boolean         spam,
-        boolean         reverseChrono,
-        int             offset,
-        int             length
-        ) throws RollerException {
-    
+            WebsiteData     website,
+            WeblogEntryData entry,
+            String          searchString,
+            Date            startDate,
+            Date            endDate,
+            Boolean         pending,
+            Boolean         approved,
+            Boolean         spam,
+            boolean         reverseChrono,
+            int             offset,
+            int             length
+            ) throws RollerException {
+        
         try {
-            Session session = ((HibernateStrategy)mStrategy).getSession();
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
             Criteria criteria = session.createCriteria(CommentData.class);
             
             if (entry != null) {
                 criteria.add(Expression.eq("weblogEntry", entry));
-            }
-            else if (website != null) {
+            } else if (website != null) {
                 criteria.createAlias("weblogEntry","e");
                 criteria.add(Expression.eq("e.website", website));
             }
             
             if (searchString != null) {
                 criteria.add(Expression.disjunction()
-                    .add(Expression.like("url", searchString, MatchMode.ANYWHERE))
-                    .add(Expression.like("content", searchString, MatchMode.ANYWHERE)));            
+                .add(Expression.like("url", searchString, MatchMode.ANYWHERE))
+                .add(Expression.like("content", searchString, MatchMode.ANYWHERE)));
             }
             
             if (startDate != null) {
@@ -51,7 +50,7 @@
             }
             
             if (length != -1) {
-                criteria.setMaxResults(offset + length);               
+                criteria.setMaxResults(offset + length);
             }
             
             if (reverseChrono) {
@@ -59,7 +58,7 @@
             } else {
                 criteria.addOrder(Order.asc("postTime"));
             }
-
+            
             List comments = criteria.list();
             if (offset==0 || comments.size() < offset) {
                 return comments;
@@ -71,7 +70,7 @@
             return range;
             
         } catch (HibernateException e) {
-            mLogger.error(e);
+            log.error(e);
             throw new RollerException(e);
         }
     }

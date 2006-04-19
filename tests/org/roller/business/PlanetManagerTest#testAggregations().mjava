@@ -1,21 +1,12 @@
-    public void testAggregations() throws Exception
-    {
-        try 
-        {
-            Roller roller = getRoller();
-            assertNotNull(roller);       
-            PlanetManager planet = roller.getPlanetManager();
-            assertNotNull(planet);     
+    public void testAggregations() throws Exception {
+        
+        try {
+            PlanetManager planet = RollerFactory.getRoller().getPlanetManager();
+            
             String feed_url1 = "http://rollerweblogger.org/rss/roller";
             String feed_url2 = "http://linuxintegrators.com/acoliver/?flavor=rss2";
-            {   
-                roller.begin();
-                PlanetConfigData config = new PlanetConfigData();
-                //config.setCacheDir(cacheDir); 
-                config.setTitle("test_title");
-                config.setAdminEmail("test_admin_email");
-                planet.saveConfiguration(config);
-                
+            
+            {
                 PlanetGroupData group = new PlanetGroupData();
                 group.setDescription("test_group_desc");
                 group.setHandle("test_handle");
@@ -30,24 +21,20 @@
                 sub2.setFeedUrl(feed_url2);
                 planet.saveSubscription(sub2);
                 
-                group.addSubscription(sub1); 
-                group.addSubscription(sub2); 
+                group.addSubscription(sub1);
+                group.addSubscription(sub2);
                 planet.saveGroup(group);
-                
-                roller.commit();
-            }        
-            {   
-                roller.begin();
+                TestUtils.endSession(true);
+            }
+            {
                 planet.refreshEntries();
-                roller.commit();
+                TestUtils.endSession(true);
                 
-                roller.begin();
                 int count = 0;
                 Iterator subs = planet.getAllSubscriptions();
-                while  (subs.hasNext()) 
-                {
+                while  (subs.hasNext()) {
                     PlanetSubscriptionData sub= (PlanetSubscriptionData)subs.next();
-                    count += sub.getEntries().size();    
+                    count += sub.getEntries().size();
                 }
                 PlanetSubscriptionData sub1 = planet.getSubscription(feed_url1);
                 assertTrue(sub1.getEntries().size() > 0);
@@ -57,24 +44,19 @@
                 
                 PlanetGroupData group = planet.getGroup("test_handle");
                 assertNotNull(group);
-    
+                
                 List bigag = planet.getAggregation(group, 30);
                 assertEquals(30, bigag.size());
-                      
+                
                 List littleag = planet.getAggregation(group, 10);
                 assertEquals(10, littleag.size());
-                                  
+                
                 planet.deleteGroup(group);
                 planet.deleteSubscription(sub1);
                 planet.deleteSubscription(sub2);
-                
-                PlanetConfigData config = planet.getConfiguration();
-                config.remove();
-                roller.commit(); 
+                TestUtils.endSession(true);
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             fail();
         }

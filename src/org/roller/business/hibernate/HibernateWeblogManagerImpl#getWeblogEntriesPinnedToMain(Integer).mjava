@@ -1,20 +1,15 @@
-    public List getWeblogEntriesPinnedToMain(Integer max) throws RollerException 
-    {
-        try
-        {
-            Session session = ((HibernateStrategy)mStrategy).getSession();
+    public List getWeblogEntriesPinnedToMain(Integer max) throws RollerException {
+        try {
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
             Criteria criteria = session.createCriteria(WeblogEntryData.class);
-            criteria.add(Expression.eq("pinnedToMain", Boolean.TRUE));                            
-            criteria.addOrder(Order.desc("pubTime"));            
-            if (max != null) 
-            {
+            criteria.add(Expression.eq("pinnedToMain", Boolean.TRUE));
+            criteria.addOrder(Order.desc("pubTime"));
+            if (max != null) {
                 criteria.setMaxResults(max.intValue());
-            }            
+            }
             return criteria.list();
-        }
-        catch (HibernateException e)
-        {
-            mLogger.error(e);
+        } catch (HibernateException e) {
+            log.error(e);
             throw new RollerException(e);
         }
     }

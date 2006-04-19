@@ -1,38 +1,29 @@
-    public void testGroupStorage() throws Exception
-    {
-        Roller roller = getRoller();
-        assertNotNull(roller);       
-        PlanetManager planet = roller.getPlanetManager();
-        assertNotNull(planet);  
+    public void testGroupStorage() throws Exception {
+        
+        PlanetManager planet = RollerFactory.getRoller().getPlanetManager();
         
         {   // save group
-            roller.begin(UserData.SYSTEM_USER);
             PlanetGroupData group = new PlanetGroupData();
             group.setDescription("test_group_desc");
             group.setHandle("test_handle");
             group.setTitle("test_title");
             planet.saveGroup(group);
-            roller.commit();
+            TestUtils.endSession(true);
         }
-        {   // retrieve group 
-            roller.begin();
+        {   // retrieve group
             PlanetGroupData group = planet.getGroup("test_handle");
             assertEquals("test_group_desc",group.getDescription());
             assertEquals("test_title",group.getTitle());
             assertTrue(planet.getGroupHandles().size() > 0);
-            roller.rollback();
         }
         {   // remove group
-            roller.begin();
             PlanetGroupData group = planet.getGroup("test_handle");
             planet.deleteGroup(group);
-            roller.commit();
+            TestUtils.endSession(true);
         }
         {   // verify that it is gone
-            roller.begin();
             PlanetGroupData group = planet.getGroup("test_handle");
             assertNull(group);
-            roller.rollback();
         }
     }
 

@@ -12,25 +12,22 @@
         try {
             WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
             WeblogEntryData wd =
-                    mgr.retrieveWeblogEntry(request.getParameter("id"));
+                    mgr.getWeblogEntry(request.getParameter("id"));
             RollerSession rses =
                     RollerSession.getRollerSession(request);
             if (     rses.isUserAuthorizedToAuthor(wd.getWebsite())
             || (rses.isUserAuthorized(wd.getWebsite()) && wd.isDraft()) ) {
-                // Flush the page cache
-                //PageCacheFilter.removeFromCache(request, wd.getWebsite());
-                //CacheManager.invalidate(wd);
                 
                 // remove the index for it
+                // TODO: can we do this in a better way?
                 wd.setStatus(WeblogEntryData.DRAFT);
                 reindexEntry(RollerFactory.getRoller(), wd);
                 
                 // remove entry itself
-                wd.remove();
-                RollerFactory.getRoller().commit();
+                mgr.removeWeblogEntry(wd);
+                RollerFactory.getRoller().flush();
                 
                 // flush caches
-                //PageCacheFilter.removeFromCache(request, wd.getWebsite());
                 CacheManager.invalidate(wd);
                 
                 ActionMessages uiMessages = new ActionMessages();

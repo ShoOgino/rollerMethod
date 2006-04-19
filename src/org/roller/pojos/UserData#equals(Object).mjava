@@ -1,19 +1,15 @@
-   public boolean equals( Object pOther )
-   {
-       if (pOther instanceof UserData)
-       {
-           UserData lTest = (UserData) pOther;
-           boolean lEquals = true;
-           lEquals = PojoUtil.equals(lEquals, this.getId(), lTest.getId());
-           lEquals = PojoUtil.equals(lEquals, this.getUserName(), lTest.getUserName());
-           lEquals = PojoUtil.equals(lEquals, this.getPassword(), lTest.getPassword());
-           lEquals = PojoUtil.equals(lEquals, this.getFullName(), lTest.getFullName());
-           lEquals = PojoUtil.equals(lEquals, this.getEmailAddress(), lTest.getEmailAddress());
-           return lEquals;
-       }
-       else
-       {
-           return false;
-       }
+    public boolean equals( Object pOther ) {
+        if (pOther instanceof UserData) {
+            UserData lTest = (UserData) pOther;
+            boolean lEquals = true;
+            lEquals = PojoUtil.equals(lEquals, this.getId(), lTest.getId());
+            lEquals = PojoUtil.equals(lEquals, this.getUserName(), lTest.getUserName());
+            lEquals = PojoUtil.equals(lEquals, this.getPassword(), lTest.getPassword());
+            lEquals = PojoUtil.equals(lEquals, this.getFullName(), lTest.getFullName());
+            lEquals = PojoUtil.equals(lEquals, this.getEmailAddress(), lTest.getEmailAddress());
+            return lEquals;
+        } else {
+            return false;
+        }
     }
 

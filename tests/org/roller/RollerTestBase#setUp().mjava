@@ -7,7 +7,7 @@
         String FS = File.separator;
         RollerConfig.setContextRealPath(".." + FS + "roller");
         RollerConfig.setUploadsDir("." + FS + "roller_dat" + FS + "uploads");       
-        getRoller().begin(UserData.SYSTEM_USER);
+        
         mUser = createUser(
                 testUsername,
                 "password",
@@ -15,31 +15,24 @@
                 "testuser@example.com");
         UserManager umgr = getRoller().getUserManager();
         mWebsite = (WebsiteData)umgr.getWebsites(mUser, null, null).get(0);
-        getRoller().commit();
         
-        getRoller().begin(UserData.SYSTEM_USER);
         PropertiesManager propmgr = getRoller().getPropertiesManager();
         Map props = propmgr.getProperties();
         RollerPropertyData prop =
                 (RollerPropertyData)props.get("site.absoluteurl");
         prop.setValue("http://localhost:8080/roller");
-        propmgr.store(props);
-        getRoller().commit();
+        propmgr.saveProperties(props);
         
-        getRoller().begin(UserData.SYSTEM_USER);
         PlanetManager planet = getRoller().getPlanetManager();
         PlanetConfigData config = config = new PlanetConfigData();
         config.setCacheDir("");
         config.setTitle("Test");
         config.setAdminEmail("admin@example.com");
         planet.saveConfiguration(config);
-        getRoller().commit();
         
-        getRoller().begin(UserData.SYSTEM_USER);
         PlanetGroupData group = new PlanetGroupData();
         group.setHandle("external");
         group.setTitle("external");
         planet.saveGroup(group);
-        getRoller().commit();
     }
 

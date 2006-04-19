@@ -5,8 +5,10 @@
         if (pathInfo.length == 3) // URI is /blogname/entries/entryid
         {
             WeblogEntryData rollerEntry =
-                    mRoller.getWeblogManager().retrieveWeblogEntry(pathInfo[2]);
+                    mRoller.getWeblogManager().getWeblogEntry(pathInfo[2]);
             if (canEdit(rollerEntry)) {
+                WeblogManager mgr = mRoller.getWeblogManager();
+                
                 WeblogEntryData rawUpdate = createRollerEntry(rollerEntry.getWebsite(), entry);
                 rollerEntry.setPubTime(rawUpdate.getPubTime());
                 rollerEntry.setUpdateTime(rawUpdate.getUpdateTime());
@@ -14,8 +16,8 @@
                 rollerEntry.setStatus(rawUpdate.getStatus());
                 rollerEntry.setCategory(rawUpdate.getCategory());
                 rollerEntry.setTitle(rawUpdate.getTitle());
-                rollerEntry.save();
-                mRoller.commit();
+                
+                mgr.saveWeblogEntry(rollerEntry);
                 
                 CacheManager.invalidate(rollerEntry.getWebsite());
                 if (rollerEntry.isPublished()) {

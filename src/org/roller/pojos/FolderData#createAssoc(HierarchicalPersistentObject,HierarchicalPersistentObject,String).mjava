@@ -8,8 +8,8 @@
         HierarchicalPersistentObject associatedObject, 
         String relation) throws RollerException
     {
-        BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
-        return bmgr.createFolderAssoc(
+        return new FolderAssoc(
+                null,
             (FolderData)object, 
             (FolderData)associatedObject, 
             relation);

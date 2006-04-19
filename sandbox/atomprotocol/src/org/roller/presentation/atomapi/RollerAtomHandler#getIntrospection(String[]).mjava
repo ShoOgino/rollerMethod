@@ -6,7 +6,6 @@
         if (pathInfo.length == 0) {
             String absUrl = mRollerContext.getAbsoluteContextUrl(mRequest);
             AtomService service = new AtomService();
-            UserData user = mRoller.getUserManager().getUser(mUsername);
             List perms = mRoller.getUserManager().getAllPermissions(user);
             if (perms != null) {
                 for (Iterator iter=perms.iterator(); iter.hasNext();) {

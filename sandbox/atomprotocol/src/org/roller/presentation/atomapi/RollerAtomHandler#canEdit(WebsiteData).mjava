@@ -3,8 +3,7 @@
      */
     private boolean canEdit(WebsiteData website) {
         try {
-            UserData user = mRoller.getUser();
-            return website.hasUserPermissions(user, PermissionsData.AUTHOR);
+            return website.hasUserPermissions(this.user, PermissionsData.AUTHOR);
         } catch (Exception e) {
             mLogger.error("ERROR: checking website.hasUserPermissions()");
         }

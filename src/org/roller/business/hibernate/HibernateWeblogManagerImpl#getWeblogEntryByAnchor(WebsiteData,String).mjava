@@ -1,26 +1,24 @@
     public WeblogEntryData getWeblogEntryByAnchor(
-                    WebsiteData website, String anchor) throws RollerException
-    {
+            WebsiteData website, String anchor) throws RollerException {
         if (website == null)
             throw new RollerException("Website is null");
-
+        
         if (anchor == null)
             throw new RollerException("Anchor is null");
-
-        Session session = ((HibernateStrategy)mStrategy).getSession();
-        Criteria criteria = session.createCriteria(WeblogEntryData.class);
-        criteria.add(Expression.conjunction()
-                        .add(Expression.eq("website",website))
-                        .add(Expression.eq("anchor",anchor)));
-        criteria.addOrder(Order.desc("pubTime"));
-        criteria.setMaxResults(1);
-        try
-        {
+        
+        
+        try {
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
+            Criteria criteria = session.createCriteria(WeblogEntryData.class);
+            criteria.add(Expression.conjunction()
+            .add(Expression.eq("website",website))
+            .add(Expression.eq("anchor",anchor)));
+            criteria.addOrder(Order.desc("pubTime"));
+            criteria.setMaxResults(1);
+            
             List list = criteria.list();
             return list.size()!=0 ? (WeblogEntryData)list.get(0) : null;
-        }
-        catch (HibernateException e)
-        {
+        } catch (HibernateException e) {
             throw new RollerException(e);
         }
     }

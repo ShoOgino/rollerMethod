@@ -13,8 +13,9 @@
         if (userName != null)
         {
             UserManager userMgr = RollerFactory.getRoller().getUserManager();
-            UserData currentUser = userMgr.getUser(userName);
-            RollerFactory.getRoller().setUser(currentUser);
+            UserData currentUser = userMgr.getUserByUsername(userName);
+            // TODO: possible fix for backend refactoryings
+            //RollerFactory.getRoller().setUser(currentUser);
         }
         
         // path info may be null, (e.g. on JSP error page)

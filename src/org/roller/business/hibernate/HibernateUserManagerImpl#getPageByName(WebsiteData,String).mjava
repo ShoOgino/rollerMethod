@@ -1,27 +1,25 @@
-    /** 
+    /**
      * @see org.roller.model.UserManager#getPageByName(WebsiteData, java.lang.String)
      */
-    public WeblogTemplate getPageByName(WebsiteData website, String pagename) 
-        throws RollerException
-    {
+    public WeblogTemplate getPageByName(WebsiteData website, String pagename)
+            throws RollerException {
+        
         if (website == null)
             throw new RollerException("website is null");
-                                   
+        
         if (pagename == null)
             throw new RollerException("Page name is null");
-                                   
-        Session session = ((HibernateStrategy)mStrategy).getSession();
-        Criteria criteria = session.createCriteria(WeblogTemplate.class);
-        criteria.add(Expression.eq("website", website));
-        criteria.add(Expression.eq("name", pagename));
-        criteria.setMaxResults(1);
-        try
-        {
+        
+        try {
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
+            Criteria criteria = session.createCriteria(WeblogTemplate.class);
+            criteria.add(Expression.eq("website", website));
+            criteria.add(Expression.eq("name", pagename));
+            criteria.setMaxResults(1);
+            
             List list = criteria.list();
-            return list.size()!=0 ? (WeblogTemplate)list.get(0) : null;
-        }
-        catch (HibernateException e)
-        {
+            return list.size()!=0? (WeblogTemplate)list.get(0) : null;
+        } catch (HibernateException e) {
             throw new RollerException(e);
         }
     }

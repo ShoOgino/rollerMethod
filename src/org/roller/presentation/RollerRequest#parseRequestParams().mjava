@@ -23,14 +23,14 @@
             }
             else if (websiteid != null && mWebsite == null )
             {
-                mWebsite = userMgr.retrieveWebsite(websiteid); 
+                mWebsite = userMgr.getWebsite(websiteid); 
             }
             
             // Look for page ID in request params
             String pageId = mRequest.getParameter(RollerRequest.PAGEID_KEY);                    
             if ( pageId != null )
             {
-                mPage = userMgr.retrievePage(pageId);                 
+                mPage = userMgr.getPage(pageId);                 
             }
             else if (mWebsite != null) 
             {

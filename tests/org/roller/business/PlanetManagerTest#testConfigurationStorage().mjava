@@ -1,55 +1,25 @@
-    public void testConfigurationStorage() throws Exception
-    {
-        Roller roller = getRoller();
-        assertNotNull(roller);       
-        PlanetManager planet = roller.getPlanetManager();
-        assertNotNull(planet);    
+    public void testConfigurationStorage() throws Exception {
         
-        {   // save config with default group
-            roller.begin();
-            
-            PlanetConfigData config = new PlanetConfigData();
-            //config.setCacheDir(cacheDir);
-            config.setTitle("test_title");
-            config.setAdminEmail("test_admin_email");
-
-            PlanetGroupData group = new PlanetGroupData();
-            group.setDescription("test_group_desc");
-            group.setHandle("test_handle");
-            group.setTitle("test_title");
-            planet.saveGroup(group);
-            
-            config.setDefaultGroup(group);
-            planet.saveConfiguration(config);
-            
-            roller.commit();
-        }
-        {   // retrieve config and default group
-            roller.begin();
+        PlanetManager planet = RollerFactory.getRoller().getPlanetManager();
+        
+        {   // retrieve config
             PlanetConfigData config = planet.getConfiguration();
+            assertNotNull(config);
             assertEquals("test_title", config.getTitle());
             assertEquals("test_admin_email", config.getAdminEmail());
-            
-            PlanetGroupData group = config.getDefaultGroup();
-            assertEquals("test_group_desc",group.getDescription());
-            assertEquals("test_title",group.getTitle());
-            
-            roller.rollback();
+            assertNull(config.getSiteUrl());
         }
-        {   // remove config
-            roller.begin();
+        {   // save config
             PlanetConfigData config = planet.getConfiguration();
-            config.remove();            
-            roller.commit();
+            config.setSiteUrl("http://footest/lskdf/null");
+            planet.saveConfiguration(config);
+            TestUtils.endSession(true);
         }
         {
-            // make sure config and group are gone
-            roller.begin();
+            // make sure config was saved
             PlanetConfigData config = planet.getConfiguration();
-            assertNull(config);
-            PlanetGroupData group = planet.getGroup("test_handle");
-            assertNull(group);
-            roller.rollback();
+            assertNotNull(config);
+            assertEquals("http://footest/lskdf/null", config.getSiteUrl());
         }
     }
 

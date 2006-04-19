@@ -36,6 +36,7 @@
         try {
             RollerRequest rreq = RollerRequest.getRollerRequest();
             Roller roller = RollerFactory.getRoller();
+            WeblogManager weblogMgr = roller.getWeblogManager();
             
             Timestamp current = new Timestamp(System.currentTimeMillis());
             
@@ -44,7 +45,8 @@
             entry.setText(content);
             entry.setPubTime(current);
             entry.setUpdateTime(current);
-            entry.setCreator(roller.getUser());
+            // TODO BACKEND: fix from backend refactoring
+            //entry.setCreator(roller.getUser());
             entry.setWebsite(website);
             entry.setCategory(website.getBloggerCategory());
             if (Boolean.valueOf(publish).booleanValue()) {
@@ -52,8 +54,12 @@
             } else {
                 entry.setStatus(WeblogEntryData.DRAFT);
             }
-            entry.save();
-            roller.commit();
+            
+            // save the entry
+            weblogMgr.saveWeblogEntry(entry);
+            roller.flush();
+            
+            // notify cache
             flushPageCache(entry.getWebsite());
 /*
             String blogUrl = Utilities.escapeHTML(

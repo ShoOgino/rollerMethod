@@ -1,16 +1,11 @@
     /**
      * Returns true if user has role specified.
-     * @param roleName Name of role
-     * @return True if user has specified role.
      */
-    public boolean hasRole(String roleName) 
-    {
+    public boolean hasRole(String roleName) {
         Iterator iter = roles.iterator();
-        while (iter.hasNext()) 
-        {
+        while (iter.hasNext()) {
             RoleData role = (RoleData) iter.next();
-            if (role.getRole().equals(roleName)) 
-            {
+            if (role.getRole().equals(roleName)) {
                 return true;
             }
         }

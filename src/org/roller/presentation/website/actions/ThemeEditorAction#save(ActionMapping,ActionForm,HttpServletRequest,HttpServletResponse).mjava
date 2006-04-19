@@ -55,17 +55,17 @@
                 // update theme for website and save
                 if(newTheme != null) {
                     try {
-                        Roller roller = RollerFactory.getRoller();
                         String username = rses.getAuthenticatedUser().getUserName();
-                        website.setEditorTheme(newTheme);
-                        website.save();
-                        roller.commit();
                         
-                        mLogger.debug("Saved theme "+newTheme+
-                                " for "+username);
+                        website.setEditorTheme(newTheme);
+                        
+                        UserManager userMgr = RollerFactory.getRoller().getUserManager();
+                        userMgr.saveWebsite(website);
+                        RollerFactory.getRoller().flush();
+                        
+                        mLogger.debug("Saved theme "+newTheme+" for "+username);
                         
                         // make sure to flush the page cache so ppl can see the change
-                        //PageCacheFilter.removeFromCache(request, website);
                         CacheManager.invalidate(website);
                         
                         // update complete ... now just send them back to edit

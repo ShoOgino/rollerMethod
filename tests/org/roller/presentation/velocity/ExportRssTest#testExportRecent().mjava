@@ -4,7 +4,6 @@
      */
     public void testExportRecent() throws Exception
     {      
-        getRoller().begin(UserData.SYSTEM_USER);
         ExportRss exporter = new ExportRss(mWebsite);
         
         //List entries = getRoller().getWeblogManager().getAllRecentWeblogEntries(new Date(), 5);
@@ -36,7 +35,6 @@
         }
         finally 
         {
-            getRoller().begin(UserData.SYSTEM_USER);
         }
     }
 

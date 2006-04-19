@@ -6,13 +6,14 @@
             throws Exception
     {
         YourWebsitesForm form = (YourWebsitesForm)actionForm;
-        Roller roller = RollerFactory.getRoller();
-        PermissionsData perms = 
-            roller.getUserManager().retrievePermissions(form.getInviteId());
         
-        perms.remove();
-        // ROLLER_2.0: notify inviter that invitee has declined invitation  
-        roller.commit();
+        UserManager userMgr = RollerFactory.getRoller().getUserManager();
+        PermissionsData perms = userMgr.getPermissions(form.getInviteId());
+        
+        // TODO ROLLER_2.0: notify inviter that invitee has declined invitation
+        // TODO EXCEPTIONS: better exception handling here
+        userMgr.removePermissions(perms);
+        RollerFactory.getRoller().flush();
         
         ActionMessages msgs = new ActionMessages();
         msgs.add(null, new ActionMessage(

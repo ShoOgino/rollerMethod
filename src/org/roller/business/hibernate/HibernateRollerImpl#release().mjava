@@ -1,24 +1,19 @@
-    public void release()
-    {
+    public void release() {
+        
+        // release our own stuff first
+        if (bookmarkManager != null) bookmarkManager.release();
+        if (configManager != null) configManager.release();
+        if (refererManager != null) refererManager.release();
+        if (userManager != null) userManager.release();
+        if (weblogManager != null) weblogManager.release();
+        if (pingTargetManager != null) pingTargetManager.release();
+        if (pingQueueManager != null) pingQueueManager.release();
+        if (autoPingManager != null) autoPingManager.release();
+        
+        // tell Hibernate to close down
+        this.strategy.release();
+        
+        // then let parent do its thing
         super.release();
-        
-        if (mBookmarkManager != null) mBookmarkManager.release();
-        if (mConfigManager != null) mConfigManager.release();
-        if (mRefererManager != null) mRefererManager.release();
-        if (mUserManager != null) mUserManager.release();
-        if (mWeblogManager != null) mWeblogManager.release();
-        if (mPingTargetManager != null) mPingTargetManager.release();
-        if (mPingQueueManager != null) mPingQueueManager.release();
-        if (mAutoPingManager != null) mAutoPingManager.release();
-        
-        try
-        {
-            if (mStrategy != null) mStrategy.release(); 
-        }
-        catch (Throwable e)
-        {
-            mLogger.error(
-            "Exception with mSupport.release() [" + e + "]", e);
-        }
     }
 

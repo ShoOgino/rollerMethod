@@ -1,12 +1,10 @@
     /**
      * @see org.roller.model.Roller#getPingTargetManager()
      */
-    public PingTargetManager getPingTargetManager() throws RollerException
-    {
-        if (mPingTargetManager == null)
-        {
-            mPingTargetManager = new HibernatePingTargetManagerImpl(mStrategy);
+    public PingTargetManager getPingTargetManager() throws RollerException {
+        if (pingTargetManager == null) {
+            pingTargetManager = new HibernatePingTargetManagerImpl(strategy);
         }
-        return mPingTargetManager;
+        return pingTargetManager;
     }
 

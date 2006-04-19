@@ -1,8 +1,9 @@
     /**
      * Use raw SQL because Hibernate can't handle sorting by sum.
+     *
+     * TODO: do we really need raw sql?  can't hibernate do this?
      */
     public List getDaysPopularWebsites(int max) throws RollerException {
-        // TODO Hibernate version of getDaysPopularWebsites
         // TODO Move to full use of mSupport
         String msg = "Getting popular websites";
         Session ses = null; // the session will eventually be release by RequestFilter
@@ -10,7 +11,7 @@
         try {
             List list = new ArrayList();
             
-            ses = ((HibernateStrategy)mStrategy).getSession();
+            ses = ((HibernatePersistenceStrategy)strategy).getSession();
             con = ses.connection();
             
             final PreparedStatement stmt;
@@ -20,57 +21,57 @@
             if (currentDialect instanceof HSQLDialect) {
                 // special handling for HSQLDB
                 stmt = con.prepareStatement(
-                    "select top ? w.id, w.name, w.handle, sum(r.dayhits) as s "+
-                    "from website as w, referer as r "+
-                    "where r.websiteid=w.id and w.isenabled=? and w.isactive=? " +
-                    "group by w.name, w.handle, w.id order by s desc");
+                        "select top ? w.id, w.name, w.handle, sum(r.dayhits) as s "+
+                        "from website as w, referer as r "+
+                        "where r.websiteid=w.id and w.isenabled=? and w.isactive=? " +
+                        "group by w.name, w.handle, w.id order by s desc");
                 stmt.setInt(1, max);
                 stmt.setBoolean(2, true);
                 stmt.setBoolean(3, true);
             } else if(currentDialect instanceof DerbyDialect) {
-	           // special handling for Derby
-				stmt = con.prepareStatement(
-				    "select w.id, w.name, w.handle, sum(r.dayhits) as s "+
-				    "from website as w, referer as r "+
-				    "where r.websiteid=w.id and w.isenabled=? and w.isactive=? " +
-				    "group by w.name, w.handle, w.id order by s desc");                      
-				stmt.setBoolean(1, true);				
+                // special handling for Derby
+                stmt = con.prepareStatement(
+                        "select w.id, w.name, w.handle, sum(r.dayhits) as s "+
+                        "from website as w, referer as r "+
+                        "where r.websiteid=w.id and w.isenabled=? and w.isactive=? " +
+                        "group by w.name, w.handle, w.id order by s desc");
+                stmt.setBoolean(1, true);
                 stmt.setBoolean(2, true);
                 stmt.setMaxRows(max);
             } else if(currentDialect instanceof DB2Dialect) {
                 // special handling for IBM DB2
                 stmt = con.prepareStatement(
-                    "select w.id, w.name, w.handle, sum(r.dayhits) as s "+
-                    "from website as w, referer as r "+
-                    "where r.websiteid=w.id and w.isenabled=? and w.isactive=? " +
-                    "group by w.name, w.handle, w.id order by s desc fetch first " +
-                    Integer.toString(max) + " rows only");
+                        "select w.id, w.name, w.handle, sum(r.dayhits) as s "+
+                        "from website as w, referer as r "+
+                        "where r.websiteid=w.id and w.isenabled=? and w.isactive=? " +
+                        "group by w.name, w.handle, w.id order by s desc fetch first " +
+                        Integer.toString(max) + " rows only");
                 stmt.setBoolean(1, true);
                 stmt.setBoolean(2, true);
             } else if (currentDialect instanceof OracleDialect) {
-				stmt = con.prepareStatement(
-                    "select w.id, w.name, w.handle, sum(r.dayhits) as s "+
-                    "from website w, referer r "+
-                    "where r.websiteid=w.id and w.isenabled=? and w.isactive=? and rownum <= ? " +
-                    "group by w.name, w.handle, w.id order by s desc");
-				stmt.setBoolean(1, true);
-				stmt.setBoolean(2, true);
-				stmt.setInt(3, max );
+                stmt = con.prepareStatement(
+                        "select w.id, w.name, w.handle, sum(r.dayhits) as s "+
+                        "from website w, referer r "+
+                        "where r.websiteid=w.id and w.isenabled=? and w.isactive=? and rownum <= ? " +
+                        "group by w.name, w.handle, w.id order by s desc");
+                stmt.setBoolean(1, true);
+                stmt.setBoolean(2, true);
+                stmt.setInt(3, max );
             } else if (currentDialect instanceof SQLServerDialect) {
-            	stmt = con.prepareStatement("select top " + max + " w.id, w.name, w.handle, sum(r.dayhits) as s " +
-            	     "from website as w, referer as r where r.websiteid=w.id and w.isenabled=? and w.isactive=? " +
-            	     "group by w.name, w.handle, w.id order by s desc");
-            	stmt.setBoolean(1, true);
+                stmt = con.prepareStatement("select top " + max + " w.id, w.name, w.handle, sum(r.dayhits) as s " +
+                        "from website as w, referer as r where r.websiteid=w.id and w.isenabled=? and w.isactive=? " +
+                        "group by w.name, w.handle, w.id order by s desc");
+                stmt.setBoolean(1, true);
                 stmt.setBoolean(2, true);
             } else { // for MySQL and PostgreSQL
                 stmt = con.prepareStatement(
-                    "select w.id, w.name, w.handle, sum(r.dayhits) as s "+
-                    "from website as w, referer as r "+
-                    "where r.websiteid=w.id and w.isenabled= ? and w.isactive=? " +
-                    // Ben Walding (a Postgres SQL user): Basically, you have
-                    // to have all non-aggregated columns that exist in your
-                    // 'SELECT' section, in the 'GROUP BY' section as well:
-                    "group by w.name, w.handle, w.id order by s desc limit ?");
+                        "select w.id, w.name, w.handle, sum(r.dayhits) as s "+
+                        "from website as w, referer as r "+
+                        "where r.websiteid=w.id and w.isenabled= ? and w.isactive=? " +
+                        // Ben Walding (a Postgres SQL user): Basically, you have
+                        // to have all non-aggregated columns that exist in your
+                        // 'SELECT' section, in the 'GROUP BY' section as well:
+                        "group by w.name, w.handle, w.id order by s desc limit ?");
                 stmt.setBoolean(1, true);
                 stmt.setBoolean(2, true);
                 stmt.setInt(3, max);
@@ -89,16 +90,16 @@
                             websiteHandle,
                             hits));
                     if(list.size() >= max) {
-                    	rs.close();
-                    	break;
+                        rs.close();
+                        break;
                     }
                 }
                 while ( rs.next() );
             }
             return list;
         } catch (Throwable pe) {
-            mLogger.error(msg, pe);
+            log.error(msg, pe);
             throw new RollerException(msg, pe);
-        }        
+        }
     }
 

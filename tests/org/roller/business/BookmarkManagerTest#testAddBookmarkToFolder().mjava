@@ -1,78 +1,69 @@
-    public void testAddBookmarkToFolder() throws RollerException
-    {
+    public void testAddBookmarkToFolder() throws Exception {
+        
         BookmarkManager bmgr = getRoller().getBookmarkManager();
         FolderData folder = null;
         BookmarkData bookmark1 = null, bookmark2 = null;
-
-        getRoller().begin(UserData.SYSTEM_USER);
-
-        WebsiteData website =
-            getRoller().getUserManager().retrieveWebsite(mWebsite.getId());
-        FolderData root = bmgr.getRootFolder(website);
-
-        folder = bmgr.createFolder();
+        
+        FolderData root = bmgr.getRootFolder(testWeblog);
+        
+        folder = new FolderData();
         folder.setName("TestFolder1");
         folder.setDescription("created by testAddBookmarkToFolder()");
-        folder.setWebsite(website);
+        folder.setWebsite(testWeblog);
         folder.setParent(root);
-        folder.save();
-
+        bmgr.saveFolder(folder);
+        
         // Add bookmark by adding to folder
-        bookmark1 = bmgr.createBookmark(
-            folder,
-            "TestBookmark1",
-            "created by testAddBookmarkToFolder()",
-            "http://www.example.com",
-            "http://www.example.com/rss.xml",
-            new Integer(1),
-            new Integer(12),
-            "test.jpg");
+        bookmark1 = new BookmarkData(
+                folder,
+                "TestBookmark1",
+                "created by testAddBookmarkToFolder()",
+                "http://www.example.com",
+                "http://www.example.com/rss.xml",
+                new Integer(1),
+                new Integer(12),
+                "test.jpg");
         folder.addBookmark(bookmark1);
-
+        
         // Add another bookmark
-        bookmark2 = bmgr.createBookmark(
-            folder,
-            "TestBookmark2",
-            "created by testAddBookmarkToFolder()",
-            "http://www.example.com",
-            "http://www.example.com/rss.xml",
-            new Integer(1),
-            new Integer(12),
-            "test.jpf");
+        bookmark2 = new BookmarkData(
+                folder,
+                "TestBookmark2",
+                "created by testAddBookmarkToFolder()",
+                "http://www.example.com",
+                "http://www.example.com/rss.xml",
+                new Integer(1),
+                new Integer(12),
+                "test.jpf");
         folder.addBookmark(bookmark2);
-
-        getRoller().commit();
-
+        
+        TestUtils.endSession(true);
+        
         FolderData testFolder = null;
         BookmarkData bookmarkb = null, bookmarka = null;
-
-        getRoller().begin(UserData.SYSTEM_USER);
+        
         // See that two bookmarks were stored
-        testFolder = bmgr.retrieveFolder(folder.getId());
+        testFolder = bmgr.getFolder(folder.getId());
         assertEquals(2, testFolder.getBookmarks().size());
         bookmarka = (BookmarkData)testFolder.getBookmarks().iterator().next();
         bookmarkb = (BookmarkData)testFolder.getBookmarks().iterator().next();
         // Remove one bookmark
         testFolder.removeBookmark(bookmarka);
-        bmgr.removeBookmark(bookmarka.getId());
-        getRoller().commit();
-
-        getRoller().begin(UserData.SYSTEM_USER);
+        bmgr.removeBookmark(bookmarka);
+        TestUtils.endSession(true);
+        
         // Folder should now contain one bookmark
-        testFolder = bmgr.retrieveFolder(folder.getId());
+        testFolder = bmgr.getFolder(folder.getId());
         assertEquals(1, testFolder.getBookmarks().size());
-        getRoller().release();
-
+        TestUtils.endSession(true);
+        
         // Remove folder
-        getRoller().begin(UserData.SYSTEM_USER);
-        testFolder = bmgr.retrieveFolder(folder.getId());
-        testFolder.remove();
-        getRoller().commit();
-
-        getRoller().begin(UserData.SYSTEM_USER);
+        testFolder = bmgr.getFolder(folder.getId());
+        bmgr.removeFolder(testFolder);
+        TestUtils.endSession(true);
+        
         // Folder and one remaining bookmark should be gone
-        assertNull( bmgr.retrieveBookmark(bookmarkb.getId()) );
-        assertNull( bmgr.retrieveFolder(folder.getId()) );
-        getRoller().release();
+        assertNull( bmgr.getBookmark(bookmarkb.getId()) );
+        assertNull( bmgr.getFolder(folder.getId()) );
     }
 

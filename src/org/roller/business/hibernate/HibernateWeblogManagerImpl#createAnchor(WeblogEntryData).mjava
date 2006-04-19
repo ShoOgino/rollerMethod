@@ -1,39 +1,30 @@
-    public String createAnchor(WeblogEntryData entry) throws RollerException
-    {        
-        try
-        {
+    public String createAnchor(WeblogEntryData entry) throws RollerException {
+        try {
             // Check for uniqueness of anchor
             String base = entry.createAnchorBase();
             String name = base;
             int count = 0;
-
-            while (true)
-            {
-                if (count > 0)
-                {
+            
+            while (true) {
+                if (count > 0) {
                     name = base + count;
                 }
                 
-                Session session = ((HibernateStrategy)mStrategy).getSession();
+                Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
                 Criteria criteria = session.createCriteria(WeblogEntryData.class);
                 criteria.add(Expression.eq("website", entry.getWebsite()));
                 criteria.add(Expression.eq("anchor", name));
-                             
+                
                 List results = criteria.list();
                 
-                if (results.size() < 1)
-                {
+                if (results.size() < 1) {
                     break;
-                }
-                else
-                {
+                } else {
                     count++;
                 }
             }
             return name;
-        }
-        catch (HibernateException e)
-        {
+        } catch (HibernateException e) {
             throw new RollerException(e);
         }
     }

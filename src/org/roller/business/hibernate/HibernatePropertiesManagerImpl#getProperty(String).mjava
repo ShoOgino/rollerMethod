@@ -1,10 +1,9 @@
     /** 
-     * Retrieve a single property by name
+     * Retrieve a single property by name.
      */
     public RollerPropertyData getProperty(String name) throws RollerException {
         try {
-            Session session = ((HibernateStrategy) mStrategy).getSession();
-            return (RollerPropertyData) mStrategy.load(name, RollerPropertyData.class);
+            return (RollerPropertyData) strategy.load(name, RollerPropertyData.class);
         } catch (HibernateException e) {
             throw new RollerException(e);
         }

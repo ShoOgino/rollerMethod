@@ -1,12 +1,10 @@
     /**
      * @see org.roller.model.Roller#getPropertiesManager()
      */
-    public PropertiesManager getPropertiesManager() throws RollerException 
-    {
-        if (mPropsManager == null)
-        {
-            mPropsManager = new HibernatePropertiesManagerImpl(mStrategy);
+    public PropertiesManager getPropertiesManager() throws RollerException {
+        if (propertiesManager == null) {
+            propertiesManager = new HibernatePropertiesManagerImpl(strategy);
         }
-        return mPropsManager;
+        return propertiesManager;
     }
 

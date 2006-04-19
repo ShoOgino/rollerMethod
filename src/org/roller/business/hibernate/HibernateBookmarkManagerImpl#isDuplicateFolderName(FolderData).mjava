@@ -1,33 +1,27 @@
-    /** 
+    /**
      * @see org.roller.model.BookmarkManager#isDuplicateFolderName(org.roller.pojos.FolderData)
      */
-    public boolean isDuplicateFolderName(FolderData folder) throws RollerException
-    {
+    public boolean isDuplicateFolderName(FolderData folder) throws RollerException {
         // ensure that no sibling folders share the same name
         boolean isNewFolder = (folder.getId() == null);
         FolderData parent =
-            isNewFolder ? (FolderData)folder.getNewParent() : folder.getParent();
+                isNewFolder ? (FolderData)folder.getNewParent() : folder.getParent();
         
-        if (null != parent)
-        {
+        if (null != parent) {
             List sameNames;
-            try
-            {
-                Session session = ((HibernateStrategy) mStrategy).getSession();
+            try {
+                Session session = ((HibernatePersistenceStrategy) strategy).getSession();
                 Criteria criteria = session.createCriteria(FolderAssoc.class);
                 criteria.createAlias("folder", "f");
                 criteria.add(Expression.eq("f.name", folder.getName()));
                 criteria.add(Expression.eq("ancestorFolder", parent));
                 criteria.add(Expression.eq("relation", Assoc.PARENT));
                 sameNames = criteria.list();
-            }
-            catch (HibernateException e)
-            {
+            } catch (HibernateException e) {
                 throw new RollerException(e);
             }
             // If we got some matches
-            if (sameNames.size() > 0)
-            {
+            if (sameNames.size() > 0) {
                 // if we're saving a new folder, any matches are dups
                 if (isNewFolder) return true;
                 // otherwise it's a dup it isn't the same one (one match with the same id).

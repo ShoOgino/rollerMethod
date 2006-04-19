@@ -1,6 +1,5 @@
     private void updateMembers(MemberEntrySet c) throws HandlerException {
         try {
-            getRoller().setUser(UserData.SYSTEM_USER);
             for (int i = 0; i < c.getEntries().length; i++) {
                 MemberEntry entry = (MemberEntry)c.getEntries()[i];
                 PermissionsData pd = getPermissionsData(entry);
@@ -9,7 +8,7 @@
                 }
                 updatePermissionsData(pd, entry);
             }
-            getRoller().commit();
+            getRoller().flush();
         } catch (RollerException re) {
             throw new InternalException("ERROR: Could not update members", re);
         }

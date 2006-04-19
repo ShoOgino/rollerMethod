@@ -25,7 +25,7 @@
                     day,        // pubTime
                     day,        // updateTime
                     WeblogEntryData.PUBLISHED ); // publishEntry
-            wd.save();
+            wmgr.saveWeblogEntry(wd);
             
             // roll calendar back to today
             mCalendar.roll(Calendar.DATE, false);
@@ -52,7 +52,7 @@
                     day,        // pubTime
                     day,        // updateTime
                     status ); // publishEntry
-            wd.save();
+            wmgr.saveWeblogEntry(wd);
             
             // add at beginning of list
             mEntriesCreated.add(0, wd);
@@ -74,7 +74,7 @@
                 comment.setPending(Boolean.FALSE);
                 comment.setSpam(Boolean.FALSE);
                 comment.setNotify(Boolean.FALSE);
-                comment.save();
+                wmgr.saveComment(comment);
                 mCommentsCreated.add(comment);
                 mLogger.debug("         Created comment ["
                         +comment.getId()+"]"+ comment.getName());
@@ -85,13 +85,14 @@
         
         // create categories under the category passed in
         for ( int j=0; j<mCatCount; j++ ) {
-            WeblogCategoryData cat = wmgr.createWeblogCategory(
+            WeblogCategoryData cat = new WeblogCategoryData(
+                    null,                           // id
                     website,                       // website
                     rootCat,                       // parent
                     rootCat.getName()+"-cat"+j,    // name
                     "desc",                        // description
                     null );                       // image
-            cat.save();
+            wmgr.saveWeblogCategory(cat);
             mCategoriesCreated.add(cat);
             mLogger.debug("   Created cat ["+cat.getId()+"]"+cat.getName());
             
