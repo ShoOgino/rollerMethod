@@ -43,7 +43,15 @@
                     form.getTheme(),
                     form.getLocale(),
                     form.getTimeZone());
-            wd.setEditorPage(RollerConfig.getProperty("newweblog.editor"));
+            
+            try {
+                String def = RollerRuntimeConfig.getProperty("users.editor.pages");
+                String[] defs = Utilities.stringToStringArray(def,",");
+                wd.setEditorPage(defs[0]);
+            } catch (Exception ex) {
+                log.error("ERROR setting default editor page for weblog", ex);
+            }
+            
             mgr.addWebsite(wd);
             
             RollerFactory.getRoller().flush();
