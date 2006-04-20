@@ -31,5 +31,8 @@
         
         // remove entry
         this.strategy.remove(entry);
+        
+        // remove entry from cache mapping
+        this.entryAnchorToIdMap.remove(entry.getWebsite().getHandle()+":"+entry.getAnchor());
     }
 
