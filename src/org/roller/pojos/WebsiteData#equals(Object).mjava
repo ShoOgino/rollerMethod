@@ -1,7 +1,5 @@
-    public boolean equals(Object pOther)
-    {
-        if (pOther instanceof WebsiteData)
-        {
+    public boolean equals(Object pOther) {
+        if (pOther instanceof WebsiteData) {
             WebsiteData lTest = (WebsiteData) pOther;
             boolean lEquals = true;
             lEquals = PojoUtil.equals(lEquals, this.getId(), lTest.getId());
@@ -15,18 +13,16 @@
             lEquals = PojoUtil.equals(lEquals, this.getDefaultCategory(), lTest.getDefaultCategory());
             lEquals = PojoUtil.equals(lEquals, this.getEditorPage(), lTest.getEditorPage());
             lEquals = PojoUtil.equals(lEquals, this.getBlacklist(), lTest.getBlacklist());
-            lEquals = PojoUtil.equals(lEquals, this.getAllowComments(), lTest.getAllowComments());           
+            lEquals = PojoUtil.equals(lEquals, this.getAllowComments(), lTest.getAllowComments());
             lEquals = PojoUtil.equals(lEquals, this.getEmailComments(), lTest.getEmailComments());
-            lEquals = PojoUtil.equals(lEquals, this.getEmailAddress(), lTest.getEmailAddress());            
+            lEquals = PojoUtil.equals(lEquals, this.getEmailAddress(), lTest.getEmailAddress());
             lEquals = PojoUtil.equals(lEquals, this.getEmailFromAddress(), lTest.getEmailFromAddress());
             lEquals = PojoUtil.equals(lEquals, this.getEditorTheme(), lTest.getEditorTheme());
             lEquals = PojoUtil.equals(lEquals, this.getLocale(), lTest.getLocale());
             lEquals = PojoUtil.equals(lEquals, this.getTimeZone(), lTest.getTimeZone());
-            lEquals = PojoUtil.equals(lEquals, this.getDefaultPlugins(), lTest.getDefaultPlugins());  
+            lEquals = PojoUtil.equals(lEquals, this.getDefaultPlugins(), lTest.getDefaultPlugins());
             return lEquals;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }

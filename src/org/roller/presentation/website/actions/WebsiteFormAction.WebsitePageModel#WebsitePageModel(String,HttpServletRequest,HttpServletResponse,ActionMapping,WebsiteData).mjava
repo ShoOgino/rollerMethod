@@ -11,6 +11,10 @@
             UserData user = rollerSession.getAuthenticatedUser();
             permissions = roller.getUserManager().getAllPermissions(website);
             groupBloggingEnabled =
-                    RollerConfig.getBooleanProperty("groupblogging.enabled");
+                RollerConfig.getBooleanProperty("groupblogging.enabled");
+            emailNotificationEnabled = 
+                RollerRuntimeConfig.getBooleanProperty("users.comments.emailnotify");
+            moderationRequired =  
+                RollerRuntimeConfig.getBooleanProperty("users.moderation.required");
         }
 

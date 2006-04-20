@@ -5,16 +5,11 @@
      * @roller.wrapPojoMethod type="simple"
      * @return TimeZone
      */
-    public TimeZone getTimeZoneInstance()
-    {
-    	if (timeZone == null) 
-        {
-            if (TimeZone.getDefault() != null) 
-            {
+    public TimeZone getTimeZoneInstance() {
+        if (timeZone == null) {
+            if (TimeZone.getDefault() != null) {
                 this.setTimeZone( TimeZone.getDefault().getID() );
-            }
-            else
-            {
+            } else {
                 this.setTimeZone("America/New_York");
             }
         }
