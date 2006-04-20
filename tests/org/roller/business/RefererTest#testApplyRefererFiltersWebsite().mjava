@@ -15,7 +15,7 @@
         umgr.saveWebsite(testWeblog);
         TestUtils.endSession(true);
         
-        rmgr.applyRefererFilters();
+        rmgr.applyRefererFilters(testWeblog);
         TestUtils.endSession(true);
         
         refs = rmgr.getReferers(testWeblog);
