@@ -18,6 +18,7 @@
                 rollerEntry.setTitle(rawUpdate.getTitle());
                 
                 mgr.saveWeblogEntry(rollerEntry);
+                mRoller.flush();
                 
                 CacheManager.invalidate(rollerEntry.getWebsite());
                 if (rollerEntry.isPublished()) {

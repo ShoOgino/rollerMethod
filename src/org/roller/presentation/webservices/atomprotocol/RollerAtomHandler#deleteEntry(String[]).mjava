@@ -9,6 +9,7 @@
             if (canEdit(rollerEntry)) {
                 WeblogManager mgr = mRoller.getWeblogManager();
                 mgr.removeWeblogEntry(rollerEntry);
+                mRoller.flush();
                 return;
             }
             throw new Exception("ERROR not authorized to delete entry");

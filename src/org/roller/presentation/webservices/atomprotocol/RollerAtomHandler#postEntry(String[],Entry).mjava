@@ -10,7 +10,8 @@
             WeblogManager mgr = mRoller.getWeblogManager();
             WeblogEntryData rollerEntry = createRollerEntry(website, entry);
             rollerEntry.setCreator(this.user);
-            mgr.saveWeblogEntry(rollerEntry);
+            mgr.saveWeblogEntry(rollerEntry);    
+            mRoller.flush();
             
             // Throttle one entry per second
             // (MySQL timestamp has 1 sec resolution, damnit)
