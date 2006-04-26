@@ -4,9 +4,9 @@
         if (handleElement == null) {
             throw new MissingElementException("ERROR: Missing element", e.getName(), Tags.HANDLE);
         }
+        setHandle(handleElement.getText());
         
         // href
-        setHandle(handleElement.getText());
         String href = urlPrefix + "/" + EntrySet.Types.WEBLOGS + "/" + getHandle();        
         setHref(href);        
         
@@ -57,5 +57,17 @@
         if (createdElement != null) {
             setDateCreated(new Date(Long.valueOf(createdElement.getText()).longValue()));
         }              
+        
+        // APP entries URL (optional)
+        Element appEntriesUrlElement = e.getChild(Tags.APP_ENTRIES_URL, Service.NAMESPACE);
+        if (appEntriesUrlElement != null) {
+            setAppEntriesUrl(appEntriesUrlElement.getText());
+        }                      
+        
+        // APP resources URL (optional)
+        Element appResourcesUrlElement = e.getChild(Tags.APP_RESOURCES_URL, Service.NAMESPACE);
+        if (appResourcesUrlElement != null) {
+            setAppResourcesUrl(appResourcesUrlElement.getText());
+        }                              
     }
 

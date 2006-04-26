@@ -4,7 +4,7 @@
             if (users == null) {
                 users = Collections.EMPTY_LIST;
             }
-            EntrySet c = toWeblogEntrySet(users);
+            EntrySet c = toWeblogEntrySet((UserData[])users.toArray(new UserData[0]));
             
             return c;
         } catch (RollerException re) {

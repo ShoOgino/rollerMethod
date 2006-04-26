@@ -5,11 +5,7 @@
     protected void doPut(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         try {
             Handler handler = Handler.getHandler(req);
-            String userName = handler.getUsername();
-            if (userName == null) {
-                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                return;
-            }
+            String userName = handler.getUserName();
             
             EntrySet c = handler.processPut(new InputStreamReader(req.getInputStream()));
             

@@ -3,7 +3,7 @@
             SAXBuilder builder = new SAXBuilder();
             Document collectionDoc = builder.build(r);
             EntrySet c = new MemberEntrySet(collectionDoc, getUrlPrefix());
-            createMembers((MemberEntrySet)c);
+            c = createMembers((MemberEntrySet)c);
             
             return c;
         } catch (JDOMException je) {

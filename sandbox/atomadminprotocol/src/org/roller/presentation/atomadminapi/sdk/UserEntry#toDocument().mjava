@@ -36,19 +36,19 @@
         }
         
         // locale
-        String locale = getLocale();
+        Locale locale = getLocale();
         if (locale != null ) {
             Element localeElement = new Element(Tags.LOCALE, Service.NAMESPACE);
-            Text localeText = new Text(getLocale());
+            Text localeText = new Text(getLocale().toString());
             localeElement.addContent(localeText);
             userElement.addContent(localeElement);
         }
         
         // timezone
-        String timezone = getTimezone();
+        TimeZone timezone = getTimezone();
         if (timezone != null) {
             Element timezoneElement = new Element(Tags.TIMEZONE, Service.NAMESPACE);
-            Text timezoneText = new Text(timezone);
+            Text timezoneText = new Text(timezone.getID());
             timezoneElement.addContent(timezoneText);
             userElement.addContent(timezoneElement);
         }

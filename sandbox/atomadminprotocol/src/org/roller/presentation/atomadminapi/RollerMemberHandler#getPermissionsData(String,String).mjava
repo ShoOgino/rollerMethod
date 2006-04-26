@@ -1,7 +1,7 @@
     private PermissionsData getPermissionsData(String handle, String username) throws HandlerException {
         try {
             UserManager mgr = getRoller().getUserManager();
-            UserData ud = mgr.getUser(username);
+            UserData ud = mgr.getUserByUsername(username);
             WebsiteData wd = mgr.getWebsiteByHandle(handle);
             PermissionsData pd = mgr.getPermissions(wd, ud);
             

@@ -1,0 +1,18 @@
+    private URL parseEndpoint(URL url) throws MalformedURLException {
+        String urlString = url.toString();
+        String endpointString = null;
+        
+        Matcher m = ENDPOINT_PATTERN.matcher(urlString);
+        
+        if (m.matches()) {
+            endpointString = m.group(1);
+        }
+        
+        URL endpoint = null;
+        if (endpointString != null) {
+            endpoint = new URL(endpointString);
+        }
+        
+        return endpoint;
+    }
+

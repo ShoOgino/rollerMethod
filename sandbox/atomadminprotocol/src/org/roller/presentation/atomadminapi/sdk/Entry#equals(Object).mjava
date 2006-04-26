@@ -1,0 +1,17 @@
+    public boolean equals(Object o) {
+        if ( o == null || o.getClass() != this.getClass()) { 
+            return false;        
+        }
+                
+        Entry other = (Entry)o;
+        
+        if (!areEqual(getHref(), other.getHref())) {
+            return false;
+        }
+        if (!areEqual(getType(), other.getType())) {
+            return false;
+        }
+        
+        return true;
+    }
+

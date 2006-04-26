@@ -1,14 +1,17 @@
-        public URI(HttpServletRequest request) {
-            String pathInfo = request.getPathInfo();
-            pathInfo = (pathInfo!=null) ? pathInfo : "";
-            String[] elements = StringUtils.split(pathInfo,"/");
+        public URI(HttpServletRequest request) throws BadRequestException {
+            String pi = request.getPathInfo();
             
-            if (elements.length > 0) {
-                type = elements[0];
-            }
-            if (elements.length > 1) {
-                entryIds = new String[elements.length-1];
-                System.arraycopy(elements, 1, entryIds, 0, entryIds.length);
+            if (pi == null || pi.length() == 0) {
+                type = null;
+                entryId = null;
+            } else {
+                Matcher m = PATHINFO_PATTERN.matcher(pi);
+                if (!m.matches()) {
+                    throw new BadRequestException("ERROR: Invalid path info: " + pi);
+                }
+                
+                type = m.group(1);
+                entryId = m.group(2);
             }
         }
 

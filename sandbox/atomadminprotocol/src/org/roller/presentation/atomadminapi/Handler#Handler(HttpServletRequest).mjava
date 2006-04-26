@@ -1,34 +1,14 @@
-    public Handler(HttpServletRequest request) {
+    public Handler(HttpServletRequest request) throws HandlerException {
         this.request = request;
         this.uri = new URI(request);
         this.rollerContext = RollerContext.getRollerContext();
         this.roller = RollerFactory.getRoller();
-        this.urlPrefix = getRollerContext().getAbsoluteContextUrl(getRequest()) + ENDPOINT;        
+        this.urlPrefix = getRollerContext().getAbsoluteContextUrl(getRequest()) + ENDPOINT;
         
         // TODO: decide what to do about authentication, is WSSE going to fly?
         //Authenticator auth = new WSSEAuthenticator(request);
         Authenticator auth = new BasicAuthenticator(request);
-        
-        //
-        // if this results in username not being set, then the client code
-        // should understand that means failed authentication
-        //
-        
-        if (auth.authenticate()) {
-            try {
-                UserData user = getRoller().getUserManager().getUser(auth.getUserId());
-                if (user != null && user.hasRole("admin") && user.getEnabled().booleanValue()) {
-                    // success!
-                    username = auth.getUserId();
-                } else {
-                    logger.warn("WARN: Is not global admin user: " + user.getUserName());
-                }
-            } catch (RollerException re) {
-                logger.error("ERROR: Could not create RollerAtomAdminHandler", re);
-            }
-        } else {
-            logger.warn("WARN: Authentication failed");
-        }
-       
+        auth.authenticate();        
+        setUserName(auth.getUserName());
     }
 

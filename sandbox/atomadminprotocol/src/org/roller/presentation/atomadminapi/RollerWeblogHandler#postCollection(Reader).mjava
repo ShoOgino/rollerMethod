@@ -3,7 +3,7 @@
             SAXBuilder builder = new SAXBuilder();
             Document collectionDoc = builder.build(r);
             EntrySet c = new WeblogEntrySet(collectionDoc, getUrlPrefix());
-            createWeblogs((WeblogEntrySet)c);
+            c = createWeblogs((WeblogEntrySet)c);
             
             return c;
         } catch (JDOMException je) {
@@ -13,7 +13,7 @@
         } catch (MissingElementException mee) {
             throw new InternalException("ERROR: Could not post collection", mee);
         } catch (UnexpectedRootElementException uree) {
-            throw new InternalException("ERROR: Could not post collection", uree);            
-        }        
+            throw new InternalException("ERROR: Could not post collection", uree);
+        }
     }
 

@@ -1,4 +1,4 @@
-    private WeblogEntry toWeblogEntry(WebsiteData wd) {
+    private WeblogEntry toWeblogEntry(WebsiteData wd) throws HandlerException {
         if (wd == null) {
             throw new NullPointerException("ERROR: Null website data not allowed");
         }
@@ -10,6 +10,13 @@
         we.setCreatingUser(wd.getCreator().getUserName());
         we.setEmailAddress(wd.getEmailAddress());
         we.setDateCreated(wd.getDateCreated());
+        try {
+            AppUrl appUrl = new AppUrl(getRollerContext().getAbsoluteContextUrl(getRequest()), wd.getHandle());
+            we.setAppEntriesUrl(appUrl.getEntryUrl().toString());
+            we.setAppResourcesUrl(appUrl.getResourceUrl().toString());
+        } catch (MalformedURLException mfue) {
+            throw new InternalException("ERROR: Could not get APP URLs", mfue);
+        }
         
         return we;
     }

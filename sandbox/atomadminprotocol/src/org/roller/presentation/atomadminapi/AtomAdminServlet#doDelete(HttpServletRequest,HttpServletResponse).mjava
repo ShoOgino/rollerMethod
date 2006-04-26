@@ -4,11 +4,7 @@
     protected void doDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         try {
             Handler handler = Handler.getHandler(req);
-            String userName = handler.getUsername();
-            if (userName == null) {
-                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                return;
-            }
+            String userName = handler.getUserName();
             
             EntrySet es = handler.processDelete();
             

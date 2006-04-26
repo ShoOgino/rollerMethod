@@ -1,24 +1,28 @@
-    private void createWeblogs(WeblogEntrySet c) throws HandlerException {
+    private WeblogEntrySet createWeblogs(WeblogEntrySet c) throws HandlerException {
         try {
             UserManager mgr = getRoller().getUserManager();
-            
-            //TODO: group blogging check?
-            
             HashMap pages = null; //getRollerContext().readThemeMacros(form.getTheme());
             
+            List websiteDatas = new ArrayList();
             for (int i = 0; i < c.getEntries().length; i++) {
                 WeblogEntry entry = (WeblogEntry)c.getEntries()[i];
-                UserData user = mgr.getUser(entry.getCreatingUser());
+                UserData user = mgr.getUserByUsername(entry.getCreatingUser());
                 WebsiteData wd = new WebsiteData(
-                    entry.getHandle(),
-                    user,
-                    entry.getName(),
-                    entry.getDescription(),
-                    entry.getEmailAddress(),
-                    entry.getEmailAddress(),
-                    DEFAULT_THEME,
-                    entry.getLocale(),
-                    entry.getTimezone());
+                        entry.getHandle(),
+                        user,
+                        entry.getName(),
+                        entry.getDescription(),
+                        entry.getEmailAddress(),
+                        entry.getEmailAddress(),
+                        DEFAULT_THEME,
+                        entry.getLocale().toString(),
+                        entry.getTimezone().getID());
+                
+                Date dateCreated  = entry.getDateCreated();
+                if (dateCreated == null) {
+                    dateCreated = new Date();
+                }
+                wd.setDateCreated(dateCreated);
                 
                 try {
                     String def = RollerRuntimeConfig.getProperty("users.editor.pages");
@@ -29,8 +33,11 @@
                 }
                 
                 mgr.addWebsite(wd);
+                websiteDatas.add(wd);
             }
+            
             getRoller().flush();
+            return toWeblogEntrySet((WebsiteData[])websiteDatas.toArray(new WebsiteData[0]));
             
         } catch (RollerException re) {
             throw new InternalException("ERROR: Could not create weblogs: " + c, re);

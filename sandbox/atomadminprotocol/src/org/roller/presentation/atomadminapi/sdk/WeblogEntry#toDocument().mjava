@@ -25,13 +25,13 @@
         
         // locale
         Element locale = new Element(Tags.LOCALE, Service.NAMESPACE);
-        Text localeText = new Text(getLocale());
+        Text localeText = new Text(getLocale().toString());
         locale.addContent(localeText);
         weblog.addContent(locale);
         
         // timezone
         Element tz = new Element(Tags.TIMEZONE, Service.NAMESPACE);
-        Text tzText = new Text(getTimezone());
+        Text tzText = new Text(getTimezone().getID());
         tz.addContent(tzText);
         weblog.addContent(tz);
         
@@ -54,6 +54,24 @@
             Text createdText = new Text(String.valueOf(dateCreated.getTime()));
             created.addContent(createdText);
             weblog.addContent(created);
+        }
+
+        // APP entries URL (optional)
+        Element appEntriesUrlElement = new Element(Tags.APP_ENTRIES_URL, Service.NAMESPACE);
+        String appEntriesUrl = getAppEntriesUrl();
+        if (appEntriesUrl != null) {
+            Text appEntriesUrlText = new Text(appEntriesUrl);
+            appEntriesUrlElement.addContent(appEntriesUrlText);
+            weblog.addContent(appEntriesUrlElement);
+        }
+
+        // APP entries URL (optional)
+        Element appResourcesUrlElement = new Element(Tags.APP_RESOURCES_URL, Service.NAMESPACE);
+        String appResourcesUrl = getAppResourcesUrl();
+        if (appResourcesUrl != null) {
+            Text appResourcesUrlText = new Text(appResourcesUrl);
+            appResourcesUrlElement.addContent(appResourcesUrlText);
+            weblog.addContent(appResourcesUrlElement);
         }
         
         return doc;

@@ -3,13 +3,18 @@
         if (ue == null) {
             throw new NullPointerException("ERROR: Null user entry not allowed");
         }
+        
+        //
+        // if any of the entry fields are null, the set below amounts
+        // to a no-op.
+        //
         UserData ud = new UserData();
         ud.setUserName(ue.getName());
         ud.setFullName(ue.getFullName());
         ud.setPassword(ue.getPassword());
         ud.setEmailAddress(ue.getEmailAddress());
-        ud.setLocale(ue.getLocale());
-        ud.setTimeZone(ue.getTimezone());
+        ud.setLocale(ue.getLocale().toString());
+        ud.setTimeZone(ue.getTimezone().getID());
         ud.setDateCreated(ue.getDateCreated());
         
         return ud;

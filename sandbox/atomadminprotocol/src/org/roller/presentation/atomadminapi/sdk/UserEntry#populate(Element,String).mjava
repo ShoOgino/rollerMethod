@@ -18,11 +18,11 @@
         setFullName(fullNameElement.getText());
         
         // password
+        // this is optional
         Element passwordElement = e.getChild(Tags.PASSWORD, NAMESPACE);
-        if (passwordElement == null) {
-            throw new MissingElementException("ERROR: Missing element", e.getName(), Tags.PASSWORD);
+        if (passwordElement != null) {
+            setPassword(passwordElement.getText());            
         }
-        setPassword(passwordElement.getText());
         
         // locale
         Element localeElement = e.getChild(Tags.LOCALE, Service.NAMESPACE);

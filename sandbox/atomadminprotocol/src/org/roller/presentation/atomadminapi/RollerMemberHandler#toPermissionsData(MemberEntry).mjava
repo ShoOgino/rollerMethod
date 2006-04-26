@@ -1,7 +1,7 @@
     private PermissionsData toPermissionsData(MemberEntry entry) throws HandlerException {
         try {
             UserManager mgr = getRoller().getUserManager();
-            UserData ud = mgr.getUser(entry.getName());
+            UserData ud = mgr.getUserByUsername(entry.getName());
             WebsiteData wd = mgr.getWebsiteByHandle(entry.getHandle());
             PermissionsData pd = new PermissionsData();
             pd.setUser(ud);
