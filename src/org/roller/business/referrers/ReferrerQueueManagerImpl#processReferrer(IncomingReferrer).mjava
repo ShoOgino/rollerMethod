@@ -23,6 +23,13 @@
             
             // execute
             job.execute();
+            
+            try {
+                // flush changes
+                RollerFactory.getRoller().flush();
+            } catch (RollerException ex) {
+                mLogger.error("ERROR commiting referrer", ex);
+            }
         }
         
     }
