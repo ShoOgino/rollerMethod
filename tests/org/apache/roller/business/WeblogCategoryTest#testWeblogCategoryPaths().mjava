@@ -1,0 +1,62 @@
+    public void testWeblogCategoryPaths() throws Exception {
+        
+        WeblogCategoryData root = null;
+        WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+        
+        root = mgr.getRootWeblogCategory(testWeblog);
+        
+        WeblogCategoryData f1 = new WeblogCategoryData();
+        f1.setName("f1");
+        f1.setParent(root);
+        f1.setWebsite(testWeblog);
+        mgr.saveWeblogCategory(f1);
+        
+        WeblogCategoryData f2 = new WeblogCategoryData();
+        f2.setName("f2");
+        f2.setParent(f1);
+        f2.setWebsite(testWeblog);
+        mgr.saveWeblogCategory(f2);
+        
+        WeblogCategoryData f3 = new WeblogCategoryData();
+        f3.setName("f3");
+        f3.setParent(f2);
+        f3.setWebsite(testWeblog);
+        mgr.saveWeblogCategory(f3);
+        
+        TestUtils.endSession(true);
+        
+        // check count of descendents and ancestors
+        f1 = mgr.getWeblogCategory(f1.getId());
+        assertEquals(2, f1.getAllDescendentAssocs().size());
+        assertEquals(1, f1.getAncestorAssocs().size());
+        
+        f2 = mgr.getWeblogCategory(f2.getId());
+        assertEquals(1, f2.getAllDescendentAssocs().size());
+        assertEquals(2, f2.getAncestorAssocs().size());
+        
+        f3 = mgr.getWeblogCategory(f3.getId());
+        assertEquals(0, f3.getAllDescendentAssocs().size());
+        assertEquals(3, f3.getAncestorAssocs().size());
+        
+        // test get by path
+        assertEquals("f1",
+                mgr.getWeblogCategoryByPath(testWeblog, null, "f1").getName());
+        
+        assertEquals("f1",
+                mgr.getWeblogCategoryByPath(testWeblog, null, "/f1").getName());
+        
+        assertEquals("f2",
+                mgr.getWeblogCategoryByPath(testWeblog, null, "/f1/f2").getName());
+        
+        assertEquals("f3",
+                mgr.getWeblogCategoryByPath(testWeblog, null, "/f1/f2/f3").getName());
+        
+        // test path creation
+        f3 = mgr.getWeblogCategoryByPath(testWeblog, null, "/f1/f2/f3");
+        String pathString = mgr.getPath(f3);
+        String[] pathArray = Utilities.stringToStringArray(pathString,"/");
+        assertEquals("f1", pathArray[0]);
+        assertEquals("f2", pathArray[1]);
+        assertEquals("f3", pathArray[2]);
+    }
+

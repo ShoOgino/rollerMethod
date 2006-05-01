@@ -1,0 +1,40 @@
+    /**
+     * Not sure how to test that the file was generated, so if
+     * there was no Exception we passed.
+     */
+    public void testExportRecent() throws Exception
+    {      
+        ExportRss exporter = new ExportRss(mWebsite);
+        
+        //List entries = getRoller().getWeblogManager().getAllRecentWeblogEntries(new Date(), 5);
+        
+        List entries = getRoller().getWeblogManager().getWeblogEntries(
+                        null,               // userName
+                        null,               // startDate
+                        new Date(),         // endDate
+                        null,               // catName
+                        null,               // status
+                        null,               // sortby
+                        new Integer(5));    // maxEntries
+        
+        try
+        {
+            // test RSS output
+            exporter.exportEntries(entries, "export-test.rss.xml");
+
+            // test Atom output
+            exporter.setExportAtom(true);
+            exporter.exportEntries(entries, "export-test.atom.xml");
+        }
+        catch (Exception e)
+        {
+            mLogger.error(e);
+            // I'm not sure how best to test the output!
+            // I guess no exceptions will have to do.
+            fail("Find a better way to test than checking Exceptions, bozo!");
+        }
+        finally 
+        {
+        }
+    }
+

@@ -1,0 +1,20 @@
+    private EntrySet getCollection() throws HandlerException {
+        // get all permissions: for all users, for all websites
+        try {
+            List users = getRoller().getUserManager().getUsers();
+            List perms = new ArrayList();
+            for (Iterator i = users.iterator(); i.hasNext(); ) {
+                UserData user = (UserData)i.next();
+                List permissions = getRoller().getUserManager().getAllPermissions(user);
+                for (Iterator j = permissions.iterator(); j.hasNext(); ) {
+                    PermissionsData pd = (PermissionsData)j.next();
+                    perms.add(pd);
+                }
+            }
+            EntrySet es = toMemberEntrySet((PermissionsData[])perms.toArray(new PermissionsData[0]));
+            return es;
+        } catch (RollerException re) {
+            throw new InternalException("ERROR: Could not get member collection", re);
+        }
+    }
+

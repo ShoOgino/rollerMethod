@@ -1,0 +1,24 @@
+    private UserEntrySet updateUsers(UserEntrySet c) throws NotFoundException, InternalException {
+        try {
+            UserManager mgr = getRoller().getUserManager();
+            
+            List userDatas = new ArrayList();
+            for (int i = 0; i < c.getEntries().length; i++) {
+                UserEntry entry = (UserEntry)c.getEntries()[i];
+                UserData ud = mgr.getUserByUsername(entry.getName());
+                if (ud == null) {
+                    throw new NotFoundException("ERROR: Uknown user: " + entry.getName());
+                }
+                updateUserData(ud, entry);
+                
+                mgr.saveUser(ud);
+                CacheManager.invalidate(ud);
+                userDatas.add(ud);
+            }
+            getRoller().flush();
+            return toUserEntrySet((UserData[])userDatas.toArray(new UserData[0]));
+        } catch (RollerException re) {
+            throw new InternalException("ERROR: Could not update users: " + c, re);
+        }
+    }
+

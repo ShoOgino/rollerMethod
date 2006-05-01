@@ -1,0 +1,51 @@
+    /**
+     * Test basic persistence operations ... Create, Update, Delete
+     */
+    public void testAutoPingCRUD() throws Exception {
+        
+        AutoPingManager mgr = RollerFactory.getRoller().getAutopingManager();
+        AutoPingData autoPing = null;
+        
+        // create ping target to use for tests
+        PingTargetData pingTarget = TestUtils.setupPingTarget("fooPing", "http://foo/null");
+        PingTargetData pingTarget2 = TestUtils.setupPingTarget("blahPing", "http://blah/null");
+        TestUtils.endSession(true);
+        
+        // create autoPing
+        autoPing = new AutoPingData(null, pingTarget, testWeblog);
+        mgr.saveAutoPing(autoPing);
+        String id = autoPing.getId();
+        TestUtils.endSession(true);
+        
+        // make sure autoPing was stored
+        autoPing = null;
+        autoPing = mgr.getAutoPing(id);
+        assertNotNull(autoPing);
+        assertEquals(pingTarget, autoPing.getPingTarget());
+        
+        // update autoPing
+        autoPing.setPingTarget(pingTarget2);
+        mgr.saveAutoPing(autoPing);
+        TestUtils.endSession(true);
+        
+        // make sure autoPing was updated
+        autoPing = null;
+        autoPing = mgr.getAutoPing(id);
+        assertNotNull(autoPing);
+        assertEquals(pingTarget2, autoPing.getPingTarget());
+        
+        // delete autoPing
+        mgr.removeAutoPing(autoPing);
+        TestUtils.endSession(true);
+        
+        // make sure common autoPing was deleted
+        autoPing = null;
+        autoPing = mgr.getAutoPing(id);
+        assertNull(autoPing);
+        
+        // teardown test ping target
+        TestUtils.teardownPingTarget(pingTarget.getId());
+        TestUtils.teardownPingTarget(pingTarget2.getId());
+        TestUtils.endSession(true);
+    }
+

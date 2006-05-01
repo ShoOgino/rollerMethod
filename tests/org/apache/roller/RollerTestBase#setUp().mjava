@@ -1,0 +1,38 @@
+    //------------------------------------------------------------------------
+    /**
+     * @see TestCase#setUp()
+     */
+    public void setUp() throws Exception {
+        super.setUp();
+        String FS = File.separator;
+        RollerConfig.setContextRealPath(".." + FS + "roller");
+        RollerConfig.setUploadsDir("." + FS + "roller_dat" + FS + "uploads");       
+        
+        mUser = createUser(
+                testUsername,
+                "password",
+                "TestUser",
+                "testuser@example.com");
+        UserManager umgr = getRoller().getUserManager();
+        mWebsite = (WebsiteData)umgr.getWebsites(mUser, null, null).get(0);
+        
+        PropertiesManager propmgr = getRoller().getPropertiesManager();
+        Map props = propmgr.getProperties();
+        RollerPropertyData prop =
+                (RollerPropertyData)props.get("site.absoluteurl");
+        prop.setValue("http://localhost:8080/roller");
+        propmgr.saveProperties(props);
+        
+        PlanetManager planet = getRoller().getPlanetManager();
+        PlanetConfigData config = config = new PlanetConfigData();
+        config.setCacheDir("");
+        config.setTitle("Test");
+        config.setAdminEmail("admin@example.com");
+        planet.saveConfiguration(config);
+        
+        PlanetGroupData group = new PlanetGroupData();
+        group.setHandle("external");
+        group.setTitle("external");
+        planet.saveGroup(group);
+    }
+

@@ -1,0 +1,6 @@
+    protected int getInt(Element elem, String path) throws JDOMException {
+        XPath xpath = XPath.newInstance(path);
+        Element e = (Element)xpath.selectSingleNode(elem);
+        return e!=null ? Integer.parseInt(e.getText()) : 0;
+    }
+

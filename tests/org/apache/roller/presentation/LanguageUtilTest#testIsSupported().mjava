@@ -1,0 +1,7 @@
+	public void testIsSupported() {
+		assertTrue(LanguageUtil.isSupported( new Locale("en", "GB"), servletContext));
+		assertFalse(LanguageUtil.isSupported( new Locale("de"), servletContext));
+		assertTrue(LanguageUtil.isSupported( "en_GB", servletContext));
+		assertFalse(LanguageUtil.isSupported( "de", servletContext));
+	}
+

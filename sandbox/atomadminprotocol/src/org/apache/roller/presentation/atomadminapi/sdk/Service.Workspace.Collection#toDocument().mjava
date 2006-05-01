@@ -1,0 +1,15 @@
+            public Document toDocument() {
+                Document doc = new Document();
+                Element element = new Element(Types.COLLECTION, NAMESPACE);
+                doc.setRootElement(element);
+                
+                element.setAttribute(Attributes.TITLE, getTitle());
+                element.setAttribute(Entry.Attributes.HREF, getHref());
+                
+                Element memberType = new Element(Tags.MEMBER_TYPE, NAMESPACE);
+                memberType.setText(getMemberType());
+                element.addContent(memberType);
+                
+                return doc;
+            }
+

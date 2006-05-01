@@ -1,0 +1,25 @@
+    public void testConfigurationStorage() throws Exception {
+        
+        PlanetManager planet = RollerFactory.getRoller().getPlanetManager();
+        
+        {   // retrieve config
+            PlanetConfigData config = planet.getConfiguration();
+            assertNotNull(config);
+            assertEquals("test_title", config.getTitle());
+            assertEquals("test_admin_email", config.getAdminEmail());
+            assertNull(config.getSiteUrl());
+        }
+        {   // save config
+            PlanetConfigData config = planet.getConfiguration();
+            config.setSiteUrl("http://footest/lskdf/null");
+            planet.saveConfiguration(config);
+            TestUtils.endSession(true);
+        }
+        {
+            // make sure config was saved
+            PlanetConfigData config = planet.getConfiguration();
+            assertNotNull(config);
+            assertEquals("http://footest/lskdf/null", config.getSiteUrl());
+        }
+    }
+

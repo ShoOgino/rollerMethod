@@ -1,0 +1,17 @@
+    protected void authenticateUser(String username, String role) 
+        throws RollerException
+    {
+        MockHttpServletRequest mockRequest = getMockFactory().getMockRequest();
+        mockRequest.setRemoteUser(username);
+        mockRequest.setUserPrincipal(new MockPrincipal(username));
+        mockRequest.setUserInRole(role, true);
+        
+        HttpSession session = mockRequest.getSession(true);        
+        UserManager umgr = getRoller().getUserManager();
+        UserData user = umgr.getUserByUsername(username);
+
+        RollerSession rollerSession = new RollerSession();
+        rollerSession.setAuthenticatedUser(user);
+        session.setAttribute(RollerSession.ROLLER_SESSION, rollerSession);
+    }
+

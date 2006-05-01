@@ -1,0 +1,14 @@
+    /**
+     * All tests in this suite require a user.
+     */
+    public void setUp() throws Exception {
+        
+        try {
+            testUser = TestUtils.setupUser("weblogTestUser");
+            TestUtils.endSession(true);
+        } catch (Exception ex) {
+            log.error(ex);
+            throw new Exception("Test setup failed", ex);
+        }
+    }
+

@@ -1,0 +1,18 @@
+    /**
+     * Delete the website created for this test.
+     *
+     * @throws RollerException
+     */
+    private void deleteWebsite(String deleteMe) throws RollerException {
+        mLogger.debug("try to delete " + deleteMe);
+        UserManager umgr = getRoller().getUserManager();
+        
+        UserData user = umgr.getUserByUsername(deleteMe);
+        
+        WebsiteData website = (WebsiteData)umgr.getWebsites(user, null, null).get(0);
+        umgr.removeWebsite(website);
+        
+        umgr.removeUser(user);
+        
+    }
+

@@ -1,0 +1,30 @@
+    /** Get a Handler object implementation based on the given request. */
+    public static Handler getHandler(HttpServletRequest req) throws HandlerException {
+        boolean enabled = RollerConfig.getBooleanProperty("webservices.adminprotocol.enabled");
+        if (!enabled) {
+            throw new NotAllowedException("ERROR: Admin protocol not enabled");
+        }
+        
+        URI uri = new URI(req);
+        Handler handler;
+        
+        if (uri.isIntrospection()) {
+            handler = new IntrospectionHandler(req);
+        } else if (uri.isCollection() || uri.isEntry()) {
+            String type = uri.getType();
+            if (type.equals(EntrySet.Types.WEBLOGS)) {
+                handler = new RollerWeblogHandler(req);
+            } else if (type.equals(EntrySet.Types.USERS)) {
+                handler = new RollerUserHandler(req);
+            } else if (type.equals(EntrySet.Types.MEMBERS)) {
+                handler = new RollerMemberHandler(req);
+            } else {
+                throw new BadRequestException("ERROR: Unknown type: " + uri.getType());
+            }
+        } else {
+            throw new BadRequestException("ERROR: Unknown URI type");
+        }
+        
+        return handler;
+    }
+
