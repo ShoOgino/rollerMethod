@@ -1,8 +1,0 @@
-    /** Responds to app-destroy by saving the indexManager's information */
-    public void contextDestroyed(ServletContextEvent sce) {
-        RollerFactory.getRoller().shutdown();
-        
-        // do we need a more generic mechanism for presentation layer shutdown?
-        CacheManager.shutdown();
-    }
-
