@@ -1,0 +1,19 @@
+    public String render(WeblogEntryData entry, String str)
+    {
+        String text = str;        
+        try
+        {
+            BookmarkManager bMgr = RollerFactory.getRoller().getBookmarkManager();
+            FolderData rootFolder = bMgr.getRootFolder(entry.getWebsite());
+            text = matchBookmarks(text, rootFolder);
+            text = lookInFolders(text, rootFolder.getFolders());
+        }
+        catch (RollerException e)
+        {
+            // nothing much I can do, go with default "Weblog" value
+            // could be RollerException or NullPointerException
+            mLogger.warn(e);
+        }
+        return text;
+    }
+

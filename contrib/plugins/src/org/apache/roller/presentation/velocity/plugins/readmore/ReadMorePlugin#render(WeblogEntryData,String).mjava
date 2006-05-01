@@ -1,0 +1,29 @@
+    public String render(WeblogEntryData entry, String str)
+    {        
+        // in case it didn't initialize
+        String pageLink = "Weblog";
+        try
+        {
+            pageLink = getPageLink(
+                RollerFactory.getRoller().getUserManager(), entry.getWebsite());
+        }
+        catch (RollerException e) 
+        {
+            mLogger.warn("Unable to get pageLink", e);
+        }
+        
+        String result = Utilities.removeHTML(str, true);
+        result = Utilities.truncateText(result, 240, 260, "...");
+        //String result = Utilities.truncateNicely(entry.getText(), 240, 260, "... ");
+        
+        // if the result is shorter, we need to add "Read More" link
+        if (result.length() < str.length())
+        {            
+            String link = "<div class=\"readMore\"><a href=\"" + 
+                baseURL + entry.getPermaLink() + "\">Read More</a></div>";
+            
+            result += link;
+        }
+        return result;
+    }
+

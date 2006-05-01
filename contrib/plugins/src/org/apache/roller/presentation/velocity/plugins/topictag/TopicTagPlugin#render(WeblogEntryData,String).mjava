@@ -1,0 +1,49 @@
+    /**
+     * Apply the plugin to the given entry.  Returns the entry text with topic tags expanded.
+     *
+     * @param entry           WeblogEntry to which plugin should be applied.
+     * @param singleEntry     Ignored.
+     * @return Results of applying plugin to entry.
+     */
+    public String render(WeblogEntryData entry, String str)
+    {
+        String entryText = str;
+        StringBuffer result = new StringBuffer(entryText.length());
+        MessageFormat fmt = getLinkFormat();
+
+        // Replace all of the instances matching the pattern with bookmark specified.
+        Matcher m = tagPatternWithBookmark.matcher(entryText);
+        while (m.find())
+        {
+            String bookmark = m.group(1);
+            String tag = m.group(2);
+            String site = getBookmarkSite(bookmark);
+            if (site == null)
+            {
+                site = getDefaultTopicSite();
+            }
+            if (!site.endsWith("/"))
+            {
+                site += "/";
+            }
+            String link = generateLink(fmt, site, tag);
+            m.appendReplacement(result, link);
+        }
+        m.appendTail(result);
+
+        // Now, in a second phase replace all of the instances matching the pattern without bookmark specified.
+        entryText = result.toString();
+        result = new StringBuffer(entryText.length());
+        m = tagPatternWithoutBookmark.matcher(entryText);
+        while (m.find())
+        {
+            String tag = m.group(1);
+            String site = getDefaultTopicSite();
+            String link = generateLink(fmt, site, tag);
+            m.appendReplacement(result, link);
+        }
+        m.appendTail(result);
+
+        return result.toString();
+    }
+
