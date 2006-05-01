@@ -1,0 +1,14 @@
+        public String getTitle()
+        {
+            if (folderPath == null || folderPath.isEmpty()) 
+            {
+                return bundle.getString("bookmarksForm.rootTitle");
+            }
+            else 
+            {
+                return MessageFormat.format(
+                    bundle.getString("bookmarksForm.folderTitle"),
+                    new Object[] {folder.getName()});
+            }
+        }
+

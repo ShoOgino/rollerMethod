@@ -1,0 +1,13 @@
+    public void init(RollerRequest rreq)
+    {
+        super.init(rreq);
+        try 
+        {
+            planetManager = RollerFactory.getRoller().getPlanetManager();
+        }
+        catch (Exception e)
+        {
+            mLogger.error("ERROR initializing page model",e);
+        }
+    }
+

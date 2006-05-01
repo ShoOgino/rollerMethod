@@ -1,0 +1,18 @@
+    /**
+     * @see org.apache.roller.model.ThemeManager#getTemplateById(java.lang.String)
+     */
+    public ThemeTemplate getTemplateById(String id)
+        throws ThemeNotFoundException, RollerException {
+        
+        if(id == null)
+            throw new ThemeNotFoundException("Theme id was null");
+        
+        // in our case we expect a template id to be <theme>:<template>
+        // so extract each piece and do the lookup
+        String[] split = id.split(":",  2);
+        if(split.length != 2)
+            throw new ThemeNotFoundException("Invalid theme id ["+id+"]");
+        
+        return this.getTemplate(split[0], split[1]);
+    }
+

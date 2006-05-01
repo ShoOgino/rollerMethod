@@ -1,0 +1,35 @@
+    //-----------------------------------------------------------------------
+    /**
+	 * Rebuild a user's search index.
+	 */
+	public ActionForward index(
+		ActionMapping       mapping,
+		ActionForm          actionForm,
+		HttpServletRequest  request,
+		HttpServletResponse response)
+		throws IOException, ServletException
+	{
+		try
+		{
+			RollerRequest rreq = RollerRequest.getRollerRequest(request);
+             RollerSession rollerSession = RollerSession.getRollerSession(request);
+			if (rollerSession.isGlobalAdminUser() )
+			{
+				UserAdminForm uaf = (UserAdminForm)actionForm;
+				
+				// if admin requests an index be re-built, do it
+				IndexManager manager = RollerFactory.getRoller().getIndexManager();								 
+				manager.rebuildWebsiteIndex();
+ 				request.getSession().setAttribute(
+					RollerSession.STATUS_MESSAGE,
+						"Successfully scheduled rebuild of index for");
+			}
+		}
+		catch (Exception e)
+		{
+			mLogger.error("ERROR in action",e);
+			throw new ServletException(e);
+		}
+		return edit(mapping, actionForm, request, response);
+	}
+

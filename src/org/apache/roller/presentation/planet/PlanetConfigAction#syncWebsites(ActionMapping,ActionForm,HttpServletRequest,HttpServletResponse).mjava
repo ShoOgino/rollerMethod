@@ -1,0 +1,36 @@
+    /** Sync websites in backgrounded thread (for testing) */
+    public ActionForward syncWebsites(ActionMapping mapping,
+            ActionForm actionForm, HttpServletRequest request,
+            HttpServletResponse response) throws IOException, ServletException
+    {
+        ActionForward forward = mapping.findForward("planetConfig.page");
+        try
+        {
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            if (RollerSession.getRollerSession(request).isGlobalAdminUser())
+            {
+                BasePageModel pageModel = new BasePageModel(
+                    "planetConfig.pageTitle", request, response, mapping);
+                request.setAttribute("model",pageModel);                
+                Roller roller = (Roller)RollerFactory.getRoller();
+                SyncWebsitesTask task = new SyncWebsitesTask();
+                task.init(roller, "dummy");
+                roller.getThreadManager().executeInBackground(task);
+                ActionMessages messages = new ActionMessages();
+                messages.add(null, 
+                        new ActionMessage("planetConfig.success.synced"));
+                saveMessages(request, messages);
+            }
+            else
+            {
+                forward = mapping.findForward("access-denied");
+            }
+        }
+        catch (Exception e)
+        {
+            request.getSession().getServletContext().log("ERROR", e);
+            throw new ServletException(e);
+        }
+        return forward;
+    }
+

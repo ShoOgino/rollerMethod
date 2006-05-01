@@ -1,0 +1,56 @@
+    /**
+     * Process filter.
+     *
+     * We'll take the incoming request and first determine if this is a
+     * secure request.  If the request is secure then we'll see if it matches
+     * one of the allowed secure urls, if not then we will redirect back out
+     * of https.
+     */
+    public void doFilter(ServletRequest request, ServletResponse response,
+                        FilterChain chain)
+            throws IOException, ServletException {
+        
+        if(this.schemeEnforcementEnabled && this.secureLoginEnabled) {
+            
+            HttpServletRequest req = (HttpServletRequest) request;
+            HttpServletResponse res = (HttpServletResponse) response;
+            
+            mLogger.debug("checking path = "+req.getServletPath());
+            
+            if(!request.isSecure() && allowedUrls.contains(req.getServletPath())) {
+                // http insecure request that should be over https
+                String redirect = "https://"+req.getServerName();
+                
+                if(this.httpsPort != 443)
+                    redirect += ":"+this.httpsPort;
+                
+                redirect += req.getRequestURI();
+                
+                if(req.getQueryString() != null)
+                    redirect += "?"+req.getQueryString();
+                
+                mLogger.debug("Redirecting to "+redirect);
+                res.sendRedirect(redirect);
+                return;
+                
+            } else if(request.isSecure() && !allowedUrls.contains(req.getServletPath())) {
+                // https secure request that should be over http
+                String redirect = "http://"+req.getServerName();
+                
+                if(this.httpPort != 80)
+                    redirect += ":"+this.httpPort;
+                
+                redirect += req.getRequestURI();
+                
+                if(req.getQueryString() != null)
+                    redirect += "?"+req.getQueryString();
+                
+                mLogger.debug("Redirecting to "+redirect);
+                res.sendRedirect(redirect);
+                return;
+            }
+        }
+        
+        chain.doFilter(request, response);
+    }
+

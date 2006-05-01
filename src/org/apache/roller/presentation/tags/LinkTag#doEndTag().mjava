@@ -1,0 +1,28 @@
+    /**
+     * Render the href reference
+     * 
+     * @exception JspException
+     *                if a JSP exception has occurred
+     */
+    public int doEndTag() throws JspException
+    {
+        hrefURL.append("\"");
+        if (target != null)
+        {
+            hrefURL.append(" target=\"");
+            hrefURL.append(target);
+            hrefURL.append("\"");
+        }
+        hrefURL.append(prepareStyles());
+        hrefURL.append(prepareEventHandlers());
+        hrefURL.append(">");
+        if (text != null)
+            hrefURL.append(text);
+        hrefURL.append("</a>");
+        if (cat.isDebugEnabled())
+            cat.debug("Total request is = '" + hrefURL.toString() + "'");
+        // Print this element to our output writer
+        ResponseUtils.write(pageContext, hrefURL.toString());
+        return (EVAL_PAGE);
+    }
+

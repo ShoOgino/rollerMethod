@@ -1,0 +1,33 @@
+    public ActionForward unspecified(
+            ActionMapping       mapping,
+            ActionForm          actionForm,
+            HttpServletRequest  request,
+            HttpServletResponse response)
+            throws IOException, ServletException {
+        
+        ActionForward forward = mapping.findForward("cacheInfo.page");
+        
+        try {
+            BasePageModel pageModel = new BasePageModel(
+                    "cacheInfo.title", request, response, mapping);
+            request.setAttribute("model",pageModel);                
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            RollerSession rollerSession = RollerSession.getRollerSession(request);
+            if (rollerSession.isGlobalAdminUser() ) {
+                
+                // caching instrumentation
+                Map cacheStats = CacheManager.getStats();
+                request.setAttribute("cacheStats", cacheStats);
+                
+            } else {
+                forward = mapping.findForward("access-denied");
+            }
+            
+        } catch (Exception e) {
+            mLogger.error("ERROR in action",e);
+            throw new ServletException(e);
+        }
+        
+        return forward;
+    }
+

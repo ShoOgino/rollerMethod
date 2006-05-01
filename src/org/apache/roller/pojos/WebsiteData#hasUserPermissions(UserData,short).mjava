@@ -1,0 +1,25 @@
+    /**
+     * Returns true if user has all permissions specified by mask.
+     */
+    public boolean hasUserPermissions(UserData user, short mask) {
+        // look for user in website's permissions
+        PermissionsData userPerms = null;
+        Iterator iter = getPermissions().iterator();
+        while (iter.hasNext()) {
+            PermissionsData perms = (PermissionsData) iter.next();
+            if (perms.getUser().getId().equals(user.getId())) {
+                userPerms = perms;
+                break;
+            }
+        }
+        // if we found one, does it satisfy the mask?
+        if (userPerms != null && !userPerms.isPending()) {
+            if (userPerms != null && (userPerms.getPermissionMask() & mask) == mask) {
+                return true;
+            }
+        }
+        // otherwise, check to see if user is a global admin
+        if (user != null && user.hasRole("admin")) return true;
+        return false;
+    }
+

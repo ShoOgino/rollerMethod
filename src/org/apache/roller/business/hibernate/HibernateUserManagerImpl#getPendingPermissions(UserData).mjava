@@ -1,0 +1,17 @@
+    /**
+     * Get pending permissions for user
+     */
+    public List getPendingPermissions(UserData user) throws RollerException {
+        
+        try {
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
+            Criteria criteria = session.createCriteria(PermissionsData.class);
+            criteria.add(Expression.eq("user", user));
+            criteria.add(Expression.eq("pending", Boolean.TRUE));
+            
+            return criteria.list();
+        } catch (HibernateException e) {
+            throw new RollerException(e);
+        }
+    }
+

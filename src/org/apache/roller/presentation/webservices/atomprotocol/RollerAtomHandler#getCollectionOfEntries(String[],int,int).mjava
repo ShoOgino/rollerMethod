@@ -1,0 +1,51 @@
+    /**
+     * Helper method that returns collection of entries, called by getCollection().
+     */
+    public Feed getCollectionOfEntries(
+            String[] pathInfo, int start, int max) throws Exception {
+        String handle = pathInfo[0];
+        String absUrl = mRollerContext.getAbsoluteContextUrl(mRequest);
+        WebsiteData website = mRoller.getUserManager().getWebsiteByHandle(handle);
+        List entries = null;
+        if (canView(website)) {
+            entries = mRoller.getWeblogManager().getWeblogEntries(
+                    website,           // website
+                    null,              // startDate
+                    null,              // endDate
+                    null,              // catName
+                    null,              // status
+                    "updateTime",      // sortby
+                    start,             // offset (for range paging)
+                    max + 1);          // maxEntries
+            Feed feed = new Feed();
+            feed.setTitle("Entries for blog[" + handle + "]");
+            List atomEntries = new ArrayList();
+            int count = 0;
+            for (Iterator iter = entries.iterator(); iter.hasNext() && count < mMaxEntries; count++) {
+                WeblogEntryData rollerEntry = (WeblogEntryData)iter.next();
+                atomEntries.add(createAtomEntry(rollerEntry));
+            }
+            List links = new ArrayList();
+            if (entries.size() > max) { // add next link
+                int nextOffset = start + max; 
+                String url = absUrl + "/app/" + website.getHandle() + "/entries/" + nextOffset;
+                Link nextLink = new Link();
+                nextLink.setRel("next");
+                nextLink.setHref(url);
+                links.add(nextLink);
+            }
+            if (start > 0) { // add previous link
+                int prevOffset = start > max ? start - max : 0;
+                String url = absUrl + "/app/" +website.getHandle() + "/entries/" + prevOffset;
+                Link prevLink = new Link();
+                prevLink.setRel("previous");
+                prevLink.setHref(url);
+                links.add(prevLink);
+            }
+            if (links.size() > 0) feed.setOtherLinks(links);
+            feed.setEntries(atomEntries);
+            return feed;
+        }
+        throw new Exception("ERROR: not authorized");
+    }
+

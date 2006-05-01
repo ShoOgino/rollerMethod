@@ -1,0 +1,10 @@
+    /**
+     * @see org.apache.roller.model.Roller#getThemeManager()
+     */
+    public ThemeManager getThemeManager() throws RollerException {
+        if (themeManager == null) {
+            themeManager = new ThemeManagerImpl();
+        }
+        return themeManager;
+    }
+

@@ -1,0 +1,24 @@
+    public String doStandaloneTest(Map inMap)
+        throws Exception
+    {
+        String          resource = getVelocityClasspathResource(
+										getTemplateClasspath());
+        VelocityContext context  = getVelocityContext();
+        StringWriter    w        = new StringWriter();
+        Iterator        iter     = inMap.keySet().iterator();
+
+        while (iter.hasNext())
+        {
+            Object o = iter.next();
+
+            context.put(o.toString(), inMap.get(o));
+        }
+
+        Velocity.mergeTemplate(resource, 
+			org.apache.velocity.runtime.RuntimeSingleton.getString(
+				Velocity.INPUT_ENCODING, Velocity.ENCODING_DEFAULT),
+            context, w);
+
+        return w.toString();
+    }
+

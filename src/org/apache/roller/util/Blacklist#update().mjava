@@ -1,0 +1,10 @@
+    /** Non-Static update method. */
+    public void update() {
+        if (this.blacklistURL != null) {
+            boolean blacklist_updated = this.downloadBlacklist();
+            if (blacklist_updated) {
+                this.loadBlacklistFromFile(null);
+            }
+        }
+    }
+

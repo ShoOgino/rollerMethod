@@ -1,0 +1,59 @@
+    /**
+     * Generate a cache key from a parsed weblog page request.
+     * This generates a key of the form ...
+     *
+     * weblog/<handle>/page/<type>[/anchor]/<weblogPage>/<language>[/user]
+     *   or
+     * weblog/<handle>/page/<type>[/date][/category]/<weblogPage>/<language>[/user]
+     *
+     *
+     * examples ...
+     *
+     * weblog/foo/page/main/Weblog/en
+     * weblog/foo/page/permalink/entry_anchor/Weblog/en
+     * weblog/foo/page/archive/20051110/Weblog/en
+     * weblog/foo/page/archive/MyCategory/Weblog/en/user=myname
+     *
+     */
+    private String generateKey(WeblogPageRequest pageRequest) {
+        
+        StringBuffer key = new StringBuffer();
+        key.append("weblog/");
+        key.append(pageRequest.getWeblogHandle().toLowerCase());
+        key.append("/page/");
+        key.append(pageRequest.getPageType());
+        
+        if(pageRequest.getWeblogAnchor() != null) {
+            // convert to base64 because there can be spaces in anchors :/
+            key.append("/").append(Utilities.toBase64(pageRequest.getWeblogAnchor().getBytes()));
+        } else {
+            
+            if(pageRequest.getWeblogDate() != null) {
+                key.append("/").append(pageRequest.getWeblogDate());
+            }
+            
+            if(pageRequest.getWeblogCategory() != null) {
+                String cat = pageRequest.getWeblogCategory();
+                if(cat.startsWith("/")) {
+                    cat = cat.substring(1);
+                }
+
+                // categories may contain spaces, which is not desired
+                key.append("/").append(org.apache.commons.lang.StringUtils.deleteWhitespace(cat));
+            }
+        }
+        
+        // add page name
+        key.append("/").append(pageRequest.getWeblogPage());
+        
+        // add language
+        key.append("/").append(pageRequest.getLanguage());
+        
+        // add login state
+        if(pageRequest.getAuthenticUser() != null) {
+            key.append("/user=").append(pageRequest.getAuthenticUser());
+        }
+        
+        return key.toString();
+    }
+

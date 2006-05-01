@@ -1,0 +1,55 @@
+    public ActionForward execute(
+        ActionMapping       mapping,
+        ActionForm          actionForm,
+        HttpServletRequest  request,
+        HttpServletResponse response)
+        throws Exception
+    {
+        ActionForward forward = mapping.findForward("Bookmarks");
+        FolderFormEx form = (FolderFormEx)actionForm;
+        RollerRequest rreq = RollerRequest.getRollerRequest(request);
+        RollerSession rses = RollerSession.getRollerSession(request);
+        BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
+        WebsiteData website = null;
+                
+        FolderData fd = null;
+        if (null != form.getId() && !form.getId().trim().equals("")) 
+        {
+            fd = bmgr.getFolder(form.getId());
+            website = fd.getWebsite();
+        }
+        else 
+        {
+            fd = new FolderData();
+            String parentId = request.getParameter(RollerRequest.PARENTID_KEY);
+            FolderData parent = bmgr.getFolder(parentId);
+            website = parent.getWebsite();
+            fd.setParent(parent);
+            fd.setWebsite(website);
+        }
+        
+        if (fd.getWebsite().hasUserPermissions(
+                rses.getAuthenticatedUser(), PermissionsData.AUTHOR))
+        {
+            // Copy form values to object
+            form.copyTo(fd, request.getLocale());
+            bmgr.saveFolder(fd);
+            RollerFactory.getRoller().flush();
+            
+            CacheManager.invalidate(fd);
+        }
+        else
+        {
+            ActionErrors errors = new ActionErrors();
+            errors.add(null, new ActionError("error.permissions.deniedSave"));
+            saveErrors(request, errors);
+            forward = mapping.findForward("access-denied");
+        }         
+        if (null != fd.getParent()) 
+        {
+            request.setAttribute(
+               RollerRequest.FOLDERID_KEY, fd.getParent().getId());
+        }         
+        return forward;
+    }
+

@@ -1,0 +1,94 @@
+    /**
+     * Upgrade database if dbVersion is older than desiredVersion.
+     */
+    public static void upgradeDatabase(Connection con, String desiredVersion) 
+        throws RollerException {
+        
+        int myVersion = 0;
+        int dbversion = -1;
+        
+        // NOTE: this assumes a maximum of 3 digits for the version number
+        //       so if we get to 10.0 then we'll need to upgrade this
+        
+        // strip out non-digits
+        desiredVersion = desiredVersion.replaceAll("\\Q.\\E", "");
+        desiredVersion = desiredVersion.replaceAll("\\D", "");
+        if(desiredVersion.length() > 3)
+            desiredVersion = desiredVersion.substring(0, 3);
+        
+        // parse to an int
+        try {
+            int parsed = Integer.parseInt(desiredVersion);
+            
+            if(parsed < 100)
+                myVersion = parsed * 10;
+            else
+                myVersion = parsed;
+        } catch(Exception e) {}
+        
+        
+        // get the current db version
+        try {
+            Statement stmt = con.createStatement();
+            
+            // just check in the roller_properties table
+            ResultSet rs = stmt.executeQuery(
+                    "select value from roller_properties where name = '"+DBVERSION_PROP+"'");
+            
+            if(rs.next()) {
+                dbversion = Integer.parseInt(rs.getString(1));
+                
+            } else {
+                // tough to know if this is an upgrade with no db version :/
+                // however, if roller_properties is not empty then we at least
+                // we have someone upgrading from 1.2.x
+                rs = stmt.executeQuery("select count(*) from roller_properties");
+                if(rs.next()) {
+                    if(rs.getInt(1) > 0)
+                        dbversion = 120;
+                }
+            }
+            
+        } catch(Exception e) {
+            // that's strange ... hopefully we didn't need to upgrade
+            mLogger.error("Couldn't lookup current database version", e);
+            return;
+        }
+        
+        mLogger.debug("Database version = "+dbversion);
+        mLogger.debug("Desired version = "+myVersion);
+            
+        if(dbversion < 0) {
+            mLogger.info("New installation found, setting db version to "+myVersion);
+            UpgradeDatabase.setDatabaseVersion(con, myVersion);
+            return;
+        } else if(dbversion >= myVersion) {
+            mLogger.info("Database is current, no upgrade needed");
+            return;
+        }
+        
+        mLogger.info("Database is old, beginning upgrade to version "+myVersion);
+        
+        // iterate through each upgrade as needed
+        // to add to the upgrade sequence simply add a new "if" statement
+        // for whatever version needed and then define a new method upgradeXXX()
+        if(dbversion < 130) 
+        {
+            UpgradeDatabase.upgradeTo130(con);
+            dbversion = 130;
+        }
+        if (dbversion < 200)
+        {
+            UpgradeDatabase.upgradeTo200(con);
+            dbversion = 200;
+        }
+        if(dbversion < 210) {
+            UpgradeDatabase.upgradeTo210(con);
+            dbversion = 210;
+        }
+        
+        // make sure the database version is the exact version
+        // we are upgrading too.
+        UpgradeDatabase.updateDatabaseVersion(con, myVersion);
+    }
+

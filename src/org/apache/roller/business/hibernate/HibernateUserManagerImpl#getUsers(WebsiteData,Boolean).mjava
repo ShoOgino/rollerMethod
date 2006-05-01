@@ -1,0 +1,21 @@
+    /**
+     * Get users of a website
+     */
+    public List getUsers(WebsiteData website, Boolean enabled) throws RollerException {
+        
+        try {
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
+            Criteria criteria = session.createCriteria(UserData.class);
+            if (website != null) {
+                criteria.createAlias("permissions","permissions");
+                criteria.add(Expression.eq("permissions.website", website));
+            }
+            if (enabled != null) {
+                criteria.add(Expression.eq("enabled", enabled));
+            }
+            return criteria.list();
+        } catch (HibernateException e) {
+            throw new RollerException(e);
+        }
+    }
+

@@ -1,0 +1,12 @@
+    public static void invalidate(CommentData comment) {
+        
+        mLogger.debug("invalidating comment = "+comment.getId());
+        
+        setLastExpiredDate(comment.getWeblogEntry().getWebsite().getHandle());
+        
+        Iterator handlers = cacheHandlers.iterator();
+        while(handlers.hasNext()) {
+            ((CacheHandler) handlers.next()).invalidate(comment);
+        }
+    }
+

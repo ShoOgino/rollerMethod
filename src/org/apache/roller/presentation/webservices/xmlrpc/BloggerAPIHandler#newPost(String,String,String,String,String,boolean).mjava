@@ -1,0 +1,75 @@
+    /**
+     * Makes a new post to a designated blog. Optionally, will publish the blog after making the post
+     *
+     * @param appkey Unique identifier/passcode of the application sending the post
+     * @param blogid Unique identifier of the blog the post will be added to
+     * @param userid Login for a Blogger user who has permission to post to the blog
+     * @param password Password for said username
+     * @param content Contents of the post
+     * @param publish If true, the blog will be published immediately after the post is made
+     * @throws XmlRpcException
+     * @return
+     */
+    public String newPost(String appkey, String blogid, String userid,
+                            String password, String content, boolean publish)
+            throws Exception {
+        
+        mLogger.debug("newPost() Called ===========[ SUPPORTED ]=====");
+        mLogger.debug("     Appkey: " + appkey);
+        mLogger.debug("     BlogId: " + blogid);
+        mLogger.debug("     UserId: " + userid);
+        mLogger.debug("    Publish: " + publish);
+        mLogger.debug("    Content:\n " + content);
+        
+        WebsiteData website = validate(blogid, userid, password);
+        
+        // extract the title from the content
+        String title = "";
+        
+        if (content.indexOf("<title>") != -1) {
+            title =
+                    content.substring(content.indexOf("<title>") + 7,
+                    content.indexOf("</title>"));
+            content = StringUtils.replace(content, "<title>"+title+"</title>", "");
+        }
+        if (Utilities.isEmpty(title)) { 
+            title = Utilities.truncateNicely(content, 15, 15, "...");
+        }
+        
+        try {
+            RollerRequest rreq = RollerRequest.getRollerRequest();
+            Roller roller = RollerFactory.getRoller();
+            WeblogManager weblogMgr = roller.getWeblogManager();
+            
+            Timestamp current = new Timestamp(System.currentTimeMillis());
+            
+            WeblogEntryData entry = new WeblogEntryData();
+            entry.setTitle(title);
+            entry.setText(content);
+            entry.setPubTime(current);
+            entry.setUpdateTime(current);
+            UserData user = roller.getUserManager().getUserByUsername(userid);
+            entry.setCreator(user);
+            entry.setWebsite(website);
+            entry.setCategory(website.getBloggerCategory());
+            if (Boolean.valueOf(publish).booleanValue()) {
+                entry.setStatus(WeblogEntryData.PUBLISHED);
+            } else {
+                entry.setStatus(WeblogEntryData.DRAFT);
+            }
+            
+            // save the entry
+            weblogMgr.saveWeblogEntry(entry);
+            roller.flush();
+            
+            // notify cache
+            flushPageCache(entry.getWebsite());
+
+            return entry.getId();
+        } catch (Exception e) {
+            String msg = "ERROR in BlooggerAPIHander.newPost";
+            mLogger.error(msg,e);
+            throw new XmlRpcException(UNKNOWN_EXCEPTION, msg);
+        }
+    }
+

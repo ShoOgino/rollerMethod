@@ -1,0 +1,87 @@
+    //------------------------------------------------------------------------
+    /**
+     * Returns website, but only if user authenticates and is authorized to edit.
+     * @param blogid   Blogid sent in request (used as website's hanldle)
+     * @param username Username sent in request
+     * @param password Password sent in requeset
+     */
+    protected WebsiteData validate(String blogid, String username, String password) 
+    throws Exception
+    {
+        boolean authenticated = false;
+        boolean userEnabled = false;
+        boolean weblogEnabled = false;
+        boolean apiEnabled = false;
+        boolean weblogFound = false;
+        WebsiteData website = null;
+        UserData user = null;
+        try
+        {
+            // Get Roller request object for current thread
+            RollerRequest rreq = RollerRequest.getRollerRequest();
+            
+            UserManager userMgr = RollerFactory.getRoller().getUserManager();
+            user = userMgr.getUserByUsername(username);
+            userEnabled = user.getEnabled().booleanValue();
+            
+            website = userMgr.getWebsiteByHandle(blogid);
+            if (website != null) {
+                weblogFound = true;
+                weblogEnabled = website.getEnabled().booleanValue();
+                apiEnabled = website.getEnableBloggerApi().booleanValue();
+            }
+            
+            if (user != null)
+            {    
+                // are passwords encrypted?
+                RollerContext rollerContext = 
+                    RollerContext.getRollerContext();
+                String encrypted = 
+                        RollerConfig.getProperty("passwds.encryption.enabled");
+                //System.out.print("password was [" + password + "] ");
+                if ("true".equalsIgnoreCase(encrypted)) 
+                {
+                	password = Utilities.encodePassword(password, 
+                      RollerConfig.getProperty("passwds.encryption.algorithm"));
+                }
+                //System.out.println("is now [" + password + "]");
+    			   authenticated= user.getPassword().equals(password);
+                if (authenticated)
+                {
+                    //RollerFactory.getRoller().setUser(user);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            mLogger.error("ERROR internal error validating user", e);
+        }
+        
+        if ( !authenticated )
+        {
+            throw new XmlRpcException(
+                AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
+        }
+        if ( !userEnabled )
+        {
+            throw new XmlRpcException(
+                USER_DISABLED, USER_DISABLED_MSG);
+        }        
+        if ( !weblogEnabled )
+        {
+            throw new XmlRpcException(
+                WEBLOG_DISABLED, WEBLOG_DISABLED_MSG);
+        }        
+        if ( !weblogFound )
+        {
+            throw new XmlRpcException(
+                WEBLOG_NOT_FOUND, WEBLOG_NOT_FOUND_MSG);
+        }        
+        if ( !apiEnabled )
+        {
+            throw new XmlRpcException(
+                BLOGGERAPI_DISABLED, BLOGGERAPI_DISABLED_MSG);
+        }        
+        return website;
+    }
+

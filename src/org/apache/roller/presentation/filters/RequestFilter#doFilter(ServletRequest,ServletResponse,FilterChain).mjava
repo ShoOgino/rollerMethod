@@ -1,0 +1,24 @@
+    public void doFilter(
+            ServletRequest req, ServletResponse res, FilterChain chain)
+            throws IOException, ServletException {
+        
+        // NOTE: Setting character encoding and JSTL/Struts locale sync has been
+        // moved to CharEncodingFilter, which is mapped for all URIs in the context.
+        
+        HttpSession session = ((HttpServletRequest)req).getSession();
+        HttpServletRequest request = (HttpServletRequest)req;
+        HttpServletResponse response = (HttpServletResponse)res;
+        Roller roller = RollerFactory.getRoller();
+        RollerRequest rreq = null;
+        try {
+            rreq = RollerRequest.getRollerRequest(
+                       request, mFilterConfig.getServletContext());
+        } catch (Throwable e) {            
+            // NOTE: this is not a page-not-found problem
+            request.setAttribute("DisplayException", e);            
+            mLogger.error(e);
+            return;
+        }
+        chain.doFilter(req, res);
+    }
+

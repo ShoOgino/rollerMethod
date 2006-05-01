@@ -1,0 +1,11 @@
+    /**
+     * Get absolute path to resource specified by path info.
+     */
+    public Entry getMedia(String[] pathInfo) throws Exception {
+        String handle = pathInfo[0];
+        WebsiteData website = mRoller.getUserManager().getWebsiteByHandle(handle);
+        String uploadPath = RollerFactory.getRoller().getFileManager().getUploadUrl();
+        File resource = new File(uploadPath + File.separator + pathInfo[2]);
+        return createAtomResourceEntry(website, resource);
+    }
+

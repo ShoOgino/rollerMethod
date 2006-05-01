@@ -1,0 +1,35 @@
+    public boolean isWeblogCategoryInUse(WeblogCategoryData cat)
+    throws RollerException {
+        try {
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
+            Criteria criteria = session.createCriteria(WeblogEntryData.class);
+            criteria.add(Expression.eq("category", cat));
+            criteria.setMaxResults(1);
+            int entryCount = criteria.list().size();
+            
+            if (entryCount > 0) {
+                return true;
+            }
+            
+            Iterator cats = cat.getWeblogCategories().iterator();
+            while (cats.hasNext()) {
+                WeblogCategoryData childCat = (WeblogCategoryData)cats.next();
+                if (childCat.isInUse()) {
+                    return true;
+                }
+            }
+            
+            if (cat.getWebsite().getBloggerCategory().equals(cat)) {
+                return true;
+            }
+            
+            if (cat.getWebsite().getDefaultCategory().equals(cat)) {
+                return true;
+            }
+            
+            return false;
+        } catch (HibernateException e) {
+            throw new RollerException(e);
+        }
+    }
+

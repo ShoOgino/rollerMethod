@@ -1,0 +1,71 @@
+    /** Save subscription, add to current group */
+    public ActionForward saveSubscription(ActionMapping mapping,
+            ActionForm actionForm, HttpServletRequest request,
+            HttpServletResponse response) throws IOException, ServletException {
+        ActionForward forward = mapping.findForward("planetSubscriptions.page");
+        try {
+            Roller roller = RollerFactory.getRoller();
+            PlanetManager planet = roller.getPlanetManager();
+            PlanetSubscriptionFormEx form = (PlanetSubscriptionFormEx)actionForm;
+            
+            String groupHandle = request.getParameter("groupHandle");
+            groupHandle = (groupHandle == null) ? form.getGroupHandle() : groupHandle;
+            groupHandle = (groupHandle == null) ? "external" : groupHandle;
+            
+            PlanetGroupData targetGroup = planet.getGroup(groupHandle);
+            
+            if (RollerSession.getRollerSession(request).isGlobalAdminUser()) {
+                
+                ActionMessages messages = new ActionMessages();
+                PlanetSubscriptionData sub = null;
+                ActionErrors errors = validate(planet, form);
+                if (errors.isEmpty()) {
+                    if (form.getId() == null || form.getId().trim().length() == 0) {                        
+                        // Adding new subscription to group                        
+                        // But, does subscription to that feed already exist?
+                        if (form.getFeedUrl() != null) {
+                            sub = planet.getSubscription(form.getFeedUrl()); 
+                        }
+                        if (sub != null) {
+                            // Yes, we'll use it instead
+                            messages.add(null, new ActionMessage(
+                                "planetSubscription.foundExisting", sub.getTitle()));
+                        } else {
+                            // No, add new subscription
+                            sub = new PlanetSubscriptionData(); 
+                            form.copyTo(sub, request.getLocale());
+                        }                        
+                        targetGroup.addSubscription(sub);
+                        
+                    } else {
+                        // User editing an existing subscription within a group
+                        sub = planet.getSubscriptionById(form.getId());
+                        form.copyTo(sub, request.getLocale());                        
+                    }                    
+                    form.setGroupHandle(groupHandle);
+                    planet.saveSubscription(sub);
+                    planet.saveGroup(targetGroup);
+                    roller.flush();
+                    
+                    messages.add(null,
+                            new ActionMessage("planetSubscription.success.saved"));
+                    saveMessages(request, messages);
+                    form.doReset(mapping, request);
+                } else {
+                    saveErrors(request, errors);
+                }
+            } else {
+                forward = mapping.findForward("access-denied");
+            }
+            request.setAttribute("model",
+                    new SubscriptionsPageModel(
+                    targetGroup, request, response, mapping, form));
+        } catch (RollerException e) {
+            ActionErrors errors = new ActionErrors();
+            errors.add(null, new ActionError(
+                    "planetSubscriptions.error.duringSave",e.getRootCauseMessage()));
+            saveErrors(request, errors);
+        }
+        return forward;
+    }
+

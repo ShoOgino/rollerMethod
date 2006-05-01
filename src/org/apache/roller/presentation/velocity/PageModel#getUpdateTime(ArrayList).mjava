@@ -1,0 +1,23 @@
+    //------------------------------------------------------------------------
+    /**
+     * Returns most recent update time of collection of weblog entries.
+     * @param weblogEntries Collection of weblog entries.
+     * @return Most recent update time.
+     */
+    public static Date getUpdateTime( ArrayList weblogEntries ) {
+        Date updateTime = null;
+        Iterator iter = weblogEntries.iterator();
+        while (iter.hasNext()) {
+            // NOTE: this will need to be WeblogEntryDataWrapper
+            WeblogEntryData wd = (WeblogEntryData)iter.next();
+            if ( updateTime == null ) {
+                updateTime = wd.getUpdateTime();
+            }
+            //else if ( updateTime.compareTo(wd.getUpdateTime()) < 0 )
+            else if (updateTime.before( wd.getUpdateTime() )) {
+                updateTime = wd.getUpdateTime();
+            }
+        }
+        return updateTime;
+    }
+

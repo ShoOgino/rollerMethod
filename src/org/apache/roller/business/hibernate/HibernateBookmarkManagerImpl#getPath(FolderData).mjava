@@ -1,0 +1,10 @@
+    public String getPath(FolderData folder) throws RollerException {
+        if (null == folder.getParent()) {
+            return "/";
+        } else {
+            String parentPath = getPath(folder.getParent());
+            parentPath = "/".equals(parentPath) ? "" : parentPath;
+            return parentPath + "/" + folder.getName();
+        }
+    }
+

@@ -1,0 +1,14 @@
+    public static String getRootCategoryId(Connection con, String websiteid)
+        throws SQLException
+    {
+        Statement st = con.createStatement();
+        String query = 
+            "select c.id from weblogcategory as c, weblogcategoryassoc as a "
+            +"where a.categoryid=c.id and a.ancestorid is null "
+            +"and c.websiteid ='"+websiteid+"'";
+        //System.out.println(query);
+        ResultSet rs = st.executeQuery(query);        
+        rs.next();
+        return rs.getString(1);
+    }
+

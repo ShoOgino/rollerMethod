@@ -1,0 +1,16 @@
+        public SubscriptionsPageModel(
+                PlanetGroupData group,
+                HttpServletRequest request,
+                HttpServletResponse response,
+                ActionMapping mapping,
+                PlanetSubscriptionFormEx form) throws RollerException {
+            super("dummy", request, response, mapping);
+            this.form = form;
+            if (group != null) {
+                Set subsSet = group.getSubscriptions();
+                subscriptions = new ArrayList(subsSet);
+            } else {
+                unconfigured = true;
+            }
+        }
+

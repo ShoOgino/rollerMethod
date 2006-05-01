@@ -1,0 +1,44 @@
+    public static ToolboxContext loadToolboxContext(
+            HttpServletRequest request,                                                     
+            HttpServletResponse response,                                                    
+            Context ctx) {
+        
+        mLogger.debug("Loading toolbox context");
+        
+        ServletContext servletContext = RollerContext.getServletContext();
+        
+        // get the toolbox manager
+        ServletToolboxManager toolboxManager =
+                (ServletToolboxManager)servletContext.getAttribute(TOOLBOX_MANAGER_KEY);
+        if (toolboxManager==null) {
+            String file = RollerConfig.getProperty("velocity.toolbox.file");
+            mLogger.debug("Creating new toolboxContext using config-file: "+file);
+            toolboxManager = ServletToolboxManager.getInstance(servletContext, file);
+            servletContext.setAttribute(TOOLBOX_MANAGER_KEY, toolboxManager);
+        }
+        
+        // load a toolbox context
+        ChainedContext chainedContext =
+                new ChainedContext(ctx, request, response, servletContext);
+        ToolboxContext toolboxContext =
+                toolboxManager.getToolboxContext(chainedContext);
+        
+        if (toolboxContext != null) {
+            // add MessageTool to VelocityContext
+            ctx.put("text", toolboxContext.internalGet("text"));
+            
+            /*
+            Object[] keys = toolboxContext.internalGetKeys();
+            for (int i=0;i<keys.length;i++) {
+                String key = (String)keys[i];
+                System.out.println("key = "+key);
+                Object tool = toolboxContext.get(key);
+                System.out.println("tool = "+tool);
+                ctx.put(key, tool);
+            }
+             */
+        }
+        
+        return toolboxContext;
+    }
+

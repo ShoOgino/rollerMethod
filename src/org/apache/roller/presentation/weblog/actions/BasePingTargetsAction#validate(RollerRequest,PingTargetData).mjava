@@ -1,0 +1,33 @@
+    /**
+     * Private helper to validate a ping target.
+     * @param rreq the request
+     * @param pingTarget the ping target to validate
+     * @return an <code>ActionMessages</code> object with 
+     *         <code>ActionMessage</code> for each error encountered, 
+     *         empty if no errors were encountered.
+     * @throws RollerException
+     */
+    private ActionMessages validate(
+        RollerRequest rreq, PingTargetData pingTarget) throws RollerException
+    {
+        ActionMessages errors = new ActionMessages();
+
+        PingTargetManager pingTargetMgr = 
+                RollerFactory.getRoller().getPingTargetManager();
+        if (!pingTargetMgr.isNameUnique(pingTarget))
+        {
+            errors.add(ActionMessages.GLOBAL_MESSAGE,
+                new ActionMessage("pingTarget.nameNotUnique"));
+        }
+        if (!pingTargetMgr.isUrlWellFormed(pingTarget))
+        {
+            errors.add(ActionMessages.GLOBAL_MESSAGE,
+                new ActionMessage("pingTarget.malformedUrl"));
+        } else if (!pingTargetMgr.isHostnameKnown(pingTarget))
+        {
+            errors.add(ActionMessages.GLOBAL_MESSAGE,
+                new ActionMessage("pingTarget.unknownHost"));
+        }
+        return errors;
+    }
+

@@ -1,0 +1,103 @@
+    /**
+     * Process filter.
+     */
+    public void doFilter(ServletRequest req,
+                        ServletResponse res,
+                        FilterChain chain)
+            throws IOException, ServletException {
+        
+        mLogger.debug("entering");
+        
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) res;
+        
+        WeblogFeedRequest feedRequest = null;
+        try {
+            feedRequest = new WeblogFeedRequest(request);
+        } catch(Exception e) {
+            // some kind of error parsing the request
+            mLogger.error("error creating weblog feed request", e);
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        
+        String key = this.CACHE_ID+":"+this.generateKey(feedRequest);
+        
+        try {
+            ResponseContent respContent = null;
+            long lastExpiration = 0;
+            
+            // first, we need to determine the last time the specified feed was expired.
+            // if this is a weblog specific feed then ask the CacheManager for
+            // the last expired time of the weblog.  otherwise this is a main feed and we
+            // keep that last expired time ourselves
+            if(feedRequest.getWeblogHandle() != null) {
+                Date lastExpirationDate =
+                        (Date) CacheManager.getLastExpiredDate(feedRequest.getWeblogHandle());
+                if(lastExpirationDate != null)
+                    lastExpiration = lastExpirationDate.getTime();
+            } else {
+                lastExpiration = this.mainLastExpiredDate.getTime();
+            }
+            
+            LazyExpiringCacheEntry entry =
+                    (LazyExpiringCacheEntry) this.mCache.get(key);
+            if(entry != null) {
+                respContent = (ResponseContent) entry.getValue(lastExpiration);
+                
+                if(respContent == null)
+                    mLogger.debug("HIT-INVALID "+key);
+            }
+                
+            if (respContent == null) {
+                
+                mLogger.debug("MISS "+key);
+                this.misses++;
+                
+                CacheHttpServletResponseWrapper cacheResponse =
+                        new CacheHttpServletResponseWrapper(response);
+                
+                chain.doFilter(request, cacheResponse);
+                
+                cacheResponse.flushBuffer();
+                
+                // only cache if there wasn't an exception
+                if (request.getAttribute("DisplayException") == null) {
+                    ResponseContent rc = cacheResponse.getContent();
+                    
+                    this.mCache.put(key, new LazyExpiringCacheEntry(rc));
+                } else {
+                    // it is expected that whoever caught this display exception
+                    // is the one who reported it to the logs
+                    mLogger.debug("Display exception "+key);
+                }
+                
+            } else {
+                
+                mLogger.debug("HIT "+key);
+                this.hits++;
+                
+                respContent.writeTo(response);
+            }
+            
+        } catch(Exception ex) {
+            
+            if(ex.getMessage().indexOf("ClientAbort") != -1) {
+                // ClientAbortException ... ignored
+                mLogger.debug(ex.getMessage());
+                
+            } else if(ex.getMessage().indexOf("SocketException") != -1) {
+                // SocketException ... ignored
+                mLogger.debug(ex.getMessage());
+                
+            } else {
+                mLogger.error("Unexpected exception rendering feed "+key, ex);
+            }
+            
+            // gotta send something to the client
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+        
+        mLogger.debug("exiting");
+    }
+

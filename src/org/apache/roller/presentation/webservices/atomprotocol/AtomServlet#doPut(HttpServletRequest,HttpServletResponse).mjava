@@ -1,0 +1,51 @@
+    //-----------------------------------------------------------------------------
+    /**
+     * Handles an Atom PUT by calling handler to identify URI, reading/parsing
+     * data, calling handler and writing results to response.
+     */
+    protected void doPut(HttpServletRequest req, HttpServletResponse res)
+    throws ServletException, IOException {
+        AtomHandler handler = createAtomRequestHandler(req);
+        String userName = handler.getAuthenticatedUsername();
+        if (userName != null) {
+            String[] pathInfo = getPathInfo(req);
+            try {
+                if (handler.isEntryURI(pathInfo)) {
+                    // parse incoming entry
+                    Entry unsavedEntry = parseEntry(
+                            new InputStreamReader(req.getInputStream()));
+                    
+                    // call handler to put entry
+                    Entry updatedEntry = handler.putEntry(pathInfo, unsavedEntry);
+                    
+                    // write entry back out to response
+                    res.setContentType("application/atom+xml; charset=utf8");
+                    Writer writer = res.getWriter();
+                    serializeEntry(updatedEntry, writer);
+                    res.setStatus(HttpServletResponse.SC_OK);
+                    writer.close();
+                } else if (handler.isMediaURI(pathInfo)) {
+                    // hand input stream to handler
+                    Entry updatedEntry = handler.putMedia(
+                        pathInfo, req.getContentType(), req.getInputStream());
+                                        
+                    // write entry back out to response
+                    res.setContentType("application/atom+xml; charset=utf8");
+                    Writer writer = res.getWriter();
+                    serializeEntry(updatedEntry, writer);
+                    writer.close();
+                    res.setStatus(HttpServletResponse.SC_OK);
+                } else {
+                    res.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                }
+            } catch (Throwable e) {
+                res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                e.printStackTrace(res.getWriter());
+                mLogger.error(e);
+            }
+        } else {
+            res.setHeader("WWW-Authenticate", "BASIC realm=\"Roller\"");
+            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        }
+    }
+

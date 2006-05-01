@@ -1,0 +1,36 @@
+    /**
+     * Delete a ping target (load delete confirmation view).
+     *
+     * @param mapping
+     * @param form
+     * @param req
+     * @param res
+     * @return the delete confirmation view with the form populated with the ping target specified by the id in the request.
+     * @throws Exception
+     */
+    public ActionForward deleteSelected(ActionMapping mapping, ActionForm form,
+                                        HttpServletRequest req, HttpServletResponse res)
+        throws Exception
+    {
+        ActionForward forward = mapping.findForward(PING_TARGET_DELETE_PAGE);
+        RollerRequest rreq = RollerRequest.getRollerRequest(req);
+        try
+        {
+            BasePageModel pageModel = new BasePageModel(
+                    getPingTargetDeleteOKTitle(), req, res, mapping);
+            req.setAttribute("model",pageModel);            
+            if (!hasRequiredRights(rreq, rreq.getWebsite()))
+            {
+                return mapping.findForward(ACCESS_DENIED_PAGE);
+            }
+            PingTargetData pingTarget = select(rreq);
+            ((PingTargetForm) form).copyFrom(pingTarget, req.getLocale());
+            return forward;
+        }
+        catch (Exception e)
+        {
+            getLogger().error("ERROR in action", e);
+            throw new ServletException(e);
+        }
+    }
+

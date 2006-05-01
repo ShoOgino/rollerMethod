@@ -1,0 +1,35 @@
+    /**
+     * Return Atom service document for site, getting blog-name from pathInfo.
+     * The workspace will contain collections for entries, categories and resources.
+     */
+    public AtomService getIntrospection(String[] pathInfo) throws Exception {
+        if (pathInfo.length == 0) {
+            String absUrl = mRollerContext.getAbsoluteContextUrl(mRequest);
+            AtomService service = new AtomService();
+            List perms = mRoller.getUserManager().getAllPermissions(user);
+            if (perms != null) {
+                for (Iterator iter=perms.iterator(); iter.hasNext();) {
+                    PermissionsData perm = (PermissionsData)iter.next();
+                    String handle = perm.getWebsite().getHandle();
+                    AtomService.Workspace workspace = new AtomService.Workspace();
+                    workspace.setTitle(Utilities.removeHTML(perm.getWebsite().getName()));
+                    service.addWorkspace(workspace);
+                    
+                    AtomService.Collection entryCol = new AtomService.Collection();
+                    entryCol.setTitle("Weblog Entries");
+                    entryCol.setMemberType("entry");
+                    entryCol.setHref(absUrl + "/app/"+handle+"/entries");
+                    workspace.addCollection(entryCol);
+                                        
+                    AtomService.Collection uploadCol = new AtomService.Collection();
+                    uploadCol.setTitle("Media Files");
+                    uploadCol.setMemberType("media");
+                    uploadCol.setHref(absUrl + "/app/"+handle+"/resources");
+                    workspace.addCollection(uploadCol);
+                }
+            }
+            return service;
+        }
+        throw new Exception("ERROR: bad URL in getIntrospection()");
+    }
+

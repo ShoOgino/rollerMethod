@@ -1,0 +1,10 @@
+    /**
+     * @see org.apache.roller.model.Roller#getIndexManager()
+     */
+    public IndexManager getIndexManager() throws RollerException {
+        if (indexManager == null) {
+            indexManager = new IndexManagerImpl();
+        }
+        return indexManager;
+    }
+

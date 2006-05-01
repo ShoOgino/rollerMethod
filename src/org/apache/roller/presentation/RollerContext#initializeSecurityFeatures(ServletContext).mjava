@@ -1,0 +1,70 @@
+    protected void initializeSecurityFeatures(ServletContext context) {
+        
+        ApplicationContext ctx =
+                WebApplicationContextUtils.getRequiredWebApplicationContext(context);
+        
+        String rememberMe = RollerConfig.getProperty("rememberme.enabled");
+        boolean rememberMeEnabled = Boolean.valueOf(rememberMe).booleanValue();
+        
+        mLogger.info("Remember Me enabled: " + rememberMeEnabled);
+        
+        context.setAttribute("rememberMeEnabled", rememberMe);
+        
+        if (rememberMeEnabled) {
+            ProviderManager provider = (ProviderManager) ctx.getBean("authenticationManager");
+            provider.getProviders().add(ctx.getBean("rememberMeAuthenticationProvider"));
+        }
+        
+        String encryptPasswords = RollerConfig.getProperty("passwds.encryption.enabled");
+        boolean doEncrypt = Boolean.valueOf(encryptPasswords).booleanValue();
+        
+        if (doEncrypt) {
+            DaoAuthenticationProvider provider =
+                    (DaoAuthenticationProvider) ctx.getBean("daoAuthenticationProvider");
+            String algorithm = RollerConfig.getProperty("passwds.encryption.algorithm");
+            PasswordEncoder encoder = null;
+            if (algorithm.equalsIgnoreCase("SHA")) {
+                encoder = new ShaPasswordEncoder();
+            } else if (algorithm.equalsIgnoreCase("MD5")) {
+                encoder = new Md5PasswordEncoder();
+            } else {
+                mLogger.error("Encryption algorithm '" + algorithm +
+                        "' not supported, disabling encryption.");
+            }
+            if (encoder != null) {
+                provider.setPasswordEncoder(encoder);
+                mLogger.info("Password Encryption Algorithm set to '" + algorithm + "'");
+            }
+        }
+        
+        if (RollerConfig.getBooleanProperty("securelogin.enabled")) {
+            AuthenticationProcessingFilterEntryPoint entryPoint =
+                    (AuthenticationProcessingFilterEntryPoint)ctx.getBean("authenticationProcessingFilterEntryPoint");
+            entryPoint.setForceHttps(true);
+        }
+        /*
+        if (RollerConfig.getBooleanProperty("schemeenforcement.enabled")) {
+            
+            ChannelProcessingFilter procfilter =
+                    (ChannelProcessingFilter)ctx.getBean("channelProcessingFilter");
+            ConfigAttributeDefinition secureDef = new ConfigAttributeDefinition();
+            secureDef.addConfigAttribute(new SecurityConfig("REQUIRES_SECURE_CHANNEL"));
+            ConfigAttributeDefinition insecureDef = new ConfigAttributeDefinition();
+            insecureDef.addConfigAttribute(new SecurityConfig("REQUIRES_INSECURE_CHANNEL"));
+            PathBasedFilterInvocationDefinitionMap defmap =
+                    (PathBasedFilterInvocationDefinitionMap)procfilter.getFilterInvocationDefinitionSource();
+            
+            // add HTTPS URL path patterns to Acegi config
+            String httpsUrlsProp = RollerConfig.getProperty("schemeenforcement.https.urls");
+            if (httpsUrlsProp != null) {
+                String[] httpsUrls = StringUtils.stripAll(StringUtils.split(httpsUrlsProp, ",") );
+                for (int i=0; i<httpsUrls.length; i++) {
+                    defmap.addSecureUrl(httpsUrls[i], secureDef);
+                }
+            }
+            // all other action URLs are non-HTTPS
+            defmap.addSecureUrl("/**<!-- need to remove this when uncommenting -->/*.do*", insecureDef);
+        }
+        */
+    }
+

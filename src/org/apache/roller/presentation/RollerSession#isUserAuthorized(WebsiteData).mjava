@@ -1,0 +1,12 @@
+    /** 
+     * Is session's authenticated user authorized to work in current website?
+     */
+    public boolean isUserAuthorized(WebsiteData website) 
+        throws RollerException
+    {
+        UserData user = getAuthenticatedUser();
+        if (user != null && user.getEnabled().booleanValue()) 
+            return hasPermissions(website, PermissionsData.LIMITED);
+        return false;
+    }
+

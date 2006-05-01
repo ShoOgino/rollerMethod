@@ -1,0 +1,30 @@
+    /** Encapsulates RefererManager **/
+    public List getReferers(String date) {
+        date = date.trim();
+        ArrayList referers = new ArrayList();
+        try {
+            List refs =
+                    mRefererMgr.getReferersToDate(mRollerReq.getWebsite(), date);
+            RollerSession rses =
+                    RollerSession.getRollerSession(mRollerReq.getRequest());
+            
+            for (Iterator rdItr = refs.iterator(); rdItr.hasNext();) {
+                RefererData referer = (RefererData) rdItr.next();
+                String title =referer.getTitle();
+                String excerpt = referer.getExcerpt();
+                if (   StringUtils.isNotEmpty(title)
+                && StringUtils.isNotEmpty(excerpt) ) {
+                    if (   referer.getVisible().booleanValue()
+                    || rses.isUserAuthorizedToAdmin(referer.getWebsite()) ) {
+                        referers.add(RefererDataWrapper.wrap(referer));
+                    }
+                }
+            }
+            
+        } catch (Exception e) {
+            mLogger.error("PageModel getReferersToDate() fails with URL"
+                    + mRollerReq.getRequestURL(), e);
+        }
+        return referers;
+    }
+

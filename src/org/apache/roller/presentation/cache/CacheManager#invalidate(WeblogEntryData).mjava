@@ -1,0 +1,12 @@
+    public static void invalidate(WeblogEntryData entry) {
+        
+        mLogger.debug("invalidating entry = "+entry.getAnchor());
+        
+        setLastExpiredDate(entry.getWebsite().getHandle());
+        
+        Iterator handlers = cacheHandlers.iterator();
+        while(handlers.hasNext()) {
+            ((CacheHandler) handlers.next()).invalidate(entry);
+        }
+    }
+

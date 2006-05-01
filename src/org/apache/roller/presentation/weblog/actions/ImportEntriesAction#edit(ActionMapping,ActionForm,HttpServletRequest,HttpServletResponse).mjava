@@ -1,0 +1,40 @@
+    /**
+     * Load list of XML files available for import.
+     * @param mapping
+     * @param actionForm
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     * @throws ServletException
+     */
+    public ActionForward edit(
+                              ActionMapping       mapping,
+                              ActionForm          actionForm,
+                              HttpServletRequest  request,
+                              HttpServletResponse response)
+    throws IOException, ServletException
+    {
+        ActionForward forward = mapping.findForward("importEntries.page");
+        try
+        {
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            RollerSession rses = RollerSession.getRollerSession(request);
+            if ( rreq.getWebsite() == null 
+                 || !rses.isUserAuthorizedToAdmin(rreq.getWebsite()) )
+            {
+                forward = mapping.findForward("access-denied");
+            }
+            else
+            {
+				getXmlFiles(actionForm, rreq);
+            }
+        }
+        catch (Exception e)
+        {
+            request.getSession().getServletContext().log("ERROR",e);
+            throw new ServletException(e);
+        }
+        return forward;
+    }
+

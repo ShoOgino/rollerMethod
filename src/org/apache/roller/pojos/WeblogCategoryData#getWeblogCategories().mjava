@@ -1,0 +1,22 @@
+    /**
+     * Query to get child categories of this category.
+     *
+     * @roller.wrapPojoMethod type="pojo-collection" class="org.apache.roller.pojos.WeblogCategoryData"
+     */
+    public List getWeblogCategories() throws RollerException
+    {
+        if (weblogCategories == null)
+        {
+            weblogCategories = new LinkedList();
+            List childAssocs = getChildAssocs();
+            Iterator childIter = childAssocs.iterator();
+            while (childIter.hasNext())
+            {
+                WeblogCategoryAssoc assoc =
+                    (WeblogCategoryAssoc) childIter.next();
+                weblogCategories.add(assoc.getCategory());
+            }
+        }
+        return weblogCategories;
+    }
+

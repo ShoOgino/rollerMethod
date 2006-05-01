@@ -1,0 +1,12 @@
+    public static void invalidate(FolderData folder) {
+        
+        mLogger.debug("invalidating folder = "+folder.getId());
+        
+        setLastExpiredDate(folder.getWebsite().getHandle());
+        
+        Iterator handlers = cacheHandlers.iterator();
+        while(handlers.hasNext()) {
+            ((CacheHandler) handlers.next()).invalidate(folder);
+        }
+    }
+

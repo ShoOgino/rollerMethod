@@ -1,0 +1,11 @@
+    //----------------------------------------------------------------
+    public void removeFolderContents(FolderData src) throws RollerException {
+        
+        // just go through the folder and remove each bookmark
+        Iterator srcBookmarks = src.getBookmarks().iterator();
+        while (srcBookmarks.hasNext()) {
+            BookmarkData bd = (BookmarkData)srcBookmarks.next();
+            this.strategy.remove(bd);
+        }
+    }
+

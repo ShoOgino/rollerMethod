@@ -1,0 +1,8 @@
+    /** Override to set "administration" checkbox depending on user's roles */
+    public void copyFrom(UserData user, Locale locale)
+            throws RollerException
+    {
+        super.copyFrom(user, locale);
+        mUserAdmin = user.hasRole("admin") ? Boolean.TRUE : Boolean.FALSE;
+    }
+

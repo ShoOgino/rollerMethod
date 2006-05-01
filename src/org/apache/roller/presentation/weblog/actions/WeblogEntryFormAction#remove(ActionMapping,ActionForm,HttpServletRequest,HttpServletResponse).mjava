@@ -1,0 +1,52 @@
+    //-----------------------------------------------------------------------
+    /**
+     * Responds to request from the 'are you sure you want to remove?' page.
+     * Removes the specified weblog entry and flushes the cache.
+     */
+    public ActionForward remove(
+            ActionMapping       mapping,
+            ActionForm          actionForm,
+            HttpServletRequest  request,
+            HttpServletResponse response)
+            throws IOException, ServletException {
+        try {
+            WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+            WeblogEntryData wd =
+                    mgr.getWeblogEntry(request.getParameter("id"));
+            RollerSession rses =
+                    RollerSession.getRollerSession(request);
+            if (     rses.isUserAuthorizedToAuthor(wd.getWebsite())
+            || (rses.isUserAuthorized(wd.getWebsite()) && wd.isDraft()) ) {
+                
+                // remove the index for it
+                // TODO: can we do this in a better way?
+                wd.setStatus(WeblogEntryData.DRAFT);
+                reindexEntry(RollerFactory.getRoller(), wd);
+                
+                // remove entry itself
+                mgr.removeWeblogEntry(wd);
+                RollerFactory.getRoller().flush();
+                
+                // flush caches
+                CacheManager.invalidate(wd);
+                
+                ActionMessages uiMessages = new ActionMessages();
+                uiMessages.add(null,
+                        new ActionMessage("weblogEdit.entryRemoved"));
+                saveMessages(request, uiMessages);
+                
+                RollerRequest.getRollerRequest().setWebsite(wd.getWebsite());
+            } else {
+                return mapping.findForward("access-denied");
+            }
+        } catch (Exception e) {
+            throw new ServletException(e); 
+        }
+        
+        // need to reset all values to empty (including 'id')
+        actionForm = new WeblogEntryFormEx();
+        actionForm.reset(mapping, request);
+        request.setAttribute(mapping.getName(), actionForm);
+        return create(mapping, actionForm, request, response);
+    }
+

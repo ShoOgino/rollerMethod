@@ -1,0 +1,12 @@
+    /*
+     * This is somewhat ridiculous, but avoids duplicating a bunch of logic 
+     * in the already messy sendEmailNotification.
+     */
+    static void sendMessage(Session session, String from, String[] to, String[] cc, String[] bcc, String subject,
+            String msg, boolean isHtml) throws MessagingException {
+        if (isHtml)
+            MailUtil.sendHTMLMessage(session, from, to, cc, bcc, subject, msg);
+        else
+            MailUtil.sendTextMessage(session, from, to, cc, bcc, subject, msg);
+    }
+

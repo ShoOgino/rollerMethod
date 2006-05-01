@@ -1,0 +1,18 @@
+    public void removeSubscription(PlanetSubscriptionData sub)
+    {
+        Set set = new TreeSet();
+        Iterator assocs = getGroupSubscriptionAssocs().iterator();
+        PlanetGroupSubscriptionAssoc target = null;
+        while (assocs.hasNext())
+        {
+            PlanetGroupSubscriptionAssoc assoc = 
+                    (PlanetGroupSubscriptionAssoc)assocs.next();
+            if (assoc.getSubscription().getFeedUrl().equals(sub.getFeedUrl()))
+            {
+                target = assoc;
+                break;
+            }
+        }
+        subscriptionAssocs.remove(target);
+    }
+

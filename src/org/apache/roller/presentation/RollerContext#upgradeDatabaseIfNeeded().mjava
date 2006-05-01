@@ -1,0 +1,15 @@
+    protected void upgradeDatabaseIfNeeded() throws RollerException {
+        
+        try {
+            InitialContext ic = new InitialContext();
+            DataSource ds = (DataSource)ic.lookup("java:comp/env/jdbc/rollerdb");
+            Connection con = ds.getConnection();
+            UpgradeDatabase.upgradeDatabase(con, mVersion);
+            con.close();
+        } catch (NamingException e) {
+            mLogger.warn("Unable to access DataSource", e);
+        } catch (SQLException e) {
+            mLogger.warn(e);
+        }
+    }
+

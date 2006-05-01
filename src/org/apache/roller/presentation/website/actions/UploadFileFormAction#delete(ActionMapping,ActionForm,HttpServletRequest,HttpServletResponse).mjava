@@ -1,0 +1,51 @@
+    /**
+     * Request to delete files
+     */
+    public ActionForward delete(
+            ActionMapping       mapping,
+            ActionForm          actionForm,
+            HttpServletRequest  request,
+            HttpServletResponse response)
+            throws Exception {
+
+        ActionMessages messages = new ActionMessages();
+        ActionErrors errors = new ActionErrors();
+        UploadFileForm theForm = (UploadFileForm)actionForm;
+        ActionForward fwd = mapping.findForward("access-denied");        
+        WebsiteData website = getWebsite(request);
+
+        int count = 0;
+        RollerSession rses = RollerSession.getRollerSession(request);
+        if (rses.isUserAuthorizedToAuthor(website)) {
+            fwd = mapping.findForward("uploadFiles.page"); 
+            try {
+                FileManager fmgr = RollerFactory.getRoller().getFileManager();
+                String[] deleteFiles = theForm.getDeleteFiles();
+                for (int i=0; i<deleteFiles.length; i++) {
+                    if (    deleteFiles[i].trim().startsWith("/")
+                    || deleteFiles[i].trim().startsWith("\\") 
+                    || deleteFiles[i].indexOf("..") != -1) {
+                        // ignore absolute paths, or paths that contiain '..'
+                    } else {
+                        fmgr.deleteFile(website.getHandle(), deleteFiles[i]);
+                        count++;
+                    }
+                }
+            } catch (Exception e) {
+                errors.add(ActionErrors.GLOBAL_ERROR,
+                        new ActionError("error.upload.file",e.toString()));
+                saveErrors(request,errors);
+            }
+            
+            messages.add(ActionMessages.GLOBAL_MESSAGE, 
+                new ActionMessage("uploadFiles.deletedFiles", new Integer(count)));
+            saveMessages(request, messages);
+            
+            UploadFilePageModel pageModel = new UploadFilePageModel(
+                request, response, mapping, website.getHandle());
+            pageModel.setWebsite(website);
+            request.setAttribute("model", pageModel);
+        }
+        return fwd;
+    }
+

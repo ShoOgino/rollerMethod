@@ -1,0 +1,12 @@
+    /**
+     * Clear the entire cache.
+     */
+    public void clear() {
+        mLogger.info("Clearing cache");
+        this.mCache.clear();
+        this.startTime = new Date();
+        this.hits = 0;
+        this.misses = 0;
+        this.purges = 0;
+    }
+

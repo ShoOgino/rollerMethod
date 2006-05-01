@@ -1,0 +1,15 @@
+    //------------------------------------------------------------- implemenatation
+    public List getCategories()
+    {
+        List list = new ArrayList();
+        if (categoriesString != null)
+        {
+            String[] catArray = Utilities.stringToStringArray(categoriesString,",");
+            for (int i=0; i<catArray.length; i++)
+            {
+                list.add(catArray[i]);
+            }
+        }
+        return list;
+    }
+

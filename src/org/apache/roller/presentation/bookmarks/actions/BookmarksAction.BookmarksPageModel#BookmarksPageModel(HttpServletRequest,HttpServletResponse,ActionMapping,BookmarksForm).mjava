@@ -1,0 +1,71 @@
+        public BookmarksPageModel(
+                HttpServletRequest request,
+                HttpServletResponse response,
+                ActionMapping mapping,
+                BookmarksForm form) throws RollerException
+        {
+            super("",  request, response, mapping);
+            
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            RollerSession rollerSession = RollerSession.getRollerSession(request);
+            BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
+
+            allFolders = new TreeSet(new FolderPathComparator());
+
+            // Find folderid wherever it may be
+            String folderId = (String)
+                request.getAttribute(RollerRequest.FOLDERID_KEY);
+            if (null == folderId)
+            {
+                folderId = request.getParameter(RollerRequest.FOLDERID_KEY);
+            }
+            if (null == folderId)
+            {
+                folderId = form.getFolderId();
+            }
+
+            if (null == folderId || folderId.equals("null"))
+            {
+                website = rreq.getWebsite();
+                folder = bmgr.getRootFolder(website);
+                folderId = folder.getId();
+            }
+            else
+            {
+                folder = bmgr.getFolder(folderId);
+                website = folder.getWebsite();
+            }
+            form.setFolderId(folder.getId());
+
+            if (null != folder.getParent())
+            {
+                folderPath = new LinkedList();
+                folderPath.add(0, folder);
+                FolderData parent = folder.getParent();
+                while (parent != null)
+                {
+                    folderPath.add(0, parent);
+                    parent = parent.getParent();
+                }
+                request.setAttribute(
+                    RollerRequest.PARENTID_KEY, folder.getParent().getId());
+            }
+
+            // Build list of all folders, except for current one, sorted by path.
+            Iterator iter = bmgr.getAllFolders(website).iterator();
+            while (iter.hasNext())
+            {
+                FolderData fd = (FolderData) iter.next();
+                if (!fd.getId().equals(folderId))
+                {
+                    allFolders.add(fd);
+                }
+            }
+            if (allFolders.size() > 0) {
+                request.setAttribute("allFolders", allFolders); // for Struts tags
+            } else {
+                allFolders = null;
+            }
+            request.setAttribute("folder", folder); // for Struts tags          
+        }
+

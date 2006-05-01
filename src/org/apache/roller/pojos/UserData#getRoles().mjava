@@ -1,0 +1,9 @@
+    /**
+     * @hibernate.set lazy="false" inverse="true" cascade="all-delete-orphan"
+     * @hibernate.collection-key column="userid"
+     * @hibernate.collection-one-to-many class="org.apache.roller.pojos.RoleData"
+     */
+    public Set getRoles() {
+        return roles;
+    }
+

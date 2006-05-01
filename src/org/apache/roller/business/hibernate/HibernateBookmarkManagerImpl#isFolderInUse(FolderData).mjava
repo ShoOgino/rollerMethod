@@ -1,0 +1,27 @@
+    /**
+     * @see org.apache.roller.model.BookmarkManager#isFolderInUse(org.apache.roller.pojos.FolderData)
+     */
+    public boolean isFolderInUse(FolderData folder) throws RollerException {
+        try {
+            // We consider a folder to be "in use" if it contains any bookmarks or has
+            // any children.
+            
+            // We first determine the number of bookmark entries.
+            // NOTE: This seems to be an attempt to optimize, rather than just use getBookmarks(),
+            // but I'm not sure that this optimization is really worthwhile, and it ignores
+            // caching in the case that the (lazy) getBookmarks has been done already. --agangolli
+            // TODO: condider changing to just use getBookmarks().size()
+            
+            Session session = ((HibernatePersistenceStrategy)strategy).getSession();
+            Criteria criteria = session.createCriteria(BookmarkData.class);
+            criteria.add(Expression.eq("folder", folder));
+            criteria.setMaxResults(1);
+            int entryCount = criteria.list().size();
+            
+            // Return true if we have bookmarks or (, failing that, then checking) if we have children
+            return (entryCount > 0 || folder.getFolders().size() > 0);
+        } catch (HibernateException e) {
+            throw new RollerException(e);
+        }
+    }
+

@@ -1,0 +1,40 @@
+   public boolean equals( Object pOther )
+   {
+      if( pOther instanceof RoleData )
+      {
+         RoleData lTest = (RoleData) pOther;
+         boolean lEquals = true;
+
+         if( this.userName == null )
+         {
+            lEquals = lEquals && ( lTest.getUserName() == null );
+         }
+         else
+         {
+            lEquals = lEquals && this.userName.equals( lTest.getUserName() );
+         }
+         if( this.user == null )
+         {
+            lEquals = lEquals && ( lTest.getUser() == null );
+         }
+         else
+         {
+            lEquals = lEquals && this.user.equals( lTest.getUser() );
+         }
+         if( this.role == null )
+         {
+            lEquals = lEquals && ( lTest.getRole() == null );
+         }
+         else
+         {
+            lEquals = lEquals && this.role.equals( lTest.getRole() );
+         }
+
+         return lEquals;
+      }
+      else
+      {
+         return false;
+      }
+   }
+

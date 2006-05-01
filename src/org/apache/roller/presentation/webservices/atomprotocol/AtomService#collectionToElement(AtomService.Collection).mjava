@@ -1,0 +1,14 @@
+    /** Serialize an AtomService.Collection object into an XML element */
+    public static Element collectionToElement(AtomService.Collection collection) {
+        Namespace ns = Namespace.getNamespace("http://purl.org/atom/app#");
+        Element element = new Element("collection", ns);
+        element.setAttribute("title", collection.getTitle());
+        element.setAttribute("href", collection.getHref());
+        
+        Element memberType = new Element("member-type", ns);
+        memberType.setText(collection.getMemberType());
+        element.addContent(memberType);
+        
+        return element;
+    }
+

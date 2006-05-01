@@ -1,0 +1,37 @@
+    public ActionForward query(
+            ActionMapping       mapping,
+            ActionForm          actionForm,
+            HttpServletRequest  request,
+            HttpServletResponse response) 
+            throws IOException, ServletException, RollerException {
+        
+        CommentManagementForm queryForm = (CommentManagementForm)actionForm;
+        RollerRequest rreq = RollerRequest.getRollerRequest(request);
+        RollerSession rses = RollerSession.getRollerSession(request);
+        
+        if (rreq.getWeblogEntry() != null) {
+            queryForm.setEntryid(rreq.getWeblogEntry().getId());
+            queryForm.setWeblog(rreq.getWeblogEntry().getWebsite().getHandle());
+        }        
+        else if (rreq.getWebsite() != null) {
+            queryForm.setWeblog(rreq.getWebsite().getHandle());
+        }        
+        request.setAttribute("model", new CommentManagementPageModel(
+           "commentManagement.title", request, response, mapping, queryForm));
+        if (request.getAttribute("commentManagementForm") == null) {
+            request.setAttribute("commentManagementForm", actionForm);
+        }
+        
+        // Ensure user is authorized to view comments in weblog
+        if (rreq.getWebsite() != null && rses.isUserAuthorized(rreq.getWebsite())) {
+            return mapping.findForward("commentManagement.page");
+        }
+        // And ensure only global admins can see all comments
+        else if (rses.isGlobalAdminUser()) {
+            return mapping.findForward("commentManagementGlobal.page");
+        } 
+        else {
+            return mapping.findForward("access-denied");
+        }
+    }
+

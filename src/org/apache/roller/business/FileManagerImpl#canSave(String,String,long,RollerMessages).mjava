@@ -1,0 +1,45 @@
+    /**
+     * Determine if file can be saved given current RollerConfig settings.
+     */
+    public boolean canSave(
+            String weblogHandle, String name, long size, RollerMessages messages)
+            throws RollerException {
+        Roller mRoller = RollerFactory.getRoller();
+        Map config = mRoller.getPropertiesManager().getProperties();
+        
+        if (!((RollerPropertyData)config.get("uploads.enabled")).getValue().equalsIgnoreCase("true")) {
+            messages.addError("error.upload.disabled");
+            return false;
+        }
+        
+        String allows = ((RollerPropertyData)config.get("uploads.types.allowed")).getValue();
+        String forbids = ((RollerPropertyData)config.get("uploads.types.forbid")).getValue();
+        String[] allowFiles = StringUtils.split(StringUtils.deleteWhitespace(allows), ",");
+        String[] forbidFiles = StringUtils.split(StringUtils.deleteWhitespace(forbids), ",");
+        if (!checkFileType(allowFiles, forbidFiles, name)) {
+            messages.addError("error.upload.forbiddenFile", allows);
+            return false;
+        }
+        
+        BigDecimal maxDirMB = new BigDecimal(
+                ((RollerPropertyData)config.get("uploads.dir.maxsize")).getValue());
+        int maxDirBytes = (int)(1024000 * maxDirMB.doubleValue());
+        int userDirSize = getWebsiteDirSize(weblogHandle, this.upload_dir);
+        if (userDirSize + size > maxDirBytes) {
+            messages.addError("error.upload.dirmax", maxDirMB.toString());
+            return false;
+        }
+        
+        BigDecimal maxFileMB = new BigDecimal(
+                ((RollerPropertyData)config.get("uploads.file.maxsize")).getValue());
+        int maxFileBytes = (int)(1024000 * maxFileMB.doubleValue());
+        mLogger.debug(""+maxFileBytes);
+        mLogger.debug(""+size);
+        if (size > maxFileBytes) {
+            messages.addError("error.upload.filemax", maxFileMB.toString());
+            return false;
+        }
+        
+        return true;
+    }
+

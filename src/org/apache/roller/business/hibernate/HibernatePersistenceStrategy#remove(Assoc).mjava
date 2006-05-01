@@ -1,0 +1,12 @@
+    /**
+     * Remove assoc.
+     */
+    protected void remove(Assoc assoc) throws HibernateException {
+        
+        if(assoc == null) {
+            throw new HibernateException("Cannot save null object");
+        }
+        
+        getSession().delete(assoc);
+    }
+

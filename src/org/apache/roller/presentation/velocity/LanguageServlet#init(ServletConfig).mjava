@@ -1,0 +1,20 @@
+    /**
+     * @see org.apache.roller.presentation.velocity.BasePageServlet#init(javax.servlet.ServletConfig)
+     */
+    public void init(ServletConfig config) throws ServletException {
+        
+        super.init(config);
+        
+        // load supported languages
+        ServletContext ctx = config.getServletContext();
+        String supportedLanguages =
+                config.getInitParameter(LanguageUtil.SUPPORTED_LANGUAGES);
+        if (supportedLanguages != null
+                && supportedLanguages.trim().length() > 0) {
+            // extract langauges
+            ctx.setAttribute(
+                    LanguageUtil.SUPPORTED_LANGUAGES,
+                    LanguageUtil.extractLanguages(supportedLanguages));
+        }
+    }
+

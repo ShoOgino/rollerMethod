@@ -1,0 +1,20 @@
+        /**
+         * Get top blogs in a group according to Technorati
+         */
+        public List getTopSubscriptions(String name, int num) 
+        throws RollerException
+        {
+            List ret = new ArrayList();
+            try 
+            {
+                Roller roller = RollerFactory.getRoller(); 
+                PlanetGroupData group= roller.getPlanetManager().getGroup(name);
+                ret = roller.getPlanetManager().getTopSubscriptions(group,num);
+            }
+            catch (RollerException e) 
+            {
+                mLogger.error(e); 
+            }
+            return ret;
+        }
+

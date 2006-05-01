@@ -1,0 +1,23 @@
+    /**
+     * @see org.apache.roller.model.BookmarkManager#getFolderParentAssoc(
+     * org.apache.roller.pojos.FolderData)
+     */
+    public Assoc getFolderParentAssoc(FolderData folder) throws RollerException {
+        try {
+            Session session = ((HibernatePersistenceStrategy)strategy).getSession();
+            Criteria criteria = session.createCriteria(FolderAssoc.class);
+            criteria.add(Expression.eq("folder", folder));
+            criteria.add(Expression.eq("relation", Assoc.PARENT));
+            List parents = criteria.list();
+            if (parents.size() > 1) {
+                throw new RollerException("ERROR: more than one parent");
+            } else if (parents.size() == 1) {
+                return (Assoc) parents.get(0);
+            } else {
+                return null;
+            }
+        } catch (HibernateException e) {
+            throw new RollerException(e);
+        }
+    }
+

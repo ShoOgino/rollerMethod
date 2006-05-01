@@ -1,0 +1,11 @@
+    /**
+    	* Setter is needed in RollerImpl.storePersistentObject()
+     */
+    public void setData(org.apache.roller.pojos.PersistentObject otherData)
+    {
+        this.id = otherData.getId();
+        this.folder = ((FolderAssoc)otherData).getFolder();
+        this.ancestor = ((FolderAssoc)otherData).getAncestorFolder();
+        this.relation = ((FolderAssoc)otherData).getRelation();
+    }
+

@@ -1,0 +1,38 @@
+	/** Name of Struts forward menu item should link to */
+	public String getUrl(PageContext pctx) 
+	{
+		String url = null;
+		try 
+		{
+            // If no forward specified, use default submenu URL
+            if (mForward == null && mMenuItems != null && mMenuItems.size() > 0)
+            {
+                HttpServletRequest req = (HttpServletRequest)pctx.getRequest();
+                String surl = getDefaultMenuItem( req ).getUrl( pctx ); 
+                StringBuffer sb = new StringBuffer( surl ); 
+                if ( surl.indexOf("?") == -1 )
+                {
+                    sb.append( "?" ); 
+                }
+                else
+                {
+                    sb.append( "&amp;" ); 
+                }
+                sb.append( RollerMenuModel.MENU_KEY );
+                sb.append( "=" ); 
+                sb.append( getName() );	
+                url = sb.toString();
+            }
+            else
+            {
+                return super.getUrl(pctx);
+            }
+		}
+		catch (Exception e)
+		{
+			pctx.getServletContext().log(
+				"ERROR in menu creating URL",e);
+		}
+		return url;
+	}
+

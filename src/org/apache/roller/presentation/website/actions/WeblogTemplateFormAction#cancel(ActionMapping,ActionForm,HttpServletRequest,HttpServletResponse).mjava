@@ -1,0 +1,13 @@
+    //-----------------------------------------------------------------------
+    public ActionForward cancel(
+        ActionMapping       mapping,
+        ActionForm          actionForm,
+        HttpServletRequest  request,
+        HttpServletResponse response)
+        throws IOException, ServletException
+    {
+        request.setAttribute("model", new BasePageModel(
+            "pagesForm.title", request, response, mapping));
+        return (mapping.findForward("editPages"));
+    }
+

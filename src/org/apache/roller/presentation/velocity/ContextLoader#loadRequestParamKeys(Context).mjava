@@ -1,0 +1,24 @@
+    protected static void loadRequestParamKeys(Context ctx) {
+        
+        mLogger.debug("Loading request param keys");
+        
+        // Since Velocity *requires* accessor methods, these values from
+        // RollerRequest are not available to it, put them into the context
+        ctx.put("USERNAME_KEY",           RollerRequest.USERNAME_KEY);
+        ctx.put("WEBSITEID_KEY",          RollerRequest.WEBSITEID_KEY);
+        ctx.put("FOLDERID_KEY",           RollerRequest.FOLDERID_KEY);
+        ctx.put("NEWSFEEDID_KEY",         RollerRequest.NEWSFEEDID_KEY);
+        ctx.put("PAGEID_KEY",             RollerRequest.PAGEID_KEY);
+        ctx.put("PAGELINK_KEY",           RollerRequest.PAGELINK_KEY);
+        ctx.put("ANCHOR_KEY",             RollerRequest.ANCHOR_KEY);
+        ctx.put("EXCERPTS_KEY",           RollerRequest.EXCERPTS_KEY);
+        ctx.put("BOOKMARKID_KEY",         RollerRequest.BOOKMARKID_KEY);
+        ctx.put("REFERERID_KEY",          RollerRequest.REFERERID_KEY);
+        ctx.put("WEBLOGENTRYID_KEY",      RollerRequest.WEBLOGENTRYID_KEY);
+        ctx.put("WEBLOGCATEGORYNAME_KEY", RollerRequest.WEBLOGCATEGORYNAME_KEY);
+        ctx.put("WEBLOGCATEGORYID_KEY",   RollerRequest.WEBLOGENTRIES_KEY);
+        ctx.put("WEBLOGENTRIES_KEY",      RollerRequest.WEBLOGENTRIES_KEY);
+        ctx.put("WEBLOGDAY_KEY",          RollerRequest.WEBLOGDAY_KEY);
+        ctx.put("WEBLOGCOMMENTID_KEY",    RollerRequest.WEBLOGCOMMENTID_KEY);
+    }
+

@@ -1,0 +1,13 @@
+	/**
+	 * Tests if a language is supported by roller as configured
+	 * in the LanguageServlet init paramater.
+	 * 
+	 * @param lang
+	 * @param ctx
+	 * @return
+	 */
+	public static boolean isSupported(String lang, ServletContext ctx)
+	{
+		return isSupported(createLocale(lang), ctx);
+	}
+

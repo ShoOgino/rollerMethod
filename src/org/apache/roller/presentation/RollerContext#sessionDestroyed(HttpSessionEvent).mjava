@@ -1,0 +1,8 @@
+    public void sessionDestroyed(HttpSessionEvent se) {
+        mSessionCount.decrement();
+        
+        mLogger.debug("sessions=" + mSessionCount
+                    + ":freemem=" + Runtime.getRuntime().freeMemory()
+                    + ":totalmem=" + Runtime.getRuntime().totalMemory());
+    }
+

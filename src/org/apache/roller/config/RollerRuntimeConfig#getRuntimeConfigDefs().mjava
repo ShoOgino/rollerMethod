@@ -1,0 +1,22 @@
+    public static RuntimeConfigDefs getRuntimeConfigDefs() {
+        
+        if(configDefs == null) {
+            
+            // unmarshall the config defs file
+            try {
+                InputStream is = 
+                        RollerRuntimeConfig.class.getResourceAsStream(runtime_config);
+                
+                RuntimeConfigDefsParser parser = new RuntimeConfigDefsParser();
+                configDefs = parser.unmarshall(is);
+                
+            } catch(Exception e) {
+                // error while parsing :(
+                mLogger.error("Error parsing runtime config defs", e);
+            }
+            
+        }
+        
+        return configDefs;
+    }
+

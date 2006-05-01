@@ -1,0 +1,25 @@
+    /**
+     * Other actions can get the website handle from request params, but
+     * request params don't come accross in a file-upload post so we have to
+     * stash the website handle in the session.
+     */
+    public static WebsiteData getWebsite(HttpServletRequest request) throws RollerException {
+        RollerRequest rreq = RollerRequest.getRollerRequest(request);
+        WebsiteData website = rreq.getWebsite();
+        String folderid = request.getParameter(RollerRequest.FOLDERID_KEY);
+        if (website == null && folderid != null) { 
+            BookmarkManager bm = RollerFactory.getRoller().getBookmarkManager();
+            FolderData folder = bm.getFolder(folderid);     
+            website = folder.getWebsite();
+        }           
+        if (website != null) {
+            request.getSession().setAttribute(HANDLE, website.getHandle());
+        } 
+        else {
+            String handle = (String)request.getSession().getAttribute(HANDLE);
+            Roller roller = RollerFactory.getRoller();
+            website = roller.getUserManager().getWebsiteByHandle(handle);
+        }
+        return website;
+    }
+

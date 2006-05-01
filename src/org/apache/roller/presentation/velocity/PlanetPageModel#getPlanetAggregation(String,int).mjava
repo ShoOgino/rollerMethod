@@ -1,0 +1,15 @@
+    /** 
+     * Get aggregation by group handle 
+     * @returns List of PlanetEntryData objects
+     */
+    public List getPlanetAggregation(String groupHandle, int max) throws Exception
+    {
+        List list = new ArrayList();
+        PlanetGroupData group = planetManager.getGroup(groupHandle);
+        if (group != null) 
+        {
+            list = planetManager.getAggregation(group, max);
+        }
+        return list;
+    }
+

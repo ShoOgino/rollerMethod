@@ -1,0 +1,47 @@
+    /**
+     * Remove hierarchical object.
+     *
+     * NOTE: if the object has proper cascade setting then is all this necessary?
+     */
+    protected void remove(HierarchicalPersistentObject obj) throws RollerException {
+        
+        if(obj == null) {
+            throw new RollerException("Cannot remove null object");
+        }
+        
+        log.debug("Removing hierarchical object "+obj.getId());
+        
+        // loop to remove all descendents and associations
+        List toRemove = new LinkedList();
+        List assocs = obj.getAllDescendentAssocs();
+        for (int i=assocs.size()-1; i>=0; i--) {
+            Assoc assoc = (Assoc)assocs.get(i);
+            HierarchicalPersistentObject hpo = assoc.getObject();
+            
+            // remove my descendent's parent and grandparent associations
+            Iterator ancestors = hpo.getAncestorAssocs().iterator();
+            while (ancestors.hasNext()) {
+                Assoc dassoc = (Assoc)ancestors.next();
+                this.remove(dassoc);
+            }
+            
+            // remove decendent association and descendents
+            //assoc.remove();
+            toRemove.add(hpo);
+        }
+        Iterator removeIterator = toRemove.iterator();
+        while (removeIterator.hasNext()) {
+            PersistentObject po = (PersistentObject) removeIterator.next();
+            getSession().delete(po);
+        }
+        
+        // loop to remove my own parent and grandparent associations
+        Iterator ancestors = obj.getAncestorAssocs().iterator();
+        while (ancestors.hasNext()) {
+            Assoc assoc = (Assoc)ancestors.next();
+            this.remove(assoc);
+        }
+        
+        getSession().delete(obj);
+    }
+

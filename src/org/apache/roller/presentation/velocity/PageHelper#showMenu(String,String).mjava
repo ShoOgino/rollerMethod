@@ -1,0 +1,15 @@
+    /** 
+     * Call hybrid EditorNavBarTag to render editor navbar.
+     * @param model Name of XML file in WEB-INF that contains XML for menu.
+     * @param template Name of Velocity template in classpath to display menu.
+     * @return String HTML for menu.
+     */
+    public String showMenu(String model, String template)
+    {
+        MenuTag menuTag = new MenuTag();
+        menuTag.setPageContext(mPageContext);
+        menuTag.setModel(model);
+        menuTag.setView(template);
+        return menuTag.emit();
+    }
+

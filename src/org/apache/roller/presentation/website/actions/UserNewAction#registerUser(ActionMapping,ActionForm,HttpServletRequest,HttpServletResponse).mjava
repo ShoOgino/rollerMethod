@@ -1,0 +1,33 @@
+    //------------------------------------------------------------------------
+    /** Process GET of user registration page (allows users to register themselves). */
+    public ActionForward registerUser(
+        ActionMapping       mapping,
+        ActionForm          actionForm,
+        HttpServletRequest  request,
+        HttpServletResponse response)
+        throws IOException, ServletException
+    {
+        ActionForward forward = mapping.findForward("registerUser.page");
+        ActionErrors errors = new ActionErrors();
+        RollerRequest rreq = RollerRequest.getRollerRequest(request);
+        try
+        {
+            UserFormEx userForm = (UserFormEx)actionForm;
+            
+            userForm.setLocale(Locale.getDefault().toString());
+            userForm.setTimeZone(TimeZone.getDefault().getID());
+            
+            userForm.setPasswordText(null);
+            userForm.setPasswordConfirm(null);            
+            request.setAttribute("model", new BasePageModel(
+                    "newUser.addNewUser", request, response, mapping));
+        }
+        catch (Exception e)
+        {
+            errors.add(ActionErrors.GLOBAL_ERROR,
+                new ActionError("error.editing.user", e.toString()));
+            mLogger.error("ERROR in newUser", e);
+        }
+        return forward;
+    }
+

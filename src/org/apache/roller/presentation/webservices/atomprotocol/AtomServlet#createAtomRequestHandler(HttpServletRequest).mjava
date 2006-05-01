@@ -1,0 +1,15 @@
+    //-----------------------------------------------------------------------------
+    /**
+     * Create an Atom request handler.
+     * TODO: make AtomRequestHandler implementation configurable.
+     */
+    private AtomHandler createAtomRequestHandler(HttpServletRequest request) 
+    throws ServletException {
+        boolean enabled = RollerConfig.getBooleanProperty(
+            "webservices.atomprotocol.enabled");
+        if (!enabled) {
+            throw new ServletException("ERROR: Atom protocol not enabled");
+        }
+        return new RollerAtomHandler(request);
+    }
+

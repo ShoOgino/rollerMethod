@@ -1,0 +1,26 @@
+    /**
+     * Load information pertaining to the Website and
+     * its associated User.
+     * @param rollerCtx
+     */
+    private void loadWebsiteInfo(RollerContext rollerCtx, WebsiteData website)
+    {
+        ctx.put("website",       website);
+        ctx.put("userName",      user.getUserName() );
+        ctx.put("fullName",      user.getFullName() );
+        ctx.put("emailAddress",  user.getEmailAddress() );
+
+        ctx.put("encodedEmail",  RegexUtil.encode(user.getEmailAddress()));
+        ctx.put("obfuscatedEmail",  RegexUtil.obfuscateEmail(user.getEmailAddress()));
+
+        
+        // custom figureResourcePath() due to no "request" object
+        StringBuffer sb = new StringBuffer();
+        String uploadDir = null;
+        try {
+            uploadDir = RollerFactory.getRoller().getFileManager().getUploadDir();
+        } catch(Exception e) {}
+
+        ctx.put("uploadPath", uploadDir);
+    }
+

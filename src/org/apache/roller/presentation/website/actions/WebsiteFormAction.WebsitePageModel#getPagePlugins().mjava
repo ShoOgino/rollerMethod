@@ -1,0 +1,20 @@
+        public List getPagePlugins() {
+            List list = new ArrayList();
+            try {
+                if (getHasPagePlugins()) {
+                    Roller roller = RollerFactory.getRoller();
+                    PagePluginManager ppmgr = roller.getPagePluginManager();
+                    Map plugins = ppmgr.createAndInitPagePlugins(
+                            getWebsite(),
+                            RollerContext.getRollerContext().getServletContext(),
+                            RollerContext.getRollerContext().getAbsoluteContextUrl(),
+                            new VelocityContext());
+                    Iterator it = plugins.values().iterator();
+                    while (it.hasNext()) list.add(it.next());
+                }
+            } catch (Exception e) {
+                mLogger.error(e);
+            }
+            return list;
+        }
+

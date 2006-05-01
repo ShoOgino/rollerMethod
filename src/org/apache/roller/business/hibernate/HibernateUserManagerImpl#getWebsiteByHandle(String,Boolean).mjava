@@ -1,0 +1,56 @@
+    /**
+     * Return website specified by handle.
+     */
+    public WebsiteData getWebsiteByHandle(String handle, Boolean enabled)
+            throws RollerException {
+        
+        if (handle==null )
+            throw new RollerException("Handle cannot be null");
+        
+        // check cache first
+        // NOTE: if we ever allow changing handles then this needs updating
+        if(this.weblogHandleToIdMap.containsKey(handle)) {
+            
+            WebsiteData weblog = this.getWebsite((String) this.weblogHandleToIdMap.get(handle));
+            if(weblog != null) {
+                // only return weblog if enabled status matches
+                if(enabled == null || enabled.equals(weblog.getEnabled())) {
+                    log.debug("weblogHandleToId CACHE HIT - "+handle);
+                    return weblog;
+                }
+            } else {
+                // mapping hit with lookup miss?  mapping must be old, remove it
+                this.weblogHandleToIdMap.remove(handle);
+            }
+        }
+        
+        // cache failed, do lookup
+        try {
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
+            Criteria criteria = session.createCriteria(WebsiteData.class);
+            
+            if (enabled != null) {
+                criteria.add(
+                        Expression.conjunction()
+                        .add(new IgnoreCaseEqExpression("handle", handle))
+                        .add(Expression.eq("enabled", enabled)));
+            } else {
+                criteria.add(
+                        Expression.conjunction()
+                        .add(Expression.eq("handle", handle)));
+            }
+            
+            WebsiteData website = (WebsiteData) criteria.uniqueResult();
+            
+            // add mapping to cache
+            if(website != null) {
+                log.debug("weblogHandleToId CACHE MISS - "+handle);
+                this.weblogHandleToIdMap.put(website.getHandle(), website.getId());
+            }
+            
+            return website;
+        } catch (HibernateException e) {
+            throw new RollerException(e);
+        }
+    }
+

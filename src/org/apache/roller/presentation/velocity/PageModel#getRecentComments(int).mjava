@@ -1,0 +1,35 @@
+    /**
+     * Facade for WeblogManager.getRecentComments().
+     * Get the most recent (chronologically) posted Comments
+     * for this website, limited to maxCount.
+     * @return List of Comments.
+     */
+    public List getRecentComments(int maxCount) {
+        List recentComments = new ArrayList();
+        try {
+            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+            List recent = wmgr.getComments(
+                    mWebsite,
+                    null,  // weblog entry
+                    null,  // search String
+                    null,  // startDate
+                    null,  // endDate
+                    null,  // pending
+                    Boolean.TRUE,  // approved only
+                    Boolean.FALSE, // no spam
+                    true,          // we want reverse chrono order
+                    0,             // offset
+                    maxCount);     // no limit
+            
+            // wrap pojos
+            recentComments = new ArrayList(recent.size());
+            Iterator it = recent.iterator();
+            while(it.hasNext()) {
+                recentComments.add(CommentDataWrapper.wrap((CommentData) it.next()));
+            }
+        } catch (RollerException e) {
+            mLogger.error(e);
+        }
+        return recentComments;
+    }
+

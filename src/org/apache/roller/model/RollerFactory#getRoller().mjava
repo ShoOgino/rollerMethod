@@ -1,0 +1,21 @@
+    /**
+     * Static accessor for the instance of Roller
+     * held by this class.
+     * 
+     * @return Roller
+     */
+    public static Roller getRoller()
+    {
+        // check to see if we need to instantiate
+        if(rollerInstance == null) {
+            // lookup value for the roller classname to use
+            String roller_classname = 
+                    RollerConfig.getProperty("persistence.roller.classname");
+            
+            // now call setRoller ourselves
+            RollerFactory.setRoller(roller_classname);
+        }
+		
+        return rollerInstance;
+    }
+

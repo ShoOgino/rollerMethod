@@ -1,0 +1,12 @@
+    /**
+     * Instantiates and returns an instance of HibernateRollerImpl.
+     */
+    public static Roller instantiate() throws RollerException {
+        if (me == null) {
+            mLogger.debug("Instantiating HibernateRollerImpl");
+            me = new HibernateRollerImpl();
+        }
+        
+        return me;
+    }
+

@@ -1,0 +1,15 @@
+    public List getUsers(Boolean enabled) throws RollerException {
+        
+        try {
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
+            Criteria criteria = session.createCriteria(UserData.class);
+            if (enabled != null) {
+                criteria.add(Expression.eq("enabled", enabled));
+            }
+            
+            return criteria.list();
+        } catch (HibernateException e) {
+            throw new RollerException(e);
+        }
+    }
+

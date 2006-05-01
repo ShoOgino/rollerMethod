@@ -1,0 +1,20 @@
+    /** Encapsulates UserManager.getPageByName() */
+    public String getPageIdByName(String pageName) {
+        mLogger.debug("looking up page ["+pageName+"]");
+        
+        String template_id = null;
+        
+        try {
+            Template pd = mWebsite.getPageByName(pageName);
+            if(pd != null) {
+                template_id = pd.getId();
+            }
+        } catch(Exception e) {
+            mLogger.error(e);
+        }
+        
+        mLogger.debug("returning template id ["+template_id+"]");
+        
+        return template_id;
+    }
+

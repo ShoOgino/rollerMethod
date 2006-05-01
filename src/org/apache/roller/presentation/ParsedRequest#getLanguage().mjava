@@ -1,0 +1,12 @@
+    public String getLanguage() {
+        if(this.language == null) {
+            // determine language
+            // this operation can possibly require a trip to the db, so we only
+            // do it when we know our user needs to know the language
+            Locale locale = LanguageUtil.getViewLocale(request);
+            this.language = locale.getLanguage();
+        }
+
+        return this.language;
+    }
+

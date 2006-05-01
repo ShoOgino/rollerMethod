@@ -1,0 +1,21 @@
+    /** Get top level bookmark folders. */
+    public Collection getTopLevelFolders() {
+        List tops = null;
+        try {
+            Collection mTops = mBookmarkMgr.getRootFolder(
+                    mUserMgr.getWebsiteByHandle(mHandle)).getFolders();
+            
+            // wrap pojos
+            tops = new ArrayList(mTops.size());
+            Iterator it = mTops.iterator();
+            int i=0;
+            while(it.hasNext()) {
+                tops.add(i, FolderDataWrapper.wrap((FolderData) it.next()));
+                i++;
+            }
+        } catch (RollerException e) {
+            tops = new ArrayList();
+        }
+        return tops;
+    }
+

@@ -1,0 +1,28 @@
+    /**
+     * Execute job.
+     *
+     * We simply pass the referrer into the RefererManager to handle the details.
+     */
+    public void execute() {
+        
+        if(this.referrer == null)
+            return;
+        
+        mLogger.debug("PROCESSING: "+referrer.getRequestUrl());
+        
+        // process a referrer
+        try {
+            RefererManager refMgr = RollerFactory.getRoller().getRefererManager();
+            refMgr.processReferrer(referrer.getRequestUrl(),
+                                   referrer.getReferrerUrl(),
+                                   referrer.getWeblogHandle(),
+                                   referrer.getWeblogAnchor(),
+                                   referrer.getWeblogDateString());
+            
+            RollerFactory.getRoller().flush();
+        } catch(RollerException re) {
+            // trouble
+            mLogger.warn("Trouble processing referrer", re);
+        }
+    }
+

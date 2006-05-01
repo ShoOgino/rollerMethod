@@ -1,0 +1,37 @@
+    /** Refresh entries in backgrounded thread (for testing) */
+    public ActionForward refreshEntries(ActionMapping mapping,
+            ActionForm actionForm, HttpServletRequest request,
+            HttpServletResponse response) throws IOException, ServletException
+    {
+        ActionForward forward = mapping.findForward("planetConfig.page");
+        try
+        {
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            if (RollerSession.getRollerSession(request).isGlobalAdminUser())
+            {
+                BasePageModel pageModel = new BasePageModel(
+                    "planetConfig.pageTitle", request, response, mapping);
+                request.setAttribute("model",pageModel);                
+                Roller roller = RollerFactory.getRoller();
+                RefreshEntriesTask task = new RefreshEntriesTask();
+                task.init(roller, "dummy");
+                roller.getThreadManager().executeInBackground(task);
+                
+                ActionMessages messages = new ActionMessages();
+                messages.add(null, 
+                        new ActionMessage("planetConfig.success.refreshed"));
+                saveMessages(request, messages);
+            }
+            else
+            {
+                forward = mapping.findForward("access-denied");
+            }
+        }
+        catch (Exception e)
+        {
+            request.getSession().getServletContext().log("ERROR", e);
+            throw new ServletException(e);
+        }
+        return forward;
+    }
+

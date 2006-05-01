@@ -1,0 +1,10 @@
+    /**
+     * @see org.apache.roller.model.Roller#getFileManager()
+     */
+    public FileManager getFileManager() throws RollerException {
+        if (fileManager == null) {
+            fileManager = new FileManagerImpl();
+        }
+        return fileManager;
+    }
+

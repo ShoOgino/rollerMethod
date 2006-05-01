@@ -1,0 +1,10 @@
+    /**
+     * We override this so we can catch the response status. Only
+     * responses with a status of 200 (<code>SC_OK</code>) will
+     * be cached.
+     */
+    public void sendError(int status) throws IOException {
+        super.sendError(status);
+        this.status = status;
+    }
+

@@ -1,0 +1,13 @@
+    /**
+     * A weblog has changed.
+     */
+    public synchronized void invalidate(WebsiteData website) {
+        
+        mLogger.debug("invalidating website = "+website.getHandle());
+        
+        // update our main feed last expiration date
+        synchronized(this) {
+            this.mainLastExpiredDate = new Date();
+        }
+    }
+

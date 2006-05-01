@@ -1,0 +1,27 @@
+    //------------------------------------------------------------------------
+    /**
+     * Gets the FolderData specified by the request, or null.
+     * @return FolderData
+     */
+    public FolderData getFolder( )
+    {
+        FolderData folder = null;
+        //if ( folder == null )
+        //{
+            String id = getFromRequest(FOLDERID_KEY);
+            if ( id != null )
+            {
+                try
+                {
+                    folder = RollerFactory.getRoller()
+                        .getBookmarkManager().getFolder(id);
+                }
+                catch (RollerException e)
+                {
+                    mLogger.error("Getting folder from request",e);
+                }
+            }
+        //}
+        return folder;
+    }
+

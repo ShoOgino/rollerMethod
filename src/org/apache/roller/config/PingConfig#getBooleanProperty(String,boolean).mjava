@@ -1,0 +1,18 @@
+    /**
+     * Get the value of a boolean property with specified default.
+     *
+     * @param propName     the property name
+     * @param defaultValue the default value if the property is not present
+     * @return the configured value or the default if it the configured value is not present.
+     */
+    private static boolean getBooleanProperty(String propName, boolean defaultValue)
+    {
+        String configuredVal = RollerConfig.getProperty(propName);
+        if (configuredVal == null)
+        {
+            if (logger.isDebugEnabled()) logger.debug("PingConfig property '" + propName + "' is not present in the configuration.  Using default value: " + defaultValue);
+            return defaultValue;
+        }
+        return Boolean.valueOf(configuredVal).booleanValue();
+    }
+

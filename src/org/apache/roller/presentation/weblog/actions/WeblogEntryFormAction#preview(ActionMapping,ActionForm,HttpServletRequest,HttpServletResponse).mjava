@@ -1,0 +1,16 @@
+    //-----------------------------------------------------------------------
+    public ActionForward preview(
+            ActionMapping       mapping,
+            ActionForm          actionForm,
+            HttpServletRequest  request,
+            HttpServletResponse response)
+            throws IOException, ServletException {
+        // we need to save any new entries before Previewing
+        WeblogEntryFormEx form = (WeblogEntryFormEx)actionForm;
+        if (form.getId() == null) {
+            save(mapping, actionForm, request, response);
+        }
+        return display(WeblogEntryPageModel.PREVIEW_MODE,
+                mapping, actionForm, request, response);
+    }
+

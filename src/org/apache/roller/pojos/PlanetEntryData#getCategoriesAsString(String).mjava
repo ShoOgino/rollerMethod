@@ -1,0 +1,16 @@
+    /** 
+     * Return category names as a string, separated by delimeters.
+     */
+    public String getCategoriesAsString(String delim)
+    {
+        StringBuffer sb = new StringBuffer();
+        Iterator cats = getCategories().iterator();
+        while (cats.hasNext())
+        {
+            String catName = ((String)cats.next()).toLowerCase();
+            sb.append(catName);
+            if (cats.hasNext()) sb.append(delim);
+        }
+        return sb.toString();
+    }
+

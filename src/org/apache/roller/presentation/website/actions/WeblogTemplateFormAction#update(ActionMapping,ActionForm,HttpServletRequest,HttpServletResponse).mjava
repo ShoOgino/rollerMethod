@@ -1,0 +1,67 @@
+    //-----------------------------------------------------------------------
+    public ActionForward update(
+        ActionMapping       mapping,
+        ActionForm          actionForm,
+        HttpServletRequest  request,
+        HttpServletResponse response)
+        throws IOException, ServletException
+    {
+        ActionForward forward = mapping.findForward("editPage.page");
+        try
+        {
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            WeblogTemplateForm form = (WeblogTemplateForm)actionForm;
+            UserManager mgr = RollerFactory.getRoller().getUserManager();
+            WeblogTemplate data = mgr.getPage(form.getId());
+            WebsiteData website = data.getWebsite();
+            
+            RollerSession rses = RollerSession.getRollerSession(request);
+            if (rses.isUserAuthorizedToAdmin(website))
+            {
+                form.copyTo(data, request.getLocale());
+                data.setLastModified( new java.util.Date() );
+
+                validateLink( data );
+
+                mgr.savePage( data );
+                RollerFactory.getRoller().flush();
+                
+                // set the (possibly) new link back into the Form bean
+                ((WeblogTemplateForm)actionForm).setLink( data.getLink() );
+
+                ActionMessages uiMessages = new ActionMessages();
+                uiMessages.add(ActionMessages.GLOBAL_MESSAGE, 
+                        new ActionMessage("pageForm.save.success", 
+                                data.getName()));
+                saveMessages(request, uiMessages);
+
+                CacheManager.invalidate(data);
+                
+                BasePageModel pageModel = new BasePageModel(
+                    "pageForm.title", request, response, mapping);
+                pageModel.setWebsite(website);
+                request.setAttribute("model", pageModel);
+            }
+            else
+            {
+                forward = mapping.findForward("access-denied");
+            }
+              
+            // Don't reset this form. Allow user to keep on tweaking.        
+            //actionForm.reset(mapping,request);
+        }
+        catch (RollerPermissionsException e)
+        {
+            ActionErrors errors = new ActionErrors();
+            errors.add(null, new ActionError("error.permissions.deniedSave"));
+            saveErrors(request, errors);
+            forward = mapping.findForward("access-denied");
+        }
+        catch (Exception e)
+        {
+            mLogger.error("ERROR in action",e);
+            throw new ServletException(e);
+        }
+        return forward;
+    }
+

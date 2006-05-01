@@ -1,0 +1,18 @@
+    public void putEntryAttribute(String name, String value) throws Exception
+    {
+        EntryAttributeData att = (EntryAttributeData)attMap.get(name);
+        if (att == null) 
+        {
+            att = new EntryAttributeData();
+            att.setEntry(this);
+            att.setName(name);
+            att.setValue(value);
+            attMap.put(name, att);    
+            attSet.add(att);
+        }
+        else 
+        {
+            att.setValue(value);
+        }
+    }
+

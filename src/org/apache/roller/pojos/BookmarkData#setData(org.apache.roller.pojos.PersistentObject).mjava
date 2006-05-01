@@ -1,0 +1,17 @@
+    /**
+     * Setter is needed in RollerImpl.storePersistentObject()
+     */
+    public void setData(org.apache.roller.pojos.PersistentObject otherData)
+    {
+        BookmarkData other = (BookmarkData)otherData;
+        this.id = other.getId();
+        this.name = other.getName();
+        this.description = other.getDescription();
+        this.url = other.getUrl();
+        this.weight = other.getWeight();
+        this.priority = other.getPriority();
+        this.folder = other.getFolder();
+        this.image = other.getImage();
+        this.feedUrl = other.getUrl();
+    }
+

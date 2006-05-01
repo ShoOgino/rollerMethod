@@ -1,0 +1,15 @@
+    /**
+     * @see org.apache.roller.model.BookmarkManager#getAllFolderDecscendentAssocs(
+     * org.apache.roller.pojos.FolderData)
+     */
+    public List getAllFolderDecscendentAssocs(FolderData folder) throws RollerException {
+        try {
+            Session session = ((HibernatePersistenceStrategy)strategy).getSession();
+            Criteria criteria = session.createCriteria(FolderAssoc.class);
+            criteria.add(Expression.eq("ancestorFolder", folder));
+            return criteria.list();
+        } catch (HibernateException e) {
+            throw new RollerException(e);
+        }
+    }
+

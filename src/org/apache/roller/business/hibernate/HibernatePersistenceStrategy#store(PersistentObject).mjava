@@ -1,0 +1,47 @@
+    /**
+     * Store object.
+     */
+    protected void store(PersistentObject obj) throws HibernateException {
+        
+        if(obj == null) {
+            throw new HibernateException("Cannot save null object");
+        }
+        
+        Session session = getSession();
+        
+        // TODO BACKEND: this is wacky, we should double check logic here
+        
+        // TODO BACKEND: better to use session.saveOrUpdate() here, if possible
+        if ( obj.getId() == null || obj.getId().trim().equals("") ) {
+            // Object has never been written to database, so save it.
+            // This makes obj into a persistent instance.
+            session.save(obj);
+        }
+        
+        /* 
+         * technically we shouldn't have any reason to support the saving
+         * of detached objects, so at some point we should re-evaluate this.
+         *
+         * objects should be re-attached before being saved again. it would
+         * be more appropriate to reject these kinds of saves because they are
+         * not really safe.
+         *
+         * NOTE: this may be coming from the way we use formbeans on the UI.
+         *   we very commonly repopulate all data in a pojo (including id) from
+         *   form data rather than properly loading the object from a Session
+         *   then modifying its properties.
+         */
+        if ( !session.contains(obj) ) {
+            
+            log.debug("storing detached object: "+obj.toString());
+            
+            // Object has been written to database, but instance passed in
+            // is not a persistent instance, so must be loaded into session.
+            PersistentObject vo =
+                    (PersistentObject)session.load(obj.getClass(),obj.getId());
+            vo.setData(obj);
+            obj = vo;
+        }
+        
+    }
+

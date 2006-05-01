@@ -1,0 +1,47 @@
+    /**
+     * Helper method that returns collection of resources, called by getCollection().
+     */
+    public Feed getCollectionOfResources(
+            String[] pathInfo, int start, int max) throws Exception {
+        String handle = pathInfo[0];
+        String absUrl = mRollerContext.getAbsoluteContextUrl(mRequest);
+        WebsiteData website = mRoller.getUserManager().getWebsiteByHandle(handle);
+        FileManager fmgr = mRoller.getFileManager();
+        File[] files = fmgr.getFiles(website.getHandle());
+        if (canView(website)) {            
+            Feed feed = new Feed();
+            List atomEntries = new ArrayList();
+            int count = 0;
+            if (files != null && start < files.length) {
+                for (int i=start; i<(start + max) && i<(files.length); i++) {                   
+                    Entry entry = createAtomResourceEntry(website, files[i]);
+                    atomEntries.add(entry);
+                    count++;
+                }
+            }
+            if (start + count < files.length) { // add next link
+                int nextOffset = start + max; 
+                String url = absUrl + "/app/" + website.getHandle() + "/resources/" + nextOffset;
+                Link nextLink = new Link();
+                nextLink.setRel("next");
+                nextLink.setHref(url);
+                List next = new ArrayList();
+                next.add(nextLink);
+                feed.setOtherLinks(next);
+            }
+            if (start > 0) { // add previous link
+                int prevOffset = start > max ? start - max : 0;
+                String url = absUrl + "/app/" +website.getHandle() + "/resources/" + prevOffset;
+                Link prevLink = new Link();
+                prevLink.setRel("previous");
+                prevLink.setHref(url);
+                List prev = new ArrayList();
+                prev.add(prevLink);
+                feed.setOtherLinks(prev);
+            }
+            feed.setEntries(atomEntries);
+            return feed;
+        }
+        throw new Exception("ERROR: not authorized");
+    }   
+

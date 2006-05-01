@@ -1,0 +1,26 @@
+    /**
+     * Thread execution.
+     *
+     * We just execute the job we were given if it's non-null.
+     */
+    public void run() {
+        
+        // we only run once
+        if (this.job != null) {
+            // process job
+            try {
+                this.job.execute();
+            } catch(Throwable t) {
+                // oops
+                mLogger.error("Error executing job. "+
+                        "Worker = "+this.id+", "+
+                        "Job = "+this.job.getClass().getName(), t);
+            }
+            
+            // since this is a thread we have to make sure that we tidy up ourselves
+            Roller roller = RollerFactory.getRoller();
+            roller.release();
+        }
+        
+    }
+

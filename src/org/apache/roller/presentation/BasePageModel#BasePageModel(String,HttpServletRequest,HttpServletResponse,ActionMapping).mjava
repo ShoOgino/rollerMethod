@@ -1,0 +1,16 @@
+    public BasePageModel(
+            String titleKey,
+            HttpServletRequest request,
+            HttpServletResponse response,
+            ActionMapping mapping)
+    {
+        this.request = request;
+        this.response = response;
+        this.mapping = mapping;
+        this.titleKey = titleKey;
+        request.setAttribute("locales", StrutsUtil.getLocaleBeans());        
+        request.setAttribute("timeZones", StrutsUtil.getTimeZoneBeans());        
+        RollerRequest rreq = RollerRequest.getRollerRequest(request);
+        website = rreq.getWebsite();
+    }
+

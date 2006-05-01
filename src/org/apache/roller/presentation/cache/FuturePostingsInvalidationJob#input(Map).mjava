@@ -1,0 +1,12 @@
+    public void input(Map input) {
+        this.inputs = input;
+        
+        // extract peer time if possible
+        Integer pTime = (Integer) this.inputs.get("peerTime");
+        if(pTime != null) {
+            this.peerTime = pTime.intValue();
+        }
+        
+        mLogger.info("Peeking "+this.peerTime+" minutes into the future each pass");
+    }
+

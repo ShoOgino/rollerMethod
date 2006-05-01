@@ -1,0 +1,15 @@
+    public ActionForward execute(
+            ActionMapping mapping, ActionForm form,
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+
+        String enabled = RollerConfig.getProperty("search.enabled");
+        if("false".equalsIgnoreCase(enabled)) {
+            return mapping.findForward("main");
+        }           
+        // search model executes search, makes results available to page
+        PageModel model = new PageModel("search.title", request, response, mapping);
+        request.setAttribute("model", model);
+        return mapping.findForward("search.page");
+    }
+

@@ -1,0 +1,31 @@
+    /** 
+     * Init entry from Roller entry 
+     */
+    private void initFromRollerEntry(WeblogEntryData rollerEntry, Map pagePlugins) 
+        throws RollerException
+    {
+        Roller roller = RollerFactory.getRoller();
+        PagePluginManager ppmgr = roller.getPagePluginManager();
+       
+        String content = "";
+        if (!StringUtils.isEmpty(rollerEntry.getText())) {
+            content = rollerEntry.getText();
+        } else {
+            content = rollerEntry.getSummary();
+        }
+        content = ppmgr.applyPagePlugins(rollerEntry, pagePlugins, content, true);
+        
+        setAuthor(    rollerEntry.getCreator().getFullName());
+        setTitle(     rollerEntry.getTitle());
+        setPermalink( rollerEntry.getLink());
+        setPublished( rollerEntry.getPubTime());         
+        setContent(   content);
+        
+        setPermalink(RollerRuntimeConfig.getProperty("site.absoluteurl") 
+            + rollerEntry.getPermaLink());
+        
+        List cats = new ArrayList();
+        cats.add(rollerEntry.getCategory().getPath());
+        setCategories(cats);   
+    }
+

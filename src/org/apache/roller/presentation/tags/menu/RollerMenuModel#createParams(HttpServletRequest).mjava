@@ -1,0 +1,25 @@
+	/** Create params based on incoming request */
+	static Hashtable createParams( HttpServletRequest req )
+	{
+		Hashtable params = new Hashtable();
+		RollerRequest rreq = RollerRequest.getRollerRequest(req);
+		try
+		{
+            WebsiteData website = rreq.getWebsite();
+            BasePageModel pageModel = (BasePageModel)req.getAttribute("model");
+            if (website == null && pageModel != null) 
+            {
+                website = pageModel.getWebsite();              
+            }
+            if (website != null)
+            {
+                params.put(RollerRequest.WEBLOG_KEY, website.getHandle());
+            }
+        }
+		catch (Exception e)
+		{
+			mLogger.error("ERROR getting user in menu model", e);
+		}
+		return params;
+	}
+

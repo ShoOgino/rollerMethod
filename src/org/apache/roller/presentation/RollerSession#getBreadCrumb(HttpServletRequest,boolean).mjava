@@ -1,0 +1,27 @@
+    /**
+     * Store the url of the latest request stored in the session.
+     * @param useReferer If true try to return the "referer" header.
+     */
+    public static String getBreadCrumb( 
+        HttpServletRequest req, boolean useReferer )
+    {
+        String crumb = null;
+        
+        HttpSession ses = req.getSession(false);
+        if (ses != null && ses.getAttribute(BREADCRUMB) != null)
+        {
+            ArrayStack stack = (ArrayStack) ses.getAttribute(BREADCRUMB);
+            if (stack != null && !stack.empty())
+            {
+                crumb = (String)stack.peek();
+            }
+        }
+
+        if ( crumb == null && useReferer )
+        {
+            crumb = req.getHeader("referer");
+        }
+        
+        return crumb;
+    }
+

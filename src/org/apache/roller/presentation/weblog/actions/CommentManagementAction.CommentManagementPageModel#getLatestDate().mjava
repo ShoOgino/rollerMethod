@@ -1,0 +1,9 @@
+        public Date getLatestDate() {
+            Date date = null;
+            if (comments.size() > 0) {
+                CommentData latest = (CommentData)comments.get(0);
+                date = latest.getPostTime();
+            }
+            return date;
+        }
+

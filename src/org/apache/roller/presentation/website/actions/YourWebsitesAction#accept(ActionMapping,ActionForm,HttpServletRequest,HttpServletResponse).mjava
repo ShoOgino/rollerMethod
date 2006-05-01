@@ -1,0 +1,29 @@
+    public ActionForward accept(
+            ActionMapping       mapping,
+            ActionForm          actionForm,
+            HttpServletRequest  request,
+            HttpServletResponse response)
+            throws Exception
+    {
+        YourWebsitesForm form = (YourWebsitesForm)actionForm;
+        
+        UserManager userMgr = RollerFactory.getRoller().getUserManager();
+        PermissionsData perms = userMgr.getPermissions(form.getInviteId());
+        
+        // TODO ROLLER_2.0: notify inviter that invitee has accepted invitation  
+        // TODO EXCEPTIONS: better exception handling
+        perms.setPending(false);
+        userMgr.savePermissions(perms);
+        RollerFactory.getRoller().flush();
+        
+        ActionMessages msgs = new ActionMessages();
+        msgs.add(null, new ActionMessage(
+                "yourWebsites.accepted", perms.getWebsite().getHandle()));
+        saveMessages(request, msgs);
+        
+        request.setAttribute("model",
+                new YourWebsitesPageModel(request, response, mapping));
+        ActionForward forward = mapping.findForward("yourWebsites.page");
+        return forward;
+    }
+

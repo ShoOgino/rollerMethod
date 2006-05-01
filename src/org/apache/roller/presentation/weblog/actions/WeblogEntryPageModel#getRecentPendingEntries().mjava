@@ -1,0 +1,20 @@
+    /**
+     * Get recent weblog entries using request parameters to determine
+     * username, date, and category name parameters.
+     * @return List of WeblogEntryData objects.
+     * @throws RollerException
+     */
+    public List getRecentPendingEntries() throws RollerException
+    {
+        RollerSession rollerSession = RollerSession.getRollerSession(getRequest());
+        return RollerFactory.getRoller().getWeblogManager()
+            .getWeblogEntries(
+                getWeblogEntry().getWebsite(), 
+                null,              // startDate
+                null,              // endDate
+                null,              // catName
+                WeblogEntryData.PENDING, // status
+                "updateTime",      // sortby
+                new Integer(20));  // maxEntries
+    }
+

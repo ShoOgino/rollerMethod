@@ -1,0 +1,10 @@
+    /**
+     * Set weblog category via weblog category ID.
+     * @param id Weblog category ID.
+     */
+    public void setCategoryId(String id) throws RollerException
+    {
+        WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+        setCategory(wmgr.getWeblogCategory(id));
+    }
+

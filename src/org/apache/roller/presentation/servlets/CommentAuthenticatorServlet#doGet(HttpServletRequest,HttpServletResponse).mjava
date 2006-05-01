@@ -1,0 +1,14 @@
+    /**
+     * Handle incoming http GET requests.
+     *
+     * We only handle get requests.
+     */
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws IOException, ServletException {
+        
+        PrintWriter out = response.getWriter();
+        
+        response.setContentType("text/html");
+        out.println(this.authenticator.getHtml(null, request, response));
+    }
+

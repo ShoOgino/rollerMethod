@@ -1,0 +1,57 @@
+    /**
+     * Create a Rome Atom entry based on a Roller entry.
+     * Content is escaped.
+     * Link is stored as rel=alternate link.
+     */
+    private Entry createAtomEntry(WeblogEntryData entry) {
+        Entry atomEntry = new Entry();
+        Content content = new Content();
+        content.setType(Content.HTML);
+        content.setValue(entry.getText());
+        List contents = new ArrayList();
+        contents.add(content);
+        
+        String absUrl = mRollerContext.getAbsoluteContextUrl(mRequest);
+        atomEntry.setId(        absUrl + entry.getPermaLink());
+        atomEntry.setTitle(     entry.getTitle());
+        atomEntry.setContents(  contents);
+        atomEntry.setPublished( entry.getPubTime());
+        atomEntry.setUpdated(   entry.getUpdateTime());        
+
+        UserData creator = entry.getCreator();        
+        Person author = new Person();
+        author.setName(         creator.getUserName());   
+        author.setEmail(        creator.getEmailAddress());                        
+        atomEntry.setAuthors(   Collections.singletonList(author));
+        
+        List categories = new ArrayList();
+        Category atomCat = new Category();
+        atomCat.setTerm(entry.getCategory().getPath());
+        categories.add(atomCat);
+        atomEntry.setCategories(categories);
+        
+        Link altlink = new Link();
+        altlink.setRel("alternate");
+        altlink.setHref(absUrl + entry.getPermaLink());
+        List altlinks = new ArrayList();
+        altlinks.add(altlink);
+        atomEntry.setAlternateLinks(altlinks);
+        
+        Link editlink = new Link();
+        editlink.setRel("edit");
+        editlink.setHref(absUrl + "/app/"
+            + entry.getWebsite().getHandle() + "/entry/" + entry.getId());
+        List otherlinks = new ArrayList();
+        otherlinks.add(editlink);
+        atomEntry.setOtherLinks(otherlinks);
+        
+        List modules = new ArrayList();
+        PubControlModule pubControl = new PubControlModuleImpl();
+        pubControl.setDraft(
+            !WeblogEntryData.PUBLISHED.equals(entry.getStatus()));
+        modules.add(pubControl);
+        atomEntry.setModules(modules);
+        
+        return atomEntry;
+    }
+

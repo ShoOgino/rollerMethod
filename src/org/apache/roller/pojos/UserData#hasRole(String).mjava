@@ -1,0 +1,14 @@
+    /**
+     * Returns true if user has role specified.
+     */
+    public boolean hasRole(String roleName) {
+        Iterator iter = roles.iterator();
+        while (iter.hasNext()) {
+            RoleData role = (RoleData) iter.next();
+            if (role.getRole().equals(roleName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+

@@ -1,0 +1,30 @@
+    /**
+     * Localize the PubTime date string.
+     * @param locale
+     */
+    private void initPubTimeDateStrings(WebsiteData website, Locale locale)
+    {
+        mLogger.debug("init pub time date sting called");
+        
+        if(getPubTime() != null) {
+            mLogger.debug("figuring pubtime values");
+            
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(getPubTime());
+            cal.setTimeZone(website.getTimeZoneInstance());
+            mHours = new Integer(cal.get(Calendar.HOUR_OF_DAY));
+            mMinutes = new Integer(cal.get(Calendar.MINUTE));
+            mSeconds = new Integer(cal.get(Calendar.SECOND));
+            
+            DateFormat df = DateFormat.getDateInstance(
+                    DateFormat.SHORT, locale);
+            df.setTimeZone(website.getTimeZoneInstance());
+            mDateString = df.format(getPubTime());
+            
+        } else {
+            mLogger.debug("pubtime is null, must be a draft");
+            
+            mDateString = "0/0/0";
+        }
+    }
+

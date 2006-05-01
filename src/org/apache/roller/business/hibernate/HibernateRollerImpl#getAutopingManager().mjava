@@ -1,0 +1,10 @@
+    /**
+     * @see org.apache.roller.model.Roller#getPingTargetManager()
+     */
+    public AutoPingManager getAutopingManager() throws RollerException {
+        if (autoPingManager == null) {
+            autoPingManager = new HibernateAutoPingManagerImpl(strategy);
+        }
+        return autoPingManager;
+    }
+

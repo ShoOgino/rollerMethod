@@ -1,0 +1,16 @@
+    /**
+     * Return the Title of this post, or the first 255 characters of the
+     * entry's text.
+     * 
+     * @roller.wrapPojoMethod type="simple"
+     * @return String
+     */
+    public String getDisplayTitle()
+    {
+        if ( getTitle()==null || getTitle().trim().equals("") )
+        {
+            return StringUtils.left(Utilities.removeHTML(text),255);
+        }
+        return Utilities.removeHTML(getTitle());
+    }
+

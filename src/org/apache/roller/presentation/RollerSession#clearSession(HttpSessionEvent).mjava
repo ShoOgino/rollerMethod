@@ -1,0 +1,18 @@
+    private void clearSession(HttpSessionEvent se)
+    {
+        HttpSession session = se.getSession();
+        try
+        {
+            session.removeAttribute(BREADCRUMB);
+            session.removeAttribute(ROLLER_SESSION);
+        }
+        catch (Throwable e)
+        {
+            if (mLogger.isDebugEnabled())
+            {
+                // ignore purge exceptions
+                mLogger.debug("EXCEPTION PURGING session attributes",e);
+            }
+        }
+    }    
+

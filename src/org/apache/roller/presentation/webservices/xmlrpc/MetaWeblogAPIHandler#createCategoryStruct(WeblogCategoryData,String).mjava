@@ -1,0 +1,20 @@
+    private Hashtable createCategoryStruct(WeblogCategoryData category, String userid) {
+        
+        RollerRequest rreq = RollerRequest.getRollerRequest();
+        HttpServletRequest req = rreq.getRequest();
+        String contextUrl = RollerContext.getRollerContext().getAbsoluteContextUrl(req);
+        
+        Hashtable struct = new Hashtable();
+        struct.put("description", category.getPath());
+        
+        String catUrl = contextUrl+"/page/"+userid+"?catname="+category.getPath();
+        catUrl = Utilities.stringReplace(catUrl," ","%20");
+        struct.put("htmlUrl", catUrl);
+        
+        String rssUrl = contextUrl+"/rss/"+userid+"?catname="+category.getPath();
+        rssUrl = Utilities.stringReplace(catUrl," ","%20");
+        struct.put("rssUrl",rssUrl);
+        
+        return struct;
+    }
+

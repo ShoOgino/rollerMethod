@@ -1,0 +1,15 @@
+    /** Validate config form, returns empty collection if all OK */
+    public ActionErrors validate(PlanetConfigForm form)
+    {
+        ActionErrors errors = new ActionErrors();
+        if (form.getProxyHost()!=null && form.getProxyHost().trim().length()>0)
+        {
+            if (form.getProxyPort()<1)
+            {
+                errors.add(null, new ActionError(
+                        "planetConfig.error.badProxyPort"));
+            }
+        }
+        return errors;
+    }
+

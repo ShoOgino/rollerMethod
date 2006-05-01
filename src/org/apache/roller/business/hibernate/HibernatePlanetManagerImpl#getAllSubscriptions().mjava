@@ -1,0 +1,14 @@
+    public Iterator getAllSubscriptions() {
+        try {
+            Session session = ((HibernatePersistenceStrategy)strategy).getSession();
+            Criteria criteria =
+                    session.createCriteria(PlanetSubscriptionData.class);
+            criteria.addOrder(Order.asc("feedUrl"));
+            List list = criteria.list();
+            return list.iterator();
+        } catch (Throwable e) {
+            throw new RuntimeException(
+                    "ERROR fetching subscription collection", e);
+        }
+    }
+

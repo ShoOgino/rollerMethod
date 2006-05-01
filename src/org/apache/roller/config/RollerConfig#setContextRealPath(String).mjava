@@ -1,0 +1,13 @@
+    /**
+     * Set the "context.realpath" property at runtime.
+     *
+     * Properties are meant to be read-only, but we make this  exception because 
+     * there are some classes which rely on having filesystem access to files in the 
+     * roller webapp context (and for unit testing).
+     *
+     * This property is *not* persisted in any way.
+     */
+    public static void setContextRealPath(String path) {
+        mConfig.setProperty("context.realpath", path);
+    }
+

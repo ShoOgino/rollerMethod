@@ -1,0 +1,51 @@
+    /** 
+     * Create URL for use on view-weblog page, ignores query-string.
+     * @param day   Day for URL
+     * @param valid Always return a URL, never return null 
+     * @return URL for day, or null if no weblog entry on that day
+     */
+    public String computeUrl(Date day, boolean valid)
+    {
+        String url = null;
+        try 
+        {
+            if ( day == null )
+            {
+                url = mSelfUrl + mCatName;
+            }
+            else 
+            {
+                // get the 8 char YYYYMMDD datestring for day, returns null 
+                // if no weblog entry on that day
+                String dateString = null;
+                List entries = 
+                   (List)mMonthMap.get( day );
+                if ( entries != null && day != null )
+                {
+                	WeblogEntryData entry = (WeblogEntryData)entries.get(0);
+                    dateString = 
+                        mStarDateFormat.format(entry.getPubTime());
+                    
+                    // append 8 char date string on end of selfurl
+                    url = mSelfUrl+"/"+dateString+mCatName;
+                }
+                else if ( entries != null )
+                {
+                    url = mSelfUrl+"/"+mCatName;
+                }
+                else if ( valid ) 
+                {
+                    // Make the date yyyyMMdd and append it to URL
+                    dateString = mStarDateFormat.format( day );
+                    url = mSelfUrl+"/"+dateString+mCatName;
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            RollerRequest.getRollerRequest(mReq)
+                .getServletContext().log("ERROR: creating URL",e);
+        }
+        return url;
+    } 
+

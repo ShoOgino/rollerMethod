@@ -1,0 +1,36 @@
+    /**
+     * Send a weblog update ping.
+     *
+     * @param absoluteContextUrl the absolute context url of the Roller site.
+     * @param pingTarget         the target site to ping
+     * @param website            the website that changed (from which the ping originates)
+     * @return the result message string sent by the server.
+     * @throws IOException
+     * @throws XmlRpcException
+     * @throws RollerException
+     */
+    public static PingResult sendPing(String absoluteContextUrl, PingTargetData pingTarget, WebsiteData website)
+        throws RollerException, IOException, XmlRpcException
+    {
+        // Figure out the url of the user's website.
+        String websiteUrl =
+            RollerFactory.getRoller().getWeblogManager().getUrl(website, absoluteContextUrl);
+
+        // Set up the ping parameters.
+        Vector params = new Vector();
+        params.addElement(website.getName());
+        params.addElement(websiteUrl);
+        if (logger.isDebugEnabled())
+        {
+            logger.debug("Executing ping to '" + pingTarget.getPingUrl() + "' for website '" +
+                websiteUrl + "' (" + website.getName() + ")");
+        }
+
+        // Send the ping
+        XmlRpcClient client = new XmlRpcClient(pingTarget.getPingUrl());
+        Hashtable result = (Hashtable) client.execute("weblogUpdates.ping", params);
+        PingResult pingResult = new PingResult((Boolean) result.get("flerror"), (String) result.get("message"));
+        if (logger.isDebugEnabled()) logger.debug("Ping result is: " + pingResult);
+        return pingResult;
+    }
+

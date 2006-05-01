@@ -1,0 +1,41 @@
+    /*
+     * Private helper to build a map indexed by ping target id with values Boolean.TRUE and Boolean.FALSE
+     * based on whether the ping target is enabled (has a corresponding auto ping configuration).
+     */
+    private Map buildIsEnabledMap(RollerRequest rreq, List commonPingTargets, List customPingTargets)
+        throws RollerException
+    {
+        AutoPingManager autoPingMgr = RollerFactory.getRoller().getAutopingManager();
+        WebsiteData website = rreq.getWebsite();
+
+        // Build isEnabled map (keyed by ping target id and values Boolean.TRUE/Boolean.FALSE)
+        Map isEnabled = new HashMap();
+        List autopings = autoPingMgr.getAutoPingsByWebsite(website);
+        // Add the enabled auto ping configs with TRUE
+        for (Iterator i = autopings.iterator(); i.hasNext();)
+        {
+            AutoPingData autoPing = (AutoPingData) i.next();
+            isEnabled.put(autoPing.getPingTarget().getId(), Boolean.TRUE);
+        }
+        // Somewhat awkward, but the two loops save building a separate combined list.
+        // Add disabled common ones with FALSE
+        for (Iterator i = commonPingTargets.iterator(); i.hasNext();)
+        {
+            PingTargetData pingTarget = (PingTargetData) i.next();
+            if (isEnabled.get(pingTarget.getId()) == null)
+            {
+                isEnabled.put(pingTarget.getId(), Boolean.FALSE);
+            }
+        }
+        // Add disabled custom ones with FALSE
+        for (Iterator i = customPingTargets.iterator(); i.hasNext();)
+        {
+            PingTargetData pingTarget = (PingTargetData) i.next();
+            if (isEnabled.get(pingTarget.getId()) == null)
+            {
+                isEnabled.put(pingTarget.getId(), Boolean.FALSE);
+            }
+        }
+        return isEnabled;
+    }
+

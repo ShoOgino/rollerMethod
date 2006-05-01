@@ -1,0 +1,12 @@
+    public int getSubscriptionCount() throws RollerException {
+        try {
+            Session session = ((HibernatePersistenceStrategy)strategy).getSession();
+            Integer count = (Integer)session.createQuery(
+                    "select count(*) from org.apache.roller.pojos.PlanetSubscriptionData").uniqueResult();
+            return count.intValue();
+        } catch (Throwable e) {
+            throw new RuntimeException(
+                    "ERROR fetching subscription count", e);
+        }
+    }
+

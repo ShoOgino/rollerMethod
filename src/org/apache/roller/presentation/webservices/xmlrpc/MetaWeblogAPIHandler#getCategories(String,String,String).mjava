@@ -1,0 +1,36 @@
+    /**
+     * Authenticates a user and returns the categories available in the website
+     *
+     * @param blogid Dummy Value for Roller
+     * @param userid Login for a MetaWeblog user who has permission to post to the blog
+     * @param password Password for said username
+     * @throws Exception
+     * @return
+     */
+    public Object getCategories(String blogid, String userid, String password)
+            throws Exception {
+        
+        mLogger.debug("getCategories() Called =====[ SUPPORTED ]=====");
+        mLogger.debug("     BlogId: " + blogid);
+        mLogger.debug("     UserId: " + userid);
+        
+        WebsiteData website = validate(blogid, userid,password);
+        RollerRequest rreq = RollerRequest.getRollerRequest();
+        Roller roller = RollerFactory.getRoller();
+        try {
+            Hashtable result = new Hashtable();
+            WeblogManager weblogMgr = roller.getWeblogManager();
+            List cats = weblogMgr.getWeblogCategories(website, false);
+            for (Iterator wbcItr = cats.iterator(); wbcItr.hasNext();) {
+                WeblogCategoryData category = (WeblogCategoryData) wbcItr.next();
+                result.put(category.getPath(),
+                        createCategoryStruct(category, userid));
+            }
+            return result;
+        } catch (Exception e) {
+            String msg = "ERROR in MetaWeblogAPIHandler.getCategories";
+            mLogger.error(msg,e);
+            throw new XmlRpcException(UNKNOWN_EXCEPTION, msg);
+        }
+    }
+

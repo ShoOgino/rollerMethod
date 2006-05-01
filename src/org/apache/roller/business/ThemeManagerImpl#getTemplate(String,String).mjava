@@ -1,0 +1,12 @@
+    /**
+     * @see org.apache.roller.model.ThemeManager#getTemplate(String, String)
+     */
+    public ThemeTemplate getTemplate(String theme_name, String template_name)
+        throws ThemeNotFoundException, RollerException {
+        
+        // basically we just try and lookup the theme first, then template
+        Theme theme = this.getTheme(theme_name);
+        
+        return theme.getTemplate(template_name);
+    }
+

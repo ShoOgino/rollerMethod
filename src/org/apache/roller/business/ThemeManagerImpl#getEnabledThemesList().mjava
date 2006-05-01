@@ -1,0 +1,23 @@
+    /**
+     * @see org.apache.roller.model.ThemeManager#getEnabledThemesList()
+     */
+    public List getEnabledThemesList() {
+        
+        Collection all_themes = this.themes.values();
+        
+        // make a new list of only the enabled themes
+        List enabled_themes = new ArrayList();
+        Iterator it = all_themes.iterator();
+        Theme theme = null;
+        while(it.hasNext()) {
+            theme = (Theme) it.next();
+            if(theme.isEnabled())
+                enabled_themes.add(theme.getName());
+        }
+                
+        // sort 'em ... the natural sorting order for Strings is alphabetical
+        Collections.sort(enabled_themes);
+        
+        return enabled_themes;
+    }
+

@@ -1,0 +1,20 @@
+    /**
+     * @see org.apache.roller.pojos.RefererManager#getTodaysReferers(String)
+     */
+    public List getTodaysReferers(WebsiteData website) throws RollerException {
+        if (website==null )
+            throw new RollerException("website is null");
+        
+        try {
+            Session session = ((HibernatePersistenceStrategy)strategy).getSession();
+            Criteria criteria = session.createCriteria(RefererData.class);
+            criteria.add(Expression.eq("website", website));
+            criteria.add(Expression.gt("dayHits", new Integer(0)));
+            criteria.addOrder(Order.desc("dayHits"));
+            
+            return criteria.list();
+        } catch (HibernateException e) {
+            throw new RollerException(e);
+        }
+    }
+

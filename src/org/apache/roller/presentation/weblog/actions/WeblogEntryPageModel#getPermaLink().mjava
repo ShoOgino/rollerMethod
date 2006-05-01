@@ -1,0 +1,8 @@
+    public String getPermaLink() throws RollerException
+    {
+        String context = RollerContext
+            .getRollerContext()
+            .getAbsoluteContextUrl(rollerRequest.getRequest());
+        return context + getWeblogEntry().getPermaLink();
+    }
+

@@ -1,0 +1,27 @@
+    /**
+     * Construct a new instance of a Roller Expiring LRUCache.
+     */
+    public Cache constructCache(Map properties) {
+        
+        int size = 100;
+        long timeout = 15 * 60;
+        
+        try {
+            size = Integer.parseInt((String) properties.get("size"));
+        } catch(Exception e) {
+            // ignored
+        }
+        
+        try {
+            timeout = Long.parseLong((String) properties.get("timeout"));
+        } catch(Exception e) {
+            // ignored
+        }
+        
+        Cache cache = new ExpiringLRUCacheImpl(size, timeout);
+        
+        mLogger.debug("new cache constructed. size="+size+", timeout="+timeout);
+        
+        return cache;
+    }
+

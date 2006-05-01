@@ -1,0 +1,10 @@
+        public String getNextLink() {
+            if (more) {
+                int offset = queryForm.getOffset() + queryForm.getCount();
+                offset = (offset < 0) ? 0 : offset;
+                return getQueryLink() + "&offset=" + offset;
+            } else {
+                return null;
+            }
+        }
+

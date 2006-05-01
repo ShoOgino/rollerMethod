@@ -1,0 +1,39 @@
+    public Date getWeblogLastPublishTime(WebsiteData website, String catName)
+    throws RollerException {
+        WeblogCategoryData cat = null;
+        Roller mRoller = RollerFactory.getRoller();
+        if (catName != null && website != null) {
+            cat = getWeblogCategoryByPath(website, null, catName);
+            if (cat == null) catName = null;
+        }
+        if (catName != null && catName.trim().equals("/")) {
+            catName = null;
+        }
+        
+        try {
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
+            Criteria criteria = session.createCriteria(WeblogEntryData.class);
+            criteria.add(Expression.eq("status", WeblogEntryData.PUBLISHED));
+            criteria.add(Expression.le("pubTime", new Date()));
+            
+            if (website != null) {
+                criteria.add(Expression.eq("website", website));
+            }
+            
+            if ( cat != null ) {
+                criteria.add(Expression.eq("category", cat));
+            }
+            
+            criteria.addOrder(Order.desc("pubTime"));
+            criteria.setMaxResults(1);
+            List list = criteria.list();
+            if (list.size() > 0) {
+                return ((WeblogEntryData)list.get(0)).getPubTime();
+            } else {
+                return null;
+            }
+        } catch (HibernateException e) {
+            throw new RollerException(e);
+        }
+    }
+

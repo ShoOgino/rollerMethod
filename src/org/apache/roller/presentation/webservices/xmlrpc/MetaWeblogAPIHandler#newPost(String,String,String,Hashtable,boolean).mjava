@@ -1,0 +1,86 @@
+    public String newPost(String blogid, String userid, String password, 
+                            Hashtable struct, boolean publish) throws Exception {
+        
+        mLogger.debug("newPost() Called ===========[ SUPPORTED ]=====");
+        mLogger.debug("     BlogId: " + blogid);
+        mLogger.debug("     UserId: " + userid);
+        mLogger.debug("    Publish: " + publish);
+        
+        WebsiteData website = validate(blogid, userid, password);
+        
+        Hashtable postcontent = struct;
+        String description = (String)postcontent.get("description");
+        String title = (String)postcontent.get("title");
+        if (Utilities.isEmpty(title) && Utilities.isEmpty(description)) {
+            throw new XmlRpcException(
+              BLOGGERAPI_INCOMPLETE_POST, "Must specify title or description");
+        }
+        if (Utilities.isEmpty(title)) { 
+            title = Utilities.truncateNicely(description, 15, 15, "...");
+        }
+        
+        Date dateCreated = (Date)postcontent.get("dateCreated");
+        if (dateCreated == null) dateCreated = (Date)postcontent.get("pubDate");
+        if (dateCreated == null) dateCreated = new Date();
+        mLogger.debug("      Title: " + title);
+        
+        try {
+            Roller roller = RollerFactory.getRoller();
+            WeblogManager weblogMgr = roller.getWeblogManager();
+            UserData user = roller.getUserManager().getUserByUsername(userid);
+            Timestamp current =
+                    new Timestamp(System.currentTimeMillis());
+            
+            WeblogEntryData entry = new WeblogEntryData();
+            entry.setTitle(title);
+            entry.setText(description);
+            entry.setPubTime(new Timestamp(dateCreated.getTime()));
+            entry.setUpdateTime(current);
+            entry.setWebsite(website);
+            entry.setCreator(user);
+            if (Boolean.valueOf(publish).booleanValue()) {
+                entry.setStatus(WeblogEntryData.PUBLISHED);
+            } else {
+                entry.setStatus(WeblogEntryData.DRAFT);
+            }
+                        
+            // MetaWeblog supports multiple cats, Roller supports one/entry
+            // so here we take accept the first category that exists
+            WeblogCategoryData rollerCat = null;
+            if ( postcontent.get("categories") != null ) {
+                Vector cats = (Vector)postcontent.get("categories");
+                if (cats != null && cats.size() > 0) {
+                    for (int i=0; i<cats.size(); i++) {
+                        String cat = (String)cats.get(i);
+                        rollerCat = weblogMgr.getWeblogCategoryByPath(website, cat);
+                        if (rollerCat != null) {
+                            entry.setCategory(rollerCat);
+                            break;
+                        }
+                    }
+                }
+            }
+            if (rollerCat == null) { 
+                // or we fall back to the default Blogger API category
+                entry.setCategory(website.getBloggerCategory());
+            }
+            
+            // save the entry
+            weblogMgr.saveWeblogEntry(entry);
+            roller.flush();
+            
+            // notify cache
+            flushPageCache(entry.getWebsite());
+            
+            // TODO: Roller timestamps need better than 1 second accuracy
+            // Until then, we can't allow more than one post per second
+            Thread.sleep(1000);
+            
+            return entry.getId();
+        } catch (Exception e) {
+            String msg = "ERROR in MetaWeblogAPIHandler.newPost";
+            mLogger.error(msg,e);
+            throw new XmlRpcException(UNKNOWN_EXCEPTION, msg);
+        }
+    }
+

@@ -1,0 +1,24 @@
+    /**
+     * @param request
+     * @param response
+     */
+    public void initNew(HttpServletRequest request, HttpServletResponse response) 
+    {
+        mLogger.debug("init new called");
+        
+        RollerRequest rreq = RollerRequest.getRollerRequest(request);
+        RollerSession rses = RollerSession.getRollerSession(request); 
+        if (rreq.getWebsite().getDefaultPlugins() != null)
+        {
+            setPluginsArray(StringUtils.split(
+                    rreq.getWebsite().getDefaultPlugins(), ",") );
+        }
+        status = WeblogEntryData.DRAFT;
+        allowComments = Boolean.TRUE;
+        
+        // we want pubTime and updateTime to be empty for new entries -- AG
+        //updateTime = new Timestamp(new Date().getTime());
+        //pubTime = updateTime;
+        //initPubTimeDateStrings(rreq.getWebsite(), request.getLocale());        
+    }
+

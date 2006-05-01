@@ -1,0 +1,21 @@
+    /** Encapsulates RefererManager */
+    public List getTodaysReferers() {
+        List referers = null;
+        try {
+            List mReferers = mRefererMgr.getTodaysReferers(mRollerReq.getWebsite());
+            
+            // wrap pojos
+            referers = new ArrayList(mReferers.size());
+            Iterator it = mReferers.iterator();
+            int i=0;
+            while(it.hasNext()) {
+                referers.add(i, RefererDataWrapper.wrap((RefererData) it.next()));
+                i++;
+            }
+            
+        } catch (RollerException e) {
+            mLogger.error("PageModel getTodaysReferers()", e);
+        }
+        return (referers == null ? Collections.EMPTY_LIST : referers);
+    }
+

@@ -1,0 +1,32 @@
+    /**
+     * Parse entry from reader.
+     */
+    public static Entry parseEntry(Reader rd)
+    throws JDOMException, IOException, IllegalArgumentException, FeedException {
+        // Parse entry into JDOM tree
+        SAXBuilder builder = new SAXBuilder();
+        Document entryDoc = builder.build(rd);
+        Element fetchedEntryElement = entryDoc.getRootElement();
+        fetchedEntryElement.detach();
+        
+        // Put entry into a JDOM document with 'feed' root so that Rome can handle it
+        Feed feed = new Feed();
+        feed.setFeedType(FEED_TYPE);
+        WireFeedOutput wireFeedOutput = new WireFeedOutput();
+        Document feedDoc = wireFeedOutput.outputJDom(feed);
+        feedDoc.getRootElement().addContent(fetchedEntryElement);
+        
+        // Check for our special namespaced element. If it's there, then we 
+        // know that client is not preserving foreign markup.
+        Namespace ns = Namespace.getNamespace(
+            "http://rollerweblogger.org/namespaces/app");
+        Element rollerElement = fetchedEntryElement.getChild("atom-draft", ns);
+        if (rollerElement == null) {
+            mLogger.debug("Client is NOT preserving foreign markup");
+        }
+        
+        WireFeedInput input = new WireFeedInput();
+        Feed parsedFeed = (Feed)input.build(feedDoc);
+        return (Entry)parsedFeed.getEntries().get(0);
+    }
+

@@ -1,0 +1,11 @@
+    /**
+     * Override for non-primitive values
+     */
+    public void copyTo(org.apache.roller.pojos.RollerConfigData dataHolder, java.util.Locale locale) throws RollerException
+    {
+        fixNulls();
+        super.copyTo(dataHolder, locale);
+        dataHolder.setUploadMaxFileMB(this.uploadMaxFileMB);
+        dataHolder.setUploadMaxDirMB(this.uploadMaxDirMB);
+    }
+

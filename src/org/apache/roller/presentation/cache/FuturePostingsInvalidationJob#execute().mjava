@@ -1,0 +1,46 @@
+    public void execute() {
+        
+        mLogger.debug("starting");
+        
+        // notify the cache manager of an invalidation
+        if(nextExpirations != null) {
+            WeblogEntryData entry = null;
+            Iterator entries = nextExpirations.iterator();
+            while(entries.hasNext()) {
+                entry = (WeblogEntryData) entries.next();
+                
+                mLogger.debug("expiring "+entry.getAnchor());
+                
+                CacheManager.invalidate(entry);
+            }
+        }
+        
+        // look for postings from current time to current time plus XX mins
+        List expiringEntries = null;
+        try {
+            WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+            
+            // current time
+            Date start = new Date();
+            
+            // XX mins in the future
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(start);
+            cal.add(Calendar.MINUTE, this.peerTime);
+            Date end = cal.getTime();
+            
+            mLogger.debug("looking up entries between "+start+" and "+end);
+            
+            // get all published entries between start and end date
+            expiringEntries = mgr.getWeblogEntries(null, start, end, null, 
+                    null, WeblogEntryData.PUBLISHED, null);
+            
+            this.nextExpirations = expiringEntries;
+            
+        } catch(Exception e) {
+            mLogger.error(e);
+        }
+        
+        mLogger.debug("finished");
+    }
+

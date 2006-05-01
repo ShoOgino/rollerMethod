@@ -1,0 +1,19 @@
+    public boolean equals(Object pOther)
+    {
+        if (pOther == null) return false;
+        if (pOther instanceof WeblogCategoryData)
+        {
+            WeblogCategoryData lTest = (WeblogCategoryData) pOther;
+            boolean lEquals = true;
+            lEquals = PojoUtil.equals(lEquals, this.getId(), lTest.getId());
+            lEquals = PojoUtil.equals(lEquals, this.getName(), lTest.getName());
+            lEquals = PojoUtil.equals(lEquals, this.getDescription(), lTest.getDescription());
+            lEquals = PojoUtil.equals(lEquals, this.getImage(), lTest.getImage());
+            return lEquals;
+        }
+        else
+        {
+            return false;
+        }
+    }
+

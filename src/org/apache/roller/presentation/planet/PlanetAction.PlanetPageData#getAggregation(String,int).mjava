@@ -1,0 +1,19 @@
+        /** 
+         * Get aggregation of entries in named group
+         */
+        public List getAggregation(String name, int num) throws RollerException
+        {
+            List ret = new ArrayList();
+            try 
+            {
+                Roller roller = RollerFactory.getRoller();   
+                PlanetGroupData group= roller.getPlanetManager().getGroup(name);
+                ret = roller.getPlanetManager().getAggregation(group, num);
+            }
+            catch (RollerException e) 
+            {
+                mLogger.error(e); 
+            }
+            return ret;
+        }
+

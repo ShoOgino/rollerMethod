@@ -1,0 +1,44 @@
+    /**
+     * @see org.apache.roller.model.BookmarkManager#retrieveBookmarks(
+     *      org.apache.roller.pojos.FolderData, boolean)
+     */
+    public List getBookmarks(FolderData folder, boolean subfolders)
+    throws RollerException {
+        try {
+            Session session = ((HibernatePersistenceStrategy) strategy).getSession();
+            List bookmarks = new LinkedList();
+            if (subfolders) {
+                // get bookmarks in subfolders
+                Criteria assocsQuery = session
+                        .createCriteria(FolderAssoc.class);
+                assocsQuery.add(Expression.eq("ancestorFolder", folder));
+                Iterator assocs = assocsQuery.list().iterator();
+                while (assocs.hasNext()) {
+                    FolderAssoc assoc = (FolderAssoc) assocs.next();
+                    Criteria bookmarksQuery = session
+                            .createCriteria(BookmarkData.class);
+                    bookmarksQuery.add(Expression.eq("folder", assoc
+                            .getFolder()));
+                    Iterator bookmarkIter = bookmarksQuery.list().iterator();
+                    while (bookmarkIter.hasNext()) {
+                        BookmarkData entry = (BookmarkData) bookmarkIter.next();
+                        bookmarks.add(entry);
+                    }
+                }
+            }
+            
+            // get bookmarks in folder
+            Criteria bookmarksQuery = session
+                    .createCriteria(BookmarkData.class);
+            bookmarksQuery.add(Expression.eq("folder", folder));
+            Iterator bookmarkIter = bookmarksQuery.list().iterator();
+            while (bookmarkIter.hasNext()) {
+                BookmarkData bookmark = (BookmarkData) bookmarkIter.next();
+                bookmarks.add(bookmark);
+            }
+            return bookmarks;
+        } catch (HibernateException e) {
+            throw new RollerException(e);
+        }
+    }
+

@@ -1,0 +1,32 @@
+    /** Cancel editing, reset form */
+    public ActionForward cancelEditing(ActionMapping mapping,
+            ActionForm actionForm, HttpServletRequest request,
+            HttpServletResponse response) throws IOException, ServletException {
+        ActionForward forward = mapping.findForward("planetSubscriptions.page");
+        try {
+            if (RollerSession.getRollerSession(request).isGlobalAdminUser()) {
+                Roller roller = RollerFactory.getRoller();
+                PlanetManager planet = roller.getPlanetManager();
+                PlanetSubscriptionFormEx form = (PlanetSubscriptionFormEx)actionForm;
+                
+                form.doReset(mapping, request);
+                
+                String groupHandle = request.getParameter("groupHandle");
+                groupHandle = (groupHandle == null) ? form.getGroupHandle() : groupHandle;
+                groupHandle = (groupHandle == null) ? "external" : groupHandle;
+                
+                PlanetGroupData targetGroup = planet.getGroup(groupHandle);
+                form.setGroupHandle(groupHandle);
+                request.setAttribute("model",
+                        new SubscriptionsPageModel(
+                        targetGroup, request, response, mapping, form));
+            } else {
+                forward = mapping.findForward("access-denied");
+            }
+        } catch (Exception e) {
+            request.getSession().getServletContext().log("ERROR", e);
+            throw new ServletException(e);
+        }
+        return forward;
+    }
+

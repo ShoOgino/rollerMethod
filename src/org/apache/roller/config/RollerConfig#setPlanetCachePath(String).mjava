@@ -1,0 +1,12 @@
+    /**
+     * Set the "context.realpath" property at runtime.
+     *
+     * Properties are meant to be read-only, but we make this exception to make it
+     * possible for unit tests to control the cache directory.
+     *
+     * This property is *not* persisted in any way.
+     */
+    public static void setPlanetCachePath(String path) {
+        mConfig.setProperty("planet.aggregator.cache.dir", path);
+    }
+
