@@ -1,0 +1,39 @@
+    //-------------------------------------------------------------------------
+    /**
+     * Get existing or open new persistence session for current thread
+     * 
+     * @param createNew
+     *            True if existing session on thread is an warn condition.
+     */
+    public PersistenceSession getPersistenceSession(UserData user,
+            boolean createNew) throws RollerException {
+        PersistenceSession ses = (PersistenceSession)mSessionTLS.get();
+        if (createNew && ses != null)
+        {
+            mLogger.warn("TLS not empty at beginnng of request");
+            release();
+            ses = null;
+        }
+        if (ses == null && user != null)
+        {
+            try
+            {
+                PersistenceManager pm = mPMF.getPersistenceManager();
+                ses = new JDOPersistenceSession(user, pm);
+            }
+            catch (Throwable e)
+            {
+                mLogger.error(
+                    "JDOStrategy.exceptionGetPersistenceManager");
+                throw new RuntimeException();
+            }
+            mSessionTLS.set(ses);
+        }
+        else if (ses == null)
+        {
+            throw new RollerException(
+                "MUST specify user for new persistence session");
+        }
+        return ses;
+    }
+
