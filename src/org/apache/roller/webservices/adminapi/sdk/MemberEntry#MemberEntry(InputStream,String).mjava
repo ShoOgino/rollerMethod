@@ -1,0 +1,8 @@
+    public MemberEntry(InputStream stream, String urlPrefix) throws JDOMException, IOException, MissingElementException {               
+        SAXBuilder sb = new SAXBuilder();
+        Document d = sb.build(stream);
+        Element e = d.detachRootElement();
+        
+        populate(e, urlPrefix);        
+    }
+

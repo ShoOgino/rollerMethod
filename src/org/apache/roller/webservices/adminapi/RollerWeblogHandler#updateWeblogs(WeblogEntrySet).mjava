@@ -1,0 +1,25 @@
+    private WeblogEntrySet updateWeblogs(WeblogEntrySet c) throws HandlerException {
+        try {
+            UserManager mgr = getRoller().getUserManager();
+            
+            //TODO: group blogging check?
+            
+            HashMap pages = null;
+            
+            List websiteDatas = new ArrayList();
+            for (int i = 0; i < c.getEntries().length; i++) {
+                WeblogEntry entry = (WeblogEntry)c.getEntries()[i];
+                WebsiteData wd = mgr.getWebsiteByHandle(entry.getHandle());
+                if (wd == null) {
+                    throw new NotFoundException("ERROR: Uknown weblog: " + entry.getHandle());
+                }
+                updateWebsiteData(wd, entry);
+                websiteDatas.add(wd);
+            }
+            getRoller().flush();
+            return toWeblogEntrySet((WebsiteData[])websiteDatas.toArray(new WebsiteData[0]));
+        } catch (RollerException re) {
+            throw new InternalException("ERROR: Could not update weblogs: " + c, re);
+        }
+    }
+

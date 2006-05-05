@@ -1,0 +1,24 @@
+    private void updatePermissionsData(PermissionsData pd, MemberEntry entry) throws HandlerException {
+        // only permission can be updated
+        
+        if (entry.getPermission() != null) {
+            pd.setPermissionMask(stringToMask(entry.getPermission()));
+        }
+		
+		// TODO: does the permissions data need to be invalidated?
+        
+        try {
+            UserData ud = getRoller().getUserManager().getUserByUsername(entry.getName());
+            CacheManager.invalidate(ud);
+            WebsiteData wd = getRoller().getUserManager().getWebsiteByHandle(entry.getHandle());
+            CacheManager.invalidate(wd);
+            
+            UserManager mgr = getRoller().getUserManager();
+            mgr.savePermissions(pd);
+            
+        } catch (RollerException re) {
+            throw new InternalException("ERROR: Could not update permissions data", re);
+        }
+        
+    }
+

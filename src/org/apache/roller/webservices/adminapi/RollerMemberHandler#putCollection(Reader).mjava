@@ -1,0 +1,19 @@
+    private EntrySet putCollection(Reader r) throws HandlerException {
+        try {
+            SAXBuilder builder = new SAXBuilder();
+            Document collectionDoc = builder.build(r);
+            EntrySet c = new MemberEntrySet(collectionDoc, getUrlPrefix());
+            c = updateMembers((MemberEntrySet)c);
+            
+            return c;
+        } catch (JDOMException je) {
+            throw new InternalException("ERROR: Could not post collection", je);
+        } catch (IOException ioe) {
+            throw new InternalException("ERROR: Could not post collection", ioe);
+        } catch (MissingElementException mee) {
+            throw new InternalException("ERROR: Could not post collection", mee);
+        } catch (UnexpectedRootElementException uree) {
+            throw new InternalException("ERROR: Could not post collection", uree);            
+        }       
+    }
+

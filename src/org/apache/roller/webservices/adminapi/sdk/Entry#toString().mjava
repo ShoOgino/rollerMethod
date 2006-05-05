@@ -1,0 +1,17 @@
+    /** 
+     * This entry, as a String (XML).
+     */
+    public String toString() {
+        Writer writer = new StringWriter();
+        XMLOutputter outputter = new XMLOutputter();
+        outputter.setFormat(Format.getPrettyFormat());
+        try {
+            outputter.output(toDocument(), writer);
+            writer.close();
+        } catch (IOException ioe) {
+            throw new IllegalStateException(ioe.getMessage());
+        }
+        
+        return writer.toString();
+    }
+
