@@ -1,0 +1,15 @@
+    protected UserEntrySet fetchSampleUser() throws IOException, JDOMException, MissingElementException, UnexpectedRootElementException {
+        UserEntry ue = getSampleUserEntry();
+        
+        HttpResponse res = get(ue.getHref(), getUser(), getPassword());
+        assertEquals(200, res.getStatus());
+        
+        UserEntrySet uesResponse = null;
+        InputStream responseBody = res.getResponseBody();
+        if (responseBody != null) {
+           uesResponse = new UserEntrySet(responseBody, getEndpointUrl());
+        }
+        
+        return uesResponse;
+    }
+

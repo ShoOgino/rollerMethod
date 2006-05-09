@@ -1,0 +1,17 @@
+    protected static HttpResponse post(String url, String user, String password, String body) throws IOException {
+        HttpClient httpClient = new HttpClient();
+        EntityEnclosingMethod method = new PostMethod(url);
+        addAuthHeader(method, user, password);
+        
+        method.setRequestBody(body);
+        
+        String contentType = "application/xml; charset=utf8";
+        method.setRequestHeader("Content-type", contentType);
+        
+        int status = httpClient.executeMethod(method);
+        InputStream responseBody = method.getResponseBodyAsStream();
+        
+        HttpResponse res = new HttpResponse(status, responseBody);
+        return res;
+    }
+

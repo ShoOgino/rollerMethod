@@ -1,0 +1,15 @@
+    protected WeblogEntrySet fetchSampleWeblog() throws IOException, JDOMException, MissingElementException, UnexpectedRootElementException {
+        WeblogEntry we = getSampleWeblogEntry();
+        
+        HttpResponse res = get(we.getHref(), getUser(), getPassword());
+        assertEquals(200, res.getStatus());
+        
+        WeblogEntrySet wesResponse = null;
+        InputStream responseBody = res.getResponseBody();
+        if (responseBody != null) {
+           wesResponse = new WeblogEntrySet(responseBody, getEndpointUrl());
+        }
+        
+        return wesResponse;
+    }
+

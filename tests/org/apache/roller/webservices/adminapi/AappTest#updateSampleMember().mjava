@@ -1,0 +1,21 @@
+    protected MemberEntrySet updateSampleMember() throws IOException, JDOMException, MissingElementException, UnexpectedRootElementException {
+        MemberEntrySet mes = updateSampleMemberEntrySet(getSampleMemberEntrySet());
+        
+        String url = mes.getHref();
+        String user = getUser();
+        String password = getPassword();
+        
+        String body = mes.toString();
+        
+        HttpResponse res = put(url, user, password, body);
+        assertEquals(200, res.getStatus());
+        
+        MemberEntrySet mesResponse = null;
+        InputStream responseBody = res.getResponseBody();
+        if (responseBody != null) {
+           mesResponse = new MemberEntrySet(responseBody, getEndpointUrl());
+        }
+        
+        return mesResponse;
+    }
+

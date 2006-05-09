@@ -4,7 +4,7 @@
             UserData ud = mgr.getUserByUsername(getUri().getEntryId());
             
             if (ud == null) {
-                throw new NotFoundException("ERROR: Uknown user: " + getUri().getEntryId());
+                throw new NotFoundException("ERROR: Unknown user: " + getUri().getEntryId());
             }
             // don't allow deletion of the currently authenticated user
             if (ud.getUserName().equals(getUserName())) {

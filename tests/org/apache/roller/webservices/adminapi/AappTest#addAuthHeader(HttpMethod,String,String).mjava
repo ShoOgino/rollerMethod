@@ -1,0 +1,5 @@
+    private static void addAuthHeader(HttpMethod method, String user, String password) {
+        String credentials = user + ":" + password;
+        method.setRequestHeader("Authorization", "Basic "  + new String(Base64.encode(credentials.getBytes())));
+    }   
+

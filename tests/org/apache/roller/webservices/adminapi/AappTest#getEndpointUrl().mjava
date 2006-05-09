@@ -1,0 +1,10 @@
+    protected static String getEndpointUrl() {
+        String endpoint = System.getProperty("aapp.endpoint");
+        if (endpoint == null) {
+            endpoint = DEFAULT_ENDPOINT_URL;
+        }
+        
+        System.err.println("endpoint=" + endpoint);
+        return endpoint;
+    }
+

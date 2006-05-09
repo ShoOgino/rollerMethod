@@ -1,0 +1,15 @@
+    protected static HttpResponse delete(String url, String user, String password) throws IOException {
+        HttpClient httpClient = new HttpClient();
+        HttpMethod method = new DeleteMethod(url);
+        addAuthHeader(method, user, password);
+                
+        String contentType = "application/xml; charset=utf8";
+        method.setRequestHeader("Content-type", contentType);
+        
+        int status = httpClient.executeMethod(method);
+        InputStream responseBody = method.getResponseBodyAsStream();
+        
+        HttpResponse res = new HttpResponse(status, responseBody);
+        return res;
+    }
+
