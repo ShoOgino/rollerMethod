@@ -11,7 +11,7 @@
                 permissionsDatas.add(pd);
             }
             getRoller().flush();
-            return toMemberEntrySet((PermissionsData[])permissionsDatas.toArray(new PermissionsData[0]));            
+            return toMemberEntrySet((PermissionsData[])permissionsDatas.toArray(new PermissionsData[0]));
         } catch (RollerException re) {
             throw new InternalException("ERROR: Could not update members", re);
         }

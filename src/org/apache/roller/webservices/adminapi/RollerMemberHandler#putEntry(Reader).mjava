@@ -1,55 +1,44 @@
     private EntrySet putEntry(Reader r) throws HandlerException {
-        try {
-            SAXBuilder builder = new SAXBuilder();
-            Document collectionDoc = builder.build(r);
-            EntrySet c = new MemberEntrySet(collectionDoc, getUrlPrefix());
-            
-            if (c.getEntries().length > 1) {
-                throw new BadRequestException("ERROR: Cannot put >1 entries per request");
+        EntrySet c = getEntrySet(r);
+        if (c.isEmpty()) {
+            throw new BadRequestException("ERROR: No entries");
+        }
+        if (c.getEntries().length > 1) {
+            throw new BadRequestException("ERROR: Cannot put >1 entries per request");
+        }
+        
+        // only one entry
+        // if there's zero entries, this is a nop
+        MemberEntry entry = (MemberEntry)c.getEntries()[0];
+        
+        MemberURI muri = (MemberURI)getUri();
+        
+        // get handle
+        // if there's no handle in the entry, set it
+        // if the entry and URI handles do not match, exception
+        String handle = muri.getHandle();
+        if (entry.getHandle() == null) {
+            entry.setHandle(handle);
+        } else if (!entry.getHandle().equals(handle)) {
+            throw new BadRequestException("ERROR: URI and entry handle do not match");
+        }
+        
+        // get username
+        // if there's no name in the entry or the URI, exception
+        // if there's no name in the entry, set it
+        // if the names in the entry and URI do not match, exception
+        String username = muri.getUsername();
+        if (entry.getName() == null) {
+            if (username == null) {
+                throw new BadRequestException("ERROR: No user name in URI or entry");
             }
-            if (c.getEntries().length > 0) {
-                // only one entry
-                // if there's zero entries, this is a nop
-                MemberEntry entry = (MemberEntry)c.getEntries()[0];
-                
-                MemberURI muri = (MemberURI)getUri();
-                
-                // get handle
-                // if there's no handle in the entry, set it
-                // if the entry and URI handles do not match, exception
-                String handle = muri.getHandle();
-                if (entry.getHandle() == null) {
-                    entry.setHandle(handle);
-                } else if (!entry.getHandle().equals(handle)) {
-                    throw new BadRequestException("ERROR: URI and entry handle do not match");
-                }
-                
-                // get username
-                // if there's no name in the entry or the URI, exception
-                // if there's no name in the entry, set it
-                // if the names in the entry and URI do not match, exception
-                String username = muri.getUsername();
-                if (entry.getName() == null) {
-                    if (username == null) {
-                        throw new BadRequestException("ERROR: No user name in URI or entry");
-                    }
-                    entry.setName(username);
-                } else if (username != null && !entry.getName().equals(username)) {
-                    throw new BadRequestException("ERROR: URI and entry user name do not match");
-                }
-                
-                updateMembers((MemberEntrySet)c);
-            }
-            
-            return c;
-        } catch (JDOMException je) {
-            throw new InternalException("ERROR: Could not post collection", je);
-        } catch (IOException ioe) {
-            throw new InternalException("ERROR: Could not post collection", ioe);
-        } catch (MissingElementException mee) {
-            throw new InternalException("ERROR: Could not post collection", mee);
-        } catch (UnexpectedRootElementException uree) {
-            throw new InternalException("ERROR: Could not post collection", uree);            
-        }        
+            entry.setName(username);
+        } else if (username != null && !entry.getName().equals(username)) {
+            throw new BadRequestException("ERROR: URI and entry user name do not match");
+        }
+        
+        c = updateMembers((MemberEntrySet)c);
+        
+        return c;
     }
 

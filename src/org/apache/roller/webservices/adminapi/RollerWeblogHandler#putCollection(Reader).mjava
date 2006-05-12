@@ -1,19 +1,10 @@
     private EntrySet putCollection(Reader r) throws HandlerException {
-        try {
-            SAXBuilder builder = new SAXBuilder();
-            Document collectionDoc = builder.build(r);
-            EntrySet c = new WeblogEntrySet(collectionDoc, getUrlPrefix());
-            c = updateWeblogs((WeblogEntrySet)c);
-            
-            return c;
-        } catch (JDOMException je) {
-            throw new InternalException("ERROR: Could not post collection", je);
-        } catch (IOException ioe) {
-            throw new InternalException("ERROR: Could not post collection", ioe);
-        } catch (MissingElementException mee) {
-            throw new InternalException("ERROR: Could not post collection", mee);
-        } catch (UnexpectedRootElementException uree) {
-            throw new InternalException("ERROR: Could not post collection", uree);
+        EntrySet c = getEntrySet(r);
+        if (c.isEmpty()) {
+            throw new BadRequestException("ERROR: No entries");
         }
+        c = updateWeblogs((WeblogEntrySet)c);
+        
+        return c;
     }
 
