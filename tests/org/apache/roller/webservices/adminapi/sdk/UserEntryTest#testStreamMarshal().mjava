@@ -1,0 +1,20 @@
+    public void testStreamMarshal() {
+        try {
+            UserEntrySet ues1 = getSampleUserEntrySet();
+            String s = ues1.toString();
+            InputStream stream = new ByteArrayInputStream(s.getBytes("UTF-8")); 
+            
+            UserEntrySet ues2 = new UserEntrySet(stream, getEndpointUrl());
+            
+            assertEquals(ues1, ues2);
+        } catch (MissingElementException mee) {
+            fail(mee.getMessage());
+        } catch (UnexpectedRootElementException uree) {
+            fail(uree.getMessage());
+        } catch (IOException ioe) {
+            fail(ioe.getMessage());
+        } catch (JDOMException je) {
+            fail(je.getMessage());
+        }
+    }
+

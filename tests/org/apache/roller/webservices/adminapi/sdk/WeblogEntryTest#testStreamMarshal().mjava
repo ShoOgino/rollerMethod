@@ -1,0 +1,20 @@
+    public void testStreamMarshal() {
+        try {
+            WeblogEntrySet wes1 = getSampleWeblogEntrySet();
+            String s = wes1.toString();
+            InputStream stream = new ByteArrayInputStream(s.getBytes("UTF-8")); 
+            
+            WeblogEntrySet wes2 = new WeblogEntrySet(stream, getEndpointUrl());
+            
+            assertEquals(wes1, wes2);
+        } catch (MissingElementException mee) {
+            fail(mee.getMessage());
+        } catch (UnexpectedRootElementException uree) {
+            fail(uree.getMessage());
+        } catch (IOException ioe) {
+            fail(ioe.getMessage());
+        } catch (JDOMException je) {
+            fail(je.getMessage());
+        }
+    }    
+
