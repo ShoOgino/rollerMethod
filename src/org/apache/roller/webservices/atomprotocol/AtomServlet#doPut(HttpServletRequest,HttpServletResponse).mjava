@@ -19,7 +19,7 @@
                     Entry updatedEntry = handler.putEntry(pathInfo, unsavedEntry);
                     
                     // write entry back out to response
-                    res.setContentType("application/atom+xml; charset=utf8");
+                    res.setContentType("application/atom+xml; charset=utf-8");
                     Writer writer = res.getWriter();
                     serializeEntry(updatedEntry, writer);
                     res.setStatus(HttpServletResponse.SC_OK);
@@ -30,7 +30,7 @@
                         pathInfo, req.getContentType(), req.getInputStream());
                                         
                     // write entry back out to response
-                    res.setContentType("application/atom+xml; charset=utf8");
+                    res.setContentType("application/atom+xml; charset=utf-8");
                     Writer writer = res.getWriter();
                     serializeEntry(updatedEntry, writer);
                     writer.close();

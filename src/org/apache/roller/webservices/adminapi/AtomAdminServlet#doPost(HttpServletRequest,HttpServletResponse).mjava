@@ -10,7 +10,7 @@
             EntrySet c = handler.processPost(new InputStreamReader(req.getInputStream()));
             
             res.setStatus(HttpServletResponse.SC_CREATED);            
-            res.setContentType("application/xml; charset=utf8");
+            res.setContentType("application/xml; charset=utf-8");
             String s = c.toString();
             Writer writer = res.getWriter();
             writer.write(s);            
