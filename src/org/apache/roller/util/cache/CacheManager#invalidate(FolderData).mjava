@@ -1,8 +1,6 @@
     public static void invalidate(FolderData folder) {
         
-        mLogger.debug("invalidating folder = "+folder.getId());
-        
-        setLastExpiredDate(folder.getWebsite().getHandle());
+        log.debug("invalidating folder = "+folder.getId());
         
         Iterator handlers = cacheHandlers.iterator();
         while(handlers.hasNext()) {

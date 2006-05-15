@@ -19,5 +19,8 @@
             cat.getWebsite().setDefaultCategory(rootCat);
             this.strategy.store(cat.getWebsite());
         }
+        
+        // update weblog last modified date.  date updated by saveWebsite()
+        RollerFactory.getRoller().getUserManager().saveWebsite(cat.getWebsite());
     }
 

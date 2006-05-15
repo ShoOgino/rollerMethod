@@ -1,8 +1,6 @@
     public static void invalidate(WebsiteData website) {
         
-        mLogger.debug("invalidating website = "+website.getHandle());
-        
-        setLastExpiredDate(website.getHandle());
+        log.debug("invalidating website = "+website.getHandle());
         
         Iterator handlers = cacheHandlers.iterator();
         while(handlers.hasNext()) {

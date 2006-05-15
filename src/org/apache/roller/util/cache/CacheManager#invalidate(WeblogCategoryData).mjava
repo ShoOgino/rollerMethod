@@ -1,8 +1,6 @@
     public static void invalidate(WeblogCategoryData category) {
         
-        mLogger.debug("invalidating category = "+category.getId());
-        
-        setLastExpiredDate(category.getWebsite().getHandle());
+        log.debug("invalidating category = "+category.getId());
         
         Iterator handlers = cacheHandlers.iterator();
         while(handlers.hasNext()) {

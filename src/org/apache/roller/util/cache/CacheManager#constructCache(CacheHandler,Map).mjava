@@ -18,7 +18,7 @@
      */
     public static Cache constructCache(CacheHandler handler, Map properties) {
         
-        mLogger.debug("Constructing new cache with props "+properties);
+        log.debug("Constructing new cache with props "+properties);
         
         Cache cache = null;
         
@@ -34,17 +34,17 @@
                 // now ask for a new cache
                 cache = factory.constructCache(properties);
             } catch(ClassCastException cce) {
-                mLogger.error("It appears that your factory ["+classname+
+                log.error("It appears that your factory ["+classname+
                         "] does not implement the CacheFactory interface",cce);
             } catch(Exception e) {
-                mLogger.error("Unable to instantiate cache factory ["+classname+
+                log.error("Unable to instantiate cache factory ["+classname+
                         "] falling back on default", e);
             }
         }
         
         if(cache == null) {
             // ask our default cache factory for a new cache instance
-            cache = mCacheFactory.constructCache(properties);
+            cache = cacheFactory.constructCache(properties);
         }
         
         // register the handler for this new cache
