@@ -70,6 +70,20 @@
                 }
             }
         }
-
+        
+        // add any auto enabled ping targets
+        PingTargetManager pingTargetMgr = RollerFactory.getRoller().getPingTargetManager();
+        AutoPingManager autoPingMgr = RollerFactory.getRoller().getAutopingManager();
+        
+        Iterator pingTargets = pingTargetMgr.getCommonPingTargets().iterator();
+        PingTargetData pingTarget = null;
+        while(pingTargets.hasNext()) {
+            pingTarget = (PingTargetData) pingTargets.next();
+            
+            if(pingTarget.isAutoEnabled()) {
+                AutoPingData autoPing = new AutoPingData(null, pingTarget, newWeblog);
+                autoPingMgr.saveAutoPing(autoPing);
+            }
+        }
     }
 
