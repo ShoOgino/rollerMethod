@@ -15,7 +15,7 @@
         // Send e-mail to owner and subscribed users (if enabled)
         boolean notify = RollerRuntimeConfig.getBooleanProperty("users.comments.emailnotify");
         if (notify && site.getEmailComments().booleanValue()) {
-            mLogger.debug("Comment notification enabled ... preparing email");
+            log.debug("Comment notification enabled ... preparing email");
             
             // Determine message and addressing options from init parameters
             boolean separateMessages =
@@ -164,16 +164,16 @@
                             ownermsg.toString(), isHtml);
                 }
             } catch (javax.naming.NamingException ne) {
-                mLogger.error("Unable to lookup mail session.  Check configuration.  NamingException: " + ne.getMessage());
+                log.error("Unable to lookup mail session.  Check configuration.  NamingException: " + ne.getMessage());
             } catch (Exception e) {
-                mLogger.warn("Exception sending comment mail: " + e.getMessage());
+                log.warn("Exception sending comment mail: " + e.getMessage());
                 // This will log the stack trace if debug is enabled
-                if (mLogger.isDebugEnabled()) {
-                    mLogger.debug(e);
+                if (log.isDebugEnabled()) {
+                    log.debug(e);
                 }
             }
             
-            mLogger.debug("Done sending email message");
+            log.debug("Done sending email message");
             
         } // if email enabled
     }

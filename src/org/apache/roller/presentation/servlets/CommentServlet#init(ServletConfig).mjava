@@ -2,6 +2,7 @@
      * Initialization.
      */
     public void init(ServletConfig config) throws ServletException {
+        
         super.init(config);
         
         // lookup the authenticator we are going to use and instantiate it
@@ -12,9 +13,41 @@
             this.authenticator = (CommentAuthenticator) clazz.newInstance();
             
         } catch(Exception e) {
-            mLogger.error(e);
+            log.error(e);
             this.authenticator = new DefaultCommentAuthenticator();
         }
 
+        // are we doing throttling?
+        if(RollerConfig.getBooleanProperty("comment.throttle.enabled")) {
+            
+            int threshold = 25;
+            try {
+                threshold = Integer.parseInt(RollerConfig.getProperty("comment.throttle.threshold"));
+            } catch(Exception e) {
+                log.warn("bad input for config property comment.throttle.threshold", e);
+            }
+            
+            int interval = 60000;
+            try {
+                interval = Integer.parseInt(RollerConfig.getProperty("comment.throttle.interval"));
+                // convert from seconds to milliseconds
+                interval = interval * 1000;
+            } catch(Exception e) {
+                log.warn("bad input for config property comment.throttle.interval", e);
+            }
+            
+            int maxEntries = 250;
+            try {
+                maxEntries = Integer.parseInt(RollerConfig.getProperty("comment.throttle.maxentries"));
+            } catch(Exception e) {
+                log.warn("bad input for config property comment.throttle.maxentries", e);
+            }
+            
+            commentThrottle = new GenericThrottle(threshold, interval, maxEntries);
+            
+            log.info("Comment Throttling ENABLED");
+        } else {
+            log.info("Comment Throttling DISABLED");
+        }
     }
 

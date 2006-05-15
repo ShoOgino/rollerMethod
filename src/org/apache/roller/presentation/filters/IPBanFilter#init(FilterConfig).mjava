@@ -1,14 +1,5 @@
-    public void init(FilterConfig filterConfig) throws ServletException
-    {
-        /*
-         * This should be updated to the new config, however I don't want
-         * to do it myself since I'm not sure if/how it is being used.
-         * 
-         * This looks like something that could be a long list, so maybe
-         * it should be in the DB or possibly its own file?
-         * -- Allen G
-         */
-        String denyFromParam = filterConfig.getInitParameter("denyFrom");
-        denyFrom = Arrays.asList(StringUtils.split(denyFromParam,","));
+    public void init(FilterConfig filterConfig) throws ServletException {
+        
+        log.info("INIT IPBanFilter");
     }
 
