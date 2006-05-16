@@ -15,16 +15,16 @@
 			String menuItemPath = "menu-bar/menu/menu-item";
 
 			digester.addObjectCreate( menuPath,
-			 	"org.apache.roller.presentation.tags.menu.MenuImpl");
+			 	"org.apache.roller.ui.core.tags.menu.MenuImpl");
 			digester.addSetProperties( menuPath );
 			digester.addSetNext( menuPath,"addMenu",
-			 	"org.apache.roller.presentation.tags.menu.Menu");
+			 	"org.apache.roller.ui.core.tags.menu.Menu");
 
 			digester.addObjectCreate( menuItemPath,
-			 	"org.apache.roller.presentation.tags.menu.MenuItemImpl");
+			 	"org.apache.roller.ui.core.tags.menu.MenuItemImpl");
 			digester.addSetProperties( menuItemPath );
 			digester.addSetNext( menuItemPath, "addItem",
-			 	"org.apache.roller.presentation.tags.menu.MenuItemImpl");
+			 	"org.apache.roller.ui.core.tags.menu.MenuItemImpl");
 
 			InputStream input = ctx.getResourceAsStream(config);
 			try 
