@@ -11,7 +11,7 @@
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         
-        if (!isGzipSupported(req)) {
+        if (!this.enabled || !isGzipSupported(req)) {
             // Invoke resource normally.
             chain.doFilter(req, res);
         } else {

@@ -1,2 +1,12 @@
-    public void init(FilterConfig config) throws ServletException {}
+    public void init(FilterConfig config) throws ServletException {
+        
+        // is compression enabled?
+        if(RollerConfig.getBooleanProperty("compression.gzipResponse.enabled")) {
+            this.enabled = true;
+            mLogger.info("Compressed Output ENABLED");
+        } else {
+            this.enabled = false;
+            mLogger.info("Compressed Output DISABLED");
+        }
+    }
 
