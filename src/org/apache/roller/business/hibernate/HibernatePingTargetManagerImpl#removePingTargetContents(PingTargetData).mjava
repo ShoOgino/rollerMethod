@@ -11,6 +11,10 @@
         Criteria criteria = session.createCriteria(PingQueueEntryData.class);
         criteria.add(Expression.eq("pingTarget", ping));
         List queueEntries = criteria.list();
+        Iterator qIT = queueEntries.iterator();
+        while(qIT.hasNext()) {
+            this.strategy.remove((PingQueueEntryData) qIT.next());
+        }
         
         // Remove the website's auto ping configurations
         AutoPingManager autoPingMgr = RollerFactory.getRoller().getAutopingManager();
