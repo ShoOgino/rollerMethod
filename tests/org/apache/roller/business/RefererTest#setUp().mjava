@@ -5,7 +5,8 @@
         
         try {
             testUser = TestUtils.setupUser("referTestUser");
-            testWeblog = TestUtils.setupWeblog("referTestWeblog", testUser);
+            testWeblog = TestUtils.setupWeblog("referTestWeblog1", testUser);
+            testWeblog2 = TestUtils.setupWeblog("referTestWeblog2", testUser);
             
             // add "spamtest" to refererSpamWords
             PropertiesManager pmgr = RollerFactory.getRoller().getPropertiesManager();
@@ -24,7 +25,11 @@
                 testDay = DateUtil.format8chars(day);
                 
                 rmgr.processReferrer("http://test"+i, "http://test"+i,
-                        testWeblog.getHandle(), null, testDay);
+                    testWeblog.getHandle(), null, testDay);
+                if (i % 2 == 0) { // half the referrers from weblog 2
+                    rmgr.processReferrer("http://test"+i, "http://test"+i,
+                        testWeblog2.getHandle(), null, testDay);
+                }
             }
             
             TestUtils.endSession(true);

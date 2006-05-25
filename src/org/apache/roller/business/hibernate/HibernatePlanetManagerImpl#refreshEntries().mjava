@@ -17,8 +17,10 @@
                 "\\$\\{user.home}",System.getProperty("user.home"));
         
         // allow ${catalina.home} in cache dir property
-        cacheDirName = cacheDirName.replaceFirst(
-                "\\$\\{catalina.home}",System.getProperty("catalina.home"));
+        if (System.getProperty("catalina.home") != null) {
+            cacheDirName = cacheDirName.replaceFirst(
+                    "\\$\\{catalina.home}",System.getProperty("catalina.home"));
+        }
         
         // create cache  dir if it does not exist
         File cacheDir = null;

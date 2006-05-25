@@ -1,22 +1,17 @@
     /** @ejb:persistent-field */
-    public void setEntryAttributes(Set attSet)
-    {
+    public void setEntryAttributes(Set attSet) {
         this.attSet = attSet;
         
         // copy set to map
-        if (attSet != null)
-        {
+        if (attSet != null) {
             this.attSet = attSet;
             this.attMap = new HashMap();
             Iterator iter = this.attSet.iterator();
-            while (iter.hasNext()) 
-            {
+            while (iter.hasNext()) {
                 EntryAttributeData att = (EntryAttributeData)iter.next();
                 attMap.put(att.getName(), att);
             }
-        }
-        else 
-        {
+        } else {
             this.attSet = new TreeSet();
             this.attMap = new HashMap();
         }

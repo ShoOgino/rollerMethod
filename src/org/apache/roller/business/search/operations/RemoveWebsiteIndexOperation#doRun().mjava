@@ -1,42 +1,29 @@
-    /* (non-Javadoc)
-     * @see java.lang.Runnable#run()
-     */
-    public void doRun()
-    {
+    public void doRun() {
         Date start = new Date();
         IndexReader reader = beginDeleting();
-        try
-        {
-            if (reader != null)
-            {
+        try {
+            if (reader != null) {
                 String handle = null;
-                if (website != null)
-                {
+                if (website != null) {
                     handle = website.getHandle();
                 }
                 Term tHandle =
-                    IndexUtil.getTerm(FieldConstants.WEBSITE_HANDLE, handle);
-
-                if (tHandle != null)
-                {
+                        IndexUtil.getTerm(FieldConstants.WEBSITE_HANDLE, handle);
+                
+                if (tHandle != null) {
                     reader.delete(tHandle);
                 }
             }
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             mLogger.info("Problems deleting doc from index", e);
-        }
-        finally
-        {
+        } finally {
             endDeleting();
         }
-
+        
         Date end = new Date();
         double length = (end.getTime() - start.getTime()) / (double) 1000;
-
-        if (website != null)
-        {
+        
+        if (website != null) {
             mLogger.info("Completed deleting indices for website '" +
                     website.getName() + "' in '" + length + "' seconds");
         }

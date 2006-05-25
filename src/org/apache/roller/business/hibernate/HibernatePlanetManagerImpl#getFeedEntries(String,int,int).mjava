@@ -1,0 +1,14 @@
+     public List getFeedEntries(String feedUrl, int offset, int length)
+        throws RollerException {
+        // TODO: ATLAS getFeedEntries         
+        try {
+            Session session = ((HibernatePersistenceStrategy)strategy).getSession();
+            Criteria criteria = session.createCriteria(PlanetEntryData.class);
+            criteria.setFirstResult(offset);
+            criteria.setMaxResults(length);
+            return criteria.list();
+        } catch (HibernateException e) {
+            throw new RollerException(e);
+        }
+    }    
+

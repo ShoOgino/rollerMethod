@@ -1,65 +1,47 @@
-    /** 
-     * Init entry from Rome entry 
+    /**
+     * Init entry from Rome entry
      */
-    private void initFromRomeEntry(SyndFeed romeFeed, SyndEntry romeEntry)
-    {
+    private void initFromRomeEntry(SyndFeed romeFeed, SyndEntry romeEntry) {
         setAuthor(romeEntry.getAuthor());
-        // this will be needed (instead of the previous line) for ROME v0.8
-        //List authors = romeEntry.getAuthors();
-        //if (authors!=null && authors.size() > 0) {
-            //SyndPerson person = (SyndPerson)authors.get(0);
-            //setAuthor(person.getName());
-        //}
         setTitle(romeEntry.getTitle());
-        setPermalink(romeEntry.getLink());
+        setPermaLink(romeEntry.getLink());
         
-        // Play some games to get the date       
+        // Play some games to get the date
         DCModule entrydc = (DCModule)romeEntry.getModule(DCModule.URI);
         DCModule feeddc = (DCModule)romeFeed.getModule(DCModule.URI);
-        if (romeEntry.getPublishedDate() != null)
-        {        
-            setPublished(romeEntry.getPublishedDate()); // use <pubDate>
+        if (romeEntry.getPublishedDate() != null) {
+            setPubTime(new Timestamp(romeEntry.getPublishedDate().getTime())); // use <pubDate>
+        } else if (entrydc != null) {
+            setPubTime(new Timestamp(entrydc.getDate().getTime())); // use <dc:date>
         }
-        else if (entrydc != null)
-        {
-            setPublished(entrydc.getDate()); // use <dc:date>
-        }       
         
-        // get content and unescape if it is 'text/plain' 
-        if (romeEntry.getContents().size() > 0)
-        {
+        // get content and unescape if it is 'text/plain'
+        if (romeEntry.getContents().size() > 0) {
             SyndContent content= (SyndContent)romeEntry.getContents().get(0);
-            if (content != null && content.getType().equals("text/plain"))
-            {
-                setContent(Utilities.unescapeHTML(content.getValue()));
-            }
-            else if (content != null)
-            {
-                setContent(content.getValue());
+            if (content != null && content.getType().equals("text/plain")) {
+                setText(Utilities.unescapeHTML(content.getValue()));
+            } else if (content != null) {
+                setText(content.getValue());
             }
         }
         
-        // no content, then try <content:encoded>        
-        if (getContent() == null || getContent().trim().length() == 0)
-        {
+        // no content, then try <content:encoded>
+        if (getText() == null || getText().trim().length() == 0) {
             ContentModule cm = (ContentModule)romeEntry.getModule(ContentModule.URI);
-            if (cm != null) 
-            {
-                setContent(Utilities.unescapeHTML(cm.getEncoded()));
+            if (cm != null) {
+                setText(Utilities.unescapeHTML(cm.getEncoded()));
             }
         }
         
         // copy categories
-        if (romeEntry.getCategories().size() > 0)
-        {
+        if (romeEntry.getCategories().size() > 0) {
             List list = new ArrayList();
             Iterator cats = romeEntry.getCategories().iterator();
-            while (cats.hasNext())
-            {
+            while (cats.hasNext()) {
                 SyndCategory cat = (SyndCategory)cats.next();
                 list.add(cat.getName());
             }
-            setCategories(list);
+            setCategoriesString(list);
         }
     }
 

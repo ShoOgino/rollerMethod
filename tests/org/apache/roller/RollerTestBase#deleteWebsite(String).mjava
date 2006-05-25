@@ -9,7 +9,7 @@
         
         UserData user = umgr.getUserByUsername(deleteMe);
         
-        WebsiteData website = (WebsiteData)umgr.getWebsites(user, null, null).get(0);
+        WebsiteData website = (WebsiteData)umgr.getWebsites(user, null, null, 0, -1).get(0);
         umgr.removeWebsite(website);
         
         umgr.removeUser(user);

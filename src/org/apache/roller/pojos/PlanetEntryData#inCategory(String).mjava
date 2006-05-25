@@ -1,15 +1,12 @@
     /**
-     * Returns true if any of entry's categories contain a specific string 
+     * Returns true if any of entry's categories contain a specific string
      * (case-insensitive comparison).
      */
-    public boolean inCategory(String category) 
-    {
+    public boolean inCategory(String category) {
         Iterator cats = getCategories().iterator();
-        while (cats.hasNext())
-        {
+        while (cats.hasNext()) {
             String catName = ((String)cats.next()).toLowerCase();
-            if (catName.indexOf(category.toLowerCase()) != -1)
-            {
+            if (catName.indexOf(category.toLowerCase()) != -1) {
                 return true;
             }
         }

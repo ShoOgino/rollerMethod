@@ -1,19 +1,15 @@
     /**
      * @roller.wrapPojoMethod type="simple"
      */
-    public String getCommentsLink()
-    {
+    public String getCommentsLink() {
         String dayString = DateUtil.format8chars(this.getPubTime());
         String lAnchor = this.getAnchor();
-        try
-        {
+        try {
             lAnchor = URLEncoder.encode(anchor, "UTF-8");
-        }
-        catch (UnsupportedEncodingException e)
-        {
+        } catch (UnsupportedEncodingException e) {
             // go with the "no encoding" version
-        }        
-        String clink = "/page/" + this.getWebsite().getHandle() + "?anchor=" + lAnchor;
+        }
+        String clink = "/page/" + this.getWebsite().getHandle() + "?entry=" + lAnchor;
         return clink;
     }
 

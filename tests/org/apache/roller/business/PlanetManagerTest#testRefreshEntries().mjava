@@ -34,6 +34,9 @@
             TestUtils.endSession(true);
             
             assertTrue(entriesSize > 0);
+            
+            Object feed = planet.getSubscription(feed_url1);
+            assertNull(feed);
         }
     }
 

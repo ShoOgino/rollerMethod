@@ -1,0 +1,29 @@
+    /**
+     * Get websites of a user
+     */
+    public List getWebsites(
+        UserData user, Boolean enabled, Boolean active, int offset, int length)  
+        throws RollerException {
+        // TODO: ATLAS getWebsites DONE TESTED
+        try {
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
+            Criteria criteria = session.createCriteria(WebsiteData.class);
+            if (user != null) {
+                criteria.createAlias("permissions","permissions");
+                criteria.add(Expression.eq("permissions.user", user));
+                criteria.add(Expression.eq("permissions.pending", Boolean.FALSE));
+            }
+            if (enabled != null) {
+                criteria.add(Expression.eq("enabled", enabled));
+            }
+            if (active != null) {
+                criteria.add(Expression.eq("active", active));
+            }
+            criteria.setFirstResult(offset);
+            criteria.setMaxResults(length);
+            return criteria.list();
+        } catch (HibernateException e) {
+            throw new RollerException(e);
+        }
+    }
+

@@ -1,26 +1,23 @@
     /* (non-Javadoc)
      * @see java.lang.Runnable#run()
      */
-    public void doRun()
-    {
+    public void doRun() {
         searchresults = null;
-      		
+        
         IndexSearcher searcher = null;
-
-        try
-        {
+        
+        try {
             IndexReader reader = manager.getSharedIndexReader();
             searcher = new IndexSearcher(reader);
-
+            
             Query query =
-                MultiFieldQueryParser.parse(
+                    MultiFieldQueryParser.parse(
                     term, SEARCH_FIELDS, new StandardAnalyzer());
-
+            
             Term tUsername =
-                IndexUtil.getTerm(FieldConstants.WEBSITE_HANDLE, websiteHandle);
-
-            if (tUsername != null)
-            {
+                    IndexUtil.getTerm(FieldConstants.WEBSITE_HANDLE, websiteHandle);
+            
+            if (tUsername != null) {
                 BooleanQuery bQuery = new BooleanQuery();
                 bQuery.add(query, true, false);
                 bQuery.add(new TermQuery(tUsername), true, false);
@@ -28,24 +25,19 @@
             }
             
             Term tCategory =
-                IndexUtil.getTerm(FieldConstants.CATEGORY, category);
-
-            if (tCategory != null)
-            {
+                    IndexUtil.getTerm(FieldConstants.CATEGORY, category);
+            
+            if (tCategory != null) {
                 BooleanQuery bQuery = new BooleanQuery();
                 bQuery.add(query, true, false);
                 bQuery.add(new TermQuery(tCategory), true, false);
                 query = bQuery;
             }
             searchresults = searcher.search(query, null/*Filter*/, SORTER);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             mLogger.error("Error searching index", e);
             parseError = e.getMessage();
-        }
-        catch (ParseException e)
-        {
+        } catch (ParseException e) {
             // who cares?
             parseError = e.getMessage();
         }

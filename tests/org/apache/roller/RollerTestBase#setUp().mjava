@@ -14,7 +14,7 @@
                 "TestUser",
                 "testuser@example.com");
         UserManager umgr = getRoller().getUserManager();
-        mWebsite = (WebsiteData)umgr.getWebsites(mUser, null, null).get(0);
+        mWebsite = (WebsiteData)umgr.getWebsites(mUser, null, null, 0, -1).get(0);
         
         PropertiesManager propmgr = getRoller().getPropertiesManager();
         Map props = propmgr.getProperties();

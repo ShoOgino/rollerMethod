@@ -49,9 +49,9 @@
             // saving sub here causes detachment issues, so we save it later
         }
         
-        // Kludge for Feeds without entry dates: most recent entry is given
-        // feed's last publish date (or yesterday if none exists) and earler
-        // entries are placed at once day intervals before that.
+        // Horrible kludge for Feeds without entry dates: most recent entry is 
+        // given feed's last publish date (or yesterday if none exists) and 
+        // earler entries are placed at once day intervals before that.
         Calendar cal = Calendar.getInstance();
         if (sub.getLastUpdated() != null) {
             cal.setTime(sub.getLastUpdated());
@@ -67,12 +67,12 @@
                 SyndEntry romeEntry = (SyndEntry) entries.next();
                 PlanetEntryData entry =
                         new PlanetEntryData(feed, romeEntry, sub);
-                if (entry.getPublished() == null) {
+                if (entry.getPubTime() == null) {
                     log.debug(
                             "No published date, assigning fake date for "+feedUrl);
-                    entry.setPublished(cal.getTime());
+                    entry.setPubTime(new Timestamp(cal.getTimeInMillis()));
                 }
-                if (entry.getPermalink() == null) {
+                if (entry.getPermaLink() == null) {
                     log.warn("No permalink, rejecting entry from "+feedUrl);
                 } else {
                     newEntries.add(entry);

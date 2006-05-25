@@ -1,4 +1,4 @@
-    /** 
+    /**
      * Format the update time of this weblog entry using the specified pattern.
      * See java.text.SimpleDateFormat for more information on this format.
      *
@@ -6,19 +6,15 @@
      * @see java.text.SimpleDateFormat
      * @return Update time formatted according to pattern.
      */
-    public String formatUpdateTime(String pattern)
-    {
-        try
-        {
+    public String formatUpdateTime(String pattern) {
+        try {
             SimpleDateFormat format = new SimpleDateFormat(pattern);
-
+            
             return format.format(getUpdateTime());
-        }
-        catch (RuntimeException e)
-        {
+        } catch (RuntimeException e) {
             mLogger.error("Unexpected exception", e);
         }
-
+        
         return "ERROR: formatting date";
     }
 

@@ -68,7 +68,9 @@
 
         // index Category
         WeblogCategoryData categorydata = data.getCategory();
-        Field category = (categorydata == null) ? Field.UnStored(FieldConstants.CATEGORY, "") : Field.Text(FieldConstants.CATEGORY, categorydata.getName());
+        Field category = (categorydata == null) 
+           ? Field.UnStored(FieldConstants.CATEGORY, "") 
+           : Field.Text(FieldConstants.CATEGORY, categorydata.getName());
         doc.add(category);
 
         return doc;
