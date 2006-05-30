@@ -1,0 +1,8 @@
+    public void testGetUsernameLetterMap() throws Exception {        
+        UserManager mgr = RollerFactory.getRoller().getUserManager();      
+        Map map = mgr.getUsernameLetterMap();    
+        assertNotNull(map.get("a"));
+        assertNotNull(map.get("b"));
+        assertNull(map.get("c"));
+    }
+

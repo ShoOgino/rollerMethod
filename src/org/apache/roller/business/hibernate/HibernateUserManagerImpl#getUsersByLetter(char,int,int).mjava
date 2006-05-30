@@ -1,0 +1,15 @@
+    public List getUsersByLetter(char letter, int offset, int length) 
+        throws RollerException { 
+        // TODO: ATLAS getUsersByLetter DONE
+        try {
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
+            Criteria criteria = session.createCriteria(UserData.class);
+            criteria.add(Expression.like("userName", new String(new char[]{letter}) + "%", MatchMode.START));
+            criteria.setFirstResult(offset);
+            criteria.setMaxResults(length);
+            return criteria.list();
+        } catch (HibernateException e) {
+            throw new RollerException(e);
+        }
+    }
+
