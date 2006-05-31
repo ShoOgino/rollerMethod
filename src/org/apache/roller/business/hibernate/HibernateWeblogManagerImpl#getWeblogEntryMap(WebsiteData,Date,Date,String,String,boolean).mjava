@@ -4,18 +4,18 @@
             Date    endDate,
             String  catName,
             String  status,
-            Integer maxEntries,
             boolean stringsOnly) throws RollerException {
         TreeMap map = new TreeMap(reverseComparator);
         
         List entries = getWeblogEntries(
-                website,
-                startDate,
-                endDate,
-                catName,
-                status,
-                null,
-                maxEntries);
+            website,                 
+            null,
+            startDate,
+            endDate,
+            catName,
+            status,
+            null,
+            0, Integer.MAX_VALUE);
         
         Calendar cal = Calendar.getInstance();
         if (website != null) {

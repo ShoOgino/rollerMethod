@@ -1,4 +1,4 @@
-    public List getUsers(Boolean enabled) throws RollerException {
+    public List getUsers(Boolean enabled, int offset, int length) throws RollerException {
         
         try {
             Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
@@ -6,7 +6,12 @@
             if (enabled != null) {
                 criteria.add(Expression.eq("enabled", enabled));
             }
-            
+            if (offset != 0) {
+                criteria.setFirstResult(offset);
+            }
+            if (length != Integer.MAX_VALUE) {
+                criteria.setMaxResults(length);
+            }
             return criteria.list();
         } catch (HibernateException e) {
             throw new RollerException(e);

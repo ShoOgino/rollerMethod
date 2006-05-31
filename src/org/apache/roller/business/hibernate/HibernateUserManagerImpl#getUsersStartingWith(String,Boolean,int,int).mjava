@@ -1,5 +1,5 @@
-    public List getUsersStartingWith(String startsWith,
-            int offset, int length, Boolean enabled) throws RollerException {
+    public List getUsersStartingWith(String startsWith, Boolean enabled,
+            int offset, int length) throws RollerException {
         
         List results = new ArrayList();
         try {
@@ -14,8 +14,12 @@
                 .add(Expression.like("userName", startsWith, MatchMode.START))
                 .add(Expression.like("emailAddress", startsWith, MatchMode.START)));
             }
-            criteria.setFirstResult(offset);
-            criteria.setMaxResults(length);
+            if (offset != 0) {
+                criteria.setFirstResult(offset);
+            }
+            if (length != Integer.MAX_VALUE) {
+                criteria.setMaxResults(length);
+            }
             results = criteria.list();
         } catch (HibernateException e) {
             throw new RollerException(e);

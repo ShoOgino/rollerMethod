@@ -47,7 +47,7 @@
             } else {
                 cal = Calendar.getInstance();
             }
-            Integer limit = new Integer(maxEntries);
+            int limit = maxEntries;
             Date startDate = null;
             Date endDate = mRollerReq.getDate();
             if (endDate == null) endDate = new Date();
@@ -57,7 +57,7 @@
                 endDate = DateUtil.getEndOfDay(endDate, cal);
                 startDate = DateUtil.getStartOfDay(endDate, cal); 
                 // and get them ALL, no limit
-                limit = null;                  
+                limit = Integer.MAX_VALUE;                  
             } else if (mRollerReq.isMonthSpecified()) {
                 endDate = DateUtil.getEndOfMonth(endDate, cal);
             }
@@ -66,8 +66,7 @@
                     startDate,                    // startDate
                     endDate,                      // endDate
                     catParam,                     // catName
-                    WeblogEntryData.PUBLISHED,    // status
-                    limit);     // maxEntries
+                    WeblogEntryData.PUBLISHED);    // status
             
             // need to wrap pojos
             java.util.Date key = null;

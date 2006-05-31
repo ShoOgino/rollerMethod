@@ -5,7 +5,7 @@
         
         // TODO BACKEND: we must do this in a better fashion, like getUserCnt()?
         boolean adminUser = false;
-        List existingUsers = this.getUsers();
+        List existingUsers = this.getUsers(0, 1);
         if(existingUsers.size() == 0) {
             // Make first user an admin
             adminUser = true;

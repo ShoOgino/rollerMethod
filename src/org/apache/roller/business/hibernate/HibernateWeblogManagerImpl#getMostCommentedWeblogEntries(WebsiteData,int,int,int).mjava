@@ -19,8 +19,12 @@
                    +"from CommentData c group by c.weblogEntry.id, c.weblogEntry.anchor, c.weblogEntry.title "
                    +"order by col_0_0_ desc");
             }
-            query.setFirstResult(offset);
-            query.setMaxResults(length);
+            if (offset != 0) {
+                query.setFirstResult(offset);
+            }
+            if (length != Integer.MAX_VALUE) {
+                query.setMaxResults(length);
+            }
             List results = new ArrayList();
             for (Iterator iter = query.list().iterator(); iter.hasNext();) {
                 Object[] row = (Object[]) iter.next();

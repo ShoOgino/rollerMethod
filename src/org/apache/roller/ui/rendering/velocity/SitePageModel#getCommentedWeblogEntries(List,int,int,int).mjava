@@ -1,12 +1,20 @@
     /**
-     * Get most commented WeblogEntry objects across all weblogs,
-     * in descending order by number of comments.
+     * Get most commented weblog entries across all weblogs, as StatCount 
+     * objects, in descending order by number of comments.
      * @param sinceDays Only consider weblogs updated in the last sinceDays
      * @param cats     To limit results to list of category names
      * @param offset   Offset into results (for paging)
      * @param len      Max number of results to return
      */
-    public List getCommentedWeblogEntries(List cats, int sinceDays, int offset, int len) {
-        return null;
+    public List getCommentedWeblogEntries(List cats, int sinceDays, int offset, int length) {
+        List results = new ArrayList();
+        try {            
+            Roller roller = RollerFactory.getRoller();
+            WeblogManager wmgr = roller.getWeblogManager();
+            results = wmgr.getMostCommentedWeblogEntries(null, Integer.MAX_VALUE, offset, length);
+        } catch (Exception e) {
+            log.error("ERROR: fetching commented weblog entries list", e);
+        }
+        return results;
     }
 

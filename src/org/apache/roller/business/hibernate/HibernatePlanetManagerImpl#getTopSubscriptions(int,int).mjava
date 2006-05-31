@@ -1,19 +1,5 @@
     public synchronized List getTopSubscriptions(int offset, int length) 
         throws RollerException {
-        // TODO: ATLAS getTopSubscriptions DONE
-        String groupHandle = NO_GROUP;
-        List ret = null;
-        try {
-            Session session = ((HibernatePersistenceStrategy)strategy).getSession();
-            Criteria criteria =
-                    session.createCriteria(PlanetSubscriptionData.class);
-            criteria.addOrder(Order.desc("inboundblogs"));
-            criteria.setFirstResult(offset);
-            criteria.setMaxResults(length);
-            ret = criteria.list();
-        } catch (HibernateException e) {
-            throw new RollerException(e);
-        }
-        return ret;
+        return getTopSubscriptions(null, offset, length);
     }
 

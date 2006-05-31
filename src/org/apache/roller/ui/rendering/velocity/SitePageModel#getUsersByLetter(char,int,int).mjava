@@ -1,20 +1,16 @@
-    /**
-     * Get most recent User objects, in reverse chrono order by creationDate.
-     * @param offset   Offset into results (for paging)
-     * @param len      Max number of results to return
-     */
-    public List getUsers(int offset, int length) {
+    /** Get collection of users whose names begin with specified letter */
+    public List getUsersByLetter(char letter, int offset, int length) {
         List results = new ArrayList();
         try {            
             Roller roller = RollerFactory.getRoller();
             UserManager umgr = roller.getUserManager();
-            List users = umgr.getUsers(offset, length);
+            List users = umgr.getUsersByLetter(letter, offset, length);
             for (Iterator it = users.iterator(); it.hasNext();) {
                 UserData user = (UserData) it.next();
                 results.add(UserDataWrapper.wrap(user));
             }
         } catch (Exception e) {
-            log.error("ERROR: fetching weblog list", e);
+            log.error("ERROR: fetching users by letter", e);
         }
         return results;
     }

@@ -10,11 +10,12 @@
         return RollerFactory.getRoller().getWeblogManager()
             .getWeblogEntries(
                 getWeblogEntry().getWebsite(), 
+                null,
                 null,              // startDate
                 null,              // endDate
                 null,              // catName
                 WeblogEntryData.PENDING, // status
                 "updateTime",      // sortby
-                new Integer(20));  // maxEntries
+                0, 20);  
     }
 

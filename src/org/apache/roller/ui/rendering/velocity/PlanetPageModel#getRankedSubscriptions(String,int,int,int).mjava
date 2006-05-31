@@ -1,0 +1,23 @@
+    /**
+     * Get PlanetSubscription objects in descending order by Planet ranking.
+     * @param groupHandle Only consider weblogs updated in the last sinceDays
+     * @param sinceDays   Only consider weblogs updated in the last sinceDays
+     * @param offset      Offset into results (for paging)
+     * @param len         Max number of results to return
+     */
+    public List getRankedSubscriptions(String groupHandle, int sinceDays, int offset, int length) {
+        List list = new ArrayList();
+        try {
+            Roller roller = RollerFactory.getRoller();
+            PlanetManager planetManager = roller.getPlanetManager();
+            List subs = planetManager.getTopSubscriptions(groupHandle, offset, length);
+            for (Iterator it = subs.iterator(); it.hasNext();) {
+                PlanetSubscriptionData sub = (PlanetSubscriptionData) it.next();
+                list.add(PlanetSubscriptionDataWrapper.wrap(sub)); 
+            }
+        } catch (Exception e) {
+            log.error("ERROR: get ranked blogs", e);
+        }
+        return list;
+    }   
+

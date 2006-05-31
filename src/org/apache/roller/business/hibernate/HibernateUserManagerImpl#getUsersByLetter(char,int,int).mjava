@@ -5,8 +5,12 @@
             Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
             Criteria criteria = session.createCriteria(UserData.class);
             criteria.add(Expression.like("userName", new String(new char[]{letter}) + "%", MatchMode.START));
-            criteria.setFirstResult(offset);
-            criteria.setMaxResults(length);
+            if (offset != 0) {
+                criteria.setFirstResult(offset);
+            }
+            if (length != Integer.MAX_VALUE) {
+                criteria.setMaxResults(length);
+            }
             return criteria.list();
         } catch (HibernateException e) {
             throw new RollerException(e);

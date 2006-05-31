@@ -1,0 +1,27 @@
+    /**
+     * Get most recent WeblogEntry objects across all weblogs,
+     * in reverse chrono order by pubTime.
+     * @param username   Limit entries to those created by this user
+     * @param offset     Offset into results (for paging)
+     * @param len        Max number of results to return
+     */
+    public List getUserWeblogEntries(String username, String cat, int offset, int length) {
+        List results = new ArrayList();
+        if (cat.equals(PageModel.VELOCITY_NULL)) cat = null;
+        try {            
+            Roller roller = RollerFactory.getRoller();
+            WeblogManager wmgr = roller.getWeblogManager();
+            UserManager umgr = roller.getUserManager();
+            UserData user = umgr.getUserByUsername(username);
+            List entries = wmgr.getWeblogEntries( 
+                null, user, null, new Date(), cat, WeblogEntryData.PUBLISHED, "pubTime", offset, length);
+            for (Iterator it = entries.iterator(); it.hasNext();) {
+                WeblogEntryData entry = (WeblogEntryData) it.next();
+                results.add(WeblogEntryDataWrapper.wrap(entry));
+            }
+        } catch (Exception e) {
+            log.error("ERROR: fetching weblog list", e);
+        }
+        return results;
+    }
+

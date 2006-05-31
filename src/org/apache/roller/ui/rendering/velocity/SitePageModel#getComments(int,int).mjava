@@ -4,7 +4,21 @@
      * @param offset   Offset into results (for paging)
      * @param len      Max number of results to return
      */
-    public List getComments(int offset, int len) {
-        return null;
+    public List getComments(int offset, int length) {
+        List results = new ArrayList();
+        try {            
+            Roller roller = RollerFactory.getRoller();
+            WeblogManager wmgr = roller.getWeblogManager();
+            List entries = wmgr.getComments(
+                null, null, null, null, new Date(), 
+                Boolean.FALSE, Boolean.TRUE, Boolean.FALSE, true, offset, length);
+            for (Iterator it = entries.iterator(); it.hasNext();) {
+                CommentData comment = (CommentData) it.next();
+                results.add(CommentDataWrapper.wrap(comment));
+            }
+        } catch (Exception e) {
+            log.error("ERROR: fetching comment list", e);
+        }
+        return results;
     }
 

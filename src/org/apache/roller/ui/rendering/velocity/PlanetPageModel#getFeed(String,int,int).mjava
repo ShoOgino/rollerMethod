@@ -6,10 +6,16 @@
      */
     public List getFeed(String feedUrl, int offset, int len) {
         List list = new ArrayList();
-        //PlanetSubscriptionData sub = planetManager.getSubscription(feedUrl);
-        //if (sub != null) {
-            //list = sub.getEntries();
-        //}
+        try {
+            Roller roller = RollerFactory.getRoller();
+            PlanetManager planetManager = roller.getPlanetManager();
+            PlanetSubscriptionData sub = planetManager.getSubscription(feedUrl);
+            if (sub != null) {
+                list = sub.getEntries();
+            }
+        } catch (Exception e) {
+            log.error("ERROR: get feed", e);
+        }
         return list;
     }
 

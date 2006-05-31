@@ -9,8 +9,12 @@
                 "select count(distinct c), c.weblogEntry.website.id, c.weblogEntry.website.name, c.weblogEntry.website.description "
                +"from CommentData c group by c.weblogEntry.website.id, c.weblogEntry.website.name, c.weblogEntry.website.description "
                +"order by col_0_0_ desc");
-            query.setFirstResult(offset);
-            query.setMaxResults(length);
+            if (offset != 0) {
+                query.setFirstResult(offset);
+            }
+            if (length != Integer.MAX_VALUE) {
+                query.setMaxResults(length);
+            }
             List results = new ArrayList();
             for (Iterator iter = query.list().iterator(); iter.hasNext();) {
                 Object[] row = (Object[]) iter.next();

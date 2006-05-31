@@ -4,6 +4,14 @@
      * names start with each letter.
      */
     public Map getUsernameLetterMap() {
-        return null;
+        Map results = new HashMap();
+        try {            
+            Roller roller = RollerFactory.getRoller();
+            UserManager umgr = roller.getUserManager();
+            results = umgr.getUsernameLetterMap();
+        } catch (Exception e) {
+            log.error("ERROR: fetching username letter map", e);
+        }
+        return results;
     }
 

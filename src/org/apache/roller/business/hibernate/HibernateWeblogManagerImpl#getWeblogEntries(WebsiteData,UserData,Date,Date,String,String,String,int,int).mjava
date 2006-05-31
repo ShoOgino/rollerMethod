@@ -1,11 +1,14 @@
     public List getWeblogEntries(
             WebsiteData website,
-            Date    startDate,
-            Date    endDate,
-            String  catName,
-            String  status,
-            String  sortby,
-            Integer maxEntries) throws RollerException {
+            UserData    user,
+            Date        startDate,
+            Date        endDate,
+            String      catName,
+            String      status,
+            String      sortby,
+            int         offset,
+            int         length) throws RollerException {
+        
         WeblogCategoryData cat = null;
         if (StringUtils.isNotEmpty(catName) && website != null) {
             cat = getWeblogCategoryByPath(website, catName);
@@ -26,6 +29,10 @@
                 criteria.add(Expression.eq("w.enabled", Boolean.TRUE));
             }
             
+            if (user != null) {
+                criteria.add(Expression.eq("creator", user));
+            }
+
             if (startDate != null) {
                 criteria.add(
                         Expression.ge("pubTime", startDate));
@@ -50,10 +57,14 @@
                 criteria.addOrder(Order.desc("pubTime"));
             }
             
-            if (maxEntries != null) {
-                criteria.setMaxResults(maxEntries.intValue());
+            if (offset != 0) {
+                criteria.setFirstResult(offset);
+            }
+            if (length != Integer.MAX_VALUE) {
+                criteria.setMaxResults(length);
             }
             return criteria.list();
+            
         } catch (HibernateException e) {
             log.error(e);
             throw new RollerException(e);

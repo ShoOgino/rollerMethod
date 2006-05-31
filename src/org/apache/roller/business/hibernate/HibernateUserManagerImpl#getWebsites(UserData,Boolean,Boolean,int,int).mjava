@@ -19,8 +19,13 @@
             if (active != null) {
                 criteria.add(Expression.eq("active", active));
             }
-            criteria.setFirstResult(offset);
-            criteria.setMaxResults(length);
+            if (offset != 0) {
+                criteria.setFirstResult(offset);
+            }
+            if (length != Integer.MAX_VALUE) {
+                criteria.setMaxResults(length);
+            }
+            criteria.addOrder(Order.desc("dateCreated"));
             return criteria.list();
         } catch (HibernateException e) {
             throw new RollerException(e);

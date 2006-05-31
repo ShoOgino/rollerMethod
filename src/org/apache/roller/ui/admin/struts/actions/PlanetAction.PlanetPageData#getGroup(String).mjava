@@ -1,17 +1,13 @@
-        /** 
+        /**
          * Get named group
          */
-        public PlanetGroupData getGroup(String name) throws RollerException
-        {
+        public PlanetGroupData getGroup(String name) throws RollerException {
             PlanetGroupData group = null;
-            try 
-            {
-                Roller roller = RollerFactory.getRoller();  
+            try {
+                Roller roller = RollerFactory.getRoller();
                 group = roller.getPlanetManager().getGroup(name);
-            }
-            catch (RollerException e) 
-            {
-                mLogger.error(e); 
+            } catch (RollerException e) {
+                mLogger.error(e);
             }
             return group;
         }

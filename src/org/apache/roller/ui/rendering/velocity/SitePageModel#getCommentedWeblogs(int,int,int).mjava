@@ -1,11 +1,19 @@
     /**
-     * Get most collection of most commented Website objects,
+     * Get most collection of most commented websites, as StatCount objects,
      * in descending order by number of comments.
      * @param sinceDays Only consider weblogs updated in the last sinceDays
      * @param offset   Offset into results (for paging)
-     * @param len      Max number of results to return
+     * @param length   Max number of results to return
      */
-    public List getCommentedWeblogs(int sinceDays ,int offset, int len) {
-        return null;
+    public List getCommentedWeblogs(int sinceDays , int offset, int length) {
+        List results = new ArrayList();
+        try {            
+            Roller roller = RollerFactory.getRoller();
+            UserManager umgr = roller.getUserManager();
+            results = umgr.getMostCommentedWebsites(Integer.MAX_VALUE, offset, length);
+        } catch (Exception e) {
+            log.error("ERROR: fetching commented weblog list", e);
+        }
+        return results;
     }
 

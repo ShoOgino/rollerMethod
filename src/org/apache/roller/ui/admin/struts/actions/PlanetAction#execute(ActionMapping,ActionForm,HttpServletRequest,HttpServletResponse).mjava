@@ -1,32 +1,28 @@
-	/**
-	 * Loads model and forwards to planet.page.
-         */
-	public ActionForward execute(
-		ActionMapping mapping, ActionForm form,
-		HttpServletRequest req, HttpServletResponse res)
-		throws Exception
-	{        
-        RollerContext rctx = RollerContext.getRollerContext();		
+    /**
+     * Loads model and forwards to planet.page.
+     */
+    public ActionForward execute(
+            ActionMapping mapping, ActionForm form,
+            HttpServletRequest req, HttpServletResponse res)
+            throws Exception {
+        RollerContext rctx = RollerContext.getRollerContext();
         req.setAttribute("version",rctx.getRollerVersion());
         req.setAttribute("buildTime",rctx.getRollerBuildTime());
         req.setAttribute("baseURL", rctx.getContextUrl(req));
         req.setAttribute("data", new PlanetPageData(req));
         
-        boolean allowNewUsers = 
-           RollerRuntimeConfig.getBooleanProperty("users.registration.enabled");
-
+        boolean allowNewUsers =
+                RollerRuntimeConfig.getBooleanProperty("users.registration.enabled");
+        
         java.security.Principal prince = req.getUserPrincipal();
-        if (prince != null) 
-        {
+        if (prince != null) {
             req.setAttribute("loggedIn",Boolean.TRUE);
             req.setAttribute("userName",prince.getName());
-        } 
-        else if (allowNewUsers)
-        {   
+        } else if (allowNewUsers) {
             req.setAttribute("allowNewUsers",Boolean.TRUE);
         }
         req.setAttribute("leftPage","/theme/status.jsp");
         
         return mapping.findForward("planet.page");
-	}
+    }
 

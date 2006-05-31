@@ -4,12 +4,18 @@
      * @param offset   Offset into results (for paging)
      * @param len      Max number of results to return
      */
-    public List getAggregation(String group, int offset, int len) {
+    public List getAggregation(String groupHandle, int offset, int len) {
         List list = new ArrayList();
-        //PlanetGroupData group = planetManager.getGroup(group);
-        //if (group != null) {
-        //    list = planetManager.getAggregation(group, offset, len);
-        //}
+        try {
+            Roller roller = RollerFactory.getRoller();
+            PlanetManager planetManager = roller.getPlanetManager();
+            PlanetGroupData group = planetManager.getGroup(groupHandle);
+            if (group != null) {
+                list = planetManager.getAggregation(group, offset, len);
+            }
+        } catch (Exception e) {
+            log.error("ERROR: get aggregation", e);
+        }
         return list;
     }
 
