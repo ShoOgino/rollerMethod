@@ -1,0 +1,18 @@
+    /** Get collection of users whose names begin with specified letter */
+    public List getUsersByLetter(String letter, int offset, int length) {
+        List results = new ArrayList();
+        letter = letter.toUpperCase();
+        try {            
+            Roller roller = RollerFactory.getRoller();
+            UserManager umgr = roller.getUserManager();
+            List users = umgr.getUsersByLetter(letter.charAt(0), offset, length);
+            for (Iterator it = users.iterator(); it.hasNext();) {
+                UserData user = (UserData) it.next();
+                results.add(UserDataWrapper.wrap(user));
+            }
+        } catch (Exception e) {
+            log.error("ERROR: fetching users by letter", e);
+        }
+        return results;
+    }
+

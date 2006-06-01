@@ -6,18 +6,17 @@
      * @return
      */
     public String getPermaLink() {
-        String lAnchor = this.getAnchor();
-        
+        // TODO: ATLAS reconcile entry.getPermaLink() with new URLs
+        String lAnchor = this.getAnchor();        
         try {
             lAnchor = URLEncoder.encode(anchor, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             // go with the "no encoding" version
-        }
-        
+        }        
         WebsiteData website = this.getWebsite();
-        String plink = "/page/" + website.getHandle() +
-                "?entry=" + lAnchor;
-        
+        String absContextUrl = RollerConfig.getProperty("context.absPath");
+        String plink = 
+          absContextUrl + "/page/" + website.getHandle() + "?entry=" + lAnchor;        
         return plink;
     }
 

@@ -11,8 +11,8 @@
             adminUser = true;
         }
         
-        if(getUserByUsername(newUser.getUserName()) != null ||
-                getUserByUsername(newUser.getUserName().toLowerCase()) != null) {
+        if(getUserByUserName(newUser.getUserName()) != null ||
+                getUserByUserName(newUser.getUserName().toLowerCase()) != null) {
             throw new RollerException("error.add.user.userNameInUse");
         }
         

@@ -1,0 +1,24 @@
+    public List getUsers(Boolean enabled, Date startDate, Date endDate, int offset, int length) throws RollerException {
+        if (endDate == null) endDate = new Date();
+        try {
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
+            Criteria criteria = session.createCriteria(UserData.class);
+            criteria.add(Expression.lt("dateCreated", endDate));
+            if (startDate != null) {
+                criteria.add(Expression.gt("dateCreated", startDate));
+            }
+            if (enabled != null) {
+                criteria.add(Expression.eq("enabled", enabled));
+            }
+            if (offset != 0) {
+                criteria.setFirstResult(offset);
+            }
+            if (length != Integer.MAX_VALUE) {
+                criteria.setMaxResults(length);
+            }
+            return criteria.list();
+        } catch (HibernateException e) {
+            throw new RollerException(e);
+        }
+    }
+

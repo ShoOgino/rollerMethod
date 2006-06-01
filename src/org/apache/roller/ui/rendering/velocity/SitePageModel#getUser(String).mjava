@@ -4,7 +4,7 @@
         try {            
             Roller roller = RollerFactory.getRoller();
             UserManager umgr = roller.getUserManager();
-            UserData user = umgr.getUserByUsername(username, Boolean.TRUE);
+            UserData user = umgr.getUserByUserName(username, Boolean.TRUE);
             wrappedUser = UserDataWrapper.wrap(user);
         } catch (Exception e) {
             log.error("ERROR: fetching users by letter", e);

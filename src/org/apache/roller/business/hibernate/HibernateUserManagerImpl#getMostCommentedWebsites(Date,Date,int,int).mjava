@@ -1,0 +1,43 @@
+    public List getMostCommentedWebsites(Date startDate, Date endDate, int offset, int length) 
+        throws RollerException {
+        // TODO: ATLAS getMostCommentedWebsites DONE TESTED
+        String msg = "Getting most commented websites";
+        if (endDate == null) endDate = new Date();
+        try {      
+            Session session = 
+                ((HibernatePersistenceStrategy)strategy).getSession();            
+            StringBuffer sb = new StringBuffer();
+            sb.append("select count(distinct c), c.weblogEntry.website.id, c.weblogEntry.website.name, c.weblogEntry.website.description ");
+            sb.append("from CommentData c where c.weblogEntry.pubTime < :endDate ");
+            if (startDate != null) {
+                sb.append("and c.weblogEntry.pubTime > :startDate ");
+            }  
+            sb.append("group by c.weblogEntry.website.id, c.weblogEntry.website.name, c.weblogEntry.website.description order by col_0_0_ desc");
+            Query query = session.createQuery(sb.toString());
+            query.setParameter("endDate", endDate);
+            if (startDate != null) {
+                query.setParameter("startDate", startDate);
+            }   
+            if (offset != 0) {
+                query.setFirstResult(offset);
+            }
+            if (length != Integer.MAX_VALUE) {
+                query.setMaxResults(length);
+            }
+            List results = new ArrayList();
+            for (Iterator iter = query.list().iterator(); iter.hasNext();) {
+                Object[] row = (Object[]) iter.next();
+                results.add(new StatCount(
+                    (String)row[1], 
+                    (String)row[2], 
+                    (String)row[3], 
+                    "statCount.weblogCommentCountType", 
+                    new Long((Integer)row[0]).longValue()));
+            }
+            return results;
+        } catch (Throwable pe) {
+            log.error(msg, pe);
+            throw new RollerException(msg, pe);
+        }
+    }
+

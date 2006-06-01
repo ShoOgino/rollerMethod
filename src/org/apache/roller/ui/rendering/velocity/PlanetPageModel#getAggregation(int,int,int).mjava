@@ -1,0 +1,27 @@
+    /**
+     * Get move recent PlanetEntry objects from 'all' and
+     * 'exernal' Planet groups. in reverse chrono order.
+     * @param offset   Offset into results (for paging)
+     * @param len      Max number of results to return
+     */
+    public List getAggregation(int sinceDays, int offset, int len) {
+        List results = new ArrayList();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.DATE, -1 * sinceDays);
+        Date startDate = cal.getTime();        
+        try {
+            Roller roller = RollerFactory.getRoller();
+            PlanetManager planetManager = roller.getPlanetManager();
+            List entries = planetManager.getAggregation(startDate, null, offset, len);
+            for (Iterator it = entries.iterator(); it.hasNext();) {
+                PlanetEntryData entry = (PlanetEntryData) it.next();
+                PlanetEntryDataWrapper wrapped = PlanetEntryDataWrapper.wrap(entry);
+                results.add(wrapped);
+            }
+        } catch (Exception e) {
+            log.error("ERROR: get aggregation", e);
+        }
+        return results;
+    }
+

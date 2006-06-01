@@ -1,0 +1,28 @@
+    /**
+     * Get most recent Comment objects across all weblogs,
+     * in reverse chrono order by postTime.
+     * @param offset   Offset into results (for paging)
+     * @param len      Max number of results to return
+     */
+    public List getComments(int sinceDays, int offset, int length) {
+        List results = new ArrayList();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.DATE, -1 * sinceDays);
+        Date startDate = cal.getTime();
+        try {            
+            Roller roller = RollerFactory.getRoller();
+            WeblogManager wmgr = roller.getWeblogManager();
+            List entries = wmgr.getComments( 
+                null, null, null, startDate, new Date(), 
+                Boolean.FALSE, Boolean.TRUE, Boolean.FALSE, true, offset, length);
+            for (Iterator it = entries.iterator(); it.hasNext();) {
+                CommentData comment = (CommentData) it.next();
+                results.add(CommentDataWrapper.wrap(comment));
+            }
+        } catch (Exception e) {
+            log.error("ERROR: fetching comment list", e);
+        }
+        return results;
+    }
+

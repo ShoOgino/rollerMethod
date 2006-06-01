@@ -1,6 +1,6 @@
     private EntrySet getEntry() throws HandlerException {
         try {
-            UserData ud = getRoller().getUserManager().getUserByUsername(getUri().getEntryId());
+            UserData ud = getRoller().getUserManager().getUserByUserName(getUri().getEntryId());
             if (ud == null) {
                 throw new NotFoundException("ERROR: Unknown user: " + getUri().getEntryId());
             }

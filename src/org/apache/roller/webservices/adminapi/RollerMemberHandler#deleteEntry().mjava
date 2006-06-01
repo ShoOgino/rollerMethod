@@ -19,7 +19,7 @@
             UserManager mgr = getRoller().getUserManager();
             mgr.removePermissions(pd);
             
-            UserData ud = getRoller().getUserManager().getUserByUsername(username);
+            UserData ud = getRoller().getUserManager().getUserByUserName(username);
             CacheManager.invalidate(ud);
             WebsiteData wd = getRoller().getUserManager().getWebsiteByHandle(handle);
             CacheManager.invalidate(wd);

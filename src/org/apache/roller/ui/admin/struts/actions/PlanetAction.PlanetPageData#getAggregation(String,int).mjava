@@ -6,7 +6,7 @@
             try {
                 Roller roller = RollerFactory.getRoller();
                 PlanetGroupData group= roller.getPlanetManager().getGroup(name);
-                ret = roller.getPlanetManager().getAggregation(group, 0, num);
+                ret = roller.getPlanetManager().getAggregation(group, null, null, 0, num);
             } catch (RollerException e) {
                 mLogger.error(e);
             }
