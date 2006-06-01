@@ -11,7 +11,7 @@
         TestUtils.endSession(true);
         
         // lookup by username
-        user = mgr.getUserByUsername(testUser.getUserName());
+        user = mgr.getUserByUserName(testUser.getUserName());
         assertNotNull(user);
         assertEquals(testUser.getUserName(), user.getUserName());
         
@@ -42,7 +42,7 @@
         user.setEnabled(Boolean.FALSE);
         mgr.saveUser(user);
         user = null;
-        user = mgr.getUserByUsername(testUser.getUserName());
+        user = mgr.getUserByUserName(testUser.getUserName());
         assertNull(user);
         
         // remove test user
