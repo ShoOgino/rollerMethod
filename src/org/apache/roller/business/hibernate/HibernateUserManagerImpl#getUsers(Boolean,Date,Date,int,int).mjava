@@ -16,6 +16,7 @@
             if (length != Integer.MAX_VALUE) {
                 criteria.setMaxResults(length);
             }
+            criteria.addOrder(Order.desc("dateCreated"));
             return criteria.list();
         } catch (HibernateException e) {
             throw new RollerException(e);

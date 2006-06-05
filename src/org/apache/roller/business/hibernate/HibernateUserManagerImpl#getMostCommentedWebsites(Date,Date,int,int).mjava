@@ -7,7 +7,7 @@
             Session session = 
                 ((HibernatePersistenceStrategy)strategy).getSession();            
             StringBuffer sb = new StringBuffer();
-            sb.append("select count(distinct c), c.weblogEntry.website.id, c.weblogEntry.website.name, c.weblogEntry.website.description ");
+            sb.append("select count(distinct c), c.weblogEntry.website.id, c.weblogEntry.website.handle, c.weblogEntry.website.name ");
             sb.append("from CommentData c where c.weblogEntry.pubTime < :endDate ");
             if (startDate != null) {
                 sb.append("and c.weblogEntry.pubTime > :startDate ");
