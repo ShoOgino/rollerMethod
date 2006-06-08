@@ -1,41 +1,31 @@
-	/**
-	 * @see org.apache.velocity.runtime.resource.loader.ResourceLoader#getResourceStream(java.lang.String)
-	 */
-	public InputStream getResourceStream(String name)
-		throws ResourceNotFoundException
-	{
-		InputStream result = null;
+    /**
+     * @see org.apache.velocity.runtime.resource.loader.ResourceLoader#getResourceStream(java.lang.String)
+     */
+    public InputStream getResourceStream(String name) 
+            throws ResourceNotFoundException {
         
-		if (name == null || name.length() == 0)
-		{
-			throw new ResourceNotFoundException ("No template name provided");
-		}
+        log.debug("Looking up resource named ... "+name);
         
-		try 
-		{
-			if (!name.startsWith("/"))
-				name = "/" + name;
-
-			result = getContext().getResourceAsStream( name );
-		}
-		catch( NullPointerException npe)
-		{
-			String msg = "WebappResourceLoader.getResourceStream(): " + name;
-			if (mContext == null)
-			{
-				mLogger.info("WebappResourceLoader("+name+"): ServletContext is null");
-				msg += "\n\tServletContext is null";
-			}
-			throw new ResourceNotFoundException(msg);
-		}
-		catch( Exception fnfe )
-		{
-			/*
-			 *  log and convert to a general Velocity ResourceNotFoundException
-			 */            
-			throw new ResourceNotFoundException( fnfe.getMessage() );
-		}
+        if (name == null || name.length() == 0) {
+            throw new ResourceNotFoundException("No template name provided");
+        }
         
-		return result;
-	}
+        InputStream result = null;
+        
+        try {
+            if(!name.startsWith("/"))
+                name = "/WEB-INF/velocity/" + name;
+            
+            result = this.mContext.getResourceAsStream(name);
+            
+        } catch(Exception e) {
+            throw new ResourceNotFoundException(e.getMessage());
+        }
+        
+        if(result == null) {
+            throw new ResourceNotFoundException("Couldn't find "+name);
+        }
+        
+        return result;
+    }
 

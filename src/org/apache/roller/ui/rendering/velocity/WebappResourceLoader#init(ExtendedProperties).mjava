@@ -1,16 +1,17 @@
-	/**
-	 * @see org.apache.velocity.runtime.resource.loader.ResourceLoader#init(org.apache.commons.collections.ExtendedProperties)
-	 */
-	public void init(ExtendedProperties arg0)
-	{
-		rsvc.info("WebappResourceLoader : initialization starting.");
-
-		this.getContext();
-		if (mContext == null)
-		{
-			mLogger.warn("WebappResourceLoader : Unable to find ServletContext!");
-		}
-
-		rsvc.info("WebappResourceLoader : initialization complete.");
-	}
+    /**
+     * @see org.apache.velocity.runtime.resource.loader.ResourceLoader#init(org.apache.commons.collections.ExtendedProperties)
+     */
+    public void init(ExtendedProperties config) {
+        
+        log.debug("WebappResourceLoader : initialization starting.");
+        
+        if (mContext == null) {
+            mContext = RollerContext.getServletContext();
+            log.debug("Servlet Context = "+mContext.getRealPath("/WEB-INF/velocity/"));
+        }
+        
+        log.debug(config);
+        
+        log.debug("WebappResourceLoader : initialization complete.");
+    }
 
