@@ -10,7 +10,7 @@
             List perms = umgr.getAllPermissions(user);
             for (Iterator it = perms.iterator(); it.hasNext();) {
                 PermissionsData perm = (PermissionsData) it.next();
-                results.add(PermissionsDataWrapper.wrap(perm));
+                results.add(WebsiteDataWrapper.wrap(perm.getWebsite()));
             }
         } catch (Exception e) {
             log.error("ERROR: fetching weblog list", e);

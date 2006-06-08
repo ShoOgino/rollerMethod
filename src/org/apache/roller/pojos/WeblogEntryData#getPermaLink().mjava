@@ -1,9 +1,7 @@
     /**
-     * Convenience method for getPermalink(category)
-     * where no category is necessary.
-     *
+     * Returns entry permalink, relative to Roller context.
+     * @deprecated Use getPermalink() instead.
      * @roller.wrapPojoMethod type="simple"
-     * @return
      */
     public String getPermaLink() {
         // TODO: ATLAS reconcile entry.getPermaLink() with new URLs
@@ -14,9 +12,6 @@
             // go with the "no encoding" version
         }        
         WebsiteData website = this.getWebsite();
-        String absContextUrl = RollerConfig.getProperty("context.absPath");
-        String plink = 
-          absContextUrl + "/page/" + website.getHandle() + "?entry=" + lAnchor;        
-        return plink;
+        return "/page/" + website.getHandle() + "?entry=" + lAnchor;        
     }
 

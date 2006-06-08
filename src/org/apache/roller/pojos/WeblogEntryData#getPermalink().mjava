@@ -1,0 +1,9 @@
+    /**
+     * Returns absolute entry permalink.
+     * @roller.wrapPojoMethod type="simple"
+     */
+    public String getPermalink() {
+        String absContextUrl = RollerConfig.getProperty("context.absPath");
+        return absContextUrl + getPermaLink();       
+    }
+
