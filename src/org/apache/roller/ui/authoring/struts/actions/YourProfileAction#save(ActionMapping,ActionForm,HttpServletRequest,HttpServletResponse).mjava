@@ -1,19 +1,16 @@
     /** Update user based on posted form data */
     public ActionForward save(
-        ActionMapping       mapping,
-        ActionForm          actionForm,
-        HttpServletRequest  request,
-        HttpServletResponse response)
-        throws IOException, ServletException
-    {
+            ActionMapping       mapping,
+            ActionForm          actionForm,
+            HttpServletRequest  request,
+            HttpServletResponse response)
+            throws IOException, ServletException {
         UserFormEx form = (UserFormEx)actionForm;
         ActionForward forward = mapping.findForward("yourProfile.page");
         ActionMessages msgs = new ActionMessages();
-        try
-        {
+        try {
             ActionMessages errors = validate(form, new ActionErrors());
-            if (errors.size() == 0)
-            {
+            if (errors.size() == 0) {
                 // We ONLY modify the user currently logged in
                 RollerSession rollerSession = RollerSession.getRollerSession(request);
                 UserData data = rollerSession.getAuthenticatedUser();
@@ -25,40 +22,32 @@
                 data.setTimeZone(form.getTimeZone());
                 
                 // If user set both password and passwordConfirm then reset password
-                if (    !StringUtils.isEmpty(form.getPasswordText()) 
-                     && !StringUtils.isEmpty(form.getPasswordConfirm()))
-                {
-                    try
-                    {
-                        data.resetPassword(RollerFactory.getRoller(), 
-                           form.getPasswordText(), 
-                           form.getPasswordConfirm());
+                if (    !StringUtils.isEmpty(form.getPasswordText())
+                && !StringUtils.isEmpty(form.getPasswordConfirm())) {
+                    try {
+                        data.resetPassword(RollerFactory.getRoller(),
+                                form.getPasswordText(),
+                                form.getPasswordConfirm());
+                    } catch (RollerException e) {
+                        msgs.add(ActionMessages.GLOBAL_MESSAGE,
+                                new ActionMessage("yourProfile.passwordResetError"));
                     }
-                    catch (RollerException e)
-                    {
-                        msgs.add(ActionMessages.GLOBAL_MESSAGE, 
-                            new ActionMessage("yourProfile.passwordResetError"));
-                    }
-                } 
+                }
                 
                 // save the updated profile
                 UserManager mgr = RollerFactory.getRoller().getUserManager();
                 mgr.saveUser(data);
                 RollerFactory.getRoller().flush();
-
+                
                 request.setAttribute("model", new BasePageModel(
                         "yourProfile.title", request, response, mapping));
                 
                 saveMessages(request, msgs);
-            }
-            else 
-            {
+            } else {
                 saveErrors(request, errors);
             }
             return mapping.findForward("yourWebsites");
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             mLogger.error("ERROR in action",e);
             throw new ServletException(e);
         }

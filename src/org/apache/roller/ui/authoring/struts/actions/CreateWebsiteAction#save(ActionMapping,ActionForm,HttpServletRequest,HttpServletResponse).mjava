@@ -1,30 +1,27 @@
-    /** Save new website created by user */    
+    /** Save new website created by user */
     public ActionForward save(
             ActionMapping       mapping,
             ActionForm          actionForm,
             HttpServletRequest  request,
             HttpServletResponse response)
-            throws Exception
-    {
+            throws Exception {
+        
         CreateWebsiteForm form = (CreateWebsiteForm)actionForm;
         ActionMessages msgs = new ActionMessages();
         ActionMessages errors = validate(form, new ActionErrors());
-        ActionForward forward = mapping.findForward("yourWebsites"); 
+        ActionForward forward = mapping.findForward("yourWebsites");
         Roller roller = RollerFactory.getRoller();
         WebsiteData website = null;
-        if (!errors.isEmpty())
-        {
+        if (!errors.isEmpty()) {
             saveErrors(request, errors);
             forward = mapping.findForward("createWebsite.page");
-        }
-        else try
-        {
+        } else try {
             RollerContext rollerContext = RollerContext.getRollerContext();
-            UserData user = 
-                RollerSession.getRollerSession(request).getAuthenticatedUser();
-            UserManager mgr = roller.getUserManager(); 
+            UserData user =
+                    RollerSession.getRollerSession(request).getAuthenticatedUser();
+            UserManager mgr = roller.getUserManager();
             
-            if (!RollerConfig.getBooleanProperty("groupblogging.enabled")) {          
+            if (!RollerConfig.getBooleanProperty("groupblogging.enabled")) {
                 List permissions = roller.getUserManager().getAllPermissions(user);
                 if (permissions.size() > 0) {
                     // sneaky user trying to get around 1 blog limit that applies
@@ -62,18 +59,16 @@
             msgs.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("createWebsite.created", form.getHandle()));
             saveMessages(request, msgs);
-        }
-        catch (RollerException e)
-        {
-            errors.add(ActionErrors.GLOBAL_ERROR, 
-                new ActionError(e.getMessage()));
-            saveErrors(request, errors);          
+        } catch (RollerException e) {
+            errors.add(ActionErrors.GLOBAL_ERROR,
+                    new ActionError(e.getMessage()));
+            saveErrors(request, errors);
             mLogger.error("ERROR in createWebsite", e);
         }
         
-        request.setAttribute("model", 
-            new CreateWebsitePageModel(request, response, mapping, website));  
+        request.setAttribute("model",
+                new CreateWebsitePageModel(request, response, mapping, website));
         
-        return forward; 
+        return forward;
     }
 

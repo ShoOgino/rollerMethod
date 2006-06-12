@@ -1,12 +1,10 @@
-    //------------------------------------------------------------------------
     /** Validate user form. TODO: replace with Struts validation. */
     protected ActionMessages validate( UserFormEx form, ActionMessages errors ) {
         super.validate(form, errors);
         if (    StringUtils.isEmpty(form.getPasswordText())
-             && StringUtils.isEmpty(form.getPasswordConfirm()))
-        {
+        && StringUtils.isEmpty(form.getPasswordConfirm())) {
             errors.add( ActionErrors.GLOBAL_ERROR,
-               new ActionError("error.add.user.missingPassword"));
+                    new ActionError("error.add.user.missingPassword"));
         }
         return errors;
     }
