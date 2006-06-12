@@ -3,8 +3,7 @@
             ActionForm          actionForm,
             HttpServletRequest  request,
             HttpServletResponse response)
-            throws Exception
-    {
+            throws Exception {
         YourWebsitesForm form = (YourWebsitesForm)actionForm;
         
         RollerSession rses = RollerSession.getRollerSession(request);
@@ -15,8 +14,7 @@
         UserManager userMgr = RollerFactory.getRoller().getUserManager();
         PermissionsData perms = userMgr.getPermissions(website, user);
         
-        if (perms != null) 
-        {
+        if (perms != null) {
             // TODO ROLLER_2.0: notify website members that user has resigned
             // TODO EXCEPTIONS: better exception handling
             userMgr.removePermissions(perms);
