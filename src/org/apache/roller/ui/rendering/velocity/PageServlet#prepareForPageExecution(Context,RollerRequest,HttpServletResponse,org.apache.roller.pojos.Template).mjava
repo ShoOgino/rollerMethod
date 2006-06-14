@@ -20,7 +20,17 @@
         }
         
         // Made it this far, populate the Context
-        ContextLoader.setupContext( ctx, rreq, response );
+        Map mapCtx = new HashMap();
+        ContextLoader.setupContext( mapCtx, rreq, response );
+        
+        // hack.  put mapCtx info velocity ctx
+        String key = null;
+        Iterator ctxIT = mapCtx.keySet().iterator();
+        while(ctxIT.hasNext()) {
+            key = (String) ctxIT.next();
+            
+            ctx.put(key, mapCtx.get(key));
+        }
         
         try {
             outty = getTemplate(page.getId(), "UTF-8");

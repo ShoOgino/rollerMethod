@@ -10,6 +10,16 @@
 		ctx.put("req", req );
 		ctx.put("res", res );
 		
-                ContextLoader.loadToolboxContext(req, res, ctx);
+                Map mapCtx = new HashMap();
+                ContextLoader.loadToolboxContext(req, res, mapCtx);
+                
+                // hack.  put mapCtx info velocity ctx
+                String key = null;
+                Iterator ctxIT = mapCtx.keySet().iterator();
+                while(ctxIT.hasNext()) {
+                    key = (String) ctxIT.next();
+                    
+                    ctx.put(key, mapCtx.get(key));
+                }
 	}
 

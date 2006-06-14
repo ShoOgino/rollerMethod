@@ -14,7 +14,7 @@
         if (exportAtom) templateFile = ATOM_TEMPLATE;
         Template template = ve.getTemplate( templateFile, "utf-8" );
         StringWriter sw = new StringWriter();
-        template.merge(ctx, sw);
+        template.merge(new VelocityContext(ctx), sw);
         
         writeResultsToFile((String)ctx.get("uploadPath"), sw, fileName);
     }

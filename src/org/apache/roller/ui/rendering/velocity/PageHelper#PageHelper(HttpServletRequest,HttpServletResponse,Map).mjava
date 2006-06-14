@@ -5,7 +5,7 @@
     public PageHelper( 
             HttpServletRequest request, 
             HttpServletResponse response, 
-            Context ctx) throws RollerException
+            Map ctx) throws RollerException
     {
         mVelocityContext = ctx;
         mRollerReq = RollerRequest.getRollerRequest(request);
@@ -23,13 +23,14 @@
                 mWebsite = mRollerReq.getWebsite();
             }
         }
-        if (mVelocityContext == null) mVelocityContext = new VelocityContext();
+        if (mVelocityContext == null) mVelocityContext = new HashMap();
         Roller roller = RollerFactory.getRoller(); 
         PagePluginManager ppmgr = roller.getPagePluginManager();
+        // TODO 3.0 : broken by velocity context -> Map
         mPagePlugins = ppmgr.createAndInitPagePlugins(
                 mWebsite, 
                 RollerContext.getRollerContext().getServletContext(),
-                RollerContext.getRollerContext().getAbsoluteContextUrl(request),
-                mVelocityContext);
+                RollerContext.getRollerContext().getAbsoluteContextUrl(),
+                new VelocityContext(mVelocityContext));
     }
 

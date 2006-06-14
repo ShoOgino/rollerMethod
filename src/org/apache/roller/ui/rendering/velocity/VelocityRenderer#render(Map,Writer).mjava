@@ -1,0 +1,12 @@
+    public void render(Map model, Writer out) throws Exception {
+        
+        // lookup the specified resource
+        Template tmpl = RollerVelocity.getTemplate(this.resourceId, "UTF-8");
+        
+        // convert model to Velocity Context
+        Context ctx = new VelocityContext(model);
+        
+        // render output to servlet response
+        tmpl.merge(ctx, out);
+    }
+

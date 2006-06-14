@@ -1,0 +1,29 @@
+    /**
+     * Init method for this servlet
+     */
+    public void init(ServletConfig servletConfig) throws ServletException {
+        
+        super.init(servletConfig);
+        
+        log.info("Initializing weblog feed servlet");
+        
+        Map cacheProps = new HashMap();
+        Enumeration allProps = RollerConfig.keys();
+        String prop = null;
+        while(allProps.hasMoreElements()) {
+            prop = (String) allProps.nextElement();
+            
+            // we are only interested in props for this cache
+            if(prop.startsWith(CACHE_ID+".")) {
+                cacheProps.put(prop.substring(CACHE_ID.length()+1), 
+                        RollerConfig.getProperty(prop));
+            }
+        }
+        
+        log.info(cacheProps);
+        
+        contentCache = CacheManager.constructCache(this, cacheProps);
+        
+        this.rendererFactory = new RollerRendererFactory();
+    }
+

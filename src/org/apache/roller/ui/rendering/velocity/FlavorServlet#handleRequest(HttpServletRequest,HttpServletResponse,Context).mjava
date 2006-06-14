@@ -39,8 +39,18 @@
             Date updateTime = wmgr.getWeblogLastPublishTime(rreq.getWebsite(), catname);
             request.setAttribute("updateTime", updateTime);
             
-            ContextLoader.setupContext(ctx, rreq, response);
+            Map mapCtx = new HashMap();
+            ContextLoader.setupContext(mapCtx, rreq, response);
             
+            // hack.  put mapCtx info velocity ctx
+            String key = null;
+            Iterator ctxIT = mapCtx.keySet().iterator();
+            while(ctxIT.hasNext()) {
+                key = (String) ctxIT.next();
+                
+                ctx.put(key, mapCtx.get(key));
+            }
+                
             String useTemplate;
             WeblogPageModel pageModel = (WeblogPageModel)ctx.get("pageModel");
             if (request.getServletPath().endsWith("rss")) {

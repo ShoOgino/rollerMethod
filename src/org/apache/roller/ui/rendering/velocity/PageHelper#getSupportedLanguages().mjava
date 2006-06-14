@@ -12,14 +12,14 @@
     public Locale[] getSupportedLanguages()
     {
         Locale currentLocale =
-            (Locale) mPageContext.getSession().getAttribute(Globals.LOCALE_KEY);
+            (Locale) mRollerReq.getRequest().getSession().getAttribute(Globals.LOCALE_KEY);
         if (currentLocale==null) 
         {
-            currentLocale = mPageContext.getRequest().getLocale();
+            currentLocale = mRollerReq.getRequest().getLocale();
         }
             
         Locale[] supportedLanguages =
-            LanguageUtil.getSupportedLanguages(mPageContext.getServletContext());
+            LanguageUtil.getSupportedLanguages(RollerContext.getServletContext());
         if (supportedLanguages==null) {
             return null;
         }

@@ -1,0 +1,40 @@
+    public void render(Map model, Writer out) throws Exception {
+        
+        // lookup the specified resource
+        Template tmpl = RollerVelocity.getTemplate(this.resourceId, "UTF-8");
+        
+        // convert model to Velocity Context
+        Context ctx = new VelocityContext(model);
+        
+        // if there is a decorator template then apply it
+        WebsiteData website = null;
+        // TODO: this is poor form, we should not need to access the pojo from the wrapper
+        WebsiteDataWrapper websiteWrapper = (WebsiteDataWrapper) model.get("website");
+        if(websiteWrapper != null) {
+            website = websiteWrapper.getPojo();
+        }
+        if (website != null) {
+            Template decorator = null;
+            try {
+                // look for decorator
+                decorator = findDecorator(website, (String) ctx.get("decorator"));
+            } catch(Exception e) {
+                // error finding decorator
+                log.warn("Could not find a decorator to apply");
+            }
+            
+            if(decorator != null) {
+                // render current template
+                StringWriter sw = new StringWriter();
+                tmpl.merge(ctx, sw);
+                
+                // put rendered template into context
+                ctx.put("decorator_body", sw.toString());
+                tmpl = decorator;
+            }
+        }
+        
+        // render output to servlet response
+        tmpl.merge(ctx, out);
+    }
+

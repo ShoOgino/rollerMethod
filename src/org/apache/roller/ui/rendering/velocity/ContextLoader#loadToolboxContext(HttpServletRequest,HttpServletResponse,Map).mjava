@@ -1,7 +1,7 @@
     public static ToolboxContext loadToolboxContext(
             HttpServletRequest request,                                                     
             HttpServletResponse response,                                                    
-            Context ctx) {
+            Map ctx) {
         
         mLogger.debug("Loading toolbox context");
         
@@ -18,8 +18,9 @@
         }
         
         // load a toolbox context
+        // TODO 3.0: is this okay?
         ChainedContext chainedContext =
-                new ChainedContext(ctx, request, response, servletContext);
+                new ChainedContext(new VelocityContext(ctx), request, response, servletContext);
         ToolboxContext toolboxContext =
                 toolboxManager.getToolboxContext(chainedContext);
         
