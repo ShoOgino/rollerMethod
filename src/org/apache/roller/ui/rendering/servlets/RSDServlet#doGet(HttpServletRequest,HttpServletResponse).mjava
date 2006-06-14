@@ -1,0 +1,101 @@
+    /**
+     * Handle GET requests for weblog pages.
+     */
+    public void doGet(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        
+        log.debug("Entering");
+        
+        HashMap model = new HashMap();
+        WebsiteData weblog = null;
+        WeblogRequest weblogRequest = null;
+        
+        // first off lets parse the incoming request and validate it
+        try {
+            weblogRequest = new WeblogRequest(request);
+            
+            // now make sure the specified weblog really exists
+            UserManager userMgr = RollerFactory.getRoller().getUserManager();
+            weblog = userMgr.getWebsiteByHandle(weblogRequest.getWeblogHandle(), Boolean.TRUE);
+            
+        } catch(InvalidRequestException ire) {
+            // An error initializing the request is considered to be a 404
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            log.error("Bad Request: "+ire.getMessage());
+            return;
+            
+        } catch(RollerException re) {
+            // error looking up the weblog, we assume it doesn't exist
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            log.warn("Unable to lookup weblog ["+
+                    weblogRequest.getWeblogHandle()+"] "+re.getMessage());
+            return;
+        }
+        
+        
+        // 304 if-modified-since checking
+        long sinceDate = request.getDateHeader("If-Modified-Since");
+        log.debug("since date = "+sinceDate);
+        if(weblog.getLastModified().getTime() <= sinceDate) {
+            log.debug("NOT MODIFIED "+request.getRequestURL());
+            response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+            return;
+        }
+        
+        // set the content type
+        response.setContentType("application/rsd+xml; charset=utf-8");
+        
+        // set last-modified date
+        response.setDateHeader("Last-Modified", weblog.getLastModified().getTime());
+        
+        
+        // populate the model
+        model.put("website", weblog);
+        
+        RollerContext rollerContext = new RollerContext();
+        model.put("absBaseURL", rollerContext.getAbsoluteContextUrl(request));
+
+        
+        // lookup Renderer we are going to use
+        Renderer renderer = null;
+        try {
+            log.debug("Looking up renderer");
+            renderer = rendererFactory.getRenderer("velocity", "templates/weblog/rsd.vm");
+        } catch(Exception e) {
+            // nobody wants to render my content :(
+            log.error("Couldn't find renderer for rsd template", e);
+            
+            if(!response.isCommitted()) response.reset();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        
+        // render content
+        CachedContent rendererOutput = new CachedContent(4096);
+        try {
+            log.debug("Doing rendering");
+            renderer.render(model, rendererOutput.getCachedWriter());
+            
+            // flush rendered output and close
+            rendererOutput.flush();
+            rendererOutput.close();
+        } catch(Exception e) {
+            // bummer, error during rendering
+            log.error("Error during rendering for rsd template", e);
+            
+            if(!response.isCommitted()) response.reset();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        
+        
+        // post rendering process
+        
+        // flush rendered content to response
+        log.debug("Flushing response output");
+        response.setContentLength(rendererOutput.getContent().length);
+        response.getOutputStream().write(rendererOutput.getContent());
+        
+        log.debug("Exiting");
+    }
+
