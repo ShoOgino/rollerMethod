@@ -25,7 +25,7 @@
             RollerSession rses = RollerSession.getRollerSession(request);
             if (rses.isUserAuthorizedToAuthor(entry.getWebsite())) {
                 // Run entry through registered PagePlugins
-                PagePluginManager ppmgr = roller.getPagePluginManager();
+                PluginManager ppmgr = roller.getPagePluginManager();
                 Map plugins = ppmgr.createAndInitPagePlugins(
                         entry.getWebsite(),
                         new HashMap());
