@@ -60,7 +60,7 @@
         Renderer renderer = null;
         try {
             log.debug("Looking up renderer");
-            renderer = rendererFactory.getRenderer("velocity", "templates/weblog/rsd.vm");
+            renderer = RendererManager.getRenderer("velocity", "templates/weblog/rsd.vm");
         } catch(Exception e) {
             // nobody wants to render my content :(
             log.error("Couldn't find renderer for rsd template", e);

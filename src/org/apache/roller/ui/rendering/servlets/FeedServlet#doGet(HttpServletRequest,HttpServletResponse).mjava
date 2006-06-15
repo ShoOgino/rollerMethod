@@ -166,7 +166,7 @@
         Renderer renderer = null;
         try {
             log.debug("Looking up renderer");
-            renderer = rendererFactory.getRenderer("velocity", pageId);
+            renderer = RendererManager.getRenderer("velocity", pageId);
         } catch(Exception e) {
             // nobody wants to render my content :(
             log.error("Couldn't find renderer for page "+pageId, e);

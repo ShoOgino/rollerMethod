@@ -1,5 +1,4 @@
-    public Renderer getRenderer(String rendererType, String resourceId) 
-            throws Exception {
+    public Renderer getRenderer(String rendererType, String resourceId) {
         
         if("velocity".equals(rendererType)) {
             
@@ -12,6 +11,7 @@
             return new VelocityWeblogPageRenderer(resourceId);
         }
         
-        throw new Exception("No renderer found!");
+        // we don't want to handle this content
+        return null;
     }
 
