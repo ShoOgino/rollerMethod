@@ -1,5 +1,10 @@
     public Renderer getRenderer(String rendererType, String resourceId) {
         
+        // nothing we can do with null values
+        if(rendererType == null || resourceId == null) {
+            return null;
+        }
+        
         if("velocity".equals(rendererType)) {
             
             // standard velocity template
