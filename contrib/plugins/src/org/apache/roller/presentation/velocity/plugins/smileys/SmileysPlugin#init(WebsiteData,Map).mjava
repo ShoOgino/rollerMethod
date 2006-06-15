@@ -2,18 +2,14 @@
      * Convert the SmileyDefs into RegEx patterns and img tags for
      * later use.  Need an HttpServletRequest though so that we can
      * get the ServletContext Path.  But only do it once.
-     * 
-     * @see org.apache.roller.presentation.velocity.PagePlugin#init(org.apache.roller.presentation.RollerRequest, org.apache.velocity.context.Context)
      */
-    public synchronized void init(
-            WebsiteData website,
-            Object servletContext,
-            String baseURL,
-            Context ctx) throws RollerException
+    public synchronized void init(WebsiteData website, Map model) throws RollerException
     {
         // don't do this work if Smileys already loaded
         if (SmileysPlugin.smileyPatterns.length < 1)
         {
+            String baseURL = RollerContext.getRollerContext().getAbsoluteContextUrl(null);
+            
             Pattern[] tempP = new Pattern[SmileysPlugin.smileyDefs.size()];
             String[] tempS = new String[SmileysPlugin.smileyDefs.size()];
             //System.out.println("# smileys: " + smileyDefs.size());

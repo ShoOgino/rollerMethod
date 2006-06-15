@@ -7,11 +7,9 @@
             Iterator iter = entryPlugins.iterator();
             while (iter.hasNext()) {
                 String key = (String)iter.next();
-                PagePlugin pagePlugin = (PagePlugin)pagePlugins.get(key);
+                WeblogEntryPlugin pagePlugin = (WeblogEntryPlugin)pagePlugins.get(key);
                 if (pagePlugin != null) {
-                    if (!(singleEntry && pagePlugin.getSkipOnSingleEntry())) {
-                        ret = pagePlugin.render(entry, ret);
-                    }
+                    ret = pagePlugin.render(entry, ret);
                 } else {
                     mLogger.error("ERROR: plugin not found: " + key);
                 }

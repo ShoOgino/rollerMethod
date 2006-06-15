@@ -1,15 +1,11 @@
     /**
      * Initialize the plugin instance.   This sets up the configurable properties and default topic site.
-     *
+     * 
      * @param rreq Plugins may need to access RollerRequest.
      * @param ctx  Plugins may place objects into the Velocity Context.
-     * @see PagePlugin#init(org.apache.roller.presentation.RollerRequest, org.apache.velocity.context.Context)
+     * @see PagWeblogEntryPluginit(org.apache.roller.presentation.RollerRequest, org.apache.velocity.context.Context)
      */
-    public void init(
-            WebsiteData website,
-            Object config,
-            String baseURL,
-            Context ctx) throws RollerException
+    public void init(WebsiteData website, Map model) throws RollerException
     {
         if (mLogger.isDebugEnabled())
         {

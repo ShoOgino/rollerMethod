@@ -17,7 +17,7 @@
                 try {
                     Class pluginClass = Class.forName(plugins[i]);
                     if (isPagePlugin(pluginClass)) {
-                        PagePlugin plugin = (PagePlugin)pluginClass.newInstance();
+                        WeblogEntryPlugin plugin = (WeblogEntryPlugin)pluginClass.newInstance();
                         mPagePlugins.put(plugin.getName(), pluginClass);
                     } else {
                         mLogger.warn(pluginClass + " is not a PagePlugin");

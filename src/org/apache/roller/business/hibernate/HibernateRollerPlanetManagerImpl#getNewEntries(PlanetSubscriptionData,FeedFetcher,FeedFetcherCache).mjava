@@ -66,11 +66,7 @@
                 
                 // Populate subscription object with new entries
                 PagePluginManager ppmgr = RollerFactory.getRoller().getPagePluginManager();
-                Map pagePlugins = ppmgr.createAndInitPagePlugins(
-                        website,
-                        null,
-                        RollerRuntimeConfig.getProperty("site.absoluteurl"),
-                        new VelocityContext());
+                Map pagePlugins = ppmgr.createAndInitPagePlugins(website, new HashMap());
                 Iterator entryIter = entries.iterator();
                 while (entryIter.hasNext()) {
                     try {

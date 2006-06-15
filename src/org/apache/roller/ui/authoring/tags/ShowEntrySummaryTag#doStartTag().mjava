@@ -14,9 +14,7 @@
                     PagePluginManager ppmgr = roller.getPagePluginManager();
                     Map plugins = ppmgr.createAndInitPagePlugins(
                         entry.getWebsite(),
-                        rctx.getServletContext(),
-                        rctx.getAbsoluteContextUrl((HttpServletRequest)pageContext.getRequest()),
-                        new VelocityContext());
+                        new HashMap());
                     xformed = ppmgr.applyPagePlugins(
                         entry, plugins, entry.getSummary(), true);
                 }               

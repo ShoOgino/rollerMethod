@@ -26,11 +26,6 @@
         if (mVelocityContext == null) mVelocityContext = new HashMap();
         Roller roller = RollerFactory.getRoller(); 
         PagePluginManager ppmgr = roller.getPagePluginManager();
-        // TODO 3.0 : broken by velocity context -> Map
-        mPagePlugins = ppmgr.createAndInitPagePlugins(
-                mWebsite, 
-                RollerContext.getRollerContext().getServletContext(),
-                RollerContext.getRollerContext().getAbsoluteContextUrl(),
-                new VelocityContext(mVelocityContext));
+        mPagePlugins = ppmgr.createAndInitPagePlugins(mWebsite, ctx);
     }
 
