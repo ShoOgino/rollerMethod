@@ -1,0 +1,163 @@
+    /**
+     * Handle GET requests for weblog pages.
+     */
+    public void doGet(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        
+        log.debug("Entering");
+        
+        Theme previewTheme = null;
+        WebsiteData website = null;
+        
+        // try getting the preview theme
+        String themeName = request.getParameter("theme");
+        log.debug("preview theme = "+themeName);
+        if (themeName != null) {
+            try {
+                ThemeManager themeMgr = RollerFactory.getRoller().getThemeManager();
+                previewTheme = themeMgr.getTheme(themeName);
+                
+            } catch(ThemeNotFoundException tnfe) {
+                // bogus theme specified ... don't worry about it
+                // possibly "custom", but we'll handle that below
+            } catch(RollerException re) {
+                
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                log.error("Error doing page preview", re);
+                return;
+            }
+        }
+        
+        // TODO 3.0: change to previewRequest
+//        WeblogPageRequest pageRequest = null;
+//        try {
+//            pageRequest = new WeblogPageRequest(request);
+//        } catch (Exception e) {
+//            // some kind of error parsing the request
+//            log.error("error creating page request", e);
+//            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+//            return;
+//        }
+        
+        // TODO: this is old logic from pre 3.0 that we'll remove when possible
+        RollerRequest rreq = null;
+        try {
+            PageContext pageContext = 
+                    JspFactory.getDefaultFactory().getPageContext(
+                    this, request, response,"", true, 8192, true);
+            
+            rreq = RollerRequest.getRollerRequest(pageContext);
+            
+            // make sure the website is valid
+            website = rreq.getWebsite();
+            if(website == null)
+                throw new InvalidRequestException("invalid weblog");
+            
+        } catch (Exception e) {
+            // An error initializing the request is considered to be a 404
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            log.error("ERROR initializing RollerRequest", e);
+            return;
+        }
+        
+        // construct a temporary Website object for this request
+        // and set the EditorTheme to our previewTheme
+        WebsiteData tmpWebsite = new WebsiteData();
+        tmpWebsite.setData(website);
+        if(previewTheme != null && previewTheme.isEnabled()) {
+            tmpWebsite.setEditorTheme(previewTheme.getName());
+        } else if(themeName.equals(Theme.CUSTOM)) {
+            tmpWebsite.setEditorTheme(Theme.CUSTOM);
+        }
+        
+        Template page = null;
+        try {
+            page = tmpWebsite.getDefaultPage();
+        } catch(RollerException re) {
+            // couldn't get page
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            log.error("Error getting default page for preview", re);
+            return;
+        }
+        
+        if (page == null) {
+            // previewing a custom theme when they have no templates
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            log.error("No page found for rendering");
+            return;
+        }
+        
+        // update our roller request object
+        rreq.setPage(page);
+        rreq.setWebsite(tmpWebsite);
+        
+        log.debug("preview page found, dealing with it");
+        
+        // set the content type
+        String pageLink = page.getLink();
+        String mimeType = RollerContext.getServletContext().getMimeType(pageLink);
+        if(mimeType != null) {
+            // we found a match ... set the content type
+            response.setContentType(mimeType+"; charset=utf-8");
+        } else {
+            response.setContentType("text/html; charset=utf-8");
+        }
+        
+        // looks like we need to render content
+        HashMap model = new HashMap();
+        try {
+            // populate the model
+            ContextLoader.setupContext(model, rreq, response);
+            
+        } catch (RollerException ex) {
+            log.error("ERROR loading model for page", ex);
+            
+            if(!response.isCommitted()) response.reset();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return;
+        }
+        
+        
+        // lookup Renderer we are going to use
+        Renderer renderer = null;
+        try {
+            log.debug("Looking up renderer");
+            renderer = RendererManager.getRenderer("velocityWeblogPage", page.getId());
+        } catch(Exception e) {
+            // nobody wants to render my content :(
+            log.error("Couldn't find renderer for page "+page.getId(), e);
+            
+            if(!response.isCommitted()) response.reset();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        
+        // render content.  use default size of about 24K for a standard page
+        CachedContent rendererOutput = new CachedContent(24567);
+        try {
+            log.debug("Doing rendering");
+            renderer.render(model, rendererOutput.getCachedWriter());
+            
+            // flush rendered output and close
+            rendererOutput.flush();
+            rendererOutput.close();
+        } catch(Exception e) {
+            // bummer, error during rendering
+            log.error("Error during rendering for page "+page.getId(), e);
+            
+            if(!response.isCommitted()) response.reset();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        
+        
+        // post rendering process
+        
+        // flush rendered content to response
+        log.debug("Flushing response output");
+        response.setContentLength(rendererOutput.getContent().length);
+        response.getOutputStream().write(rendererOutput.getContent());
+        
+        log.debug("Exiting");
+    }
+
