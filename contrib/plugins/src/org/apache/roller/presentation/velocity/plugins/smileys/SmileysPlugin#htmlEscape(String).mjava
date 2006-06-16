@@ -2,29 +2,20 @@
      * To display the smiley 'glyph' certain characters
      * must be HTML escaped.
      */
-    private String htmlEscape(String smiley) 
-    {
+    private String htmlEscape(String smiley) {
         char[] chars = smiley.toCharArray();
         StringBuffer buf = new StringBuffer();
-        for (int i=0; i<chars.length; i++) 
-        {
-            if (chars[i] == '"')
-            {
+        for (int i=0; i<chars.length; i++) {
+            if (chars[i] == '"') {
                 buf.append("&quot;");
-            }
-            else if (chars[i] == '>')
-            {
+            } else if (chars[i] == '>') {
                 buf.append("&gt;");
-            }
-            else if (chars[i] == '<')
-            {
+            } else if (chars[i] == '<') {
                 buf.append("&lt;");
-            }
-            else
-            {    
+            } else {
                 buf.append(chars[i]);
             }
         }
-        return buf.toString();    
+        return buf.toString();
     }
 

@@ -1,23 +1,21 @@
-	/**
-	 * Iterates through the acronym properties and replaces matching 
-	 * acronyms in the entry text with acronym html-tags.
-	 * 
-	 * @param text entry text
-	 * @param acronyms user provided set of acronyms
-	 * @return entry text with acronym explanations
-	 */
-	private String matchAcronyms(String text, Pattern[] acronymPatterns, String[] acronymTags)
-	{
-		if (mLogger.isDebugEnabled()) {
-			mLogger.debug("matchAcronyms("+text+")");
-		}
-
+    /**
+     * Iterates through the acronym properties and replaces matching
+     * acronyms in the entry text with acronym html-tags.
+     *
+     * @param text entry text
+     * @param acronyms user provided set of acronyms
+     * @return entry text with acronym explanations
+     */
+    private String matchAcronyms(String text, Pattern[] acronymPatterns, String[] acronymTags) {
+        if (mLogger.isDebugEnabled()) {
+            mLogger.debug("matchAcronyms("+text+")");
+        }
+        
         Matcher matcher = null;
-		for (int i=0; i<acronymPatterns.length; i++)
-		{
+        for (int i=0; i<acronymPatterns.length; i++) {
             matcher = acronymPatterns[i].matcher(text);
             text = matcher.replaceAll(acronymTags[i]);
-		}
-		return text;
-	}
+        }
+        return text;
+    }
 

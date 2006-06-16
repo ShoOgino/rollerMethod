@@ -4,21 +4,16 @@
      * @return
      * @throws RollerException
      */
-    private Properties loadAcronyms(WebsiteData website) 
-    {
+    private Properties loadAcronyms(WebsiteData website) {
         Properties acronyms = new Properties();
-        try
-        {
+        try {
             UserManager userMgr = RollerFactory.getRoller().getUserManager();
             WeblogTemplate acronymsPage = userMgr.getPageByName(
-                                        website, "_acronyms");
-            if (acronymsPage != null) 
-            {
+                    website, "_acronyms");
+            if (acronymsPage != null) {
                 acronyms = parseAcronymPage(acronymsPage, acronyms);
             }
-        }
-        catch (RollerException e)
-        {
+        } catch (RollerException e) {
             // not much we can do about it
             mLogger.warn(e);
         }

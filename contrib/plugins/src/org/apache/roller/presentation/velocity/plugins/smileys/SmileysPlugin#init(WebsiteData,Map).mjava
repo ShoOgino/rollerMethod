@@ -1,13 +1,11 @@
-    /* 
+    /*
      * Convert the SmileyDefs into RegEx patterns and img tags for
      * later use.  Need an HttpServletRequest though so that we can
      * get the ServletContext Path.  But only do it once.
      */
-    public synchronized void init(WebsiteData website, Map model) throws RollerException
-    {
+    public synchronized void init(WebsiteData website, Map model) throws RollerException {
         // don't do this work if Smileys already loaded
-        if (SmileysPlugin.smileyPatterns.length < 1)
-        {
+        if (SmileysPlugin.smileyPatterns.length < 1) {
             String baseURL = RollerContext.getRollerContext().getAbsoluteContextUrl(null);
             
             Pattern[] tempP = new Pattern[SmileysPlugin.smileyDefs.size()];
@@ -15,17 +13,16 @@
             //System.out.println("# smileys: " + smileyDefs.size());
             int count = 0;
             Enumeration enum1 = SmileysPlugin.smileyDefs.propertyNames();
-            while(enum1.hasMoreElements())
-            {
+            while(enum1.hasMoreElements()) {
                 String smiley = (String)enum1.nextElement();
                 String smileyAlt = htmlEscape(smiley);
                 tempP[count] = Pattern.compile(regexEscape(smiley));
-                tempS[count] = "<img src=\"" + 
-                               baseURL + "/images/smileys/" + 
-                               smileyDefs.getProperty(smiley, "smile.gif") +
-                               "\" class=\"smiley\"" + 
-                               " alt=\"" + smileyAlt + "\"" +
-                               " title=\"" + smileyAlt +"\" />";
+                tempS[count] = "<img src=\"" +
+                        baseURL + "/images/smileys/" +
+                        smileyDefs.getProperty(smiley, "smile.gif") +
+                        "\" class=\"smiley\"" +
+                        " alt=\"" + smileyAlt + "\"" +
+                        " title=\"" + smileyAlt +"\" />";
                 //System.out.println(smiley + "=" + tempS[count]);
                 count++;
             }
