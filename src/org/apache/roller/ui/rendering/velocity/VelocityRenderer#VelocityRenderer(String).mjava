@@ -1,5 +1,9 @@
-    public VelocityRenderer(String resource) {
+    public VelocityRenderer(String resource) throws Exception {
         
         this.resourceId = resource;
+        
+        // make sure that we can locate the template
+        // if we can't then this will throw an exception
+        resourceTemplate = RollerVelocity.getTemplate(this.resourceId, "UTF-8");
     }
 
