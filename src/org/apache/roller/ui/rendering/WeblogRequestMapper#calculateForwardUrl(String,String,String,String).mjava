@@ -1,0 +1,47 @@
+    private String calculateForwardUrl(String handle, String locale,
+                                       String context, String data) {
+        
+        String forwardUrl = null;
+        
+        // no context means weblog homepage
+        if(context == null) {
+            
+            forwardUrl = "/page/"+handle;
+            
+        // requests handled by PageServlet
+        } else if(context.equals("page") || context.equals("entry") ||
+                context.equals("date") || context.equals("category")) {
+            
+            forwardUrl = "/page/"+handle;
+            
+            if(locale != null) {
+                forwardUrl += "/"+locale;
+            }
+            
+            forwardUrl += "/"+context+"/"+data;
+            
+        // requests handled by FeedServlet
+        } else if(context.equals("feed")) {
+            
+            forwardUrl = "/feed/"+handle;
+            
+            if(locale != null) {
+                forwardUrl += "/"+locale;
+            }
+            
+            forwardUrl += "/"+context+"/"+data;
+            
+        // requests handled by ResourceServlet
+        } else if(context.equals("resource")) {
+            
+            forwardUrl = "/resource/"+handle+"/"+data;
+            
+        // requests handled by SearchServlet
+        } else if(context.equals("search")) {
+            
+            forwardUrl = "/search/"+handle;
+        }
+        
+        return forwardUrl;
+    }
+

@@ -1,0 +1,86 @@
+    public boolean handleRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        String weblogHandle = null;
+        String weblogLocale = null;
+        String weblogRequestContext = null;
+        String weblogRequestData = null;
+        
+        log.debug("evaluating ["+request.getRequestURI()+"]");
+        
+        // figure out potential weblog handle
+        String servlet = request.getServletPath();
+        String pathInfo = null;
+        if(servlet != null && servlet.trim().length() > 1) {
+            
+            // strip off the leading slash
+            servlet = servlet.substring(1);
+            
+            if(servlet.indexOf("/") != -1) {
+                weblogHandle = servlet.substring(0, servlet.indexOf("/"));
+                pathInfo = servlet.substring(servlet.indexOf("/")+1);
+            } else {
+                weblogHandle = servlet;
+            }
+        }
+        
+        log.debug("potential weblog handle = "+weblogHandle);
+        
+        // check if it's a valid weblog handle
+        if(restricted.contains(weblogHandle) || !this.isWeblog(weblogHandle)) {
+            return false;
+        }
+        
+        log.debug("WEBLOG_URL "+request.getRequestURI());
+        
+        // parse the rest of the url and build forward url
+        if(pathInfo != null) {
+            // parse the next portion of the url
+            // we expect [locale]/<context>/<extra>/<info>
+            String[] urlPath = pathInfo.split("/", 3);
+            
+            // if we have a locale, deal with it
+            if(urlPath[0].indexOf("_") != -1) {
+                weblogLocale = urlPath[0];
+                
+                if(urlPath.length == 2) {
+                    weblogRequestContext = urlPath[1];
+                    weblogRequestData = null;
+                } else if(urlPath.length == 3) {
+                    weblogRequestContext = urlPath[1];
+                    weblogRequestData = urlPath[2];
+                }
+            
+            // otherwise locale is empty
+            } else {
+                weblogLocale = null;
+                weblogRequestContext = urlPath[0];
+                
+                // if we didn't have a locale then we split too much
+                if(urlPath.length > 2) {
+                    weblogRequestData = urlPath[1] + "/" + urlPath[2];
+                } else {
+                    weblogRequestData = urlPath[1];
+                }
+            }
+            
+        }
+        
+        // calculate forward url
+        String forwardUrl = calculateForwardUrl(weblogHandle, weblogLocale,
+                weblogRequestContext, weblogRequestData);
+        
+        // if we don't have a forward url then the request was invalid somehow
+        if(forwardUrl == null) {
+            return false;
+        }
+        
+        // dispatch to forward url
+        log.debug("forwarding to "+forwardUrl);
+        RequestDispatcher dispatch = request.getRequestDispatcher(forwardUrl);
+        dispatch.forward(request, response);
+        
+        // we dealt with this request ourselves, so return "true"
+        return true;
+    }
+
