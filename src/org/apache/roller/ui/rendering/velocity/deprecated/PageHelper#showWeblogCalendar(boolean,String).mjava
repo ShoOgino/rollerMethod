@@ -1,47 +1,38 @@
-    //------------------------------------------------------------------------
-    /** 
+    /**
      * Weblog calendar display implementation.
      * @param big Show big archive style calendar.
      * @return HTML for calendar.
      */
-    public String showWeblogCalendar( boolean big, String cat )
-    {
+    public String showWeblogCalendar( boolean big, String cat ) {
         if (OldWeblogPageModel.VELOCITY_NULL.equals(cat)) cat = null;
         String ret = null;
-        try
-        {
+        try {
             HttpServletRequest request =
-                (HttpServletRequest) mRollerReq.getRequest();
+                    (HttpServletRequest) mRollerReq.getRequest();
             HttpServletResponse response = mResponse;
-
+            
             String selfUrl = null;
             String pageLink = mRollerReq.getPageLink();
-            if ( pageLink != null )
-            {
-                selfUrl = request.getContextPath() + "/page/" 
-                          + mWebsite.getHandle() + "/"+pageLink;
-            }
-            else
-            {
+            if ( pageLink != null ) {
+                selfUrl = request.getContextPath() + "/page/"
+                        + mWebsite.getHandle() + "/"+pageLink;
+            } else {
                 selfUrl = request.getContextPath()+"/page/" + mWebsite.getHandle();
             }
-
+            
             // setup weblog calendar model
             CalendarModel model = null;
-            if ( big )
-            {
+            if ( big ) {
                 model = new BigWeblogCalendarModel(
-                           mRollerReq, response, selfUrl, cat);
-            }
-            else
-            {
+                        mRollerReq, response, selfUrl, cat);
+            } else {
                 model = new WeblogCalendarModel(
-                            mRollerReq, response, selfUrl, cat);
+                        mRollerReq, response, selfUrl, cat);
             }
-
+            
             // save model in JSP page context so CalendarTag can find it
             mPageContext.setAttribute("calendarModel",model);
-
+            
             // Create and setup calendar tag
             CalendarTag calTag = new CalendarTag();
             calTag.setPageContext(mPageContext);
@@ -50,14 +41,11 @@
             //calTag.setLocale(mRollerReq.getWebsite().getLocaleInstance());
             calTag.setLocale(LanguageUtil.getViewLocale(request));
             //calTag.setTimeZone(mRollerReq.getWebsite().getTimeZoneInstance());
-            if ( big )
-            {
+            if ( big ) {
                 calTag.setClassSuffix("Big");
             }
             ret = calTag.emit();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             mLogger.error("Unexpected exception",e);
         }
         return ret;

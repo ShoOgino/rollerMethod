@@ -1,18 +1,14 @@
-    /** 
+    /**
      * Call hybrid EditorNavBarTag to render editor navbar.
      * @param vertical True for vertical navbar.
      * @return String HTML for navbar.
      */
-    public String showEditorNavBar(boolean vertical)
-    {
+    public String showEditorNavBar(boolean vertical) {
         EditorNavigationBarTag editorTag = new EditorNavigationBarTag();
         editorTag.setPageContext(mPageContext);
-        if ( vertical )
-        {
+        if ( vertical ) {
             editorTag.setView("templates/navbar/navbar-vertical.vm");
-        }
-        else
-        {
+        } else {
             editorTag.setView("templates/navbar/navbar-horizontal.vm");
         }
         editorTag.setModel("editor-menu.xml");

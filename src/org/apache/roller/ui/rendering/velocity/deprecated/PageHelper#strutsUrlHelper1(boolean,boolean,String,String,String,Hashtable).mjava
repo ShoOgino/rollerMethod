@@ -8,44 +8,33 @@
      * @param val2
      * @return String
      */
-    public String strutsUrlHelper1( boolean useIds, boolean isAction, 
-        String path, String val1, String val2, Hashtable params)
-    {
-        if (useIds)
-        {
-            if (mRollerReq.getFolder() != null) 
-            {
+    public String strutsUrlHelper1( boolean useIds, boolean isAction,
+            String path, String val1, String val2, Hashtable params) {
+        if (useIds) {
+            if (mRollerReq.getFolder() != null) {
                 params.put(RollerRequest.FOLDERID_KEY,
-                mRollerReq.getFolder().getId());
-            } 
-            if (mWebsite != null)
-            {
+                        mRollerReq.getFolder().getId());
+            }
+            if (mWebsite != null) {
                 params.put(RollerRequest.WEBLOG_KEY, mWebsite.getHandle());
             }
         }
         
-        if (StringUtils.isNotEmpty(val1) && !val1.equals("null"))
-        {
+        if (StringUtils.isNotEmpty(val1) && !val1.equals("null")) {
             params.clear();
             params.put("weblog", val1);
         }
         
         String returnUrl = "";
-        try
-        {
-            if (isAction)
-            {
+        try {
+            if (isAction) {
                 returnUrl = RequestUtils.computeURL( mPageContext,
-                                path, null, null, null, params, null, false);
-            }
-            else
-            {
+                        path, null, null, null, params, null, false);
+            } else {
                 returnUrl = RequestUtils.computeURL( mPageContext,
-                                null, path, null, null, params, null, false);
+                        null, path, null, null, params, null, false);
             }
-        }
-        catch (MalformedURLException mue)
-        {
+        } catch (MalformedURLException mue) {
             mLogger.warn("RollerRequest.strutsUrlHelper exception: ", mue);
             returnUrl = "<span class=\"error\">ERROR generating link</span>";
         }
