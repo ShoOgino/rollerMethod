@@ -25,7 +25,7 @@
         if (romeEntry.getContents().size() > 0) {
             SyndContent content= (SyndContent)romeEntry.getContents().get(0);
             if (content != null && content.getType().equals("text/plain")) {
-                setText(Utilities.unescapeHTML(content.getValue()));
+                setText(StringEscapeUtils.unescapeHtml(content.getValue()));
             } else if (content != null) {
                 setText(content.getValue());
             }
@@ -35,7 +35,7 @@
         if (getText() == null || getText().trim().length() == 0) {
             ContentModule cm = (ContentModule)romeEntry.getModule(ContentModule.URI);
             if (cm != null) {
-                setText(Utilities.unescapeHTML(cm.getEncoded()));
+                setText(StringEscapeUtils.unescapeHtml(cm.getEncoded()));
             }
         }
         

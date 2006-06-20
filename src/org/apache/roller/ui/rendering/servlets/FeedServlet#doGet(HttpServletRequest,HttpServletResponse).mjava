@@ -151,7 +151,7 @@
             request.setAttribute("updateTime", updateTime);
             
             // populate the model
-            ContextLoader.setupContext(model, rreq, response);
+            ModelLoader.loadFeedModels(model, request, response);
             
         } catch (RollerException ex) {
             log.error("ERROR loading model for page", ex);

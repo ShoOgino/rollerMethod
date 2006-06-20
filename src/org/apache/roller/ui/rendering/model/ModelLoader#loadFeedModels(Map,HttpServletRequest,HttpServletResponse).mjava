@@ -1,0 +1,41 @@
+    /** 
+     * Load page models needed for rendering a feed.
+     */
+    public static void loadFeedModels(
+            Map map,
+            HttpServletRequest request,  
+            HttpServletResponse response) throws RollerException { 
+        
+        RollerRequest rreq = RollerRequest.getRollerRequest(request);
+        WebsiteData weblog = rreq.getWebsite();
+
+        // Only load old model if it's specified
+        String useOldModel = 
+            RollerConfig.getProperty("velocity.pagemodel.classname");        
+        if (useOldModel != null) { 
+            ContextLoader.setupContext(map, rreq, response);            
+        }
+        
+        // Feeds get the weblog specific page model
+        String modelsString = RollerConfig.getProperty("rendering.weblogPageModels");
+        
+        // Unless the weblog is the frontpage weblog w/aggregated feeds
+        String frontPageHandle = 
+            RollerConfig.getProperty("velocity.pagemodel.classname");
+        boolean frontPageAggregated = 
+            RollerConfig.getBooleanProperty("frontpage.weblog.aggregatedFeeds");
+        if (weblog.getHandle().equals(frontPageHandle) && frontPageAggregated) {
+            modelsString = RollerConfig.getProperty("rendering.weblogPageModels");
+        }
+        loadConfiguredPageModels(modelsString, request, map);
+
+        // Feeds get utilities, but that's all
+        UtilitiesPageHelper utils = new UtilitiesPageHelper();
+        map.put("utils", utils);
+        
+        // Feeds get weblog's additional custom models too
+        if (rreq.getWebsite() != null) {
+            loadWeblogPageModels(rreq.getWebsite(), request, map);
+        }
+    }
+

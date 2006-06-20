@@ -1,0 +1,14 @@
+    public boolean isUserAuthorizedToAdmin() {
+        try {
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            RollerSession rses = RollerSession.getRollerSession(request);
+            if (rses.getAuthenticatedUser() != null
+                    && rreq.getWebsite() != null) {
+                return rses.isUserAuthorizedToAdmin(rreq.getWebsite());
+            }
+        } catch (RollerException e) {
+           logger.warn("ERROR: checking user authorization", e);
+        }
+        return false;
+    }
+

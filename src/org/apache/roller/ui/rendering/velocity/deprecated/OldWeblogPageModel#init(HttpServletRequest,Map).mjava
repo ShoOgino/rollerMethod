@@ -1,0 +1,44 @@
+    /**
+     * Initialize PageModel and allow PageModel to initialized VelocityContext.
+     */
+    public void init(HttpServletRequest request, Map map) {
+        mRollerReq = RollerRequest.getRollerRequest(request);
+        if ( request.getAttribute(RollerRequest.OWNING_WEBSITE) != null) {
+            mWebsite = (WebsiteData)
+            request.getAttribute(RollerRequest.OWNING_WEBSITE);
+            mHandle = mWebsite.getHandle();
+        } else if ( mRollerReq.getWebsite() != null ) {
+            mWebsite = mRollerReq.getWebsite();
+            mHandle = mWebsite.getHandle();
+        }
+        
+        try {
+            mBookmarkMgr = RollerFactory.getRoller().getBookmarkManager();
+            mRefererMgr  = RollerFactory.getRoller().getRefererManager();
+            mUserMgr     = RollerFactory.getRoller().getUserManager();
+            mWeblogMgr   = RollerFactory.getRoller().getWeblogManager();
+            
+            // Preload what we can for encapsulation.  What we cannot preload we
+            // will use the Managers later to fetch.
+            
+            // Get the pages, put into context & load map
+            if (mWebsite != null) {
+                // if we have website from RollerRequest, use it
+                mWebsite = mRollerReq.getWebsite();
+                
+                // Get the pages, put into context & load map
+                List pages = mWebsite.getPages();
+                Iterator pageIter = pages.iterator();
+                while (pageIter.hasNext()) {
+                    Template page = (Template) pageIter.next();
+                    mPageMap.put(page.getName(), TemplateWrapper.wrap(page));
+                }
+            }
+            
+            
+            
+        } catch (RollerException e) {
+            mLogger.error("PageModel Roller get*Manager Exception", e);
+        }
+    }
+

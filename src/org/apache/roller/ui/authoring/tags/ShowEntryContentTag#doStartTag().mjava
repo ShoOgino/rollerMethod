@@ -5,7 +5,7 @@
         Roller roller = RollerFactory.getRoller();
         WeblogEntryData entry = (WeblogEntryData)
             RequestUtils.lookup(pageContext, name, property, scope);
-        if (Utilities.isNotEmpty(entry.getText())) {
+        if (StringUtils.isNotEmpty(entry.getText())) {
             String xformed = entry.getText();;        
             try {
                 if (entry.getPlugins() != null) {
@@ -34,7 +34,7 @@
 
                 // somehow things (&#8220) are getting double-escaped
                 // but I cannot seem to track it down
-                xformed = Utilities.stringReplace(xformed, "&amp#", "&#");
+                xformed = StringUtils.replace(xformed, "&amp#", "&#");
 
                 pageContext.getOut().println(xformed);
 

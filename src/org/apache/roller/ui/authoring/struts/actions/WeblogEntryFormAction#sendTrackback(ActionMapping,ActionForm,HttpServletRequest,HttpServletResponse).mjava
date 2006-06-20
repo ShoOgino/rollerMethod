@@ -110,7 +110,7 @@
                                     StringBuffer resultBuff = new StringBuffer();
                                     while ((line = rd.readLine()) != null) {
                                         resultBuff.append(
-                                                Utilities.escapeHTML(line, true));
+                                            StringEscapeUtils.escapeHtml(line));
                                         resultBuff.append("<br />");
                                     }
                                     resultMsg.add(ActionMessages.GLOBAL_MESSAGE,

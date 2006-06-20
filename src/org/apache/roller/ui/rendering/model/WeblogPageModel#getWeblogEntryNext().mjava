@@ -2,6 +2,34 @@
      * Get weblog entry to be displayed or null if not on single-entry page.
      */
     public WeblogEntryDataWrapper getWeblogEntryNext() {
-        return null;
+        
+        RollerRequest rreq = RollerRequest.getRollerRequest(request);
+        WeblogCategoryData category = rreq.getWeblogCategory(); 
+        
+        WeblogEntryDataWrapper currentEntry = getWeblogEntry();
+        if (firstEntry != null) currentEntry = firstEntry;
+        if (nextEntry == null && currentEntry != null) {
+            String catName = null;
+            if (category != null) {
+                catName = category.getName();
+            }
+            try {
+                WeblogManager wmgr = 
+                    RollerFactory.getRoller().getWeblogManager();
+                WeblogEntryData next =
+                    wmgr.getNextEntry(currentEntry.getPojo(), catName);
+                
+                if (nextEntry != null)
+                    nextEntry = WeblogEntryDataWrapper.wrap(next);
+                
+                // make sure that mNextEntry is not published to future
+                if (nextEntry != null && nextEntry.getPubTime().after(new Date())) {
+                    nextEntry = null;
+                }
+            } catch (RollerException e) {
+                logger.error("ERROR: getting next entry", e);
+            }
+        }
+        return nextEntry;
     }
 

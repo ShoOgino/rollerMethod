@@ -4,7 +4,7 @@
      */
     public String getUrl(WebsiteData site, String contextUrl) {
         String url =
-                Utilities.escapeHTML(contextUrl + "/page/" + site.getHandle());
+            StringEscapeUtils.escapeHtml(contextUrl + "/page/" + site.getHandle());
         return url;
     }
 

@@ -5,7 +5,7 @@
         Roller roller = RollerFactory.getRoller();
         WeblogEntryData entry = (WeblogEntryData)
             RequestUtils.lookup(pageContext, name, property, scope);
-        if (Utilities.isNotEmpty(entry.getSummary())) {
+        if (StringUtils.isNotEmpty(entry.getSummary())) {
             String xformed = entry.getSummary();
             try {        
                 if (entry.getPlugins() != null) {

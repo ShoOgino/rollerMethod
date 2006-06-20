@@ -1,0 +1,28 @@
+    /**
+     * Load comma-separated list of page models and does not fail if one of the 
+     * models fails to load.
+     */
+    private static void loadWeblogPageModels(
+            WebsiteData weblog, 
+            HttpServletRequest request, 
+            Map map) {
+        if (weblog.getPageModels() != null) {
+            String[] weblogModels = 
+                Utilities.stringToStringArray(weblog.getPageModels(), ",");
+            for (int i=0; i<weblogModels.length; i++) {
+                try { // don't die just because of one bad custom model
+                    Class modelClass = Class.forName(weblogModels[i]);
+                    PageModel pageModel = (PageModel)modelClass.newInstance();
+                    pageModel.init(request, new HashMap());            
+                    map.put(pageModel.getModelName(), pageModel);
+                } catch (ClassNotFoundException cnfe) {
+                    log.warn("ERROR: can't find page model: " + weblogModels[i]);
+                } catch (InstantiationException ie) {
+                    log.warn("ERROR: insantiating page model: " + weblogModels[i]);
+                } catch (IllegalAccessException iae) {
+                    log.warn("ERROR: access exception page model: " + weblogModels[i]);
+                }
+            }
+        }     
+    }
+

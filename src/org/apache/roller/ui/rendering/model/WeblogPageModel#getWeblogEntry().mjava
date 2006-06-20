@@ -1,7 +1,15 @@
     /** 
-     * Get weblog entry to be displayed or null if not on single-entry page.
+     * Get weblog entry to be displayed; null if not on single-entry page or if entry not published.
      */
     public WeblogEntryDataWrapper getWeblogEntry() {
-        return null;
+        
+        RollerRequest rreq = RollerRequest.getRollerRequest(request);
+        WeblogEntryData entry = rreq.getWeblogEntry(); 
+        
+        WeblogEntryDataWrapper ret = null;
+        if (entry != null && entry.getStatus().equals(WeblogEntryData.PUBLISHED)) {
+            ret = WeblogEntryDataWrapper.wrap(entry);
+        }
+        return ret;
     }
 

@@ -81,7 +81,7 @@
         comment.setNotify(new Boolean((request.getParameter("notify") != null)));
         comment.setWeblogEntry(entry);
         comment.setRemoteHost(request.getRemoteHost());
-        comment.setPostTime(new java.sql.Timestamp(System.currentTimeMillis()));
+        comment.setPostTime(new Timestamp(System.currentTimeMillis()));
         
         // this is legacy stuff, but still used by ContextLoader
         // we can probably switch this to a CommentData without problems

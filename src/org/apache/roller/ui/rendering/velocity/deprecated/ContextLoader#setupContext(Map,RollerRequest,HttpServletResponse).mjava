@@ -19,7 +19,7 @@
                 RollerConfig.getProperty("velocity.pagemodel.classname");
             Class pageModelClass = Class.forName(pageModelClassName);
             PageModel pageModel = (PageModel)pageModelClass.newInstance();
-            pageModel.init(rreq.getRequest());            
+            pageModel.init(rreq.getRequest(), new HashMap());            
             ctx.put(pageModel.getModelName(), pageModel);
             
             // Add other page models
@@ -37,7 +37,7 @@
         }
         
         // Add Velocity page helper to context
-        PageHelper pageHelper = new PageHelper(request, response, ctx);
+        OldPageHelper pageHelper = new OldPageHelper(request, response, ctx);
         Roller roller = RollerFactory.getRoller();
         ctx.put("pageHelper", pageHelper);
                 

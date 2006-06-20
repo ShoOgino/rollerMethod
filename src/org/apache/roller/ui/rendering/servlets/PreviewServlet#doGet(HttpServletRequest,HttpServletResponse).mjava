@@ -107,7 +107,7 @@
         HashMap model = new HashMap();
         try {
             // populate the model
-            ContextLoader.setupContext(model, rreq, response);
+            ModelLoader.loadPageModels(model, request, response, rreq.getPageContext());
             
         } catch (RollerException ex) {
             log.error("ERROR loading model for page", ex);

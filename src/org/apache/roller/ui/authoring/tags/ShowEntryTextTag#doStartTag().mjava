@@ -7,8 +7,8 @@
             RequestUtils.lookup(pageContext, name, property, scope);  
         
         String sourceText = null;
-        boolean hasSummary = Utilities.isNotEmpty(entry.getSummary());
-        boolean hasText= Utilities.isNotEmpty(entry.getText());
+        boolean hasSummary = StringUtils.isNotEmpty(entry.getSummary());
+        boolean hasText= StringUtils.isNotEmpty(entry.getText());
         if (singleEntry) {
             if (hasText) sourceText = entry.getText();
             else if (hasSummary) sourceText = entry.getSummary();
@@ -16,7 +16,7 @@
             if (hasSummary) sourceText = entry.getSummary();
             else if (hasText) sourceText = entry.getText();
         }
-        if (Utilities.isNotEmpty(sourceText)) {
+        if (StringUtils.isNotEmpty(sourceText)) {
             try {
                 String xformed = sourceText;        
                 if (entry.getPlugins() != null) {
@@ -46,7 +46,7 @@
 
                 // somehow things (&#8220) are getting double-escaped
                 // but I cannot seem to track it down
-                xformed = Utilities.stringReplace(xformed, "&amp#", "&#");
+                xformed = StringUtils.replace(xformed, "&amp#", "&#");
 
                 pageContext.getOut().println(xformed);
                 

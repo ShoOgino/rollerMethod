@@ -1,0 +1,15 @@
+    /**
+     * Get website being displayed.
+     */
+    public WebsiteDataWrapper getWeblog() { 
+        
+        RollerRequest rreq = RollerRequest.getRollerRequest(request);
+        WebsiteData weblog = rreq.getWebsite();
+        
+        WebsiteDataWrapper ret = null;
+        if (weblog != null) {
+            ret = WebsiteDataWrapper.wrap(weblog);
+        }
+        return ret;
+    }
+

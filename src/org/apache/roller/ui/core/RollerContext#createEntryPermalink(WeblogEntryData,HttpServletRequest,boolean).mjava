@@ -10,7 +10,7 @@
             } else {
                 baseUrl = getContextUrl(request);
             }
-            link = Utilities.escapeHTML(baseUrl + entry.getPermaLink());
+            link = StringEscapeUtils.escapeHtml(baseUrl + entry.getPermaLink());
         } catch (Exception e) {
             mLogger.error("Unexpected exception", e);
         }

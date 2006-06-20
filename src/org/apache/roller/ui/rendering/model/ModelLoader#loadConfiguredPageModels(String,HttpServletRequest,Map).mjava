@@ -1,0 +1,27 @@
+    /**
+     * Load comma-separated list of configured page models and if any of the
+     * models fail to load, throws an exception.
+     */
+    private static void loadConfiguredPageModels(
+            String modelsString, 
+            HttpServletRequest request, 
+            Map map) throws RollerException {
+        String currentModel = null;
+        try { // if we can't load a configued page models, then bail out
+            String[] models = Utilities.stringToStringArray(modelsString, ",");
+            for (int i=0; i<models.length; i++) {
+                currentModel = models[i];
+                Class modelClass = Class.forName(currentModel);
+                PageModel pageModel = (PageModel)modelClass.newInstance();
+                pageModel.init(request, new HashMap());            
+                map.put(pageModel.getModelName(), pageModel);
+            }
+        } catch (ClassNotFoundException cnfe) {
+            throw new RollerException("ERROR: can't find page model: " + currentModel);
+        } catch (InstantiationException ie) {
+            throw new RollerException("ERROR: insantiating page model: " + currentModel);
+        } catch (IllegalAccessException iae) {
+            throw new RollerException("ERROR: access exception page model: " + currentModel);
+        }
+    }
+

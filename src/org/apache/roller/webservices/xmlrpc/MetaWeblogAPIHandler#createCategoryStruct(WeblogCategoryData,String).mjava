@@ -8,11 +8,11 @@
         struct.put("description", category.getPath());
         
         String catUrl = contextUrl+"/page/"+userid+"?catname="+category.getPath();
-        catUrl = Utilities.stringReplace(catUrl," ","%20");
+        catUrl = StringUtils.replace(catUrl," ","%20");
         struct.put("htmlUrl", catUrl);
         
         String rssUrl = contextUrl+"/rss/"+userid+"?catname="+category.getPath();
-        rssUrl = Utilities.stringReplace(catUrl," ","%20");
+        rssUrl = StringUtils.replace(catUrl," ","%20");
         struct.put("rssUrl",rssUrl);
         
         return struct;

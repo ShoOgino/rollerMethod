@@ -2,6 +2,18 @@
      * Get preview comment or null if none exists.
      */
     public CommentDataWrapper getCommentPreview() {
-        return null;
-    }   
+        CommentDataWrapper commentWrapper = null;
+        try {
+            if (request.getAttribute("previewComments") != null) {
+                ArrayList list = new ArrayList();
+                CommentData comment = new CommentData();
+                CommentFormEx commentForm = getCommentForm();
+                commentForm.copyTo(comment, request.getLocale());
+                commentWrapper = CommentDataWrapper.wrap(comment);
+            }        
+        } catch (RollerException e) {
+            logger.warn("ERROR: creating comment form", e);
+        }
+        return commentWrapper;
+    }
 

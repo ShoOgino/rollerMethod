@@ -3,6 +3,35 @@
      * @return List of CommentDataWrapper objects.
      */
     public List getComments(int offset, int length) {
-        return null;
+        
+        RollerRequest rreq = RollerRequest.getRollerRequest(request);
+        WebsiteData weblog          = rreq.getWebsite();
+        
+        List recentComments = new ArrayList();
+        try {
+            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+            List recent = wmgr.getComments(
+                    weblog,
+                    null,  // weblog entry
+                    null,  // search String
+                    null,  // startDate
+                    null,  // endDate
+                    null,  // pending
+                    Boolean.TRUE,  // approved only
+                    Boolean.FALSE, // no spam
+                    true,          // we want reverse chrono order
+                    offset,        // offset
+                    length);       // no limit
+            
+            // wrap pojos
+            recentComments = new ArrayList(recent.size());
+            Iterator it = recent.iterator();
+            while(it.hasNext()) {
+                recentComments.add(CommentDataWrapper.wrap((CommentData) it.next()));
+            }
+        } catch (RollerException e) {
+            logger.error("ERROR: getting comments", e);
+        }
+        return recentComments;
     }
 

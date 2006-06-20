@@ -5,11 +5,11 @@
         throws RollerException, IOException
     {
         filePath += "/" + user.getUserName();
-        new java.io.File( filePath ).mkdirs(); // create dir path on drive
+        new File( filePath ).mkdirs(); // create dir path on drive
         
         filePath += "/" + fileName;
         
-        File outputFile = new java.io.File( filePath );
+        File outputFile = new File( filePath );
         FileOutputStream out = null;
         try
         {
@@ -31,7 +31,7 @@
                     out.close();
                 }
             }
-            catch ( java.io.IOException ioe )
+            catch ( IOException ioe )
             {
                 System.err.println( "ExportRss unable to close OutputStream" );
             }

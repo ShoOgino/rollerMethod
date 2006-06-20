@@ -1,0 +1,45 @@
+    public String emitWeblogCalendar(String cat, boolean big) {
+        
+        HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
+        HttpServletResponse response = (HttpServletResponse)pageContext.getResponse();
+
+        RollerRequest rreq = RollerRequest.getRollerRequest(request);
+        WebsiteData weblog = rreq.getWebsite();
+        String pageLink = rreq.getPageLink();
+        
+        if ("nil".equals(cat)) cat = null;        
+        String ret = null;
+        try {
+            String selfUrl = null;
+            if (pageLink != null) {
+                selfUrl = request.getContextPath() + "/page/"
+                        + weblog.getHandle() + "/"+pageLink;
+            } else {
+                selfUrl = request.getContextPath()+"/page/" + weblog.getHandle();
+            }
+
+            CalendarModel model = null;
+            if (big) {
+                model = new BigWeblogCalendarModel(rreq, response, selfUrl, cat);
+            } else {
+                model = new WeblogCalendarModel(rreq, response, selfUrl, cat);
+            }
+            
+            // save model in JSP page context so CalendarTag can find it
+            pageContext.setAttribute("calendarModel",model);
+            
+            CalendarTag calTag = new CalendarTag();
+            calTag.setPageContext(pageContext);
+            calTag.setName("calendar");
+            calTag.setModel("calendarModel");
+            calTag.setLocale(LanguageUtil.getViewLocale(request));
+            if (big) {
+                calTag.setClassSuffix("Big");
+            }
+            ret = calTag.emit();
+        } catch (Exception e) {
+            logger.error("ERROR: initializing calendar tag",e);
+        }
+        return ret;
+    }
+

@@ -2,6 +2,16 @@
      * Get comment form to be displayed or null if not on single-entry page.
      */
     public CommentFormEx getCommentForm() {
-        return null;
+        CommentFormEx commentForm =
+            (CommentFormEx) request.getAttribute("commentForm");
+        if (commentForm == null) {
+            commentForm = new CommentFormEx();            
+            // Set fields to spaces to please Velocity
+            commentForm.setName("");
+            commentForm.setEmail("");
+            commentForm.setUrl("");
+            commentForm.setContent("");
+        }
+        return commentForm;
     }      
 
