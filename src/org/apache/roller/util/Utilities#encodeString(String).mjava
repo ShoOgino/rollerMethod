@@ -10,7 +10,7 @@
      * @throws IOException
      */
     public static String encodeString(String str) throws IOException {
-        sun.misc.BASE64Encoder encoder = new sun.misc.BASE64Encoder();
+        BASE64Encoder encoder = new BASE64Encoder();
         String encodedStr = encoder.encodeBuffer(str.getBytes());
         
         return (encodedStr.trim());
