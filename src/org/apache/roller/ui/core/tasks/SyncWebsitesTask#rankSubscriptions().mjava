@@ -47,20 +47,20 @@
                     if (count >= start && count < end) {
                         try {
                             Technorati.Result result =
-                                    technorati.getBloginfo(sub.getSiteUrl());
+                                    technorati.getBloginfo(sub.getSiteURL());
                             if (result != null && result.getWeblog() != null) {
                                 sub.setInboundblogs(
                                         result.getWeblog().getInboundblogs());
                                 sub.setInboundlinks(
                                         result.getWeblog().getInboundlinks());
                                 logger.debug("Adding rank for "
-                                        +sub.getFeedUrl()+" ["+count+"|"
+                                        +sub.getFeedURL()+" ["+count+"|"
                                         +sub.getInboundblogs()+"|"
                                         +sub.getInboundlinks()+"]");
                             } else {
                                 logger.debug(
                                         "No ranking available for "
-                                        +sub.getFeedUrl()+" ["+count+"]");
+                                        +sub.getFeedURL()+" ["+count+"]");
                                 sub.setInboundlinks(0);
                                 sub.setInboundblogs(0);
                             }

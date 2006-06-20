@@ -8,8 +8,8 @@
         URL feedUrl = null;
         Date lastUpdated = new Date();
         try {
-            feedUrl = new URL(sub.getFeedUrl());
-            log.debug("Get feed from cache "+sub.getFeedUrl());
+            feedUrl = new URL(sub.getFeedURL());
+            log.debug("Get feed from cache "+sub.getFeedURL());
             feed = feedFetcher.retrieveFeed(feedUrl);
             SyndFeedInfo feedInfo = feedInfoCache.getFeedInfo(feedUrl);
             if (feedInfo.getLastModified() != null) {
@@ -21,7 +21,7 @@
             }
             Thread.sleep(100); // be nice
         } catch (Exception e) {
-            log.warn("ERROR parsing " + sub.getFeedUrl()
+            log.warn("ERROR parsing " + sub.getFeedURL()
             + " : " + e.getClass().getName() + " : " + e.getMessage());
             log.debug(e);
             return newEntries; // bail out

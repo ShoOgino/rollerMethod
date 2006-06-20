@@ -46,8 +46,8 @@
                             logger.info("ADDING feed: "+feedUrl);
                             sub = new PlanetSubscriptionData();
                             sub.setTitle(website.getName());
-                            sub.setFeedUrl(feedUrl);
-                            sub.setSiteUrl(siteUrl);
+                            sub.setFeedURL(feedUrl);
+                            sub.setSiteURL(siteUrl);
                             sub.setAuthor(website.getHandle());
                             planet.saveSubscription(sub);
                             group.addSubscription(sub);
@@ -67,8 +67,8 @@
                     while (subs.hasNext()) {
                         PlanetSubscriptionData sub =
                                 (PlanetSubscriptionData)subs.next();
-                        if (!liveUserFeeds.contains(sub.getFeedUrl())) {
-                            logger.info("DELETING feed: "+sub.getFeedUrl());
+                        if (!liveUserFeeds.contains(sub.getFeedURL())) {
+                            logger.info("DELETING feed: "+sub.getFeedURL());
                             planet.deleteSubscription(sub);
                         }
                     }

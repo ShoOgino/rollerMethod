@@ -1,0 +1,9 @@
+    /**
+     * Get absolute URL of comment page.
+     * @roller.wrapPojoMethod type="simple"
+     */
+    public String getCommentLink() {
+        String absContextUrl = RollerConfig.getProperty("context.absPath");
+        return absContextUrl + getCommentsLink(); 
+    }
+

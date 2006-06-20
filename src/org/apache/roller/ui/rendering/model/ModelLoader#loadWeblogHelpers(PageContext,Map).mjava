@@ -1,0 +1,13 @@
+    /** 
+     * Load helpers needed in weblog pages (e.g. calendar, menu).
+     */
+    public static void loadWeblogHelpers(
+        PageContext pageContext, Map map) {
+        
+        CalendarHelper calendarTag = new CalendarHelper(pageContext);
+        map.put("calendarTag", calendarTag);
+        
+        EditorMenuHelper menuTag = new EditorMenuHelper(pageContext);
+        map.put("menuTag", menuTag);
+    }
+
