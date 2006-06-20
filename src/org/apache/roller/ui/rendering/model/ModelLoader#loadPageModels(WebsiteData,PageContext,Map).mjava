@@ -2,18 +2,18 @@
      * Load page models needed for rendering a weblog page.
      */
     public static void loadPageModels(
-        Map map,
-        HttpServletRequest request,  
-        HttpServletResponse response,
-        PageContext pageContext) throws RollerException { 
+        WebsiteData weblog,
+        PageContext pageContext,
+        Map         map) throws RollerException { 
         
-        RollerRequest rreq = RollerRequest.getRollerRequest(request);
+        HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
+        HttpServletResponse response = (HttpServletResponse)pageContext.getRequest();
 
         // Only load old model if it's specified
         String useOldModel = 
             RollerConfig.getProperty("velocity.pagemodel.classname");        
         if (useOldModel != null) { 
-            ContextLoader.setupContext(map, rreq, response);            
+            ContextLoader.setupContext(map, request, response);            
         }
         
         // Weblogs pages get the weblog page models
@@ -35,8 +35,8 @@
         map.put("menuTag", menuTag);
         
         // Weblog pages get weblog's additional custom models too
-        if (rreq.getWebsite() != null) {
-            loadWeblogPageModels(rreq.getWebsite(), request, map);
+        if (weblog != null) {
+            loadWeblogPageModels(weblog, request, map);
         }
     }
 

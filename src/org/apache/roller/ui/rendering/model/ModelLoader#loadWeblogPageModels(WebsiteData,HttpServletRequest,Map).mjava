@@ -13,7 +13,9 @@
                 try { // don't die just because of one bad custom model
                     Class modelClass = Class.forName(weblogModels[i]);
                     PageModel pageModel = (PageModel)modelClass.newInstance();
-                    pageModel.init(request, new HashMap());            
+                    Map args = new HashMap();
+                    args.put("request", request);
+                    pageModel.init(args);             
                     map.put(pageModel.getModelName(), pageModel);
                 } catch (ClassNotFoundException cnfe) {
                     log.warn("ERROR: can't find page model: " + weblogModels[i]);

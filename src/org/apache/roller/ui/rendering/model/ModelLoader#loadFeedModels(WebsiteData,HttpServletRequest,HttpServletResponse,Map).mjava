@@ -1,19 +1,17 @@
     /** 
      * Load page models needed for rendering a feed.
      */
-    public static void loadFeedModels(
-            Map map,
-            HttpServletRequest request,  
-            HttpServletResponse response) throws RollerException { 
+    public static void loadFeedModels( 
+        WebsiteData         weblog,
+        HttpServletRequest  request,  
+        HttpServletResponse response, 
+        Map                 map) throws RollerException { 
         
-        RollerRequest rreq = RollerRequest.getRollerRequest(request);
-        WebsiteData weblog = rreq.getWebsite();
-
-        // Only load old model if it's specified
+        // TODO: remove this for Roller 3.0
         String useOldModel = 
             RollerConfig.getProperty("velocity.pagemodel.classname");        
         if (useOldModel != null) { 
-            ContextLoader.setupContext(map, rreq, response);            
+            ContextLoader.setupContext(map, request, response);            
         }
         
         // Feeds get the weblog specific page model
@@ -34,8 +32,8 @@
         map.put("utils", utils);
         
         // Feeds get weblog's additional custom models too
-        if (rreq.getWebsite() != null) {
-            loadWeblogPageModels(rreq.getWebsite(), request, map);
+        if (weblog != null) {
+            loadWeblogPageModels(weblog, request, map);
         }
     }
 
