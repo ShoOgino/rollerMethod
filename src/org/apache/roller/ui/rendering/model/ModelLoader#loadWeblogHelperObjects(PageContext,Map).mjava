@@ -1,0 +1,12 @@
+    public static void loadWeblogHelperObjects(
+        PageContext pageContext, Map map) {
+        
+        CalendarPageHelper calendarTag = new CalendarPageHelper();
+        calendarTag.init(pageContext);
+        map.put("calendarTag", calendarTag);
+        
+        EditorMenuPageHelper menuTag = new EditorMenuPageHelper();
+        menuTag.init(pageContext);
+        map.put("menuTag", menuTag);
+    }
+

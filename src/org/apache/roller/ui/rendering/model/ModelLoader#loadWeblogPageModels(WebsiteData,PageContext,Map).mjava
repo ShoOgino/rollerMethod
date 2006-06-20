@@ -1,0 +1,25 @@
+    /** 
+     * Load page models needed by PageServlet and PreviewServlet.
+     */
+    public static void loadWeblogPageModels(
+        WebsiteData weblog,
+        PageContext pageContext,
+        Map         map) throws RollerException { 
+        
+        HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
+        HttpServletResponse response = (HttpServletResponse)pageContext.getRequest();
+        loadOldModels(response, request, map);
+        
+        // Weblogs pages get the weblog page models
+        String modelsString = 
+            RollerConfig.getProperty("rendering.weblogPageModels");
+        loadConfiguredPageModels(modelsString, request, map);
+        loadUtilityObjects(map);
+        loadWeblogHelperObjects(pageContext, map);
+        
+        // Weblog pages get weblog's additional custom models too
+        if (weblog != null) {
+            loadAdditionalPageModels(weblog, request, map);
+        }
+    }
+
