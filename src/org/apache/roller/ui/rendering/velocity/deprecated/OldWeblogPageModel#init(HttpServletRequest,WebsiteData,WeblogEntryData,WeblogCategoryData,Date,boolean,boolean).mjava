@@ -1,27 +1,23 @@
     /**
      * Initialize PageModel and allow PageModel to initialized VelocityContext.
      */
-    public void init(HttpServletRequest request) {
+    public void init(HttpServletRequest request,
+            WebsiteData website,
+            WeblogEntryData entry,
+            WeblogCategoryData category,
+            Date date,
+            boolean isDay,
+            boolean isMonth) {
         
         mRequest = request;
         
-        WeblogPageRequest pageRequest = null;
-        try {
-            pageRequest = new WeblogPageRequest(request);
-        } catch(Exception e) {
-            // this should never happen because the old page model
-            // is only supposed to be use on weblog pages
-            mLogger.error("error parsing request", e);
-        }
-        
-        RollerRequest mRollerReq = RollerRequest.getRollerRequest(request);
-        mWebsite = mRollerReq.getWebsite();
-        mHandle = mWebsite.getHandle();
-        mEntry = mRollerReq.getWeblogEntry();
-        mCategory = mRollerReq.getWeblogCategory();
-        mDate = mRollerReq.getDate();
-        mIsDaySpecified = mRollerReq.isDaySpecified();
-        mIsMonthSpecified = mRollerReq.isMonthSpecified();
+        // data we'll need in the methods
+        mWebsite = website;
+        mEntry = entry;
+        mCategory = category;
+        mDate = date;
+        mIsDaySpecified = isDay;
+        mIsMonthSpecified = isMonth;
         
         try {
             mBookmarkMgr = RollerFactory.getRoller().getBookmarkManager();

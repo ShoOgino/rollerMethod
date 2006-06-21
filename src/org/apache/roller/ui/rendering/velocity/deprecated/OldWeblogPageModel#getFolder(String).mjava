@@ -3,7 +3,7 @@
         try {
             return FolderDataWrapper.wrap(
                     mBookmarkMgr.getFolder(
-                    mUserMgr.getWebsiteByHandle(mHandle), folderPath));
+                    mUserMgr.getWebsiteByHandle(mWebsite.getHandle()), folderPath));
         } catch (RollerException e) {
             mLogger.error("PageModel getFolder()", e);
         }
