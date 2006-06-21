@@ -1,0 +1,13 @@
+    /**
+     * Load set of common weblog models.
+     *
+     * This is the list of models defined by rendering.weblogPageModels
+     */
+    public static void loadWeblogModels(Map model, Map initData)
+            throws RollerException {
+        
+        String weblogModels = 
+                RollerConfig.getProperty("rendering.weblogPageModels");
+        loadModels(weblogModels, model, initData);
+    }
+

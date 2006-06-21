@@ -1,0 +1,13 @@
+    public WeblogPreviewRequest(HttpServletRequest request) 
+            throws InvalidRequestException {
+        
+        // our parent will determine the weblog handle for us
+        super(request);
+        
+        // all we need to worry about is the query params
+        // the only param we expect is "theme"
+        if(request.getParameter("theme") != null) {
+            this.theme = request.getParameter("theme");
+        }
+    }
+

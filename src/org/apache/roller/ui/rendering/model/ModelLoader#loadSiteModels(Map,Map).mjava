@@ -1,0 +1,13 @@
+    /**
+     * Load set of common site-wide models.
+     *
+     * This is the list of models defined by rendering.sitePageModels
+     */
+    public static void loadSiteModels(Map model, Map initData)
+            throws RollerException {
+        
+        String weblogModels = 
+                RollerConfig.getProperty("rendering.sitePageModels");
+        loadModels(weblogModels, model, initData);
+    }
+

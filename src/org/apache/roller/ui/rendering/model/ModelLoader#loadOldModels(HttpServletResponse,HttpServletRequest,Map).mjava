@@ -4,13 +4,13 @@
     public static void loadOldModels(
         HttpServletResponse response, 
         HttpServletRequest  request,
-        Map map) throws RollerException {
+        Map model) throws RollerException {
 
         // Only load old model if it's specified
         String useOldModel = 
             RollerConfig.getProperty("velocity.pagemodel.classname");        
         if (useOldModel != null) { 
-            ContextLoader.setupContext(map, request, response);            
+            ContextLoader.setupContext(model, request, response);            
         }
     }
 

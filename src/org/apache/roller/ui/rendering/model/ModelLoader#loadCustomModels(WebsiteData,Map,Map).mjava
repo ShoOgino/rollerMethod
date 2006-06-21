@@ -1,11 +1,13 @@
     /**
-     * Load comma-separated list of page models and does not fail if one of the 
-     * models fails to load.
+     * Load set of custom models allowed for the given weblog.
+     *
+     * Does not fail if there is a problem with one of the models.
      */
-    public static void loadAdditionalPageModels(
+    public static void loadCustomModels(
             WebsiteData weblog, 
-            HttpServletRequest request, 
-            Map map) {
+            Map model,
+            Map initData) {
+        
         if (weblog.getPageModels() != null) {
             String[] weblogModels = 
                 Utilities.stringToStringArray(weblog.getPageModels(), ",");
@@ -13,10 +15,8 @@
                 try { // don't die just because of one bad custom model
                     Class modelClass = Class.forName(weblogModels[i]);
                     PageModel pageModel = (PageModel)modelClass.newInstance();
-                    Map args = new HashMap();
-                    args.put("request", request);
-                    pageModel.init(args);             
-                    map.put(pageModel.getModelName(), pageModel);
+                    pageModel.init(initData);             
+                    model.put(pageModel.getModelName(), pageModel);
                 } catch (RollerException re) {
                     log.warn("ERROR: initializing a plugin: " + weblogModels[i]);
                 } catch (ClassNotFoundException cnfe) {
