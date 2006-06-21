@@ -2,15 +2,15 @@
      * Load useful utility objects for string and date formatting.
      */
     protected static void loadUtilityObjects(
-            Map ctx, 
-            RollerRequest rreq,                                             
-            RollerContext rollerCtx, 
+            Map ctx,
+            RollerRequest rreq,
+            RollerContext rollerCtx,
             WebsiteData website)
             throws RollerException {
         
         mLogger.debug("Loading utility objects");
         
-        // date formatter for macro's set this up with the Locale to make 
+        // date formatter for macro's set this up with the Locale to make
         // sure we can reuse it with other patterns in the macro's
         Locale viewLocale = (Locale) ctx.get("viewLocale");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", viewLocale);

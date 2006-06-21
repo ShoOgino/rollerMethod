@@ -3,8 +3,8 @@
      * RollerPagePlugins needed for Roller page execution.
      */
     public static void setupContext(
-            Map                 ctx, 
-            HttpServletRequest  request, 
+            Map                 ctx,
+            HttpServletRequest  request,
             HttpServletResponse response)
             throws RollerException {
         
@@ -24,18 +24,18 @@
         try {
             // Add default page model object to context
             String pageModelClassName =
-                RollerConfig.getProperty("velocity.pagemodel.classname");
+                    RollerConfig.getProperty("velocity.pagemodel.classname");
             Class pageModelClass = Class.forName(pageModelClassName);
             PageModel pageModel = (PageModel)pageModelClass.newInstance();
             Map args = new HashMap();
             args.put("request", request);
-            pageModel.init(args);            
+            pageModel.init(args);
             ctx.put(pageModel.getModelName(), pageModel);
             
             // Add other page models
-            // TODO: ATLAS make page models configurable            
+            // TODO: ATLAS make page models configurable
             PageModel sitePageModel = new SitePageModel();
-            ctx.put(sitePageModel.getModelName(), sitePageModel);            
+            ctx.put(sitePageModel.getModelName(), sitePageModel);
             PageModel planetPageModel = new PlanetPageModel();
             ctx.put(planetPageModel.getModelName(), planetPageModel);
             
@@ -52,10 +52,10 @@
         OldPageHelper pageHelper = new OldPageHelper(request, response, ctx, weblog, pageContext, pageRequest);
         Roller roller = RollerFactory.getRoller();
         ctx.put("pageHelper", pageHelper);
-                
+        
         // Load standard Roller objects and values into the context
-        WebsiteData website = 
-            loadWeblogValues(ctx, rreq, rollerCtx );
+        WebsiteData website =
+                loadWeblogValues(ctx, rreq, rollerCtx );
         loadPathValues(       ctx, rreq, rollerCtx, website );
         loadRssValues(        ctx, rreq, website );
         loadUtilityObjects(   ctx, rreq, rollerCtx, website );

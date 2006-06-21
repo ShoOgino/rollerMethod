@@ -2,9 +2,9 @@
      * Load objects needed for RSS and Atom newsfeed generation.
      */
     protected static void loadRssValues(
-            Map ctx, 
-            RollerRequest rreq, 
-            WebsiteData website) 
+            Map ctx,
+            RollerRequest rreq,
+            WebsiteData website)
             throws RollerException {
         
         mLogger.debug("Loading rss values");
@@ -22,10 +22,10 @@
         int entryCount = website.getEntryDisplayCount();
         
         // But don't exceed installation-wide maxEntries settings
-        int maxEntries = 
-            RollerRuntimeConfig.getIntProperty("site.newsfeeds.maxEntries");
-        int defaultEntries = 
-            RollerRuntimeConfig.getIntProperty("site.newsfeeds.defaultEntries");
+        int maxEntries =
+                RollerRuntimeConfig.getIntProperty("site.newsfeeds.maxEntries");
+        int defaultEntries =
+                RollerRuntimeConfig.getIntProperty("site.newsfeeds.defaultEntries");
         if (entryCount < 1) entryCount = defaultEntries;
         if (entryCount > maxEntries) entryCount = maxEntries;
         ctx.put("entryCount",  new Integer(entryCount));

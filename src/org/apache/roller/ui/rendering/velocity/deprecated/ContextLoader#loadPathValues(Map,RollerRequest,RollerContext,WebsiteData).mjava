@@ -2,8 +2,8 @@
      * Load URL paths useful in page templates.
      */
     protected static void loadPathValues(
-            Map ctx,  RollerRequest rreq, 
-            RollerContext rollerCtx, 
+            Map ctx,  RollerRequest rreq,
+            RollerContext rollerCtx,
             WebsiteData   website)
             throws RollerException {
         
@@ -13,8 +13,8 @@
         String url = null;
         if (website != null  && !"zzz_none_zzz".equals(website.getHandle())) {
             url = OldUtilities.escapeHTML(
-                      rollerCtx.getAbsoluteContextUrl(request) 
-                          + "/page/" + website.getHandle());
+                    rollerCtx.getAbsoluteContextUrl(request)
+                    + "/page/" + website.getHandle());
         } else {
             url= OldUtilities.escapeHTML(rollerCtx.getAbsoluteContextUrl(request));
         }

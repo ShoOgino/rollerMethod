@@ -2,22 +2,22 @@
      * Load website object and related objects.
      */
     protected static WebsiteData loadWeblogValues(
-            Map ctx, 
-            RollerRequest rreq, 
+            Map ctx,
+            RollerRequest rreq,
             RollerContext rollerCtx )
             throws RollerException {
-                
+        
         Roller mRoller = RollerFactory.getRoller();
         Map props = mRoller.getPropertiesManager().getProperties();
         
-        WebsiteData weblog = rreq.getWebsite();            
+        WebsiteData weblog = rreq.getWebsite();
         if (weblog == null && rreq.getRequest().getParameter("entry") != null) {
             String handle = rreq.getRequest().getParameter("entry");
             weblog = RollerFactory.getRoller().getUserManager().getWebsiteByHandle(handle);
         }
         if (weblog == null && rreq.getRequest().getAttribute(RollerRequest.OWNING_WEBSITE) != null) {
             weblog = (WebsiteData)rreq.getRequest().getAttribute(RollerRequest.OWNING_WEBSITE);
-        } 
+        }
         
         if (weblog != null) {
             ctx.put("userName",         weblog.getHandle());
@@ -38,11 +38,11 @@
             weblog.setAllowComments(Boolean.FALSE);
             weblog.setHandle("zzz_none_zzz");
             weblog.setName(
-                ((RollerPropertyData)props.get("site.name")).getValue());
+                    ((RollerPropertyData)props.get("site.name")).getValue());
             weblog.setDescription(
-                ((RollerPropertyData)props.get("site.description")).getValue());
+                    ((RollerPropertyData)props.get("site.description")).getValue());
             weblog.setEntryDisplayCount(
-                RollerRuntimeConfig.getIntProperty("site.newsfeeds.defaultEntries"));
+                    RollerRuntimeConfig.getIntProperty("site.newsfeeds.defaultEntries"));
             ctx.put("handle",   weblog.getHandle() );
             ctx.put("userName", weblog.getHandle() );
             ctx.put("fullName", weblog.getHandle());
@@ -50,7 +50,7 @@
             ctx.put("timezone", TimeZone.getDefault());
             ctx.put("timeZone", TimeZone.getDefault());
             ctx.put("emailAddress",
-                ((RollerPropertyData)props.get("site.adminemail")).getValue());           
+                    ((RollerPropertyData)props.get("site.adminemail")).getValue());
         }
         ctx.put("website", WebsiteDataWrapper.wrap(weblog) );
         
@@ -65,7 +65,7 @@
         ctx.put("viewLocale",
                 LanguageUtil.getViewLocale(rreq.getRequest()));
         mLogger.debug("context viewLocale = "+ctx.get( "viewLocale"));
-               
+        
         // if there is an "_entry" page, only load it once
         // but don't do it for dummy website
         if (weblog != null && !"zzz_none_zzz".equals(weblog.getHandle())) {
@@ -73,20 +73,20 @@
             Template entryPage = weblog.getPageByName("_entry");
             if (entryPage != null) {
                 ctx.put("entryPage", TemplateWrapper.wrap(entryPage));
-            }            
-            // TODO: ATLAS: no templates use this, should be safe to remove 
+            }
+            // TODO: ATLAS: no templates use this, should be safe to remove
             // Template descPage = weblog.getPageByName("_desc");
             //if (descPage != null) {
-                //ctx.put("descPage", TemplateWrapper.wrap(descPage));
+            //ctx.put("descPage", TemplateWrapper.wrap(descPage));
             //}
         }
-
+        
         boolean commentsEnabled =
-            RollerRuntimeConfig.getBooleanProperty("users.comments.enabled");
+                RollerRuntimeConfig.getBooleanProperty("users.comments.enabled");
         boolean trackbacksEnabled =
-            RollerRuntimeConfig.getBooleanProperty("users.trackbacks.enabled");
+                RollerRuntimeConfig.getBooleanProperty("users.trackbacks.enabled");
         boolean linkbacksEnabled =
-            RollerRuntimeConfig.getBooleanProperty("site.linkbacks.enabled");
+                RollerRuntimeConfig.getBooleanProperty("site.linkbacks.enabled");
         
         ctx.put("commentsEnabled",   new Boolean(commentsEnabled) );
         ctx.put("trackbacksEnabled", new Boolean(trackbacksEnabled) );
