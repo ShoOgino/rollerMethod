@@ -27,42 +27,42 @@
         try {            
             // If request specifies a category, then use that
             String catParam = null;
-            if (mRollerReq.getWeblogCategory() != null) {
-                catParam = mRollerReq.getWeblogCategory().getPath();
+            if (mCategory != null) {
+                catParam = mCategory.getPath();
             } else if (catName != null) {
                 // use category argument instead
                 catParam = catName;
-            } else if (mRollerReq.getWebsite() != null) // MAIN
+            } else if (mWebsite != null) // MAIN
             {
-                catParam = mRollerReq.getWebsite().getDefaultCategory().getPath();
+                catParam = mWebsite.getDefaultCategory().getPath();
                 if (catParam.equals("/")) {
                     catParam = null;
                 }
             }
             
             Calendar cal = null;
-            if (mRollerReq.getWebsite() != null) {
-                TimeZone tz = mRollerReq.getWebsite().getTimeZoneInstance();
+            if (mWebsite != null) {
+                TimeZone tz = mWebsite.getTimeZoneInstance();
                 cal = Calendar.getInstance(tz);
             } else {
                 cal = Calendar.getInstance();
             }
             int limit = maxEntries;
             Date startDate = null;
-            Date endDate = mRollerReq.getDate();
+            Date endDate = mDate;
             if (endDate == null) endDate = new Date();
-            if (mRollerReq.isDaySpecified()) { 
+            if (mIsDaySpecified) { 
                 // URL specified a specific day
                 // so get entries for that day
                 endDate = DateUtil.getEndOfDay(endDate, cal);
                 startDate = DateUtil.getStartOfDay(endDate, cal); 
                 // and get them ALL, no limit
                 limit = -1;                  
-            } else if (mRollerReq.isMonthSpecified()) {
+            } else if (mIsMonthSpecified) {
                 endDate = DateUtil.getEndOfMonth(endDate, cal);
             }
             Map mRet = RollerFactory.getRoller().getWeblogManager().getWeblogEntryObjectMap(
-                    mRollerReq.getWebsite(),
+                    mWebsite,
                     startDate,                    // startDate
                     endDate,                      // endDate
                     catParam,                     // catName

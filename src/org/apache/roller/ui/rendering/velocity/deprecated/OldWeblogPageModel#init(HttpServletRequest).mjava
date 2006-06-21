@@ -2,15 +2,26 @@
      * Initialize PageModel and allow PageModel to initialized VelocityContext.
      */
     public void init(HttpServletRequest request) {
-        mRollerReq = RollerRequest.getRollerRequest(request);
-        if ( request.getAttribute(RollerRequest.OWNING_WEBSITE) != null) {
-            mWebsite = (WebsiteData)
-            request.getAttribute(RollerRequest.OWNING_WEBSITE);
-            mHandle = mWebsite.getHandle();
-        } else if ( mRollerReq.getWebsite() != null ) {
-            mWebsite = mRollerReq.getWebsite();
-            mHandle = mWebsite.getHandle();
+        
+        mRequest = request;
+        
+        WeblogPageRequest pageRequest = null;
+        try {
+            pageRequest = new WeblogPageRequest(request);
+        } catch(Exception e) {
+            // this should never happen because the old page model
+            // is only supposed to be use on weblog pages
+            mLogger.error("error parsing request", e);
         }
+        
+        RollerRequest mRollerReq = RollerRequest.getRollerRequest(request);
+        mWebsite = mRollerReq.getWebsite();
+        mHandle = mWebsite.getHandle();
+        mEntry = mRollerReq.getWeblogEntry();
+        mCategory = mRollerReq.getWeblogCategory();
+        mDate = mRollerReq.getDate();
+        mIsDaySpecified = mRollerReq.isDaySpecified();
+        mIsMonthSpecified = mRollerReq.isMonthSpecified();
         
         try {
             mBookmarkMgr = RollerFactory.getRoller().getBookmarkManager();
@@ -23,8 +34,6 @@
             
             // Get the pages, put into context & load map
             if (mWebsite != null) {
-                // if we have website from RollerRequest, use it
-                mWebsite = mRollerReq.getWebsite();
                 
                 // Get the pages, put into context & load map
                 List pages = mWebsite.getPages();
@@ -34,8 +43,6 @@
                     mPageMap.put(page.getName(), TemplateWrapper.wrap(page));
                 }
             }
-            
-            
             
         } catch (RollerException e) {
             mLogger.error("PageModel Roller get*Manager Exception", e);

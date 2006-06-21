@@ -4,9 +4,9 @@
         ArrayList referers = new ArrayList();
         try {
             List refs =
-                    mRefererMgr.getReferersToDate(mRollerReq.getWebsite(), date);
+                    mRefererMgr.getReferersToDate(mWebsite, date);
             RollerSession rses =
-                    RollerSession.getRollerSession(mRollerReq.getRequest());
+                    RollerSession.getRollerSession(mRequest);
             
             for (Iterator rdItr = refs.iterator(); rdItr.hasNext();) {
                 RefererData referer = (RefererData) rdItr.next();
@@ -23,7 +23,7 @@
             
         } catch (Exception e) {
             mLogger.error("PageModel getReferersToDate() fails with URL"
-                    + mRollerReq.getRequestURL(), e);
+                    + mRequest.getRequestURL(), e);
         }
         return referers;
     }

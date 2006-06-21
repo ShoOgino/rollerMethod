@@ -15,9 +15,9 @@
                 WeblogCategoryData category = null;
                 if (categoryName != null) {
                     category = mWeblogMgr.getWeblogCategoryByPath(
-                            mRollerReq.getWebsite(), null, categoryName);
+                            mWebsite, null, categoryName);
                 } else {
-                    category = mRollerReq.getWebsite().getDefaultCategory();
+                    category = mWebsite.getDefaultCategory();
                 }
                 
                 List mRet = category.getWeblogCategories();

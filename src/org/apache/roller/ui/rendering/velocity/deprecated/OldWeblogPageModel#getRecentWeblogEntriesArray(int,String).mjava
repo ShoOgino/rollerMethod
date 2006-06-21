@@ -15,19 +15,19 @@
         if (VELOCITY_NULL.equals(categoryName)) categoryName = null;
         List ret = new ArrayList();
         try {
-            Date day = mRollerReq.getDate();
+            Date day = mDate;
             if (day == null) day = new Date();
             
             // If request specifies a category, then use that
             String catParam = null;
-            if (mRollerReq.getWeblogCategory() != null) {
-                catParam = mRollerReq.getWeblogCategory().getPath();
+            if (mCategory != null) {
+                catParam = mCategory.getPath();
             } else if (categoryName != null) {
                 // use category argument instead
                 catParam = categoryName;
-            } else if (mRollerReq.getWebsite() != null) // MAIN
+            } else if (mWebsite != null) // MAIN
             {
-                catParam = mRollerReq.getWebsite().getDefaultCategory().getPath();
+                catParam = mWebsite.getDefaultCategory().getPath();
                 if (catParam.equals("/")) {
                     catParam = null;
                 }
@@ -38,7 +38,7 @@
             //name, day, catParam, maxEntries, true );
             
             List mEntries = mgr.getWeblogEntries(
-                    mRollerReq.getWebsite(),
+                    mWebsite,
                     null,
                     null,                        // startDate
                     day,                         // endDate
