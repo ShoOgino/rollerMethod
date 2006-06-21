@@ -11,74 +11,53 @@
         String servlet = request.getServletPath();
         String pathInfo = request.getPathInfo();
         
-        // what servlet is our destination?
-        if(servlet != null) {
-            // strip off the leading slash
-            servlet = servlet.substring(1);
-            
-            if(feedServlets.contains(servlet)) {
-                this.context = "weblog";
-                this.flavor = servlet;
-            } else {
-                // not a request to a feed servlet
-                throw new InvalidRequestException("not a weblog feed request, "+request.getRequestURL());
-            }
-        } else {
+        // was this request bound for the feed servlet?
+        if(servlet == null || !FEED_SERVLET.equals(servlet)) {
             throw new InvalidRequestException("not a weblog feed request, "+request.getRequestURL());
         }
         
-        // parse the path info
+        /* 
+         * parse the path info.  must conform to the format below.
+         *
+         * /<weblog>/<type>/<format>
+         *
+         */
         if(pathInfo != null && pathInfo.trim().length() > 1) {
             // strip off the leading slash
             pathInfo = pathInfo.substring(1);
             String[] pathElements = pathInfo.split("/");
             
-            if(pathElements[0].length() > 0) {
+            if(pathElements.length == 3) {
                 this.weblogHandle = pathElements[0];
+                this.type = pathElements[1];
+                this.format = pathElements[2];
+            } else {
+                throw new InvalidRequestException("invalid feed path info, "+request.getRequestURL());
             }
             
         } else {
-            
-            // no path info means this was a non-weblog request
-            // we handle a few exceptions for this which include
-            //   /rss - main rss feed
-            //   /atom - main atom feed
-            //   /flavor - main flavor feed
-            
-            this.context = "main";
+            throw new InvalidRequestException("invalid feed path info, "+request.getRequestURL());
         }
+        
         
         /* 
          * parse request parameters
          *
          * the only params we currently care about are:
-         *   flavor - defines the feed type
-         *   catname - specifies a weblog category
-         *   path - specifies a weblog category
+         *   cat - specifies a weblog category
          *   excerpts - specifies the feed should only include excerpts
          *
          */
-        if(request.getParameter("flavor") != null) {
-            this.flavor = request.getParameter("flavor");
-        }
-        
-        if(request.getParameter("path") != null) {
-            this.weblogCategory = request.getParameter("path");
-        }
-        
-        if(request.getParameter("catname") != null) {
-            this.weblogCategory = request.getParameter("catname");
+        if(request.getParameter("cat") != null) {
+            try {
+                this.weblogCategory = URLDecoder.decode(request.getParameter("cat"), "UTF-8");
+            } catch (UnsupportedEncodingException ex) {
+                // should never happen, utf-8 is always supported by java
+            }
         }
         
         if(request.getParameter("excerpts") != null) {
             this.excerpts = Boolean.valueOf(request.getParameter("excerpts")).booleanValue();
-        }
-        
-        // one small final adjustment.
-        // if our flavor is "flavor" then that means someone is just getting
-        // the default flavor, which is rss, so let's set that
-        if(this.flavor.equals("flavor")) {
-            this.flavor = "rss";
         }
         
     }

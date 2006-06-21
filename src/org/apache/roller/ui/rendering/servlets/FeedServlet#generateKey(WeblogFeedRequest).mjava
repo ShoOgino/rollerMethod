@@ -14,22 +14,21 @@
     private String generateKey(WeblogFeedRequest feedRequest) {
         
         StringBuffer key = new StringBuffer();
-        key.append(feedRequest.getContext());
         
-        if(feedRequest.getContext().equals("weblog")) {
-            key.append("/").append(feedRequest.getWeblogHandle().toLowerCase());
-            key.append("/").append(feedRequest.getFlavor());
-            
-            if(feedRequest.getWeblogCategory() != null) {
-                String cat = feedRequest.getWeblogCategory();
-                if(cat.startsWith("/"))
-                    cat = cat.substring(1).replaceAll("/","_");
-                
-                // categories may contain spaces, which is not desired
-                key.append("/").append(org.apache.commons.lang.StringUtils.deleteWhitespace(cat));
+        key.append("weblog");
+        key.append("/").append(feedRequest.getWeblogHandle().toLowerCase());
+        key.append("/").append(feedRequest.getType());
+        key.append("/").append(feedRequest.getFormat());
+        
+        if(feedRequest.getWeblogCategory() != null) {
+            String cat = feedRequest.getWeblogCategory();
+            try {
+                cat = URLEncoder.encode(cat, "UTF-8");
+            } catch (UnsupportedEncodingException ex) {
+                // should never happen, utf-8 is always supported
             }
-        } else {
-            key.append("/").append(feedRequest.getFlavor());
+            
+            key.append("/").append(cat);
         }
         
         // add language
