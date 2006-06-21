@@ -9,14 +9,17 @@
                       PageContext pageContext,
                       WeblogPageRequest pageRequest) throws RollerException {
         
-        // old roller request, going to be eoled
-        mRollerReq = RollerRequest.getRollerRequest(request);
+        mPageContext = pageContext;
         
         // store the parsed page request
         mPageRequest = pageRequest;
+        mPageName = mPageRequest.getWeblogPage();
         
+        // old roller request, going to be eoled
+        RollerRequest mRollerReq = RollerRequest.getRollerRequest(request);
         mWebsite = website;
-        mPageContext = pageContext;
+        mDate = mRollerReq.getDate(true);
+        mFolder = mRollerReq.getFolder();
         
         // save original request and response objects
         mRequest = request;
