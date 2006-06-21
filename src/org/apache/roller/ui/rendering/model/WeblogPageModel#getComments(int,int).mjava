@@ -12,16 +12,16 @@
             WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
             List recent = wmgr.getComments(
                     weblog,
-                    null,  // weblog entry
-                    null,  // search String
-                    null,  // startDate
-                    null,  // endDate
-                    null,  // pending
+                    null,          // weblog entry
+                    null,          // search String
+                    null,          // startDate
+                    null,          // endDate
+                    null,          // pending
                     Boolean.TRUE,  // approved only
                     Boolean.FALSE, // no spam
                     true,          // we want reverse chrono order
                     offset,        // offset
-                    length);       // no limit
+                    length);       // length
             
             // wrap pojos
             recentComments = new ArrayList(recent.size());
