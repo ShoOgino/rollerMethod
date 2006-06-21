@@ -1,14 +1,19 @@
-    /** 
+    /**
      * Get weblog entry to be displayed; null if not on single-entry page or if entry not published.
      */
     public WeblogEntryDataWrapper getWeblogEntry() {
-        
-        RollerRequest rreq = RollerRequest.getRollerRequest(request);
-        WeblogEntryData entry = rreq.getWeblogEntry(); 
-        
-        WeblogEntryDataWrapper ret = null;
-        if (entry != null && entry.getStatus().equals(WeblogEntryData.PUBLISHED)) {
-            ret = WeblogEntryDataWrapper.wrap(entry);
+       WeblogEntryDataWrapper ret = null;
+        try {
+            Roller roller = RollerFactory.getRoller();
+            WeblogManager wmgr = roller.getWeblogManager();
+            WeblogEntryData entry = 
+                 wmgr.getWeblogEntryByAnchor(weblog, entryAnchor);
+            if (entry != null && entry.getStatus().equals(WeblogEntryData.PUBLISHED)) {
+                ret = WeblogEntryDataWrapper.wrap(entry);
+            }
+
+        } catch (Exception e) {
+            log.error("ERROR: fetching entry");
         }
         return ret;
     }

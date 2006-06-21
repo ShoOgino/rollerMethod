@@ -10,9 +10,9 @@
                 CommentFormEx commentForm = getCommentForm();
                 commentForm.copyTo(comment, request.getLocale());
                 commentWrapper = CommentDataWrapper.wrap(comment);
-            }        
+            }
         } catch (RollerException e) {
-            logger.warn("ERROR: creating comment form", e);
+            log.warn("ERROR: creating comment form", e);
         }
         return commentWrapper;
     }

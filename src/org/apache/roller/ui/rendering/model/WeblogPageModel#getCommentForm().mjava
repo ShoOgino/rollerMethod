@@ -3,9 +3,9 @@
      */
     public CommentFormEx getCommentForm() {
         CommentFormEx commentForm =
-            (CommentFormEx) request.getAttribute("commentForm");
+                (CommentFormEx) request.getAttribute("commentForm");
         if (commentForm == null) {
-            commentForm = new CommentFormEx();            
+            commentForm = new CommentFormEx();
             // Set fields to spaces to please Velocity
             commentForm.setName("");
             commentForm.setEmail("");
@@ -13,5 +13,5 @@
             commentForm.setContent("");
         }
         return commentForm;
-    }      
+    }
 

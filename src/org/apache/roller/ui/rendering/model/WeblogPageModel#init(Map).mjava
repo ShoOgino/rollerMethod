@@ -1,5 +1,27 @@
     /** Init page model based on request */
-    public void init(Map map) {
-        this.request = (HttpServletRequest)map.get("request");
+    public void init(Map map) throws RollerException {
+        HttpServletRequest request = (HttpServletRequest)map.get("request");
+        try {
+            // Can we parse it as a page request?
+            WeblogPageRequest parsed = new WeblogPageRequest(request);
+            weblogHandle = parsed.getWeblogHandle();
+            categoryPath = parsed.getWeblogCategory();
+            entryAnchor = parsed.getWeblogAnchor();
+            dateString = parsed.getWeblogDate();
+        } catch(Exception ignored) {}
+        if (weblogHandle == null) {
+            try {
+                // Can we parse it as feed request?
+                WeblogFeedRequest parsed = new WeblogFeedRequest(request);
+                weblogHandle = parsed.getWeblogHandle();
+                categoryPath = parsed.getWeblogCategory();
+            } catch(Exception e) {
+                // Can't parse as either; we've got a problem
+                throw new RollerException("ERROR: parsing request", e);
+            }            
+        }
+        Roller roller = RollerFactory.getRoller();
+        UserManager umgr = roller.getUserManager();
+        weblog = umgr.getWebsiteByHandle(weblogHandle, Boolean.TRUE);
     }
 

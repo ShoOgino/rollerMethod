@@ -1,29 +1,27 @@
-    /** 
+    /**
      * Get weblog entry to be displayed or null if not on single-entry page.
      */
     public WeblogEntryDataWrapper getWeblogEntryPrev() {
-        
-        RollerRequest rreq = RollerRequest.getRollerRequest(request);
-        WeblogCategoryData category = rreq.getWeblogCategory(); 
-        
-        WeblogEntryDataWrapper currentEntry = getWeblogEntry();
-        if (lastEntry != null) currentEntry = lastEntry;
-        if (prevEntry == null && currentEntry != null ) {
-            String catName = null;
-            if (category != null) {
-                catName = category.getName();
-            }
-            try {
-                WeblogManager wmgr = 
-                     RollerFactory.getRoller().getWeblogManager();
-                WeblogEntryData prev =
-                     wmgr.getPreviousEntry(currentEntry.getPojo(), catName);                
-                if(prev != null) {
-                   prevEntry = WeblogEntryDataWrapper.wrap(prev);
+        try {
+            Roller roller = RollerFactory.getRoller();
+            WeblogManager wmgr = roller.getWeblogManager();
+            WeblogCategoryData category = wmgr.getWeblogCategoryByPath(
+                    weblog, categoryPath);
+            WeblogEntryDataWrapper currentEntry = getWeblogEntry();
+            if (lastEntry != null) currentEntry = lastEntry;
+            if (prevEntry == null && currentEntry != null ) {
+                String catName = null;
+                if (category != null) {
+                    catName = category.getName();
                 }
-            } catch (RollerException e) {
-                logger.error("ERROR: getting previous entry", e);
+                WeblogEntryData prev =
+                        wmgr.getPreviousEntry(currentEntry.getPojo(), catName);
+                if(prev != null) {
+                    prevEntry = WeblogEntryDataWrapper.wrap(prev);
+                }
             }
+        } catch (RollerException e) {
+            log.error("ERROR: getting next entry", e);
         }
         return prevEntry;
     }

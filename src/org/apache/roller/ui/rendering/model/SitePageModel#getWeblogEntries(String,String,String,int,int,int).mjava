@@ -10,9 +10,9 @@
      */
     public List getWeblogEntries(String handle, String userName, String cat, int sinceDays, int offset, int length) {
         List results = new ArrayList();
-        if (handle.equals(OldWeblogPageModel.VELOCITY_NULL)) handle = null;
-        if (userName.equals(OldWeblogPageModel.VELOCITY_NULL)) userName = null;
-        if (cat.equals(OldWeblogPageModel.VELOCITY_NULL)) cat = null;
+        if (handle != null && handle.equals("nil")) handle = null;
+        if (userName != null && userName.equals("nil")) userName = null;
+        if (cat != null && cat.equals("nil")) cat = null;
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         cal.add(Calendar.DATE, -1 * sinceDays);

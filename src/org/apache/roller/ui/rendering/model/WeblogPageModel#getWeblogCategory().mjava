@@ -1,14 +1,18 @@
-    /** 
+    /**
      * Get weblog category or null if request does not specify one.
      */
     public WeblogCategoryDataWrapper getWeblogCategory() {
-        
-        RollerRequest rreq = RollerRequest.getRollerRequest(request);
-        WeblogCategoryData cat = rreq.getWeblogCategory(); 
-        
         WeblogCategoryDataWrapper ret = null;
-        if (cat != null) {
-            ret = WeblogCategoryDataWrapper.wrap(cat);
+        try {
+            Roller roller = RollerFactory.getRoller();
+            WeblogManager wmgr = roller.getWeblogManager();
+            WeblogCategoryData cat = wmgr.getWeblogCategoryByPath(
+                    weblog, categoryPath);
+            if (cat != null) {
+                ret = WeblogCategoryDataWrapper.wrap(cat);
+            }
+        } catch (Exception e) {
+            log.error("ERROR: fetching category");
         }
         return ret;
     }
