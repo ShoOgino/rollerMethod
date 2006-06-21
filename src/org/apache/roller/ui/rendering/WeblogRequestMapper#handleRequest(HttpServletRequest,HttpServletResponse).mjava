@@ -6,7 +6,7 @@
         String weblogRequestContext = null;
         String weblogRequestData = null;
         
-        log.debug("evaluating ["+request.getRequestURI()+"]");
+        log.debug("evaluating ["+request.getServletPath()+"]");
         
         // figure out potential weblog handle
         String servlet = request.getServletPath();
@@ -15,6 +15,11 @@
             
             // strip off the leading slash
             servlet = servlet.substring(1);
+            
+            // strip off trailing slash if needed
+            if(servlet.endsWith("/")) {
+                servlet = servlet.substring(0, servlet.length() - 1);
+            }
             
             if(servlet.indexOf("/") != -1) {
                 weblogHandle = servlet.substring(0, servlet.indexOf("/"));
@@ -28,10 +33,11 @@
         
         // check if it's a valid weblog handle
         if(restricted.contains(weblogHandle) || !this.isWeblog(weblogHandle)) {
+            log.debug("DENIED "+weblogHandle);
             return false;
         }
         
-        log.debug("WEBLOG_URL "+request.getRequestURI());
+        log.debug("WEBLOG_URL "+request.getServletPath());
         
         // parse the rest of the url and build forward url
         if(pathInfo != null) {
@@ -40,12 +46,15 @@
             String[] urlPath = pathInfo.split("/", 3);
             
             // if we have a locale, deal with it
-            if(urlPath[0].indexOf("_") != -1) {
+            if(this.isLocale(urlPath[0])) {
                 weblogLocale = urlPath[0];
                 
+                // no extra path info specified
                 if(urlPath.length == 2) {
                     weblogRequestContext = urlPath[1];
                     weblogRequestData = null;
+                    
+                // request contains extra path info
                 } else if(urlPath.length == 3) {
                     weblogRequestContext = urlPath[1];
                     weblogRequestData = urlPath[2];
@@ -56,11 +65,14 @@
                 weblogLocale = null;
                 weblogRequestContext = urlPath[0];
                 
-                // if we didn't have a locale then we split too much
-                if(urlPath.length > 2) {
-                    weblogRequestData = urlPath[1] + "/" + urlPath[2];
-                } else {
+                // last part of request is extra path info
+                if(urlPath.length == 2) {
                     weblogRequestData = urlPath[1];
+                    
+                // if we didn't have a locale then we have split too much
+                // so we reassemble the last 2 path elements together
+                } else if(urlPath.length == 3) {
+                    weblogRequestData = urlPath[1] + "/" + urlPath[2];
                 }
             }
             
