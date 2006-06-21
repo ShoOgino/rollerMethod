@@ -27,17 +27,6 @@
         if (toolboxContext != null) {
             // add MessageTool to VelocityContext
             ctx.put("text", toolboxContext.internalGet("text"));
-            
-            /*
-            Object[] keys = toolboxContext.internalGetKeys();
-            for (int i=0;i<keys.length;i++) {
-                String key = (String)keys[i];
-                System.out.println("key = "+key);
-                Object tool = toolboxContext.get(key);
-                System.out.println("tool = "+tool);
-                ctx.put(key, tool);
-            }
-             */
         }
         
         return toolboxContext;

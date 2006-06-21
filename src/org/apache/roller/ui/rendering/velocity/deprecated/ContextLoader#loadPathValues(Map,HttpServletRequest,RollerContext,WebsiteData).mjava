@@ -1,15 +1,15 @@
     /**
      * Load URL paths useful in page templates.
      */
-    protected static void loadPathValues(
-            Map ctx,  RollerRequest rreq,
+    private static void loadPathValues(
+            Map ctx,
+            HttpServletRequest request,
             RollerContext rollerCtx,
             WebsiteData   website)
             throws RollerException {
         
         mLogger.debug("Loading path values");
         
-        HttpServletRequest request = rreq.getRequest();
         String url = null;
         if (website != null  && !"zzz_none_zzz".equals(website.getHandle())) {
             url = OldUtilities.escapeHTML(
@@ -22,7 +22,7 @@
         ctx.put("baseURL",    rollerCtx.getContextUrl( request ) );
         ctx.put("absBaseURL", rollerCtx.getAbsoluteContextUrl( request ) );
         ctx.put("ctxPath",    request.getContextPath() );
-        ctx.put("uploadPath", ContextLoader.figureResourcePath( rreq ) );
+        ctx.put("uploadPath", ContextLoader.figureResourcePath());
         
         try {
             URL absUrl = RequestUtils.absoluteURL(request, "/");

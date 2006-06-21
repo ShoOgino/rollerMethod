@@ -2,11 +2,11 @@
      * If there is an ERROR or STATUS message in the session,
      * place it into the Context for rendering later.
      */
-    private static void loadStatusMessage(Map ctx, RollerRequest rreq) {
+    private static void loadStatusMessage(Map ctx, HttpServletRequest req) {
         
         mLogger.debug("Loading status message");
         
-        HttpSession session = rreq.getRequest().getSession(false);
+        HttpSession session = req.getSession(false);
         String msg = null;
         if (session != null)
             msg = (String)session.getAttribute(RollerSession.ERROR_MESSAGE);

@@ -1,15 +1,14 @@
     /**
      * Load objects needed for RSS and Atom newsfeed generation.
      */
-    protected static void loadRssValues(
+    private static void loadRssValues(
             Map ctx,
-            RollerRequest rreq,
-            WebsiteData website)
+            HttpServletRequest request,
+            WebsiteData website,
+            WeblogCategoryData category)
             throws RollerException {
         
         mLogger.debug("Loading rss values");
-        
-        HttpServletRequest request = rreq.getRequest();
         
         int entryLength = -1;
         String sExcerpts = request.getParameter("excerpts");
@@ -32,9 +31,9 @@
         
         String catname = null;
         String catPath = null;
-        if ( rreq.getWeblogCategory() != null ) {
-            catname = rreq.getWeblogCategory().getName();
-            catPath = rreq.getWeblogCategory().getPath();
+        if (category != null ) {
+            catname = category.getName();
+            catPath = category.getPath();
         }
         ctx.put("catname", (catname!=null) ? catname : "");
         ctx.put("catPath", (catPath != null) ? catPath : "");

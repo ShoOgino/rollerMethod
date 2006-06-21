@@ -1,23 +1,13 @@
     /**
      * Load website object and related objects.
      */
-    protected static WebsiteData loadWeblogValues(
+    private static WebsiteData loadWeblogValues(
             Map ctx,
-            RollerRequest rreq,
-            RollerContext rollerCtx )
-            throws RollerException {
+            WebsiteData weblog,
+            HttpServletRequest request) throws RollerException {
         
         Roller mRoller = RollerFactory.getRoller();
         Map props = mRoller.getPropertiesManager().getProperties();
-        
-        WebsiteData weblog = rreq.getWebsite();
-        if (weblog == null && rreq.getRequest().getParameter("entry") != null) {
-            String handle = rreq.getRequest().getParameter("entry");
-            weblog = RollerFactory.getRoller().getUserManager().getWebsiteByHandle(handle);
-        }
-        if (weblog == null && rreq.getRequest().getAttribute(RollerRequest.OWNING_WEBSITE) != null) {
-            weblog = (WebsiteData)rreq.getRequest().getAttribute(RollerRequest.OWNING_WEBSITE);
-        }
         
         if (weblog != null) {
             ctx.put("userName",         weblog.getHandle());
@@ -62,8 +52,7 @@
         ctx.put("siteShortName", siteShortName);
         
         // add language of the session (using locale of viewer set by Struts)
-        ctx.put("viewLocale",
-                LanguageUtil.getViewLocale(rreq.getRequest()));
+        ctx.put("viewLocale", LanguageUtil.getViewLocale(request));
         mLogger.debug("context viewLocale = "+ctx.get( "viewLocale"));
         
         // if there is an "_entry" page, only load it once

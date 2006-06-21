@@ -1,12 +1,12 @@
     /**
      * Load useful utility objects for string and date formatting.
      */
-    protected static void loadUtilityObjects(
+    private static void loadUtilityObjects(
             Map ctx,
-            RollerRequest rreq,
+            HttpServletRequest request,
             RollerContext rollerCtx,
-            WebsiteData website)
-            throws RollerException {
+            WebsiteData website,
+            Template page) throws RollerException {
         
         mLogger.debug("Loading utility objects");
         
@@ -25,7 +25,7 @@
         // the Entry Day link.
         ctx.put("plainFormat", "yyyyMMdd");
         
-        ctx.put("page",            TemplateWrapper.wrap(rreq.getPage()));
+        ctx.put("page",            TemplateWrapper.wrap(page));
         ctx.put("utilities",       new OldUtilities() );
         ctx.put("stringUtils",     new OldStringUtils() );
         ctx.put("rollerVersion",   rollerCtx.getRollerVersion() );
@@ -33,6 +33,6 @@
         ctx.put("rollerBuildUser", rollerCtx.getRollerBuildUser() );
         ctx.put("newsfeedCache",   NewsfeedCache.getInstance() );
         
-        ctx.put("requestParameters", rreq.getRequest().getParameterMap());
+        ctx.put("requestParameters", request.getParameterMap());
     }
 

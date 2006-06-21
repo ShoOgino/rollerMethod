@@ -1,15 +1,12 @@
     /**
      * Load comments for one weblog entry and related objects.
      */
-    protected static void loadCommentValues(
-            Map       ctx,
-            RollerRequest rreq,
-            RollerContext rollerCtx )
-            throws RollerException {
+    private static void loadCommentValues(
+            Map ctx,
+            HttpServletRequest request,
+            WeblogEntryData entry) throws RollerException {
         
         mLogger.debug("Loading comment values");
-        
-        HttpServletRequest request = rreq.getRequest();
         
         String escapeHtml =
                 RollerRuntimeConfig.getProperty("users.comments.escapehtml");
@@ -42,7 +39,6 @@
             ctx.put("previewComments",list);
         }
         
-        WeblogEntryData entry = rreq.getWeblogEntry();
         if (entry.getStatus().equals(WeblogEntryData.PUBLISHED)) {
             ctx.put("entry", WeblogEntryDataWrapper.wrap(entry));
         }
