@@ -7,27 +7,26 @@
         if (OldWeblogPageModel.VELOCITY_NULL.equals(cat)) cat = null;
         String ret = null;
         try {
-            HttpServletRequest request =
-                    (HttpServletRequest) mRollerReq.getRequest();
             HttpServletResponse response = mResponse;
             
             String selfUrl = null;
-            String pageLink = mRollerReq.getPageLink();
+            String pageLink = mPageRequest.getWeblogPage();
             if ( pageLink != null ) {
-                selfUrl = request.getContextPath() + "/page/"
+                selfUrl = mRequest.getContextPath() + "/page/"
                         + mWebsite.getHandle() + "/"+pageLink;
             } else {
-                selfUrl = request.getContextPath()+"/page/" + mWebsite.getHandle();
+                selfUrl = mRequest.getContextPath()+"/page/" + mWebsite.getHandle();
             }
             
             // setup weblog calendar model
             CalendarModel model = null;
+            Date date = mRollerReq.getDate(true);
             if ( big ) {
                 model = new BigWeblogCalendarModel(
-                        mRollerReq, response, selfUrl, cat);
+                        mRequest, response, mWebsite, date, selfUrl, cat);
             } else {
                 model = new WeblogCalendarModel(
-                        mRollerReq, response, selfUrl, cat);
+                        mRequest, response, mWebsite, date, selfUrl, cat);
             }
             
             // save model in JSP page context so CalendarTag can find it
@@ -38,9 +37,7 @@
             calTag.setPageContext(mPageContext);
             calTag.setName("calendar");
             calTag.setModel("calendarModel");
-            //calTag.setLocale(mRollerReq.getWebsite().getLocaleInstance());
-            calTag.setLocale(LanguageUtil.getViewLocale(request));
-            //calTag.setTimeZone(mRollerReq.getWebsite().getTimeZoneInstance());
+            calTag.setLocale(LanguageUtil.getViewLocale(mRequest));
             if ( big ) {
                 calTag.setClassSuffix("Big");
             }

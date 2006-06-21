@@ -12,11 +12,11 @@
         HttpServletRequest request = rreq.getRequest();
         String url = null;
         if (website != null  && !"zzz_none_zzz".equals(website.getHandle())) {
-            url = Utilities.escapeHTML(
+            url = OldUtilities.escapeHTML(
                       rollerCtx.getAbsoluteContextUrl(request) 
                           + "/page/" + website.getHandle());
         } else {
-            url= Utilities.escapeHTML(rollerCtx.getAbsoluteContextUrl(request));
+            url= OldUtilities.escapeHTML(rollerCtx.getAbsoluteContextUrl(request));
         }
         ctx.put("websiteURL", url);
         ctx.put("baseURL",    rollerCtx.getContextUrl( request ) );

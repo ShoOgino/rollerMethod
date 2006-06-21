@@ -6,6 +6,7 @@
         RollerRequest rreq = RollerRequest.getRollerRequest(request);
         WebsiteData weblog = rreq.getWebsite();
         String pageLink = rreq.getPageLink();
+        Date date = rreq.getDate(true);
         
         if ("nil".equals(cat)) cat = null;        
         String ret = null;
@@ -20,9 +21,9 @@
 
             CalendarModel model = null;
             if (big) {
-                model = new BigWeblogCalendarModel(rreq, response, selfUrl, cat);
+                model = new BigWeblogCalendarModel(request, response, weblog, date, selfUrl, cat);
             } else {
-                model = new WeblogCalendarModel(rreq, response, selfUrl, cat);
+                model = new WeblogCalendarModel(request, response, weblog, date, selfUrl, cat);
             }
             
             // save model in JSP page context so CalendarTag can find it

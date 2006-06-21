@@ -1,0 +1,29 @@
+    /**
+     * Initialize VelocityHelper, setting the variables it will be hiding from
+     * the Velocimacros.
+     */
+    public OldPageHelper(HttpServletRequest request,
+                      HttpServletResponse response,
+                      Map ctx,
+                      WebsiteData website,
+                      PageContext pageContext,
+                      WeblogPageRequest pageRequest) throws RollerException {
+        
+        // old roller request, going to be eoled
+        mRollerReq = RollerRequest.getRollerRequest(request);
+        
+        // store the parsed page request
+        mPageRequest = pageRequest;
+        
+        mWebsite = website;
+        mPageContext = pageContext;
+        
+        // save original request and response objects
+        mRequest = request;
+        mResponse = response;
+        
+        Roller roller = RollerFactory.getRoller();
+        PluginManager ppmgr = roller.getPagePluginManager();
+        mPagePlugins = ppmgr.getWeblogEntryPlugins(mWebsite, ctx);
+    }
+

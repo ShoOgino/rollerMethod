@@ -1,12 +1,12 @@
-	public WeblogCalendarModel(
-        RollerRequest rreq, HttpServletResponse res, String url, String cat)
+	public WeblogCalendarModel(HttpServletRequest req, HttpServletResponse res, 
+                WebsiteData website, Date date, String url, String cat)
 	{
-        mRollerReq = rreq;
-		mReq = rreq.getRequest();
+		mReq = req;
 		mRes = res;
-        mSelfUrl = url;
+                mWebsite = website;
+                mSelfUrl = url;
         
-        setDay( mRollerReq.getDate(true) );
+        setDay( date );
         
         // If category is specified in URL, then perpetuate it
         String catKey = RollerRequest.WEBLOGCATEGORYNAME_KEY;

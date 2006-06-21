@@ -5,13 +5,21 @@
     public static void setupContext(
             Map                 ctx, 
             HttpServletRequest  request, 
-            HttpServletResponse response )
+            HttpServletResponse response)
             throws RollerException {
         
         mLogger.debug("setupContext( ctx = "+ctx+")");
         
         RollerRequest rreq = RollerRequest.getRollerRequest(request);
         RollerContext rollerCtx = RollerContext.getRollerContext( );
+        
+        // if this is a weblog page request then parse it out
+        WeblogPageRequest pageRequest = null;
+        try {
+            pageRequest = new WeblogPageRequest(request);
+        } catch(Exception e) {
+            // ignored, just assume it's not a page request
+        }
         
         try {
             // Add default page model object to context
@@ -39,7 +47,9 @@
         }
         
         // Add Velocity page helper to context
-        OldPageHelper pageHelper = new OldPageHelper(request, response, ctx);
+        WebsiteData weblog = rreq.getWebsite();
+        PageContext pageContext = rreq.getPageContext();
+        OldPageHelper pageHelper = new OldPageHelper(request, response, ctx, weblog, pageContext, pageRequest);
         Roller roller = RollerFactory.getRoller();
         ctx.put("pageHelper", pageHelper);
                 

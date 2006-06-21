@@ -1,10 +1,10 @@
     /**
      * Pass the String through any PagePlugins that have been
-     * assigned to the OldPageHelper, as selected by the Entry.
-     * 
+     * assigned to the PageHelper, as selected by the Entry.
+     *
      * @param entry Entry being rendered.
      * @param str   String to which plugins are to be applied.
-     * @return Result of applying plugins to str.
+     * @return      Result of applying plugins to str.
      */
     public String renderPlugins(WeblogEntryDataWrapper entry, String str) {
         String ret = str;
@@ -14,12 +14,6 @@
             List entryPlugins = entry.getPluginsList();
             // if no Entry plugins, don't bother looping.
             if (entryPlugins != null && !entryPlugins.isEmpty()) {
-                // need to do this to tell ReadMore not to do its job
-                // if we are in the "view one Entry" page.
-                boolean singleEntry = false;
-                if (mRollerReq == null || mRollerReq.getWeblogEntry() != null) {
-                    singleEntry = true;
-                }
                 
                 // now loop over mPagePlugins, matching
                 // against Entry plugins (by name):

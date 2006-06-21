@@ -11,9 +11,9 @@
      */
     public Locale[] getSupportedLanguages() {
         Locale currentLocale =
-                (Locale) mRollerReq.getRequest().getSession().getAttribute(Globals.LOCALE_KEY);
+                (Locale) mRequest.getSession().getAttribute(Globals.LOCALE_KEY);
         if (currentLocale==null) {
-            currentLocale = mRollerReq.getRequest().getLocale();
+            currentLocale = mRequest.getLocale();
         }
         
         Locale[] supportedLanguages =
