@@ -13,7 +13,7 @@
             for (int i=0; i<models.length; i++) {
                 currentModel = models[i];
                 Class modelClass = Class.forName(currentModel);
-                PageModel pageModel = (PageModel) modelClass.newInstance();
+                RenderModel pageModel = (RenderModel) modelClass.newInstance();
                 pageModel.init(initData);            
                 model.put(pageModel.getModelName(), pageModel);
             }

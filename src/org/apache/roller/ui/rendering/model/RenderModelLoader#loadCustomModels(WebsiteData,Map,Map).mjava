@@ -14,7 +14,7 @@
             for (int i=0; i<weblogModels.length; i++) {
                 try { // don't die just because of one bad custom model
                     Class modelClass = Class.forName(weblogModels[i]);
-                    PageModel pageModel = (PageModel)modelClass.newInstance();
+                    RenderModel pageModel = (RenderModel)modelClass.newInstance();
                     pageModel.init(initData);             
                     model.put(pageModel.getModelName(), pageModel);
                 } catch (RollerException re) {
