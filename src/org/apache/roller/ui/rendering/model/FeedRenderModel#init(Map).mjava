@@ -1,0 +1,10 @@
+    /** Init page model based on request */
+    public void init(Map map) throws RollerException {
+        HttpServletRequest request = (HttpServletRequest)map.get("request");
+        WeblogFeedRequest parsed = new WeblogFeedRequest(request);
+        categoryPath = parsed.getWeblogCategory();
+        Roller roller = RollerFactory.getRoller();
+        UserManager umgr = roller.getUserManager();
+        weblog = umgr.getWebsiteByHandle(parsed.getWeblogHandle(), Boolean.TRUE);
+    }
+
