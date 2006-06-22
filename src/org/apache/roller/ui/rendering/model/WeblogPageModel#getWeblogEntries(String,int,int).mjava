@@ -1,10 +1,12 @@
     /**
-     * Get most recent weblog entries for day or month specified by request.
-     * @return Map of Lists of weblog entry objects, keyed by 8-char date strings.
+     * Get weblog entries as specified by the date and category specified or 
+     * implied by the URL.  
+     * @param cat Category restriction or null for all categories
+     * @return List of WeblogEntryDataWrapper objects.
      */
-    public Map getWeblogEntriesMonthMap(String cat, int offset) {
+    public List getWeblogEntries(String cat, int offset, int length) {        
         if (cat != null && "nil".equals(cat)) cat = null;
-        Map ret = new HashMap();
+        List ret = new ArrayList();
         try {
             Roller roller = RollerFactory.getRoller();
             WeblogManager wmgr = roller.getWeblogManager();
@@ -35,10 +37,9 @@
                 cal = Calendar.getInstance();
             }
             
-            int limit = weblog.getEntryDisplayCount();
             Date startDate = null;
             Date endDate = date;
-            if (endDate == null) endDate = new Date();
+            if (endDate == null) endDate = new Date(); 
             if (isDaySpecified) {
                 // URL specified a specific day so get all entries for it
                 startDate = DateUtil.getStartOfDay(endDate, cal);
@@ -48,37 +49,29 @@
                 startDate = DateUtil.getStartOfMonth(endDate, cal);
                 endDate = DateUtil.getEndOfMonth(endDate, cal);
             }
-            Map mmap = RollerFactory.getRoller().getWeblogManager().getWeblogEntryObjectMap(
-                    weblog,
-                    startDate,
-                    endDate,
-                    chosenCatPath,
-                    WeblogEntryData.PUBLISHED, 
-                    0, 
-                    weblog.getEntryDisplayCount());
+            List entries = wmgr.getWeblogEntries(
+                    weblog,        // weblog
+                    null,          // user
+                    startDate,     // startDate
+                    endDate,       // endDate
+                    chosenCatPath, // catName
+                    WeblogEntryData.PUBLISHED, // status
+                    null,          // sortby (null for pubTime)
+                    offset,        // offset into results
+                    length); // max results to return
             
-            // need to wrap pojos
-            java.util.Date key = null;
-            Iterator days = mmap.keySet().iterator();
-            while(days.hasNext()) {
-                key = (java.util.Date)days.next();
-                
-                // now we need to go through each entry in a day and wrap
-                List wrappedEntries = new ArrayList();
-                List entries = (List) mmap.get(key);
-                for(int i=0; i < entries.size(); i++) {
-                    wrappedEntries.add(i,
-                            WeblogEntryDataWrapper.wrap((WeblogEntryData)entries.get(i)));
-                }
-                mmap.put(key, wrappedEntries);
+            // wrap pojos
+            ret = new ArrayList(entries.size());
+            Iterator it = entries.iterator();
+            int i=0;
+            while(it.hasNext()) {
+                ret.add(i, WeblogEntryDataWrapper.wrap((WeblogEntryData) it.next()));
+                i++;
             }
-            
-            ret = mmap;
-            
             setFirstAndLastEntries( ret );
-            
+                        
         } catch (Exception e) {
-            log.error("ERROR: getting entry month map", e);
+            log.error("ERROR: getting entry list", e);
         }
         return ret;
     }

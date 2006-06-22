@@ -2,7 +2,7 @@
      * Get most recent approved and non-spam comments in weblog.
      * @return List of CommentDataWrapper objects.
      */
-    public List getComments(int offset) {        
+    public List getComments(int offset, int length) {        
         List recentComments = new ArrayList();
         try {
             WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
@@ -17,7 +17,7 @@
                     Boolean.FALSE, // no spam
                     true,          // we want reverse chrono order
                     offset,        // offset
-                    weblog.getEntryDisplayCount()); // length
+                    length);       // length
             
             // wrap pojos
             recentComments = new ArrayList(recent.size());
