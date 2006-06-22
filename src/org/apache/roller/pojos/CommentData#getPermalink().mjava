@@ -1,0 +1,12 @@
+    /** 
+     * Get comment's permalink, suitable for use as an RSS guid or Atom id.
+     * @roller.wrapPojoMethod type="simple"
+     */
+    public String getPermalink() {
+        String ret = null;
+        if (weblogEntry != null) {
+            ret = weblogEntry.getPermalink() + "#comment-" + postTime.getTime();
+        }
+        return ret;
+    }
+
