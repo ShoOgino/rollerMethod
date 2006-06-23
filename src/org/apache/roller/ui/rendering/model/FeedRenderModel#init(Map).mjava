@@ -1,7 +1,11 @@
-    /** Init page model based on request */
-    public void init(Map map) throws RollerException {
-        HttpServletRequest request = (HttpServletRequest)map.get("request");
-        WeblogFeedRequest parsed = new WeblogFeedRequest(request);
+    public void init(Map initData) throws RollerException {
+        
+        // we expect the init data to contain a feedRequest object
+        WeblogFeedRequest parsed = (WeblogFeedRequest) initData.get("feedRequest");
+        if(parsed == null) {
+            throw new RollerException("expected feedRequest from init data");
+        }
+        
         categoryPath = parsed.getWeblogCategory();
         Roller roller = RollerFactory.getRoller();
         UserManager umgr = roller.getUserManager();

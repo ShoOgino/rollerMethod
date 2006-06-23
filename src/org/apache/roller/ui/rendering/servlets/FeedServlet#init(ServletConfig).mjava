@@ -5,7 +5,7 @@
         
         super.init(servletConfig);
         
-        log.info("Initializing weblog feed servlet");
+        log.info("Initializing FeedServlet");
         
         Map cacheProps = new HashMap();
         Enumeration allProps = RollerConfig.keys();
@@ -20,7 +20,7 @@
             }
         }
         
-        log.info(cacheProps);
+        log.info("Feed cache = "+cacheProps);
         
         contentCache = CacheManager.constructCache(this, cacheProps);
     }
