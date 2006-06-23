@@ -1,0 +1,13 @@
+    /**
+     * Load set of common search models.
+     *
+     * This is the list of models defined by rendering.searchRendererModels
+     */
+    public static void loadSearchModels(Map model, Map initData)
+            throws RollerException {
+        
+        String searchModels = 
+                RollerConfig.getProperty("rendering.searchRenderModels");
+        loadModels(searchModels, model, initData);
+    }
+
