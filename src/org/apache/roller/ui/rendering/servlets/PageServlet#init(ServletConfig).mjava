@@ -5,7 +5,7 @@
         
         super.init(servletConfig);
         
-        log.info("Initializing weblog page servlet");
+        log.info("Initializing PageServlet");
         
         this.excludeOwnerPages = 
                 RollerConfig.getBooleanProperty(this.CACHE_ID+".excludeOwnerEditPages");
@@ -23,7 +23,7 @@
             }
         }
         
-        log.info(cacheProps);
+        log.info("Page cache = "+cacheProps);
         
         contentCache = CacheManager.constructCache(this, cacheProps);
     }
