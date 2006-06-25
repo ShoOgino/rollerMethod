@@ -1,19 +1,18 @@
     public void testRefreshEntries() {
         try {      
-            PlanetManager planet = getRoller().getPlanetManager();
+            PlanetManager planet = RollerFactory.getRoller().getPlanetManager();
             
             // run sync task to fill aggregator with websites created by super
             SyncWebsitesTask syncTask = new SyncWebsitesTask();
-            syncTask.init(getRoller(), "dummy");
+            syncTask.init(RollerFactory.getRoller(), "dummy");
             syncTask.run();           
             
             RefreshEntriesTask refreshTask = new RefreshEntriesTask();
-            refreshTask.init(getRoller(), "dummy");
+            refreshTask.init(RollerFactory.getRoller(), "dummy");
             refreshTask.run();
             
             List agg = planet.getAggregation(null, null, 0, -1);
-            int size = agg.size();
-            assertEquals(mBlogCount * mExpectedPublishedEntryCount, size);
+            assertEquals(3, agg.size());
         }
         catch (Exception e) {
             e.printStackTrace();

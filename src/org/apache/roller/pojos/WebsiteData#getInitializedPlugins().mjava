@@ -1,0 +1,16 @@
+    /**
+     * Get initialized plugins for use during rendering process.
+     */
+    public Map getInitializedPlugins() {
+        if (initializedPlugins == null) {
+            try {
+                Roller roller = RollerFactory.getRoller();
+                PluginManager ppmgr = roller.getPagePluginManager();
+                initializedPlugins = ppmgr.getWeblogEntryPlugins(this, new HashMap()); 
+            } catch (Exception e) {
+                this.mLogger.error("ERROR: initializing plugins");
+            }
+        }
+        return initializedPlugins;
+    }
+

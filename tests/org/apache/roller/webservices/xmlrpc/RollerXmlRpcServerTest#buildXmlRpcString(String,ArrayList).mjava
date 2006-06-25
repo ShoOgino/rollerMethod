@@ -1,12 +1,11 @@
     /**
      * Build an XML-RPC message from methodName and params.
-     * 
+     *
      * @param methodName
      * @param params
      * @return
      */
-    private String buildXmlRpcString(String methodName, ArrayList params)
-    {
+    private String buildXmlRpcString(String methodName, ArrayList params) {
         StringBuffer buf = new StringBuffer("<?xml version=\"1.0\"?>");
         buf.append("<methodCall>");
         buf.append("<methodName>").append(methodName).append("</methodName>");
@@ -16,14 +15,11 @@
             buf.append("<param><value>");
             Object param = it.next();
             String paramType = (String)typeMap.get(param.getClass());
-            if (paramType != null)
-            {
+            if (paramType != null) {
                 buf.append("<").append(paramType).append(">")
-                   .append(param)
-                   .append("</").append(paramType).append(">");                    
-            }
-            else
-            {    
+                .append(param)
+                .append("</").append(paramType).append(">");
+            } else {
                 buf.append("<string>").append(param).append("</string>");
             }
             buf.append("</value></param>");

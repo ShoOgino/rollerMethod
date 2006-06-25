@@ -22,7 +22,7 @@
                 Query query = session.createQuery(sb.toString());
                 query.setEntity("group", group);
                 query.setFirstResult(offset);
-                query.setMaxResults(length);
+                if (length != -1) query.setMaxResults(length);
                 query.setParameter("endDate", endDate);
                 if (startDate != null) {
                     query.setParameter("startDate", startDate);
@@ -40,7 +40,7 @@
                 sb.append("order by entry.pubTime desc");
                 Query query = session.createQuery(sb.toString());
                 query.setFirstResult(offset);
-                query.setMaxResults(length);
+                if (length != -1) query.setMaxResults(length);
                 query.setParameter("endDate", endDate);
                 if (startDate != null) {
                     query.setParameter("startDate", startDate);

@@ -1,23 +1,15 @@
-    public void testSmileEmoticon() throws Exception
-    {
-        MockServletContext ctx = getMockFactory().getMockServletContext();
-        ctx.setServletContextName("/roller");      
-        
-        MockHttpServletRequest request = getMockFactory().getMockRequest();
-        request.setContextPath("/roller");
-       
+    public void testSmileEmoticon() throws Exception {
         doFilters();
-
+        
         SmileysPlugin plugin = new SmileysPlugin();
-        plugin.init(mWebsite, null);
+        plugin.init(testWeblog, null);
         assertTrue( SmileysPlugin.smileyPatterns.length > 0 );
-
+        
         String test = "put on a happy :-) face";
-        String expected = 
-            "put on a happy <img src=\"/roller/images/smileys/smile.gif" +
-            "\" class=\"smiley\" alt=\":-)\" title=\":-)\"> face";
+        String expected =
+                "put on a happy <img src=\"http://localhost:8080/roller/images/smileys/smile.gif" +
+                "\" class=\"smiley\" alt=\":-)\" title=\":-)\" /> face";
         String result = plugin.render(null, test);
-        //System.out.println(result);
         assertEquals(expected, result);
     }
 

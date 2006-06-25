@@ -1,0 +1,32 @@
+    public void setUp() throws Exception {
+        getMockFactory().refresh();
+        
+        servletModule = new ServletTestModule(getMockFactory());
+        strutsModule = new ActionTestModule(getStrutsMockFactory());
+        
+        MockServletContext ctx = getMockFactory().getMockServletContext();
+        ctx.setServletContextName("/roller"); 
+        ctx.setRealPath("/", "");        
+        rollerContext = new MockRollerContext();
+        rollerContext.init(ctx);
+        
+        MockHttpServletRequest request = getMockFactory().getMockRequest();
+        request.setContextPath("/roller");
+        
+        JspFactory.setDefaultFactory(new MockJspFactory(getMockFactory()));
+        
+        // setup resources needed for running Velocity
+        MockServletContext app = getMockFactory().getMockServletContext();
+        app.addResourcePath("/WEB-INF/toolbox.xml","/WEB-INF/toolbox.xml");
+        app.setResourceAsStream(
+                "/WEB-INF/toolbox.xml", 
+                new FileInputStream("./WEB-INF/toolbox.xml"));        
+        MockServletConfig config = getMockFactory().getMockServletConfig();
+        config.setInitParameter(
+                "org.apache.velocity.properties","WEB-INF/velocity.properties");        
+        MapMessageResources resources = new MapMessageResources();
+        resources.putMessages(
+                "WEB-INF/classes/ApplicationResources.properties");
+        strutsModule.setResources(resources);
+    }
+

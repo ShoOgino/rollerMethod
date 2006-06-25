@@ -5,8 +5,8 @@
      */
     public boolean isSiteWideWeblog(String weblogHandle) {
         
-        boolean siteWide = 
-                RollerConfig.getBooleanProperty("frontpage.weblog.aggregatedFeeds");
+        boolean siteWide = RollerRuntimeConfig.getBooleanProperty(
+                "site.frontpage.weblog.aggregated");
         
         return (isFrontPageWeblog(weblogHandle) && siteWide);
     }

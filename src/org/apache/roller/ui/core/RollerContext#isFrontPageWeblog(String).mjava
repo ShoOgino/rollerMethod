@@ -4,7 +4,8 @@
      */
     public boolean isFrontPageWeblog(String weblogHandle) {
         
-        String frontPageHandle = RollerConfig.getProperty("frontpage.weblog.handle");
+        String frontPageHandle = RollerRuntimeConfig.getProperty(
+                "site.frontpage.weblog.handle");
         
         return (frontPageHandle.equals(weblogHandle));
     }

@@ -1,10 +1,10 @@
-    public void setUp() throws Exception
-    {
-        super.setUp();       
+    public void setUp() throws Exception {
         getMockFactory().refresh();
-        strutsModule = new ActionTestModule(getStrutsMockFactory()); 
+        
+        strutsModule = new ActionTestModule(getStrutsMockFactory());
         servletModule = new ServletTestModule(getStrutsMockFactory());
         
+        // Setup mocks needed to run a Struts action 
         MapMessageResources resources = new MapMessageResources();
         resources.putMessages("WEB-INF/classes/ApplicationResources.properties");
         strutsModule.setResources(resources);

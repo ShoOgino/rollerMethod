@@ -1,0 +1,12 @@
+    public boolean getUserAuthorizedToAdmin(WebsiteDataWrapper weblog) {
+        try {
+            RollerSession rses = RollerSession.getRollerSession(request);
+            if (rses.getAuthenticatedUser() != null) {
+                return rses.isUserAuthorizedToAdmin(weblog.getPojo());
+            }
+        } catch (Exception e) {
+            log.warn("ERROR: checking user authorization", e);
+        }
+        return false;
+    }
+

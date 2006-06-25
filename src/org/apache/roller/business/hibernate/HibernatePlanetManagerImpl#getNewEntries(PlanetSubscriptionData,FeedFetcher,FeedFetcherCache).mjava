@@ -5,13 +5,13 @@
         
         Set newEntries = new TreeSet();
         SyndFeed feed = null;
-        URL feedUrl = null;
+        URL feedURL = null;
         Date lastUpdated = new Date();
         try {
-            feedUrl = new URL(sub.getFeedURL());
+            feedURL = new URL(sub.getFeedURL());
             log.debug("Get feed from cache "+sub.getFeedURL());
-            feed = feedFetcher.retrieveFeed(feedUrl);
-            SyndFeedInfo feedInfo = feedInfoCache.getFeedInfo(feedUrl);
+            feed = feedFetcher.retrieveFeed(feedURL);
+            SyndFeedInfo feedInfo = feedInfoCache.getFeedInfo(feedURL);
             if (feedInfo.getLastModified() != null) {
                 long lastUpdatedLong =
                         ((Long)feedInfo.getLastModified()).longValue();
@@ -69,11 +69,11 @@
                         new PlanetEntryData(feed, romeEntry, sub);
                 if (entry.getPubTime() == null) {
                     log.debug(
-                            "No published date, assigning fake date for "+feedUrl);
+                            "No published date, assigning fake date for "+feedURL);
                     entry.setPubTime(new Timestamp(cal.getTimeInMillis()));
                 }
                 if (entry.getPermaLink() == null) {
-                    log.warn("No permalink, rejecting entry from "+feedUrl);
+                    log.warn("No permalink, rejecting entry from "+feedURL);
                 } else {
                     newEntries.add(entry);
                 }

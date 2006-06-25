@@ -1,0 +1,36 @@
+    /**
+     * Get up to 100 most recent published entries in weblog.
+     * @param cat Category path or null for no category restriction
+     * @param length Max entries to return (1-100)
+     * @return List of WeblogEntryDataWrapper objects.
+     */
+    public List getRecentWeblogEntries(String cat, int length) {  
+        if (cat != null && "nil".equals(cat)) cat = null;
+        if (length > 100) length = 100;
+        if (length < 1) return Collections.emptyList();
+        List recentEntries = new ArrayList();
+        try {
+            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+            List recent = wmgr.getWeblogEntries(
+                    weblog, 
+                    null,       // user
+                    null,       // startDate
+                    new Date(), // endDate
+                    cat,        // categoryPath or null
+                    WeblogEntryData.PUBLISHED, 
+                    "pubTime",  // sortby
+                    0,          // offset
+                    length); 
+            
+            // wrap pojos
+            recentEntries = new ArrayList(recent.size());
+            Iterator it = recent.iterator();
+            while(it.hasNext()) {
+                recentEntries.add(WeblogEntryDataWrapper.wrap((WeblogEntryData) it.next()));
+            }
+        } catch (RollerException e) {
+            log.error("ERROR: getting comments", e);
+        }
+        return recentEntries;
+    }
+
