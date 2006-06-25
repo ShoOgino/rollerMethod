@@ -5,8 +5,8 @@
      */
     public List getRecentComments(int length) {   
         if (length > 100) length = 100;
-        if (length < 1) return Collections.emptyList();
         List recentComments = new ArrayList();
+        if (length < 1) return recentComments;
         try {
             WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
             List recent = wmgr.getComments(
