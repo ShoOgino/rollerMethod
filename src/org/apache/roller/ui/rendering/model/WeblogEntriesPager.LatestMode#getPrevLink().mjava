@@ -1,0 +1,10 @@
+        public String getPrevLink() {
+            String ret = null;
+            if (offset > 0) {
+                int prevOffset = offset + length;
+                prevOffset = (prevOffset < 0) ? 0 : prevOffset;
+                ret = weblog.getURL() + "&offset=" + prevOffset;
+            }
+            return ret;
+        }
+

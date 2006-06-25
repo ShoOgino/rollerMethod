@@ -1,0 +1,9 @@
+        public String getNextCollectionLink() {
+            String ret = null;
+            if (nextMonth != null) {
+                String next = DateUtil.format6chars(nextMonth); 
+                ret = weblog.getURL() + "/date/" + next;
+            }
+            return ret;
+        }
+

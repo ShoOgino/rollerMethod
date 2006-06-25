@@ -1,0 +1,9 @@
+        public String getNextLink() {
+            String ret = null;
+            if (more) {
+                int nextOffset = offset + length;
+                ret = weblog.getURL() + "&offset=" + nextOffset;
+            }
+            return ret;
+        }
+

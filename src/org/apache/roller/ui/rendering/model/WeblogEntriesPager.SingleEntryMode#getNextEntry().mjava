@@ -1,0 +1,16 @@
+        private WeblogEntryData getNextEntry() {
+            if (nextEntry == null) try {
+                Roller roller = RollerFactory.getRoller();
+                WeblogManager wmgr = roller.getWeblogManager();
+                nextEntry = wmgr.getNextEntry(entry, chosenCatPath);
+                // make sure that entry is published and not to future
+                if (nextEntry != null && nextEntry.getPubTime().after(new Date()) 
+                    && nextEntry.getStatus().equals(WeblogEntryData.PUBLISHED)) {
+                    nextEntry = null;
+                }
+            } catch (RollerException e) {
+                log.error("ERROR: getting next entry", e);
+            }
+            return nextEntry;
+        }
+
