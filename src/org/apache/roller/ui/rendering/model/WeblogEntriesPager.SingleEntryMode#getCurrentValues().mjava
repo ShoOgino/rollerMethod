@@ -1,3 +1,6 @@
+        /**
+         * Wrap entry up in map of lists.
+         */
         public Map getCurrentValues() {
             if (entries == null) try {
                 Roller roller = RollerFactory.getRoller();
@@ -7,9 +10,8 @@
                     entry = null;
                 } else {
                     entries = new TreeMap();
-                    entries.put(
-                        new Date(entry.getPubTime().getTime()), 
-                        Collections.singletonList(entry));
+                    entries.put(new Date(entry.getPubTime().getTime()), 
+                        Collections.singletonList(WeblogEntryDataWrapper.wrap(entry)));
                 } 
             } catch (Exception e) {
                 log.error("ERROR: fetching entry");
