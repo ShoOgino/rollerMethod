@@ -2,12 +2,16 @@
         
         super.init(config);
         
+        log.info("Initializing ResourceServlet");
+        
         this.context = config.getServletContext();
         
         try {
             this.upload_dir = RollerFactory.getRoller().getFileManager().getUploadDir();
-            mLogger.debug("upload dir is ["+this.upload_dir+"]");
-        } catch(Exception e) { mLogger.warn(e); }
+            log.debug("upload dir is ["+this.upload_dir+"]");
+        } catch(Exception e) { 
+            log.error(e);
+        }
         
     }
 

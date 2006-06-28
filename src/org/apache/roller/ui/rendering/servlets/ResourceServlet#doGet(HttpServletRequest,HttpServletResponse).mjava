@@ -27,8 +27,8 @@
         String resource_path = this.upload_dir + reqResource;
         File resource = new File(resource_path);
         
-        mLogger.debug("Resource requested ["+reqURI+"]");
-        mLogger.debug("Real path is ["+resource.getAbsolutePath()+"]");
+        log.debug("Resource requested ["+reqURI+"]");
+        log.debug("Real path is ["+resource.getAbsolutePath()+"]");
         
         // do a quick check to make sure the resource exits, otherwise 404
         if(!resource.exists() || !resource.canRead() || resource.isDirectory()) {
@@ -47,7 +47,7 @@
         Date ifModDate = new Date(request.getDateHeader("If-Modified-Since"));
         Date lastMod = new Date(resource.lastModified());
         if(lastMod.compareTo(ifModDate) <= 0) {
-            mLogger.debug("Resource unmodified ... sending 304");
+            log.debug("Resource unmodified ... sending 304");
             response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
             return;
         }
