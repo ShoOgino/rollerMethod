@@ -6,9 +6,6 @@
         
         log.debug("Entering");
         
-        // used for rendering
-        HashMap model = new HashMap();
-        
         WebsiteData weblog = null;
         
         WeblogPageRequest pageRequest = null;
@@ -30,8 +27,6 @@
             return;
         }
         
-        PageContext pageContext = JspFactory.getDefaultFactory().getPageContext(
-                    this, request, response,"", true, 8192, true);
         
         // figure out what we are going to render
         Template page = null;
@@ -101,7 +96,8 @@
         
         // cached content checking
         String cacheKey = this.CACHE_ID+":"+this.generateKey(pageRequest);
-        if(!this.excludeOwnerPages || !pageRequest.isLoggedIn()) {
+        if((!this.excludeOwnerPages || !pageRequest.isLoggedIn()) &&
+                request.getAttribute("skipCache") == null) {
             // we need the last expiration time for the given weblog
             long lastExpiration = 0;
             Date lastExpirationDate =
@@ -134,6 +130,7 @@
 
         
         // looks like we need to render content
+        HashMap model = new HashMap();
         try {
             RollerContext rollerContext = RollerContext.getRollerContext();
             
@@ -141,6 +138,9 @@
             Map initData = new HashMap();
             initData.put("request", request);
             initData.put("pageRequest", pageRequest);
+            
+            PageContext pageContext = JspFactory.getDefaultFactory().getPageContext(
+                    this, request, response,"", true, 8192, true);
             
             // Feeds get the weblog specific page model
             RenderModelLoader.loadPageModels(model, initData);
@@ -210,7 +210,8 @@
         response.getOutputStream().write(rendererOutput.getContent());
         
         // cache rendered content.  only cache if user is not logged in?
-        if (!this.excludeOwnerPages || !pageRequest.isLoggedIn()) {
+        if((!this.excludeOwnerPages || !pageRequest.isLoggedIn()) &&
+                request.getAttribute("skipCache") == null) {
             log.debug("PUT "+cacheKey);
             this.contentCache.put(cacheKey, new LazyExpiringCacheEntry(rendererOutput));
         } else {
