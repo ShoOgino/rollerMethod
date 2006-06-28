@@ -12,9 +12,7 @@
         
         String url = null;
         if (website != null  && !"zzz_none_zzz".equals(website.getHandle())) {
-            url = OldUtilities.escapeHTML(
-                    rollerCtx.getAbsoluteContextUrl(request)
-                    + "/page/" + website.getHandle());
+            url = OldUtilities.escapeHTML(website.getAbsoluteURL());
         } else {
             url= OldUtilities.escapeHTML(rollerCtx.getAbsoluteContextUrl(request));
         }

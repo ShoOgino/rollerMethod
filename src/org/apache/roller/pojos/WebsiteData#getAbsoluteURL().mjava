@@ -1,0 +1,9 @@
+    /** 
+     * @roller.wrapPojoMethod type="simple"
+     */
+    public String getAbsoluteURL() {
+        // TODO: ATLAS reconcile entry.getPermaLink() with new URLs
+        String relPath = RollerRuntimeConfig.getProperty("site.absoluteurl");
+        return relPath + "/" + getHandle();
+    }
+

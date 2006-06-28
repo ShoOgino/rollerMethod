@@ -52,6 +52,7 @@
         ctx.put("siteShortName", siteShortName);
         
         // add language of the session (using locale of viewer set by Struts)
+        // TODO 3.0: this will probably need tweaking for multi-lang support
         ctx.put("viewLocale", LanguageUtil.getViewLocale(request));
         mLogger.debug("context viewLocale = "+ctx.get( "viewLocale"));
         
