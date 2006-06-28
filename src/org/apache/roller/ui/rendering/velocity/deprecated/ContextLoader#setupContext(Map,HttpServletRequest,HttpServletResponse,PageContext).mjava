@@ -144,10 +144,10 @@
         ctx.put("pageHelper", pageHelper);
         
         // Load standard Roller objects and values into the context
-        WebsiteData website = loadWeblogValues(ctx, weblog, request);
-        loadPathValues(ctx, request, rollerCtx, website);
-        loadRssValues(ctx, request, website, category);
-        loadUtilityObjects(ctx, request, rollerCtx, website, page);
+        loadWeblogValues(ctx, weblog, request);
+        loadPathValues(ctx, request, rollerCtx, weblog);
+        loadRssValues(ctx, request, weblog, category);
+        loadUtilityObjects(ctx, request, rollerCtx, weblog, page);
         loadRequestParamKeys(ctx);
         loadStatusMessage(ctx, request);
         

@@ -37,7 +37,7 @@
         }
         ctx.put("catname", (catname!=null) ? catname : "");
         ctx.put("catPath", (catPath != null) ? catPath : "");
-        ctx.put("updateTime", request.getAttribute("updateTime"));
+        ctx.put("updateTime", website.getLastModified());
         ctx.put("now", new Date());
     }
 
