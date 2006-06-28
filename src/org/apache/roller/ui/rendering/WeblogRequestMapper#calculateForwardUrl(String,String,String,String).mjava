@@ -72,6 +72,17 @@
             forwardUrl.append(SEARCH_SERVLET);
             forwardUrl.append("/");
             forwardUrl.append(handle);
+            
+        // requests handled by RSDServlet
+        } else if(context.equals("rsd")) {
+            
+            forwardUrl.append(RSD_SERVLET);
+            forwardUrl.append("/");
+            forwardUrl.append(handle);
+            
+        // unsupported url
+        } else {
+            return null;
         }
         
         log.debug("FORWARD_URL "+forwardUrl.toString());

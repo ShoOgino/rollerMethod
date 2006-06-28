@@ -18,10 +18,9 @@
     private String generateKey(WeblogPageRequest pageRequest) {
         
         StringBuffer key = new StringBuffer();
-        key.append("weblog/");
+        key.append("weblog/page/");
         key.append(pageRequest.getWeblogHandle().toLowerCase());
-        key.append("/page/");
-        key.append(pageRequest.getPageType());
+        key.append("/").append(pageRequest.getContext());
         
         if(pageRequest.getWeblogAnchor() != null) {
             // convert to base64 because there can be spaces in anchors :/

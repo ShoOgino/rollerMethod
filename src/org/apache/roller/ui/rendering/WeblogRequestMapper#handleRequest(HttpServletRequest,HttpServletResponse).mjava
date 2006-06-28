@@ -33,7 +33,7 @@
         
         // check if it's a valid weblog handle
         if(restricted.contains(weblogHandle) || !this.isWeblog(weblogHandle)) {
-            log.debug("DENIED "+weblogHandle);
+            log.debug("SKIPPED "+weblogHandle);
             return false;
         }
         
@@ -41,8 +41,9 @@
         
         // parse the rest of the url and build forward url
         if(pathInfo != null) {
+            
             // parse the next portion of the url
-            // we expect [locale]/<context>/<extra>/<info>
+            // we expect [locale/]<context>/<extra>/<info>
             String[] urlPath = pathInfo.split("/", 3);
             
             // if we have a locale, deal with it

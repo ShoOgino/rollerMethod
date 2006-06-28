@@ -21,8 +21,8 @@
                         feedRequest.getWeblogHandle());
             }
         } catch(Exception e) {
-            // some kind of error parsing the request
-            log.error("error creating weblog feed request", e);
+            // invalid feed request format or weblog doesn't exist
+            log.debug("error creating weblog feed request", e);
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }

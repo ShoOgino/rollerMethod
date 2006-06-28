@@ -24,8 +24,8 @@
                         pageRequest.getWeblogHandle());
             }
         } catch (Exception e) {
-            // some kind of error parsing the request
-            log.error("error creating page request", e);
+            // some kind of error parsing the request or looking up weblog
+            log.debug("error creating page request", e);
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
