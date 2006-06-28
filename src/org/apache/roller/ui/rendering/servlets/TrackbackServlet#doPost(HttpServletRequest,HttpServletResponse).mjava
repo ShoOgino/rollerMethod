@@ -1,20 +1,15 @@
     /**
-     * POSTing to this Servlet will add a Trackback to a Weblog Entrty.
+     * Service incoming POST requests.
+     *
+     * Here we handle incoming trackback posts.
      */
-    protected void doPost(HttpServletRequest req, HttpServletResponse res)
-        throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         
-        try {
-            // insure that incoming data is parsed as UTF-8
-            req.setCharacterEncoding("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new ServletException("Can't set incoming encoding to UTF-8");
-        }
-        
-        String url = req.getParameter(TRACKBACK_URL_PARAM);
-        String title = req.getParameter(TRACKBACK_TITLE_PARAM);
-        String excerpt = req.getParameter(TRACKBACK_EXCERPT_PARAM);
-        String blogName = req.getParameter(TRACKBACK_BLOG_NAME_PARAM);
+        String url = request.getParameter(TRACKBACK_URL_PARAM);
+        String title = request.getParameter(TRACKBACK_TITLE_PARAM);
+        String excerpt = request.getParameter(TRACKBACK_EXCERPT_PARAM);
+        String blogName = request.getParameter(TRACKBACK_BLOG_NAME_PARAM);
         
         if ((title == null) || "".equals(title)) {
             title = url;
@@ -31,7 +26,7 @@
         
         String error = null;
         boolean verified = true;
-        PrintWriter pw = new PrintWriter(res.getOutputStream());
+        PrintWriter pw = new PrintWriter(response.getOutputStream());
         try {
             if(!RollerRuntimeConfig.getBooleanProperty("users.trackbacks.enabled")) {
                 error = "Trackbacks are disabled for this site";
@@ -40,7 +35,7 @@
                 error = "title, url, excerpt, and blog_name not specified.";
             } 
             else {                
-                RollerRequest rreq = RollerRequest.getRollerRequest(req);
+                RollerRequest rreq = RollerRequest.getRollerRequest(request);
                 WeblogEntryData entry = rreq.getWeblogEntry();
                 WebsiteData website = entry.getWebsite();
                 boolean siteAllows = website.getAllowComments().booleanValue();
@@ -69,7 +64,7 @@
                         
                         // ...ensure trackbacker actually links to us
                         RollerContext rctx= RollerContext.getRollerContext();
-                        String absurl = rctx.getAbsoluteContextUrl(req);
+                        String absurl = rctx.getAbsoluteContextUrl(request);
                         LinkbackExtractor linkback = new LinkbackExtractor(
                             comment.getUrl(), absurl + entry.getPermaLink());
                         if (linkback.getExcerpt() == null) {
@@ -102,9 +97,9 @@
 
                         // Send email notifications
                         RollerContext rc = RollerContext.getRollerContext();                                
-                        String rootURL = rc.getAbsoluteContextUrl(req);
+                        String rootURL = rc.getAbsoluteContextUrl(request);
                         if (rootURL == null || rootURL.trim().length()==0) {
-                            rootURL = RequestUtils.serverURL(req) + req.getContextPath();
+                            rootURL = RequestUtils.serverURL(request) + request.getContextPath();
                         } 
                         CommentServlet.sendEmailNotification(comment, rootURL);
 
@@ -142,7 +137,7 @@
             pw.println("</response>");
             pw.flush();
         }
-        res.flushBuffer();
+        response.flushBuffer();
         
         // TODO : FindBugs thinks 'pw' should close
     }
