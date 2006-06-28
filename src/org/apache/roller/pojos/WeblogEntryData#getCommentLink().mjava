@@ -3,7 +3,7 @@
      * @roller.wrapPojoMethod type="simple"
      */
     public String getCommentLink() {
-        String absContextUrl = RollerConfig.getProperty("context.absPath");
-        return absContextUrl + getCommentsLink(); 
+        String absPath = RollerRuntimeConfig.getProperty("site.absoluteurl");
+        return absPath + getCommentsLink(); 
     }
 

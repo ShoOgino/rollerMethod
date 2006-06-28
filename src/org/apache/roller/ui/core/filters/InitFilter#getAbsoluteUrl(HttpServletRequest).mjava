@@ -1,0 +1,20 @@
+    private String getAbsoluteUrl(HttpServletRequest request) {
+        
+        String url = null;
+        
+        String fullUrl = request.getRequestURL().toString();
+        
+        // first extract just the server portion of the url
+        url = fullUrl.substring(0, fullUrl.indexOf(request.getRequestURI()));
+        
+        // then just add on the context path
+        url += request.getContextPath();
+        
+        // make certain that we don't end with a /
+        if(url.endsWith("/")) {
+            url = url.substring(0, url.length()-1);
+        }
+        
+        return url;
+    }
+

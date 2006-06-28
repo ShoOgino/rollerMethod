@@ -1,0 +1,13 @@
+    /**
+     * Set the "site.absoluteurl" property locally.
+     *
+     * Local properties are a kind of bastardized attempt to maintain some
+     * properties which can only be determined at runtime but which should
+     * not be persisted.
+     *
+     * This property is *not* persisted in any way.
+     */
+    public static void setAbsoluteContextPath(String path) {
+        localConfig.setProperty("site.absoluteurl", path);
+    }
+
