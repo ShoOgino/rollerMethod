@@ -8,7 +8,7 @@
      */
     public static String getRuntimeConfigDefsAsString() {
         
-        mLogger.debug("Trying to load runtime config defs file");
+        log.debug("Trying to load runtime config defs file");
         
         try {
             InputStreamReader reader =
@@ -24,7 +24,7 @@
             
             return configString.toString();
         } catch(Exception e) {
-            mLogger.error("Error loading runtime config defs file", e);
+            log.error("Error loading runtime config defs file", e);
         }
         
         return "";

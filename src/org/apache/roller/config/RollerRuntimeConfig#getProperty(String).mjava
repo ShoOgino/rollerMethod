@@ -9,10 +9,10 @@
             PropertiesManager pmgr = RollerFactory.getRoller().getPropertiesManager();
             value = pmgr.getProperty(name).getValue();
         } catch(Exception e) {
-            mLogger.warn("Trouble accessing property: "+name, e);
+            log.warn("Trouble accessing property: "+name, e);
         }
         
-        mLogger.debug("fetched property ["+name+"="+value+"]");
+        log.debug("fetched property ["+name+"="+value+"]");
         
         return value;
     }
