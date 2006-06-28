@@ -5,7 +5,7 @@
      * because these old comment servlet urls are deprecated now.
      */
     public void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws IOException, ServletException {
+            throws IOException, ServletException {
         
         // a GET request means that this client is trying to use this old
         // comment servlet as a form of permalink for rendering an entry.
@@ -34,7 +34,7 @@
             }
                 
         }        
-        mLogger.debug("forwarding to "+forward);
+        log.debug("forwarding to "+forward);
         
         // send an HTTP 301 response
         response.setStatus(response.SC_MOVED_PERMANENTLY);
