@@ -23,7 +23,10 @@
         weblog = umgr.getWebsiteByHandle(parsed.getWeblogHandle(), Boolean.TRUE);
         
         // get the entry pager which represents this page
-        this.pager = WeblogEntriesPager.getWeblogEntriesPager(
-                weblog, entryAnchor, dateString, categoryPath, page);
+        if (entryAnchor != null) {
+            this.pager = new WeblogEntriesPermalinkPager(weblog, entryAnchor);
+        } else {
+            this.pager = new WeblogEntriesCollectionPager(weblog, dateString, categoryPath, page);
+        }
     }
 
