@@ -1,0 +1,14 @@
+    public Map getEntries() {
+        
+        if(this.entries == null) {
+            try {
+                this.entries = getEntriesMap(weblog, startDate, endDate,
+                        catPath, offset, length);
+            } catch (RollerException ex) {
+                log.error("Error getting entries", ex);
+            }
+        }
+        
+        return this.entries;
+    }
+

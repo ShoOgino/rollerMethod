@@ -15,8 +15,15 @@
         categoryPath = parsed.getWeblogCategory();
         entryAnchor = parsed.getWeblogAnchor();
         dateString = parsed.getWeblogDate();
+        page = parsed.getPageNum();
+        
+        // lookup weblog object
         Roller roller = RollerFactory.getRoller();
         UserManager umgr = roller.getUserManager();
         weblog = umgr.getWebsiteByHandle(parsed.getWeblogHandle(), Boolean.TRUE);
+        
+        // get the entry pager which represents this page
+        this.pager = WeblogEntriesPager.getWeblogEntriesPager(
+                weblog, entryAnchor, dateString, categoryPath, page);
     }
 
