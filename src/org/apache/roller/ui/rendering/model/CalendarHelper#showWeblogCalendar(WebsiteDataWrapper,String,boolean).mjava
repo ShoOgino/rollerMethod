@@ -1,4 +1,4 @@
-    public String emitWeblogCalendar(WebsiteDataWrapper websiteWrapper, String catArgument, boolean big) {        
+    private String showWeblogCalendar(WebsiteDataWrapper websiteWrapper, String catArgument, boolean big) {        
         HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
         HttpServletResponse response = (HttpServletResponse)pageContext.getResponse();                        
         if ("nil".equals(catArgument)) catArgument = null;        
@@ -12,7 +12,7 @@
             }
             
             // save model in JSP page context so CalendarTag can find it
-            pageContext.setAttribute("calendarModel",model);
+            pageContext.setAttribute("calendarModel", model);
             
             CalendarTag calTag = new CalendarTag();
             calTag.setPageContext(pageContext);
