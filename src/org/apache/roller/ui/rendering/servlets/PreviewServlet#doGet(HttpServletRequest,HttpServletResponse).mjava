@@ -1,8 +1,8 @@
     /**
      * Handle GET requests for weblog pages.
      */
-    public void doGet(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
         
         log.debug("Entering");
         
@@ -46,10 +46,6 @@
             }
         }
         
-        // construct page context
-        PageContext pageContext = JspFactory.getDefaultFactory().getPageContext(
-                    this, request, response,"", true, 8192, true);
-        
         // construct a temporary Website object for this request
         // and set the EditorTheme to our previewTheme
         WebsiteData tmpWebsite = new WebsiteData();
@@ -62,6 +58,7 @@
         
         Template page = null;
         try {
+            // we just want to show the default view
             page = tmpWebsite.getDefaultPage();
             
             if(page == null) {
@@ -88,7 +85,12 @@
             Map initData = new HashMap();
             initData.put("request", request);
             
-            // Feeds get the weblog specific page model
+            // we need to add a simple page request to use weblog models
+            WeblogPageRequest pageRequest = new WeblogPageRequest();
+            pageRequest.setWeblogHandle(previewRequest.getWeblogHandle());
+            initData.put("pageRequest", pageRequest);
+            
+            // standard weblog models
             RenderModelLoader.loadPageModels(model, initData);
             
             // special handling for site wide weblog
@@ -96,15 +98,19 @@
                 RenderModelLoader.loadSiteModels(model, initData);
             }
             
+            // page context for helpers which use jsp tags :/
+            PageContext pageContext = JspFactory.getDefaultFactory().getPageContext(
+                    this, request, response,"", true, 8192, true);
+            
             // add helpers
             RenderModelLoader.loadUtilityHelpers(model, request);
             RenderModelLoader.loadWeblogHelpers(pageContext, model);
-
-            // Feeds get weblog's custom models too
+            
+            // weblog's custom models
             RenderModelLoader.loadCustomModels(tmpWebsite, model, initData);
             
             // ick, gotta load pre-3.0 model stuff as well :(
-            RenderModelLoader.loadOldModels(model, request, response, pageContext);
+            RenderModelLoader.loadOldModels(model, request, response, pageContext, pageRequest);
             
         } catch (RollerException ex) {
             log.error("ERROR loading model for page", ex);

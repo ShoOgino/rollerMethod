@@ -6,7 +6,8 @@
             Map                 ctx,
             HttpServletRequest  request,
             HttpServletResponse response,
-            PageContext pageContext) throws RollerException {
+            PageContext pageContext,
+            WeblogRequest weblogRequest) throws RollerException {
         
         mLogger.debug("setupContext( ctx = "+ctx+")");
         
@@ -24,7 +25,7 @@
         // if this is a weblog page request then parse it out
         WeblogPageRequest pageRequest = null;
         try {
-            pageRequest = new WeblogPageRequest(request);
+            pageRequest = (WeblogPageRequest) weblogRequest;
             
             UserManager uMgr = RollerFactory.getRoller().getUserManager();
             WeblogManager wMgr = RollerFactory.getRoller().getWeblogManager();
@@ -77,6 +78,8 @@
                     isMonth = true;
                 }
             }
+        } catch(ClassCastException cce) {
+            // ignore, just means this isn't a page request
         } catch(InvalidRequestException ire) {
             // ignore, must not be a page request
         } catch(RollerException re) {
@@ -88,7 +91,7 @@
         // if not a page request then try search request
         WeblogSearchRequest searchRequest = null;
         if(pageRequest == null) try {
-            searchRequest = new WeblogSearchRequest(request);
+            searchRequest = (WeblogSearchRequest) weblogRequest;
             
             UserManager uMgr = RollerFactory.getRoller().getUserManager();
             WeblogManager wMgr = RollerFactory.getRoller().getWeblogManager();
@@ -104,6 +107,8 @@
             // lookup page if specified, otherwise lookup default
             page = weblog.getDefaultPage();
             
+        } catch(ClassCastException cce) {
+            // ignore, just means this isn't a search request
         } catch(InvalidRequestException ire) {
             // ignore, must not be a search request
         } catch(RollerException re) {
