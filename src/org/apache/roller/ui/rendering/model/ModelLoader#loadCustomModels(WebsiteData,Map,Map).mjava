@@ -14,17 +14,17 @@
             for (int i=0; i<weblogModels.length; i++) {
                 try { // don't die just because of one bad custom model
                     Class modelClass = Class.forName(weblogModels[i]);
-                    RenderModel pageModel = (RenderModel)modelClass.newInstance();
+                    Model pageModel = (Model)modelClass.newInstance();
                     pageModel.init(initData);             
                     model.put(pageModel.getModelName(), pageModel);
                 } catch (RollerException re) {
                     log.warn("ERROR: initializing a plugin: " + weblogModels[i]);
                 } catch (ClassNotFoundException cnfe) {
-                    log.warn("ERROR: can't find page model: " + weblogModels[i]);
+                    log.warn("ERROR: can't find model: " + weblogModels[i]);
                 } catch (InstantiationException ie) {
-                    log.warn("ERROR: insantiating page model: " + weblogModels[i]);
+                    log.warn("ERROR: insantiating model: " + weblogModels[i]);
                 } catch (IllegalAccessException iae) {
-                    log.warn("ERROR: access exception page model: " + weblogModels[i]);
+                    log.warn("ERROR: access exception model: " + weblogModels[i]);
                 }
             }
         }     

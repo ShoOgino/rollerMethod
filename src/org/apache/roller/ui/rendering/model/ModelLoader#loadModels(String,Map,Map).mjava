@@ -13,16 +13,16 @@
             for (int i=0; i<models.length; i++) {
                 currentModel = models[i];
                 Class modelClass = Class.forName(currentModel);
-                RenderModel pageModel = (RenderModel) modelClass.newInstance();
+                Model pageModel = (Model) modelClass.newInstance();
                 pageModel.init(initData);            
                 model.put(pageModel.getModelName(), pageModel);
             }
         } catch (ClassNotFoundException cnfe) {
-            throw new RollerException("ERROR: can't find page model: " + currentModel);
+            throw new RollerException("ERROR: can't find model: " + currentModel);
         } catch (InstantiationException ie) {
-            throw new RollerException("ERROR: insantiating page model: " + currentModel);
+            throw new RollerException("ERROR: insantiating model: " + currentModel);
         } catch (IllegalAccessException iae) {
-            throw new RollerException("ERROR: access exception page model: " + currentModel);
+            throw new RollerException("ERROR: access exception model: " + currentModel);
         }
     }
 
