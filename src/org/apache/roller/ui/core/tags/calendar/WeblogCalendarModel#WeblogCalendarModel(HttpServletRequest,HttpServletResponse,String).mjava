@@ -1,0 +1,37 @@
+    public WeblogCalendarModel(
+            HttpServletRequest request, HttpServletResponse response, String catArgument) {
+
+        this.request = request;
+        this.response = response;
+        this.weblog = weblog;        
+        WeblogPageRequest pageRequest = null;
+        try {
+            pageRequest = new WeblogPageRequest(request);
+            
+            // lookup weblog specified by feed request
+            UserManager uMgr = RollerFactory.getRoller().getUserManager();
+            this.weblog = uMgr.getWebsiteByHandle(pageRequest.getWeblogHandle());
+            
+            pageLink = pageRequest.getWeblogPage();
+
+            day = DateUtil.parseWeblogURLDateString(pageRequest.getWeblogDate(), 
+                weblog.getTimeZoneInstance(), weblog.getLocaleInstance());
+            initDay(day);
+            
+            if(weblog == null) {
+                throw new RollerException("unable to lookup weblog: "+
+                        pageRequest.getWeblogHandle());
+            }
+        } catch (Exception e) {
+            // some kind of error parsing the request or looking up weblog
+            log.debug("ERROR: displaying calendar", e);
+        }
+              
+        // Category method argument overrides category from URL
+        if (catArgument != null) {
+            cat = catArgument;
+        } else if (pageRequest.getWeblogCategory() != null) {
+            cat = pageRequest.getWeblogCategory();
+        }
+    }
+

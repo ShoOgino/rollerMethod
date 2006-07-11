@@ -22,7 +22,8 @@
             Calendar cal = Calendar.getInstance();
             
             // parse date string and figure out date
-            thisDate = parseDate(dateString, weblog);
+            thisDate = DateUtil.parseWeblogURLDateString(dateString, 
+                    weblog.getTimeZoneInstance(), weblog.getLocaleInstance());
             
             // single day
             if(dateString.length() == 8) {

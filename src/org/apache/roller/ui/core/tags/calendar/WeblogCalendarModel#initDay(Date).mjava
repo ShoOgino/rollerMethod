@@ -1,24 +1,10 @@
- /*   
-	public static WeblogCalendarModel getInstance(
-		HttpServletRequest req, HttpServletResponse res, String url, String cat)
-	{
-		return new WeblogCalendarModel(RollerRequest.getRollerRequest(req), res, url, cat);
-	}
-*/	
-	private void setDay(Date month)
-	{
-        mDay = month;
+    private void initDay(Date month) {
+        this.day = day;        
+        calendar = Calendar.getInstance(
+                weblog.getTimeZoneInstance(),
+                weblog.getLocaleInstance());
         
-        // If category is specified in URL, then use it
-        String catName = 
-            mReq.getParameter(RollerRequest.WEBLOGCATEGORYNAME_KEY);
-
-        mCalendar = Calendar.getInstance(
-                                mWebsite.getTimeZoneInstance(),
-                                mWebsite.getLocaleInstance()
-        );   
-        
-        Calendar cal = (Calendar)mCalendar.clone();
+        Calendar cal = (Calendar)calendar.clone();
         
         // Compute first second of month
         cal.setTime(month);
@@ -36,7 +22,7 @@
         cal.set(Calendar.SECOND, cal.getMaximum(Calendar.SECOND));
         cal.set(Calendar.MILLISECOND, cal.getMaximum(Calendar.MILLISECOND));
         Date endDate = cal.getTime();
-
-        loadWeblogEntries(startDate, endDate, catName);
+        
+        loadWeblogEntries(startDate, endDate);
     }
 

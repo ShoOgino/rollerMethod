@@ -1,0 +1,20 @@
+    /**
+     * @param startDate
+     * @param endDate
+     */
+    protected void loadWeblogEntries(Date startDate, Date endDate) {
+        try {
+            WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+            monthMap = mgr.getWeblogEntryStringMap(
+                    weblog,                  // website
+                    startDate,                 // startDate
+                    endDate,                   // endDate
+                    cat,                   // cat
+                    WeblogEntryData.PUBLISHED, // status
+                    0, -1);
+        } catch (RollerException e) {
+            log.error(e);
+            monthMap = new HashMap();
+        }
+    }
+

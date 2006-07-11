@@ -1,0 +1,34 @@
+    /**
+     * Create URL for use on view-weblog page
+     * @param day       Day for URL or null if no entries on that day
+     * @param alwaysURL Always return a URL, never return null
+     * @return          URL for day, or null if no weblog entry on that day
+     */
+    public String computeUrl(Date day, boolean monthURL, boolean alwaysURL) {
+        String url = null;
+        // get the 8 char YYYYMMDD datestring for day
+        String dateString = (String)monthMap.get(day);
+        if (dateString == null && !alwaysURL) return null;
+        else if (dateString == null && !monthURL) {
+            dateString = DateUtil.format8chars(day);
+        } else if (dateString == null && monthURL) {
+            dateString = DateUtil.format6chars(day);
+        }
+        try {
+            if (pageLink == null) { // create date URL
+                url = weblog.getURL() + "/date/" + dateString;
+                if (cat != null) { 
+                    url += "?cat=" + cat;
+                }
+            } else { // create page URL
+                url = weblog.getURL() + "/page/" + pageLink;
+                if (cat != null) { 
+                    url += "?cat=" + cat;
+                }
+            }
+        } catch (Exception e) {
+            log.error("ERROR: creating URL",e);
+        }
+        return url;
+    }
+

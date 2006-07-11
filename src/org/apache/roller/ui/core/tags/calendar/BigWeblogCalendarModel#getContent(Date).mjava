@@ -1,27 +1,30 @@
     /**
      * @see org.apache.roller.presentation.tags.calendar.CalendarModel#getContent(Date, boolean)
      */
-    public String getContent(Date day)
-    {
+    public String getContent(Date day) {
         String content = null;
-        try 
-        {
-			RollerRequest rreq = RollerRequest.getRollerRequest(mReq);
-			RollerContext rctx = RollerContext.getRollerContext();
+        try {
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            RollerContext rctx = RollerContext.getRollerContext();
             StringBuffer sb = new StringBuffer();
             
-            // get the 8 char YYYYMMDD datestring for day, returns null 
+            // get the 8 char YYYYMMDD datestring for day, returns null
             // if no weblog entry on that day
             String dateString = null;
-            List entries = (List)mMonthMap.get(day);
-            if ( entries != null )
-            {
-                dateString = mStarDateFormat.format( 
-                    ((WeblogEntryData)entries.get(0)).getPubTime());
-                                
+            List entries = (List)monthMap.get(day);
+            if ( entries != null ) {
+                dateString = mStarDateFormat.format(
+                        ((WeblogEntryData)entries.get(0)).getPubTime());
+                
                 // append 8 char date string on end of selfurl
-                String dayUrl = mSelfUrl+"/"+ dateString+mCatName;
-
+                String dayUrl = null;
+                if (pageLink != null) {
+                    dayUrl = weblog.getURL() + "/page/" + "?date=" + dateString + "&cat="+ cat;
+                } else {
+                    dayUrl = weblog.getURL() + "/date/" + dateString + "?cat="+ cat;
+                }
+                
+                
                 sb.append("<div class=\"hCalendarDayTitleBig\">");
                 sb.append("<a href=\"");
                 sb.append( dayUrl );
@@ -29,42 +32,35 @@
                 sb.append( mSingleDayFormat.format( day ) );
                 sb.append("</a></div>");
                 
-                for ( int i=0; i<entries.size(); i++ )
-                {
+                for ( int i=0; i<entries.size(); i++ ) {
                     sb.append("<div class=\"bCalendarDayContentBig\">");
                     sb.append("<a href=\"");
                     sb.append(rctx.createEntryPermalink(
-                        (WeblogEntryData)entries.get(i),mReq,false));
+                            (WeblogEntryData)entries.get(i),request,false));
                     sb.append("\">");
                     
                     String title = ((WeblogEntryData)entries.get(i)).getTitle().trim();
-                    if ( title.length()==0 )
-                    {
+                    if ( title.length()==0 ) {
                         title = ((WeblogEntryData)entries.get(i)).getAnchor();
                     }
-                    if ( title.length() > 20 )
-                    {
+                    if ( title.length() > 20 ) {
                         title = title.substring(0,20)+"...";
                     }
-                   
+                    
                     sb.append( title );
-                    sb.append("</a></div>");                       
-                }  
+                    sb.append("</a></div>");
+                }
                 
-            }
-            else
-            {
+            } else {
                 sb.append("<div class=\"hCalendarDayTitleBig\">");
                 sb.append( mSingleDayFormat.format( day ) );
                 sb.append("</div>");
                 sb.append("<div class=\"bCalendarDayContentBig\"/>");
             }
-            content = sb.toString();              
-        }
-        catch (Exception e)
-        {
-            RollerRequest.getRollerRequest(mReq)
-                .getServletContext().log("ERROR: creating URL",e);
+            content = sb.toString();
+        } catch (Exception e) {
+            RollerRequest.getRollerRequest(request)
+            .getServletContext().log("ERROR: creating URL",e);
         }
         return content;
     }
