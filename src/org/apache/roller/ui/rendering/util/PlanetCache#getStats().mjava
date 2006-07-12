@@ -1,0 +1,17 @@
+    public Map getStats() {
+        
+        Map stats = new HashMap();
+        stats.put("cacheType", this.contentCache.getClass().getName());
+        stats.put("startTime", this.startTime);
+        stats.put("hits", new Double(this.hits));
+        stats.put("misses", new Double(this.misses));
+        
+        // calculate efficiency
+        if(misses > 0) {
+            double efficiency = hits / (misses + hits);
+            stats.put("efficiency", new Double(efficiency * 100));
+        }
+        
+        return stats;
+    }
+

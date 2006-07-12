@@ -1,0 +1,29 @@
+    public Date lastModified() {
+        
+        Date lastModified = null;
+        
+        // first try our cached version
+        if(this.lastUpdateTime != null) {
+            lastModified = (Date) this.lastUpdateTime.getValue();
+        }
+        
+        // still null, we need to get a fresh value
+        if(lastModified == null) {
+            
+            try {
+                lastModified = RollerFactory.getRoller().getPlanetManager().getLastUpdated();
+            } catch (RollerException ex) {
+                log.error("Error getting planet manager", ex);
+            }
+            
+            if (lastModified == null) {
+                lastModified = new Date();
+                log.warn("Can't get lastUpdate time, using current time instead");
+            }
+            
+            this.lastUpdateTime = new ExpiringCacheEntry(lastModified, this.timeout);
+        }
+        
+        return lastModified;
+    }
+

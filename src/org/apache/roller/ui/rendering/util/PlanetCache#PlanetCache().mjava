@@ -1,0 +1,29 @@
+    private PlanetCache() {
+        
+        Map cacheProps = new HashMap();
+        Enumeration allProps = RollerConfig.keys();
+        String prop = null;
+        while(allProps.hasMoreElements()) {
+            prop = (String) allProps.nextElement();
+            
+            // we are only interested in props for this cache
+            if(prop.startsWith(CACHE_ID+".")) {
+                cacheProps.put(prop.substring(CACHE_ID.length()+1), 
+                        RollerConfig.getProperty(prop));
+            }
+        }
+        
+        log.info("Planet cache = "+cacheProps);
+        
+        contentCache = CacheManager.constructCache(this, cacheProps);
+        
+        // lookup our timeout value
+        String timeoutString = RollerConfig.getProperty("cache.planet.timeout");
+        try {
+            long timeoutSecs = Long.parseLong(timeoutString);
+            this.timeout = timeoutSecs * 1000;
+        } catch(Exception e) {
+            // ignored ... illegal value
+        }
+    }
+

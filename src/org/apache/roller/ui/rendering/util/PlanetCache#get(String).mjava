@@ -1,0 +1,15 @@
+    public Object get(String key) {
+        
+        Object entry = contentCache.get(key);
+        
+        if(entry == null) {
+            this.misses++;
+            log.debug("MISS "+key);
+        } else {
+            this.hits++;
+            log.debug("HIT "+key);
+        }
+        
+        return entry;
+    }
+
