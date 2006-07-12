@@ -1,69 +1,53 @@
     public Template handleRequest(HttpServletRequest request,
-                                  HttpServletResponse response, Context context)
-    {
+            HttpServletResponse response, Context context) {
+        
         RollerRequest rreq = null;
-        try
-        {
+        try {
             rreq = RollerRequest.getRollerRequest(request, getServletContext());
-        }
-        catch (RollerException e)
-        {
+        } catch (RollerException e) {
             // An error initializing the request is considered to be a 404
-            if (mLogger.isDebugEnabled())
-            {
+            if (mLogger.isDebugEnabled()) {
                 mLogger.debug("RollerRequest threw Exception", e);
             }
-            try
-            {
+            try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            }
-            catch (IOException e1)
-            {
-                if (mLogger.isDebugEnabled())
-                {
+            } catch (IOException e1) {
+                if (mLogger.isDebugEnabled()) {
                     mLogger.debug("IOException sending error", e);
                 }
             }
             return null;
         }
-        try
-        {
+        try {
             response.setContentType("application/rss+xml;charset=utf-8");
-            PlanetManager planet = 
-                RollerFactory.getRoller().getPlanetManager();
-            if (request.getParameter("group") != null) 
-            {
-                context.put("group", 
+            PlanetManager planet =
+                    RollerFactory.getRoller().getPlanetManager();
+            if (request.getParameter("group") != null) {
+                context.put("group",
                         planet.getGroup(request.getParameter("group")));
             }
             context.put("planet", planet);
             context.put("date", new Date());
             context.put("utilities", new Utilities());
             
-            int entryCount = 
-                RollerRuntimeConfig.getIntProperty("site.newsfeeds.defaultEntries");
-            int maxEntries = 
-                RollerRuntimeConfig.getIntProperty("site.newsfeeds.maxEntries");
+            int entryCount =
+                    RollerRuntimeConfig.getIntProperty("site.newsfeeds.defaultEntries");
+            int maxEntries =
+                    RollerRuntimeConfig.getIntProperty("site.newsfeeds.maxEntries");
             String sCount = request.getParameter("count");
-            if (sCount!=null)
-            {
-                try
-                {
+            if (sCount!=null) {
+                try {
                     entryCount = Integer.parseInt(sCount);
-                }
-                catch (NumberFormatException e)
-                {
+                } catch (NumberFormatException e) {
                     mLogger.warn("Improperly formatted count parameter");
                 }
                 if ( entryCount > maxEntries ) entryCount = maxEntries;
                 if ( entryCount < 0 ) entryCount = 0;
             }
-            context.put("entryCount", new Integer(entryCount));            
+            context.put("entryCount", new Integer(entryCount));
             
             return getTemplate("templates/planet/planetrss.vm");
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             mLogger.error("ERROR in PlanetFeedServlet", e);
         }
         return null;
