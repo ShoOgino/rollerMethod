@@ -9,29 +9,51 @@
         String error = null;
         PrintWriter pw = response.getWriter();
         
-        String url = request.getParameter(TRACKBACK_URL_PARAM);
-        String title = request.getParameter(TRACKBACK_TITLE_PARAM);
-        String excerpt = request.getParameter(TRACKBACK_EXCERPT_PARAM);
-        String blogName = request.getParameter(TRACKBACK_BLOG_NAME_PARAM);
+        WebsiteData weblog = null;
+        WeblogEntryData entry = null;
         
-        if ((title == null) || "".equals(title)) {
-            title = url;
-        }
-        
-        if (excerpt == null) {
-            excerpt = "";
-        } else {
-            if (excerpt.length() >= 255) {
-                excerpt = excerpt.substring(0, 252);
-                excerpt += "...";
-            }
-        }
-        
-        
+        WeblogTrackbackRequest trackbackRequest = null;
         if(!RollerRuntimeConfig.getBooleanProperty("users.trackbacks.enabled")) {
             error = "Trackbacks are disabled for this site";
-        } else if (title==null || url==null || excerpt==null || blogName==null) {
-            error = "title, url, excerpt, and blog_name not specified.";
+        } else {
+            
+            try {
+                trackbackRequest = new WeblogTrackbackRequest(request);
+                
+                if((trackbackRequest.getTitle() == null) ||
+                        "".equals(trackbackRequest.getTitle())) {
+                    trackbackRequest.setTitle(trackbackRequest.getUrl());
+                }
+                
+                if(trackbackRequest.getExcerpt() == null) {
+                    trackbackRequest.setExcerpt("");
+                } else if(trackbackRequest.getExcerpt().length() >= 255) {
+                    trackbackRequest.setExcerpt(trackbackRequest.getExcerpt().substring(0, 252)+"...");
+                }
+                
+                // lookup weblog specified by comment request
+                UserManager uMgr = RollerFactory.getRoller().getUserManager();
+                weblog = uMgr.getWebsiteByHandle(trackbackRequest.getWeblogHandle());
+                
+                if(weblog == null) {
+                    throw new RollerException("unable to lookup weblog: "+
+                            trackbackRequest.getWeblogHandle());
+                }
+                
+                // lookup entry specified by comment request
+                WeblogManager weblogMgr = RollerFactory.getRoller().getWeblogManager();
+                entry = weblogMgr.getWeblogEntryByAnchor(weblog, trackbackRequest.getWeblogAnchor());
+                
+                if(entry == null) {
+                    throw new RollerException("unable to lookup entry: "+
+                            trackbackRequest.getWeblogAnchor());
+                }
+                
+            } catch (Exception e) {
+                // some kind of error parsing the request or looking up weblog
+                logger.debug("error creating page request", e);
+                error = e.getMessage();
+            }
         }
         
         if(error != null) {
@@ -39,20 +61,17 @@
             return;
         }
         
-        boolean verified = true;
         try {
-            RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            WeblogEntryData entry = rreq.getWeblogEntry();
-            WebsiteData website = entry.getWebsite();
-            boolean siteAllows = website.getAllowComments().booleanValue();
+            boolean siteAllows = weblog.getAllowComments().booleanValue();
+            boolean verified = true;
             
             if (entry!=null && siteAllows && entry.getCommentsStillAllowed()) {
                 
                 // Track trackbacks as comments
                 CommentData comment = new CommentData();
-                comment.setContent("[Trackback] "+excerpt);
-                comment.setName(blogName);
-                comment.setUrl(url);
+                comment.setContent("[Trackback] "+trackbackRequest.getExcerpt());
+                comment.setName(trackbackRequest.getBlogName());
+                comment.setUrl(trackbackRequest.getUrl());
                 comment.setWeblogEntry(entry);
                 comment.setNotify(Boolean.FALSE);
                 comment.setPostTime(new Timestamp(new Date().getTime()));
@@ -85,7 +104,7 @@
                 
                 if (error == null) {
                     // If comment moderation is on, set comment as pending
-                    if (verified && website.getCommentModerationRequired()) {
+                    if (verified && weblog.getCommentModerationRequired()) {
                         comment.setPending(Boolean.TRUE);
                         comment.setApproved(Boolean.FALSE);
                     } else if (verified) {

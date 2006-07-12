@@ -80,8 +80,8 @@
         }
         
         // calculate forward url
-        String forwardUrl = calculateForwardUrl(weblogHandle, weblogLocale,
-                weblogRequestContext, weblogRequestData, request.getMethod());
+        String forwardUrl = calculateForwardUrl(request, weblogHandle, weblogLocale,
+                weblogRequestContext, weblogRequestData);
         
         // if we don't have a forward url then the request was invalid somehow
         if(forwardUrl == null) {
