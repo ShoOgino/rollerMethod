@@ -3,7 +3,7 @@
      * results wrapped using our pojo wrappers.
      */
     Map getEntriesMap(WebsiteData weblog, Date start, Date end,
-                      String catPath, int offset, int length)
+                      String catPath, int offset, int length, String locale)
             throws RollerException {
         
         Map entries = new TreeMap();
@@ -15,7 +15,8 @@
                 catPath,
                 WeblogEntryData.PUBLISHED,
                 offset,
-                length);
+                length,
+                locale);
         
         // need to wrap pojos
         java.util.Date key = null;

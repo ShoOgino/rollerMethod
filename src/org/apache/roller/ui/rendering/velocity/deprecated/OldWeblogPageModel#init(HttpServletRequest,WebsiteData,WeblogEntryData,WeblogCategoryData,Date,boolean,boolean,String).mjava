@@ -7,7 +7,8 @@
             WeblogCategoryData category,
             Date date,
             boolean isDay,
-            boolean isMonth) {
+            boolean isMonth,
+            String locale) {
         
         mRequest = request;
         
@@ -18,6 +19,7 @@
         mDate = date;
         mIsDaySpecified = isDay;
         mIsMonthSpecified = isMonth;
+        mLocale = locale;
         
         try {
             mBookmarkMgr = RollerFactory.getRoller().getBookmarkManager();

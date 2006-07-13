@@ -7,7 +7,8 @@
             String      status,
             String      sortby,
             int         offset,
-            int         length) throws RollerException {
+            int         length,
+            String      locale) throws RollerException {
         
         WeblogCategoryData cat = null;
         if (StringUtils.isNotEmpty(catName) && website != null) {
@@ -49,6 +50,10 @@
             
             if (status != null) {
                 criteria.add(Expression.eq("status", status));
+            }
+            
+            if (locale != null) {
+                criteria.add(Expression.eq("locale", locale));
             }
             
             if (sortby != null && sortby.equals("updateTime")) {

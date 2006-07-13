@@ -15,6 +15,7 @@
         categoryPath = parsed.getWeblogCategory();
         entryAnchor = parsed.getWeblogAnchor();
         dateString = parsed.getWeblogDate();
+        locale = parsed.getLocale();
         page = parsed.getPageNum();
         
         // lookup weblog object
@@ -26,7 +27,7 @@
         if (entryAnchor != null) {
             this.pager = new WeblogEntriesPermalinkPager(weblog, entryAnchor);
         } else {
-            this.pager = new WeblogEntriesCollectionPager(weblog, dateString, categoryPath, page);
+            this.pager = new WeblogEntriesCollectionPager(weblog, dateString, categoryPath, locale, page);
         }
     }
 

@@ -1,19 +1,21 @@
-    public Map getWeblogEntryStringMap(
+    public Map getWeblogEntryObjectMap(
             WebsiteData website,
             Date    startDate,
             Date    endDate,
             String  catName,
             String  status,
             int     offset,
-            int     length) throws RollerException {
+            int     length,
+            String  locale) throws RollerException {
         return getWeblogEntryMap(
             website,
             startDate,
             endDate,
             catName,
             status,
-            true,
+            false,
             offset,
-            length);
+            length,
+            locale);
     }
 
