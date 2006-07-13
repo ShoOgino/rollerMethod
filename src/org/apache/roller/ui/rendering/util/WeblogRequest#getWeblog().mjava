@@ -1,4 +1,14 @@
     public WebsiteData getWeblog() {
+        
+        if(weblog == null && weblogHandle != null) {
+            try {
+                UserManager umgr = RollerFactory.getRoller().getUserManager();
+                weblog = umgr.getWebsiteByHandle(weblogHandle, Boolean.TRUE);
+            } catch (RollerException ex) {
+                log.error("Error looking up weblog "+weblogHandle, ex);
+            }
+        }
+        
         return weblog;
     }
 

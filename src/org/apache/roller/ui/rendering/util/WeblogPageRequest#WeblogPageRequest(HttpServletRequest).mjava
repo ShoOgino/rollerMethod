@@ -45,7 +45,12 @@
                 pathElements = pathInfo.split("/", 2);
                 this.context = pathElements[0];
                 this.weblogCategoryName = "/"+pathElements[1];
-                    
+                
+                // all categories must start with a /
+                if(!this.weblogCategoryName.startsWith("/")) {
+                    this.weblogCategoryName = "/"+this.weblogCategoryName;
+                }
+
             } else if(pathElements.length == 2) {
                 
                 this.context = pathElements[0];
@@ -109,6 +114,12 @@
                 try {
                     this.weblogCategoryName = 
                             URLDecoder.decode(request.getParameter("cat"), "UTF-8");
+                    
+                    // all categories must start with a /
+                    if(!this.weblogCategoryName.startsWith("/")) {
+                        this.weblogCategoryName = "/"+this.weblogCategoryName;
+                    }
+                    
                 } catch (UnsupportedEncodingException ex) {
                     // should never happen
                     log.error(ex);

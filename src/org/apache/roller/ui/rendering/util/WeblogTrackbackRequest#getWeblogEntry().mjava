@@ -1,4 +1,14 @@
     public WeblogEntryData getWeblogEntry() {
+        
+        if(weblogEntry == null && weblogAnchor != null) {
+            try {
+                WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+                weblogEntry = wmgr.getWeblogEntryByAnchor(getWeblog(), weblogAnchor);
+            } catch (RollerException ex) {
+                log.error("Error getting weblog entry "+weblogAnchor, ex);
+            }
+        }
+        
         return weblogEntry;
     }
 
