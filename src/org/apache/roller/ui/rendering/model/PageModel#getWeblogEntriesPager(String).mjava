@@ -1,0 +1,12 @@
+    /**
+     * A map of entries representing this page. The collection is grouped by 
+     * days of entries.  Each value is a list of entry objects keyed by the 
+     * date they were published.
+     * @param catArgument Category restriction (null or "nil" for no restriction)
+     */
+    public WeblogEntriesPager getWeblogEntriesPager(String catArgument) {        
+        // category specified by argument wins over request parameter
+        String chosenCat = (catArgument != null) ? catArgument : cat;            
+        return new WeblogEntriesPagerImpl(weblog, dateString, entryAnchor, chosenCat, locale, page);
+    }
+

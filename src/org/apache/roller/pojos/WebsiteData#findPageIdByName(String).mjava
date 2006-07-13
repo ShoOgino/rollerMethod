@@ -1,0 +1,17 @@
+    /**
+     * Lookup a template id for this website by pageName.
+     * @roller.wrapPojoMethod type="simple"
+     */        
+    public String findPageIdByName(String pageName) {        
+        String template_id = null;        
+        try {
+            Template pd = this.getPageByName(pageName);
+            if(pd != null) {
+                template_id = pd.getId();
+            }
+        } catch(Exception e) {
+            mLogger.error("ERROR: getting page ID by name", e);
+        }              
+        return template_id;
+    }
+

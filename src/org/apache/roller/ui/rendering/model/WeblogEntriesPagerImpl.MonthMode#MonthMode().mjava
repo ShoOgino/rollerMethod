@@ -1,0 +1,18 @@
+        public MonthMode() {
+            MonthMode.this.getEntries();
+            month = parseDate(dateString);
+            
+            Calendar cal = Calendar.getInstance();
+            
+            cal.setTime(month);
+            cal.add(Calendar.MONTH, 1);
+            nextMonth = cal.getTime();
+            if (nextMonth.after(getToday())) {
+                nextMonth = null;
+            }
+            
+            cal.setTime(month);
+            cal.add(Calendar.MONTH, -1);
+            prevMonth = cal.getTime();
+        }
+

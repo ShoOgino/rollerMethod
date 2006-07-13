@@ -1,0 +1,21 @@
+        /**
+         * Wrap entry up in map of lists.
+         */
+        public Map getEntries() {
+            if (entries == null) try {
+                Roller roller = RollerFactory.getRoller();
+                WeblogManager wmgr = roller.getWeblogManager();
+                entry = wmgr.getWeblogEntryByAnchor(weblog, entryAnchor);
+                if (entry == null || !entry.getStatus().equals(WeblogEntryData.PUBLISHED)) {
+                    entry = null;
+                } else {
+                    entries = new TreeMap();
+                    entries.put(new Date(entry.getPubTime().getTime()), 
+                        Collections.singletonList(WeblogEntryDataWrapper.wrap(entry)));
+                } 
+            } catch (Exception e) {
+                log.error("ERROR: fetching entry");
+            }
+            return entries;
+        }
+

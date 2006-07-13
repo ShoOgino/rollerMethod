@@ -1,0 +1,33 @@
+    public WeblogEntriesPagerImpl(
+            WebsiteData weblog, 
+            String dateString, 
+            String entryAnchor,
+            String cat,
+            String locale,
+            int page) { 
+        
+        this.weblog = weblog;
+        this.dateString = dateString;
+        this.entryAnchor = entryAnchor;
+        this.cat = cat;
+        this.locale = locale;
+        this.page = page;
+        
+        length = weblog.getEntryDisplayCount();
+        if(page > 0) {
+            this.page = page;
+        }
+        this.offset = length * page;
+                
+        // determine which mode to use
+        if (entryAnchor != null) {
+            mode = new SingleEntryMode();
+        } else if (dateString != null && dateString.length() == 8) {
+            mode = new DayMode();
+        } else if (dateString != null && dateString.length() == 6) {
+            mode = new MonthMode();
+        } else {
+            mode = new LatestMode();
+        }
+    }
+

@@ -1,0 +1,19 @@
+    /**
+     * Get weblog category specified by request, or null if the category path
+     * found in the request does not exist in the current weblog.
+     */
+    public WeblogCategoryDataWrapper getWeblogCategory() {
+        WeblogCategoryDataWrapper ret = null;
+        try {
+            Roller roller = RollerFactory.getRoller();
+            WeblogManager wmgr = roller.getWeblogManager();
+            WeblogCategoryData category = wmgr.getWeblogCategoryByPath(weblog, cat);
+            if (category != null) {
+                ret = WeblogCategoryDataWrapper.wrap(category);
+            }
+        } catch (Exception e) {
+            log.error("ERROR: fetching category");
+        }
+        return ret;
+    }
+

@@ -1,0 +1,29 @@
+    /** 
+     * Init page model based on request. 
+     */
+    public void init(Map initData) throws RollerException {
+        
+        HttpServletRequest request = (HttpServletRequest) initData.get("request");
+        this.request = request;
+        
+        // we expect the init data to contain a pageRequest object
+        WeblogPageRequest parsed = (WeblogPageRequest) initData.get("pageRequest");
+        if(parsed == null) {
+            throw new RollerException("expected pageRequest from init data");
+        }
+        
+        cat = parsed.getWeblogCategory();
+        entryAnchor = parsed.getWeblogAnchor();
+        dateString = parsed.getWeblogDate();
+        weblogPage = parsed.getWeblogPage();
+        locale = parsed.getLocale();
+        page = parsed.getPageNum();
+        
+        // lookup weblog object
+        Roller roller = RollerFactory.getRoller();
+        UserManager umgr = roller.getUserManager();
+        weblog = umgr.getWebsiteByHandle(parsed.getWeblogHandle(), Boolean.TRUE);
+        
+
+    }    
+

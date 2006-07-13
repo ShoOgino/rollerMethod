@@ -1,0 +1,15 @@
+    /** URL for editing a weblog entry */
+    public String getWeblogEntryEditURL(WeblogEntryDataWrapper entry) {
+        String ret = null;
+        Hashtable params = new Hashtable();
+        params.put("entryid", entry.getId());
+        params.put("anchor", entry.getAnchor());
+        try {
+            ret = RequestUtils.computeURL(pageContext,
+                "weblogEdit", null, null, null, params, null, false);
+        } catch (MalformedURLException mue) {
+            log.warn("RollerRequest.editEntryUrl exception: ", mue);
+        }
+        return ret;
+    } 
+

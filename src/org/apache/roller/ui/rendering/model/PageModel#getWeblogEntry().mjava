@@ -1,0 +1,18 @@
+    /**
+     * Get weblog entry being displayed or null if none specified by request.
+     */
+    public WeblogEntryDataWrapper getWeblogEntry() {      
+        WeblogEntryDataWrapper ret = null;
+        if (entryAnchor != null) {
+            Roller roller = RollerFactory.getRoller();
+            try {
+                WeblogManager wmgr = roller.getWeblogManager();
+                WeblogEntryData entry = wmgr.getWeblogEntryByAnchor(weblog, entryAnchor);
+                ret = WeblogEntryDataWrapper.wrap(entry);
+            } catch (RollerException e) {
+                log.error("ERROR: getting weblog entry");
+            }
+        }        
+        return ret;
+    }
+

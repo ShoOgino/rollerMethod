@@ -1,0 +1,10 @@
+        public Map getEntries() {
+            Date date = parseDate(dateString);
+            Calendar cal = Calendar.getInstance(weblog.getTimeZoneInstance());
+            Date startDate = null;
+            Date endDate = date;
+            startDate = DateUtil.getStartOfDay(endDate, cal);
+            endDate = DateUtil.getEndOfDay(endDate, cal);
+            return getEntriesImpl(startDate, endDate);
+        }
+

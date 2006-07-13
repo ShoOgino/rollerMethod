@@ -1,0 +1,21 @@
+    /**
+     * Get weblog entry being displayed or null if none specified by request.
+     */
+    public TemplateWrapper getWeblogPage() {       
+        TemplateWrapper ret = null;
+        try {
+            if (weblogPage != null) {
+                Roller roller = RollerFactory.getRoller();
+                UserManager umgr = roller.getUserManager();
+                WeblogTemplate template = umgr.getPageByName(weblog, weblogPage);
+                ret = TemplateWrapper.wrap(template);
+
+            } else {
+                ret = TemplateWrapper.wrap(weblog.getDefaultPage());
+            }  
+        } catch (RollerException e) {
+            log.error("ERROR: getting page template");
+        }
+        return ret;
+    }
+
