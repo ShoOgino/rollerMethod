@@ -57,7 +57,7 @@
          */
         if(request.getParameter("cat") != null) {
             try {
-                this.weblogCategory = 
+                this.weblogCategoryName = 
                         URLDecoder.decode(request.getParameter("cat"), "UTF-8");
             } catch (UnsupportedEncodingException ex) {
                 // should never happen, utf-8 is always supported by java
@@ -71,7 +71,7 @@
         if(log.isDebugEnabled()) {
             log.debug("type = "+this.type);
             log.debug("format = "+this.format);
-            log.debug("weblogCategory = "+this.weblogCategory);
+            log.debug("weblogCategory = "+this.weblogCategoryName);
             log.debug("excerpts = "+this.excerpts);
         }
     }

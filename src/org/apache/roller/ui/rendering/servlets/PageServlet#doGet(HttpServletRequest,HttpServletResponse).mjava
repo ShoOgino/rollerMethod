@@ -48,11 +48,11 @@
             }
             
         // If request specified the page, then go with that
-        } else if (pageRequest.getWeblogPage() != null) {
+        } else if (pageRequest.getWeblogPageName() != null) {
             try {
-                page = weblog.getPageByLink(pageRequest.getWeblogPage());
+                page = weblog.getPageByLink(pageRequest.getWeblogPageName());
             } catch(Exception e) {
-                log.error("Error getting page: "+pageRequest.getWeblogPage(), e);
+                log.error("Error getting page: "+pageRequest.getWeblogPageName(), e);
             }
             
         // If page not available from request, then use weblog's default
@@ -69,6 +69,11 @@
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
+        
+        // validation
+        // 1. locale is valid
+        // 2. permalink entry exists
+        // 3. category exits
         
         log.debug("page found, dealing with it");
         

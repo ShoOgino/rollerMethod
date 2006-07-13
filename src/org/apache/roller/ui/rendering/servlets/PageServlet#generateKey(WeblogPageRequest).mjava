@@ -31,8 +31,8 @@
                 key.append("/").append(pageRequest.getWeblogDate());
             }
             
-            if(pageRequest.getWeblogCategory() != null) {
-                String cat = pageRequest.getWeblogCategory();
+            if(pageRequest.getWeblogCategoryName() != null) {
+                String cat = pageRequest.getWeblogCategoryName();
                 if(cat.startsWith("/")) {
                     cat = cat.substring(1);
                 }
@@ -43,7 +43,7 @@
         }
         
         // add page name
-        key.append("/").append(pageRequest.getWeblogPage());
+        key.append("/").append(pageRequest.getWeblogPageName());
         
         // add locale
         key.append("/").append(pageRequest.getLocale());

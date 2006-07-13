@@ -44,7 +44,7 @@
                 // category may have multiple path elements, so re-split with max 2
                 pathElements = pathInfo.split("/", 2);
                 this.context = pathElements[0];
-                this.weblogCategory = "/"+pathElements[1];
+                this.weblogCategoryName = "/"+pathElements[1];
                     
             } else if(pathElements.length == 2) {
                 
@@ -67,7 +67,7 @@
                     }
                     
                 } else if("page".equals(this.context)) {
-                    this.weblogPage = pathElements[1];
+                    this.weblogPageName = pathElements[1];
                     
                 } else {
                     throw new InvalidRequestException("context "+this.context+
@@ -107,7 +107,7 @@
             
             if(request.getParameter("cat") != null) {
                 try {
-                    this.weblogCategory = 
+                    this.weblogCategoryName = 
                             URLDecoder.decode(request.getParameter("cat"), "UTF-8");
                 } catch (UnsupportedEncodingException ex) {
                     // should never happen
@@ -130,8 +130,8 @@
             log.debug("context = "+this.context);
             log.debug("weblogAnchor = "+this.weblogAnchor);
             log.debug("weblogDate = "+this.weblogDate);
-            log.debug("weblogCategory = "+this.weblogCategory);
-            log.debug("weblogPage = "+this.weblogPage);
+            log.debug("weblogCategory = "+this.weblogCategoryName);
+            log.debug("weblogPage = "+this.weblogPageName);
             log.debug("pageNum = "+this.pageNum);
         }
     }
