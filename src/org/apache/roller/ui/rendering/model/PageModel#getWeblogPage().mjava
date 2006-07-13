@@ -1,21 +1,16 @@
     /**
      * Get weblog entry being displayed or null if none specified by request.
      */
-    public TemplateWrapper getWeblogPage() {       
-        TemplateWrapper ret = null;
-        try {
-            if (weblogPage != null) {
-                Roller roller = RollerFactory.getRoller();
-                UserManager umgr = roller.getUserManager();
-                WeblogTemplate template = umgr.getPageByName(weblog, weblogPage);
-                ret = TemplateWrapper.wrap(template);
-
-            } else {
-                ret = TemplateWrapper.wrap(weblog.getDefaultPage());
-            }  
-        } catch (RollerException e) {
-            log.error("ERROR: getting page template");
+    public TemplateWrapper getWeblogPage() {
+        if(pageRequest.getWeblogPageName() != null) {
+            return TemplateWrapper.wrap(pageRequest.getWeblogPage());
+        } else {
+            try {
+                return TemplateWrapper.wrap(weblog.getDefaultPage());
+            } catch (RollerException ex) {
+                log.error("Error getting default page", ex);
+            }
         }
-        return ret;
+        return null;
     }
 

@@ -8,8 +8,15 @@
             Roller roller = RollerFactory.getRoller();
             WeblogManager wmgr = roller.getWeblogManager();
             List entries = wmgr.getWeblogEntries(weblog,
-                null, null, new Date(), categoryPath, WeblogEntryData.PUBLISHED, 
-                "pubTime", locale, 0, weblog.getEntryDisplayCount());
+                    null, 
+                    null, 
+                    new Date(), 
+                    feedRequest.getWeblogCategoryName(), 
+                    WeblogEntryData.PUBLISHED, 
+                    "pubTime", 
+                    feedRequest.getLocale(), 
+                    0, 
+                    weblog.getEntryDisplayCount());
             for (Iterator it = entries.iterator(); it.hasNext();) {
                 WeblogEntryData entry = (WeblogEntryData) it.next();
                 results.add(WeblogEntryDataWrapper.wrap(entry));

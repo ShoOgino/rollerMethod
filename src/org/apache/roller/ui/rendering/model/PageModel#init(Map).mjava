@@ -7,23 +7,12 @@
         this.request = request;
         
         // we expect the init data to contain a pageRequest object
-        WeblogPageRequest parsed = (WeblogPageRequest) initData.get("pageRequest");
-        if(parsed == null) {
+        this.pageRequest = (WeblogPageRequest) initData.get("pageRequest");
+        if(this.pageRequest == null) {
             throw new RollerException("expected pageRequest from init data");
         }
         
-        cat = parsed.getWeblogCategoryName();
-        entryAnchor = parsed.getWeblogAnchor();
-        dateString = parsed.getWeblogDate();
-        weblogPage = parsed.getWeblogPageName();
-        locale = parsed.getLocale();
-        page = parsed.getPageNum();
-        
-        // lookup weblog object
-        Roller roller = RollerFactory.getRoller();
-        UserManager umgr = roller.getUserManager();
-        weblog = umgr.getWebsiteByHandle(parsed.getWeblogHandle(), Boolean.TRUE);
-        
-
+        // extract weblog object
+        weblog = pageRequest.getWeblog();
     }    
 

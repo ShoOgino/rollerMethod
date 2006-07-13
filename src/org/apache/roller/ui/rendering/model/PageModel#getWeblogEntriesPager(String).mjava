@@ -6,7 +6,12 @@
      */
     public WeblogEntriesPager getWeblogEntriesPager(String catArgument) {        
         // category specified by argument wins over request parameter
-        String chosenCat = (catArgument != null) ? catArgument : cat;            
-        return new WeblogEntriesPagerImpl(weblog, dateString, entryAnchor, chosenCat, locale, page);
+        String chosenCat = (catArgument != null) ? catArgument : pageRequest.getWeblogCategoryName();            
+        return new WeblogEntriesPagerImpl(weblog, 
+                                          pageRequest.getWeblogDate(), 
+                                          pageRequest.getWeblogAnchor(), 
+                                          chosenCat, 
+                                          pageRequest.getLocale(), 
+                                          pageRequest.getPageNum());
     }
 

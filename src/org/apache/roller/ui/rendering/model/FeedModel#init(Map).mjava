@@ -1,16 +1,11 @@
     public void init(Map initData) throws RollerException {
         
         // we expect the init data to contain a feedRequest object
-        WeblogFeedRequest parsed = (WeblogFeedRequest) initData.get("feedRequest");
-        if(parsed == null) {
+        this.feedRequest = (WeblogFeedRequest) initData.get("feedRequest");
+        if(this.feedRequest == null) {
             throw new RollerException("expected feedRequest from init data");
         }
         
-        categoryPath = parsed.getWeblogCategoryName();
-        locale = parsed.getLocale();
-        
-        Roller roller = RollerFactory.getRoller();
-        UserManager umgr = roller.getUserManager();
-        weblog = umgr.getWebsiteByHandle(parsed.getWeblogHandle(), Boolean.TRUE);
+        weblog = feedRequest.getWeblog();
     }
 
