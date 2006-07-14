@@ -1,9 +1,7 @@
-    public List getNextPrevEntries(
-            WeblogEntryData current, String catName, int maxEntries, boolean next)
+    public List getNextPrevEntries(WeblogEntryData current, String catName, 
+                                   String locale, int maxEntries, boolean next)
             throws RollerException {
-        if (catName != null && catName.trim().equals("/")) {
-            catName = null;
-        }
+        
         Junction conjunction = Expression.conjunction();
         conjunction.add(Expression.eq("website", current.getWebsite()));
         conjunction.add(Expression.eq("status", WeblogEntryData.PUBLISHED));
@@ -14,7 +12,7 @@
             conjunction.add(Expression.lt("pubTime", current.getPubTime()));
         }
         
-        if (catName != null) {
+        if (catName != null && !catName.trim().equals("/")) {
             WeblogCategoryData category =
                     getWeblogCategoryByPath(current.getWebsite(), null, catName);
             if (category != null) {
@@ -22,6 +20,10 @@
             } else {
                 throw new RollerException("Cannot find category: "+catName);
             }
+        }
+        
+        if(locale != null) {
+            conjunction.add(Expression.eq("locale", locale));
         }
         
         try {
