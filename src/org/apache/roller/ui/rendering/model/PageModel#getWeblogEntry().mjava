@@ -1,7 +1,10 @@
     /**
      * Get weblog entry being displayed or null if none specified by request.
      */
-    public WeblogEntryDataWrapper getWeblogEntry() {  
-        return WeblogEntryDataWrapper.wrap(pageRequest.getWeblogEntry());
+    public WeblogEntryDataWrapper getWeblogEntry() {
+        if(pageRequest.getWeblogEntry() != null) {
+            return WeblogEntryDataWrapper.wrap(pageRequest.getWeblogEntry());
+        }
+        return null;
     }
 

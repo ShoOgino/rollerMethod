@@ -3,6 +3,9 @@
      * found in the request does not exist in the current weblog.
      */
     public WeblogCategoryDataWrapper getWeblogCategory() {
-        return WeblogCategoryDataWrapper.wrap(pageRequest.getWeblogCategory());
+        if(pageRequest.getWeblogCategory() != null) {
+            return WeblogCategoryDataWrapper.wrap(pageRequest.getWeblogCategory());
+        }
+        return null;
     }
 
