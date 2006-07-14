@@ -1,0 +1,16 @@
+    public SearchResultsPager(WeblogSearchRequest searchRequest, Map entries, boolean more) {
+        
+        // store search results
+        this.entries = entries;
+        
+        // data from search request
+        this.weblog = searchRequest.getWeblog();
+        this.query = searchRequest.getQuery();
+        this.category = searchRequest.getWeblogCategoryName();
+        this.locale = searchRequest.getLocale();
+        this.page = searchRequest.getPageNum();
+        
+        // does this pager have more results?
+        this.moreResults = more;
+    }
+
