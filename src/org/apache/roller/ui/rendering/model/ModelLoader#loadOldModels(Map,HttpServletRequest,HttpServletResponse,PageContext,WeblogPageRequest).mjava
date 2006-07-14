@@ -6,13 +6,13 @@
             HttpServletRequest  request,
             HttpServletResponse response,
             PageContext pageContext,
-            WeblogRequest weblogRequest) throws RollerException {
+            WeblogPageRequest pageRequest) throws RollerException {
         
         // Only load old model if it's specified
         String useOldModel = 
             RollerConfig.getProperty("velocity.pagemodel.classname");        
         if (useOldModel != null && useOldModel.trim().length() > 0) { 
-            ContextLoader.setupContext(model, request, response, pageContext, weblogRequest);            
+            ContextLoader.setupContext(model, request, response, pageContext, pageRequest);            
         }
     }
 
