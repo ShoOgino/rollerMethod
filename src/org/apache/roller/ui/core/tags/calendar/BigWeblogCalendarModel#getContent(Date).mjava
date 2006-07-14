@@ -34,8 +34,8 @@
                 for ( int i=0; i<entries.size(); i++ ) {
                     sb.append("<div class=\"bCalendarDayContentBig\">");
                     sb.append("<a href=\"");
-                    sb.append(rctx.createEntryPermalink(
-                            (WeblogEntryData)entries.get(i),request,false));
+                    // TODO 3.0: this permalink used to be non-absolute
+                    sb.append(((WeblogEntryData)entries.get(i)).getPermalink());
                     sb.append("\">");
                     
                     String title = ((WeblogEntryData)entries.get(i)).getTitle().trim();

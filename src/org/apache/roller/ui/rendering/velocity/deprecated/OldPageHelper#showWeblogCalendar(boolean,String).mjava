@@ -21,11 +21,9 @@
             CalendarModel model = null;
             Date date = mDate;
             if ( big ) {
-                model = new BigWeblogCalendarModel(
-                        mRequest, response, cat);
+                model = new BigWeblogCalendarModel(mPageRequest, cat);
             } else {
-                model = new WeblogCalendarModel(
-                        mRequest, response, cat);
+                model = new WeblogCalendarModel(mPageRequest, cat);
             }
             
             // save model in JSP page context so CalendarTag can find it
@@ -36,7 +34,7 @@
             calTag.setPageContext(mPageContext);
             calTag.setName("calendar");
             calTag.setModel("calendarModel");
-            calTag.setLocale(LanguageUtil.getViewLocale(mRequest));
+            calTag.setLocale(mPageRequest.getLocaleInstance());
             if ( big ) {
                 calTag.setClassSuffix("Big");
             }

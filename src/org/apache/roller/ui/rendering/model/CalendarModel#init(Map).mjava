@@ -3,5 +3,11 @@
         
         // extract page context
         this.pageContext = (PageContext) initData.get("pageContext");
+        
+        // we expect the init data to contain a pageRequest object
+        this.pageRequest = (WeblogPageRequest) initData.get("pageRequest");
+        if(this.pageRequest == null) {
+            throw new RollerException("expected pageRequest from init data");
+        }
     }
 

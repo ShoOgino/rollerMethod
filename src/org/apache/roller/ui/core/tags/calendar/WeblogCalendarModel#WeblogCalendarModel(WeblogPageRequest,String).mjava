@@ -1,16 +1,8 @@
-    public WeblogCalendarModel(
-            HttpServletRequest request, HttpServletResponse response, String catArgument) {
+    public WeblogCalendarModel(WeblogPageRequest pRequest, String catArgument) {
 
-        this.request = request;
-        this.response = response;
-        this.weblog = weblog;        
-        WeblogPageRequest pageRequest = null;
+        this.pageRequest = pRequest;
         try {
-            pageRequest = new WeblogPageRequest(request);
-            
-            // lookup weblog specified by feed request
-            UserManager uMgr = RollerFactory.getRoller().getUserManager();
-            this.weblog = uMgr.getWebsiteByHandle(pageRequest.getWeblogHandle());
+            this.weblog = pageRequest.getWeblog();
             
             pageLink = pageRequest.getWeblogPageName();
 
