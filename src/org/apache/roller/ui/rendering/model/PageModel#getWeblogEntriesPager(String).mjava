@@ -6,12 +6,23 @@
      */
     public WeblogEntriesPager getWeblogEntriesPager(String catArgument) {        
         // category specified by argument wins over request parameter
-        String chosenCat = (catArgument != null) ? catArgument : pageRequest.getWeblogCategoryName();            
-        return new WeblogEntriesPagerImpl(weblog, 
-                                          pageRequest.getWeblogDate(), 
-                                          pageRequest.getWeblogAnchor(), 
-                                          chosenCat, 
-                                          pageRequest.getLocale(), 
-                                          pageRequest.getPageNum());
+        WeblogCategoryData chosenCat = null;
+        if (catArgument != null) {
+            try {
+                Roller roller = RollerFactory.getRoller();
+                WeblogManager wmgr = roller.getWeblogManager();
+                chosenCat = wmgr.getWeblogCategoryByPath(weblog, catArgument);
+            } catch (Exception ignore) {
+                log.debug("Ignoring unknown category restriction");
+            }
+        }            
+        return new WeblogEntriesPagerImpl(  
+            weblog, 
+            pageRequest.getWeblogPage(), 
+            pageRequest.getWeblogEntry(),
+            pageRequest.getWeblogDate(), 
+            chosenCat != null ? chosenCat : pageRequest.getWeblogCategory(),  
+            pageRequest.getLocale(), 
+            pageRequest.getPageNum());
     }
 

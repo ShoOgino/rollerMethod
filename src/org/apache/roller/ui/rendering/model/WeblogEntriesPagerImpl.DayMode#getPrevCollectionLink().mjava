@@ -1,9 +1,8 @@
         public String getPrevCollectionLink() {
-            String ret = null;
             if (prevDay != null) {
                 String prev = DateUtil.format8chars(prevDay);
-                ret = weblog.getURL() + "/date/" + prev + queryString(0);
+                return createURL(page, 0, weblog, weblogPage, null, cat, prev, locale);
             }
-            return ret;
+            return null;
         }
 

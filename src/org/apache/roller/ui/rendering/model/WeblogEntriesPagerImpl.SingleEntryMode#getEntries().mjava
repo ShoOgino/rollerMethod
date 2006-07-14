@@ -5,7 +5,7 @@
             if (entries == null) try {
                 Roller roller = RollerFactory.getRoller();
                 WeblogManager wmgr = roller.getWeblogManager();
-                entry = wmgr.getWeblogEntryByAnchor(weblog, entryAnchor);
+                entry = wmgr.getWeblogEntryByAnchor(weblog, entry.getAnchor());
                 if (entry == null || !entry.getStatus().equals(WeblogEntryData.PUBLISHED)) {
                     entry = null;
                 } else {

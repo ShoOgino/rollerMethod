@@ -1,8 +1,7 @@
         public String getNextLink() {
-            String ret = null;
             if (more) {
-                ret = weblog.getURL() + "/date/" + dateString  + queryString(1);
+                 return createURL(page, 1, weblog, weblogPage, null, cat, dateString, locale);
             }
-            return ret;
+            return null;
         }
 

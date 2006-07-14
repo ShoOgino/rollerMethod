@@ -2,6 +2,8 @@
      * Get up to 100 most recent approved and non-spam comments in weblog.
      * @param length Max entries to return (1-100)
      * @return List of CommentDataWrapper objects.
+     *
+     * @roller.wrapPojoMethod type="pojo-collection" class="org.apache.roller.pojos.CommentData"
      */
     public List getRecentComments(int length) {   
         if (length > 100) length = 100;
@@ -10,7 +12,7 @@
         try {
             WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
             List recent = wmgr.getComments(
-                    weblog,
+                    this,
                     null,          // weblog entry
                     null,          // search String
                     null,          // startDate
@@ -21,15 +23,8 @@
                     true,          // we want reverse chrono order
                     0,             // offset
                     length);       // length
-            
-            // wrap pojos
-            recentComments = new ArrayList(recent.size());
-            Iterator it = recent.iterator();
-            while(it.hasNext()) {
-                recentComments.add(CommentDataWrapper.wrap((CommentData) it.next()));
-            }
         } catch (RollerException e) {
-            log.error("ERROR: getting comments", e);
+            log.error("ERROR: getting recent comments", e);
         }
         return recentComments;
     }

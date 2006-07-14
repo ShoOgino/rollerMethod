@@ -1,8 +1,7 @@
         public String getNextLink() {
-            String ret = null;
             if (getNextEntry() != null) {
-                ret = getNextEntry().getPermalink() + queryString(0);
+                return createURL(page, 0, weblog, weblogPage, getNextEntry(), cat, dateString, locale);
             }
-            return ret;
+            return null;
         }
 

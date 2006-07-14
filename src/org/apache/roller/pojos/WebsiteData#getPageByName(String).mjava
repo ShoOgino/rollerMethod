@@ -6,7 +6,7 @@
         if(name == null)
             return null;
         
-        mLogger.debug("looking up template ["+name+"]");
+        log.debug("looking up template ["+name+"]");
         
         Template template = null;
         
@@ -21,7 +21,7 @@
                 
             } catch(ThemeNotFoundException tnfe) {
                 // i sure hope not!
-                mLogger.error(tnfe);
+                log.error(tnfe);
             }
             
         }
@@ -33,7 +33,7 @@
         }
         
         if(template != null)
-            mLogger.debug("returning template ["+template.getId()+"]");
+            log.debug("returning template ["+template.getId()+"]");
         
         return template;
     }

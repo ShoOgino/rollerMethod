@@ -1,8 +1,7 @@
         public String getPrevLink() {
-            String ret = null;
             if (page > 0) {
-                ret = weblog.getURL() + "/date/" + dateString + queryString(-1);
+                return createURL(page, -1, weblog, weblogPage, null, cat, dateString, locale);
             }
-            return ret;
+            return null;
         }
 
