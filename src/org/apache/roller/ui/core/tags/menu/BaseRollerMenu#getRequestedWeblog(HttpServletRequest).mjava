@@ -1,0 +1,40 @@
+    /**
+     * Currently, the menu tag can be used in both the authoring UI and the
+     * rendering system, so we have to check both forms of URL to determine
+     * the selected weblog.
+     * 
+     * TODO 3.0: more simple/consistent method for conveying weblog state across requests
+     */
+    protected static WebsiteData getRequestedWeblog(HttpServletRequest request) throws RollerException {
+        WebsiteData weblog = null;
+        Roller roller = RollerFactory.getRoller();
+        // first check authoring form of URL
+        if (request.getParameter(RequestConstants.WEBLOG) != null) {
+            String weblogHandle = request.getParameter(RequestConstants.WEBLOG);
+            weblog = roller.getUserManager().getWebsiteByHandle(weblogHandle);
+        } else if (request.getParameter(RequestConstants.WEBLOG_ID) != null) {
+            String weblogId = request.getParameter(RequestConstants.WEBLOG_ID);
+            weblog = roller.getUserManager().getWebsite(weblogId);
+        } else if (request.getParameter(RequestConstants.WEBLOGENTRY_ID) != null) {
+            String entryId = request.getParameter(RequestConstants.WEBLOGENTRY_ID);
+            WeblogEntryData entry = roller.getWeblogManager().getWeblogEntry(entryId);
+            weblog = entry.getWebsite();
+        } else if (request.getParameter(RequestConstants.WEBLOGCATEGORY_ID) != null) {
+            String catId = request.getParameter(RequestConstants.WEBLOGCATEGORY_ID);
+            WeblogCategoryData cat = roller.getWeblogManager().getWeblogCategory(catId);
+            weblog = cat.getWebsite();
+        } else if (request.getParameter(RequestConstants.FOLDER_ID) != null) {
+            String folderId = request.getParameter(RequestConstants.FOLDER_ID);
+            FolderData folder = roller.getBookmarkManager().getFolder(folderId);
+            weblog = folder.getWebsite();
+        } else if (request.getSession().getAttribute(RequestConstants.WEBLOG_SESSION_STASH) != null) {
+            String handle = (String)request.getSession().getAttribute(RequestConstants.WEBLOG_SESSION_STASH);
+            weblog = roller.getUserManager().getWebsiteByHandle(handle);
+        } else { 
+            // check rendering system form of URL
+            WeblogPageRequest pageRequest = new WeblogPageRequest(request);
+            weblog = pageRequest.getWeblog();
+        }
+        return weblog;
+    }  
+

@@ -4,7 +4,6 @@
     public String getContent(Date day) {
         String content = null;
         try {
-            RollerRequest rreq = RollerRequest.getRollerRequest(request);
             RollerContext rctx = RollerContext.getRollerContext();
             StringBuffer sb = new StringBuffer();
             
@@ -59,8 +58,7 @@
             }
             content = sb.toString();
         } catch (Exception e) {
-            RollerRequest.getRollerRequest(request)
-            .getServletContext().log("ERROR: creating URL",e);
+            mLogger.error("ERROR: creating URL", e);
         }
         return content;
     }

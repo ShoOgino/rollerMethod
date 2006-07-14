@@ -19,7 +19,7 @@
         {
             bd = new BookmarkData();
             FolderData fd = bmgr.getFolder(
-                request.getParameter(RollerRequest.FOLDERID_KEY));
+                request.getParameter(RequestConstants.FOLDER_ID));
             bd.setFolder(fd);
         }
         RollerSession rses = RollerSession.getRollerSession(request);
@@ -33,7 +33,7 @@
             CacheManager.invalidate(bd);
             
             request.setAttribute(
-                RollerRequest.FOLDERID_KEY, bd.getFolder().getId());
+                RequestConstants.FOLDER_ID, bd.getFolder().getId());
         }
         else 
         {

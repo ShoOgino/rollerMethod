@@ -7,9 +7,9 @@
         RollerRequest rreq = RollerRequest.getRollerRequest(request);
         WebsiteData website = rreq.getWebsite();
         if (website != null) {
-            request.getSession().setAttribute(HANDLE, website.getHandle());
+            request.getSession().setAttribute(RequestConstants.WEBLOG_SESSION_STASH, website.getHandle());
         } else {
-            String handle = (String)request.getSession().getAttribute(HANDLE);
+            String handle = (String)request.getSession().getAttribute(RequestConstants.WEBLOG_SESSION_STASH);
             Roller roller = RollerFactory.getRoller();
             website = roller.getUserManager().getWebsiteByHandle(handle);
         }

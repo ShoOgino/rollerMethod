@@ -14,7 +14,6 @@
             }
         }
         RollerSession rses = RollerSession.getRollerSession(req);
-        RollerRequest rreq = RollerRequest.getRollerRequest(req);
         boolean ret = true;
         
         if (rses != null && rses.isGlobalAdminUser()) return true;
@@ -37,7 +36,7 @@
             UserData user = null;
             if (rses != null) user = rses.getAuthenticatedUser();
             
-            WebsiteData website = rreq.getWebsite();
+            WebsiteData website = getRequestedWeblog(req);
             BasePageModel pageModel = (BasePageModel)req.getAttribute("model");
             if (pageModel != null) {
                 website = pageModel.getWebsite();

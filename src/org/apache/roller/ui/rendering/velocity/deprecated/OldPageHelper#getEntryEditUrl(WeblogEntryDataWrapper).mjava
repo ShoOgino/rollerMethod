@@ -1,10 +1,10 @@
     /** Build the URL for editing an WeblogEntry **/
     public String getEntryEditUrl(WeblogEntryDataWrapper entry) {
         Hashtable params = new Hashtable();
-        params.put( RollerRequest.WEBLOGENTRYID_KEY, entry.getId());
-        params.put( RollerRequest.ANCHOR_KEY,        entry.getAnchor());
+        params.put( RequestConstants.WEBLOGENTRY_ID, entry.getId());
+        params.put( RequestConstants.ANCHOR,        entry.getAnchor());
         if (mWebsite != null) {
-            params.put( RollerRequest.USERNAME_KEY,  mWebsite.getHandle());
+            params.put( RequestConstants.USERNAME,  mWebsite.getHandle());
         }
         try {
             return RequestUtils.computeURL( mPageContext,

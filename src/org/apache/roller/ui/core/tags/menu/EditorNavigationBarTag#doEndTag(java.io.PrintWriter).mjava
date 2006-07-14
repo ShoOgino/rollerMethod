@@ -2,7 +2,6 @@
         try {
             HttpServletRequest request =
                     (HttpServletRequest)pageContext.getRequest();
-            RollerRequest rreq = RollerRequest.getRollerRequest(request);
             RollerSession rollerSession = RollerSession.getRollerSession(request);
             if ( rollerSession.isGlobalAdminUser() ) {
                 return super.doEndTag(pw);

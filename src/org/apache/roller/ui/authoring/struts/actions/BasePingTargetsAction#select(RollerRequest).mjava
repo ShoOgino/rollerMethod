@@ -7,7 +7,7 @@
      */
     protected PingTargetData select(RollerRequest rreq) throws RollerException
     {
-        String pingTargetId = rreq.getRequest().getParameter(RollerRequest.PINGTARGETID_KEY);
+        String pingTargetId = rreq.getRequest().getParameter(RequestConstants.PINGTARGET_ID);
         PingTargetManager pingTargetMgr = RollerFactory.getRoller().getPingTargetManager();
         if (pingTargetId == null || pingTargetId.length() == 0)
         {
