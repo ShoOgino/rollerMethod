@@ -2,10 +2,9 @@
      * Convenience method for Roller classes trying to determine if a given
      * weblog handle represents the front page blog.
      */
-    public boolean isFrontPageWeblog(String weblogHandle) {
+    public static boolean isFrontPageWeblog(String weblogHandle) {
         
-        String frontPageHandle = RollerRuntimeConfig.getProperty(
-                "site.frontpage.weblog.handle");
+        String frontPageHandle = getProperty("site.frontpage.weblog.handle");
         
         return (frontPageHandle.equals(weblogHandle));
     }

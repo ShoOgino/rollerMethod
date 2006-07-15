@@ -1,5 +1,5 @@
     private Entry createAtomResourceEntry(WebsiteData website, File file) { 
-        String absUrl = mRollerContext.getAbsoluteContextUrl(mRequest);
+        String absUrl = RollerRuntimeConfig.getAbsoluteContextURL();
         String editURI = absUrl
                 + "/app/" + website.getHandle()
                 + "/resource/" + file.getName();

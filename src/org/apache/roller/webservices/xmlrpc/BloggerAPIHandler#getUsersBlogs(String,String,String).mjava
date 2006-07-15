@@ -19,8 +19,7 @@
             try {
                 RollerRequest rreq = RollerRequest.getRollerRequest();
                 HttpServletRequest req = rreq.getRequest();
-                String contextUrl =
-                        RollerContext.getRollerContext().getAbsoluteContextUrl(req);
+                String contextUrl = RollerRuntimeConfig.getAbsoluteContextURL();
                 
                 UserManager umgr = RollerFactory.getRoller().getUserManager();
                 UserData user = umgr.getUserByUserName(userid);

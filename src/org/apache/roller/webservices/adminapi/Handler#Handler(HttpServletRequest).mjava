@@ -3,7 +3,7 @@
         this.uri = new URI(request);
         this.rollerContext = RollerContext.getRollerContext();
         this.roller = RollerFactory.getRoller();
-        this.urlPrefix = getRollerContext().getAbsoluteContextUrl(getRequest()) + ENDPOINT;
+        this.urlPrefix = RollerRuntimeConfig.getAbsoluteContextURL() + ENDPOINT;
         
         // TODO: decide what to do about authentication, is WSSE going to fly?
         //Authenticator auth = new WSSEAuthenticator(request);

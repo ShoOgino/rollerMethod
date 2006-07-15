@@ -79,10 +79,8 @@
         HashMap model = new HashMap();
         String pageId = null;
         try {
-            RollerContext rollerContext = RollerContext.getRollerContext();
-            
             // determine what template to render with
-            if (rollerContext.isSiteWideWeblog(weblog.getHandle())) {
+            if (RollerRuntimeConfig.isSiteWideWeblog(weblog.getHandle())) {
                 pageId = "templates/feeds/site-"+feedRequest.getType()+"-"+feedRequest.getFormat()+".vm";
             } else {
                 pageId = "templates/feeds/weblog-"+feedRequest.getType()+"-"+feedRequest.getFormat()+".vm";
@@ -97,7 +95,7 @@
             ModelLoader.loadFeedModels(model, initData);
             
             // special handling for site wide feed
-            if (rollerContext.isSiteWideWeblog(weblog.getHandle())) {
+            if (RollerRuntimeConfig.isSiteWideWeblog(weblog.getHandle())) {
                 ModelLoader.loadSiteModels(model, initData);
             }
             

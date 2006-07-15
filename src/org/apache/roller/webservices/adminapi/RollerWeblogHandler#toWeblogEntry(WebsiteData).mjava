@@ -11,7 +11,7 @@
         we.setEmailAddress(wd.getEmailAddress());
         we.setDateCreated(wd.getDateCreated());
         try {
-            AppUrl appUrl = new AppUrl(getRollerContext().getAbsoluteContextUrl(getRequest()), wd.getHandle());
+            AppUrl appUrl = new AppUrl(RollerRuntimeConfig.getAbsoluteContextURL(), wd.getHandle());
             we.setAppEntriesUrl(appUrl.getEntryUrl().toString());
             we.setAppResourcesUrl(appUrl.getResourceUrl().toString());
         } catch (MalformedURLException mfue) {

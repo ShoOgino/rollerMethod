@@ -38,8 +38,7 @@
             
             RollerRequest rreq = RollerRequest.getRollerRequest();
             HttpServletRequest req = rreq.getRequest();
-            String contextUrl =
-                    RollerContext.getRollerContext().getAbsoluteContextUrl(req);
+            String contextUrl = RollerRuntimeConfig.getAbsoluteContextURL();
             
             // populates user information to return as a result
             Hashtable result = new Hashtable();

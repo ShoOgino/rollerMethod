@@ -8,7 +8,7 @@
         try
         {
             RollerRequest rreq = RollerRequest.getRollerRequest(req);
-            String absoluteUrl = RollerContext.getRollerContext().getAbsoluteContextUrl(req);
+            String absoluteUrl = RollerRuntimeConfig.getAbsoluteContextURL();
             PingTargetData pingTarget = select(rreq);
             WebsiteData website = rreq.getWebsite();
             try

@@ -63,7 +63,6 @@
         // looks like we need to render content
         Map model = new HashMap();
         try {
-            RollerContext rollerContext = RollerContext.getRollerContext();
             PageContext pageContext = JspFactory.getDefaultFactory().getPageContext(
                     this, request, response,"", true, 8192, true);
             
@@ -80,7 +79,7 @@
             ModelLoader.loadPageModels(model, initData);
             
             // special handling for site wide weblog
-            if (rollerContext.isSiteWideWeblog(tmpWebsite.getHandle())) {
+            if (RollerRuntimeConfig.isSiteWideWeblog(tmpWebsite.getHandle())) {
                 ModelLoader.loadSiteModels(model, initData);
             }
             

@@ -44,9 +44,7 @@
         
         // populate the model
         model.put("website", weblog);
-        
-        RollerContext rollerContext = new RollerContext();
-        model.put("absBaseURL", rollerContext.getAbsoluteContextUrl(request));
+        model.put("absBaseURL", RollerRuntimeConfig.getAbsoluteContextURL());
 
         
         // lookup Renderer we are going to use

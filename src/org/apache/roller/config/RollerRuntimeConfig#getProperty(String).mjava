@@ -6,24 +6,15 @@
         
         String value = null;
         
-        // try local config first
-        value = localConfig.getProperty(name);
-        
-        // next try db
-        // i don't like this special case for the absoluteurl, but right now
-        // i can't seem to see a better way.  at some point we should come
-        // back to this and see if there is a cleaner way to handle this  -- AG
-        if(value == null || "site.absoluteurl".equals(name)) {
-            try {
-                PropertiesManager pmgr = RollerFactory.getRoller().getPropertiesManager();
-                value = pmgr.getProperty(name).getValue();
-            } catch(Exception e) {
-                log.warn("Trouble accessing property: "+name, e);
-            }
+        try {
+            PropertiesManager pmgr = RollerFactory.getRoller().getPropertiesManager();
+            value = pmgr.getProperty(name).getValue();
+        } catch(Exception e) {
+            log.warn("Trouble accessing property: "+name, e);
         }
         
         log.debug("fetched property ["+name+"="+value+"]");
-        
+
         return value;
     }
 

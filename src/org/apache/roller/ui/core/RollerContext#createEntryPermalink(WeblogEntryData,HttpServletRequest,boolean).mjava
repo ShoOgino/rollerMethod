@@ -6,9 +6,9 @@
         try {
             String baseUrl = null;
             if (absolute) {
-                baseUrl = getAbsoluteContextUrl(request);
+                baseUrl = RollerRuntimeConfig.getAbsoluteContextURL();
             } else {
-                baseUrl = getContextUrl(request);
+                baseUrl = RollerRuntimeConfig.getRelativeContextURL();
             }
             link = StringEscapeUtils.escapeHtml(baseUrl + entry.getPermaLink());
         } catch (Exception e) {

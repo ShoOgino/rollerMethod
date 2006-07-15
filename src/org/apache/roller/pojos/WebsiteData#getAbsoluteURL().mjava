@@ -3,7 +3,7 @@
      */
     public String getAbsoluteURL() {
         // TODO: ATLAS reconcile entry.getPermaLink() with new URLs
-        String relPath = RollerRuntimeConfig.getProperty("site.absoluteurl");
+        String relPath = RollerRuntimeConfig.getAbsoluteContextURL();
         return relPath + "/" + getHandle();
     }
 

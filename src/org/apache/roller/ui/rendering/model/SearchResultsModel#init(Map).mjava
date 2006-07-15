@@ -15,8 +15,7 @@
         SearchOperation search = new SearchOperation(indexMgr);
         search.setTerm(searchRequest.getQuery());
         
-        RollerContext rollerContext = RollerContext.getRollerContext();
-        if(rollerContext.isSiteWideWeblog(searchRequest.getWeblogHandle())) {
+        if(RollerRuntimeConfig.isSiteWideWeblog(searchRequest.getWeblogHandle())) {
             this.websiteSpecificSearch = false;
         } else {
             search.setWebsiteHandle(searchRequest.getWeblogHandle());

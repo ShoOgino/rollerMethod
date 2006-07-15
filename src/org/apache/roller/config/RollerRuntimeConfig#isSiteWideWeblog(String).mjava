@@ -3,10 +3,9 @@
      * weblog handle represents the front page blog configured to render
      * site-wide data.
      */
-    public boolean isSiteWideWeblog(String weblogHandle) {
+    public static boolean isSiteWideWeblog(String weblogHandle) {
         
-        boolean siteWide = RollerRuntimeConfig.getBooleanProperty(
-                "site.frontpage.weblog.aggregated");
+        boolean siteWide = getBooleanProperty("site.frontpage.weblog.aggregated");
         
         return (isFrontPageWeblog(weblogHandle) && siteWide);
     }

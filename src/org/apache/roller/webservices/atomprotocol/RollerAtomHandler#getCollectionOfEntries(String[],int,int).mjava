@@ -4,7 +4,7 @@
     public Feed getCollectionOfEntries(
             String[] pathInfo, int start, int max) throws Exception {
         String handle = pathInfo[0];
-        String absUrl = mRollerContext.getAbsoluteContextUrl(mRequest);
+        String absUrl = RollerRuntimeConfig.getAbsoluteContextURL();
         WebsiteData website = mRoller.getUserManager().getWebsiteByHandle(handle);
         List entries = null;
         if (canView(website)) {

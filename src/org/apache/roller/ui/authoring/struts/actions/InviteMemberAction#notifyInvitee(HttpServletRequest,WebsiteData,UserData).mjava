@@ -25,7 +25,7 @@
                 
                 // Figure URL to entry edit page
                 RollerContext rc = RollerContext.getRollerContext();
-                String rootURL = rc.getAbsoluteContextUrl(request);
+                String rootURL = RollerRuntimeConfig.getAbsoluteContextURL();
                 if (rootURL == null || rootURL.trim().length()==0)
                 {
                     rootURL = RequestUtils.serverURL(request) 

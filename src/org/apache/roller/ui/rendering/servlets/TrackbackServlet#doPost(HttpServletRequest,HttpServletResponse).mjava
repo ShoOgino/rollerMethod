@@ -88,8 +88,7 @@
                         "site.trackbackVerification.enabled")) {
                     
                     // ...ensure trackbacker actually links to us
-                    RollerContext rctx= RollerContext.getRollerContext();
-                    String absurl = rctx.getAbsoluteContextUrl(request);
+                    String absurl = RollerRuntimeConfig.getAbsoluteContextURL();
                     LinkbackExtractor linkback = new LinkbackExtractor(
                             comment.getUrl(), absurl + entry.getPermaLink());
                     if (linkback.getExcerpt() == null) {
@@ -121,8 +120,7 @@
                     CacheManager.invalidate(comment);
                     
                     // Send email notifications
-                    RollerContext rc = RollerContext.getRollerContext();
-                    String rootURL = rc.getAbsoluteContextUrl(request);
+                    String rootURL = RollerRuntimeConfig.getAbsoluteContextURL();
                     if (rootURL == null || rootURL.trim().length()==0) {
                         rootURL = RequestUtils.serverURL(request) + request.getContextPath();
                     }
