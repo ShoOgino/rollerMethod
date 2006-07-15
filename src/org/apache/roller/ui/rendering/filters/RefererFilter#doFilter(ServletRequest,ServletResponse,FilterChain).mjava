@@ -56,8 +56,8 @@
             RollerContext rctx = RollerContext.getRollerContext();
             
             // Base page URLs, with and without www.
-            String basePageUrlWWW =
-                    rctx.getAbsoluteContextUrl(request)+"/"+weblog.getHandle();
+            String basePageUrlWWW = 
+               RollerRuntimeConfig.getAbsoluteContextURL() + "/" + weblog.getHandle();
             String basePageUrl = basePageUrlWWW;
             if ( basePageUrlWWW.startsWith("http://www.") ) {
                 // chop off the http://www.
