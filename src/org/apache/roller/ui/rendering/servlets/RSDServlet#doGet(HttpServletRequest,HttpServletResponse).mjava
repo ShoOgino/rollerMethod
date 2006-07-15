@@ -6,17 +6,18 @@
         
         log.debug("Entering");
         
-        HashMap model = new HashMap();
         WebsiteData weblog = null;
-        WeblogRequest weblogRequest = null;
         
-        // first off lets parse the incoming request and validate it
+        WeblogRequest weblogRequest = null;
         try {
             weblogRequest = new WeblogRequest(request);
             
             // now make sure the specified weblog really exists
-            UserManager userMgr = RollerFactory.getRoller().getUserManager();
-            weblog = userMgr.getWebsiteByHandle(weblogRequest.getWeblogHandle(), Boolean.TRUE);
+            weblog = weblogRequest.getWeblog();
+            if(weblog == null) {
+                throw new RollerException("Unable to lookup weblog: "+
+                        weblogRequest.getWeblogHandle());
+            }
             
         } catch(Exception e) {
             // invalid rsd request format or weblog doesn't exist
@@ -43,6 +44,7 @@
         
         
         // populate the model
+        HashMap model = new HashMap();
         model.put("website", weblog);
         model.put("absBaseURL", RollerRuntimeConfig.getAbsoluteContextURL());
 
