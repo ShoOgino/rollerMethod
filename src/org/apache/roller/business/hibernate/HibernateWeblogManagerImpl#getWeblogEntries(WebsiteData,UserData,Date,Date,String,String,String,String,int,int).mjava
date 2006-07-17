@@ -53,7 +53,7 @@
             }
             
             if (locale != null) {
-                criteria.add(Expression.eq("locale", locale));
+                criteria.add(Expression.ilike("locale", locale, MatchMode.START));
             }
             
             if (sortby != null && sortby.equals("updateTime")) {

@@ -23,7 +23,7 @@
         }
         
         if(locale != null) {
-            conjunction.add(Expression.eq("locale", locale));
+            conjunction.add(Expression.ilike("locale", locale, MatchMode.START));
         }
         
         try {
