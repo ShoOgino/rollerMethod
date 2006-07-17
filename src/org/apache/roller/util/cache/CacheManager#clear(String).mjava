@@ -1,17 +1,11 @@
     /**
-     * Flush a single cache handler.
+     * Flush a single cache.
      */
-    public static void clear(String handlerClass) {
+    public static void clear(String cacheId) {
         
-        // loop through all handlers to find the one we want
-        CacheHandler handler = null;
-        Iterator handlers = cacheHandlers.iterator();
-        while(handlers.hasNext()) {
-            handler = (CacheHandler) handlers.next();
-            
-            if(handler.getClass().getName().equals(handlerClass)) {
-                handler.clear();
-            }
+        Cache cache = (Cache) caches.get(cacheId);
+        if(cache != null) {
+            cache.clear();
         }
     }
 

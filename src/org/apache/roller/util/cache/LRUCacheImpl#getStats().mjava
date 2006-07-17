@@ -1,14 +1,14 @@
     public Map getStats() {
         
         Map stats = new HashMap();
-        stats.put("cacheType", this.contentCache.getClass().getName());
         stats.put("startTime", this.startTime);
         stats.put("hits", new Double(this.hits));
         stats.put("misses", new Double(this.misses));
-        stats.put("purges", new Double(this.purges));
+        stats.put("puts", new Double(this.puts));
+        stats.put("removes", new Double(this.removes));
         
         // calculate efficiency
-        if((misses - purges) > 0) {
+        if((misses - removes) > 0) {
             double efficiency = hits / (misses + hits);
             stats.put("efficiency", new Double(efficiency * 100));
         }

@@ -3,13 +3,13 @@
      */
     public static void clear() {
         
-        // loop through all handlers and trigger a clear
-        CacheHandler handler = null;
-        Iterator handlers = cacheHandlers.iterator();
-        while(handlers.hasNext()) {
-            handler = (CacheHandler) handlers.next();
+        // loop through all caches and trigger a clear
+        Cache cache = null;
+        Iterator cachesIT = caches.values().iterator();
+        while(cachesIT.hasNext()) {
+            cache = (Cache) cachesIT.next();
             
-            handler.clear();
+            cache.clear();
         }
     }
 

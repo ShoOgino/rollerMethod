@@ -1,5 +1,6 @@
-    protected LRUCacheImpl(int maxsize) {
+    protected LRUCacheImpl(String id, int maxsize) {
         
+        this.id = id;
         this.cache = Collections.synchronizedMap(new LRULinkedHashMap(maxsize));
     }
 

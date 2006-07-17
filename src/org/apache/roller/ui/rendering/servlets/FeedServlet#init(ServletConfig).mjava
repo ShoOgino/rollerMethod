@@ -8,6 +8,7 @@
         log.info("Initializing FeedServlet");
         
         Map cacheProps = new HashMap();
+        cacheProps.put("id", CACHE_ID);
         Enumeration allProps = RollerConfig.keys();
         String prop = null;
         while(allProps.hasMoreElements()) {
@@ -22,6 +23,6 @@
         
         log.info("Feed cache = "+cacheProps);
         
-        contentCache = CacheManager.constructCache(this, cacheProps);
+        contentCache = CacheManager.constructCache(null, cacheProps);
     }
 

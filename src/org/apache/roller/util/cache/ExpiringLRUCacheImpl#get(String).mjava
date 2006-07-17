@@ -19,7 +19,8 @@
             
             // if the value is null then that means this entry expired
             if (value == null) {
-                mLogger.debug("entry expired ["+key+"]");
+                log.debug("EXPIRED ["+key+"]");
+                hits--;
                 super.remove(key);
             }
         }
