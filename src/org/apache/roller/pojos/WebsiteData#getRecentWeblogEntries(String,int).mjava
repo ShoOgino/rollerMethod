@@ -2,7 +2,7 @@
      * Get up to 100 most recent published entries in weblog.
      * @param cat Category path or null for no category restriction
      * @param length Max entries to return (1-100)
-     * @return List of WeblogEntryDataWrapper objects.
+     * @return List of weblog entry objects.
      *
      * @roller.wrapPojoMethod type="pojo-collection" class="org.apache.roller.pojos.WeblogEntryData"
      */
@@ -13,7 +13,7 @@
         if (length < 1) return recentEntries;
         try {
             WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
-            List recent = wmgr.getWeblogEntries(
+            recentEntries = wmgr.getWeblogEntries(
                     this, 
                     null,       // user
                     null,       // startDate

@@ -1,14 +1,14 @@
     /** URL for editing a weblog entry */
     public String getWeblogEntryEditURL(WeblogEntryDataWrapper entry) {
         String ret = null;
-        Hashtable params = new Hashtable();
-        params.put("entryid", entry.getId());
-        params.put("anchor", entry.getAnchor());
+        Map params = new HashMap();
+        params.put(RequestConstants.WEBLOGENTRY_ID, entry.getId());
+        params.put(RequestConstants.ANCHOR, entry.getAnchor());
         try {
             ret = RequestUtils.computeURL(pageContext,
                 "weblogEdit", null, null, null, params, null, false);
         } catch (MalformedURLException mue) {
-            log.warn("RollerRequest.editEntryUrl exception: ", mue);
+            log.error("ERROR forming Struts URL: ", mue);
         }
         return ret;
     } 

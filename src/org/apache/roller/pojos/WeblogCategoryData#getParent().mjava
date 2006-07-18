@@ -1,22 +1,16 @@
-    /** 
+    /**
      * Return parent category, or null if category is root of hierarchy.
      *
      * @roller.wrapPojoMethod type="pojo"
      */
-    public WeblogCategoryData getParent() throws RollerException
-    {
-        if (mNewParent != null)
-        {
+    public WeblogCategoryData getParent() throws RollerException {
+        if (mNewParent != null) {
             // Category has new parent, so return that
             return (WeblogCategoryData)mNewParent;
-        }
-        else if (getParentAssoc() != null)
-        {
+        } else if (getParentAssoc() != null) {
             // Return parent found in database
             return ((WeblogCategoryAssoc)getParentAssoc()).getAncestorCategory();
-        }
-        else 
-        {
+        } else {
             return null;
         }
     }

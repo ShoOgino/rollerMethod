@@ -3,17 +3,14 @@
      *
      * @roller.wrapPojoMethod type="pojo-collection" class="org.apache.roller.pojos.WeblogCategoryData"
      */
-    public List getWeblogCategories() throws RollerException
-    {
-        if (weblogCategories == null)
-        {
+    public List getWeblogCategories() throws RollerException {
+        if (weblogCategories == null) {
             weblogCategories = new LinkedList();
             List childAssocs = getChildAssocs();
             Iterator childIter = childAssocs.iterator();
-            while (childIter.hasNext())
-            {
+            while (childIter.hasNext()) {
                 WeblogCategoryAssoc assoc =
-                    (WeblogCategoryAssoc) childIter.next();
+                        (WeblogCategoryAssoc) childIter.next();
                 weblogCategories.add(assoc.getCategory());
             }
         }

@@ -1,5 +1,10 @@
     public void render(Map model, Writer out) throws Exception {
         
+        if (exception != null) {
+            renderException(model, out);
+            return;
+        }
+        
         long startTime = System.currentTimeMillis();
         
         // convert model to Velocity Context
