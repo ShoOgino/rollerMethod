@@ -3,10 +3,10 @@
      */
     public void init(FilterConfig filterConfig) {
         
-        log.info("Initializing planet cache");
+        log.info("Initializing planet cache filter");
         
         this.excludeOwnerPages = 
-                RollerConfig.getBooleanProperty("cache.planet.excludeOwnerEditPages");
+                RollerConfig.getBooleanProperty("cache.excludeOwnerEditPages");
         
         this.planetCache = PlanetCache.getInstance();
     }

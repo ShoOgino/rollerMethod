@@ -14,13 +14,12 @@
             planetRequest = new PlanetRequest(request);
         } catch(Exception e) {
             // some kind of error parsing the request
-            log.error("error creating planet request", e);
+            log.debug("error creating planet request", e);
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
         
-        String key = "planetCache:"+this.generateKey(planetRequest);
-        
+        String key = planetCache.generateKey(planetRequest);
         try {
             ResponseContent respContent = null;
             if(!this.excludeOwnerPages || !planetRequest.isLoggedIn()) {

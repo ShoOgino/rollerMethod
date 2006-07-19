@@ -2,21 +2,23 @@
      * Generate a cache key from a parsed weblog feed request.
      * This generates a key of the form ...
      *
-     * <context>[/handle]/<flavor>[/category]/<language>[/excerpts]
+     * <handle>/<type>/<format>/[/category][/language][/excerpts]
      *
      * examples ...
      *
-     * main/rss/en
-     * weblog/foo/rss/MyCategory/en
-     * weblog/foo/atom/en/excerpts
+     * foo/entries/rss/en
+     * foo/comments/rss/MyCategory/en
+     * foo/entries/atom/en/excerpts
      *
      */
-    private String generateKey(WeblogFeedRequest feedRequest) {
+    public String generateKey(WeblogFeedRequest feedRequest) {
         
         StringBuffer key = new StringBuffer();
         
-        key.append("weblog");
-        key.append("/").append(feedRequest.getWeblogHandle().toLowerCase());
+        key.append(this.CACHE_ID).append(":");
+        key.append("feed/");
+        key.append(feedRequest.getWeblogHandle());
+        
         key.append("/").append(feedRequest.getType());
         key.append("/").append(feedRequest.getFormat());
         
@@ -31,8 +33,9 @@
             key.append("/").append(cat);
         }
         
-        // add locale
-        key.append("/").append(feedRequest.getLocale());
+        if(feedRequest.getLocale() != null) {
+            key.append("/").append(feedRequest.getLocale());
+        }
         
         if(feedRequest.isExcerpts()) {
             key.append("/excerpts");

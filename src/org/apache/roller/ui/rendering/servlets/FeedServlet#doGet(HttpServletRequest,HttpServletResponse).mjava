@@ -7,6 +7,7 @@
         log.debug("Entering");
         
         WebsiteData weblog = null;
+        boolean isSiteWide = false;
         
         WeblogFeedRequest feedRequest = null;
         try {
@@ -18,6 +19,10 @@
                 throw new RollerException("unable to lookup weblog: "+
                         feedRequest.getWeblogHandle());
             }
+            
+            // is this the site-wide weblog?
+            isSiteWide = RollerRuntimeConfig.isSiteWideWeblog(feedRequest.getWeblogHandle());
+            
         } catch(Exception e) {
             // invalid feed request format or weblog doesn't exist
             log.debug("error creating weblog feed request", e);
@@ -26,47 +31,61 @@
         }
             
         
+        // determine the lastModified date for this content
+        long lastModified = 0;
+        if(isSiteWide) {
+            lastModified = siteWideCache.getLastModified().getTime();
+        } else {
+            lastModified = weblog.getLastModified().getTime();
+        }
+        
         // 304 if-modified-since checking
         long sinceDate = request.getDateHeader("If-Modified-Since");
         log.debug("since date = "+sinceDate);
-        if(weblog.getLastModified().getTime() <= sinceDate) {
+        if(lastModified <= sinceDate) {
             log.debug("NOT MODIFIED "+request.getRequestURL());
             response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
             return;
         }
         
         // set last-modified date
-        response.setDateHeader("Last-Modified", weblog.getLastModified().getTime());
+        response.setDateHeader("Last-Modified", lastModified);
         
-        // cached content checking
-        String cacheKey = this.CACHE_ID+":"+this.generateKey(feedRequest);
-        LazyExpiringCacheEntry entry =
-                (LazyExpiringCacheEntry) this.contentCache.get(cacheKey);
-        if(entry != null) {
-            CachedContent cachedContent = 
-                    (CachedContent) entry.getValue(weblog.getLastModified().getTime());
-            
-            if(cachedContent != null) {
-                log.debug("HIT "+cacheKey);
-                
-                response.setContentLength(cachedContent.getContent().length);
-                response.getOutputStream().write(cachedContent.getContent());
-                return;
-                
-            } else {
-                log.debug("HIT-EXPIRED "+cacheKey);
-            }
-            
-        } else {
-            log.debug("MISS "+cacheKey);
-        }
-
         // set content type
         if("rss".equals(feedRequest.getFormat())) {
             response.setContentType("application/rss+xml; charset=utf-8");
         } else if("atom".equals(feedRequest.getFormat())) {
             response.setContentType("application/atom+xml; charset=utf-8");
         }
+        
+        
+        // generate cache key
+        String cacheKey = null;
+        if(isSiteWide) {
+            cacheKey = siteWideCache.generateKey(feedRequest);
+        } else {
+            cacheKey = weblogFeedCache.generateKey(feedRequest);
+        }
+        
+        // cached content checking
+        CachedContent cachedContent = null;
+        if(isSiteWide) {
+            cachedContent = (CachedContent) siteWideCache.get(cacheKey);
+        } else {
+            cachedContent = (CachedContent) weblogFeedCache.get(cacheKey, lastModified);
+        }
+        
+        if(cachedContent != null) {
+            log.debug("HIT "+cacheKey);
+            
+            response.setContentLength(cachedContent.getContent().length);
+            response.getOutputStream().write(cachedContent.getContent());
+            return;
+            
+        } else {
+            log.debug("MISS "+cacheKey);
+        }
+        
         
         // looks like we need to render content
         HashMap model = new HashMap();
@@ -149,7 +168,11 @@
         
         // cache rendered content.  only cache if user is not logged in?
         log.debug("PUT "+cacheKey);
-        this.contentCache.put(cacheKey, new LazyExpiringCacheEntry(rendererOutput));
+        if(isSiteWide) {
+            siteWideCache.put(cacheKey, rendererOutput);
+        } else {
+            weblogFeedCache.put(cacheKey, rendererOutput);
+        }
         
         log.debug("Exiting");
     }

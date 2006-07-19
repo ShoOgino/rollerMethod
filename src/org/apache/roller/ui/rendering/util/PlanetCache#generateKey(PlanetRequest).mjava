@@ -13,9 +13,11 @@
      * planet/feed/rss/en/excerpts
      *
      */
-    private String generateKey(PlanetRequest planetRequest) {
+    public String generateKey(PlanetRequest planetRequest) {
         
         StringBuffer key = new StringBuffer();
+        
+        key.append(this.CACHE_ID).append(":");
         key.append(planetRequest.getContext());
         key.append("/");
         key.append(planetRequest.getType());

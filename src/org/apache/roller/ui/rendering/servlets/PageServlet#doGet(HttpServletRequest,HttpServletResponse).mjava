@@ -7,6 +7,7 @@
         log.debug("Entering");
         
         WebsiteData weblog = null;
+        boolean isSiteWide = false;
         
         WeblogPageRequest pageRequest = null;
         try {
@@ -17,6 +18,10 @@
                 throw new RollerException("unable to lookup weblog: "+
                         pageRequest.getWeblogHandle());
             }
+            
+            // is this the site-wide weblog?
+            isSiteWide = RollerRuntimeConfig.isSiteWideWeblog(pageRequest.getWeblogHandle());
+            
         } catch (Exception e) {
             // some kind of error parsing the request or looking up weblog
             log.debug("error creating page request", e);
@@ -25,14 +30,25 @@
         }
         
         
+        // determine the lastModified date for this content
+        long lastModified = 0;
+        if(isSiteWide) {
+            lastModified = siteWideCache.getLastModified().getTime();
+        } else {
+            lastModified = weblog.getLastModified().getTime();
+        }
+        
         // 304 if-modified-since checking
         long sinceDate = request.getDateHeader("If-Modified-Since");
         log.debug("since date = "+sinceDate);
-        if(weblog.getLastModified().getTime() <= sinceDate) {
+        if(lastModified <= sinceDate) {
             log.debug("NOT MODIFIED "+request.getRequestURL());
             response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
             return;
         }
+        
+        // set last-modified date
+        response.setDateHeader("Last-Modified", lastModified);
         
         
         // set the content type
@@ -45,31 +61,32 @@
             response.setContentType("text/html; charset=utf-8");
         }
         
-        // set last-modified date
-        response.setDateHeader("Last-Modified", weblog.getLastModified().getTime());
         
+        // generate cache key
+        String cacheKey = null;
+        if(isSiteWide) {
+            cacheKey = siteWideCache.generateKey(pageRequest);
+        } else {
+            cacheKey = weblogPageCache.generateKey(pageRequest);
+        }
         
         // cached content checking
-        String cacheKey = this.CACHE_ID+":"+this.generateKey(pageRequest);
         if((!this.excludeOwnerPages || !pageRequest.isLoggedIn()) &&
                 request.getAttribute("skipCache") == null) {
             
-            LazyExpiringCacheEntry entry =
-                    (LazyExpiringCacheEntry) this.contentCache.get(cacheKey);
-            if(entry != null) {
-                CachedContent cachedContent = 
-                        (CachedContent) entry.getValue(weblog.getLastModified().getTime());
+            CachedContent cachedContent = null;
+            if(isSiteWide) {
+                cachedContent = (CachedContent) siteWideCache.get(cacheKey);
+            } else {
+                cachedContent = (CachedContent) weblogPageCache.get(cacheKey, lastModified);
+            }
+            
+            if(cachedContent != null) {
+                log.debug("HIT "+cacheKey);
                 
-                if(cachedContent != null) {
-                    log.debug("HIT "+cacheKey);
-                    
-                    response.setContentLength(cachedContent.getContent().length);
-                    response.getOutputStream().write(cachedContent.getContent());
-                    return;
-
-                } else {
-                    log.debug("HIT-EXPIRED "+cacheKey);
-                }
+                response.setContentLength(cachedContent.getContent().length);
+                response.getOutputStream().write(cachedContent.getContent());
+                return;
                 
             } else {
                 log.debug("MISS "+cacheKey);
@@ -175,7 +192,7 @@
             ModelLoader.loadPageModels(model, initData);
             
             // special handling for site wide weblog
-            if (RollerRuntimeConfig.isSiteWideWeblog(weblog.getHandle())) {
+            if(isSiteWide) {
                 ModelLoader.loadSiteModels(model, initData);
             }
             
@@ -212,7 +229,7 @@
             return;
         }
         
-        // render content.  use default size of about 24K for a standard page
+        // render content.  use size of about 24K for a standard page
         CachedContent rendererOutput = new CachedContent(24567);
         try {
             log.debug("Doing rendering");
@@ -242,7 +259,13 @@
         if((!this.excludeOwnerPages || !pageRequest.isLoggedIn()) &&
                 request.getAttribute("skipCache") == null) {
             log.debug("PUT "+cacheKey);
-            this.contentCache.put(cacheKey, new LazyExpiringCacheEntry(rendererOutput));
+            
+            // put it in the right cache
+            if(isSiteWide) {
+                siteWideCache.put(cacheKey, rendererOutput);
+            } else {
+                weblogPageCache.put(cacheKey, rendererOutput);
+            }
         } else {
             log.debug("SKIPPED "+cacheKey);
         }

@@ -1,12 +1,4 @@
-    /**
-     * Init method for this filter
-     */
-    public void init(FilterConfig filterConfig) {
-        
-        mLogger.info("Initializing main page cache");
-
-        this.excludeOwnerPages = 
-                RollerConfig.getBooleanProperty("cache.mainpage.excludeOwnerEditPages");
+    private WeblogPageCache() {
         
         Map cacheProps = new HashMap();
         cacheProps.put("id", CACHE_ID);
@@ -22,8 +14,8 @@
             }
         }
         
-        mLogger.info(cacheProps);
+        log.info(cacheProps);
         
-        mCache = CacheManager.constructCache(this, cacheProps);
+        contentCache = CacheManager.constructCache(null, cacheProps);
     }
 

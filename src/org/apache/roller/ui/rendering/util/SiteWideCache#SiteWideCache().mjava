@@ -1,4 +1,4 @@
-    private PlanetCache() {
+    private SiteWideCache() {
         
         Map cacheProps = new HashMap();
         cacheProps.put("id", CACHE_ID);
@@ -14,17 +14,8 @@
             }
         }
         
-        log.info("Planet cache = "+cacheProps);
+        log.info(cacheProps);
         
-        contentCache = CacheManager.constructCache(null, cacheProps);
-        
-        // lookup our timeout value
-        String timeoutString = RollerConfig.getProperty("cache.planet.timeout");
-        try {
-            long timeoutSecs = Long.parseLong(timeoutString);
-            this.timeout = timeoutSecs * 1000;
-        } catch(Exception e) {
-            // ignored ... illegal value
-        }
+        contentCache = CacheManager.constructCache(this, cacheProps);
     }
 

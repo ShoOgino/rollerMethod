@@ -8,24 +8,12 @@
         log.info("Initializing PageServlet");
         
         this.excludeOwnerPages = 
-                RollerConfig.getBooleanProperty(this.CACHE_ID+".excludeOwnerEditPages");
+                RollerConfig.getBooleanProperty("cache.excludeOwnerEditPages");
         
-        Map cacheProps = new HashMap();
-        cacheProps.put("id", CACHE_ID);
-        Enumeration allProps = RollerConfig.keys();
-        String prop = null;
-        while(allProps.hasMoreElements()) {
-            prop = (String) allProps.nextElement();
-            
-            // we are only interested in props for this cache
-            if(prop.startsWith(CACHE_ID+".")) {
-                cacheProps.put(prop.substring(CACHE_ID.length()+1), 
-                        RollerConfig.getProperty(prop));
-            }
-        }
+        // get a reference to the weblog page cache
+        this.weblogPageCache = WeblogPageCache.getInstance();
         
-        log.info("Page cache = "+cacheProps);
-        
-        contentCache = CacheManager.constructCache(this, cacheProps);
+        // get a reference to the site wide cache
+        this.siteWideCache = SiteWideCache.getInstance();
     }
 
