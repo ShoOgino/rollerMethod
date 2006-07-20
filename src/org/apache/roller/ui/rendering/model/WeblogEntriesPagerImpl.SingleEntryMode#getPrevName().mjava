@@ -1,6 +1,8 @@
         public String getPrevName() {
             if (getPrevEntry() != null) {
-                return getPrevEntry().getTitle();
+                String title = Utilities.truncateNicely(getPrevEntry().getTitle(), 15, 20, "...");
+                String msg = bundle.getString("weblogEntriesPager.singleEntry.prev");
+                return MessageFormat.format(msg, new Object[] {title});
             }
             return null;
         }

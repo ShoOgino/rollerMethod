@@ -1,6 +1,7 @@
         public String getPrevName() {
-            if (getNextLink() != null) {
-                return "Prev"; // TODO: I18N
+            if (getPrevLink() != null) {
+                String msg = bundle.getString("weblogEntriesPager.month.prev");
+                return MessageFormat.format(msg, new Object[] {monthFormat.format(month)});
             }
             return null;
         }

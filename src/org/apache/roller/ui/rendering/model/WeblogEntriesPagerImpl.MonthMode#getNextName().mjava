@@ -1,6 +1,7 @@
         public String getNextName() {
             if (getNextLink() != null) {
-                return "Next"; // TODO: I18N
+                String msg = bundle.getString("weblogEntriesPager.month.next");
+                return MessageFormat.format(msg, new Object[] {monthFormat.format(month)});
             }
             return null;
         }

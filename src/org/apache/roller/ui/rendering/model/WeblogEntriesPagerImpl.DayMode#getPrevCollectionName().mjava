@@ -1,6 +1,7 @@
         public String getPrevCollectionName() {
             if (prevDay != null) {
-                return DateUtil.format8chars(prevDay);
+                String msg = bundle.getString("weblogEntriesPager.day.prevCollection");
+                return MessageFormat.format(msg, new Object[] {dayFormat.format(prevDay)});
             }
             return null;
         }

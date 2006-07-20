@@ -1,6 +1,7 @@
         public String getPrevCollectionName() {
             if (prevMonth != null) {
-                return DateUtil.format6chars(prevMonth);
+                String msg = bundle.getString("weblogEntriesPager.month.prevCollection");
+                return MessageFormat.format(msg, new Object[] {monthFormat.format(prevMonth)});
             }
             return null;
         }        
