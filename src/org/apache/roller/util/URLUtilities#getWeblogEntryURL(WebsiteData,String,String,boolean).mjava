@@ -1,0 +1,16 @@
+    /**
+     * Get url for a single weblog entry on a given weblog.
+     */
+    public static final String getWeblogEntryURL(WebsiteData weblog,
+                                                 String locale,
+                                                 String entryAnchor,
+                                                 boolean absolute) {
+        
+        StringBuffer url = new StringBuffer();
+        
+        url.append(getWeblogURL(weblog, locale, absolute));
+        url.append("/entry/").append(encode(entryAnchor));
+        
+        return url.toString();
+    }
+

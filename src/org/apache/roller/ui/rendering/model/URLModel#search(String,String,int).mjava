@@ -1,8 +1,4 @@
     public String search(String query, String catPath, int pageNum) {
-        String ret = weblog.getURL()+"/search?q="+query+"&page="+pageNum;
-        if (catPath != null) {
-            ret += "?cat="+catPath;
-        }
-        return ret;
+        return URLUtilities.getWeblogSearchURL(weblog, locale, query, catPath, pageNum, false);
     }
 

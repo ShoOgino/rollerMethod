@@ -1,14 +1,4 @@
     public String collection(String dateString, String catPath) {
-        String url = null;
-        if(dateString != null && catPath != null) {
-            url = weblog.getURL();
-            url += "?date="+dateString;
-            url += "&cat="+catPath;
-        } else if(dateString != null) {
-            url = date(dateString);
-        } else if(catPath != null) {
-            url = category(catPath);
-        }
-        return url;
+        return URLUtilities.getWeblogCollectionURL(weblog, locale, catPath, dateString, -1, false);
     }
 

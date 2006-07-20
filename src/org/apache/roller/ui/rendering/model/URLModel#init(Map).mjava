@@ -1,10 +1,13 @@
     public void init(Map initData) throws RollerException {
         
-        // need a weblog to base the weblog specific urls off of
-        weblog = (WebsiteData) initData.get("weblog");
-        if(weblog == null) {
-            throw new RollerException("Expected 'weblog' init param!");
+        // need a weblog request so that we can know the weblog and locale
+        WeblogRequest weblogRequest = (WeblogRequest) initData.get("weblogRequest");
+        if(weblogRequest == null) {
+            throw new RollerException("Expected 'weblogRequest' init param!");
         }
+        
+        this.weblog = weblogRequest.getWeblog();
+        this.locale = weblogRequest.getLocale();
         
         // need page context as well :(
         pageContext = (PageContext) initData.get("pageContext");

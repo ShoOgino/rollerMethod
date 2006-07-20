@@ -1,7 +1,4 @@
     public String home(int pageNum) {
-        String url = getHome();
-        if(pageNum > 0)
-            url += "?page="+pageNum;
-        return url;
+        return URLUtilities.getWeblogCollectionURL(weblog, locale, null, null, pageNum, false);
     }
 

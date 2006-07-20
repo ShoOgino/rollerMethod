@@ -1,0 +1,25 @@
+    /**
+     * Compose a map of key=value params into a query string.
+     */
+    public static final String getQueryString(Map params) {
+        
+        StringBuffer queryString = new StringBuffer();
+        
+        for(Iterator keys = params.keySet().iterator(); keys.hasNext();) {
+            String key = (String) keys.next();
+            String value = (String) params.get(key);
+            
+            if (queryString.length() == 0) {
+                queryString.append("?");
+            } else {
+                queryString.append("&");
+            }
+            
+            queryString.append(key);
+            queryString.append("=");
+            queryString.append(value);
+        }
+        
+        return queryString.toString();
+    }
+

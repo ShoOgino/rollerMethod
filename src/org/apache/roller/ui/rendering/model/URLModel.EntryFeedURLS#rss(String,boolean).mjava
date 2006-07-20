@@ -1,20 +1,4 @@
         public String rss(String catPath, boolean excerpts) {
-            String url = getRss();
-            if(catPath != null) {
-                String cat = catPath;
-                try {
-                    cat = URLEncoder.encode(catPath, "UTF-8");
-                } catch (UnsupportedEncodingException ex) {
-                    log.error("Error encoding url", ex);
-                }
-                url += "?cat="+cat;
-                
-                if(excerpts) {
-                    url += "&excerpts=true";
-                }
-            } else if(excerpts) {
-                url += "?excerpts=true";
-            }
-            return url;
+            return URLUtilities.getWeblogFeedURL(weblog, locale, "entries", "rss", catPath, excerpts, false);
         }
 

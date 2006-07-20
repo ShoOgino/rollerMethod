@@ -1,0 +1,31 @@
+    /**
+     * Get url to search endpoint on a given weblog.
+     */
+    public static final String getWeblogSearchURL(WebsiteData weblog,
+                                                  String locale,
+                                                  String query,
+                                                  String category,
+                                                  int pageNum,
+                                                  boolean absolute) {
+        
+        StringBuffer url = new StringBuffer();
+        
+        url.append(getWeblogURL(weblog, locale, absolute));
+        url.append("/search");
+        
+        Map params = new HashMap();
+        if(query != null) {
+            params.put("query", encode(query));
+            
+            // other stuff only makes sense if there is a query
+            if(category != null) {
+                params.put("cat", encode("cat"));
+            }
+            if(pageNum > 0) {
+                params.put("page", Integer.toString(pageNum));
+            }
+        }
+        
+        return url.toString() + getQueryString(params);
+    }
+

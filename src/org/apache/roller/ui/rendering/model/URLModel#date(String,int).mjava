@@ -1,7 +1,4 @@
     public String date(String dateString, int pageNum) {
-        String url = date(dateString);
-        if(pageNum > 0)
-            url += "?page="+pageNum;
-        return url;
+        return URLUtilities.getWeblogCollectionURL(weblog, locale, null, dateString, pageNum, false);
     }
 
