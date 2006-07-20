@@ -12,9 +12,10 @@
         
         String url = null;
         if (website != null  && !"zzz_none_zzz".equals(website.getHandle())) {
-            url = OldUtilities.escapeHTML(website.getAbsoluteURL());
+            // TODO 3.0: this should probably include locale from request
+            url = URLUtilities.getWeblogURL(website, null, true);
         } else {
-            url= OldUtilities.escapeHTML(RollerRuntimeConfig.getAbsoluteContextURL());
+            url= RollerRuntimeConfig.getAbsoluteContextURL();
         }
         ctx.put("websiteURL", url);
         ctx.put("baseURL",    RollerRuntimeConfig.getRelativeContextURL() );

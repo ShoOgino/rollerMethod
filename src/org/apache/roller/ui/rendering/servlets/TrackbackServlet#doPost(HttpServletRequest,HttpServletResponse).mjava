@@ -88,9 +88,8 @@
                         "site.trackbackVerification.enabled")) {
                     
                     // ...ensure trackbacker actually links to us
-                    String absurl = RollerRuntimeConfig.getAbsoluteContextURL();
                     LinkbackExtractor linkback = new LinkbackExtractor(
-                            comment.getUrl(), absurl + entry.getPermaLink());
+                            comment.getUrl(), URLUtilities.getWeblogEntryURL(weblog, null, entry.getAnchor(), true));
                     if (linkback.getExcerpt() == null) {
                         comment.setPending(Boolean.TRUE);
                         comment.setApproved(Boolean.FALSE);

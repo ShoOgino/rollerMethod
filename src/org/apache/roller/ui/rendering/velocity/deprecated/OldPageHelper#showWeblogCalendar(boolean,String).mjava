@@ -7,19 +7,8 @@
         if (OldWeblogPageModel.VELOCITY_NULL.equals(cat)) cat = null;
         String ret = null;
         try {
-            HttpServletResponse response = mResponse;
-            
-            String selfUrl = null;
-            String pageLink = mPageName;
-            if ( pageLink != null ) {
-                selfUrl = mWebsite.getURL() + "/" + pageLink;
-            } else {
-                selfUrl = mWebsite.getURL();
-            }
-            
             // setup weblog calendar model
             CalendarModel model = null;
-            Date date = mDate;
             if ( big ) {
                 model = new BigWeblogCalendarModel(mPageRequest, cat);
             } else {
@@ -27,7 +16,7 @@
             }
             
             // save model in JSP page context so CalendarTag can find it
-            mPageContext.setAttribute("calendarModel",model);
+            mPageContext.setAttribute("calendarModel", model);
             
             // Create and setup calendar tag
             CalendarTag calTag = new CalendarTag();
