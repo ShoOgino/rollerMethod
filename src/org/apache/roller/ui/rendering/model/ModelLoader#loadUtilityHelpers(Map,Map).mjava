@@ -4,8 +4,9 @@
     public static void loadUtilityHelpers(Map model, Map initData) 
             throws RollerException {
         
+        // general set of utilities
         UtilitiesModel utils = new UtilitiesModel();
         utils.init(initData);
-        model.put("utils", utils);
+        model.put(utils.getModelName(), utils);
     }
 

@@ -1,0 +1,14 @@
+    public String collection(String dateString, String catPath, int pageNum) {
+        String url = null;
+        if(dateString != null && catPath != null) {
+            url = collection(dateString, catPath);
+            if(pageNum > 0)
+                url += "&page="+pageNum;
+        } else if(dateString != null) {
+            url = date(dateString, pageNum);
+        } else if(catPath != null) {
+            url = category(catPath, pageNum);
+        }
+        return url;
+    }
+

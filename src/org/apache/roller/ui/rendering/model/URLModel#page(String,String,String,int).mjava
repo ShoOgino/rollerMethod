@@ -1,0 +1,19 @@
+    public String page(String pageLink, String dateString, String catPath, int pageNum) {
+        String url = page(pageLink);
+        String qString = "?";
+        if(dateString != null) {
+            qString += "date="+dateString;
+        }
+        if(catPath != null) {
+            if(!qString.endsWith("?"))
+                qString += "&";
+            qString += "cat="+catPath;
+        }
+        if(pageNum > 0) {
+            if(!qString.endsWith("?"))
+                qString += "&";
+            qString += "page="+pageNum;
+        }
+        return url;
+    }
+

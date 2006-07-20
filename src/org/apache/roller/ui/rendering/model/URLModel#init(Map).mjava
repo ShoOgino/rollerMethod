@@ -1,0 +1,9 @@
+    public void init(Map initData) throws RollerException {
+        
+        // need a weblog to base the weblog specific urls off of
+        weblog = (WebsiteData) initData.get("weblog");
+        if(weblog == null) {
+            throw new RollerException("Expected 'weblog' init param!");
+        }
+    }
+

@@ -1,0 +1,10 @@
+    public String category(String catPath) {
+        String cat = catPath;
+        try {
+            cat = URLEncoder.encode(catPath, "UTF-8");
+        } catch (UnsupportedEncodingException ex) {
+            log.error("url encoding problem", ex);
+        }
+        return weblog.getURL()+"/category/"+cat;
+    }
+
