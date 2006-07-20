@@ -5,5 +5,8 @@
         if(weblog == null) {
             throw new RollerException("Expected 'weblog' init param!");
         }
+        
+        // need page context as well :(
+        pageContext = (PageContext) initData.get("pageContext");
     }
 

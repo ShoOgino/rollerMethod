@@ -1,9 +1,8 @@
     /** URL for editing a weblog entry */
-    public String getWeblogEntryEditURL(WeblogEntryDataWrapper entry) {
+    public String editEntry(String anchor) {
         String ret = null;
         Map params = new HashMap();
-        params.put(RequestConstants.WEBLOGENTRY_ID, entry.getId());
-        params.put(RequestConstants.ANCHOR, entry.getAnchor());
+        params.put(RequestConstants.ANCHOR, anchor);
         try {
             ret = RequestUtils.computeURL(pageContext,
                 "weblogEdit", null, null, null, params, null, false);
