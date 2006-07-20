@@ -1,5 +1,19 @@
     public void render(Map model, Writer out) throws Exception {
         
+        if(parseException != null) {
+            
+            Context ctx = new VelocityContext(model);
+            ctx.put("exception", parseException);
+            ctx.put("exceptionSource", resourceId);
+            ctx.put("utils", new UtilitiesModel());
+            
+            // render output to Writer
+            resourceTemplate.merge(ctx, out);
+            
+            // and we're done
+            return;
+        }
+        
         long startTime = System.currentTimeMillis();
         
         // the template we are going to render
