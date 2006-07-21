@@ -1,0 +1,12 @@
+    public Template getDecorator() {
+        if(decoratorName != null && !id.equals(decoratorName)) {
+            try {
+                return weblog.getPageByName(decoratorName);
+            } catch (RollerException ex) {
+                log.error("Error getting decorator["+decoratorName+"] "+
+                        "for template "+id);
+            }
+        }
+        return null;
+    }
+

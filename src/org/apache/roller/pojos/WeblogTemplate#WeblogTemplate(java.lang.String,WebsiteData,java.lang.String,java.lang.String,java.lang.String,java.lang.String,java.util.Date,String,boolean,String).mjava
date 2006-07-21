@@ -5,7 +5,10 @@
             java.lang.String description,
             java.lang.String link,
             java.lang.String template,
-            java.util.Date updateTime ) {
+            java.util.Date updateTime,
+            String tempLang,
+            boolean hid,
+            String decorator) {
         this.id = id;
         this.weblog = website;
         this.name = name;
@@ -13,5 +16,8 @@
         this.link = link;
         this.contents = template;
         this.lastModified = (Date)updateTime.clone();
+        this.templateLanguage = tempLang;
+        this.hidden = hid;
+        this.decoratorName = decorator;
     }
 

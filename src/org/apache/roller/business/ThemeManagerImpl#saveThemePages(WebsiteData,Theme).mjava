@@ -41,13 +41,17 @@
                     
                 } else {
                     // User does not have page by that name, so create new page.
-                    template = new WeblogTemplate( null,
+                    template = new WeblogTemplate(
+                            null,                               // id
                             website,                            // website
                             theme_template.getName(),           // name
                             theme_template.getDescription(),    // description
                             theme_template.getName(),           // link
                             theme_template.getContents(),       // contents
-                            new Date()                          // last mod
+                            new Date(),                         // last mod
+                            theme_template.getTemplateLanguage(), // temp lang
+                            theme_template.isHidden(),          // hidden
+                            theme_template.getDecoratorName()   // decorator
                             );
                     userMgr.savePage( template );
                 }
