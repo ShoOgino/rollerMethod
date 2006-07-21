@@ -1,0 +1,26 @@
+    public VelocityRenderer(Template template) throws Exception {
+        
+        // the Template we are supposed to render
+        this.renderTemplate = template;
+        
+        try {
+            // make sure that we can locate the template
+            // if we can't then this will throw an exception
+            velocityTemplate = RollerVelocity.getTemplate(template.getId(), "UTF-8");
+            
+            // if there is a decorator then look that up too
+            Template decorator = renderTemplate.getDecorator();
+            if(decorator != null) {
+                velocityDecorator = RollerVelocity.getTemplate(decorator.getId());
+            }
+            
+        } catch(ParseErrorException ex) {
+            // in the case of a parsing error we want to render an
+            // error page instead so the user knows what was wrong
+            parseException = ex;
+            
+            // need to lookup error page template
+            velocityTemplate = RollerVelocity.getTemplate("templates/error-page.vm");
+        }
+    }
+

@@ -1,0 +1,23 @@
+    public Renderer getRenderer(Template template) {
+        
+        Renderer renderer = null;
+        
+        // nothing we can do with null values
+        if(template.getTemplateLanguage() == null || template.getId() == null) {
+            return null;
+        }
+        
+        if("velocity".equals(template.getTemplateLanguage())) { 
+            
+            // standard velocity template
+            try {
+               renderer = new VelocityRenderer(template);
+            } catch(Exception ignored) {
+                // can't render
+            }            
+            
+        }
+        
+        return renderer;
+    }
+

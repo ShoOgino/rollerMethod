@@ -4,11 +4,11 @@
             
             Context ctx = new VelocityContext(model);
             ctx.put("exception", parseException);
-            ctx.put("exceptionSource", resourceId);
+            ctx.put("exceptionSource", renderTemplate.getId());
             ctx.put("utils", new UtilitiesModel());
             
             // render output to Writer
-            resourceTemplate.merge(ctx, out);
+            velocityTemplate.merge(ctx, out);
             
             // and we're done
             return;
@@ -19,12 +19,34 @@
         // convert model to Velocity Context
         Context ctx = new VelocityContext(model);
         
-        // render output to Writer
-        this.resourceTemplate.merge(ctx, out);
+        if(velocityDecorator != null) {
+            
+            /**
+             * We only allow decorating once, so the process isn't
+             * fully recursive.  This is just to keep it simple.
+             */
+            
+            // render base template to a temporary StringWriter
+            StringWriter sw = new StringWriter();
+            velocityTemplate.merge(ctx, sw);
+            
+            // put rendered template into context
+            ctx.put("decorator_body", sw.toString());
+            
+            log.debug("Applying decorator "+velocityDecorator.getName());
+            
+            // now render decorator to our output writer
+            velocityDecorator.merge(ctx, out);
+            
+        } else {
+            
+            // no decorator, so just merge template to our output writer
+            velocityTemplate.merge(ctx, out);
+        }
         
         long endTime = System.currentTimeMillis();
         long renderTime = (endTime - startTime)/1000;
         
-        log.debug("Rendered ["+this.resourceId+"] in "+renderTime+" secs");
+        log.debug("Rendered ["+renderTemplate.getId()+"] in "+renderTime+" secs");
     }
 
