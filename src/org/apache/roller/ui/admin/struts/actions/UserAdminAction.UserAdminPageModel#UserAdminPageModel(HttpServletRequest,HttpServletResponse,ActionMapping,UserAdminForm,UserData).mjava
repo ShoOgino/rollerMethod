@@ -1,15 +1,13 @@
         public UserAdminPageModel(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            ActionMapping mapping,
-            UserAdminForm form,
-            UserData user) throws RollerException
-        {
+                HttpServletRequest request,
+                HttpServletResponse response,
+                ActionMapping mapping,
+                UserAdminForm form,
+                UserData user) throws RollerException {
             super("dummy", request, response, mapping);
             userAdminForm = form;
             
-            if (user != null)
-            {
+            if (user != null) {
                 Roller roller = RollerFactory.getRoller();
                 permissions = roller.getUserManager().getAllPermissions(user);
             }

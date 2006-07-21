@@ -1,11 +1,11 @@
-        public String getTitle() 
-        {
-            if (StringUtils.isEmpty(userAdminForm.getUserName())) 
-            {
+        public String getTitle() {
+            if (StringUtils.isEmpty(userAdminForm.getUserName()) && userAdminForm.isNewUser()) {
+                return bundle.getString("userAdmin.title.createNewUser");
+            } else if (StringUtils.isEmpty(userAdminForm.getUserName())) {
                 return bundle.getString("userAdmin.title.searchUser");
             }
             return MessageFormat.format(
-                    bundle.getString("userAdmin.title.editUser"), 
+                    bundle.getString("userAdmin.title.editUser"),
                     new Object[] { userAdminForm.getUserName() } );
         }
 
