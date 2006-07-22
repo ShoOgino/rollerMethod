@@ -8,28 +8,20 @@
      * @return forward to the ping targets page
      * @throws Exception
      */
-    public ActionForward view(ActionMapping mapping, ActionForm form,
-                              HttpServletRequest req, HttpServletResponse res)
-        throws Exception
-    {
+    public ActionForward view(ActionMapping mapping, ActionForm form, HttpServletRequest req, HttpServletResponse res) throws Exception {
         ActionForward forward = mapping.findForward(VIEW_PAGE);
         RollerRequest rreq = RollerRequest.getRollerRequest(req);
-        try
-        {
-            BasePageModel pageModel = 
-                new BasePageModel(getPingTargetsTitle(), req, res, mapping);
-            req.setAttribute("model",pageModel);            
-            if (!hasRequiredRights(rreq, rreq.getWebsite()))
-            {
+        try {
+            BasePageModel pageModel = new BasePageModel(getPingTargetsTitle(), req, res, mapping);
+            req.setAttribute("model", pageModel);
+            if (!hasRequiredRights(rreq, rreq.getWebsite())) {
                 return mapping.findForward(ACCESS_DENIED_PAGE);
             }
 
             List pingTargets = getPingTargets(rreq);
             req.setAttribute("pingTargets", pingTargets);
             return forward;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             getLogger().error("ERROR in action", e);
             throw new ServletException(e);
         }

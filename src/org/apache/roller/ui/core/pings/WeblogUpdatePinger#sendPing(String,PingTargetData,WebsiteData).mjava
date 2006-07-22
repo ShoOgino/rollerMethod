@@ -9,9 +9,7 @@
      * @throws XmlRpcException
      * @throws RollerException
      */
-    public static PingResult sendPing(String absoluteContextUrl, PingTargetData pingTarget, WebsiteData website)
-        throws RollerException, IOException, XmlRpcException
-    {
+    public static PingResult sendPing(String absoluteContextUrl, PingTargetData pingTarget, WebsiteData website) throws RollerException, IOException, XmlRpcException {
         // Figure out the url of the user's website.
         String websiteUrl = website.getAbsoluteURL();
 
@@ -19,10 +17,8 @@
         Vector params = new Vector();
         params.addElement(website.getName());
         params.addElement(websiteUrl);
-        if (logger.isDebugEnabled())
-        {
-            logger.debug("Executing ping to '" + pingTarget.getPingUrl() + "' for website '" +
-                websiteUrl + "' (" + website.getName() + ")");
+        if (logger.isDebugEnabled()) {
+            logger.debug("Executing ping to '" + pingTarget.getPingUrl() + "' for website '" + websiteUrl + "' (" + website.getName() + ")");
         }
 
         // Send the ping

@@ -4,10 +4,8 @@
      * @param rc the Roller context
      * @throws RollerException
      */
-    public static synchronized void init(RollerContext rc) throws RollerException
-    {
-        if (theInstance != null)
-        {
+    public static synchronized void init(RollerContext rc) throws RollerException {
+        if (theInstance != null) {
             logger.warn("Ignoring duplicate initialization of PingQueueProcessor!");
             return;
         }

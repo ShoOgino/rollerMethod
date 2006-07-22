@@ -1,8 +1,5 @@
-    private boolean isAuthorized(RollerRequest rreq, WebsiteData website) 
-        throws RollerException
-    {
+    private boolean isAuthorized(RollerRequest rreq, WebsiteData website) throws RollerException {
         RollerSession rses = RollerSession.getRollerSession(rreq.getRequest());
-        return rses.isUserAuthorizedToAdmin(website) 
-            && !PingConfig.getDisablePingUsage();
+        return rses.isUserAuthorizedToAdmin(website) && !PingConfig.getDisablePingUsage();
     }
 

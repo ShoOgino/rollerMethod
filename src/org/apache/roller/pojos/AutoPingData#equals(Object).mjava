@@ -1,16 +1,20 @@
     /**
      * @see Object#equals(Object)
      */
-    public boolean equals(Object o)
-    {
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof AutoPingData)) return false;
 
-        final AutoPingData autoPingData = (AutoPingData)o;
+        final AutoPingData autoPingData = (AutoPingData) o;
 
         if (id != null ? !id.equals(autoPingData.getId()) : autoPingData.getId() != null) return false;
-        if (pingTarget != null ? !pingTarget.equals(autoPingData.getPingTarget()) : autoPingData.getPingTarget() != null) return false;
-        if (website != null ? !website.equals(autoPingData.getWebsite()) : autoPingData.getWebsite() != null) return false;
+        if (pingTarget != null ? !pingTarget.equals(autoPingData.getPingTarget()) : autoPingData.getPingTarget() != null)
+        {
+            return false;
+        }
+        if (website != null ? !website.equals(autoPingData.getWebsite()) : autoPingData.getWebsite() != null) {
+            return false;
+        }
 
         return true;
     }

@@ -14,15 +14,13 @@
      * @return the result of replacing property expressions with the values of the corresponding properties from the
      *         supplied property map, null if the input string is null.
      */
-    public static String expandProperties(String input, Map props)
-    {
+    public static String expandProperties(String input, Map props) {
         if (input == null) return null;
 
         Matcher matcher = EXPANSION_PATTERN.matcher(input);
 
         StringBuffer expanded = new StringBuffer(input.length());
-        while (matcher.find())
-        {
+        while (matcher.find()) {
             String propName = matcher.group(2);
             String value = (String) props.get(propName);
             // if no value is found, use a value equal to the original expression
