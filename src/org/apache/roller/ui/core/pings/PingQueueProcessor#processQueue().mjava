@@ -28,7 +28,7 @@
             // Process each entry
             for (Iterator i = entries.iterator(); i.hasNext();) {
                 PingQueueEntryData pingQueueEntry = (PingQueueEntryData) i.next();
-                processQueueEntry(absoluteContextUrl, pingQueueEntry);
+                processQueueEntry(pingQueueEntry);
             }
             if (logger.isDebugEnabled()) logger.debug("Finished processing ping queue.");
         } catch (Exception ex) {

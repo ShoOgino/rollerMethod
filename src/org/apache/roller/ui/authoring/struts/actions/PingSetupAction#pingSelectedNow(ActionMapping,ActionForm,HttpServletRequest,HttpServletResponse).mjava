@@ -4,7 +4,6 @@
     public ActionForward pingSelectedNow(ActionMapping mapping, ActionForm form, HttpServletRequest req, HttpServletResponse res) throws Exception {
         try {
             RollerRequest rreq = RollerRequest.getRollerRequest(req);
-            String absoluteUrl = RollerRuntimeConfig.getAbsoluteContextURL();
             PingTargetData pingTarget = select(rreq);
             WebsiteData website = rreq.getWebsite();
             try {
@@ -17,7 +16,7 @@
                     errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("ping.pingProcessingIsSuspended"));
                     saveErrors(req, errors);
                 } else {
-                    WeblogUpdatePinger.PingResult pingResult = WeblogUpdatePinger.sendPing(absoluteUrl, pingTarget, website);
+                    WeblogUpdatePinger.PingResult pingResult = WeblogUpdatePinger.sendPing(pingTarget, website);
                     if (pingResult.isError()) {
                         if (mLogger.isDebugEnabled()) mLogger.debug("Ping Result: " + pingResult);
                         ActionMessages errors = new ActionMessages();
