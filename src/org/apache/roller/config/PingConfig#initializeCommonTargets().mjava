@@ -6,7 +6,7 @@
      * Note: this is expected to be called during initialization  with transaction demarcation being handled by the
      * caller.
      *
-     * @see org.apache.roller.presentation.RollerContext#contextInitialized(javax.servlet.ServletContextEvent)
+     * @see org.apache.roller.ui.core.RollerContext#contextInitialized(javax.servlet.ServletContextEvent)
      */
     public static void initializeCommonTargets() throws RollerException {
         String configuredVal = RollerConfig.getProperty(PINGS_INITIAL_COMMON_TARGETS_PROP);
@@ -31,15 +31,15 @@
             // skip empty ones
             if (thisTarget.length() == 0) continue;
             // parse the ith target and store it
-            Matcher m = PING_TARGET_SPEC.matcher(configuredTargets[i].trim());
+            Matcher m = NESTED_BRACE_PAIR.matcher(thisTarget);
             if (m.matches() && m.groupCount() == 2) {
-                String name = m.group(1);
-                String url = m.group(2);
+                String name = m.group(1).trim();
+                String url = m.group(2).trim();
                 logger.info("Creating common ping target '" + name + "' from configuration properties.");
                 PingTargetData pingTarget = new PingTargetData(null, name, url, null, false);
                 pingTargetMgr.savePingTarget(pingTarget);
             } else {
-                logger.error("Unable to parse configured initial ping target '" + configuredTargets[i] + "'. Skipping this target. Check your setting of the property " + PINGS_INITIAL_COMMON_TARGETS_PROP);
+                logger.error("Unable to parse configured initial ping target '" + thisTarget + "'. Skipping this target. Check your setting of the property " + PINGS_INITIAL_COMMON_TARGETS_PROP);
             }
         }
     }
