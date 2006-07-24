@@ -2,7 +2,7 @@
                 HttpServletRequest req, 
                 HttpServletResponse res, 
                 ActionMapping mapping,
-                String weblogHandle,
+                WebsiteData weblog,
                 List lastUploads) throws RollerException {
             
             super("uploadFiles.title", req, res, mapping);
@@ -12,18 +12,18 @@
             FileManager fmgr = roller.getFileManager();
             
             String dir = fmgr.getUploadDir();
-            resourcesBaseURL = getBaseURL() + fmgr.getUploadUrl() + "/" + weblogHandle;
+            resourcesBaseURL = URLUtilities.getWeblogResourceURL(weblog, "", false);
             
             RollerRequest rreq = RollerRequest.getRollerRequest(req);
             WebsiteData website = UploadFileFormAction.getWebsite(req);            
             maxDirMB = RollerRuntimeConfig.getProperty("uploads.dir.maxsize");
             maxFileMB = RollerRuntimeConfig.getProperty("uploads.file.maxsize");
                      
-            overQuota = fmgr.overQuota(weblogHandle);
+            overQuota = fmgr.overQuota(weblog.getHandle());
             uploadEnabled = RollerRuntimeConfig.getBooleanProperty("uploads.enabled");  
             
             files = new ArrayList();
-            File[] rawFiles = fmgr.getFiles(weblogHandle);
+            File[] rawFiles = fmgr.getFiles(weblog.getHandle());
             for (int i=0; i<rawFiles.length; i++) {
                 files.add(new FileBean(rawFiles[i]));
                 totalSize += rawFiles[i].length();
