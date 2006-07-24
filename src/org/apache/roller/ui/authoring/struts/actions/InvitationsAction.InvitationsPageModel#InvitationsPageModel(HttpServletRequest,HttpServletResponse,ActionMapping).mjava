@@ -1,10 +1,10 @@
-        public MemberPermissionsPageModel(HttpServletRequest request,
+        public InvitationsPageModel(HttpServletRequest request,
                 HttpServletResponse response, ActionMapping mapping) throws RollerException {
-            super("memberPermissions.title", request, response, mapping);
+            super("invitations.title", request, response, mapping);
             Roller roller = RollerFactory.getRoller();
-            RollerRequest rreq = RollerRequest.getRollerRequest(request);
             RollerSession rollerSession = RollerSession.getRollerSession(request);
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
             WebsiteData website = rreq.getWebsite();
-            permissions = roller.getUserManager().getAllPermissions(website);
+            pendings = roller.getUserManager().getPendingPermissions(website);
         }
 

@@ -1,10 +1,10 @@
-    /** Called after invite user action posted */
-    public ActionForward send(
+    /** Forwads back to the member permissions page */
+    public ActionForward cancel(
             ActionMapping       mapping,
             ActionForm          actionForm,
             HttpServletRequest  request,
             HttpServletResponse response)
             throws Exception {
-        return edit(mapping, actionForm, request, response);
-    }
+        return mapping.findForward("memberPermissions");
+    }  
 

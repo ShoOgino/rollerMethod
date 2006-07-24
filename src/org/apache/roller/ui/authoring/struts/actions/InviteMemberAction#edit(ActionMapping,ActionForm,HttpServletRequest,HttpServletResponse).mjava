@@ -1,26 +1,25 @@
     public ActionForward edit(
-        ActionMapping       mapping,
-        ActionForm          actionForm,
-        HttpServletRequest  request,
-        HttpServletResponse response)
-        throws Exception
-    {
+            ActionMapping       mapping,
+            ActionForm          actionForm,
+            HttpServletRequest  request,
+            HttpServletResponse response)
+            throws Exception {
         // if group blogging is disabled then you can't change permissions
         if (!RollerConfig.getBooleanProperty("groupblogging.enabled")) {
             return mapping.findForward("access-denied");
         }
-            
+        
         BasePageModel pageModel = new BasePageModel(
-            "inviteMember.title", request, response, mapping);        
+                "inviteMember.title", request, response, mapping);
         RollerSession rses = RollerSession.getRollerSession(request);
         
         // Ensure use has admin perms for this weblog
-        if (pageModel.getWebsite() != null && rses.isUserAuthorizedToAdmin(pageModel.getWebsite())) {                
-            request.setAttribute("model", pageModel);        
+        if (pageModel.getWebsite() != null && rses.isUserAuthorizedToAdmin(pageModel.getWebsite())) {
+            request.setAttribute("model", pageModel);
             InviteMemberForm form = (InviteMemberForm)actionForm;
             form.setWebsiteId(pageModel.getWebsite().getId());
             ActionForward forward = mapping.findForward("inviteMember.page");
-            return forward; 
+            return forward;
         } else {
             return mapping.findForward("access-denied");
         }

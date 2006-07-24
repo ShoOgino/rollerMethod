@@ -5,9 +5,6 @@
             HttpServletRequest  request,
             HttpServletResponse response)
             throws Exception {
-        if (request.getMethod().equals("GET")) {
-            return edit(mapping, actionForm, request, response);
-        }
-        return save(mapping, actionForm, request, response);
+        return view(mapping, actionForm, request, response);
     }
 
