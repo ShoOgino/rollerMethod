@@ -47,7 +47,7 @@
             } else {
                 cal = Calendar.getInstance();
             }
-            int limit = maxEntries;
+            int limit = mWebsite.getEntryDisplayCount();
             Date startDate = null;
             Date endDate = mDate;
             if (endDate == null) endDate = new Date();
@@ -67,7 +67,7 @@
                     endDate,                      // endDate
                     catParam,                     // catName
                     WeblogEntryData.PUBLISHED,    // status
-mLocale,                     0, -1);  
+                    mLocale, 0, limit);  
             
             // need to wrap pojos
             java.util.Date key = null;
