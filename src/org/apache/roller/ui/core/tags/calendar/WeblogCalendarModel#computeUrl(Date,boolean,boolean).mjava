@@ -16,15 +16,9 @@
         }
         try {
             if (pageLink == null) { // create date URL
-                url = weblog.getURL() + "/date/" + dateString;
-                if (cat != null) { 
-                    url += "?cat=" + cat;
-                }
+                url = URLUtilities.getWeblogCollectionURL(weblog, locale, cat, dateString, -1, false);
             } else { // create page URL
-                url = weblog.getURL() + "/page/" + pageLink;
-                if (cat != null) { 
-                    url += "?cat=" + cat;
-                }
+                url = URLUtilities.getWeblogPageURL(weblog, locale, pageLink, null, cat, dateString, -1, false);
             }
         } catch (Exception e) {
             log.error("ERROR: creating URL",e);

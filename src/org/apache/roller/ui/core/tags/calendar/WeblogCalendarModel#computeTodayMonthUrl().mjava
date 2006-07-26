@@ -1,8 +1,4 @@
     public String computeTodayMonthUrl() {
-        String url = weblog.getURL();
-        if (cat != null) { 
-            url += "?cat=" + cat;
-        }
-        return url;
+        return URLUtilities.getWeblogCollectionURL(weblog, locale, cat, null, -1, false);
     }
 
