@@ -4,7 +4,6 @@
      * @roller.wrapPojoMethod type="simple"
      */
     public String getPermaLink() {
-        // TODO: ATLAS reconcile entry.getPermaLink() with new URLs
         String lAnchor = this.getAnchor();        
         try {
             lAnchor = URLEncoder.encode(anchor, "UTF-8");
@@ -12,6 +11,6 @@
             // go with the "no encoding" version
         }        
         WebsiteData website = this.getWebsite();
-        return "/" + getWebsite().getHandle() + "/entry/" + lAnchor;        
+        return "/" + getWebsite().getHandle() + "/entry/" + lAnchor;
     }
 
