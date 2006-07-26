@@ -6,7 +6,7 @@
         super(request);
         
         // parse the request object and figure out what we've got
-        mLogger.debug("parsing url "+request.getRequestURL());
+        log.debug("parsing url "+request.getRequestURL());
         
         String servlet = request.getServletPath();
         
@@ -43,5 +43,8 @@
             this.excerpts = Boolean.valueOf(request.getParameter("excerpts")).booleanValue();
         }
         
+        
+        // language is always from the browser
+        language = request.getLocale().getLanguage();
     }
 
