@@ -3,7 +3,6 @@
      * @roller.wrapPojoMethod type="simple"
      */
     public String getPermalink() {
-        String absPath = RollerRuntimeConfig.getAbsoluteContextURL();
-        return absPath + getPermaLink();       
+        return URLUtilities.getWeblogEntryURL(getWebsite(), null, anchor, true);
     }
 
