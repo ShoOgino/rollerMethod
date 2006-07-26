@@ -5,18 +5,20 @@
                                             String locale,
                                             boolean absolute) {
         
-        String url = null;
+        StringBuffer url = new StringBuffer();
         
         if(absolute) {
-            url = weblog.getAbsoluteURL();
+            url.append(RollerRuntimeConfig.getAbsoluteContextURL());
         } else {
-            url = weblog.getURL();
+            url.append(RollerRuntimeConfig.getRelativeContextURL());
         }
         
-        if (locale != null) {
-            url += "/"+locale;
+        url.append("/").append(weblog.getHandle()).append("/");
+        
+        if(locale != null) {
+            url.append(locale).append("/");
         }
         
-        return url;
+        return url.toString();
     }
 

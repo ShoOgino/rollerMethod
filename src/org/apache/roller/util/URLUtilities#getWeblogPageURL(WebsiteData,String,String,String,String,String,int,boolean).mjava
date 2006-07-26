@@ -16,7 +16,7 @@
         pathinfo.append(getWeblogURL(weblog, locale, absolute));
         
         if(pageLink != null) {
-            pathinfo.append("/page/").append(pageLink);
+            pathinfo.append("page/").append(pageLink);
             
             // for custom pages we only allow query params
             if(dateString != null) {
@@ -25,25 +25,12 @@
             if(category != null) {
                 params.put("cat", encode(category));
             }
-            
-        } else if(category != null && dateString == null) {
-            String cat = category;
-            if(category.startsWith("/")) {
-                cat = category.substring(1);
+            if(pageNum > 0) {
+                params.put("page", Integer.toString(pageNum));
             }
-            
-            pathinfo.append("/category/").append(encode(cat));   
-            
-        } else if(dateString != null && category == null) {
-            pathinfo.append("/date/").append(dateString);  
-            
         } else {
-            if(dateString != null) params.put("date", dateString);
-            if(category != null) params.put("cat", encode(category));
-        }
-
-        if(pageNum > 0) {
-            params.put("page", Integer.toString(pageNum));
+            // if there is no page link then this is just a typical collection url
+            return getWeblogCollectionURL(weblog, locale, category, dateString, pageNum, absolute);
         }
         
         return pathinfo.toString() + getQueryString(params);
