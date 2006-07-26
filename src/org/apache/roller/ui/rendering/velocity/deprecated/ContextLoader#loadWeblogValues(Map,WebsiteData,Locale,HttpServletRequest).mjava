@@ -4,6 +4,7 @@
     private static void loadWeblogValues(
             Map ctx,
             WebsiteData weblog,
+            Locale locale,
             HttpServletRequest request) throws RollerException {
         
         // weblog cannot be null
@@ -34,9 +35,8 @@
         String siteShortName = ((RollerPropertyData)props.get("site.shortName")).getValue();
         ctx.put("siteShortName", siteShortName);
         
-        // add language of the session (using locale of viewer set by Struts)
-        // TODO 3.0: this will probably need tweaking for multi-lang support
-        ctx.put("viewLocale", LanguageUtil.getViewLocale(request));
+        // add language of the session (using locale specified by request)
+        ctx.put("viewLocale", locale);
         mLogger.debug("context viewLocale = "+ctx.get( "viewLocale"));
         
         // alternative display pages - customization
