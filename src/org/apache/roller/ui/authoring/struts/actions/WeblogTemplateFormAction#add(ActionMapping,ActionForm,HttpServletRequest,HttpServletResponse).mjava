@@ -1,20 +1,17 @@
     public ActionForward add(
-        ActionMapping       mapping,
-        ActionForm          actionForm,
-        HttpServletRequest  request,
-        HttpServletResponse response)
-        throws IOException, ServletException
-    {
+            ActionMapping       mapping,
+            ActionForm          actionForm,
+            HttpServletRequest  request,
+            HttpServletResponse response)
+            throws IOException, ServletException {
         ActionForward forward = mapping.findForward("editPages.page");
-        try
-        {
+        try {
             request.setAttribute("model", new BasePageModel(
-                "pagesForm.title", request, response, mapping));   
+                    "pagesForm.title", request, response, mapping));
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             RollerSession rses = RollerSession.getRollerSession(request);
             WebsiteData website = rreq.getWebsite();
-            if ( rses.isUserAuthorizedToAdmin(website) )
-            {
+            if ( rses.isUserAuthorizedToAdmin(website) ) {
                 WeblogTemplateForm form = (WeblogTemplateForm)actionForm;
                 WeblogTemplate data = new WeblogTemplate();
                 form.copyTo(data, request.getLocale());
@@ -37,22 +34,18 @@
                 RollerFactory.getRoller().flush();
                 
                 ActionMessages uiMessages = new ActionMessages();
-                uiMessages.add(ActionMessages.GLOBAL_MESSAGE, 
-                        new ActionMessage("pagesForm.addNewPage.success", 
-                                data.getName()));
+                uiMessages.add(ActionMessages.GLOBAL_MESSAGE,
+                        new ActionMessage("pagesForm.addNewPage.success",
+                        data.getName()));
                 saveMessages(request, uiMessages);
-                    
-                actionForm.reset(mapping,request);                
+                
+                actionForm.reset(mapping,request);
                 
                 addModelObjects(request, response, mapping, website);
-            }
-            else
-            {
+            } else {
                 forward = mapping.findForward("access-denied");
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             mLogger.error("ERROR in action",e);
             throw new ServletException(e);
         }
