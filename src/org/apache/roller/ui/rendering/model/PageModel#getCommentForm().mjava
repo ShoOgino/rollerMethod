@@ -1,17 +1,12 @@
     /**
-     * Get comment form to be displayed, may contain preview data. 
-     * @return Comment form object or null if not on a comment page.
+     * Get comment form to be displayed, may contain preview data.
+     *
+     * @return Comment form object
      */
-    public CommentFormEx getCommentForm() {
-        CommentFormEx commentForm =
-                (CommentFormEx) request.getAttribute("commentForm");
-        if (commentForm == null) {
-            commentForm = new CommentFormEx();
-            // Set fields to spaces to please Velocity
-            commentForm.setName("");
-            commentForm.setEmail("");
-            commentForm.setUrl("");
-            commentForm.setContent("");
+    public WeblogEntryCommentForm getCommentForm() {
+        
+        if(commentForm == null) {
+            commentForm = new WeblogEntryCommentForm();
         }
         return commentForm;
     }

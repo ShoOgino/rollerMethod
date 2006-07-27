@@ -189,6 +189,13 @@
             initData.put("weblogRequest", pageRequest);
             initData.put("pageContext", pageContext);
             
+            // if this was a comment posting, check for comment form
+            WeblogEntryCommentForm commentForm = 
+                    (WeblogEntryCommentForm) request.getAttribute("commentForm");
+            if(commentForm != null) {
+                initData.put("commentForm", commentForm);
+            }
+            
             // Load models for pages
             String pageModels = RollerConfig.getProperty("rendering.pageModels");
             ModelLoader.loadModels(pageModels, model, initData, true);

@@ -17,10 +17,10 @@
         ctx.put("autoformat",        new Boolean(autoFormat) );
         
         // Make sure comment form object is available in context
-        CommentFormEx commentForm =
-                (CommentFormEx) request.getAttribute("commentForm");
+        WeblogEntryCommentForm commentForm =
+                (WeblogEntryCommentForm) request.getAttribute("commentForm");
         if ( commentForm == null ) {
-            commentForm = new CommentFormEx();
+            commentForm = new WeblogEntryCommentForm();
             
             // Set fields to spaces to please Velocity
             commentForm.setName("");
@@ -31,12 +31,10 @@
         ctx.put("commentForm",commentForm);
         
         // Either put a preview comment in to context
-        if ( request.getAttribute("previewComments")!=null ) {
+        if(commentForm.isPreview()) {
             ArrayList list = new ArrayList();
-            CommentData cd = new CommentData();
-            commentForm.copyTo(cd, request.getLocale());
-            list.add(CommentDataWrapper.wrap(cd));
-            ctx.put("previewComments",list);
+            list.add(commentForm.getPreviewComment());
+            ctx.put("previewComments", list);
         }
         
         if (entry.getStatus().equals(WeblogEntryData.PUBLISHED)) {

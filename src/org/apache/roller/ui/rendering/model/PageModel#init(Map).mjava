@@ -3,14 +3,14 @@
      */
     public void init(Map initData) throws RollerException {
         
-        HttpServletRequest request = (HttpServletRequest) initData.get("request");
-        this.request = request;
-        
         // we expect the init data to contain a pageRequest object
         this.pageRequest = (WeblogPageRequest) initData.get("pageRequest");
         if(this.pageRequest == null) {
             throw new RollerException("expected pageRequest from init data");
         }
+        
+        // see if there is a comment form
+        this.commentForm = (WeblogEntryCommentForm) initData.get("commentForm");
         
         // extract weblog object
         weblog = pageRequest.getWeblog();
