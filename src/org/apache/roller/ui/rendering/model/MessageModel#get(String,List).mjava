@@ -1,0 +1,10 @@
+    /** Return parameterized message string */
+    public String get(String key, List args) {
+        try {
+            String msg = bundle.getString(key);
+            return MessageFormat.format(msg, args.toArray());
+        } catch (Exception e) {
+            return key;
+        }
+    }    
+

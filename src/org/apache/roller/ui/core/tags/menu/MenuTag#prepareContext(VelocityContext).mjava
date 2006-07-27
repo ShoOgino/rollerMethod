@@ -10,8 +10,11 @@
         ctx.put("req", req );
         ctx.put("res", res );
         
+        MessageModel messageModel = new MessageModel();
+        ctx.put("text", messageModel);
+                
         Map mapCtx = new HashMap();
-        ContextLoader.loadToolboxContext(req, res, mapCtx);
+        //ContextLoader.loadToolboxContext(req, res, mapCtx);
         
         // hack.  put mapCtx info velocity ctx
         String key = null;
