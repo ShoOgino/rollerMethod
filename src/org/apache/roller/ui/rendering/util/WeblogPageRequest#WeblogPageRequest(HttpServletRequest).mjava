@@ -138,6 +138,12 @@
             }
         }
         
+        // build customParams Map, we remove built-in params
+        customParams = new HashMap(request.getParameterMap());
+        customParams.remove("date");
+        customParams.remove("cat");
+        customParams.remove("page");
+            
         if(log.isDebugEnabled()) {
             log.debug("context = "+this.context);
             log.debug("weblogAnchor = "+this.weblogAnchor);
