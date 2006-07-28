@@ -173,6 +173,17 @@
         }
         
         
+        // do referrer processing, if it's enabled
+        if(this.processReferrers) {
+            boolean spam = this.processReferrer(request, pageRequest);
+            if(spam) {
+                if(!response.isCommitted()) response.reset();
+                response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                return;
+            }
+        }
+        
+        
         // looks like we need to render content
         HashMap model = new HashMap();
         try {

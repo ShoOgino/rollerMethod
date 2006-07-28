@@ -15,5 +15,24 @@
         
         // get a reference to the site wide cache
         this.siteWideCache = SiteWideCache.getInstance();
+        
+        // see if built-in referrer processing is enabled
+        this.processReferrers = 
+                RollerConfig.getBooleanProperty("referrers.processing.enabled");
+        
+        log.info("Referrer processing enabled = "+this.processReferrers);
+        
+        // check for possible robot pattern
+        String robotPatternStr = RollerConfig.getProperty("referrer.robotCheck.userAgentPattern");
+        if (robotPatternStr != null && robotPatternStr.length() > 0) {
+            // Parse the pattern, and store the compiled form.
+            try {
+                robotPattern = Pattern.compile(robotPatternStr);
+            } catch (Exception e) {
+                // Most likely a PatternSyntaxException; log and continue as if it is not set.
+                log.error("Error parsing referrer.robotCheck.userAgentPattern value '" +
+                        robotPatternStr + "'.  Robots will not be filtered. ", e);
+            }
+        }
     }
 
