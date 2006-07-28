@@ -1,12 +1,4 @@
-    /**
-     * Get Roller string runtime configuration property.
-     * @return Property value or null if not found
-     */
-    public String getProperty(String name) {
-        String ret = null;
-        if (allowedProperties.contains(name)) {
-            ret = RollerRuntimeConfig.getProperty(name);
-        }
-        return ret;
+    private String getProperty(String name) {
+        return RollerRuntimeConfig.getProperty(name);
     }
 
