@@ -1,0 +1,37 @@
+    public List getEntries() {
+        if (entries == null) {
+            List results = new ArrayList();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            cal.add(Calendar.DATE, -1 * sinceDays);
+            Date startDate = cal.getTime();        
+            try {
+                Roller roller = RollerFactory.getRoller();
+                PlanetManager planetManager = roller.getPlanetManager();
+                PlanetGroupData group = planetManager.getGroup(groupHandle);
+                List rawEntries = null; 
+                if (feedURL != null) {
+                    rawEntries = planetManager.getFeedEntries(feedURL, offset, length);
+                } else if (groupHandle == null) {
+                    rawEntries = planetManager.getAggregation(startDate, null, offset, length);
+                } else {
+                    rawEntries = planetManager.getAggregation(group, startDate, null, offset, length); 
+                }
+                int count = 0;
+                for (Iterator it = rawEntries.iterator(); it.hasNext();) {
+                    PlanetEntryData entry = (PlanetEntryData) it.next();
+                    if (count++ < length) {
+                        PlanetEntryDataWrapper wrapped = PlanetEntryDataWrapper.wrap(entry);
+                        results.add(wrapped);
+                    } else {
+                        more = true;
+                    }    
+                }
+            } catch (Exception e) {
+                log.error("ERROR: get aggregation", e);
+            }
+            entries = results;
+        }
+        return entries;
+    }   
+

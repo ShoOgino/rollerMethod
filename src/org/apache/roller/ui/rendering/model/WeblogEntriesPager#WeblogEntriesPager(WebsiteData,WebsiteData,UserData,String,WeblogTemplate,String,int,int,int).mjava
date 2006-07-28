@@ -1,0 +1,17 @@
+    public WeblogEntriesPager(            
+            WebsiteData    weblog,
+            WebsiteData    queryWeblog,
+            UserData       queryUser,
+            String         queryCat,
+            WeblogTemplate weblogPage,
+            String         locale,
+            int            sinceDays,
+            int            page,
+            int            length) {
+        super(weblog, weblogPage, locale, sinceDays, page, length);
+        this.queryWeblog = queryWeblog;
+        this.queryUser = queryUser;
+        this.queryCat = queryCat;
+        getEntries();
+    }
+

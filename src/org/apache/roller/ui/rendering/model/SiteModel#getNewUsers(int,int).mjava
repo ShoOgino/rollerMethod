@@ -1,0 +1,21 @@
+    /*
+     * Get most recent User objects, in reverse chrono order by creationDate.
+     * @param offset   Offset into results (for paging)
+     * @param len      Max number of results to return
+     */
+    public List getNewUsers(int sinceDays, int length) {
+        List results = new ArrayList();
+        try {            
+            Roller roller = RollerFactory.getRoller();
+            UserManager umgr = roller.getUserManager();
+            List users = umgr.getUsers(0, length);
+            for (Iterator it = users.iterator(); it.hasNext();) {
+                UserData user = (UserData) it.next();
+                results.add(UserDataWrapper.wrap(user));
+            }
+        } catch (Exception e) {
+            log.error("ERROR: fetching weblog list", e);
+        }
+        return results;
+    }   
+

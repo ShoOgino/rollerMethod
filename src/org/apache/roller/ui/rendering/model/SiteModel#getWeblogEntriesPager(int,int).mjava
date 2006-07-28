@@ -1,0 +1,15 @@
+    /**
+     * Get pager ofWeblogEntry objects across all weblogs, in reverse chrono order by pubTime.
+     * @param sinceDays Limit to past X days in past (or -1 for no limit)
+     * @param length    Max number of results to return
+     */
+    public Pager getWeblogEntriesPager(int sinceDays, int length) {
+        return new WeblogEntriesPager(
+            weblog, null, null, null,
+            pageRequest.getWeblogPage(),
+            pageRequest.getLocale(),
+            sinceDays,
+            pageRequest.getPageNum(), 
+            length);
+    }
+

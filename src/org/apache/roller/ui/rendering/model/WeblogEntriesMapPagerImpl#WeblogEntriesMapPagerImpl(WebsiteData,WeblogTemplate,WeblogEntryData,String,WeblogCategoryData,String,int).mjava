@@ -1,0 +1,35 @@
+    public WeblogEntriesMapPagerImpl(
+            WebsiteData        weblog, 
+            WeblogTemplate     weblogPage,
+            WeblogEntryData    entry,
+            String             dateString, 
+            WeblogCategoryData cat,
+            String             locale,
+            int                page) { 
+        
+        this.weblog = weblog;
+        this.weblogPage = weblogPage;
+        this.entry = entry;
+        this.dateString = dateString;
+        this.cat = cat;
+        this.locale = locale;
+        this.page = page;
+        
+        length = weblog.getEntryDisplayCount();
+        if(page > 0) {
+            this.page = page;
+        }
+        this.offset = length * page;
+                
+        // determine which mode to use
+        if (entry != null) {
+            mode = new SingleEntryMode();
+        } else if (dateString != null && dateString.length() == 8) {
+            mode = new DayMode();
+        } else if (dateString != null && dateString.length() == 6) {
+            mode = new MonthMode();
+        } else {
+            mode = new LatestMode();
+        }
+    }
+

@@ -1,0 +1,12 @@
+    /* Get pager of users whose names begin with specified letter */
+    public Pager getUsersByLetterPager(String letter, int sinceDays, int length) {
+        return new UsersPager(
+            letter,
+            weblog, 
+            pageRequest.getWeblogPage(),
+            pageRequest.getLocale(),
+            sinceDays,
+            pageRequest.getPageNum(), 
+            length);
+    }      
+

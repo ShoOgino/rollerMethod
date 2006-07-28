@@ -1,0 +1,17 @@
+    protected static String createURL(
+        int                page, 
+        int                pageAdd, 
+        WebsiteData        weblog, 
+        WeblogTemplate     weblogPage, 
+        String             locale) {
+
+        int pageNum = page + pageAdd;
+        String pageLink = (weblogPage != null) ? weblogPage.getLink() : null;
+        if (weblogPage != null) {
+            return URLUtilities.getWeblogPageURL(
+                weblog, locale, pageLink, null, null, null, pageNum, false);
+        } 
+        return URLUtilities.getWeblogCollectionURL(
+                weblog, locale, null, null, pageNum, false);
+    }  
+

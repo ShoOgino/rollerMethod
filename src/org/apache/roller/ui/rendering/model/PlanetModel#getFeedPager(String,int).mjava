@@ -1,0 +1,18 @@
+    /**
+     * Get pager for WeblogEntry objects from specified
+     * Planet feed in reverse chrono order.
+     * @param offset   Offset into results (for paging)
+     * @param len      Max number of results to return
+     */
+    public Pager getFeedPager(String feedURL, int length) {
+        return new PlanetEntriesPager(
+            feedURL,
+            null,
+            weblog, 
+            pageRequest.getWeblogPage(),
+            pageRequest.getLocale(),
+            -1,
+            pageRequest.getPageNum(), 
+            length);
+    }
+

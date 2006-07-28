@@ -1,4 +1,11 @@
-    public void init(Map map) throws RollerException {
-        // no-op for now
+    public void init(Map initData) throws RollerException {        
+        // we expect the init data to contain a pageRequest object
+        this.pageRequest = (WeblogPageRequest) initData.get("pageRequest");
+        if(this.pageRequest == null) {
+            throw new RollerException("expected pageRequest from init data");
+        }
+        
+        // extract weblog object
+        weblog = pageRequest.getWeblog();
     }
 

@@ -1,0 +1,16 @@
+    /*
+     * Get pager of most recent Comment objects across all weblogs,
+     * in reverse chrono order by postTime.
+     * @param offset   Offset into results (for paging)
+     * @param len      Max number of results to return
+     */
+    public Pager getCommentsPager(int sinceDays, int length) {
+        return new CommentsPager(
+            weblog, 
+            pageRequest.getWeblogPage(),
+            pageRequest.getLocale(),
+            sinceDays,
+            pageRequest.getPageNum(), 
+            length);
+    }     
+

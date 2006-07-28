@@ -1,0 +1,22 @@
+    /** Creates a new instance of AbstractPager */
+    public AbstractPager(            
+            WebsiteData    weblog,             
+            WeblogTemplate weblogPage,
+            String         locale,
+            int            sinceDays,
+            int            page,
+            int            length) {
+        
+        this.weblog =     weblog;
+        this.weblogPage = weblogPage;
+        this.locale =     locale;
+        this.sinceDays =  sinceDays;
+        this.page =       page;
+        this.length =     length;
+
+        if(page > 0) {
+            this.page = page;
+        }
+        this.offset = length * page;
+    }
+

@@ -1,0 +1,30 @@
+    public List getComments() {
+        if (comments == null) {
+            List results = new ArrayList();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            cal.add(Calendar.DATE, -1 * sinceDays);
+            Date startDate = cal.getTime();
+            try {            
+                Roller roller = RollerFactory.getRoller();
+                WeblogManager wmgr = roller.getWeblogManager();
+                List entries = wmgr.getComments( 
+                    null, null, null, startDate, new Date(), 
+                    Boolean.FALSE, Boolean.TRUE, Boolean.FALSE, true, offset, length + 1);
+                int count = 0;
+                for (Iterator it = entries.iterator(); it.hasNext();) {
+                    CommentData comment = (CommentData) it.next();
+                    if (count++ < length) {
+                        results.add(CommentDataWrapper.wrap(comment));
+                    } else {
+                        more = true;
+                    }                                
+                }
+            } catch (Exception e) {
+                log.error("ERROR: fetching comment list", e);
+            }
+            comments = results;
+        }
+        return comments;
+    }   
+

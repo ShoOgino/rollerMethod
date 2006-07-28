@@ -1,8 +1,39 @@
-    /**
-     * A map of entries representing this collection.
-     *
-     * The collection is grouped by days of entries.  Each value is a list of
-     * entry objects keyed by the date they were published.
-     */
-    public Map getEntries();
+    public List getEntries() {
+        if (entries == null) {
+            List results = new ArrayList();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            cal.add(Calendar.DATE, -1 * sinceDays);
+            Date startDate = cal.getTime();
+            try {            
+                Roller roller = RollerFactory.getRoller();
+                WeblogManager wmgr = roller.getWeblogManager();
+                UserManager umgr = roller.getUserManager();
+                List rawEntries = wmgr.getWeblogEntries( 
+                    queryWeblog, 
+                    queryUser, 
+                    startDate, 
+                    new Date(), 
+                    queryCat, 
+                    WeblogEntryData.PUBLISHED, 
+                    "pubTime", 
+                    locale, 
+                    offset, 
+                    length + 1);
+                int count = 0;
+                for (Iterator it = rawEntries.iterator(); it.hasNext();) {
+                    WeblogEntryData entry = (WeblogEntryData) it.next();
+                    if (count++ < length) {
+                        results.add(WeblogEntryDataWrapper.wrap(entry));
+                    } else {
+                        more = true;
+                    }                      
+                }
+            } catch (Exception e) {
+                log.error("ERROR: fetching weblog entries list", e);
+            }
+            entries = results;
+        }
+        return entries;
+    }   
 

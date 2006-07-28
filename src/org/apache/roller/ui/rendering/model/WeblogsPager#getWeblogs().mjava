@@ -1,0 +1,33 @@
+    public List getWeblogs() {
+        if (weblogs == null) {
+            List results = new ArrayList();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            cal.add(Calendar.DATE, -1 * sinceDays);
+            Date startDate = cal.getTime();
+            try {            
+                Roller roller = RollerFactory.getRoller();
+                UserManager umgr = roller.getUserManager();
+                List weblogs = null;
+                if (letter == null) {
+                    weblogs = umgr.getWebsites(null, Boolean.TRUE, Boolean.TRUE, startDate, null, offset, length);
+                } else {
+                    weblogs = umgr.getWeblogsByLetter(letter.charAt(0), offset, length);
+                }
+                int count = 0;
+                for (Iterator it = weblogs.iterator(); it.hasNext();) {
+                    WebsiteData website = (WebsiteData) it.next();
+                    if (count++ < length) {
+                        results.add(WebsiteDataWrapper.wrap(website));
+                    } else {
+                        more = true;
+                    }                       
+                }
+            } catch (Exception e) {
+                log.error("ERROR: fetching weblog list", e);
+            }
+            weblogs = results;
+        }
+        return weblogs;
+    }
+
