@@ -62,24 +62,24 @@
         }
         
         
+        // do referrer processing, if it's enabled
+        if(this.processReferrers) {
+            boolean spam = this.processReferrer(request, pageRequest);
+            if(spam) {
+                log.debug("spammer, giving 'em a 403");
+                if(!response.isCommitted()) response.reset();
+                response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                return;
+            }
+        }
+        
+        
         // generate cache key
         String cacheKey = null;
         if(isSiteWide) {
             cacheKey = siteWideCache.generateKey(pageRequest);
         } else {
             cacheKey = weblogPageCache.generateKey(pageRequest);
-        }
-        
-        // TODO 3.0: this is a hack, but we need to provide some way for 
-        // templates to use arbitrary request parameters.
-        if (request.getParameter("letter") != null) {
-            cacheKey += "_" + request.getParameter("letter");
-        }
-        if (request.getParameter("weblog") != null) {
-            cacheKey += "_" + request.getParameter("weblog");
-        }
-        if (request.getParameter("userName") != null) {
-            cacheKey += "_" + request.getParameter("userName");
         }
         
         // cached content checking
@@ -182,17 +182,6 @@
             if(!response.isCommitted()) response.reset();
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
-        }
-        
-        
-        // do referrer processing, if it's enabled
-        if(this.processReferrers) {
-            boolean spam = this.processReferrer(request, pageRequest);
-            if(spam) {
-                if(!response.isCommitted()) response.reset();
-                response.sendError(HttpServletResponse.SC_FORBIDDEN);
-                return;
-            }
         }
         
         

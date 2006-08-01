@@ -7,19 +7,16 @@
     private boolean processReferrer(HttpServletRequest request,
                                     WeblogPageRequest pageRequest) {
         
+        log.debug("processing referrer for "+request.getRequestURI());
+        
         // if this came from a robot then don't process it
         if (robotPattern != null) {
             String userAgent = request.getHeader("User-Agent");
             if (userAgent != null && userAgent.length() > 0 && 
                     robotPattern.matcher(userAgent).matches()) {
+                log.debug("skipping referrer from robot");
                 return false;
             }
-        }
-        
-        // if this came from persons own blog then don't process it
-        String selfSiteFragment = "/"+pageRequest.getWeblogHandle();
-        if (request.getRequestURI().indexOf(selfSiteFragment) != -1) {
-            return false;
         }
         
         String referrerUrl = request.getHeader("Referer");
@@ -29,6 +26,15 @@
             reqsb.append(request.getQueryString());
         }
         String requestUrl = reqsb.toString();
+        
+        log.debug("referrer = "+referrerUrl);
+        
+        // if this came from persons own blog then don't process it
+        String selfSiteFragment = "/"+pageRequest.getWeblogHandle();
+        if (referrerUrl != null && referrerUrl.indexOf(selfSiteFragment) != -1) {
+            log.debug("skipping referrer from own blog");
+            return false;
+        }
         
         // validate the referrer
         if (pageRequest != null && pageRequest.getWeblogHandle() != null) {
