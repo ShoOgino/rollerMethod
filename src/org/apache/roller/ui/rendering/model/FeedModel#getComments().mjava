@@ -3,7 +3,7 @@
      * the weblog.entryDisplayCount.
      */
     public List getComments() {
-        
+            
         // Display same number of entries in feed as displayed on page
         int entryCount = weblog.getEntryDisplayCount();
         
@@ -19,7 +19,7 @@
         try {
             WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
             List recent = wmgr.getComments(
-                    weblog,
+                    RollerRuntimeConfig.isSiteWideWeblog(weblog.getHandle()) ? null : weblog,
                     null,          // weblog entry
                     null,          // search String
                     null,          // startDate

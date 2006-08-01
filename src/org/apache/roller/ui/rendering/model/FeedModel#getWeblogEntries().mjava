@@ -19,7 +19,8 @@
         try {             
             Roller roller = RollerFactory.getRoller();
             WeblogManager wmgr = roller.getWeblogManager();
-            List entries = wmgr.getWeblogEntries(weblog,
+            List entries = wmgr.getWeblogEntries(
+                    RollerRuntimeConfig.isSiteWideWeblog(weblog.getHandle()) ? null : weblog,
                     null, 
                     null, 
                     new Date(), 
