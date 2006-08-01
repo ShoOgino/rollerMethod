@@ -5,6 +5,11 @@
      *       enclosed Writer up until the last call to flush().
      */
     public String getContentAsString() {
-        return new String(this.content);
+        try {
+            return new String(this.content,"UTF-8");
+        } catch (UnsupportedEncodingException uex) {
+            // shouldn't ever happen - violates Java Spec.
+            throw new RuntimeException(uex);
+        }
     }
 
