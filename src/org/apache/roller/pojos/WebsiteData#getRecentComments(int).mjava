@@ -11,7 +11,7 @@
         if (length < 1) return recentComments;
         try {
             WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
-            List recent = wmgr.getComments(
+            recentComments = wmgr.getComments(
                     this,
                     null,          // weblog entry
                     null,          // search String
