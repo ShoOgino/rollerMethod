@@ -4,10 +4,20 @@
      *
      * @returns true if referrer was spam, false otherwise
      */
-    private boolean processReferrer(HttpServletRequest request,
-                                    WeblogPageRequest pageRequest) {
+    private boolean processReferrer(HttpServletRequest request) {
         
         log.debug("processing referrer for "+request.getRequestURI());
+        
+        // bleh!  because ref processing does a flush it will close
+        // our hibernate session and cause lazy init exceptions on
+        // objects we have fetched, so we need to use a separate
+        // page request object for this
+        WeblogPageRequest pageRequest;
+        try {
+            pageRequest = new WeblogPageRequest(request);
+        } catch (InvalidRequestException ex) {
+            return false;
+        }
         
         // if this came from a robot then don't process it
         if (robotPattern != null) {

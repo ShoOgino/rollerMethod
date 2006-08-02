@@ -6,6 +6,20 @@
         
         log.debug("Entering");
         
+        // do referrer processing, if it's enabled
+        // NOTE: this *must* be done first because it triggers a hibernate flush
+        // which will close the active session and cause lazy init exceptions otherwise
+        if(this.processReferrers) {
+            boolean spam = this.processReferrer(request);
+            if(spam) {
+                log.debug("spammer, giving 'em a 403");
+                if(!response.isCommitted()) response.reset();
+                response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                return;
+            }
+        }
+        
+        
         WebsiteData weblog = null;
         boolean isSiteWide = false;
         
@@ -59,18 +73,6 @@
             response.setContentType(mimeType+"; charset=utf-8");
         } else {
             response.setContentType("text/html; charset=utf-8");
-        }
-        
-        
-        // do referrer processing, if it's enabled
-        if(this.processReferrers) {
-            boolean spam = this.processReferrer(request, pageRequest);
-            if(spam) {
-                log.debug("spammer, giving 'em a 403");
-                if(!response.isCommitted()) response.reset();
-                response.sendError(HttpServletResponse.SC_FORBIDDEN);
-                return;
-            }
         }
         
         
