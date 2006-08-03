@@ -19,6 +19,11 @@
             return false;
         }
         
+        // if this came from site-wide frontpage then skip it
+        if(RollerRuntimeConfig.isSiteWideWeblog(pageRequest.getWeblogHandle())) {
+            return false;
+        }
+        
         // if this came from a robot then don't process it
         if (robotPattern != null) {
             String userAgent = request.getHeader("User-Agent");
