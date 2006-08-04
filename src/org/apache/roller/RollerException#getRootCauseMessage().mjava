@@ -2,13 +2,10 @@
      * Get root cause message.
      * @return Root cause message.
      */
-    public String getRootCauseMessage() 
-    {
+    public String getRootCauseMessage() {
         String rcmessage = null;
-        if (getRootCause()!=null) 
-        {
-            if (getRootCause().getCause()!=null)
-            {
+        if (getRootCause()!=null) {
+            if (getRootCause().getCause()!=null) {
                 rcmessage = getRootCause().getCause().getMessage();
             }
             rcmessage = (rcmessage == null) ? getRootCause().getMessage() : rcmessage;
