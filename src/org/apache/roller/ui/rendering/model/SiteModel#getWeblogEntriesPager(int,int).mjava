@@ -6,10 +6,10 @@
     public Pager getWeblogEntriesPager(int sinceDays, int length) {
         return new WeblogEntriesListPager(
             weblog, null, null, null,
-            pageRequest.getWeblogPage(),
-            pageRequest.getLocale(),
+            weblogPage,
+            weblogRequest.getLocale(),
             sinceDays,
-            pageRequest.getPageNum(), 
+            pageNum, 
             length);
     }
 

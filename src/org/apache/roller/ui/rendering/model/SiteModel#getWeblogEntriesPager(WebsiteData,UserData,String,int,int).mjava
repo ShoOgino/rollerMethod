@@ -10,10 +10,10 @@
     public Pager getWeblogEntriesPager(WebsiteData queryWeblog, UserData user, String cat, int sinceDays, int length) {
         return new WeblogEntriesListPager(
             weblog, queryWeblog, user, cat,
-            pageRequest.getWeblogPage(),
-            pageRequest.getLocale(),
+            weblogPage,
+            weblogRequest.getLocale(),
             sinceDays,
-            pageRequest.getPageNum(), 
+            pageNum, 
             length);
     }    
 

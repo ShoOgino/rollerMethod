@@ -1,11 +1,15 @@
     public void init(Map initData) throws RollerException {
         // we expect the init data to contain a pageRequest object
-        this.pageRequest = (WeblogPageRequest) initData.get("pageRequest");
-        if(this.pageRequest == null) {
+        this.weblogRequest = (WeblogPageRequest) initData.get("pageRequest");
+        if(this.weblogRequest == null) {
             throw new RollerException("expected pageRequest from init data");
         }
-        
+        // TODO 3.0: is it better to reparse URL to get these?
+        if (weblogRequest instanceof WeblogPageRequest) {
+            weblogPage = ((WeblogPageRequest)weblogRequest).getWeblogPage();
+            pageNum = ((WeblogPageRequest)weblogRequest).getPageNum();
+        }  
         // extract weblog object
-        weblog = pageRequest.getWeblog();
+        weblog = weblogRequest.getWeblog();
     } 
 
