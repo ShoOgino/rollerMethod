@@ -22,6 +22,10 @@
                     forwardUrl.append(TRACKBACK_SERVLET);
                     forwardUrl.append("/");
                     forwardUrl.append(handle);
+                    if(locale != null) {
+                        forwardUrl.append("/");
+                        forwardUrl.append(locale);
+                    }
                     forwardUrl.append("/");
                     forwardUrl.append(context);
                     if(data != null) {
@@ -35,6 +39,10 @@
                     forwardUrl.append(COMMENT_SERVLET);
                     forwardUrl.append("/");
                     forwardUrl.append(handle);
+                    if(locale != null) {
+                        forwardUrl.append("/");
+                        forwardUrl.append(locale);
+                    }
                     forwardUrl.append("/");
                     forwardUrl.append(context);
                     if(data != null) {
