@@ -1,16 +1,12 @@
     /** Creates a new instance of CommentPager */
-    public PlanetEntriesPager(   
-            String         feedURL,
-            String         groupHandle,  
-            WebsiteData    weblog,
-            WeblogTemplate weblogPage,
+    public CommentsPager(            
+            WebsiteData    weblog,             
+            Template       weblogPage,
             String         locale,
             int            sinceDays,
             int            page,
             int            length) {
         super(weblog, weblogPage, locale, sinceDays, page, length);
-        this.feedURL = feedURL;
-        this.groupHandle = groupHandle;
         getItems();
     }
 
