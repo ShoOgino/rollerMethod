@@ -1,0 +1,15 @@
+    public static final String getXmlrpcURL(boolean absolute) {
+        
+        StringBuffer url = new StringBuffer();
+        
+        if(absolute) {
+            url.append(RollerRuntimeConfig.getAbsoluteContextURL());
+        } else {
+            url.append(RollerRuntimeConfig.getRelativeContextURL());
+        }
+        
+        url.append("/roller-services/xmlrpc");
+        
+        return url.toString();
+    }
+
