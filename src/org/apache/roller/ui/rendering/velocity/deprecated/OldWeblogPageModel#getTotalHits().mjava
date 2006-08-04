@@ -1,10 +1,5 @@
     /** Encapsulates RefererManager */
     public int getTotalHits() {
-        try {
-            return mRefererMgr.getTotalHits(mWebsite);
-        } catch (RollerException e) {
-            mLogger.error("PageModel getTotalHits()", e);
-        }
-        return 0;
+        return mWebsite.getTodaysHits();
     }
 
