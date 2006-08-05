@@ -1,6 +1,8 @@
+    /**
+     * Single constructor.
+     * @throws org.apache.roller.RollerException on any error
+     */
     protected JDORollerImpl() throws RollerException {
-        PersistenceManagerFactory pmf = 
-                JDOHelper.getPersistenceManagerFactory("JDOPMF.properties");
-        mStrategy = new JDOStrategy(pmf);
+        strategy = new JDOPersistenceStrategy();
     }
 
