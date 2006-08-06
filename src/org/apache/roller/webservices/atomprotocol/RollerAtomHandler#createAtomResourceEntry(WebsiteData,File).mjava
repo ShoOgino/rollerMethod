@@ -1,25 +1,40 @@
-    private Entry createAtomResourceEntry(WebsiteData website, File file) { 
+    private Entry createAtomResourceEntry(WebsiteData website, File file) {
         String absUrl = mRollerContext.getAbsoluteContextUrl(mRequest);
         String editURI = absUrl
+                + "/app/" + website.getHandle()
+                + "/resource/" + file.getName() + ".media-link";
+        String editMediaURI = absUrl
                 + "/app/" + website.getHandle()
                 + "/resource/" + file.getName();
         String viewURI = absUrl
                 + "/resources/" + website.getHandle()
                 + "/" + file.getName();
+        
         FileTypeMap map = FileTypeMap.getDefaultFileTypeMap();
+        // TODO: figure out why PNG is missing from Java MIME types
+        if (map instanceof MimetypesFileTypeMap) {
+            try {
+                ((MimetypesFileTypeMap)map).addMimeTypes("image/png png PNG");
+            } catch (Exception ignored) {}
+        }
         String contentType = map.getContentType(file);
-
+        
         Entry entry = new Entry();
+        entry.setId(editMediaURI);
         entry.setTitle(file.getName());
         entry.setUpdated(new Date(file.lastModified()));
-
-        Link editlink = new Link();
-        editlink.setRel("edit");
-        editlink.setHref(editURI);
-        List otherlinks = new ArrayList();
-        otherlinks.add(editlink);
+        
+        List otherlinks = new ArrayList();        
         entry.setOtherLinks(otherlinks);
-
+        Link editlink = new Link();
+            editlink.setRel("edit");
+            editlink.setHref(editURI);        
+            otherlinks.add(editlink);            
+        Link editMedialink = new Link();
+            editMedialink.setRel("edit-media");
+            editMedialink.setHref(editMediaURI);        
+            otherlinks.add(editMedialink);
+        
         Content content = new Content();
         content.setSrc(viewURI);
         content.setType(contentType);

@@ -16,12 +16,12 @@
         atomEntry.setTitle(     entry.getTitle());
         atomEntry.setContents(  contents);
         atomEntry.setPublished( entry.getPubTime());
-        atomEntry.setUpdated(   entry.getUpdateTime());        
-
-        UserData creator = entry.getCreator();        
+        atomEntry.setUpdated(   entry.getUpdateTime());
+        
+        UserData creator = entry.getCreator();
         Person author = new Person();
-        author.setName(         creator.getUserName());   
-        author.setEmail(        creator.getEmailAddress());                        
+        author.setName(         creator.getUserName());
+        author.setEmail(        creator.getEmailAddress());
         atomEntry.setAuthors(   Collections.singletonList(author));
         
         List categories = new ArrayList();
@@ -40,7 +40,7 @@
         Link editlink = new Link();
         editlink.setRel("edit");
         editlink.setHref(absUrl + "/app/"
-            + entry.getWebsite().getHandle() + "/entry/" + entry.getId());
+                + entry.getWebsite().getHandle() + "/entry/" + entry.getId());
         List otherlinks = new ArrayList();
         otherlinks.add(editlink);
         atomEntry.setOtherLinks(otherlinks);
@@ -48,7 +48,7 @@
         List modules = new ArrayList();
         PubControlModule pubControl = new PubControlModuleImpl();
         pubControl.setDraft(
-            !WeblogEntryData.PUBLISHED.equals(entry.getStatus()));
+                !WeblogEntryData.PUBLISHED.equals(entry.getStatus()));
         modules.add(pubControl);
         atomEntry.setModules(modules);
         

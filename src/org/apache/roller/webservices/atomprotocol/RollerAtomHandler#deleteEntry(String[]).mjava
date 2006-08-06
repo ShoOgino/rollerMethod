@@ -1,21 +1,49 @@
     /**
      * Delete entry, URI like this /blog-name/entry/id
      */
-    public void deleteEntry(String[] pathInfo) throws Exception {
-        if (pathInfo.length == 3) // URI is /blogname/entries/entryid
-        {
-            WeblogEntryData rollerEntry =
-                    mRoller.getWeblogManager().getWeblogEntry(pathInfo[2]);
-            if (canEdit(rollerEntry)) {
-                WeblogManager mgr = mRoller.getWeblogManager();
-                mgr.removeWeblogEntry(rollerEntry);
-                mRoller.flush();
-                CacheManager.invalidate(rollerEntry.getWebsite());
-                mRoller.getIndexManager().removeEntryIndexOperation(rollerEntry);
-                return;
+    public void deleteEntry(String[] pathInfo) throws AtomException {
+        try {
+            if (pathInfo.length == 3) // URI is /blogname/entry/entryid
+            {
+                if (pathInfo[1].equals("entry")) {
+                    WeblogEntryData rollerEntry = mRoller.getWeblogManager().getWeblogEntry(pathInfo[2]);
+                    if (rollerEntry == null) {
+                        throw new AtomNotFoundException("ERROR: cannot find specified entry/resource");
+                    }
+                    if (canEdit(rollerEntry)) {
+                        WeblogManager mgr = mRoller.getWeblogManager();
+                        mgr.removeWeblogEntry(rollerEntry);
+                        mRoller.flush();
+                        CacheManager.invalidate(rollerEntry.getWebsite());
+                        mRoller.getIndexManager().removeEntryIndexOperation(rollerEntry);
+                        return;
+                    } 
+                } else if (pathInfo[1].equals("resource") && pathInfo[2].endsWith(".media-link")) {
+                    String handle = pathInfo[0];
+                    WebsiteData website = mRoller.getUserManager().getWebsiteByHandle(handle);
+                    if (website == null) {
+                        throw new AtomNotFoundException("ERROR: cannot find specified weblog");
+                    }
+                    if (canEdit(website) && pathInfo.length > 1) {
+                        try {
+                            String fileName = 
+                                pathInfo[2].substring(0, pathInfo[2].length() - ".media-link".length());
+                            FileManager fmgr = mRoller.getFileManager();
+                            fmgr.deleteFile(website.getHandle(), fileName);
+                        } catch (Exception e) {
+                            String msg = "ERROR in atom.deleteResource";
+                            mLogger.error(msg,e);
+                            throw new AtomException(msg);
+                        }
+                        return;
+                    }               
+                }
+                throw new AtomNotAuthorizedException("ERROR not authorized to delete entry");
             }
-            throw new Exception("ERROR not authorized to delete entry");
+            throw new AtomNotFoundException("ERROR: cannot find specified entry/resource");
+            
+        } catch (RollerException re) {
+            throw new AtomException("ERROR: deleting entry");
         }
-        throw new Exception("ERROR: bad URI");
     }
 

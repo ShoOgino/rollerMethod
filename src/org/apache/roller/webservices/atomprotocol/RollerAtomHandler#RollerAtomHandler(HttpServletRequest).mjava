@@ -9,15 +9,14 @@
         mRollerContext = RollerContext.getRollerContext();
         
         // TODO: decide what to do about authentication, is WSSE going to fly?
-        //mUsername = authenticateWSSE(request);
-        String mUsername = authenticateBASIC(request);
-        
-        if (mUsername != null) {
+        //String userName = authenticateWSSE(request);
+        String userName = authenticateBASIC(request);
+        if (userName != null) {
             try {
-                this.user = mRoller.getUserManager().getUserByUsername(mUsername);
-            } catch (Exception e) {
-                mLogger.error("ERROR: setting user", e);
-            }
+                this.user = mRoller.getUserManager().getUserByUsername(userName);
+            } catch (Exception neverHappen) {
+                mLogger.debug("ERROR: getting user", neverHappen);
+            } 
         }
     }
 
