@@ -3,9 +3,9 @@
         AtomService.Collection collection = new AtomService.Collection();
         collection.setTitle(element.getAttribute("title").getValue());
         collection.setHref(element.getAttribute("href").getValue());
-        Element memberType = element.getChild("member-type",  ns);
+        Element memberType = element.getChild("accept",  ns);
         if (memberType != null) {
-            collection.setMemberType(memberType.getText());
+            collection.setAccept(memberType.getText());
         }
         return collection;
     }

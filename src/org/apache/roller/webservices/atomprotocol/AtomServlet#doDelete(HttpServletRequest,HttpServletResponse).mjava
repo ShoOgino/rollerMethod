@@ -12,16 +12,16 @@
                 if (handler.isEntryURI(pathInfo)) {
                     handler.deleteEntry(pathInfo);
                     res.setStatus(HttpServletResponse.SC_OK);
-                } else if (handler.isMediaURI(pathInfo)) {
-                    handler.deleteMedia(pathInfo);
-                    res.setStatus(HttpServletResponse.SC_OK);
-                } else {
+                } 
+                else {
                     res.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 }
-            } catch (Throwable e) {
+            } catch (AtomException ae) {
+                res.setStatus(ae.getStatus());
+                mLogger.debug(ae);
+            } catch (Exception ae) {
                 res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                e.printStackTrace(res.getWriter());
-                mLogger.error(e);
+                mLogger.debug(ae);
             }
         } else {
             res.setHeader("WWW-Authenticate", "BASIC realm=\"Roller\"");

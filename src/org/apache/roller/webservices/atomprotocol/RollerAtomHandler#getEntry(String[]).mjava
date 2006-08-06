@@ -1,18 +1,40 @@
     /**
      * Retrieve entry, URI like this /blog-name/entry/id
      */
-    public Entry getEntry(String[] pathInfo) throws Exception {
-        if (pathInfo.length == 3) // URI is /blogname/entries/entryid
-        {
-            WeblogEntryData entry =
-                mRoller.getWeblogManager().getWeblogEntry(pathInfo[2]);
-            if (entry != null && !canView(entry)) {
-                throw new Exception("ERROR not authorized to view entry");
-            } else if (entry != null) {
-                return createAtomEntry(entry);
+    public Entry getEntry(String[] pathInfo) throws AtomException {
+        try {
+            if (pathInfo.length == 3) // URI is /blogname/entries/entryid
+            {
+                if (pathInfo[1].equals("entry")) {
+                    WeblogEntryData entry = 
+                        mRoller.getWeblogManager().getWeblogEntry(pathInfo[2]);
+                    if (entry == null) {
+                        throw new AtomNotFoundException(
+                            "ERROR: cannot find specified entry/resource");
+                    }
+                    if (!canView(entry)) {
+                        throw new AtomNotAuthorizedException(
+                            "ERROR: not authorized to view entry");
+                    } else {
+                        return createAtomEntry(entry);
+                    }
+                } else if (pathInfo[1].equals("resource") && pathInfo[2].endsWith(".media-link")) {
+                    String fileName = 
+                        pathInfo[2].substring(0, pathInfo[2].length() - ".media-link".length());
+                    String handle = pathInfo[0];
+                    WebsiteData website = 
+                        mRoller.getUserManager().getWebsiteByHandle(handle);
+                    String uploadPath = 
+                        RollerFactory.getRoller().getFileManager().getUploadUrl();
+                    File resource = 
+                        new File(uploadPath + File.separator + fileName);
+                    return createAtomResourceEntry(website, resource);
+                }
             }
-            return null;
+            throw new AtomNotFoundException(
+                "ERROR: cannot find specified entry/resource");
+        } catch (RollerException re) {
+            throw new AtomException("ERROR: getting entry");
         }
-        throw new Exception("ERROR: bad URI");
     }
 

@@ -1,0 +1,43 @@
+    /**
+     * Return Atom service document for site, getting blog-name from pathInfo.
+     * The workspace will contain collections for entries, categories and resources.
+     */
+    public AtomService getIntrospection() throws AtomException {
+        AtomService service = new AtomService();
+        List perms = null;
+        try {
+            perms = mRoller.getUserManager().getAllPermissions(user);
+        } catch (RollerException re) {
+            throw new AtomException("ERROR: getting user's weblogs", re);
+        }
+        String accept = null;
+        try {
+            accept = getAcceptedContentTypeRange();
+        } catch (RollerException re) {
+            throw new AtomException("ERROR: getting site's accept range", re);
+        }
+        if (perms != null) {
+            for (Iterator iter=perms.iterator(); iter.hasNext();) {
+                PermissionsData perm = (PermissionsData)iter.next();
+                String handle = perm.getWebsite().getHandle();
+                AtomService.Workspace workspace = new AtomService.Workspace();
+                workspace.setTitle(Utilities.removeHTML(perm.getWebsite().getName()));
+                service.addWorkspace(workspace);
+                
+                AtomService.Collection entryCol = new AtomService.Collection();
+                entryCol.setTitle("Weblog Entries");
+                entryCol.setAccept("entry");
+                entryCol.setHref(URLUtilities.getAtomProtocolURL(true)+"/"+handle+"/entries");
+                workspace.addCollection(entryCol);
+                
+                
+                AtomService.Collection uploadCol = new AtomService.Collection();
+                uploadCol.setTitle("Media Files");
+                uploadCol.setAccept(accept);
+                uploadCol.setHref(URLUtilities.getAtomProtocolURL(true)+"/"+handle+"/resources");
+                workspace.addCollection(uploadCol);
+            }
+        }
+        return service;
+    }
+

@@ -22,9 +22,9 @@
         rollerEntry.setPubTime(pubTime);
         rollerEntry.setUpdateTime(updateTime);
         rollerEntry.setWebsite(website);
-               
-        PubControlModule control = 
-            (PubControlModule)entry.getModule("http://purl.org/atom/app#");
+        
+        PubControlModule control =
+                (PubControlModule)entry.getModule("http://purl.org/atom/app#");
         if (control!=null && control.getDraft()) {
             rollerEntry.setStatus(WeblogEntryData.DRAFT);
         } else {
@@ -41,8 +41,8 @@
                 String catString = cat.getTerm() != null ? cat.getTerm() : cat.getLabel();
                 if (catString != null) {
                     WeblogCategoryData rollerCat =
-                        mRoller.getWeblogManager().getWeblogCategoryByPath(
-                        website, catString);
+                            mRoller.getWeblogManager().getWeblogCategoryByPath(
+                            website, catString);
                     if (rollerCat != null) {
                         // Found a valid category, so break out
                         rollerEntry.setCategory(rollerCat);
@@ -50,8 +50,9 @@
                     }
                 }
             }
-        } else {
-            // or we fall back to the default Blogger API category
+        }
+        if (rollerEntry.getCategory() == null) {
+            // no category? fall back to the default Blogger API category
             rollerEntry.setCategory(website.getBloggerCategory());
         }
         return rollerEntry;

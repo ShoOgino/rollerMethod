@@ -8,10 +8,10 @@
      *    /<blog-name>/resources/offset
      * </pre>
      */
-    public Feed getCollection(String[] pathInfo) throws Exception {
+    public Feed getCollection(String[] pathInfo) throws AtomException {
         int start = 0;
         if (pathInfo.length > 2) {
-            try { 
+            try {
                 String s = pathInfo[2].trim();
                 start = Integer.parseInt(s);
             } catch (Throwable t) {
@@ -23,6 +23,6 @@
         } else if (pathInfo.length > 0 && pathInfo[1].equals("resources")) {
             return getCollectionOfResources(pathInfo, start, mMaxEntries);
         }
-        throw new Exception("ERROR: bad URL in getCollection()");
+        throw new AtomNotFoundException("ERROR: cannot find collection specified");
     }
 
