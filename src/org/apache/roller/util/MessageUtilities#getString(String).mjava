@@ -1,0 +1,13 @@
+    /**
+     * Get a message from the bundle.
+     */
+    public static final String getString(String key) throws RollerException {
+        
+        try {
+            return bundle.getString(key);
+        } catch (Exception e) {
+            // wrap as RollerException and rethrow
+            throw new RollerException("Error getting key "+key, e);
+        }
+    }
+

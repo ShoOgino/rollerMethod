@@ -1,0 +1,16 @@
+    /**
+     * Get a message from the bundle and substitute the given args into
+     * the message contents.
+     */
+    public static final String getString(String key, List args) 
+            throws RollerException {
+        
+        try {
+            String msg = bundle.getString(key);
+            return MessageFormat.format(msg, args.toArray());
+        } catch (Exception e) {
+            // wrap as RollerException and rethrow
+            throw new RollerException("Error getting key "+key, e);
+        }
+    }
+
