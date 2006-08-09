@@ -1,6 +1,9 @@
     public String getNextLink() {
-        if (page > 0) {
-            return createURL(page, -1, weblog, weblogPage, locale);
+        if(hasMoreItems()) {
+            int nextPage = page + 1;
+            Map params = new HashMap();
+            params.put("page", ""+nextPage);
+            return createURL(url, params);
         }
         return null;
     }

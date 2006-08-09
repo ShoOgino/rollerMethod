@@ -1,5 +1,9 @@
     public List getItems() {
+        
         if (weblogs == null) {
+            // calculate offset
+            int offset = getPage() * length;
+            
             List results = new ArrayList();
             Date startDate = null;
             if (sinceDays != -1) {
@@ -8,29 +12,35 @@
                 cal.add(Calendar.DATE, -1 * sinceDays);
                 startDate = cal.getTime();
             }
-            try {            
+            try {
                 Roller roller = RollerFactory.getRoller();
                 UserManager umgr = roller.getUserManager();
                 List weblogs = null;
                 if (letter == null) {
-                    weblogs = umgr.getWebsites(null, Boolean.TRUE, Boolean.TRUE, startDate, null, offset, length);
+                    weblogs = umgr.getWebsites(null, Boolean.TRUE, Boolean.TRUE, startDate, null, offset, length + 1);
                 } else {
-                    weblogs = umgr.getWeblogsByLetter(letter.charAt(0), offset, length);
+                    weblogs = umgr.getWeblogsByLetter(letter.charAt(0), offset, length + 1);
                 }
-                int count = 0;
+                
+                // check if there are more results for paging
+                if(weblogs.size() > length) {
+                    more = true;
+                    weblogs.remove(weblogs.size() - 1);
+                }
+                
+                // wrap the results
                 for (Iterator it = weblogs.iterator(); it.hasNext();) {
                     WebsiteData website = (WebsiteData) it.next();
-                    if (count++ < length) {
-                        results.add(WebsiteDataWrapper.wrap(website));
-                    } else {
-                        more = true;
-                    }                       
+                    results.add(WebsiteDataWrapper.wrap(website));
                 }
+                
             } catch (Exception e) {
                 log.error("ERROR: fetching weblog list", e);
             }
+            
             weblogs = results;
         }
+        
         return weblogs;
     }
 

@@ -1,6 +1,9 @@
     public String getPrevLink() {
-        if (more) {        
-            return createURL(page, 1, weblog, weblogPage, locale);
+        if (page > 0) {
+            int prevPage = page - 1;
+            Map params = new HashMap();
+            params.put("page", ""+prevPage);
+            return createURL(url, params);
         }
         return null;
     }

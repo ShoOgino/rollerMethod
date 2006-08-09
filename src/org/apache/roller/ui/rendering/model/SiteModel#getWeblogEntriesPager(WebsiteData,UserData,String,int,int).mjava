@@ -8,9 +8,13 @@
      * @param length      Max number of results to return
      */   
     public Pager getWeblogEntriesPager(WebsiteData queryWeblog, UserData user, String cat, int sinceDays, int length) {
+        
+        String pagerUrl = URLUtilities.getWeblogPageURL(weblog, 
+                weblogRequest.getLocale(), weblogPage.getLink(), 
+                null, null, null, 0, false);
+        
         return new WeblogEntriesListPager(
-            weblog, queryWeblog, user, cat,
-            weblogPage,
+            pagerUrl, queryWeblog, user, cat,
             weblogRequest.getLocale(),
             sinceDays,
             pageNum, 

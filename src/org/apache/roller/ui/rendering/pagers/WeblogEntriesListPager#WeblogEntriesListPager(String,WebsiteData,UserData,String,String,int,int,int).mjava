@@ -1,17 +1,24 @@
-    public WeblogEntriesListPager(            
-            WebsiteData    weblog,
+    public WeblogEntriesListPager(
+            String         baseUrl,
             WebsiteData    queryWeblog,
             UserData       queryUser,
             String         queryCat,
-            Template       weblogPage,
             String         locale,
             int            sinceDays,
-            int            page,
+            int            pageNum,
             int            length) {
-        super(weblog, weblogPage, locale, sinceDays, page, length);
+        
+        super(baseUrl, pageNum);
+        
+        // store the data
         this.queryWeblog = queryWeblog;
         this.queryUser = queryUser;
         this.queryCat = queryCat;
+        this.locale = locale;
+        this.sinceDays = sinceDays;
+        this.length = length;
+        
+        // initialize the pager collection
         getItems();
     }
 

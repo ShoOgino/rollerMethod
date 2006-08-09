@@ -5,11 +5,15 @@
      * @param len      Max number of results to return
      */
     public Pager getAggregationPager(String groupHandle, int sinceDays, int length) {
+        
+        String pagerUrl = URLUtilities.getWeblogPageURL(weblog, 
+                weblogRequest.getLocale(), weblogPage.getLink(), 
+                null, null, null, 0, false);
+        
         return new PlanetEntriesPager(
             null,
             groupHandle,
-            weblog, 
-            weblogPage,
+            pagerUrl,
             weblogRequest.getLocale(),
             sinceDays,
             pageNum, 
