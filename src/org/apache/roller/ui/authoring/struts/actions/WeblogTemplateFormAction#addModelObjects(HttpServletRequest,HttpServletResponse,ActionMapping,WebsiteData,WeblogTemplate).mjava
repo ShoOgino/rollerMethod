@@ -3,7 +3,8 @@
             HttpServletRequest  request,
             HttpServletResponse response,
             ActionMapping mapping,
-            WebsiteData website)
+            WebsiteData website,
+            WeblogTemplate page)
             throws RollerException {
         UserManager mgr = RollerFactory.getRoller().getUserManager();
         RollerSession rses = RollerSession.getRollerSession(request);
@@ -18,6 +19,6 @@
         List pages = mgr.getPages(website);
         request.setAttribute("pages", pages);
         
-        request.setAttribute("page", rreq.getPage());
+        if (page != null) request.setAttribute("page", page);
     }
 

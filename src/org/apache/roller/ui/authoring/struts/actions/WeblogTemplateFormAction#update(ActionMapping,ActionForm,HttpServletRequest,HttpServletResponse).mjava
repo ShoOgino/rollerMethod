@@ -34,10 +34,13 @@
                 
                 CacheManager.invalidate(data);
                 
+                addModelObjects(request, response, mapping, data.getWebsite(), data);
+
                 BasePageModel pageModel = new BasePageModel(
                         "pageForm.title", request, response, mapping);
                 pageModel.setWebsite(website);
                 request.setAttribute("model", pageModel);
+                
             } else {
                 forward = mapping.findForward("access-denied");
             }

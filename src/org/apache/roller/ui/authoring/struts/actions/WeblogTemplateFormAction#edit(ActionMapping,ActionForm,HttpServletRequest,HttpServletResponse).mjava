@@ -20,7 +20,7 @@
                 WeblogTemplateForm pf = (WeblogTemplateForm)actionForm;
                 pf.copyFrom(pd, request.getLocale());
                 
-                addModelObjects(request, response, mapping, pd.getWebsite());
+                addModelObjects(request, response, mapping, pd.getWebsite(), pd);
             } else {
                 forward = mapping.findForward("access-denied");
             }

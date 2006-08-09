@@ -16,7 +16,7 @@
                 WeblogTemplateForm form = (WeblogTemplateForm)actionForm;
                 form.copyFrom(page, request.getLocale());
                 
-                addModelObjects(request, response, mapping, page.getWebsite());
+                addModelObjects(request, response, mapping, page.getWebsite(), page);
                 
                 BasePageModel pageModel = new BasePageModel(
                         "editPages.title.removeOK", request, response, mapping);

@@ -21,7 +21,7 @@
             }
             
             if ( rses.isUserAuthorizedToAdmin(website)) {
-                addModelObjects(request, response, mapping, website);
+                addModelObjects(request, response, mapping, website, null);
             } else {
                 forward = mapping.findForward("access-denied");
             }
