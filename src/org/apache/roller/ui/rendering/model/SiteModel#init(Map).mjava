@@ -8,7 +8,8 @@
         
         // TODO 3.0: is it better to reparse URL to get these?
         if (weblogRequest instanceof WeblogPageRequest) {
-            weblogPage = ((WeblogPageRequest)weblogRequest).getWeblogPage();
+            Template weblogPage = ((WeblogPageRequest)weblogRequest).getWeblogPage();
+            pageLink = (weblogPage != null) ? weblogPage.getLink() : null;
             pageNum = ((WeblogPageRequest)weblogRequest).getPageNum();
         }
         
