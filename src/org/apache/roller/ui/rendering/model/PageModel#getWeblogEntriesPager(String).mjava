@@ -4,25 +4,54 @@
      * date they were published.
      * @param catArgument Category restriction (null or "nil" for no restriction)
      */
-    public WeblogEntriesPager getWeblogEntriesPager(String catArgument) {        
+    public WeblogEntriesPager getWeblogEntriesPager(String catArgument) {
+        
         // category specified by argument wins over request parameter
-        WeblogCategoryData chosenCat = null;
-        if (catArgument != null) {
-            try {
-                Roller roller = RollerFactory.getRoller();
-                WeblogManager wmgr = roller.getWeblogManager();
-                chosenCat = wmgr.getWeblogCategoryByPath(weblog, catArgument);
-            } catch (Exception ignore) {
-                log.debug("Ignoring unknown category restriction");
-            }
-        }            
-        return new WeblogEntriesPagerImpl(  
-            weblog, 
-            pageRequest.getWeblogPage(), 
-            pageRequest.getWeblogEntry(),
-            pageRequest.getWeblogDate(), 
-            chosenCat != null ? chosenCat : pageRequest.getWeblogCategory(),  
-            pageRequest.getLocale(), 
-            pageRequest.getPageNum());
+        String cat = pageRequest.getWeblogCategoryName();
+        if(catArgument != null && !StringUtils.isEmpty(catArgument) &&
+                !"nil".equals(catArgument)) {
+            cat = catArgument;
+        }
+        
+        String dateString = pageRequest.getWeblogDate();
+        
+        // determine which mode to use
+        if (pageRequest.getWeblogAnchor() != null) {
+            return new WeblogEntriesPermalinkPager(
+                    weblog,
+                    pageRequest.getLocale(),
+                    pageRequest.getWeblogPageName(),
+                    pageRequest.getWeblogAnchor(),
+                    pageRequest.getWeblogDate(),
+                    pageRequest.getWeblogCategoryName(),
+                    pageRequest.getPageNum());
+        } else if (dateString != null && dateString.length() == 8) {
+            return new WeblogEntriesDayPager(
+                    weblog,
+                    pageRequest.getLocale(),
+                    pageRequest.getWeblogPageName(),
+                    pageRequest.getWeblogAnchor(),
+                    pageRequest.getWeblogDate(),
+                    pageRequest.getWeblogCategoryName(),
+                    pageRequest.getPageNum());
+        } else if (dateString != null && dateString.length() == 6) {
+            return new WeblogEntriesMonthPager(
+                    weblog,
+                    pageRequest.getLocale(),
+                    pageRequest.getWeblogPageName(),
+                    pageRequest.getWeblogAnchor(),
+                    pageRequest.getWeblogDate(),
+                    pageRequest.getWeblogCategoryName(),
+                    pageRequest.getPageNum());
+        } else {
+            return new WeblogEntriesLatestPager(
+                    weblog,
+                    pageRequest.getLocale(),
+                    pageRequest.getWeblogPageName(),
+                    pageRequest.getWeblogAnchor(),
+                    pageRequest.getWeblogDate(),
+                    pageRequest.getWeblogCategoryName(),
+                    pageRequest.getPageNum());
+        }
     }
 

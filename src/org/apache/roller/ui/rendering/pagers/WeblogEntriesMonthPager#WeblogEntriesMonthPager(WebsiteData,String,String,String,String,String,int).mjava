@@ -1,0 +1,29 @@
+    public WeblogEntriesMonthPager(
+            WebsiteData        weblog,
+            String             locale,
+            String             pageLink,
+            String             entryAnchor,
+            String             dateString,
+            String             catPath,
+            int                page) {
+        
+        super(weblog, locale, pageLink, entryAnchor, dateString, catPath, page);
+        
+        getEntries();
+        
+        month = parseDate(dateString);
+        
+        Calendar cal = Calendar.getInstance();
+        
+        cal.setTime(month);
+        cal.add(Calendar.MONTH, 1);
+        nextMonth = cal.getTime();
+        if (nextMonth.after(getToday())) {
+            nextMonth = null;
+        }
+        
+        cal.setTime(month);
+        cal.add(Calendar.MONTH, -1);
+        prevMonth = cal.getTime();
+    }
+

@@ -1,0 +1,24 @@
+    public AbstractWeblogEntriesPager(
+            WebsiteData        weblog,
+            String             locale,
+            String             pageLink,
+            String             entryAnchor,
+            String             dateString,
+            String             catPath,
+            int                page) {
+        
+        this.weblog = weblog;
+        this.locale = locale;
+        this.pageLink = pageLink;
+        this.entryAnchor = entryAnchor;
+        this.dateString = dateString;
+        this.catPath = catPath;
+        
+        // make sure offset, length, and page are valid
+        length = weblog.getEntryDisplayCount();
+        if(page > 0) {
+            this.page = page;
+        }
+        this.offset = length * page;
+    }
+
