@@ -2,6 +2,8 @@
      * A weblog template has changed.
      */
     public void invalidate(WeblogTemplate template) {
-        // ignored
+        if(RollerRuntimeConfig.isSiteWideWeblog(template.getWebsite().getHandle())) {
+            invalidate(template.getWebsite());
+        }
     }
 
