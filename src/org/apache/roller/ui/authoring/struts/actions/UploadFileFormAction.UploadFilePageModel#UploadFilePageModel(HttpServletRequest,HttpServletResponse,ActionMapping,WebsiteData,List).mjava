@@ -1,6 +1,6 @@
         public UploadFilePageModel(
-                HttpServletRequest req, 
-                HttpServletResponse res, 
+                HttpServletRequest req,
+                HttpServletResponse res,
                 ActionMapping mapping,
                 WebsiteData weblog,
                 List lastUploads) throws RollerException {
@@ -15,12 +15,12 @@
             resourcesBaseURL = URLUtilities.getWeblogResourceURL(weblog, "", false);
             
             RollerRequest rreq = RollerRequest.getRollerRequest(req);
-            WebsiteData website = UploadFileFormAction.getWebsite(req);            
+            WebsiteData website = UploadFileFormAction.getWebsite(req);
             maxDirMB = RollerRuntimeConfig.getProperty("uploads.dir.maxsize");
             maxFileMB = RollerRuntimeConfig.getProperty("uploads.file.maxsize");
-                     
+            
             overQuota = fmgr.overQuota(weblog.getHandle());
-            uploadEnabled = RollerRuntimeConfig.getBooleanProperty("uploads.enabled");  
+            uploadEnabled = RollerRuntimeConfig.getBooleanProperty("uploads.enabled");
             
             files = new ArrayList();
             File[] rawFiles = fmgr.getFiles(weblog.getHandle());

@@ -14,11 +14,11 @@
         
         if (rses.isUserAuthorizedToAuthor(website)) {
             UploadFilePageModel pageModel = new UploadFilePageModel(
-                request, response, mapping, website);
+                    request, response, mapping, website);
             pageModel.setWebsite(website);
             request.setAttribute("model", pageModel);
             fwd = mapping.findForward("uploadFiles.page");
-        }        
+        }
         return fwd;
     }
 

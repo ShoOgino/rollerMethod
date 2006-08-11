@@ -7,23 +7,23 @@
             HttpServletRequest  request,
             HttpServletResponse response)
             throws Exception {
-
+        
         ActionMessages messages = new ActionMessages();
         ActionErrors errors = new ActionErrors();
         UploadFileForm theForm = (UploadFileForm)actionForm;
-        ActionForward fwd = mapping.findForward("access-denied");        
+        ActionForward fwd = mapping.findForward("access-denied");
         WebsiteData website = getWebsite(request);
-
+        
         int count = 0;
         RollerSession rses = RollerSession.getRollerSession(request);
         if (rses.isUserAuthorizedToAuthor(website)) {
-            fwd = mapping.findForward("uploadFiles.page"); 
+            fwd = mapping.findForward("uploadFiles.page");
             try {
                 FileManager fmgr = RollerFactory.getRoller().getFileManager();
                 String[] deleteFiles = theForm.getDeleteFiles();
                 for (int i=0; i<deleteFiles.length; i++) {
                     if (    deleteFiles[i].trim().startsWith("/")
-                    || deleteFiles[i].trim().startsWith("\\") 
+                    || deleteFiles[i].trim().startsWith("\\")
                     || deleteFiles[i].indexOf("..") != -1) {
                         // ignore absolute paths, or paths that contiain '..'
                     } else {
@@ -37,12 +37,12 @@
                 saveErrors(request,errors);
             }
             
-            messages.add(ActionMessages.GLOBAL_MESSAGE, 
-                new ActionMessage("uploadFiles.deletedFiles", new Integer(count)));
+            messages.add(ActionMessages.GLOBAL_MESSAGE,
+                    new ActionMessage("uploadFiles.deletedFiles", new Integer(count)));
             saveMessages(request, messages);
             
             UploadFilePageModel pageModel = new UploadFilePageModel(
-                request, response, mapping, website);
+                    request, response, mapping, website);
             pageModel.setWebsite(website);
             request.setAttribute("model", pageModel);
         }
