@@ -5,8 +5,10 @@
      * @param size Size of file to be saved
      * @param is Read file from input stream
      */
-    public void saveFile(String weblogHandle, String name, String contentType, long size, InputStream is)
-    throws RollerException {
+    public void saveFile(String weblogHandle, String name, String contentType, 
+                         long size, InputStream is)
+            throws RollerException {
+        
         if (!canSave(weblogHandle, name, contentType, size, new RollerMessages())) {
             throw new RollerException("ERROR: upload denied");
         }

@@ -6,15 +6,14 @@
      * @param fileName    Name of file to be uploaded
      * @return True if file is allowed to be uploaded
      */
-    private boolean checkFileType(
-        String[] allowFiles, String[] forbidFiles, 
-            String fileName, String contentType) {
+    private boolean checkFileType(String[] allowFiles, String[] forbidFiles,
+                                  String fileName, String contentType) {
         
-        // TODO: Atom Publushing Protocol figure out how to handle file 
-        // allow/forbid using contentType.        
-        // TEMPORARY SOLUTION: In the allow/forbid lists we will continue to 
+        // TODO: Atom Publushing Protocol figure out how to handle file
+        // allow/forbid using contentType.
+        // TEMPORARY SOLUTION: In the allow/forbid lists we will continue to
         // allow user to specify file extensions (e.g. gif, png, jpeg) but will
-        // now also allow them to specify content-type rules (e.g. */*, image/*, 
+        // now also allow them to specify content-type rules (e.g. */*, image/*,
         // text/xml, etc.).
         
         // if content type is invalid, reject file
@@ -35,9 +34,9 @@
         
         // check file against allowed file extensions
         if (allowFiles != null && allowFiles.length > 0) {
-            for (int y=0; y<allowFiles.length; y++) {                
+            for (int y=0; y<allowFiles.length; y++) {
                 // oops, this allowed rule is a content-type, skip it
-                if (allowFiles[y].indexOf("/") != -1) continue;               
+                if (allowFiles[y].indexOf("/") != -1) continue;
                 if (fileName.toLowerCase().endsWith(
                         allowFiles[y].toLowerCase())) {
                     allowFile = true;
@@ -48,9 +47,9 @@
         
         // check file against allowed contentTypes
         if (allowFiles != null && allowFiles.length > 0) {
-            for (int y=0; y<allowFiles.length; y++) {                
+            for (int y=0; y<allowFiles.length; y++) {
                 // oops, this allowed rule is NOT a content-type, skip it
-                if (allowFiles[y].indexOf("/") == -1) continue;               
+                if (allowFiles[y].indexOf("/") == -1) continue;
                 if (matchContentType(allowFiles[y], contentType)) {
                     allowFile = true;
                     break;
@@ -60,11 +59,11 @@
         
         // First check against what is FORBIDDEN
         
-       // check file against forbidden file extensions, overrides any allows
+        // check file against forbidden file extensions, overrides any allows
         if (forbidFiles != null && forbidFiles.length > 0) {
             for (int x=0; x<forbidFiles.length; x++) {
                 // oops, this forbid rule is a content-type, skip it
-                if (allowFiles[x].indexOf("/") != -1) continue;               
+                if (allowFiles[x].indexOf("/") != -1) continue;
                 if (fileName.toLowerCase().endsWith(
                         forbidFiles[x].toLowerCase())) {
                     allowFile = false;
@@ -74,18 +73,18 @@
         }
         
         
-         // check file against forbidden contentTypes, overrides any allows
+        // check file against forbidden contentTypes, overrides any allows
         if (forbidFiles != null && forbidFiles.length > 0) {
             for (int x=0; x<forbidFiles.length; x++) {
                 // oops, this forbid rule is NOT a content-type, skip it
-                if (forbidFiles[x].indexOf("/") == -1) continue;               
+                if (forbidFiles[x].indexOf("/") == -1) continue;
                 if (matchContentType(forbidFiles[x], contentType)) {
                     allowFile = false;
                     break;
                 }
             }
         }
-                
+        
         return allowFile;
     }
 
