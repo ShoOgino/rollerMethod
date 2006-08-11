@@ -2,6 +2,10 @@
      * A weblog entry has changed.
      */
     public void invalidate(WeblogEntryData entry) {
+        
+        if(!cacheEnabled)
+            return;
+        
         this.contentCache.clear();
         this.lastUpdateTime = null;
     }

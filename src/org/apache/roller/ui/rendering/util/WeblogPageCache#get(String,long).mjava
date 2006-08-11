@@ -1,5 +1,8 @@
     public Object get(String key, long lastModified) {
         
+        if(!cacheEnabled)
+            return null;
+        
         Object entry = null;
         
         LazyExpiringCacheEntry lazyEntry =

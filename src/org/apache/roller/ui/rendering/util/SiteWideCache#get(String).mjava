@@ -1,5 +1,8 @@
     public Object get(String key) {
         
+        if(!cacheEnabled)
+            return null;
+        
         Object entry = contentCache.get(key);
         
         if(entry == null) {

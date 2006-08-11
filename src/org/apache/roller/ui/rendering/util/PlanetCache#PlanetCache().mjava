@@ -1,5 +1,7 @@
     private PlanetCache() {
         
+        cacheEnabled = RollerConfig.getBooleanProperty(CACHE_ID+".enabled");
+        
         Map cacheProps = new HashMap();
         cacheProps.put("id", CACHE_ID);
         Enumeration allProps = RollerConfig.keys();
@@ -16,7 +18,11 @@
         
         log.info("Planet cache = "+cacheProps);
         
-        contentCache = CacheManager.constructCache(null, cacheProps);
+        if(cacheEnabled) {
+            contentCache = CacheManager.constructCache(null, cacheProps);
+        } else {
+            log.warn("Caching has been DISABLED");
+        }
         
         // lookup our timeout value
         String timeoutString = RollerConfig.getProperty("cache.planet.timeout");
