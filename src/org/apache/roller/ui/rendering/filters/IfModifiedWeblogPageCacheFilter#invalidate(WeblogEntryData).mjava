@@ -2,15 +2,15 @@
      * A weblog entry has changed.
      */
     public void invalidate(WeblogEntryData entry) {
-        
+
         mLogger.debug("invalidating entry = "+entry.getAnchor());
-        
+
         // we need to remove the following cached items if they exist
         //   - the weblog main page
         //   - the weblog entry permalink page
         //   - the weblog entry category page
         //   - the weblog entry date archive pages
-        
+
         /*
         Set removeSet = new HashSet();
         

@@ -16,13 +16,13 @@
      *
      */
     private String generateKey(WeblogPageRequest pageRequest) {
-        
+
         StringBuffer key = new StringBuffer();
         key.append("weblog/");
         key.append(pageRequest.getWeblogHandle().toLowerCase());
         key.append("/page/");
         key.append(pageRequest.getWeblogPage());
-        
+
         if(pageRequest.getWeblogAnchor() != null) {
             // convert to base64 because there can be spaces in anchors :/
             key.append("/").append(Utilities.toBase64(pageRequest.getWeblogAnchor().getBytes()));
@@ -30,7 +30,7 @@
             if(pageRequest.getWeblogDate() != null) {
                 key.append("/").append(pageRequest.getWeblogDate());
             }
-            
+
             if(pageRequest.getWeblogCategory() != null) {
                 String cat = pageRequest.getWeblogCategory();
                 if(cat.startsWith("/")) {
@@ -41,15 +41,15 @@
                 key.append("/").append(org.apache.commons.lang.StringUtils.deleteWhitespace(cat));
             }
         }
-        
+
         // add language
         key.append("/").append(pageRequest.getLanguage());
-        
+
         // add login state
         if(pageRequest.getAuthenticUser() != null) {
             key.append("/user=").append(pageRequest.getAuthenticUser());
         }
-        
+
         return key.toString();
     }
 

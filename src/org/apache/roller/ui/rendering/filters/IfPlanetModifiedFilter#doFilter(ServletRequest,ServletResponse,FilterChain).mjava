@@ -42,16 +42,10 @@
             request.setAttribute("updateTime", updateTime);
             
             // Check the incoming if-modified-since header
-            Date sinceDate =
-                    new Date(request.getDateHeader("If-Modified-Since"));
+            long sinceDate = request.getDateHeader("If-Modified-Since");
             
             if (updateTime != null) {
-                // convert date (JDK 1.5 workaround)
-                synchronized (dateFormatter) {
-                    String date = dateFormatter.format(updateTime);
-                    updateTime = new Date(date);
-                }
-                if (updateTime.compareTo(sinceDate) <= 0) {
+                if (updateTime.getTime() <= sinceDate) {
                     response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
                     return;
                 }
