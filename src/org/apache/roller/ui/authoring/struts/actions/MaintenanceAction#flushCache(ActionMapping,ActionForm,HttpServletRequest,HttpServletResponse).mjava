@@ -14,7 +14,19 @@
             RollerSession rses = RollerSession.getRollerSession(request);
             
             if ( rses.isUserAuthorizedToAdmin(website) ) {
-                //PageCacheFilter.removeFromCache(request, website);
+                
+                // some caches are based on weblog last-modified, so update it
+                website.setLastModified(new Date());
+                
+                try {
+                    UserManager umgr = RollerFactory.getRoller().getUserManager();
+                    umgr.saveWebsite(website);
+                    RollerFactory.getRoller().flush();
+                } catch (RollerException ex) {
+                    mLogger.error("Error saving website", ex);
+                }
+                
+                // also notify cache manager
                 CacheManager.invalidate(website);
                 
                 ActionMessages messages = new ActionMessages();
