@@ -2,10 +2,11 @@
      * Loop through all subscriptions get get Technorati rankings for each
      */
     private void rankSubscriptions() {
+        
         int count = 0;
         int errorCount = 0;
         try {
-            PlanetManager planet = roller.getPlanetManager();
+            PlanetManager planet = RollerFactory.getRoller().getPlanetManager();
             PlanetConfigData config = planet.getConfiguration();
             Technorati technorati = null;
             try {
@@ -16,7 +17,7 @@
                     technorati = new Technorati();
                 }
             } catch (IOException e) {
-                logger.error("Aborting collection of Technorati rankings.\n"
+                log.error("Aborting collection of Technorati rankings.\n"
                         +"technorati.license not found at root of classpath.\n"
                         +"Get license at http://technorati.com/developers/apikey.html\n"
                         +"Put the license string in a file called technorati.license.\n"
@@ -24,7 +25,8 @@
                         +"For example, in the /WEB-INF/classes directory.");
                 return;
             }
-            UserManager userManager = roller.getUserManager();
+            
+            UserManager userManager = RollerFactory.getRoller().getUserManager();
             try {
                 int limit = RollerConfig.getIntProperty(
                         "planet.aggregator.technorati.limit", 500);
@@ -38,7 +40,7 @@
                 int start = (day % mod) * limit;
                 int end = start + limit;
                 end = end > userCount ? userCount : end;
-                logger.info("Updating subscriptions ["+start+":"+end+"]");
+                log.info("Updating subscriptions ["+start+":"+end+"]");
                 
                 Iterator subs = planet.getAllSubscriptions();
                 while (subs.hasNext()) {
@@ -53,12 +55,12 @@
                                         result.getWeblog().getInboundblogs());
                                 sub.setInboundlinks(
                                         result.getWeblog().getInboundlinks());
-                                logger.debug("Adding rank for "
+                                log.debug("Adding rank for "
                                         +sub.getFeedURL()+" ["+count+"|"
                                         +sub.getInboundblogs()+"|"
                                         +sub.getInboundlinks()+"]");
                             } else {
-                                logger.debug(
+                                log.debug(
                                         "No ranking available for "
                                         +sub.getFeedURL()+" ["+count+"]");
                                 sub.setInboundlinks(0);
@@ -66,10 +68,10 @@
                             }
                             planet.saveSubscription(sub);
                         } catch (Exception e) {
-                            logger.warn("WARN ranking subscription ["
+                            log.warn("WARN ranking subscription ["
                                     + count + "]: " + e.getMessage());
                             if (errorCount++ > 5) {
-                                logger.warn(
+                                log.warn(
                                         "   Stopping ranking, too many errors");
                                 break;
                             }
@@ -77,12 +79,16 @@
                     }
                     count++;
                 }
-                roller.flush();
+                
+                // all done, flush results to db
+                RollerFactory.getRoller().flush();
+                
             } finally {
-                roller.release();
+                RollerFactory.getRoller().release();
             }
+            
         } catch (Exception e) {
-            logger.error("ERROR ranking subscriptions", e);
+            log.error("ERROR ranking subscriptions", e);
         }
     }
 

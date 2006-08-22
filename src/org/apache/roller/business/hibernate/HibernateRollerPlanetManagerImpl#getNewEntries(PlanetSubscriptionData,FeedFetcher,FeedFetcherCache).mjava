@@ -13,18 +13,20 @@
             return super.getNewEntries(sub, feedFetcher, feedInfoCache);
         }
         
-        // url must be local, lets deal with it
-        Set newEntries = new TreeSet();
         try {
             // for local feeds, sub.author = website.handle
-            if (sub.getAuthor()!=null && sub.getFeedURL().endsWith(sub.getAuthor())) {
+            // feed is from our domain and we have a handle, lets deal with it
+            if(sub.getAuthor() != null) {
                 
                 log.debug("Getting LOCAL feed "+sub.getFeedURL());
+                
+                Set newEntries = new TreeSet();
                 
                 // get corresponding website object
                 UserManager usermgr = RollerFactory.getRoller().getUserManager();
                 WebsiteData website = usermgr.getWebsiteByHandle(sub.getAuthor());
-                if (website == null) return newEntries;
+                if (website == null) 
+                    return newEntries;
                 
                 // figure website last update time
                 WeblogManager blogmgr = RollerFactory.getRoller().getWeblogManager();
@@ -43,14 +45,15 @@
                             "site.newsfeeds.defaultEntries");
                     entries = blogmgr.getWeblogEntries(
                             website,
-                            null,                             
+                            null,
                             null,                        // startDate
                             new Date(),                  // endDate
                             null,                        // catName
                             WeblogEntryData.PUBLISHED,   // status
                             null,                        // sortby (null means pubTime)
-null,                             0,                           // offset
-                            entryCount);                       // locale
+                            null,                        // locale
+                            0,                           // offset
+                            entryCount);                 
                     
                     sub.setLastUpdated(siteUpdated);
                     saveSubscription(sub);
@@ -80,6 +83,7 @@ null,                             0,                           // offset
                         log.error("ERROR processing subscription entry", e);
                     }
                 }
+                
                 return newEntries;
             }
         } catch (Exception e) {
