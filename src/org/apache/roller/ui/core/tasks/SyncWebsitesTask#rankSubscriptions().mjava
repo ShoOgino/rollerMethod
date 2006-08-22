@@ -17,17 +17,17 @@
                 }
             } catch (IOException e) {
                 logger.error("Aborting collection of Technorati rankings.\n"
-                +"technorati.license not found at root of classpath.\n"
-                +"Get license at http://technorati.com/developers/apikey.html\n"
-                +"Put the license string in a file called technorati.license.\n"
-                +"And place that file at the root of Roller's classpath.\n"
-                +"For example, in the /WEB-INF/classes directory.");
+                        +"technorati.license not found at root of classpath.\n"
+                        +"Get license at http://technorati.com/developers/apikey.html\n"
+                        +"Put the license string in a file called technorati.license.\n"
+                        +"And place that file at the root of Roller's classpath.\n"
+                        +"For example, in the /WEB-INF/classes directory.");
                 return;
             }
             UserManager userManager = roller.getUserManager();
             try {
                 int limit = RollerConfig.getIntProperty(
-                    "planet.aggregator.technorati.limit", 500);
+                        "planet.aggregator.technorati.limit", 500);
                 int userCount = planet.getSubscriptionCount();
                 int mod = (userCount / limit) + 1;
                 
