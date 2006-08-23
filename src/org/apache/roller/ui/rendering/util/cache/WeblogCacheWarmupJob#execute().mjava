@@ -1,0 +1,21 @@
+    public void execute() {
+        
+        log.debug("starting");
+        
+        // check inputs to see what work we are going to do
+        if(inputs != null) {
+            
+            // should we do rss entries feeds?
+            if("true".equals((String)inputs.get("feed-entries-rss"))) {
+                this.warmupFeedCache("entries", "rss");
+            }
+            
+            // should we do atom entries feeds?
+            if("true".equals((String)inputs.get("feed-entries-atom"))) {
+                this.warmupFeedCache("entries", "atom");
+            }
+        }
+        
+        log.debug("finished");
+    }
+
