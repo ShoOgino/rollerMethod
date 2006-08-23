@@ -12,8 +12,9 @@
             // standard velocity template
             try {
                renderer = new VelocityRenderer(template);
-            } catch(Exception ignored) {
-                // can't render
+            } catch(Exception ex) {
+                // some kind of problem creating renderer
+                log.error("Error creating renderer for "+template.getId(), ex);
             }            
             
         }
