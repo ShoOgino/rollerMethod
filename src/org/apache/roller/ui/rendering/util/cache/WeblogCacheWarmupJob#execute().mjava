@@ -5,14 +5,20 @@
         // check inputs to see what work we are going to do
         if(inputs != null) {
             
+            // what weblogs will we handle?
+            List weblogs = (List) inputs.get("weblogs");
+            if(weblogs == null) {
+                return;
+            }
+            
             // should we do rss entries feeds?
-            if("true".equals((String)inputs.get("feed-entries-rss"))) {
-                this.warmupFeedCache("entries", "rss");
+            if("true".equals((String) inputs.get("feed-entries-rss"))) {
+                this.warmupFeedCache(weblogs, "entries", "rss");
             }
             
             // should we do atom entries feeds?
-            if("true".equals((String)inputs.get("feed-entries-atom"))) {
-                this.warmupFeedCache("entries", "atom");
+            if("true".equals((String) inputs.get("feed-entries-atom"))) {
+                this.warmupFeedCache(weblogs, "entries", "atom");
             }
         }
         
