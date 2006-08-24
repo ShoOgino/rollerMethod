@@ -9,6 +9,10 @@
                                                 boolean excerpts,
                                                 boolean absolute) {
         
+        if(weblog == null) {
+            return null;
+        }
+        
         StringBuffer url = new StringBuffer();
         
         url.append(getWeblogURL(weblog, locale, absolute));

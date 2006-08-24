@@ -3,6 +3,11 @@
      */
     public static final String getWeblogRsdURL(WebsiteData weblog,
                                                boolean absolute) {
+        
+        if(weblog == null) {
+            return null;
+        }
+        
         return getWeblogURL(weblog, null, absolute)+"rsd";
     }
 
