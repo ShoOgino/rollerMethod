@@ -2,163 +2,145 @@
     /**
      * Write to a PrintWriter so that tag may be used from Velocity
      */
-    public int doStartTag( PrintWriter pw ) throws JspException
-    {
-        try
-        {
+    public int doStartTag( PrintWriter pw ) throws JspException {
+        try {
             // build week day names
             this.buildDayNames();
-
+            
             Date day=null;       // day to be displayed
             Calendar dayCal;     // set to day to be displayed
             Calendar cal;        // for iterating through days of month
             Calendar todayCal;   // for iterating through days of month
             CalendarModel model; // the calendar model
-
+            
             // ---------------------------------
             // --- initialize date variables ---
             // ---------------------------------
-
+            
             // check for parameter map and target url
             StringTokenizer toker = new StringTokenizer(mModelName,".");
             String tok1 = toker.nextToken();
-            if (toker.hasMoreTokens())
-            {
+            if (toker.hasMoreTokens()) {
                 String tok2 = toker.nextToken();
                 Object bean = pageContext.findAttribute(tok1);
                 model = (CalendarModel)PropertyUtils.getProperty(bean, tok2);
-            }
-            else
-            {
+            } else {
                 model = (CalendarModel)pageContext.findAttribute( mModelName );
             }
             
             // no model specified, nothing to generate
-            if (model == null)
-            {
+            if (model == null) {
                 return SKIP_BODY;
             }
             
             day = model.getDay();
-
+            
             // ceate object to represent today
             todayCal = model.getCalendar();
             todayCal.setTime( new Date() );
-
+            
             // formatter Month-Year title of calendar
             SimpleDateFormat formatTitle = new SimpleDateFormat("MMMM yyyy", mLocale);
-
+            
             HttpServletRequest request =
-                (HttpServletRequest)pageContext.getRequest();
-
+                    (HttpServletRequest)pageContext.getRequest();
+            
             // get Resource Bundle
             MessageResources resources = getResources(request);
-
+            
             // go back to first day in month
             cal = model.getCalendar();
             day = DateUtil.getNoonOfDay(day, cal);
             cal.set( Calendar.DAY_OF_MONTH, cal.getMinimum(Calendar.DAY_OF_MONTH) );
-
+            
             // go back to sunday before that: the first sunday in the calendar
-            while ( cal.get( Calendar.DAY_OF_WEEK ) != Calendar.SUNDAY )
-            {
+            while ( cal.get( Calendar.DAY_OF_WEEK ) != Calendar.SUNDAY ) {
                 cal.add( Calendar.DATE, -1 );
             }
-
+            
             // create table of 5 weeks, 7 days per row
             dayCal = model.getCalendar();
             dayCal.setTime( day );
-
+            
             // -------------------------
             // --- draw the calendar ---
             // -------------------------
             pw.print("<table cellspacing=\"0\" border=\"0\" ");
             pw.print(" summary=\""
-                +resources.getMessage(mLocale, "calendar.summary")
-                +"\" class=\"hCalendarTable"
-                +mClassSuffix+"\">");
+                    +resources.getMessage(mLocale, "calendar.summary")
+                    +"\" class=\"hCalendarTable"
+                    +mClassSuffix+"\">");
             pw.print("<tr>");
             pw.print("<td colspan=\"7\" align=\"center\" "+
-                "class=\"hCalendarMonthYearRow"+mClassSuffix+"\">");
+                    "class=\"hCalendarMonthYearRow"+mClassSuffix+"\">");
             pw.print("<a href=\"" + model.computePrevMonthUrl()
-                     + "\" title=\"" + resources.getMessage(mLocale, "calendar.prev")
-                     + "\" class=\"hCalendarNavBar\">&laquo;</a> ");
+            + "\" title=\"" + resources.getMessage(mLocale, "calendar.prev")
+            + "\" class=\"hCalendarNavBar\">&laquo;</a> ");
             pw.print( formatTitle.format(day) );
-            if (todayCal.getTime().compareTo(model.getNextMonth()) >= 0)
-            {    
+            if (todayCal.getTime().compareTo(model.getNextMonth()) >= 0) {
                 pw.print(" <a href=\"" + model.computeNextMonthUrl()
-                     + "\" title=\"" + resources.getMessage(mLocale, "calendar.next")
-                     + "\" class=\"hCalendarNavBar\">&raquo;</a>");
+                + "\" title=\"" + resources.getMessage(mLocale, "calendar.next")
+                + "\" class=\"hCalendarNavBar\">&raquo;</a>");
             }
             pw.print("</td></tr>");
-
+            
             // emit the HTML calendar
-            for ( int w=-1; w<6; w++ )
-            {
+            for ( int w=-1; w<6; w++ ) {
                 pw.print("<tr>");
-                for ( int d=0; d<7; d++ )
-                {
-                    if ( w == -1 )
-                    {
+                for ( int d=0; d<7; d++ ) {
+                    if ( w == -1 ) {
                         pw.print(
-                            "<th class=\"hCalendarDayNameRow"
-                            +mClassSuffix+"\" align=\"center\">");
+                                "<th class=\"hCalendarDayNameRow"
+                                +mClassSuffix+"\" align=\"center\">");
                         pw.print( mDayNames[d] );
                         pw.print("</th>");
                         continue;
                     }
-
+                    
                     // determine URL for this calendar day
                     Date tddate = cal.getTime();
                     String url = model.computeUrl(tddate, false, false);
                     String content = model.getContent( tddate );
-
+                    
                     if // day is in calendar month
-                       ((cal.get(Calendar.MONTH) == dayCal.get(Calendar.MONTH))
-                     && (cal.get(Calendar.YEAR) == dayCal.get(Calendar.YEAR)))
-                    {
+                            ((cal.get(Calendar.MONTH) == dayCal.get(Calendar.MONTH))
+                            && (cal.get(Calendar.YEAR) == dayCal.get(Calendar.YEAR))) {
                         if // day is today then use today style
-                            ((          cal.get(Calendar.DAY_OF_MONTH)
+                                ((          cal.get(Calendar.DAY_OF_MONTH)
                                 == todayCal.get(Calendar.DAY_OF_MONTH))
-                            && (        cal.get(Calendar.MONTH)
+                                && (        cal.get(Calendar.MONTH)
                                 == todayCal.get(Calendar.MONTH))
-                            && (        cal.get(Calendar.YEAR)
-                                == todayCal.get(Calendar.YEAR)))
-                        {
+                                && (        cal.get(Calendar.YEAR)
+                                == todayCal.get(Calendar.YEAR))) {
                             printToday(pw, cal, url, content);
-                        }
-                        else
-                        {
+                        } else {
                             printDayInThisMonth(pw, cal, url, content);
                         }
-                    }
-                    else // apply day-not-in-month style ;-)
+                    } else // apply day-not-in-month style ;-)
                     {
                         printDayNotInMonth(pw, cal);
                     }
-
+                    
                     // increment calendar by one day
                     cal.add( Calendar.DATE, 1 );
                 }
                 pw.print("</tr>");
             }
-
+            
             pw.print("<tr class=\"hCalendarNextPrev"
-                +mClassSuffix+"\">");
+                    +mClassSuffix+"\">");
             pw.print("<td colspan=\"7\" align=\"center\">");
-
+            
             pw.print("<a href=\""+model.computeTodayMonthUrl()
-                +"\" class=\"hCalendarNavBar\">"
-                +resources.getMessage(mLocale, "calendar.today")
-                +"</a>");
-
+            +"\" class=\"hCalendarNavBar\">"
+                    +resources.getMessage(mLocale, "calendar.today")
+                    +"</a>");
+            
             pw.print("</td>");
             pw.print("</tr>");
-
+            
             pw.print("</table>");
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             pw.print("<span class=\"error\">");
             pw.print("<p><b>An ERROR has occured CalendarTag</b></p>");
             pw.print("</span>");
