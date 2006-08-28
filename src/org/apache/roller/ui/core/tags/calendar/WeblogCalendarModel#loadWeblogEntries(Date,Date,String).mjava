@@ -2,14 +2,14 @@
      * @param startDate
      * @param endDate
      */
-    protected void loadWeblogEntries(Date startDate, Date endDate) {
+    protected void loadWeblogEntries(Date startDate, Date endDate, String catName) {
         try {
             WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
             monthMap = mgr.getWeblogEntryStringMap(
                     weblog,                  // website
                     startDate,                 // startDate
                     endDate,                   // endDate
-                    cat,                   // cat
+                    catName,                   // cat
                     WeblogEntryData.PUBLISHED, // status
                     locale,
                     0, -1);

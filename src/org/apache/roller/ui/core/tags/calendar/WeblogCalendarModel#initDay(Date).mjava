@@ -1,4 +1,4 @@
-    private void initDay(Date month) {
+    protected void initDay(Date month) {
         this.day = day;        
         calendar = Calendar.getInstance(
                 weblog.getTimeZoneInstance(),
@@ -23,6 +23,6 @@
         cal.set(Calendar.MILLISECOND, cal.getMaximum(Calendar.MILLISECOND));
         Date endDate = cal.getTime();
         
-        loadWeblogEntries(startDate, endDate);
+        loadWeblogEntries(startDate, endDate, cat);
     }
 
