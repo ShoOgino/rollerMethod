@@ -27,7 +27,14 @@
                 Feed feed = new Feed();
                 feed.setId(URLUtilities.getAtomProtocolURL(true)
                     +"/"+website.getHandle() + "/entries/" + start);
-                feed.setTitle("Entries for blog[" + handle + "]");
+                feed.setTitle(website.getName());
+                
+                Link link = new Link();
+                link.setHref(absUrl + "/" + website.getHandle());
+                link.setRel("alternate");
+                link.setType("text/html");
+                feed.setAlternateLinks(Collections.singletonList(link));
+                
                 List atomEntries = new ArrayList();
                 int count = 0;
                 for (Iterator iter = entries.iterator(); iter.hasNext() && count < mMaxEntries; count++) {

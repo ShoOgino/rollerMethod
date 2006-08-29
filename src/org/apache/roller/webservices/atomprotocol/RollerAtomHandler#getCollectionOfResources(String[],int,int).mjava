@@ -18,7 +18,15 @@
             if (canView(website)) {
                 Feed feed = new Feed();
                 feed.setId(URLUtilities.getAtomProtocolURL(true)
-                    +"/"+website.getHandle() + "/entries/" + start);
+                    +"/"+website.getHandle() + "/entries/" + start);                
+                feed.setTitle(website.getName());
+                
+                Link link = new Link();
+                link.setHref(absUrl + "/" + website.getHandle());
+                link.setRel("alternate");
+                link.setType("text/html");
+                feed.setAlternateLinks(Collections.singletonList(link));
+                
                 SortedSet sortedSet = new TreeSet(new Comparator() {
                     public int compare(Object o1, Object o2) {
                         File f1 = (File)o1;

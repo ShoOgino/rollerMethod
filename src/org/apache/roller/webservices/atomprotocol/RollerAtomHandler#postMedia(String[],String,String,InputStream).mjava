@@ -5,7 +5,7 @@
      * TODO: use Jakarta Commons File-upload?
      */
     public Entry postMedia(String[] pathInfo,
-            String name, String contentType, InputStream is)
+            String title, String contentType, InputStream is)
             throws AtomException {
         try {
             // authenticated client posted a weblog entry
@@ -16,25 +16,22 @@
                 mRoller.getUserManager().getWebsiteByHandle(handle);
             if (canEdit(website) && pathInfo.length > 1) {
                 // save to temp file
-                if (name == null) {
-                    throw new AtomException(
-                        "ERROR: No 'Title' present in HTTP headers");
-                }
+                String fileName = createFileName(website, title, contentType);
                 try {
                     FileManager fmgr = mRoller.getFileManager();
-                    tempFile = File.createTempFile(name,"tmp");
+                    tempFile = File.createTempFile(fileName,"tmp");
                     FileOutputStream fos = new FileOutputStream(tempFile);
                     Utilities.copyInputToOutput(is, fos);
                     fos.close();
 
                     // If save is allowed by Roller system-wide policies
-                    if (fmgr.canSave(website.getHandle(), name, contentType, tempFile.length(), msgs)) {
+                    if (fmgr.canSave(website.getHandle(), fileName, contentType, tempFile.length(), msgs)) {
                         // Then save the file
                         FileInputStream fis = new FileInputStream(tempFile);
-                        fmgr.saveFile(website.getHandle(), name, contentType, tempFile.length(), fis);
+                        fmgr.saveFile(website.getHandle(), fileName, contentType, tempFile.length(), fis);
                         fis.close();
 
-                        File resource = new File(fmgr.getUploadDir() + File.separator + name);
+                        File resource = new File(fmgr.getUploadDir() + File.separator + fileName);
                         return createAtomResourceEntry(website, resource);
                     }
 
