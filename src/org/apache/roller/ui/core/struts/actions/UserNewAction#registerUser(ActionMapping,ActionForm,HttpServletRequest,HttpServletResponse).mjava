@@ -13,6 +13,18 @@
             
             userForm.setLocale(Locale.getDefault().toString());
             userForm.setTimeZone(TimeZone.getDefault().getID());
+            userForm.setDataFromSSO(false);
+            
+            // Let's see if there's any user-authentication available from Acegi
+            // and retrieve custom user data to pre-populate form.
+            boolean usingSSO = RollerConfig.getBooleanProperty("users.sso.enabled");
+            if(usingSSO) {            
+              UserData fromSSO = CustomUserRegistry.getUserDetailsFromAuthentication();
+              if(fromSSO != null) {
+                userForm.copyFrom(fromSSO, request.getLocale());
+                userForm.setDataFromSSO(true);
+              }
+            }
             
             userForm.setPasswordText(null);
             userForm.setPasswordConfirm(null);

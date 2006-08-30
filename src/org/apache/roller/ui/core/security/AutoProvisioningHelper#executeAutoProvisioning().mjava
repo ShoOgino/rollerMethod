@@ -1,0 +1,45 @@
+  public static boolean executeAutoProvisioning() {
+    
+    log.debug("AutoProvisionFactory::getInstance()");
+    boolean enabled = RollerConfig.getBooleanProperty("users.sso.autoProvision.enabled");
+    
+    if(!enabled) {
+      return false;
+    }
+    
+    String clazzName = RollerConfig.getProperty("users.sso.autoProvision.class");
+    
+    if(null == clazzName) {
+      return false;
+    }
+    
+    Class clazz;
+    try {
+      clazz = Class.forName(clazzName);
+    } catch (ClassNotFoundException e) {
+      log.warn("Unable to found specified Auto Provision class.", e);
+      return false;
+    }
+    
+    if(null == clazz) {
+      return false;
+    }
+    
+    Class[] interfaces = clazz.getInterfaces();
+    for (int i=0; i<interfaces.length; i++) {
+        if (interfaces[i].equals(AutoProvision.class))
+        {
+          try {
+            AutoProvision autoPrivision = (AutoProvision) clazz.newInstance();
+            return autoPrivision.execute();
+          } catch (InstantiationException e) {
+            log.warn("InstantiationException while creating: " + clazzName, e);
+          } catch (IllegalAccessException e) {
+            log.warn("IllegalAccessException while creating: " + clazzName, e);
+          }
+        }
+    }
+    
+    return false;
+  }
+
