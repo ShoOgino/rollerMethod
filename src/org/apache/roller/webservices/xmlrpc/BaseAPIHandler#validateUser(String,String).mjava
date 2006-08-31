@@ -4,55 +4,46 @@
      * @param username Username sent in request
      * @param password Password sent in requeset
      */
-    protected boolean validateUser(String username, String password) 
-    throws Exception
-    {
+    protected boolean validateUser(String username, String password)
+    throws Exception {
         boolean authenticated = false;
         boolean enabled = false;
         UserData user = null;
-        try
-        {
+        try {
             
             UserManager userMgr = RollerFactory.getRoller().getUserManager();
             user = userMgr.getUserByUserName(username);
             
             enabled = user.getEnabled().booleanValue();
-            if (enabled)
-            {    
+            if (enabled) {
                 // are passwords encrypted?
-                RollerContext rollerContext = 
-                    RollerContext.getRollerContext();
-                String encrypted = 
+                RollerContext rollerContext =
+                        RollerContext.getRollerContext();
+                String encrypted =
                         RollerConfig.getProperty("passwds.encryption.enabled");
                 //System.out.print("password was [" + password + "] ");
-                if ("true".equalsIgnoreCase(encrypted)) 
-                {
-                    password = Utilities.encodePassword(password, 
-                      RollerConfig.getProperty("passwds.encryption.algorithm"));
+                if ("true".equalsIgnoreCase(encrypted)) {
+                    password = Utilities.encodePassword(password,
+                            RollerConfig.getProperty("passwds.encryption.algorithm"));
                 }
                 //System.out.println("is now [" + password + "]");
                 authenticated = user.getPassword().equals(password);
-                if (authenticated)
-                {
+                if (authenticated) {
                     //RollerFactory.getRoller().setUser(user);
                 }
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             mLogger.error("ERROR internal error validating user", e);
         }
         
-        if ( !enabled )
-        {
+        if ( !enabled ) {
             throw new XmlRpcException(
-                BLOGGERAPI_DISABLED, BLOGGERAPI_DISABLED_MSG);
+                    BLOGGERAPI_DISABLED, BLOGGERAPI_DISABLED_MSG);
         }
         
-        if ( !authenticated )
-        {
+        if ( !authenticated ) {
             throw new XmlRpcException(
-                AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
+                    AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
         return authenticated;
     }

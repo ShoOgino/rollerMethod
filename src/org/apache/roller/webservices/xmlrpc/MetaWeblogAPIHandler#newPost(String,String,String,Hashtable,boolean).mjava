@@ -1,5 +1,5 @@
-    public String newPost(String blogid, String userid, String password, 
-                            Hashtable struct, boolean publish) throws Exception {
+    public String newPost(String blogid, String userid, String password,
+            Hashtable struct, boolean publish) throws Exception {
         
         mLogger.debug("newPost() Called ===========[ SUPPORTED ]=====");
         mLogger.debug("     BlogId: " + blogid);
@@ -13,9 +13,9 @@
         String title = (String)postcontent.get("title");
         if (StringUtils.isEmpty(title) && StringUtils.isEmpty(description)) {
             throw new XmlRpcException(
-              BLOGGERAPI_INCOMPLETE_POST, "Must specify title or description");
+                    BLOGGERAPI_INCOMPLETE_POST, "Must specify title or description");
         }
-        if (StringUtils.isEmpty(title)) { 
+        if (StringUtils.isEmpty(title)) {
             title = Utilities.truncateNicely(description, 15, 15, "...");
         }
         
@@ -43,7 +43,7 @@
             } else {
                 entry.setStatus(WeblogEntryData.DRAFT);
             }
-                        
+            
             // MetaWeblog supports multiple cats, Roller supports one/entry
             // so here we take accept the first category that exists
             WeblogCategoryData rollerCat = null;
@@ -60,7 +60,7 @@
                     }
                 }
             }
-            if (rollerCat == null) { 
+            if (rollerCat == null) {
                 // or we fall back to the default Blogger API category
                 entry.setCategory(website.getBloggerCategory());
             }

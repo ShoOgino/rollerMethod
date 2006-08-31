@@ -5,9 +5,8 @@
      * @param username Username sent in request
      * @param password Password sent in requeset
      */
-    protected WebsiteData validate(String blogid, String username, String password) 
-    throws Exception
-    {
+    protected WebsiteData validate(String blogid, String username, String password)
+    throws Exception {
         boolean authenticated = false;
         boolean userEnabled = false;
         boolean weblogEnabled = false;
@@ -15,8 +14,7 @@
         boolean weblogFound = false;
         WebsiteData website = null;
         UserData user = null;
-        try
-        {        
+        try {
             UserManager userMgr = RollerFactory.getRoller().getUserManager();
             user = userMgr.getUserByUserName(username);
             userEnabled = user.getEnabled().booleanValue();
@@ -28,52 +26,43 @@
                 apiEnabled = website.getEnableBloggerApi().booleanValue();
             }
             
-            if (user != null)
-            {    
+            if (user != null) {
                 // are passwords encrypted?
-                RollerContext rollerContext = 
-                    RollerContext.getRollerContext();
-                String encrypted = 
+                RollerContext rollerContext =
+                        RollerContext.getRollerContext();
+                String encrypted =
                         RollerConfig.getProperty("passwds.encryption.enabled");
                 //System.out.print("password was [" + password + "] ");
-                if ("true".equalsIgnoreCase(encrypted)) 
-                {
-                	password = Utilities.encodePassword(password, 
-                      RollerConfig.getProperty("passwds.encryption.algorithm"));
+                if ("true".equalsIgnoreCase(encrypted)) {
+                    password = Utilities.encodePassword(password,
+                            RollerConfig.getProperty("passwds.encryption.algorithm"));
                 }
                 authenticated = password.equals(user.getPassword());
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             mLogger.error("ERROR internal error validating user", e);
         }
         
-        if ( !authenticated )
-        {
+        if ( !authenticated ) {
             throw new XmlRpcException(
-                AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
+                    AUTHORIZATION_EXCEPTION, AUTHORIZATION_EXCEPTION_MSG);
         }
-        if ( !userEnabled )
-        {
+        if ( !userEnabled ) {
             throw new XmlRpcException(
-                USER_DISABLED, USER_DISABLED_MSG);
-        }        
-        if ( !weblogEnabled )
-        {
+                    USER_DISABLED, USER_DISABLED_MSG);
+        }
+        if ( !weblogEnabled ) {
             throw new XmlRpcException(
-                WEBLOG_DISABLED, WEBLOG_DISABLED_MSG);
-        }        
-        if ( !weblogFound )
-        {
+                    WEBLOG_DISABLED, WEBLOG_DISABLED_MSG);
+        }
+        if ( !weblogFound ) {
             throw new XmlRpcException(
-                WEBLOG_NOT_FOUND, WEBLOG_NOT_FOUND_MSG);
-        }        
-        if ( !apiEnabled )
-        {
+                    WEBLOG_NOT_FOUND, WEBLOG_NOT_FOUND_MSG);
+        }
+        if ( !apiEnabled ) {
             throw new XmlRpcException(
-                BLOGGERAPI_DISABLED, BLOGGERAPI_DISABLED_MSG);
-        }        
+                    BLOGGERAPI_DISABLED, BLOGGERAPI_DISABLED_MSG);
+        }
         return website;
     }
 

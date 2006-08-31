@@ -11,7 +11,7 @@
      * @return
      */
     public String newPost(String appkey, String blogid, String userid,
-                            String password, String content, boolean publish)
+            String password, String content, boolean publish)
             throws Exception {
         
         mLogger.debug("newPost() Called ===========[ SUPPORTED ]=====");
@@ -32,7 +32,7 @@
                     content.indexOf("</title>"));
             content = StringUtils.replace(content, "<title>"+title+"</title>", "");
         }
-        if (StringUtils.isEmpty(title)) { 
+        if (StringUtils.isEmpty(title)) {
             title = Utilities.truncateNicely(content, 15, 15, "...");
         }
         
@@ -63,7 +63,7 @@
             
             // notify cache
             flushPageCache(entry.getWebsite());
-
+            
             return entry.getId();
         } catch (Exception e) {
             String msg = "ERROR in BlooggerAPIHander.newPost";
