@@ -33,10 +33,11 @@
                 }
                 
                 mgr.addWebsite(wd);
+                CacheManager.invalidate(wd);                
+                getRoller().flush();
                 websiteDatas.add(wd);
             }
             
-            getRoller().flush();
             return toWeblogEntrySet((WebsiteData[])websiteDatas.toArray(new WebsiteData[0]));
             
         } catch (RollerException re) {

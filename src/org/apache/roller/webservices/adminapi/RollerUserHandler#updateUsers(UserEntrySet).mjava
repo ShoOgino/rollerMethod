@@ -1,4 +1,4 @@
-    private UserEntrySet updateUsers(UserEntrySet c) throws NotFoundException, InternalException {
+    private UserEntrySet updateUsers(UserEntrySet c) throws HandlerException {
         try {
             UserManager mgr = getRoller().getUserManager();
             
@@ -10,12 +10,8 @@
                     throw new NotFoundException("ERROR: Unknown user: " + entry.getName());
                 }
                 updateUserData(ud, entry);
-                
-                mgr.saveUser(ud);
-                CacheManager.invalidate(ud);
                 userDatas.add(ud);
             }
-            getRoller().flush();
             return toUserEntrySet((UserData[])userDatas.toArray(new UserData[0]));
         } catch (RollerException re) {
             throw new InternalException("ERROR: Could not update users: " + c, re);

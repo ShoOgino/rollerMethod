@@ -9,13 +9,13 @@
         
         try {
             UserData ud = getRoller().getUserManager().getUserByUsername(entry.getName());
-            CacheManager.invalidate(ud);
             WebsiteData wd = getRoller().getUserManager().getWebsiteByHandle(entry.getHandle());
-            CacheManager.invalidate(wd);
             
             UserManager mgr = getRoller().getUserManager();
             mgr.savePermissions(pd);
-            
+            getRoller().flush();
+            CacheManager.invalidate(ud);
+            CacheManager.invalidate(wd);
         } catch (RollerException re) {
             throw new InternalException("ERROR: Could not update permissions data", re);
         }
