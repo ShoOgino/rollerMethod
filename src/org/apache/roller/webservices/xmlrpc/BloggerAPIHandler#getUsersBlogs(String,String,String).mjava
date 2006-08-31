@@ -17,8 +17,6 @@
         Vector result = new Vector();
         if (validateUser(userid, password)) {
             try {
-                RollerRequest rreq = RollerRequest.getRollerRequest();
-                HttpServletRequest req = rreq.getRequest();
                 String contextUrl = RollerRuntimeConfig.getAbsoluteContextURL();
                 
                 UserManager umgr = RollerFactory.getRoller().getUserManager();

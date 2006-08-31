@@ -16,10 +16,7 @@
         WebsiteData website = null;
         UserData user = null;
         try
-        {
-            // Get Roller request object for current thread
-            RollerRequest rreq = RollerRequest.getRollerRequest();
-            
+        {        
             UserManager userMgr = RollerFactory.getRoller().getUserManager();
             user = userMgr.getUserByUserName(username);
             userEnabled = user.getEnabled().booleanValue();
@@ -44,12 +41,7 @@
                 	password = Utilities.encodePassword(password, 
                       RollerConfig.getProperty("passwds.encryption.algorithm"));
                 }
-                //System.out.println("is now [" + password + "]");
-    			   authenticated= user.getPassword().equals(password);
-                if (authenticated)
-                {
-                    //RollerFactory.getRoller().setUser(user);
-                }
+                authenticated = password.equals(user.getPassword());
             }
         }
         catch (Exception e)
