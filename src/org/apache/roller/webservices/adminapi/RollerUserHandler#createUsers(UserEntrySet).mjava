@@ -11,9 +11,10 @@
                 }
                 UserData ud = toUserData(entry);
                 mgr.addUser(ud);
+                getRoller().flush();
+                CacheManager.invalidate(ud);
                 userDatas.add(ud);
             }
-            getRoller().flush();
             return toUserEntrySet((UserData[])userDatas.toArray(new UserData[0]));
         } catch (RollerException re) {
             throw new InternalException("ERROR: Could not create users: " + c, re);

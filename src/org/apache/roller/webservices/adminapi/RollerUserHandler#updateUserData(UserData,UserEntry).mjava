@@ -1,4 +1,4 @@
-    private void updateUserData(UserData ud, UserEntry entry) {
+    private void updateUserData(UserData ud, UserEntry entry) throws HandlerException {
         // user name cannot be updated
         
         if (entry.getFullName() != null) {
@@ -15,6 +15,15 @@
         }
         if (entry.getEmailAddress() != null) {
             ud.setEmailAddress(entry.getEmailAddress());
+        }
+        
+        try {
+            UserManager mgr = getRoller().getUserManager();
+            mgr.saveUser(ud);
+            getRoller().flush();
+            CacheManager.invalidate(ud);
+        } catch (RollerException re) {
+            throw new InternalException("ERROR: could not update user data", re);
         }
     }
 

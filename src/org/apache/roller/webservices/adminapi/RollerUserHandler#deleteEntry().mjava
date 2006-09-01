@@ -13,9 +13,9 @@
             
             UserData[] uds = new UserData[] { ud };
             mgr.removeUser(ud);
-            
+            getRoller().flush();            
             CacheManager.invalidate(ud);
-            getRoller().flush();
+
             EntrySet es = toUserEntrySet(uds);
             return es;
         } catch (RollerException re) {

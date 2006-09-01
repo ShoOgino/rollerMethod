@@ -7,9 +7,11 @@
                 MemberEntry entry = (MemberEntry)c.getEntries()[i];
                 PermissionsData pd = toPermissionsData(entry);
                 mgr.savePermissions(pd);
+                getRoller().flush();
+                CacheManager.invalidate(pd.getUser());
+                CacheManager.invalidate(pd.getWebsite());
                 permissionsDatas.add(pd);
             }
-            getRoller().flush();
             return toMemberEntrySet((PermissionsData[])permissionsDatas.toArray(new PermissionsData[0]));
         } catch (RollerException re) {
             throw new InternalException("ERROR: Could not create members", re);

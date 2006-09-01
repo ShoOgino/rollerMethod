@@ -33,12 +33,12 @@
                 }
                 
                 mgr.addWebsite(wd);
+                getRoller().flush();
+                CacheManager.invalidate(wd);                
                 websiteDatas.add(wd);
             }
             
-            getRoller().flush();
-            return toWeblogEntrySet((WebsiteData[])websiteDatas.toArray(new WebsiteData[0]));
-            
+            return toWeblogEntrySet((WebsiteData[])websiteDatas.toArray(new WebsiteData[0]));            
         } catch (RollerException re) {
             throw new InternalException("ERROR: Could not create weblogs: " + c, re);
         }

@@ -13,9 +13,8 @@
             EntrySet es = toWeblogEntrySet(wds);
             
             mgr.removeWebsite(wd);
-            
+            getRoller().flush();            
             CacheManager.invalidate(wd);
-            getRoller().flush();
             
             return es;
         } catch (RollerException re) {
