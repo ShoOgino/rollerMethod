@@ -1,6 +1,6 @@
     private String getSetting(String propName, String defaultValue)
     {
-        String fullPropName = thisClassnameDot + propName;
+        String fullPropName = "plugins.topictag." + propName;
         String val = (String) RollerConfig.getProperty(fullPropName);
         return (val != null) ? val : defaultValue;
     }
