@@ -1,0 +1,7 @@
+    /** Creates a new instance of JDOQueryImpl */
+    public JDOQueryImpl(PersistenceManager pm,
+            Class clazz, String queryName) {
+        this.pm = pm;
+        q = pm.newQuery(clazz, queryName);
+    }
+
