@@ -1,0 +1,13 @@
+    public Map getProperties() 
+            throws RollerException {
+        HashMap result = new HashMap();
+        Collection properties = (Collection)strategy.newQuery
+                (RollerPropertyData.class, null)
+            .execute();
+        for (Iterator it = properties.iterator(); it.hasNext();) {
+            RollerPropertyData property = (RollerPropertyData)it.next();
+            result.put(property.getName(), property);
+        }
+        return result;
+    }
+

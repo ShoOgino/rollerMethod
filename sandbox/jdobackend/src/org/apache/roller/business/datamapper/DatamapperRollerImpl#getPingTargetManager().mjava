@@ -1,0 +1,10 @@
+    /**
+     * @see org.apache.roller.model.Roller#getPingTargetManager()
+     */
+    public PingTargetManager getPingTargetManager() throws RollerException {
+        if (pingTargetManager == null) {
+            pingTargetManager = createPingTargetManagerImpl(strategy);
+        }
+        return pingTargetManager;
+    }
+

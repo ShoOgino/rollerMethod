@@ -1,0 +1,17 @@
+    public PermissionsData inviteUser
+            (WebsiteData website, UserData user, short mask) 
+            throws RollerException {
+        if (website == null) 
+            throw new RollerException("inviteUser: Website cannot be null");
+        if (user == null) 
+            throw new RollerException("inviteUser: User cannot be null");
+
+        PermissionsData perms = new PermissionsData();
+        perms.setWebsite(website);
+        perms.setUser(user);
+        perms.setPermissionMask(mask);
+        strategy.store(perms);
+        
+        return perms;
+    }
+

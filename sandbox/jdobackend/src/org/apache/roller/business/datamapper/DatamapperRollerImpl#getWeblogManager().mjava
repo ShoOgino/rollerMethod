@@ -1,0 +1,10 @@
+    /**
+     * @see org.apache.roller.model.Roller#getWeblogManager()
+     */
+    public WeblogManager getWeblogManager() throws RollerException {
+        if ( weblogManager == null ) {
+            weblogManager = createWeblogManagerImpl(strategy);
+        }
+        return weblogManager;
+    }
+

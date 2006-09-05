@@ -1,0 +1,13 @@
+    public WeblogTemplate getPageByLink(WebsiteData website, String pageLink) 
+            throws RollerException {
+        if (website == null)
+            throw new RollerException(
+                    "getPageByLink: website cannot be null");
+        if (pageLink == null)
+            throw new RollerException(
+                    "getPageByLink: Page link cannot be null");
+        return (WeblogTemplate)strategy.newQuery(WeblogTemplate.class,
+                "getUniqueByWebsite&&Link")
+            .execute(new Object[]{website, pageLink});
+    }
+

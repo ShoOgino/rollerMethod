@@ -1,0 +1,52 @@
+    public void removeWebsite(WebsiteData website) 
+            throws RollerException {
+
+        // Remove the website's ping queue entries
+        strategy.newQuery(PingQueueEntryData.class,
+                "getByWebsite")
+            .execute(website);
+        
+        // Remove the website's auto ping configurations
+        strategy.newQuery(AutoPingData.class,
+                "getByWebsite")
+            .execute(website);
+        
+        // Remove the website's custom ping targets
+        strategy.newQuery(PingTargetData.class,
+                "getByWebsite")
+            .execute(website);
+        
+        // Remove the website's weblog entries
+        strategy.newQuery(WeblogEntryData.class,
+                "getByWebsite")
+            .execute(website);
+        
+        // Remove the website's associated referrers
+        strategy.newQuery(RefererData.class,
+                "getByWebsite")
+            .execute(website);
+                
+        // Remove the website's associated templates
+        strategy.newQuery(WeblogTemplate.class,
+                "getByWebsite")
+            .execute(website);
+
+        // Remove all the website's bookmarks in all folders
+        strategy.newQuery(BookmarkData.class,
+                "getByFolderByWebsite")
+            .execute(website);
+        
+        // Remove all the website's folders
+        strategy.newQuery(FolderData.class,
+                "getByWebsite")
+            .execute(website);
+                
+        // Remove the website's categories
+        strategy.newQuery(WeblogCategoryData.class,
+                "getByWebsite")
+            .execute(website);
+
+        // Finally, remove the website
+        strategy.remove(website);
+    }
+

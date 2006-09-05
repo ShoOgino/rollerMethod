@@ -1,0 +1,6 @@
+    public List getAllQueueEntries() 
+            throws RollerException {
+        return (List)strategy.newQuery(PingQueueEntryData.class,
+                "getAll.orderByEntryTime");
+    }
+

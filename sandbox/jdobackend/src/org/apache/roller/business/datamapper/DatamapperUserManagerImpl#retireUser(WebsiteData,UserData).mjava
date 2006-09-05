@@ -1,0 +1,12 @@
+    public void retireUser(WebsiteData website, UserData user) 
+            throws RollerException {
+        if (website == null) 
+            throw new RollerException("retireUser: Website cannot be null");
+        if (user == null) 
+            throw new RollerException("retireUser: User cannot be null");
+
+        strategy.newQuery(PermissionsData.class,
+                "getByWebsite&&UserId")
+            .execute(new Object[]{website, user});
+    }
+

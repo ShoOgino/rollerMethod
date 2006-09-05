@@ -1,0 +1,10 @@
+    /**
+     * @see org.apache.roller.model.Roller#getBookmarkManager()
+     */
+    public BookmarkManager getBookmarkManager() throws RollerException {
+        if ( bookmarkManager == null ) {
+            bookmarkManager = createBookmarkManagerImpl(strategy);
+        }
+        return bookmarkManager;
+    }
+

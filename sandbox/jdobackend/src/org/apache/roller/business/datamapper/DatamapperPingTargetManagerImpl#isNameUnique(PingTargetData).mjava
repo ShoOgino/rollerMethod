@@ -1,0 +1,15 @@
+    public boolean isNameUnique(PingTargetData pingTarget)
+            throws RollerException {
+        String name = pingTarget.getName();
+        if (name == null || name.trim().length() == 0) return false;
+        int count = ((Integer)
+            strategy.newQuery(PingTargetData.class,
+                    "countByWebsite&&NameEqual&&IdNotEqual")
+                .execute(new Object[]{
+                    pingTarget.getWebsite(), 
+                    name,
+                    pingTarget.getId()}))
+            .intValue();
+        return (count != 0);
+    }
+

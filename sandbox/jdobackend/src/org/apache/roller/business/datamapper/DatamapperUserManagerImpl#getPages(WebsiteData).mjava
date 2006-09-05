@@ -1,0 +1,7 @@
+    public List getPages(WebsiteData website) 
+            throws RollerException {
+        return (List)strategy.newQuery(WeblogTemplate.class,
+                "getByWebsite.orderByName")
+            .execute(website);
+    }
+

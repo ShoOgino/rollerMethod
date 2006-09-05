@@ -1,0 +1,10 @@
+    /**
+     * @see org.apache.roller.model.Roller#getPropertiesManager()
+     */
+    public PropertiesManager getPropertiesManager() throws RollerException {
+        if (propertiesManager == null) {
+            propertiesManager = createPropertiesManagerImpl(strategy);
+        }
+        return propertiesManager;
+    }
+

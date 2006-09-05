@@ -1,0 +1,8 @@
+    public WebsiteData getWebsiteByHandle(String handle, Boolean enabled) 
+            throws RollerException {
+        // XXX cache websites by handle?
+        return (WebsiteData)strategy.newQuery(WebsiteData.class,
+                "getByHandle&&Enabled")
+            .execute(new Object[]{handle, enabled});
+    }
+

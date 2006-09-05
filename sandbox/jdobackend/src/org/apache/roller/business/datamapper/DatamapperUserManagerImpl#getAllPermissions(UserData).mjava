@@ -1,0 +1,7 @@
+    public List getAllPermissions(UserData user) 
+            throws RollerException {
+        return (List)strategy.newQuery(PermissionsData.class,
+                "getByUser&&NotPending")
+            .execute(user);
+    }
+

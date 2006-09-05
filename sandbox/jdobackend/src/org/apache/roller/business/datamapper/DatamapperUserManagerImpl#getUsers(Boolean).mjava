@@ -1,0 +1,13 @@
+    public List getUsers(Boolean enabled) 
+            throws RollerException {
+        if (enabled == null) {
+            return (List)strategy.newQuery(UserData.class,
+                    "all")
+                .execute();
+        } else {
+            return (List)strategy.newQuery(UserData.class,
+                    "getByEnabled")
+                .execute(enabled);
+        }
+    }
+

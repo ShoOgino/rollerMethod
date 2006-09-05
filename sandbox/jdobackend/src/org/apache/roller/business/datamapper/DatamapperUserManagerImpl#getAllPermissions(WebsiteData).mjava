@@ -1,0 +1,7 @@
+    public List getAllPermissions(WebsiteData website) 
+            throws RollerException {
+        return (List)strategy.newQuery(PermissionsData.class,
+                "getByWebsite&&NotPending")
+            .execute(website);
+    }
+

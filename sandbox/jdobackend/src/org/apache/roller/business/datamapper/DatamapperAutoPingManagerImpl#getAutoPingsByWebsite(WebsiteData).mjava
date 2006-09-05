@@ -1,0 +1,6 @@
+    public List getAutoPingsByWebsite(WebsiteData website) 
+            throws RollerException {
+        return (List)strategy.newQuery(AutoPingData.class, "getByWebsite")
+            .execute(website);
+    }
+

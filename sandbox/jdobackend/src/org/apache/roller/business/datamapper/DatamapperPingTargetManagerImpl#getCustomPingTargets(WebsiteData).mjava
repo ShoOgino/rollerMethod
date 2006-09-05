@@ -1,0 +1,7 @@
+    public List getCustomPingTargets(WebsiteData website)
+            throws RollerException {
+        return (List)strategy.newQuery(PingTargetData.class,
+                "getByWebsite.orderByName")
+            .execute(website);
+    }
+

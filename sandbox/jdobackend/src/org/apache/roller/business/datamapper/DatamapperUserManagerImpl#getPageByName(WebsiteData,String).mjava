@@ -1,0 +1,13 @@
+    public WeblogTemplate getPageByName(WebsiteData website, String pageName) 
+            throws RollerException {
+        if (website == null)
+            throw new RollerException(
+                    "getPageByName: website cannot be null");
+        if (pageName == null)
+            throw new RollerException(
+                    "getPageByName: Page name cannot be null");
+        return (WeblogTemplate)strategy.newQuery(WeblogTemplate.class,
+                "getUniqueByWebsite&&Name")
+            .execute(new Object[]{website, pageName});
+    }
+
