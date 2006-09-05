@@ -3,7 +3,7 @@
      */
     public BookmarkManager getBookmarkManager() throws RollerException {
         if ( bookmarkManager == null ) {
-            bookmarkManager = createBookmarkManagerImpl(strategy);
+            bookmarkManager = new DatamapperBookmarkManagerImpl(strategy);
         }
         return bookmarkManager;
     }

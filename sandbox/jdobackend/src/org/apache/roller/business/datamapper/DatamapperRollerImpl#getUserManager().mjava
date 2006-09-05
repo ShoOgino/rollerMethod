@@ -3,7 +3,7 @@
      */
     public UserManager getUserManager() throws RollerException {
         if ( userManager == null ) {
-            userManager = createUserManagerImpl(strategy);
+            userManager = new DatamapperUserManagerImpl(strategy);
         }
         return userManager;
     }

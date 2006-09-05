@@ -3,7 +3,7 @@
      */
     public PingTargetManager getPingTargetManager() throws RollerException {
         if (pingTargetManager == null) {
-            pingTargetManager = createPingTargetManagerImpl(strategy);
+            pingTargetManager = new DatamapperPingTargetManagerImpl(strategy);
         }
         return pingTargetManager;
     }

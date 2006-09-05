@@ -3,7 +3,7 @@
      */
     public PropertiesManager getPropertiesManager() throws RollerException {
         if (propertiesManager == null) {
-            propertiesManager = createPropertiesManagerImpl(strategy);
+            propertiesManager = new DatamapperPropertiesManagerImpl(strategy);
         }
         return propertiesManager;
     }

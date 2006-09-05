@@ -3,7 +3,7 @@
      */
     public PlanetManager getPlanetManager() throws RollerException {
         if ( planetManager == null ) {
-            planetManager = createPlanetManagerImpl(strategy);
+            planetManager = new DatamapperPlanetManagerImpl(strategy);
         }
         return planetManager;
     }

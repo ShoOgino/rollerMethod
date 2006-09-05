@@ -3,7 +3,7 @@
      */
     public PingQueueManager getPingQueueManager() throws RollerException {
         if (pingQueueManager == null) {
-            pingQueueManager = createPingQueueManagerImpl(strategy);
+            pingQueueManager = new DatamapperPingQueueManagerImpl(strategy);
         }
         return pingQueueManager;
     }

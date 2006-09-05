@@ -3,7 +3,7 @@
      */
     public RefererManager getRefererManager() throws RollerException {
         if ( referrerManager == null ) {
-            referrerManager = createReferrerManagerImpl(strategy);
+            referrerManager = new DatamapperReferrerManagerImpl(strategy);
         }
         return referrerManager;
     }

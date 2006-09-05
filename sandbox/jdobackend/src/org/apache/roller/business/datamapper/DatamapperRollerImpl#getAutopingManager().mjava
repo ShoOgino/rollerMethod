@@ -3,7 +3,7 @@
      */
     public AutoPingManager getAutopingManager() throws RollerException {
         if (autoPingManager == null) {
-            autoPingManager = createAutoPingManagerImpl(strategy);
+            autoPingManager = new DatamapperAutoPingManagerImpl(strategy);
         }
         return autoPingManager;
     }
