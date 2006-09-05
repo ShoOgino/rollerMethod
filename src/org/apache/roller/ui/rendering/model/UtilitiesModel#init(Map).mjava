@@ -2,6 +2,13 @@
     public void init(Map initData) throws RollerException {
         
         // extract request object
-        this.request = (HttpServletRequest) initData.get("request");
+        this.request = (HttpServletRequest) initData.get("request");        
+
+        // extract timezone if available
+        WeblogPageRequest pageRequest = 
+            (WeblogPageRequest)initData.get("pageRequest");
+        if (pageRequest != null && pageRequest.getWeblog() != null) {
+            tz = pageRequest.getWeblog().getTimeZoneInstance();
+        }
     }
 
