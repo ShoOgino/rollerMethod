@@ -13,8 +13,9 @@
                 if (handler.isEntryURI(pathInfo)) {
                     
                     // parse incoming entry
-                    Entry unsavedEntry = parseEntry(
-                            new InputStreamReader(req.getInputStream()));
+                    Entry unsavedEntry = parseEntry(new BufferedReader(
+                        new InputStreamReader(
+                            req.getInputStream(), "UTF-8")));
                     
                     // call handler to put entry
                     Entry updatedEntry = handler.putEntry(pathInfo, unsavedEntry);

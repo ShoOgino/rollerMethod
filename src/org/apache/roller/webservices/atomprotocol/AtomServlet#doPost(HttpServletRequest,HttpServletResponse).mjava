@@ -15,8 +15,9 @@
                     if (req.getContentType().startsWith("application/atom+xml")) {
 
                         // parse incoming entry
-                        Entry unsavedEntry = parseEntry(
-                            new InputStreamReader(req.getInputStream()));
+                        Entry unsavedEntry = parseEntry(new BufferedReader(
+                            new InputStreamReader(
+                                req.getInputStream(), "UTF-8")));
 
                         // call handler to post it
                         Entry savedEntry = handler.postEntry(pathInfo, unsavedEntry);
