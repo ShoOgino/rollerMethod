@@ -5,10 +5,9 @@
         this.request = (HttpServletRequest) initData.get("request");        
 
         // extract timezone if available
-        WeblogPageRequest pageRequest = 
-            (WeblogPageRequest)initData.get("pageRequest");
-        if (pageRequest != null && pageRequest.getWeblog() != null) {
-            tz = pageRequest.getWeblog().getTimeZoneInstance();
+        WeblogRequest weblogRequest = (WeblogRequest)initData.get("weblogRequest");
+        if (weblogRequest != null && weblogRequest.getWeblog() != null) {
+            tz = weblogRequest.getWeblog().getTimeZoneInstance();
         }
     }
 
