@@ -1,0 +1,16 @@
+    public String render(WeblogEntryData entry, String str) {
+        
+        String result = Utilities.removeHTML(str, true);
+        result = Utilities.truncateText(result, 240, 260, "...");
+        
+        // if the result is shorter, we need to add "Read More" link
+        if (result.length() < str.length()) {
+            String link = "<div class=\"readMore\"><a href=\"" +
+                    entry.getPermalink() + "\">Read More</a></div>";
+            
+            result += link;
+        }
+        
+        return result;
+    }
+
