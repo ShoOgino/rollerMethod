@@ -6,9 +6,9 @@
         try {
             // for local feeds, sub.author = website.handle
             if (sub.getAuthor() != null
-                    && sub.getFeedUrl().endsWith(sub.getAuthor())) {
+                    && sub.getFeedURL().endsWith(sub.getAuthor())) {
 
-                logger.debug("Getting LOCAL feed " + sub.getFeedUrl());
+                logger.debug("Getting LOCAL feed " + sub.getFeedURL());
 
                 // get corresponding website object
                 WebsiteData website = (WebsiteData)strategy.newQuery(
@@ -18,7 +18,7 @@
                     return newEntries;
 
                 // figure website last update time
-                WeblogManager blogmgr = roller.getWeblogManager();
+                WeblogManager blogmgr = RollerFactory.getRoller().getWeblogManager();
 
                 Date siteUpdated = blogmgr.getWeblogLastPublishTime(website);
                 if (siteUpdated == null) { // Site never updated, skip it
@@ -51,26 +51,7 @@
                         logger.debug(msg);
                     }
                 }
-                // Populate subscription object with new entries
-                PagePluginManager ppmgr = roller.getPagePluginManager();
-                Map pagePlugins = ppmgr.createAndInitPagePlugins(website, null,
-                        RollerRuntimeConfig.getProperty("site.absoluteurl"),
-                        new VelocityContext());
-                Iterator entryIter = entries.iterator();
-                while (entryIter.hasNext()) {
-                    try {
-                        WeblogEntryData rollerEntry = (WeblogEntryData) entryIter
-                                .next();
-                        PlanetEntryData entry = new PlanetEntryData(
-                                rollerEntry, sub, pagePlugins);
-                        saveEntry(entry);
-                        newEntries.add(entry);
-                    }
-                    catch (Exception e) {
-                        logger.error("ERROR processing subscription entry", e);
-                    }
-                }
-                return newEntries;
+                return null;
             }
         }
         catch (Exception e) {
