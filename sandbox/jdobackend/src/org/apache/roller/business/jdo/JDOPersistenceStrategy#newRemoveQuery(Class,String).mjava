@@ -6,7 +6,7 @@
      */
     public DatamapperRemoveQuery newRemoveQuery(Class clazz, String queryName)
             throws RollerException {
-        PersistenceManager pm = getPersistenceManager(false, false);
+        PersistenceManager pm = getPersistenceManager(false);
         return new JDORemoveQueryImpl(pm, clazz, queryName);
     }
 

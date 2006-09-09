@@ -8,6 +8,6 @@
     private boolean isTransactionActive(PersistenceManager pm) {
         if (pm == null)
             return false;
-        return pm.currentTransaction().isActive()?true:false;
+        return pm.currentTransaction().isActive();
     }
 

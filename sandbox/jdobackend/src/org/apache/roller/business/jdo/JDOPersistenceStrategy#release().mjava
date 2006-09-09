@@ -2,5 +2,10 @@
      * Release database session, rolls back any uncommitted changes.
      */
     public void release() {
+        PersistenceManager pm = getPersistenceManager(false);
+        if (isTransactionActive(pm))
+            pm.currentTransaction().rollback();
+        pm.close();
+        setThreadLocalPersistenceManager(null);
     }
 

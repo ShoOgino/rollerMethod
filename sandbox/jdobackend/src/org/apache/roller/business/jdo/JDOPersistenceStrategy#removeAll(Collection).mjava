@@ -5,5 +5,7 @@
      */
     public void removeAll(Collection pos) 
             throws RollerException {
+        PersistenceManager pm = getPersistenceManager(true);
+        pm.deletePersistent(pos);
     }
 

@@ -5,5 +5,7 @@
      */
     public void removeAll(Class clazz) 
             throws RollerException {
+        DatamapperRemoveQuery rq = newRemoveQuery(clazz, null);
+        rq.removeAll();
     }
 

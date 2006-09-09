@@ -4,9 +4,9 @@
      */
     public void flush() 
             throws RollerException {
-        PersistenceManager pm = getPersistenceManager(false, false);
-        if (!isTransactionActive(pm))
-            return;
-        pm.currentTransaction().commit();
+        PersistenceManager pm = getPersistenceManager(false);
+        if (isTransactionActive(pm))
+            pm.currentTransaction().commit();
+        pm.close();
     }
 

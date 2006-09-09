@@ -1,0 +1,13 @@
+    /** 
+     * Get the current ThreadLocal PersistenceManager
+     */
+    private PersistenceManager getThreadLocalPersistenceManager() {
+        PersistenceManager pm = (PersistenceManager) 
+            threadLocalPersistenceManager.get();
+        if (pm == null) {
+            pm = pmf.getPersistenceManager();
+            threadLocalPersistenceManager.set(pm);
+        }
+        return pm;
+    }
+

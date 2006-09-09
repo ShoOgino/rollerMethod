@@ -6,5 +6,8 @@
      */
     public void remove(Class clazz, String id) 
             throws RollerException {
+        PersistenceManager pm = getPersistenceManager(true);
+        Object po = pm.getObjectById(clazz, id);
+        pm.deletePersistent(po);
     }
 

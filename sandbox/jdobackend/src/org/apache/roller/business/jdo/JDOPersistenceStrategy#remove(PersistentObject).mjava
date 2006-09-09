@@ -5,5 +5,7 @@
      */
     public void remove(PersistentObject po) 
             throws RollerException {
+        PersistenceManager pm = getPersistenceManager(true);
+        pm.deletePersistent(po);
     }
 

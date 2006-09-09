@@ -6,6 +6,8 @@
      */
     public PersistentObject store(PersistentObject obj) 
             throws RollerException {
+        PersistenceManager pm = getPersistenceManager(true);
+        pm.makePersistent(obj);
         return obj;
     }
 
