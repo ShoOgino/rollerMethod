@@ -1,27 +1,16 @@
     /**
-     * Convenience method for getPermalink(category)
-     * where no category is necessary.
-     * 
+     * Returns entry permalink, relative to Roller context.
+     * @deprecated Use getPermalink() instead.
      * @roller.wrapPojoMethod type="simple"
-     * @return
      */
-    public String getPermaLink()
-    {
-        String lAnchor = this.getAnchor();
-        
-        try
-        {
+    public String getPermaLink() {
+        String lAnchor = this.getAnchor();        
+        try {
             lAnchor = URLEncoder.encode(anchor, "UTF-8");
-        }
-        catch (UnsupportedEncodingException e)
-        {
+        } catch (UnsupportedEncodingException e) {
             // go with the "no encoding" version
-        }
-        
+        }        
         WebsiteData website = this.getWebsite();
-        String plink = "/page/" + website.getHandle() + 
-                "?entry=" + lAnchor;
-        
-        return plink;
+        return "/" + getWebsite().getHandle() + "/entry/" + lAnchor;
     }
 

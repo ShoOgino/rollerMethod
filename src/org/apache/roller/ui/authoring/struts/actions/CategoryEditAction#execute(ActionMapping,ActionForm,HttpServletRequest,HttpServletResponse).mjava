@@ -41,7 +41,7 @@
             // We are adding a new Category
             request.setAttribute("state","add");
             
-            String pid = request.getParameter(RollerRequest.PARENTID_KEY);
+            String pid = request.getParameter(RequestConstants.PARENT_ID);
             parentCat = wmgr.getWeblogCategory(pid);             
             form.setParentId(parentCat.getId()); 
             

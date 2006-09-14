@@ -1,10 +1,8 @@
-    public boolean equals(Object pOther)
-    {
-        if (pOther instanceof CommentData)
-        {
+    public boolean equals(Object pOther) {
+        if (pOther instanceof CommentData) {
             CommentData lTest = (CommentData) pOther;
             boolean lEquals = true;
-
+            
             lEquals = PojoUtil.equals(lEquals, this.id, lTest.getId());
             lEquals = PojoUtil.equals(lEquals, this.weblogEntry, lTest.getWeblogEntry());
             lEquals = PojoUtil.equals(lEquals, this.name, lTest.getName());
@@ -17,9 +15,7 @@
             lEquals = PojoUtil.equals(lEquals, this.pending, lTest.getPending());
             lEquals = PojoUtil.equals(lEquals, this.approved, lTest.getApproved());
             return lEquals;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }

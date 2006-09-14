@@ -1,0 +1,30 @@
+    /**
+     * Get the next occurring Entry.
+     */
+    public WeblogEntryDataWrapper getNextEntry() {
+        WeblogEntryDataWrapper currentEntry = getWeblogEntry();
+        if (mFirstEntry != null) currentEntry = mFirstEntry;
+        if (mNextEntry == null && currentEntry != null) {
+            String catName = null;
+            if (mCategory != null) {
+                catName = mCategory.getName();
+            }
+            try {
+                WeblogEntryData nextEntry =
+                        mWeblogMgr.getNextEntry(currentEntry.getPojo(), catName, mLocale);
+                
+                if(nextEntry != null)
+                    mNextEntry = WeblogEntryDataWrapper.wrap(nextEntry);
+                
+                // make sure that mNextEntry is not published to future
+                if (mNextEntry != null &&
+                        mNextEntry.getPubTime().after( new Date() )) {
+                    mNextEntry = null;
+                }
+            } catch (RollerException e) {
+                mLogger.error("PageModel.getNextEntry)", e);
+            }
+        }
+        return mNextEntry;
+    }
+

@@ -11,7 +11,7 @@
         List contents = new ArrayList();
         contents.add(content);
         
-        String absUrl = mRollerContext.getAbsoluteContextUrl(mRequest);
+        String absUrl = RollerRuntimeConfig.getAbsoluteContextURL();
         atomEntry.setId(        absUrl + entry.getPermaLink());
         atomEntry.setTitle(     entry.getTitle());
         atomEntry.setContents(  contents);
@@ -39,8 +39,9 @@
         
         Link editlink = new Link();
         editlink.setRel("edit");
-        editlink.setHref(absUrl + "/app/"
-                + entry.getWebsite().getHandle() + "/entry/" + entry.getId());
+        editlink.setHref(
+                URLUtilities.getAtomProtocolURL(true)
+                +"/"+entry.getWebsite().getHandle() + "/entry/" + entry.getId());
         List otherlinks = new ArrayList();
         otherlinks.add(editlink);
         atomEntry.setOtherLinks(otherlinks);

@@ -1,0 +1,9 @@
+    /**
+     * A comment has changed.
+     */
+    public void invalidate(CommentData comment) {
+        if(RollerRuntimeConfig.isSiteWideWeblog(comment.getWeblogEntry().getWebsite().getHandle())) {
+            invalidate(comment.getWeblogEntry().getWebsite());
+        }
+    }
+

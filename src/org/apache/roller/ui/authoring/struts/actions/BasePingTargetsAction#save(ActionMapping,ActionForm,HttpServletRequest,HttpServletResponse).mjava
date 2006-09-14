@@ -8,37 +8,24 @@
      * @return the result of <code>view()</code> after the target is saved.
      * @throws Exception
      */
-    public ActionForward save(ActionMapping mapping, ActionForm form,
-                              HttpServletRequest req, HttpServletResponse res)
-        throws Exception
-    {
+    public ActionForward save(ActionMapping mapping, ActionForm form, HttpServletRequest req, HttpServletResponse res) throws Exception {
         RollerRequest rreq = RollerRequest.getRollerRequest(req);
-        PingTargetManager pingTargetMgr = 
-                RollerFactory.getRoller().getPingTargetManager();
+        PingTargetManager pingTargetMgr = RollerFactory.getRoller().getPingTargetManager();
         PingTargetForm pingTargetForm = (PingTargetForm) form;
-        try
-        {
-            BasePageModel pageModel = 
-                new BasePageModel(getPingTargetEditTitle(), req, res, mapping);
-            req.setAttribute("model",pageModel);            
-            if (!hasRequiredRights(rreq, rreq.getWebsite()))
-            {
+        try {
+            BasePageModel pageModel = new BasePageModel(getPingTargetEditTitle(), req, res, mapping);
+            req.setAttribute("model", pageModel);
+            if (!hasRequiredRights(rreq, rreq.getWebsite())) {
                 return mapping.findForward(ACCESS_DENIED_PAGE);
             }
 
             PingTargetData pingTarget = null;
             String pingTargetId = pingTargetForm.getId();
-            if (pingTargetId != null && pingTargetId.length() > 0)
-            {
-                pingTarget = pingTargetMgr.getPingTarget(
-                        pingTargetForm.getId());
-                if (pingTarget == null) 
-                    throw new RollerException(
-                            "No such ping target id: " + pingTargetId);
+            if (pingTargetId != null && pingTargetId.length() > 0) {
+                pingTarget = pingTargetMgr.getPingTarget(pingTargetForm.getId());
+                if (pingTarget == null) throw new RollerException("No such ping target id: " + pingTargetId);
                 pingTargetForm.copyTo(pingTarget, req.getLocale());
-            }
-            else
-            {
+            } else {
                 pingTarget = createPingTarget(rreq, pingTargetForm);
             }
 
@@ -54,16 +41,13 @@
             // Save it, commit and return refreshed view of target list.
             pingTargetMgr.savePingTarget(pingTarget);
             RollerFactory.getRoller().flush();
-            
+
             ActionMessages msgs = new ActionMessages();
-            msgs.add(ActionMessages.GLOBAL_MESSAGE, 
-                    new ActionMessage("pingTarget.saved"));
-            saveMessages(req, msgs);     
-            
+            msgs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("pingTarget.saved"));
+            saveMessages(req, msgs);
+
             return view(mapping, form, req, res);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             getLogger().error("ERROR in action", e);
             throw new ServletException(e);
         }

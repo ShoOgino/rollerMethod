@@ -7,12 +7,12 @@
     public static String escapeHTML(String s, boolean escapeAmpersand) {
         // got to do amp's first so we don't double escape
         if (escapeAmpersand) {
-            s = stringReplace(s, "&", "&amp;");
+            s = StringUtils.replace(s, "&", "&amp;");
         }
-        s = stringReplace(s, "&nbsp;", " ");
-        s = stringReplace(s, "\"", "&quot;");
-        s = stringReplace(s, "<", "&lt;");
-        s = stringReplace(s, ">", "&gt;");
+        s = StringUtils.replace(s, "&nbsp;", " ");
+        s = StringUtils.replace(s, "\"", "&quot;");
+        s = StringUtils.replace(s, "<", "&lt;");
+        s = StringUtils.replace(s, ">", "&gt;");
         return s;
     }
 

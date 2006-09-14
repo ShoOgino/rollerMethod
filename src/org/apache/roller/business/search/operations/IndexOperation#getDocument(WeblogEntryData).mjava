@@ -51,8 +51,8 @@
         doc.add(Field.UnStored(FieldConstants.CONTENT, data.getText()));
 
         // store an abbreviated version of the entry text, but don't index
-        doc.add(Field.UnIndexed(FieldConstants.CONTENT_STORED, Utilities
-                .truncateNicely(Utilities.removeHTML(data.getText()), 240, 260, "...")));
+        doc.add(Field.UnIndexed(FieldConstants.CONTENT_STORED, 
+            Utilities.truncateNicely(Utilities.removeHTML(data.getText()), 240, 260, "...")));
 
         doc.add(Field.Keyword(FieldConstants.UPDATED, data.getUpdateTime()
                 .toString()));
@@ -68,7 +68,9 @@
 
         // index Category
         WeblogCategoryData categorydata = data.getCategory();
-        Field category = (categorydata == null) ? Field.UnStored(FieldConstants.CATEGORY, "") : Field.Text(FieldConstants.CATEGORY, categorydata.getName());
+        Field category = (categorydata == null) 
+           ? Field.UnStored(FieldConstants.CATEGORY, "") 
+           : Field.Text(FieldConstants.CATEGORY, categorydata.getName());
         doc.add(category);
 
         return doc;

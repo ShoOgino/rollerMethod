@@ -1,0 +1,8 @@
+    public WeblogTemplate getPage(String id) 
+            throws RollerException {
+        // For templates stored on disk, just return
+        if (id != null && id.endsWith(".vm")) 
+            return null;
+        return (WeblogTemplate)strategy.load(WeblogTemplate.class, id);
+    }
+

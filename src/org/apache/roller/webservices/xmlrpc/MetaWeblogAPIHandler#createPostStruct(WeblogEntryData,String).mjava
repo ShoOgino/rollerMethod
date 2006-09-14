@@ -1,10 +1,7 @@
     private Hashtable createPostStruct(WeblogEntryData entry, String userid) {
         
-        RollerRequest rreq = RollerRequest.getRollerRequest();
-        HttpServletRequest request = rreq.getRequest();
-        RollerContext rollerCtx = RollerContext.getRollerContext();
         String permalink =
-                rollerCtx.getAbsoluteContextUrl(request) + entry.getPermaLink();
+                RollerRuntimeConfig.getAbsoluteContextURL() + entry.getPermaLink();
         
         Hashtable struct = new Hashtable();
         struct.put("title", entry.getTitle());

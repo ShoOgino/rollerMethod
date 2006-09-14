@@ -1,0 +1,33 @@
+        public UploadFilePageModel(
+                HttpServletRequest req,
+                HttpServletResponse res,
+                ActionMapping mapping,
+                WebsiteData weblog,
+                List lastUploads) throws RollerException {
+            
+            super("uploadFiles.title", req, res, mapping);
+            
+            Roller roller = RollerFactory.getRoller();
+            PropertiesManager pmgr = roller.getPropertiesManager();
+            FileManager fmgr = roller.getFileManager();
+            
+            String dir = fmgr.getUploadDir();
+            resourcesBaseURL = URLUtilities.getWeblogResourceURL(weblog, "", false);
+            
+            RollerRequest rreq = RollerRequest.getRollerRequest(req);
+            WebsiteData website = UploadFileFormAction.getWebsite(req);
+            maxDirMB = RollerRuntimeConfig.getProperty("uploads.dir.maxsize");
+            maxFileMB = RollerRuntimeConfig.getProperty("uploads.file.maxsize");
+            
+            overQuota = fmgr.overQuota(weblog.getHandle());
+            uploadEnabled = RollerRuntimeConfig.getBooleanProperty("uploads.enabled");
+            
+            files = new ArrayList();
+            File[] rawFiles = fmgr.getFiles(weblog.getHandle());
+            for (int i=0; i<rawFiles.length; i++) {
+                files.add(new FileBean(rawFiles[i]));
+                totalSize += rawFiles[i].length();
+            }
+            Collections.sort(files, new FileBeanNameComparator());
+        }
+

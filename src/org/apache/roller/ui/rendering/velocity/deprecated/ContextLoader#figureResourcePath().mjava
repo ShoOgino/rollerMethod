@@ -1,0 +1,13 @@
+    /**
+     * Determine URL path to Roller upload directory.
+     */
+    private static String figureResourcePath() {
+        
+        String uploadurl = null;
+        try {
+            uploadurl = RollerFactory.getRoller().getFileManager().getUploadUrl();
+        } catch(Exception e) {}
+        
+        return uploadurl;
+    }
+

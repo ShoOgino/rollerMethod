@@ -1,0 +1,13 @@
+    /** Init page model based on request */
+    public void init(Map initData) throws RollerException {
+        
+        // extract request object
+        this.request = (HttpServletRequest) initData.get("request");        
+
+        // extract timezone if available
+        WeblogRequest weblogRequest = (WeblogRequest)initData.get("weblogRequest");
+        if (weblogRequest != null && weblogRequest.getWeblog() != null) {
+            tz = weblogRequest.getWeblog().getTimeZoneInstance();
+        }
+    }
+

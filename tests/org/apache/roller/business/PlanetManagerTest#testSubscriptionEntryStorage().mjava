@@ -4,7 +4,7 @@
         
         {   // save subscription
             PlanetSubscriptionData sub = new PlanetSubscriptionData();
-            sub.setFeedUrl("test_url");
+            sub.setFeedURL("test_url");
             planet.saveSubscription(sub);
             TestUtils.endSession(true);
         }
@@ -16,14 +16,14 @@
             entry1.setPermalink("test_entry1");
             entry1.setCategoriesString("test,test2");
             entry1.setSubscription(sub);
-            entry1.setPublished(new Date());
+            entry1.setPubTime(new Timestamp(System.currentTimeMillis()));
             sub.addEntry(entry1);
             
             PlanetEntryData entry2 = new PlanetEntryData();
             entry2.setPermalink("test_entry2");
             entry2.setCategoriesString("test_cat1,test_cat2,test_cat3");
             entry2.setSubscription(sub);
-            entry2.setPublished(new Date());
+            entry2.setPubTime(new Timestamp(System.currentTimeMillis()));
             sub.addEntry(entry2);
             
             // save entries
@@ -43,7 +43,7 @@
             entry3.setPermalink("test_entry3");
             entry3.setCategoriesString("test,test3");
             entry3.setSubscription(sub);
-            entry3.setPublished(new Date());
+            entry3.setPubTime(new Timestamp(System.currentTimeMillis()));
             planet.saveEntry(entry3);
             TestUtils.endSession(true);
             

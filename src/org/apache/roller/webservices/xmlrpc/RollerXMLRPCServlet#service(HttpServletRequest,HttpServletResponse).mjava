@@ -1,7 +1,7 @@
     protected void service(HttpServletRequest request,
-                                  HttpServletResponse response)
-        throws ServletException, java.io.IOException
-    {
+            HttpServletResponse response)
+            throws ServletException, IOException {
+        
         InputStream is = request.getInputStream();
         
         if (mLogger.isDebugEnabled()) {
@@ -9,7 +9,7 @@
             String line = null;
             StringBuffer sb = new StringBuffer();
             while ((line = br.readLine()) != null) {
-                sb.append(line); 
+                sb.append(line);
                 sb.append("\n");
             }
             mLogger.debug(sb.toString());
@@ -23,7 +23,7 @@
             String output = new String(result);
             mLogger.debug(output);
         }
-
+        
         response.setContentType("text/xml");
         response.setContentLength(result.length);
         OutputStream output = response.getOutputStream();

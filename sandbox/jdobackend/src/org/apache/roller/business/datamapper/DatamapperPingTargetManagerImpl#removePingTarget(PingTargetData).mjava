@@ -1,0 +1,10 @@
+    public void removePingTarget(PingTargetData pingTarget)
+            throws RollerException {
+        // remove queued ping entries that refer to this ping target
+        strategy.newRemoveQuery(PingQueueEntryData.class, "getByPingTarget")
+            .removeAll(pingTarget);
+        // remove autopings that refer to this ping target
+        strategy.newRemoveQuery(AutoPingData.class, "getByPingTarget")
+            .removeAll(pingTarget);
+    }
+

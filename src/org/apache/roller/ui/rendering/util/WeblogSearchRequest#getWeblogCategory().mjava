@@ -1,0 +1,14 @@
+    public WeblogCategoryData getWeblogCategory() {
+        
+        if(weblogCategory == null && weblogCategoryName != null) {
+            try {
+                WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+                weblogCategory = wmgr.getWeblogCategoryByPath(getWeblog(), weblogCategoryName);
+            } catch (RollerException ex) {
+                log.error("Error getting weblog category "+weblogCategoryName, ex);
+            }
+        }
+        
+        return weblogCategory;
+    }
+

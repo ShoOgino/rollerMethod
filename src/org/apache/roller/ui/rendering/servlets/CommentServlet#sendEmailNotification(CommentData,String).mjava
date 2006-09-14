@@ -91,7 +91,7 @@
             msg.append((escapeHtml) ? "\n\n" : "<br /><br />");
                         
             msg.append((escapeHtml) ? Utilities.escapeHTML(cd.getContent()) 
-                : Utilities.transformToHTMLSubset(Utilities.escapeHTML(cd.getContent())));
+                : UtilitiesModel.transformToHTMLSubset(Utilities.escapeHTML(cd.getContent())));
             
             msg.append((escapeHtml) ? "\n\n----\n"
                     : "<br /><br /><hr /><span style=\"font-size: 11px\">");
@@ -118,7 +118,7 @@
             ownermsg.append((escapeHtml) ? "\n" : "<br />");
             
             StringBuffer deleteURL = new StringBuffer(rootURL);
-            deleteURL.append("/editor/commentManagement.do?method=query&entryid=" + entry.getId());
+            deleteURL.append("/roller-ui/authoring/commentManagement.do?method=query&entryId=" + entry.getId());
             
             if (escapeHtml) {
                 ownermsg.append(deleteURL.toString());
@@ -141,7 +141,7 @@
             //------------------------------------------
             // --- Send message to email recipients
             try {
-                javax.naming.Context ctx = (javax.naming.Context)
+                Context ctx = (Context)
                 new InitialContext().lookup("java:comp/env");
                 Session session = (Session)ctx.lookup("mail/Session");
                 boolean isHtml = !escapeHtml;
@@ -163,7 +163,7 @@
                     sendMessage(session, from, new String[]{user.getEmailAddress()}, cc, bcc, subject,
                             ownermsg.toString(), isHtml);
                 }
-            } catch (javax.naming.NamingException ne) {
+            } catch (NamingException ne) {
                 log.error("Unable to lookup mail session.  Check configuration.  NamingException: " + ne.getMessage());
             } catch (Exception e) {
                 log.warn("Exception sending comment mail: " + e.getMessage());

@@ -1,31 +1,31 @@
-	/** Given a request, tells if menu item is selected */ 
-	public boolean isSelected( HttpServletRequest req )
-	{
-		boolean selected = false;
+    /** Given a request, tells if menu item is selected */
+    public boolean isSelected( HttpServletRequest req ) {
+        boolean selected = false;
         HttpSession ses = req.getSession(false);
         
         // first look for menu state in request params, then attributes
         String itemKey = req.getParameter(RollerMenuModel.MENU_ITEM_KEY );
-        if (null == itemKey) 
-        {
+        if (null == itemKey) {
             itemKey = (String)req.getAttribute(RollerMenuModel.MENU_ITEM_KEY);
         }
         
         ActionMapping amapping = (ActionMapping)req.getAttribute(Globals.MAPPING_KEY);
-        if (itemKey != null && itemKey.equals(mName)) 
-        {
+        if (itemKey != null && itemKey.equals(mName)) {
             selected = true;
-        }
-		else if (mForward != null && amapping != null) 
-		{
-            ServletContext ctx = RollerContext.getServletContext();     
-			ModuleConfig mConfig = RequestUtils.getModuleConfig(req, ctx);
+        } else if (mForward != null && amapping != null) {
+            ServletContext ctx = RollerContext.getServletContext();
+            ModuleConfig mConfig = RequestUtils.getModuleConfig(req, ctx);
             List fconfigs = new ArrayList();
-			fconfigs.add(mConfig.findForwardConfig(mForward));
+            fconfigs.add(mConfig.findForwardConfig(mForward));
             if (mSubforwards != null) {
                 String[] subforwards = mSubforwards.split(",");
                 for (int i=0; i<subforwards.length; i++) {
-                    fconfigs.add(mConfig.findForwardConfig(subforwards[i]));
+                    ForwardConfig fconfig = mConfig.findForwardConfig(subforwards[i]);
+                    if (fconfig != null) {
+                        fconfigs.add(fconfig);
+                    } else {
+                        log.error("ERROR: subforward specified in XML menu file not found: " + subforwards[i]);
+                    }
                 }
             }
             for (Iterator iter = fconfigs.iterator(); iter.hasNext();) {
@@ -33,19 +33,17 @@
                 String fwdPath = fconfig.getPath();
                 int end = fwdPath.indexOf(".do");
                 fwdPath = (end == -1) ? fwdPath : fwdPath.substring(0, end);
-                if  (fwdPath.equals(amapping.getPath()))
-                {
+                if  (fwdPath.equals(amapping.getPath())) {
                     selected = true;
                     break;
-                } 
+                }
             }
-		}
+        }
         
         // still not found, look for menu state in session attributes
-		if (ses != null && selected)
-		{
-			ses.setAttribute(mMenuId+"_"+RollerMenuModel.MENU_ITEM_KEY, mName);
-		}
-		return selected;
-	}
+        if (ses != null && selected) {
+            ses.setAttribute(mMenuId+"_"+RollerMenuModel.MENU_ITEM_KEY, mName);
+        }
+        return selected;
+    }
 

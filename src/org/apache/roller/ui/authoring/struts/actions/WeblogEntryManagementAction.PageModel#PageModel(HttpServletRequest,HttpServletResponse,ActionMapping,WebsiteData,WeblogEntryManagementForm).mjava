@@ -41,12 +41,13 @@
 
             entries = RollerFactory.getRoller().getWeblogManager().getWeblogEntries(
                     website,
+                    null,
                     startDate,
                     endDate,
                     category,
                     status,
                     queryForm.getSortby(),
-                    queryForm.getOffset(),
+null,                     queryForm.getOffset(),
                     queryForm.getCount() + 1);
            if (entries.size() > queryForm.getCount()) {
                more = true;

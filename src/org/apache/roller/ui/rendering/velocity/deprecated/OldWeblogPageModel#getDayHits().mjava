@@ -1,0 +1,10 @@
+    /** Encapsulates RefererManager */
+    public int getDayHits() {
+        try {
+            return mRefererMgr.getDayHits(mWebsite);
+        } catch (RollerException e) {
+            mLogger.error("PageModel getDayHits()", e);
+        }
+        return 0;
+    }
+

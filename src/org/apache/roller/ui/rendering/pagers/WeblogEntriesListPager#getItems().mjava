@@ -1,0 +1,49 @@
+    public List getItems() {
+        
+        if (entries == null) {
+            // calculate offset
+            int offset = getPage() * length;
+            
+            List results = new ArrayList();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            cal.add(Calendar.DATE, -1 * sinceDays);
+            Date startDate = cal.getTime();
+            try {
+                Roller roller = RollerFactory.getRoller();
+                WeblogManager wmgr = roller.getWeblogManager();
+                UserManager umgr = roller.getUserManager();
+                List rawEntries = wmgr.getWeblogEntries(
+                        queryWeblog,
+                        queryUser,
+                        startDate,
+                        new Date(),
+                        queryCat,
+                        WeblogEntryData.PUBLISHED,
+                        "pubTime",
+                        locale,
+                        offset,
+                        length + 1);
+                
+                // check if there are more results for paging
+                if(rawEntries.size() > length) {
+                    more = true;
+                    rawEntries.remove(rawEntries.size() - 1);
+                }
+                
+                // wrap the results
+                for (Iterator it = rawEntries.iterator(); it.hasNext();) {
+                    WeblogEntryData entry = (WeblogEntryData) it.next();
+                    results.add(WeblogEntryDataWrapper.wrap(entry));
+                }
+                
+            } catch (Exception e) {
+                log.error("ERROR: fetching weblog entries list", e);
+            }
+            
+            entries = results;
+        }
+        
+        return entries;
+    }
+

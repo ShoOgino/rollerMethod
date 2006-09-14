@@ -1,0 +1,11 @@
+    /**
+     * Remove objects from persistence storage.
+     * @param clazz the persistent from which to remove all objects 
+     * @throws org.apache.roller.RollerException on any error
+     */
+    public void removeAll(Class clazz) 
+            throws RollerException {
+        DatamapperRemoveQuery rq = newRemoveQuery(clazz, null);
+        rq.removeAll();
+    }
+

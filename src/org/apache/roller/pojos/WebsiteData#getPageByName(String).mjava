@@ -1,12 +1,13 @@
     /**
      * Lookup a Template for this website by name.
+     * @roller.wrapPojoMethod type="pojo"
      */
     public Template getPageByName(String name) throws RollerException {
         
         if(name == null)
             return null;
         
-        mLogger.debug("looking up template ["+name+"]");
+        log.debug("looking up template ["+name+"]");
         
         Template template = null;
         
@@ -21,7 +22,7 @@
                 
             } catch(ThemeNotFoundException tnfe) {
                 // i sure hope not!
-                mLogger.error(tnfe);
+                log.error(tnfe);
             }
             
         }
@@ -33,7 +34,7 @@
         }
         
         if(template != null)
-            mLogger.debug("returning template ["+template.getId()+"]");
+            log.debug("returning template ["+template.getId()+"]");
         
         return template;
     }

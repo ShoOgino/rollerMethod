@@ -7,7 +7,7 @@
     {
         if ( mWeblogCategory == null )
         {
-            String id = getFromRequest(WEBLOGCATEGORYID_KEY);
+            String id = getFromRequest(RequestConstants.WEBLOGCATEGORY_ID);
             if ( id != null )
             {
                 try
@@ -21,7 +21,7 @@
                     mLogger.error("Getting weblog category by id from request",e);
                 }
             }
-            else if (StringUtils.isNotEmpty(id = getFromRequest(WEBLOGCATEGORYNAME_KEY)))
+            else if (StringUtils.isNotEmpty(id = getFromRequest(RequestConstants.WEBLOGCATEGORY)))
             {
                 try
                 {

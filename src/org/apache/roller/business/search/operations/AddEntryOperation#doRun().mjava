@@ -1,25 +1,15 @@
-    /* (non-Javadoc)
-     * @see java.lang.Runnable#run()
-     */
-    public void doRun()
-    {    	
+    public void doRun() {
         IndexWriter writer = beginWriting();
         Roller roller = RollerFactory.getRoller();
-        try
-        {
-            if (writer != null)
-            {
+        try {
+            if (writer != null) {
                 writer.addDocument(getDocument(data));
             }
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             mLogger.error("Problems adding doc to index", e);
-        }
-        finally
-        {
+        } finally {
             if (roller != null) roller.release();
             endWriting();
-        }    	
-    }
+        }
+    }   
 

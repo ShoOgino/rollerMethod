@@ -1,0 +1,15 @@
+    /**
+     * Returns categories under the default category of the weblog.
+     * @roller.wrapPojoMethod type="pojo-collection" class="org.apache.roller.pojos.WeblogCategoryData"
+     */
+    public List getWeblogCategories() {
+        List ret = new ArrayList();
+        try {           
+            WeblogCategoryData category = this.getDefaultCategory();
+            ret = category.getWeblogCategories();
+        } catch (RollerException e) {
+            log.error("ERROR: fetching categories", e);
+        }
+        return ret;
+    }
+

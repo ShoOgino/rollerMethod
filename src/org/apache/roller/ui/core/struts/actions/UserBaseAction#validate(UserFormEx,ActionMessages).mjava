@@ -1,0 +1,24 @@
+    /** Validate user form. TODO: replace with Struts validation. */
+    protected ActionMessages validate( UserFormEx form, ActionMessages errors ) {
+        
+        String allowed = RollerConfig.getProperty("username.allowedChars");
+        if(allowed == null || allowed.trim().length() == 0) {
+            allowed = DEFAULT_ALLOWED_CHARS;
+        }
+        String safe = CharSetUtils.keep(form.getUserName(), allowed);
+        
+        if ( "".equals(form.getUserName().trim())) {
+            errors.add( ActionErrors.GLOBAL_ERROR,
+                    new ActionError("error.add.user.missingUserName"));
+        } else if ( !safe.equals(form.getUserName()) ) {
+            errors.add( ActionErrors.GLOBAL_ERROR,
+                    new ActionError("error.add.user.badUserName"));
+        }
+        
+        if ( "".equals(form.getEmailAddress().trim())) {
+            errors.add( ActionErrors.GLOBAL_ERROR,
+                    new ActionError("error.add.user.missingEmailAddress"));
+        }
+        return errors;
+    }
+

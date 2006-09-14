@@ -1,0 +1,69 @@
+    /**
+     * All tests in this suite require a user and a weblog.
+     */
+    public void setUp() throws Exception {
+        
+        try {
+            mockFactory = new WebMockObjectFactory();
+            
+            // create mock RollerContext
+            MockServletContext ctx = mockFactory.getMockServletContext();
+            ctx.setRealPath("/", ".");
+            rollerContext = new MockRollerContext();
+            rollerContext.init(ctx);
+            
+            mockRequest = mockFactory.getMockRequest();
+            mockRequest.setContextPath("/roller");
+            RollerRequest.getRollerRequest(
+                    mockRequest, mockFactory.getMockServletContext());
+            
+            servletTestModule = new ServletTestModule(mockFactory);
+            servletTestModule.createServlet(RollerXMLRPCServlet.class);
+        
+            testUser = TestUtils.setupUser("entryTestUser");
+            testWeblog = TestUtils.setupWeblog("entryTestWeblog", testUser);
+            
+            WeblogEntryData testEntry1 = new WeblogEntryData();
+            testEntry1.setTitle("entryTestEntry1");
+            testEntry1.setLink("testEntryLink1");
+            testEntry1.setText("blah blah entry1");
+            testEntry1.setAnchor("testEntryAnchor1");
+            testEntry1.setPubTime(new Timestamp(new Date().getTime()));
+            testEntry1.setUpdateTime(new Timestamp(new Date().getTime()));
+            testEntry1.setWebsite(testWeblog);
+            testEntry1.setCreator(testUser);
+            testEntry1.setCategory(testWeblog.getDefaultCategory());
+            RollerFactory.getRoller().getWeblogManager().saveWeblogEntry(testEntry1);
+
+            WeblogEntryData testEntry2 = new WeblogEntryData();
+            testEntry2.setTitle("entryTestEntry2");
+            testEntry2.setLink("testEntryLink2");
+            testEntry2.setText("blah blah entry2");
+            testEntry2.setAnchor("testEntryAnchor2");
+            testEntry2.setPubTime(new Timestamp(new Date().getTime()));
+            testEntry2.setUpdateTime(new Timestamp(new Date().getTime()));
+            testEntry2.setWebsite(testWeblog);
+            testEntry2.setCreator(testUser);
+            testEntry2.setCategory(testWeblog.getDefaultCategory());
+            RollerFactory.getRoller().getWeblogManager().saveWeblogEntry(testEntry1);
+
+            WeblogEntryData testEntry3 = new WeblogEntryData();
+            testEntry3.setTitle("entryTestEntry3");
+            testEntry3.setLink("testEntryLink3");
+            testEntry3.setText("blah blah entry3");
+            testEntry3.setAnchor("testEntryAnchor3");
+            testEntry3.setPubTime(new Timestamp(new Date().getTime()));
+            testEntry3.setUpdateTime(new Timestamp(new Date().getTime()));
+            testEntry3.setWebsite(testWeblog);
+            testEntry3.setCreator(testUser);
+            testEntry3.setCategory(testWeblog.getDefaultCategory());           
+            RollerFactory.getRoller().getWeblogManager().saveWeblogEntry(testEntry1);
+
+            TestUtils.endSession(true);
+            
+        } catch (Exception ex) {
+            log.error(ex);
+            throw new Exception("Test setup failed", ex);
+        }
+    }
+

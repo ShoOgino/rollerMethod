@@ -1,0 +1,31 @@
+    public ActionForward revoke(
+            ActionMapping       mapping,
+            ActionForm          actionForm,
+            HttpServletRequest  request,
+            HttpServletResponse response)
+            throws Exception {
+        
+        InvitationsForm invitationForm = (InvitationsForm)actionForm;
+        Roller roller = RollerFactory.getRoller();
+        UserManager umgr = roller.getUserManager();
+        PermissionsData perms = umgr.getPermissions(invitationForm.getPermissionId());
+        if (perms == null) {
+            ActionErrors errors = new ActionErrors();
+            errors.add(null, new ActionError("invitations.error.notFound"));
+            saveErrors(request, errors);
+            return view(mapping, actionForm, request, response);
+        }
+        RollerSession rses = RollerSession.getRollerSession(request);
+        if (rses.isUserAuthorizedToAdmin(perms.getWebsite())) {
+            umgr.removePermissions(perms);
+            roller.flush();
+            notifyInvitee(request, perms.getWebsite(), perms.getUser());
+            ActionMessages msgs = new ActionMessages();
+            msgs.add(ActionMessages.GLOBAL_MESSAGE, 
+                new ActionMessage("invitations.revoked"));
+            saveMessages(request, msgs);
+            return view(mapping, actionForm, request, response);
+        }      
+        return mapping.findForward("access-denied"); 
+    }
+

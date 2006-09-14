@@ -1,0 +1,20 @@
+    // redirect to new weblog resource location
+    private String figureResourceRedirect(HttpServletRequest request) {
+        
+        String newUrl = RollerRuntimeConfig.getRelativeContextURL();
+        
+        String pathInfo = request.getPathInfo();
+        if(pathInfo == null) {
+            return null;
+        } else {
+            pathInfo = pathInfo.substring(1);
+        }
+        
+        String[] pathElements = pathInfo.split("/", 2);
+        if(pathElements.length != 2) {
+            return null;
+        }
+        
+        return newUrl+"/"+pathElements[0]+"/resource/"+pathElements[1];
+    }
+

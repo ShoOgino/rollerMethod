@@ -1,0 +1,51 @@
+    public void init(Map initData) throws RollerException {
+        
+        // we expect the init data to contain a searchRequest object
+        searchRequest = (WeblogSearchRequest) initData.get("searchRequest");
+        if(searchRequest == null) {
+            throw new RollerException("expected searchRequest from init data");
+        }
+        
+        // let parent initialize
+        super.init(initData);
+        
+        // if there is no query, then we are done
+        if(searchRequest.getQuery() == null) {
+            pager = new SearchResultsPager(searchRequest, results, false);
+            return;
+        }
+        
+        // setup the search
+        IndexManager indexMgr = RollerFactory.getRoller().getIndexManager();
+        
+        SearchOperation search = new SearchOperation(indexMgr);
+        search.setTerm(searchRequest.getQuery());
+        
+        if(RollerRuntimeConfig.isSiteWideWeblog(searchRequest.getWeblogHandle())) {
+            this.websiteSpecificSearch = false;
+        } else {
+            search.setWebsiteHandle(searchRequest.getWeblogHandle());
+        }
+        
+        if(StringUtils.isNotEmpty(searchRequest.getWeblogCategoryName())) {
+            search.setCategory(searchRequest.getWeblogCategoryName());
+        }
+        
+        // execute search
+        indexMgr.executeIndexOperationNow(search);
+        
+        if (search.getResultsCount() == -1) {
+            // this means there has been a parsing (or IO) error
+            this.errorMessage = bundle.getString("error.searchProblem");
+        } else {
+            Hits hits = search.getResults();
+            this.hits = search.getResultsCount();
+            
+            // Convert the Hits into WeblogEntryData instances.
+            convertHitsToEntries(hits);
+        }
+        
+        // search completed, setup pager based on results
+        pager = new SearchResultsPager(searchRequest, results, (hits > (offset+limit)));
+    }
+

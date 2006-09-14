@@ -16,7 +16,7 @@
         
         // store a file
         InputStream is = getClass().getResourceAsStream("/bookmarks.opml");
-        fmgr.saveFile(testWeblog.getHandle(), "bookmarks.opml", "text/xml", 1545, is);
+        fmgr.saveFile(testWeblog.getHandle(), "bookmarks.opml", "text/plain", 1545, is);
         
         // make sure file was stored successfully
         assertEquals(1, fmgr.getFiles(testWeblog.getHandle()).length);

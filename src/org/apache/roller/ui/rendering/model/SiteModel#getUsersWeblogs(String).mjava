@@ -1,0 +1,20 @@
+    /** 
+     * Return list of weblogs that user belongs to.
+     */
+    public List getUsersWeblogs(String userName) {
+        List results = new ArrayList();
+        try {            
+            Roller roller = RollerFactory.getRoller();
+            UserManager umgr = roller.getUserManager();
+            UserData user = umgr.getUserByUserName(userName);
+            List perms = umgr.getAllPermissions(user);
+            for (Iterator it = perms.iterator(); it.hasNext();) {
+                PermissionsData perm = (PermissionsData) it.next();
+                results.add(WebsiteDataWrapper.wrap(perm.getWebsite()));
+            }
+        } catch (Exception e) {
+            log.error("ERROR: fetching weblog list", e);
+        }
+        return results;
+    }
+

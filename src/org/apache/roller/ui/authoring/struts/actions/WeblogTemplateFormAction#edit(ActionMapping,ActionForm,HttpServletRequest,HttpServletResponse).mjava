@@ -1,37 +1,30 @@
     //-----------------------------------------------------------------------
     public ActionForward edit(
-        ActionMapping       mapping,
-        ActionForm          actionForm,
-        HttpServletRequest  request,
-        HttpServletResponse response)
-        throws IOException, ServletException
-    {
+            ActionMapping       mapping,
+            ActionForm          actionForm,
+            HttpServletRequest  request,
+            HttpServletResponse response)
+            throws IOException, ServletException {
         ActionForward forward = mapping.findForward("editPage.page");
-        try
-        {            
+        try {
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             WeblogTemplate pd = (WeblogTemplate)rreq.getPage();
             
-            RollerSession rses = RollerSession.getRollerSession(request);            
-            if ( rses.isUserAuthorizedToAdmin(pd.getWebsite()) )
-            {
+            RollerSession rses = RollerSession.getRollerSession(request);
+            if ( rses.isUserAuthorizedToAdmin(pd.getWebsite()) ) {
                 BasePageModel pageModel = new BasePageModel(
-                    "pageForm.title", request, response, mapping);
+                        "pageForm.title", request, response, mapping);
                 pageModel.setWebsite(pd.getWebsite());
-                request.setAttribute("model", pageModel); 
+                request.setAttribute("model", pageModel);
                 
                 WeblogTemplateForm pf = (WeblogTemplateForm)actionForm;
                 pf.copyFrom(pd, request.getLocale());
                 
-                addModelObjects(request, response, mapping, pd.getWebsite());
-            }
-            else
-            {
+                addModelObjects(request, response, mapping, pd.getWebsite(), pd);
+            } else {
                 forward = mapping.findForward("access-denied");
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             mLogger.error("ERROR in action",e);
             throw new ServletException(e);
         }

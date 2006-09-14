@@ -1,10 +1,11 @@
-    public PlanetSubscriptionData getSubscription(String feedUrl) throws RollerException {
+    public PlanetSubscriptionData getSubscription(String feedURL) 
+        throws RollerException {
         try {
             Session session = ((HibernatePersistenceStrategy)strategy).getSession();
             Criteria criteria =
                     session.createCriteria(PlanetSubscriptionData.class);
             criteria.setMaxResults(1);
-            criteria.add(Expression.eq("feedUrl", feedUrl));
+            criteria.add(Expression.eq("feedURL", feedURL));
             List list = criteria.list();
             return list.size()!=0 ? (PlanetSubscriptionData)list.get(0) : null;
         } catch (HibernateException e) {

@@ -5,14 +5,14 @@
         
         // TODO BACKEND: we must do this in a better fashion, like getUserCnt()?
         boolean adminUser = false;
-        List existingUsers = this.getUsers();
+        List existingUsers = this.getUsers(0, 1);
         if(existingUsers.size() == 0) {
             // Make first user an admin
             adminUser = true;
         }
         
-        if(getUserByUsername(newUser.getUserName()) != null ||
-                getUserByUsername(newUser.getUserName().toLowerCase()) != null) {
+        if(getUserByUserName(newUser.getUserName()) != null ||
+                getUserByUserName(newUser.getUserName().toLowerCase()) != null) {
             throw new RollerException("error.add.user.userNameInUse");
         }
         

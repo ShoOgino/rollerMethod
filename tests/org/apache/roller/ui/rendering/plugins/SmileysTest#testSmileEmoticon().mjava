@@ -1,0 +1,15 @@
+    public void testSmileEmoticon() throws Exception {
+        doFilters();
+        
+        SmileysPlugin plugin = new SmileysPlugin();
+        plugin.init(testWeblog);
+        assertTrue( SmileysPlugin.smileyPatterns.length > 0 );
+        
+        String test = "put on a happy :-) face";
+        String expected =
+                "put on a happy <img src=\"http://localhost:8080/roller/images/smileys/smile.gif" +
+                "\" class=\"smiley\" alt=\":-)\" title=\":-)\" /> face";
+        String result = plugin.render(null, test);
+        assertEquals(expected, result);
+    }
+

@@ -1,0 +1,12 @@
+    /** Process GET of new user page (allows admin to create a user) */
+    public ActionForward createUser(
+            ActionMapping       mapping,
+            ActionForm          actionForm,
+            HttpServletRequest  request,
+            HttpServletResponse response)
+            throws IOException, ServletException {
+        UserFormEx userForm = (UserFormEx)actionForm;
+        userForm.setAdminCreated(true);
+        return registerUser(mapping, actionForm, request, response);
+    }
+

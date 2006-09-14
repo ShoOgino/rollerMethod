@@ -5,20 +5,17 @@
         Roller roller = RollerFactory.getRoller();
         WeblogEntryData entry = (WeblogEntryData)
             RequestUtils.lookup(pageContext, name, property, scope);
-        if (Utilities.isNotEmpty(entry.getSummary())) {
+        if (StringUtils.isNotEmpty(entry.getSummary())) {
             String xformed = entry.getSummary();
             try {        
                 if (entry.getPlugins() != null) {
                     RollerContext rctx = 
                         RollerContext.getRollerContext();
-                    PagePluginManager ppmgr = roller.getPagePluginManager();
-                    Map plugins = ppmgr.createAndInitPagePlugins(
-                        entry.getWebsite(),
-                        rctx.getServletContext(),
-                        rctx.getAbsoluteContextUrl((HttpServletRequest)pageContext.getRequest()),
-                        new VelocityContext());
-                    xformed = ppmgr.applyPagePlugins(
-                        entry, plugins, entry.getSummary(), true);
+                    PluginManager ppmgr = roller.getPagePluginManager();
+                    Map plugins = ppmgr.getWeblogEntryPlugins(
+                        entry.getWebsite());
+                    xformed = ppmgr.applyWeblogEntryPlugins(
+                        plugins, entry, entry.getSummary());
                 }               
                 pageContext.getOut().println(xformed);
             } catch (Throwable e) {

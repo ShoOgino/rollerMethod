@@ -3,45 +3,36 @@
             ActionForm          actionForm,
             HttpServletRequest  request,
             HttpServletResponse response)
-            throws Exception
-    {
+            throws Exception {
         ActionErrors errors = new ActionErrors();
         ActionMessages msgs = new ActionMessages();
         RollerSession rses = RollerSession.getRollerSession(request);
-        MemberPermissionsPageModel model = 
-            new MemberPermissionsPageModel(request, response, mapping);
+        MemberPermissionsPageModel model =
+                new MemberPermissionsPageModel(request, response, mapping);
         
         // Ensure use has admin perms for this weblog
         if (model.getWebsite() != null && rses.isUserAuthorizedToAdmin(model.getWebsite())) {
-
+            
             UserManager userMgr = RollerFactory.getRoller().getUserManager();
             
             Iterator iter = model.getPermissions().iterator();
             int removed = 0;
             int changed = 0;
-            while (iter.hasNext())
-            {
+            while (iter.hasNext()) {
                 PermissionsData perms = (PermissionsData)iter.next();
                 String sval = request.getParameter("perm-" + perms.getId());
-                if (sval != null)
-                {
+                if (sval != null) {
                     short val = Short.parseShort(sval);
                     UserData user = rses.getAuthenticatedUser();
-                    if (perms.getUser().getId().equals(user.getId()) 
-                            && val < perms.getPermissionMask())
-                    {
+                    if (perms.getUser().getId().equals(user.getId())
+                    && val < perms.getPermissionMask()) {
                         errors.add(null,new ActionError(
-                            "memberPermissions.noSelfDemotions"));
-                    }
-                    else if (val != perms.getPermissionMask()) 
-                    {
-                        if (val == -1) 
-                        {
+                                "memberPermissions.noSelfDemotions"));
+                    } else if (val != perms.getPermissionMask()) {
+                        if (val == -1) {
                             userMgr.removePermissions(perms);
                             removed++;
-                        }
-                        else
-                        {
+                        } else {
                             perms.setPermissionMask(val);
                             userMgr.savePermissions(perms);
                             changed++;
@@ -49,24 +40,21 @@
                     }
                 }
             }
-            if (removed > 0 || changed > 0)
-            {
+            if (removed > 0 || changed > 0) {
                 RollerFactory.getRoller().flush();
             }
-            if (removed > 0) 
-            {
+            if (removed > 0) {
                 msgs.add(null,new ActionMessage(
-                    "memberPermissions.membersRemoved", new Integer(removed)));
+                        "memberPermissions.membersRemoved", new Integer(removed)));
             }
-            if (changed > 0)
-            {
+            if (changed > 0) {
                 msgs.add(null,new ActionMessage(
-                    "memberPermissions.membersChanged", new Integer(changed)));
+                        "memberPermissions.membersChanged", new Integer(changed)));
             }
             saveErrors(request, errors);
             saveMessages(request, msgs);
-            MemberPermissionsPageModel updatedModel = 
-                new MemberPermissionsPageModel(request, response, mapping);
+            MemberPermissionsPageModel updatedModel =
+                    new MemberPermissionsPageModel(request, response, mapping);
             request.setAttribute("model", updatedModel);
             ActionForward forward = mapping.findForward("memberPermissions.page");
             return forward;

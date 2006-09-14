@@ -6,30 +6,32 @@
         String localURL = RollerRuntimeConfig.getProperty("site.absoluteurl");
         
         // if this is not a local url then let parent deal with it
-        if (StringUtils.isEmpty(localURL) || !sub.getFeedUrl().startsWith(localURL)) {
+        if (StringUtils.isEmpty(localURL) || !sub.getFeedURL().startsWith(localURL)) {
             
-            log.debug("Feed is remote, letting parent handle it "+sub.getFeedUrl());
+            log.debug("Feed is remote, letting parent handle it "+sub.getFeedURL());
             
             return super.getNewEntries(sub, feedFetcher, feedInfoCache);
         }
         
-        // url must be local, lets deal with it
-        Set newEntries = new TreeSet();
         try {
             // for local feeds, sub.author = website.handle
-            if (sub.getAuthor()!=null && sub.getFeedUrl().endsWith(sub.getAuthor())) {
+            // feed is from our domain and we have a handle, lets deal with it
+            if(sub.getAuthor() != null) {
                 
-                log.debug("Getting LOCAL feed "+sub.getFeedUrl());
+                log.debug("Getting LOCAL feed "+sub.getFeedURL());
+                
+                Set newEntries = new TreeSet();
                 
                 // get corresponding website object
                 UserManager usermgr = RollerFactory.getRoller().getUserManager();
                 WebsiteData website = usermgr.getWebsiteByHandle(sub.getAuthor());
-                if (website == null) return newEntries;
+                if (website == null) 
+                    return newEntries;
                 
                 // figure website last update time
                 WeblogManager blogmgr = RollerFactory.getRoller().getWeblogManager();
                 
-                Date siteUpdated = blogmgr.getWeblogLastPublishTime(website);
+                Date siteUpdated = website.getLastModified();
                 if (siteUpdated == null) { // Site never updated, skip it
                     log.warn("Last-publish time null, skipping local feed ["
                             + website.getHandle() + "]");
@@ -43,12 +45,15 @@
                             "site.newsfeeds.defaultEntries");
                     entries = blogmgr.getWeblogEntries(
                             website,
+                            null,
                             null,                        // startDate
                             new Date(),                  // endDate
                             null,                        // catName
                             WeblogEntryData.PUBLISHED,   // status
                             null,                        // sortby (null means pubTime)
-                            new Integer(entryCount));    // maxEntries
+                            null,                        // locale
+                            0,                           // offset
+                            entryCount);                 
                     
                     sub.setLastUpdated(siteUpdated);
                     saveSubscription(sub);
@@ -63,12 +68,8 @@
                 }
                 
                 // Populate subscription object with new entries
-                PagePluginManager ppmgr = RollerFactory.getRoller().getPagePluginManager();
-                Map pagePlugins = ppmgr.createAndInitPagePlugins(
-                        website,
-                        null,
-                        RollerRuntimeConfig.getProperty("site.absoluteurl"),
-                        new VelocityContext());
+                PluginManager ppmgr = RollerFactory.getRoller().getPagePluginManager();
+                Map pagePlugins = ppmgr.getWeblogEntryPlugins(website);
                 Iterator entryIter = entries.iterator();
                 while (entryIter.hasNext()) {
                     try {
@@ -82,13 +83,14 @@
                         log.error("ERROR processing subscription entry", e);
                     }
                 }
+                
                 return newEntries;
             }
         } catch (Exception e) {
             log.warn("Problem reading local feed", e);
         }
         
-        log.debug("Failed to fetch locally, trying remote "+sub.getFeedUrl());
+        log.debug("Failed to fetch locally, trying remote "+sub.getFeedURL());
         
         // if there was an error then try normal planet method
         return super.getNewEntries(sub, feedFetcher, feedInfoCache);

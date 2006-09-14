@@ -1,10 +1,9 @@
     /**
      * convenience method for removing contents of a weblog.
-     *
      * TODO BACKEND: use manager methods instead of queries here
      */
-    private void removeWebsiteContents(WebsiteData website) 
-            throws HibernateException, RollerException {
+    private void removeWebsiteContents(WebsiteData website)
+    throws HibernateException, RollerException {
         
         Session session = this.strategy.getSession();
         
@@ -51,7 +50,7 @@
             this.strategy.remove(referer);
         }
         
-                
+        
         // remove associated pages
         Criteria pageQuery = session.createCriteria(WeblogTemplate.class);
         pageQuery.add(Expression.eq("website", website));

@@ -15,7 +15,7 @@
             String entryid = form.getId();
             if ( entryid == null ) {
                 entryid =
-                        request.getParameter(RollerRequest.WEBLOGENTRYID_KEY);
+                        request.getParameter(RequestConstants.WEBLOGENTRY_ID);
             }
             Roller roller = RollerFactory.getRoller();
             RollerContext rctx= RollerContext.getRollerContext();
@@ -25,12 +25,9 @@
             RollerSession rses = RollerSession.getRollerSession(request);
             if (rses.isUserAuthorizedToAuthor(entry.getWebsite())) {
                 // Run entry through registered PagePlugins
-                PagePluginManager ppmgr = roller.getPagePluginManager();
-                Map plugins = ppmgr.createAndInitPagePlugins(
-                        entry.getWebsite(),
-                        RollerContext.getRollerContext().getServletContext(),
-                        RollerContext.getRollerContext().getAbsoluteContextUrl(request),
-                        new VelocityContext());
+                PluginManager ppmgr = roller.getPagePluginManager();
+                Map plugins = ppmgr.getWeblogEntryPlugins(
+                        entry.getWebsite());
                 
                 String content = "";
                 if (!StringUtils.isEmpty(entry.getText())) {
@@ -38,12 +35,12 @@
                 } else {
                     content = entry.getSummary();
                 }
-                content = ppmgr.applyPagePlugins(entry, plugins, content, true);
+                content = ppmgr.applyWeblogEntryPlugins(plugins, entry, content);
 
                 String title = entry.getTitle();
                 String excerpt = StringUtils.left( Utilities.removeHTML(content),255 );
                 
-                String url = rctx.createEntryPermalink(entry, request, true);
+                String url = entry.getPermalink();
                 String blog_name = entry.getWebsite().getName();
                 
                 if (form.getTrackbackUrl() != null) {
@@ -112,7 +109,7 @@
                                     StringBuffer resultBuff = new StringBuffer();
                                     while ((line = rd.readLine()) != null) {
                                         resultBuff.append(
-                                                Utilities.escapeHTML(line, true));
+                                            StringEscapeUtils.escapeHtml(line));
                                         resultBuff.append("<br />");
                                     }
                                     resultMsg.add(ActionMessages.GLOBAL_MESSAGE,

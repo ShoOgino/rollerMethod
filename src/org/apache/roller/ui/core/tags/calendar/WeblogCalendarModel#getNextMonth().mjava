@@ -1,0 +1,7 @@
+    public Date getNextMonth() {
+        Calendar nextCal = getCalendar();
+        nextCal.setTime( day );
+        nextCal.add( Calendar.MONTH, 1 );
+        return getFirstDayOfMonth(nextCal).getTime();
+    }
+

@@ -18,7 +18,7 @@
                 
             } catch(ThemeNotFoundException tnfe) {
                 // i sure hope not!
-                mLogger.error(tnfe);
+                log.error(tnfe);
             }
         }
         
@@ -29,7 +29,7 @@
         }
         
         if(template != null)
-            mLogger.debug("returning default template id ["+template.getId()+"]");
+            log.debug("returning default template id ["+template.getId()+"]");
         
         return template;
     }

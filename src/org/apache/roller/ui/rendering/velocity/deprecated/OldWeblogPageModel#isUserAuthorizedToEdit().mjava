@@ -1,0 +1,13 @@
+    public boolean isUserAuthorizedToEdit() {
+        try {
+            RollerSession rses =
+                    RollerSession.getRollerSession(mRequest);
+            if (rses.getAuthenticatedUser() != null && mWebsite != null) {
+                return rses.isUserAuthorizedToAuthor(mWebsite);
+            }
+        } catch (Exception e) {
+            mLogger.warn("PageModel.isUserAuthorizedToEdit()", e);
+        }
+        return false;
+    }
+

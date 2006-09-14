@@ -22,9 +22,25 @@
                 try 
                 {
                     UserManager umgr = RollerFactory.getRoller().getUserManager();
-                    UserData user = umgr.getUserByUsername(principal.getName());
+                    UserData user = umgr.getUserByUserName(principal.getName());
+
+                    // try one time to auto-provision, only happens if user==null
+                    // which means installation has SSO-enabled in security.xml
+                     if(user == null && RollerConfig.getBooleanProperty("users.sso.autoProvision.enabled")) {                    
+                       // provisioning enabled, get provisioner and execute
+                       AutoProvision provisioner = RollerContext.getAutoProvision();
+                       if(provisioner != null) 
+                       {
+                           boolean userProvisioned = provisioner.execute();
+                           if(userProvisioned) 
+                           {
+                               // try lookup again real quick
+                               user = umgr.getUserByUserName(principal.getName());
+                           }
+                       }
+                     }
                     // only set authenticated user if user is enabled
-                    if (user.getEnabled().booleanValue()) 
+                    if(user != null && user.getEnabled().booleanValue()) 
                     {
                         rollerSession.setAuthenticatedUser(user);  
                     }                    

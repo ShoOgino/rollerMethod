@@ -1,0 +1,78 @@
+    public List getWeblogEntries(
+            WebsiteData website,
+            UserData    user,
+            Date        startDate,
+            Date        endDate,
+            String      catName,
+            String      status,
+            String      sortby,
+            String      locale,
+            int         offset,
+            int         length) throws RollerException {
+        
+        WeblogCategoryData cat = null;
+        if (StringUtils.isNotEmpty(catName) && website != null) {
+            cat = getWeblogCategoryByPath(website, catName);
+            if (cat == null) catName = null;
+        }
+        if (catName != null && catName.trim().equals("/")) {
+            catName = null;
+        }
+        
+        try {
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
+            Criteria criteria = session.createCriteria(WeblogEntryData.class);
+            
+            if (website != null) {
+                criteria.add(Expression.eq("website", website));
+            } else {
+                criteria.createAlias("website","w");
+                criteria.add(Expression.eq("w.enabled", Boolean.TRUE));
+            }
+            
+            if (user != null) {
+                criteria.add(Expression.eq("creator", user));
+            }
+
+            if (startDate != null) {
+                criteria.add(
+                        Expression.ge("pubTime", startDate));
+            }
+            
+            if (endDate != null) {
+                criteria.add(
+                        Expression.le("pubTime", endDate));
+            }
+            
+            if (cat != null && website != null) {
+                criteria.add(Expression.eq("category", cat));
+            }
+            
+            if (status != null) {
+                criteria.add(Expression.eq("status", status));
+            }
+            
+            if (locale != null) {
+                criteria.add(Expression.ilike("locale", locale, MatchMode.START));
+            }
+            
+            if (sortby != null && sortby.equals("updateTime")) {
+                criteria.addOrder(Order.desc("updateTime"));
+            } else {
+                criteria.addOrder(Order.desc("pubTime"));
+            }
+            
+            if (offset != 0) {
+                criteria.setFirstResult(offset);
+            }
+            if (length != -1) {
+                criteria.setMaxResults(length);
+            }
+            return criteria.list();
+            
+        } catch (HibernateException e) {
+            log.error(e);
+            throw new RollerException(e);
+        }
+    }
+

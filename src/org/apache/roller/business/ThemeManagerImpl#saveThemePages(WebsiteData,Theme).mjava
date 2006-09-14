@@ -38,16 +38,22 @@
                 if (template != null) {
                     // User already has page by that name, so overwrite it.
                     template.setContents(theme_template.getContents());
+                    template.setLink(theme_template.getLink());
                     
                 } else {
                     // User does not have page by that name, so create new page.
-                    template = new WeblogTemplate( null,
+                    template = new WeblogTemplate(
+                            null,                               // id
                             website,                            // website
                             theme_template.getName(),           // name
                             theme_template.getDescription(),    // description
-                            theme_template.getName(),           // link
+                            theme_template.getLink(),           // link
                             theme_template.getContents(),       // contents
-                            new Date()                          // last mod
+                            new Date(),                         // last mod
+                            theme_template.getTemplateLanguage(), // temp lang
+                            theme_template.isHidden(),          // hidden
+                            theme_template.isNavbar(),          // navbar
+                            theme_template.getDecoratorName()   // decorator
                             );
                     userMgr.savePage( template );
                 }

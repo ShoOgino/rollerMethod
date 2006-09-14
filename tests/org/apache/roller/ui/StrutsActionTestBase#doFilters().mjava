@@ -1,0 +1,9 @@
+    protected void doFilters() {
+        servletModule.createFilter(PersistenceSessionFilter.class);
+        servletModule.createFilter(RequestFilter.class);
+        servletModule.setDoChain(true);
+        servletModule.doFilter();
+        getMockFactory().addRequestWrapper(new HttpServletRequestWrapper(
+                (HttpServletRequest)servletModule.getFilteredRequest()));
+    }
+

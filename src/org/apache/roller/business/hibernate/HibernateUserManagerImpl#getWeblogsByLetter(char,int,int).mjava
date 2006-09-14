@@ -1,0 +1,20 @@
+    public List getWeblogsByLetter(char letter, int offset, int length) 
+        throws RollerException {
+        // TODO: ATLAS getWeblogsByLetter DONE
+        try {
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
+            Criteria criteria = session.createCriteria(WebsiteData.class);
+            criteria.add(Expression.like("handle", new String(new char[]{letter}) + "%", MatchMode.START));
+            criteria.addOrder(Order.asc("handle"));
+            if (offset != 0) {
+                criteria.setFirstResult(offset);
+            }
+            if (length != -1) {
+                criteria.setMaxResults(length);
+            }
+            return criteria.list();
+        } catch (HibernateException e) {
+            throw new RollerException(e);
+        }
+    }
+

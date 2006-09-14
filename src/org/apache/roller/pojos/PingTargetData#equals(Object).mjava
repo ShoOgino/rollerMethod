@@ -4,16 +4,23 @@
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof PingTargetData)) return false;
-        
+
         final PingTargetData pingTargetData = (PingTargetData) o;
-        
+
         if (conditionCode != pingTargetData.getConditionCode()) return false;
         if (id != null ? !id.equals(pingTargetData.getId()) : pingTargetData.getId() != null) return false;
-        if (lastSuccess != null ? !lastSuccess.equals(pingTargetData.getLastSuccess()) : pingTargetData.getLastSuccess() != null) return false;
+        if (lastSuccess != null ? !lastSuccess.equals(pingTargetData.getLastSuccess()) : pingTargetData.getLastSuccess() != null)
+        {
+            return false;
+        }
         if (name != null ? !name.equals(pingTargetData.getName()) : pingTargetData.getName() != null) return false;
-        if (pingUrl != null ? !pingUrl.equals(pingTargetData.getPingUrl()) : pingTargetData.getPingUrl() != null) return false;
-        if (website != null ? !website.equals(pingTargetData.getWebsite()) : pingTargetData.getWebsite() != null) return false;
-        
+        if (pingUrl != null ? !pingUrl.equals(pingTargetData.getPingUrl()) : pingTargetData.getPingUrl() != null) {
+            return false;
+        }
+        if (website != null ? !website.equals(pingTargetData.getWebsite()) : pingTargetData.getWebsite() != null) {
+            return false;
+        }
+
         return true;
     }
 

@@ -1,0 +1,44 @@
+    /** Encapsulates WeblogManager.getWeblogCategories() */
+    public List getWeblogCategories(String categoryName) {
+        List ret = null;
+        if (VELOCITY_NULL.equals(categoryName)) categoryName = null;
+        
+        // Make sure we have not already fetched this category.
+        if (categoryName != null) {
+            ret = (List)mCategories.get(categoryName);
+        } else {
+            ret = (List)mCategories.get("zzz_null_zzz");
+        }
+        
+        if (null == ret) {
+            try {
+                WeblogCategoryData category = null;
+                if (categoryName != null) {
+                    category = mWeblogMgr.getWeblogCategoryByPath(
+                            mWebsite, null, categoryName);
+                } else {
+                    category = mWebsite.getDefaultCategory();
+                }
+                
+                List mRet = category.getWeblogCategories();
+                
+                // wrap pojos
+                ret = new ArrayList(mRet.size());
+                Iterator it = mRet.iterator();
+                int i=0;
+                while(it.hasNext()) {
+                    ret.add(i, WeblogCategoryDataWrapper.wrap((WeblogCategoryData)it.next()));
+                    i++;
+                }
+                if (categoryName != null) {
+                    mCategories.put(categoryName, ret);
+                } else {
+                    mCategories.put("zzz_null_zzz", ret);
+                }
+            } catch (RollerException e) {
+                mLogger.error(e);
+            }
+        }
+        return ret;
+    }
+

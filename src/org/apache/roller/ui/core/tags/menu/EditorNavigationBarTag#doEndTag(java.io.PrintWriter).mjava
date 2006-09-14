@@ -1,25 +1,16 @@
-   	//------------------------------------------------------------- 
-    public int doEndTag(java.io.PrintWriter pw) throws JspException
-    {
-		try 
-		{
-			HttpServletRequest request = 
-				(HttpServletRequest)pageContext.getRequest(); 
-			RollerRequest rreq = RollerRequest.getRollerRequest(request);
-			RollerSession rollerSession = RollerSession.getRollerSession(request);
-			if ( rollerSession.isGlobalAdminUser() )
-			{
-				return super.doEndTag(pw);
-			}
-			else
-			{
-				return EVAL_PAGE;
-			}
-		}
-		catch (Exception e)
-		{
-			mLogger.error("EditorNavigationBarTag exception",e);
-			throw new JspException(e);
-		}
+    public int doEndTag(java.io.PrintWriter pw) throws JspException {
+        try {
+            HttpServletRequest request =
+                    (HttpServletRequest)pageContext.getRequest();
+            RollerSession rollerSession = RollerSession.getRollerSession(request);
+            if ( rollerSession.isGlobalAdminUser() ) {
+                return super.doEndTag(pw);
+            } else {
+                return EVAL_PAGE;
+            }
+        } catch (Exception e) {
+            mLogger.error("EditorNavigationBarTag exception",e);
+            throw new JspException(e);
+        }
     }
 

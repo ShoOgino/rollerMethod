@@ -1,0 +1,16 @@
+    /**
+     * Load old page models, but only if they are enabled.
+     */
+    public static void loadOldModels(
+            Map model,
+            HttpServletRequest  request,
+            HttpServletResponse response,
+            PageContext pageContext,
+            WeblogPageRequest pageRequest) throws RollerException {
+        
+        // Only load old models if it's enabled     
+        if (RollerConfig.getBooleanProperty("rendering.legacyModels.enabled")) { 
+            ContextLoader.setupContext(model, request, response, pageContext, pageRequest);            
+        }
+    }
+

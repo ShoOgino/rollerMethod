@@ -1,20 +1,19 @@
-    /**  
+    /**
      * <p>Publish time is the time that an entry is to be (or was) made available
-     * for viewing by newsfeed readers and visitors to the Roller site.</p> 
-     * 
+     * for viewing by newsfeed readers and visitors to the Roller site.</p>
+     *
      * <p>Roller stores time using the timeZone of the server itself. When
-     * times are displayed  in a user's weblog they must be translated 
+     * times are displayed  in a user's weblog they must be translated
      * to the user's timeZone.</p>
      *
-     * <p>NOTE: Times are stored using the SQL TIMESTAMP datatype, which on 
+     * <p>NOTE: Times are stored using the SQL TIMESTAMP datatype, which on
      * MySQL has only a one-second resolution.</p>
      *
      * @roller.wrapPojoMethod type="simple"
-     * @ejb:persistent-field 
+     * @ejb:persistent-field
      * @hibernate.property column="pubtime" non-null="true" unique="false"
      */
-    public java.sql.Timestamp getPubTime()
-    {
+    public Timestamp getPubTime() {
         return this.pubTime;
     }
 

@@ -5,13 +5,13 @@
         
         Set newEntries = new TreeSet();
         SyndFeed feed = null;
-        URL feedUrl = null;
+        URL feedURL = null;
         Date lastUpdated = new Date();
         try {
-            feedUrl = new URL(sub.getFeedUrl());
-            log.debug("Get feed from cache "+sub.getFeedUrl());
-            feed = feedFetcher.retrieveFeed(feedUrl);
-            SyndFeedInfo feedInfo = feedInfoCache.getFeedInfo(feedUrl);
+            feedURL = new URL(sub.getFeedURL());
+            log.debug("Get feed from cache "+sub.getFeedURL());
+            feed = feedFetcher.retrieveFeed(feedURL);
+            SyndFeedInfo feedInfo = feedInfoCache.getFeedInfo(feedURL);
             if (feedInfo.getLastModified() != null) {
                 long lastUpdatedLong =
                         ((Long)feedInfo.getLastModified()).longValue();
@@ -21,7 +21,7 @@
             }
             Thread.sleep(100); // be nice
         } catch (Exception e) {
-            log.warn("ERROR parsing " + sub.getFeedUrl()
+            log.warn("ERROR parsing " + sub.getFeedURL()
             + " : " + e.getClass().getName() + " : " + e.getMessage());
             log.debug(e);
             return newEntries; // bail out
@@ -49,9 +49,9 @@
             // saving sub here causes detachment issues, so we save it later
         }
         
-        // Kludge for Feeds without entry dates: most recent entry is given
-        // feed's last publish date (or yesterday if none exists) and earler
-        // entries are placed at once day intervals before that.
+        // Horrible kludge for Feeds without entry dates: most recent entry is 
+        // given feed's last publish date (or yesterday if none exists) and 
+        // earler entries are placed at once day intervals before that.
         Calendar cal = Calendar.getInstance();
         if (sub.getLastUpdated() != null) {
             cal.setTime(sub.getLastUpdated());
@@ -67,13 +67,13 @@
                 SyndEntry romeEntry = (SyndEntry) entries.next();
                 PlanetEntryData entry =
                         new PlanetEntryData(feed, romeEntry, sub);
-                if (entry.getPublished() == null) {
+                if (entry.getPubTime() == null) {
                     log.debug(
-                            "No published date, assigning fake date for "+feedUrl);
-                    entry.setPublished(cal.getTime());
+                            "No published date, assigning fake date for "+feedURL);
+                    entry.setPubTime(new Timestamp(cal.getTimeInMillis()));
                 }
                 if (entry.getPermalink() == null) {
-                    log.warn("No permalink, rejecting entry from "+feedUrl);
+                    log.warn("No permalink, rejecting entry from "+feedURL);
                 } else {
                     newEntries.add(entry);
                 }

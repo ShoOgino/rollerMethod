@@ -3,7 +3,7 @@
             Session session = ((HibernatePersistenceStrategy)strategy).getSession();
             Criteria criteria =
                     session.createCriteria(PlanetSubscriptionData.class);
-            criteria.addOrder(Order.asc("feedUrl"));
+            criteria.addOrder(Order.asc("feedURL"));
             List list = criteria.list();
             return list.iterator();
         } catch (Throwable e) {

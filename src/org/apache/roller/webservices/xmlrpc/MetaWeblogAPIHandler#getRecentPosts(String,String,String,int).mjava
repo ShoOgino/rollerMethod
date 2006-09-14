@@ -8,8 +8,8 @@
      * @throws XmlRpcException
      * @return
      */
-    public Object getRecentPosts(String blogid, String userid, String password, 
-                                    int numposts) throws Exception {
+    public Object getRecentPosts(String blogid, String userid, String password,
+            int numposts) throws Exception {
         
         mLogger.debug("getRecentPosts() Called ===========[ SUPPORTED ]=====");
         mLogger.debug("     BlogId: " + blogid);
@@ -25,18 +25,19 @@
             WeblogManager weblogMgr = roller.getWeblogManager();
             if (website != null) {
                 List entries = weblogMgr.getWeblogEntries(
-                    website,           // website
-                    null,              // startDate
-                    null,              // endDate
-                    null,              // catName
-                    null,              // status
-                    "updateTime",      // sortby
-                    new Integer(numposts));  // maxEntries
+                        website,           // website
+                        null,
+                        null,              // startDate
+                        null,              // endDate
+                        null,              // catName
+                        null,              // status
+                        "updateTime",      // sortby
+                        null,                     0, numposts);
                 
                 Iterator iter = entries.iterator();
                 while (iter.hasNext()) {
-                     WeblogEntryData entry = (WeblogEntryData)iter.next();
-                     results.addElement(createPostStruct(entry, userid));
+                    WeblogEntryData entry = (WeblogEntryData)iter.next();
+                    results.addElement(createPostStruct(entry, userid));
                 }
             }
             return results;

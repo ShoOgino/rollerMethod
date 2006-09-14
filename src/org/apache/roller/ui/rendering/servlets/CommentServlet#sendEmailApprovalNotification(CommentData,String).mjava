@@ -45,7 +45,7 @@
             //------------------------------------------
             // --- Send message to author of approved comment
             try {
-                javax.naming.Context ctx = (javax.naming.Context)
+                Context ctx = (Context)
                 new InitialContext().lookup("java:comp/env");
                 Session session = (Session)ctx.lookup("mail/Session");
                 String[] cc = null;
@@ -55,7 +55,7 @@
                     null, // cc
                     null, // bcc
                     subject, msg.toString(), false);
-            } catch (javax.naming.NamingException ne) {
+            } catch (NamingException ne) {
                 log.error("Unable to lookup mail session.  Check configuration.  NamingException: " + ne.getMessage());
             } catch (Exception e) {
                 log.warn("Exception sending comment mail: " + e.getMessage());

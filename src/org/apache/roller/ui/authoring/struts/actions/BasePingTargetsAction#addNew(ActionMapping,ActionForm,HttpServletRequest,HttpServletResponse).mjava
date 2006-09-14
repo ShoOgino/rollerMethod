@@ -8,13 +8,9 @@
      * @return the edit page (blank)
      * @throws Exception
      */
-    public ActionForward addNew(ActionMapping mapping, ActionForm form,
-                                HttpServletRequest req, HttpServletResponse res)
-        throws Exception
-    {
-        BasePageModel pageModel = 
-            new BasePageModel(getPingTargetEditTitle(), req, res, mapping);
-        req.setAttribute("model",pageModel);            
+    public ActionForward addNew(ActionMapping mapping, ActionForm form, HttpServletRequest req, HttpServletResponse res) throws Exception {
+        BasePageModel pageModel = new BasePageModel(getPingTargetEditTitle(), req, res, mapping);
+        req.setAttribute("model", pageModel);
         return mapping.findForward(PING_TARGET_EDIT_PAGE);
     }
 

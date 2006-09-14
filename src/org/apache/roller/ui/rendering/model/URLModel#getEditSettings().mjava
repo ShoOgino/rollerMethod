@@ -1,0 +1,14 @@
+    /** URL for editing weblog settings */
+    public String getEditSettings() {
+        String returnURL = null;
+        Map params = new HashMap();
+        params.put(RequestConstants.WEBLOG, weblog.getHandle());        
+        try {
+            returnURL = RequestUtils.computeURL(pageContext,
+                "editWebsite", null, null, null, params, null, false);
+        } catch (MalformedURLException mue) {
+            log.error("ERROR forming Struts URL: ", mue);
+        }
+        return returnURL;
+    }
+

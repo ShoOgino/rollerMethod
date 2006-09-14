@@ -1,0 +1,18 @@
+    public void init(Map initData) throws RollerException {
+        
+        // we expect the init data to contain a weblogRequest object
+        this.weblogRequest = (WeblogRequest) initData.get("weblogRequest");
+        if(this.weblogRequest == null) {
+            throw new RollerException("expected weblogRequest from init data");
+        }
+        
+        if (weblogRequest instanceof WeblogPageRequest) {
+            Template weblogPage = ((WeblogPageRequest)weblogRequest).getWeblogPage();
+            pageLink = (weblogPage != null) ? weblogPage.getLink() : null;
+            pageNum = ((WeblogPageRequest)weblogRequest).getPageNum();
+        }
+        
+        // extract weblog object
+        weblog = weblogRequest.getWeblog();
+    }
+

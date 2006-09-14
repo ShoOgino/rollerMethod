@@ -3,12 +3,11 @@
      * Creating the index manager more than once will definately result in
      * errors. The preferred way of getting an index is through the
      * RollerContext.
-     * 
+     *
      * @param indexDir -
      *            the path to the index directory
      */
-    public IndexManagerImpl()
-    {
+    public IndexManagerImpl() {
         // check config to see if the internal search is enabled
         String enabled = RollerConfig.getProperty("search.enabled");
         if("false".equalsIgnoreCase(enabled))
@@ -16,91 +15,69 @@
         
         // we also need to know what our index directory is
         // Note: system property expansion is now handled by RollerConfig
-        String indexDir = RollerConfig.getProperty("search.index.dir");
-
-        this.indexDir = indexDir.replace('/', File.separatorChar);
+        String searchIndexDir = RollerConfig.getProperty("search.index.dir");
+        
+        this.indexDir = searchIndexDir.replace('/', File.separatorChar);
         
         // a little debugging
         mLogger.info("search enabled: " + this.searchEnabled);
         mLogger.info("index dir: " + this.indexDir);
-
+        
         String test = indexDir + File.separator + ".index-inconsistent";
         indexConsistencyMarker = new File(test);
-
+        
         // only setup the index if search is enabled
-        if (this.searchEnabled) 
-        {
+        if (this.searchEnabled) {
             
             // 1. If inconsistency marker exists.
             //     Delete index
             // 2. if we're using RAM index
             //     load ram index wrapper around index
             //
-            if (indexConsistencyMarker.exists()) 
-            {
+            if (indexConsistencyMarker.exists()) {
                 getFSDirectory(true);
                 inconsistentAtStartup = true;
-            } 
-            else 
-            {
-                try 
-                {
+            } else {
+                try {
                     File makeIndexDir = new File(indexDir);
-                    if (!makeIndexDir.exists()) 
-                    {
+                    if (!makeIndexDir.exists()) {
                         makeIndexDir.mkdirs();
                         inconsistentAtStartup = true;
                     }
                     indexConsistencyMarker.createNewFile();
-                } 
-                catch (IOException e) 
-                {
+                } catch (IOException e) {
                     mLogger.error(e);
                 }
             }
             
-            if (indexExists()) 
-            {
-                if (useRAMIndex) 
-                {
+            if (indexExists()) {
+                if (useRAMIndex) {
                     Directory filesystem = getFSDirectory(false);
                     
-                    try 
-                    {
+                    try {
                         fRAMindex = new RAMDirectory(filesystem);
-                    } 
-                    catch (IOException e)                     
-                    {
+                    } catch (IOException e) {
                         mLogger.error("Error creating in-memory index", e);
                     }
                 }
-            } 
-            else 
-            {
-                if (useRAMIndex) 
-                {
+            } else {
+                if (useRAMIndex) {
                     fRAMindex = new RAMDirectory();
                     createIndex(fRAMindex);
-                } 
-                else 
-                {
+                } else {
                     createIndex(getFSDirectory(true));
                 }
             }
             
-            if (isInconsistentAtStartup())
-            {
+            if (isInconsistentAtStartup()) {
                 mLogger.info(
-                    "Index was inconsistent. Rebuilding index in the background...");
-                try 
-                {                    
+                        "Index was inconsistent. Rebuilding index in the background...");
+                try {
                     rebuildWebsiteIndex();
-                }
-                catch (RollerException e) 
-                {
+                } catch (RollerException e) {
                     mLogger.error("ERROR: scheduling re-index operation");
                 }
-            }       
+            }
         }
     }
 

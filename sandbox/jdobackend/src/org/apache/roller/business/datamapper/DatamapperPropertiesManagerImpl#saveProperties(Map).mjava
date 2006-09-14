@@ -1,0 +1,8 @@
+    public void saveProperties(Map properties) 
+            throws RollerException {
+        Iterator it = properties.values().iterator();
+        while (it.hasNext()) {
+            strategy.store((RollerPropertyData)it.next());
+        }
+    }
+

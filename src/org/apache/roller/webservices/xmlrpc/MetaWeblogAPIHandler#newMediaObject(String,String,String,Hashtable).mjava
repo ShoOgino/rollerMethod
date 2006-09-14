@@ -3,8 +3,8 @@
      * allowed by the RollerConfig file-upload settings, then the file will be
      * placed in the user's upload diretory.
      */
-    public Object newMediaObject(String blogid, String userid, String password, 
-                                    Hashtable struct) throws Exception {
+    public Object newMediaObject(String blogid, String userid, String password,
+            Hashtable struct) throws Exception {
         
         mLogger.debug("newMediaObject() Called =[ SUPPORTED ]=====");
         mLogger.debug("     BlogId: " + blogid);
@@ -30,14 +30,10 @@
                 // Then save the file
                 fmgr.saveFile(website.getHandle(), name, type, bits.length, new ByteArrayInputStream(bits));
                 
-                RollerRequest rreq = RollerRequest.getRollerRequest();
-                HttpServletRequest request = rreq.getRequest();
-                
                 // TODO: build URL to uploaded file should be done in FileManager
                 String uploadPath = RollerFactory.getRoller().getFileManager().getUploadUrl();
                 uploadPath += "/" + website.getHandle() + "/" + name;
-                String fileLink = RequestUtils.printableURL(
-                        RequestUtils.absoluteURL(request, uploadPath));
+                String fileLink = URLUtilities.getWeblogResourceURL(website, name, true);
                 
                 Hashtable returnStruct = new Hashtable(1);
                 returnStruct.put("url", fileLink);

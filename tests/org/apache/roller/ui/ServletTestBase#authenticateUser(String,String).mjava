@@ -1,0 +1,8 @@
+    /** Convenience method for placing username in role via mockRequest. */
+    protected void authenticateUser(String username, String role) {
+        MockHttpServletRequest mockRequest = getMockFactory().getMockRequest();
+        mockRequest.setRemoteUser(username);
+        mockRequest.setUserPrincipal(new MockPrincipal(username));
+        mockRequest.setUserInRole(role, true);
+    }
+

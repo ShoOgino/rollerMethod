@@ -1,0 +1,16 @@
+    /**
+     * Get the PersistenceManager associated with the 
+     * current thread of control.
+     * @param isTransactionRequired true if a transaction is begun 
+     * if not already active
+     * @return the PersistenceManager
+     */
+    private PersistenceManager getPersistenceManager
+            (boolean isTransactionRequired) {
+        PersistenceManager pm = getThreadLocalPersistenceManager();
+        if (isTransactionRequired && !pm.currentTransaction().isActive()) {
+             pm.currentTransaction().begin();
+        }
+        return pm;
+    }
+

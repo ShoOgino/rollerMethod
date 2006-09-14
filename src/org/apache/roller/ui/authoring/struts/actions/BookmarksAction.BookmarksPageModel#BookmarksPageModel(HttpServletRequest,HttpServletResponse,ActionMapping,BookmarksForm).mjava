@@ -14,10 +14,10 @@
 
             // Find folderid wherever it may be
             String folderId = (String)
-                request.getAttribute(RollerRequest.FOLDERID_KEY);
+                request.getAttribute(RequestConstants.FOLDER_ID);
             if (null == folderId)
             {
-                folderId = request.getParameter(RollerRequest.FOLDERID_KEY);
+                folderId = request.getParameter(RequestConstants.FOLDER_ID);
             }
             if (null == folderId)
             {
@@ -48,7 +48,7 @@
                     parent = parent.getParent();
                 }
                 request.setAttribute(
-                    RollerRequest.PARENTID_KEY, folder.getParent().getId());
+                    RequestConstants.PARENT_ID, folder.getParent().getId());
             }
 
             // Build list of all folders, except for current one, sorted by path.

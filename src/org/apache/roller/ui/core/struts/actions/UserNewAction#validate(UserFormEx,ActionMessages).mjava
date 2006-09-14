@@ -1,0 +1,30 @@
+    /** Validate user form. TODO: replace with Struts validation. */
+    protected ActionMessages validate( UserFormEx form, ActionMessages errors ) {
+      
+        // if usingSSO, we don't want to error on empty password/username from HTML form.
+        form.setDataFromSSO(false);
+        boolean usingSSO = RollerConfig.getBooleanProperty("users.sso.enabled");
+        if(usingSSO) {
+          boolean storePassword = RollerConfig.getBooleanProperty("users.sso.passwords.saveInRollerDb");
+          UserData fromSSO = CustomUserRegistry.getUserDetailsFromAuthentication();
+          if(fromSSO != null) {
+            String password = RollerConfig.getProperty("users.sso.passwords.defaultValue", "<unknown>");
+            if(storePassword) {
+              password = fromSSO.getPassword();
+            }
+            form.setPasswordText(password);
+            form.setPasswordConfirm(password);
+            form.setUserName(fromSSO.getUserName());
+            form.setDataFromSSO(true);
+          }
+        }
+      
+        super.validate(form, errors);
+        if (    StringUtils.isEmpty(form.getPasswordText())
+        && StringUtils.isEmpty(form.getPasswordConfirm())) {
+            errors.add( ActionErrors.GLOBAL_ERROR,
+                    new ActionError("error.add.user.missingPassword"));
+        }
+        return errors;
+    }
+

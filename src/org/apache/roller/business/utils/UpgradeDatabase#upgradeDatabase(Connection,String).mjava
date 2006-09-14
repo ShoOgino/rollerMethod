@@ -1,8 +1,8 @@
     /**
      * Upgrade database if dbVersion is older than desiredVersion.
      */
-    public static void upgradeDatabase(Connection con, String desiredVersion) 
-        throws RollerException {
+    public static void upgradeDatabase(Connection con, String desiredVersion)
+            throws RollerException {
         
         int myVersion = 0;
         int dbversion = -1;
@@ -57,7 +57,7 @@
         
         mLogger.debug("Database version = "+dbversion);
         mLogger.debug("Desired version = "+myVersion);
-            
+        
         if(dbversion < 0) {
             mLogger.info("New installation found, setting db version to "+myVersion);
             UpgradeDatabase.setDatabaseVersion(con, myVersion);
@@ -72,19 +72,21 @@
         // iterate through each upgrade as needed
         // to add to the upgrade sequence simply add a new "if" statement
         // for whatever version needed and then define a new method upgradeXXX()
-        if(dbversion < 130) 
-        {
+        if(dbversion < 130) {
             UpgradeDatabase.upgradeTo130(con);
             dbversion = 130;
         }
-        if (dbversion < 200)
-        {
+        if (dbversion < 200) {
             UpgradeDatabase.upgradeTo200(con);
             dbversion = 200;
         }
         if(dbversion < 210) {
             UpgradeDatabase.upgradeTo210(con);
             dbversion = 210;
+        }
+        if(dbversion < 300) {
+            UpgradeDatabase.upgradeTo300(con);
+            dbversion = 300;
         }
         
         // make sure the database version is the exact version

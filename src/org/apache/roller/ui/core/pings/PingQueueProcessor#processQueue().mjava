@@ -3,16 +3,14 @@
      * an entry is requeued for processing on subsequent passes until the configured maximum number of attempts is
      * reached.
      */
-    public synchronized void processQueue()
-    {
+    public synchronized void processQueue() {
         if (PingConfig.getSuspendPingProcessing()) {
             logger.info("Ping processing has been suspended.  Skipping current round of ping queue processing.");
             return;
         }
 
-        String absoluteContextUrl = rollerContext.getAbsoluteContextUrl();
-        if (absoluteContextUrl == null)
-        {
+        String absoluteContextUrl = RollerRuntimeConfig.getAbsoluteContextURL();
+        if (absoluteContextUrl == null) {
             logger.warn("WARNING: Skipping current ping queue processing round because we cannot yet determine the site's absolute context url.");
             return;
         }
@@ -22,22 +20,18 @@
         // all of the pings for that target at once.  If it becomes an efficiency issue, we should do
         // that.
 
-        try
-        {
+        try {
             if (logger.isDebugEnabled()) logger.debug("Started processing ping queue.");
             // Get all of the entries
             List entries = pingQueueMgr.getAllQueueEntries();
 
             // Process each entry
-            for (Iterator i = entries.iterator(); i.hasNext();)
-            {
+            for (Iterator i = entries.iterator(); i.hasNext();) {
                 PingQueueEntryData pingQueueEntry = (PingQueueEntryData) i.next();
-                processQueueEntry(absoluteContextUrl, pingQueueEntry);
+                processQueueEntry(pingQueueEntry);
             }
             if (logger.isDebugEnabled()) logger.debug("Finished processing ping queue.");
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             logger.error("Unexpected exception processing ping queue!  Aborting this pass of ping queue processing.", ex);
         }
     }

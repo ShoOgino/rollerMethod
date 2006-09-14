@@ -5,10 +5,8 @@
             pd.setPermissionMask(stringToMask(entry.getPermission()));
         }
         
-        // TODO: does the permissions data need to be invalidated?
-        
         try {
-            UserData ud = getRoller().getUserManager().getUserByUsername(entry.getName());
+            UserData ud = getRoller().getUserManager().getUserByUserName(entry.getName());
             WebsiteData wd = getRoller().getUserManager().getWebsiteByHandle(entry.getHandle());
             
             UserManager mgr = getRoller().getUserManager();
@@ -19,6 +17,5 @@
         } catch (RollerException re) {
             throw new InternalException("ERROR: Could not update permissions data", re);
         }
-        
     }
 

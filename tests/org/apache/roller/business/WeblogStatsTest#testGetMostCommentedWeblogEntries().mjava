@@ -1,0 +1,15 @@
+    public void testGetMostCommentedWeblogEntries() throws Exception {        
+        WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();      
+        List list = mgr.getMostCommentedWeblogEntries(null, null, null, 0, -1);
+        
+        assertNotNull(list);
+        assertEquals(3, list.size());
+        
+        StatCount s1 = (StatCount)list.get(0);
+        assertEquals(2L, s1.getCount()); 
+        assertEquals(entry11.getId(), s1.getSubjectId());
+        
+        StatCount s2 = (StatCount)list.get(1);
+        assertEquals(1L, s2.getCount());   
+    }
+

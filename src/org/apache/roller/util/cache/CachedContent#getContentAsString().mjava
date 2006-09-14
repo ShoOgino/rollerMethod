@@ -1,0 +1,15 @@
+    /**
+     * Get the content cached in this object as a String.
+     *
+     * NOTE: the content is only a representation of the data written to the
+     *       enclosed Writer up until the last call to flush().
+     */
+    public String getContentAsString() {
+        try {
+            return new String(this.content,"UTF-8");
+        } catch (UnsupportedEncodingException uex) {
+            // shouldn't ever happen - violates Java Spec.
+            throw new RuntimeException(uex);
+        }
+    }
+

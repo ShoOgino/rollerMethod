@@ -1,19 +1,13 @@
-    private void scheduleIndexOperation(final IndexOperation op)
-    {
-        try
-        {
+    private void scheduleIndexOperation(final IndexOperation op) {
+        try {
             // only if search is enabled
             if(this.searchEnabled) {
                 mLogger.debug("Starting scheduled index operation: "+op.getClass().getName());
                 RollerFactory.getRoller().getThreadManager().executeInBackground(op);
             }
-        }
-        catch (RollerException re)
-        {
+        } catch (RollerException re) {
             mLogger.error("Error getting thread manager", re);
-        }
-        catch (InterruptedException e)
-        {
+        } catch (InterruptedException e) {
             mLogger.error("Error executing operation", e);
         }
     }

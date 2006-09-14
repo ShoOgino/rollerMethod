@@ -1,0 +1,82 @@
+  public static UserData getUserDetailsFromAuthentication() {
+    boolean usingSSO = RollerConfig.getBooleanProperty("users.sso.enabled");
+    if(!usingSSO) {
+      log.info("SSO is not enabled. Skipping CustomUserRegistry functionality.");
+      return null;
+    }
+    
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        
+    if(authentication == null) {
+      log.warn("No Authentication found in SecurityContextHolder.");
+      return null;
+    }
+    
+    Object oPrincipal = authentication.getPrincipal();
+    
+    if(oPrincipal == null) {
+      log.warn("Principal is null. Skipping auto-registration.");
+      return null;
+    }
+
+    if (!(oPrincipal instanceof UserDetails)) {
+      log.warn("Unsupported Principal type in Authentication. Skipping auto-registration.");
+      return null;
+    } 
+    
+    UserDetails userDetails = (UserDetails) oPrincipal;
+    
+    String userName = userDetails.getUsername();
+    String password = userDetails.getPassword();
+    boolean enabled = userDetails.isEnabled();
+
+    UserData ud = new UserData();
+    ud.setId(null);
+    ud.setUserName(userName);
+    
+    boolean storePassword = RollerConfig.getBooleanProperty("users.sso.passwords.save");
+    if(!storePassword) {
+      password = RollerConfig.getProperty("users.sso.passwords.defaultValue","<unknown>");
+    }
+    ud.setPassword(password);
+    ud.setEnabled(enabled ? Boolean.TRUE : Boolean.FALSE);
+    ud.setLocale(Locale.getDefault().toString());
+    ud.setTimeZone(TimeZone.getDefault().getID());
+    ud.setDateCreated(new java.util.Date());
+    
+    if(userDetails instanceof RollerUserDetails) {
+      RollerUserDetails rollerDetails = (RollerUserDetails) userDetails;
+      
+      ud.setFullName(rollerDetails.getFullName());
+      ud.setEmailAddress(rollerDetails.getFullName());
+      if(rollerDetails.getTimeZone() != null) {
+        ud.setTimeZone(rollerDetails.getTimeZone());
+      }
+      
+      if(rollerDetails.getLocale() != null) {
+        ud.setLocale(rollerDetails.getLocale());
+      }
+      
+    } else if(userDetails instanceof LdapUserDetails) {
+      LdapUserDetails ldapDetails = (LdapUserDetails) userDetails;
+      Attributes attributes = ldapDetails.getAttributes();
+      String name = getLdapAttribute(attributes, RollerConfig.getProperty(NAME_LDAP_PROPERTY, DEFAULT_NAME_LDAP_ATTRIBUTE));
+      String email = getLdapAttribute(attributes, RollerConfig.getProperty(EMAIL_LDAP_PROPERTY, DEFAULT_EMAIL_LDAP_ATTRIBUTE));
+      
+      ud.setFullName(name);
+      ud.setEmailAddress(email);
+      
+      String locale = getLdapAttribute(attributes, RollerConfig.getProperty(LOCALE_LDAP_PROPERTY, DEFAULT_LOCALE_LDAP_ATTRIBUTE));
+      String timezone = getLdapAttribute(attributes, RollerConfig.getProperty(TIMEZONE_LDAP_PROPERTY, DEFAULT_TIMEZONE_LDAP_ATTRIBUTE));
+      
+      if(locale != null) {
+        ud.setLocale(locale);
+      }
+      if(timezone != null) {
+        ud.setTimeZone(timezone);
+      }
+    }
+
+    return ud;
+  }
+

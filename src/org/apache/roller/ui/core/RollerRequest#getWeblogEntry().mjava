@@ -16,12 +16,12 @@
         if ( mWeblogEntry == null )
         {        
             // Look for anchor or entry ID that identifies a specific entry 
-            String anchor = mRequest.getParameter(ANCHOR_KEY);
-            if (anchor == null) anchor = mRequest.getParameter(ANCHOR_KEY_OLD);
-            String entryid = mRequest.getParameter(WEBLOGENTRYID_KEY);
+            String anchor = mRequest.getParameter(RequestConstants.ANCHOR);
+            if (anchor == null) anchor = mRequest.getParameter(RequestConstants.ANCHOR);
+            String entryid = mRequest.getParameter(RequestConstants.WEBLOGENTRY_ID);
             if (entryid == null) 
             {
-                entryid = (String)mRequest.getAttribute(WEBLOGENTRYID_KEY);
+                entryid = (String)mRequest.getAttribute(RequestConstants.WEBLOGENTRY_ID);
             }
             try
             {

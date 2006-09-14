@@ -1,0 +1,35 @@
+    /**
+     * Gets most recent entries limited by: weblog and category specified in 
+     * request plus the weblog.entryDisplayCount.
+     */
+    public List getWeblogEntries() {
+        
+        // all feeds get the site-wide default # of entries
+        int entryCount =
+                RollerRuntimeConfig.getIntProperty("site.newsfeeds.defaultEntries");
+        
+        List results = new ArrayList();
+        try {             
+            Roller roller = RollerFactory.getRoller();
+            WeblogManager wmgr = roller.getWeblogManager();
+            List entries = wmgr.getWeblogEntries(
+                    weblog,
+                    null, 
+                    null, 
+                    new Date(), 
+                    feedRequest.getWeblogCategoryName(), 
+                    WeblogEntryData.PUBLISHED, 
+                    "pubTime", 
+                    feedRequest.getLocale(), 
+                    0, 
+                    entryCount);
+            for (Iterator it = entries.iterator(); it.hasNext();) {
+                WeblogEntryData entry = (WeblogEntryData) it.next();
+                results.add(WeblogEntryDataWrapper.wrap(entry));
+            }
+        } catch (Exception e) {
+            log.error("ERROR: fetching weblog list", e);
+        }
+        return results;
+    }
+

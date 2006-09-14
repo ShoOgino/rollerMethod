@@ -11,8 +11,8 @@
                 }
                 UserData ud = toUserData(entry);
                 mgr.addUser(ud);
-                CacheManager.invalidate(ud);
                 getRoller().flush();
+                CacheManager.invalidate(ud);
                 userDatas.add(ud);
             }
             return toUserEntrySet((UserData[])userDatas.toArray(new UserData[0]));

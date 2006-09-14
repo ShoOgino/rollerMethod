@@ -1,50 +1,51 @@
     public ActionForward add(
-        ActionMapping       mapping,
-        ActionForm          actionForm,
-        HttpServletRequest  request,
-        HttpServletResponse response)
-        throws IOException, ServletException
-    {
+            ActionMapping       mapping,
+            ActionForm          actionForm,
+            HttpServletRequest  request,
+            HttpServletResponse response)
+            throws IOException, ServletException {
         ActionForward forward = mapping.findForward("editPages.page");
-        try
-        {
+        try {
             request.setAttribute("model", new BasePageModel(
-                "pagesForm.title", request, response, mapping));   
+                    "pagesForm.title", request, response, mapping));
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             RollerSession rses = RollerSession.getRollerSession(request);
             WebsiteData website = rreq.getWebsite();
-            if ( rses.isUserAuthorizedToAdmin(website) )
-            {
+            if ( rses.isUserAuthorizedToAdmin(website) ) {
                 WeblogTemplateForm form = (WeblogTemplateForm)actionForm;
                 WeblogTemplate data = new WeblogTemplate();
                 form.copyTo(data, request.getLocale());
                 data.setWebsite(website);
-                data.setLastModified( new java.util.Date() );
+                data.setLastModified( new Date() );
                 data.setDescription("");
                 data.setContents("");
                 validateLink( data );
-
+                
+                // all templates start out as velocity templates
+                data.setTemplateLanguage("velocity");
+                
+                // for now, all templates just use _decorator
+                if(!"_decorator".equals(data.getName())) {
+                    data.setDecoratorName("_decorator");
+                }
+                
                 UserManager mgr = RollerFactory.getRoller().getUserManager();
                 mgr.savePage( data );
                 RollerFactory.getRoller().flush();
                 
                 ActionMessages uiMessages = new ActionMessages();
-                uiMessages.add(ActionMessages.GLOBAL_MESSAGE, 
-                        new ActionMessage("pagesForm.addNewPage.success", 
-                                data.getName()));
+                uiMessages.add(ActionMessages.GLOBAL_MESSAGE,
+                        new ActionMessage("pagesForm.addNewPage.success",
+                        data.getName()));
                 saveMessages(request, uiMessages);
-                    
-                actionForm.reset(mapping,request);                
                 
-                addModelObjects(request, response, mapping, website);
-            }
-            else
-            {
+                actionForm.reset(mapping,request);
+                
+                addModelObjects(request, response, mapping, website, data);
+            } else {
                 forward = mapping.findForward("access-denied");
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             mLogger.error("ERROR in action",e);
             throw new ServletException(e);
         }

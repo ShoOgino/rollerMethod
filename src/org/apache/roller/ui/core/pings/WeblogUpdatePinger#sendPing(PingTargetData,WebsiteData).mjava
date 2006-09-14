@@ -1,0 +1,33 @@
+    /**
+     * Send a weblog update ping.
+     *
+     * @param pingTarget         the target site to ping
+     * @param website            the website that changed (from which the ping originates)
+     * @return the result message string sent by the server.
+     * @throws IOException
+     * @throws XmlRpcException
+     */
+    public static PingResult sendPing(PingTargetData pingTarget, WebsiteData website) throws IOException, XmlRpcException {
+        String websiteUrl = website.getAbsoluteURL();
+        String pingTargetUrl = pingTarget.getPingUrl();
+        Set variantOptions = PingConfig.getVariantOptions(pingTargetUrl);
+
+        // Set up the ping parameters.
+        Vector params = new Vector();
+        if (!variantOptions.contains("noname")) {
+            // ping variant for icerocket and anyone with similar bug, where we must omit the blog name.
+            params.addElement(website.getName());
+        }
+        params.addElement(websiteUrl);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Executing ping to '" + pingTargetUrl + "' for website '" + websiteUrl + "' (" + website.getName() + ")" + (variantOptions.isEmpty() ? "" : " with variant options " + variantOptions));
+        }
+
+        // Send the ping.
+        XmlRpcClient client = new XmlRpcClient(pingTargetUrl);
+        PingResult pingResult = parseResult(client.execute("weblogUpdates.ping", params));
+
+        if (logger.isDebugEnabled()) logger.debug("Ping result is: " + pingResult);
+        return pingResult;
+    }
+

@@ -30,7 +30,7 @@
             // We are correcting a previously submtted form.
             request.setAttribute("state","correcting"); 
             
-            String parentId = request.getParameter(RollerRequest.PARENTID_KEY);
+            String parentId = request.getParameter(RequestConstants.PARENT_ID);
             parentFolder = bmgr.getFolder(parentId);
             
             BasePageModel pageModel = new BasePageModel(
@@ -43,7 +43,7 @@
             // We are adding a new bookmark
             request.setAttribute("state","add");
             
-            String parentId = request.getParameter(RollerRequest.PARENTID_KEY);
+            String parentId = request.getParameter(RequestConstants.PARENT_ID);
             parentFolder = bmgr.getFolder(parentId);
             
             BasePageModel pageModel = new BasePageModel(
@@ -52,7 +52,7 @@
             request.setAttribute("model", pageModel);
         }
         
-        request.setAttribute(RollerRequest.PARENTID_KEY, parentFolder.getId());
+        request.setAttribute(RequestConstants.PARENT_ID, parentFolder.getId());
         request.setAttribute("parentFolder", parentFolder);
         
         return mapping.findForward("FolderForm");

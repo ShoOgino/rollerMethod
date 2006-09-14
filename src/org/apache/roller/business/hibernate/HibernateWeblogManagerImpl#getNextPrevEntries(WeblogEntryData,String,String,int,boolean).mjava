@@ -1,0 +1,41 @@
+    public List getNextPrevEntries(WeblogEntryData current, String catName, 
+                                   String locale, int maxEntries, boolean next)
+            throws RollerException {
+        
+        Junction conjunction = Expression.conjunction();
+        conjunction.add(Expression.eq("website", current.getWebsite()));
+        conjunction.add(Expression.eq("status", WeblogEntryData.PUBLISHED));
+        
+        if (next) {
+            conjunction.add(Expression.gt("pubTime", current.getPubTime()));
+        } else {
+            conjunction.add(Expression.lt("pubTime", current.getPubTime()));
+        }
+        
+        if (catName != null && !catName.trim().equals("/")) {
+            WeblogCategoryData category =
+                    getWeblogCategoryByPath(current.getWebsite(), null, catName);
+            if (category != null) {
+                conjunction.add(Expression.eq("category", category));
+            } else {
+                throw new RollerException("Cannot find category: "+catName);
+            }
+        }
+        
+        if(locale != null) {
+            conjunction.add(Expression.ilike("locale", locale, MatchMode.START));
+        }
+        
+        try {
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
+            Criteria criteria = session.createCriteria(WeblogEntryData.class);
+            criteria.addOrder(next ? Order.asc("pubTime") : Order.desc("pubTime"));
+            criteria.add(conjunction);
+            criteria.setMaxResults(maxEntries);
+            List results = criteria.list();
+            return results;
+        } catch (HibernateException e) {
+            throw new RollerException(e);
+        }
+    }
+

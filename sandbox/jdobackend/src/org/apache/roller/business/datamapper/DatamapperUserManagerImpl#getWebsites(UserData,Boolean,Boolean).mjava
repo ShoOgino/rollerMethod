@@ -1,0 +1,7 @@
+    public List getWebsites(UserData user, Boolean enabled, Boolean active) 
+            throws RollerException {
+        return (List)strategy.newQuery(WebsiteData.class,
+                "getByPermissionsContainsUser&&Enabled&&Active")
+            .execute(new Object[]{user, enabled, active});
+    }
+

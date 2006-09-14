@@ -1,0 +1,11 @@
+    public void queueApplicableAutoPings(WeblogEntryData changedWeblogEntry) 
+            throws RollerException {
+        if (PingConfig.getSuspendPingProcessing()) {
+            if (logger.isDebugEnabled()) 
+                logger.debug("Ping processing is suspended.  " +
+                        "No auto pings will be queued.");
+            return;
+        // XXX not implemented
+        }
+    }
+

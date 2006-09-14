@@ -1,0 +1,32 @@
+    private void setupVelocity() throws RollerException {
+        
+        mLogger.info("Initializing Velocity");
+        
+        // initialize the Velocity engine
+        Properties velocityProps = new Properties();
+        
+        try {
+            InputStream instream = mContext.getResourceAsStream("/WEB-INF/velocity.properties");
+            
+            velocityProps.load(instream);
+            
+            // need to dynamically add old macro libraries if they are enabled
+            if(RollerConfig.getBooleanProperty("rendering.legacyModels.enabled")) {
+                String macroLibraries = (String) velocityProps.get("velocimacro.library");
+                String oldLibraries = RollerConfig.getProperty("velocity.oldMacroLibraries");
+                
+                // set the new value
+                velocityProps.setProperty("velocimacro.library", oldLibraries+","+macroLibraries);
+            }
+            
+            mLogger.debug("Velocity props = "+velocityProps);
+            
+            // init velocity
+            RuntimeSingleton.init(velocityProps);
+            
+        } catch (Exception e) {
+            throw new RollerException(e);
+        }
+        
+    }
+

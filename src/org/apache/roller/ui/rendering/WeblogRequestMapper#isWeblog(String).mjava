@@ -1,0 +1,26 @@
+    /**
+     * convenience method which determines if the given string is a valid
+     * weblog handle.
+     *
+     * TODO 3.0: some kind of caching
+     */
+    private boolean isWeblog(String potentialHandle) {
+        
+        log.debug("checking weblog handle "+potentialHandle);
+        
+        boolean isWeblog = false;
+        
+        try {
+            UserManager mgr = RollerFactory.getRoller().getUserManager();
+            WebsiteData weblog = mgr.getWebsiteByHandle(potentialHandle);
+            
+            if(weblog != null) {
+                isWeblog = true;
+            }
+        } catch(Exception ex) {
+            // doesn't really matter to us why it's not a valid website
+        }
+        
+        return isWeblog;
+    }
+

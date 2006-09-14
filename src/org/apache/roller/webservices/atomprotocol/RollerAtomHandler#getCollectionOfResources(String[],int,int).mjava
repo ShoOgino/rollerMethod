@@ -5,7 +5,7 @@
             String[] pathInfo, int start, int max) throws AtomException {
         try {
             String handle = pathInfo[0];
-            String absUrl = mRollerContext.getAbsoluteContextUrl(mRequest);
+            String absUrl = RollerRuntimeConfig.getAbsoluteContextURL();
             WebsiteData website = 
                 mRoller.getUserManager().getWebsiteByHandle(handle);
             if (website == null) {
@@ -17,7 +17,16 @@
                         
             if (canView(website)) {
                 Feed feed = new Feed();
-                feed.setId(absUrl + "/app/" +website.getHandle() + "/entries/" + start);
+                feed.setId(URLUtilities.getAtomProtocolURL(true)
+                    +"/"+website.getHandle() + "/entries/" + start);                
+                feed.setTitle(website.getName());
+                
+                Link link = new Link();
+                link.setHref(absUrl + "/" + website.getHandle());
+                link.setRel("alternate");
+                link.setType("text/html");
+                feed.setAlternateLinks(Collections.singletonList(link));
+                
                 SortedSet sortedSet = new TreeSet(new Comparator() {
                     public int compare(Object o1, Object o2) {
                         File f1 = (File)o1;
@@ -49,8 +58,8 @@
                 }
                 if (start + count < files.length) { // add next link
                     int nextOffset = start + max;
-                    String url = absUrl + "/app/" 
-                        + website.getHandle() + "/resources/" + nextOffset;
+                    String url = URLUtilities.getAtomProtocolURL(true)
+                        +"/"+ website.getHandle() + "/resources/" + nextOffset;
                     Link nextLink = new Link();
                     nextLink.setRel("next");
                     nextLink.setHref(url);
@@ -60,8 +69,8 @@
                 }
                 if (start > 0) { // add previous link
                     int prevOffset = start > max ? start - max : 0;
-                    String url = absUrl + "/app/" 
-                        + website.getHandle() + "/resources/" + prevOffset;
+                    String url = URLUtilities.getAtomProtocolURL(true)
+                        +"/"+website.getHandle() + "/resources/" + prevOffset;
                     Link prevLink = new Link();
                     prevLink.setRel("previous");
                     prevLink.setHref(url);

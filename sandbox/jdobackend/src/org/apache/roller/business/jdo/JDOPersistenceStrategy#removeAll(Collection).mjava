@@ -1,0 +1,11 @@
+    /**
+     * Remove object from persistence storage.
+     * @param pos the persistent objects to remove
+     * @throws org.apache.roller.RollerException on any error
+     */
+    public void removeAll(Collection pos) 
+            throws RollerException {
+        PersistenceManager pm = getPersistenceManager(true);
+        pm.deletePersistent(pos);
+    }
+

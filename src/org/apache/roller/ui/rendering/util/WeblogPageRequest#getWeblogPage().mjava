@@ -1,0 +1,14 @@
+    public WeblogTemplate getWeblogPage() {
+        
+        if(weblogPage == null && weblogPageName != null) {
+            try {
+                UserManager umgr = RollerFactory.getRoller().getUserManager();
+                weblogPage = umgr.getPageByLink(getWeblog(), weblogPageName);
+            } catch (RollerException ex) {
+                log.error("Error getting weblog page "+weblogPageName, ex);
+            }
+        }
+        
+        return weblogPage;
+    }
+

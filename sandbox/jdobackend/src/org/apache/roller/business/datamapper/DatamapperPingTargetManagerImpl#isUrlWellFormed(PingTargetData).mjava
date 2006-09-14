@@ -1,0 +1,15 @@
+    public boolean isUrlWellFormed(PingTargetData pingTarget)
+            throws RollerException {
+        String url = pingTarget.getPingUrl();
+        if (url == null || url.trim().length() == 0) return false;
+        try {
+            URL parsed = new URL(url);
+            if (!parsed.getProtocol().equals("http"))
+                return false;
+            return (parsed.getHost() != null) && 
+                    (parsed.getHost().trim().length() > 0);
+        } catch (MalformedURLException e) {
+            return false;
+        }
+    }
+

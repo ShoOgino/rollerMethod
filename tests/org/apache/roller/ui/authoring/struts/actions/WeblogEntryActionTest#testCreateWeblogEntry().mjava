@@ -1,0 +1,47 @@
+    public void testCreateWeblogEntry() {
+        MockHttpServletRequest mockRequest = getMockFactory().getMockRequest();
+        mockRequest.setContextPath("/dummy");
+        doFilters();
+        
+        UserManager umgr = null;
+        UserData user = null;
+        try {
+            umgr = RollerFactory.getRoller().getUserManager();
+            user = (UserData)umgr.getUsers(testWeblog, null, 0, -1).get(0);
+            authenticateUser(user.getUserName(), "editor");
+        } catch (RollerException e) {
+            e.printStackTrace();
+            fail();
+        }
+        
+        // Setup mapping and request parameters
+        MockActionMapping mapping = strutsModule.getMockActionMapping();
+        mapping.setupForwards(new String[] {
+            "access-denied","weblogEdit.page","weblogEntryRemove.page"});
+        mapping.setParameter("method");
+        strutsModule.addRequestParameter("weblog",testWeblog.getHandle());
+        strutsModule.addRequestParameter("method","create");
+        
+        // Setup form bean
+        WeblogEntryFormEx form = (WeblogEntryFormEx)
+        strutsModule.createActionForm(WeblogEntryFormEx.class);
+        form.setTitle("test_title");
+        form.setText("Test blog text");
+        
+        try {
+            RollerRequest rreq = new RollerRequest(strutsModule.getMockPageContext());
+            rreq.setWebsite(testWeblog);
+            strutsModule.setRequestAttribute(RollerRequest.ROLLER_REQUEST, rreq);
+            strutsModule.actionPerform(WeblogEntryFormAction.class, form);
+        } catch (Throwable t) {
+            t.printStackTrace();
+            fail();
+        }
+        // Test for success
+        strutsModule.verifyNoActionMessages();
+        strutsModule.verifyForward("weblogEdit.page");
+        
+        // Verify objects we put in context for JSP page
+        verifyPageContext();
+    }
+

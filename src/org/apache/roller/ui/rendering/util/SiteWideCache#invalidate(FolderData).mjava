@@ -1,0 +1,9 @@
+    /**
+     * A folder has changed.
+     */
+    public void invalidate(FolderData folder) {
+        if(RollerRuntimeConfig.isSiteWideWeblog(folder.getWebsite().getHandle())) {
+            invalidate(folder.getWebsite());
+        }
+    }
+

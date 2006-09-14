@@ -1,17 +1,12 @@
     /*
      * Enable a ping target.
      */
-    public ActionForward enableSelected(ActionMapping mapping, ActionForm form,
-                                        HttpServletRequest req, HttpServletResponse res)
-        throws Exception
-    {
+    public ActionForward enableSelected(ActionMapping mapping, ActionForm form, HttpServletRequest req, HttpServletResponse res) throws Exception {
         RollerRequest rreq = RollerRequest.getRollerRequest(req);
         AutoPingManager autoPingMgr = RollerFactory.getRoller().getAutopingManager();
         PingTargetData pingTarget = select(rreq);
-        try
-        {
-            if (!isAuthorized(rreq, rreq.getWebsite()))
-            {
+        try {
+            if (!isAuthorized(rreq, rreq.getWebsite())) {
                 return mapping.findForward("access-denied");
             }
             AutoPingData autoPing = new AutoPingData(null, pingTarget, rreq.getWebsite());
@@ -19,9 +14,7 @@
             RollerFactory.getRoller().flush();
 
             return view(mapping, form, req, res);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             mLogger.error("ERROR in action", e);
             throw new ServletException(e);
         }

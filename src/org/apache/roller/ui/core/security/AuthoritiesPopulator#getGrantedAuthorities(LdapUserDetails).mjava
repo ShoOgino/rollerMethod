@@ -1,0 +1,20 @@
+  /* (non-Javadoc)
+   * @see org.acegisecurity.providers.ldap.LdapAuthoritiesPopulator#getGrantedAuthorities(org.acegisecurity.userdetails.ldap.LdapUserDetails)
+   */
+  public GrantedAuthority[] getGrantedAuthorities(LdapUserDetails userDetails) throws LdapDataAccessException {
+    
+    List dbAuths = authoritiesByUsernameMapping.execute(userDetails.getUsername());
+
+    addCustomAuthorities(userDetails.getUsername(), dbAuths);
+    
+    if (defaultRole != null) {
+      dbAuths.add(defaultRole);
+    }
+
+    if (dbAuths.size() == 0) {
+        throw new UsernameNotFoundException("User has no GrantedAuthority");
+    }
+
+    return (GrantedAuthority[]) dbAuths.toArray(new GrantedAuthority[dbAuths.size()]); 
+  }
+

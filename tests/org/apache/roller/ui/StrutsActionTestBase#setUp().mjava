@@ -1,0 +1,17 @@
+    public void setUp() throws Exception {
+        getMockFactory().refresh();
+        
+        strutsModule = new ActionTestModule(getStrutsMockFactory());
+        servletModule = new ServletTestModule(getStrutsMockFactory());
+        
+        // Setup mocks needed to run a Struts action 
+        MapMessageResources resources = new MapMessageResources();
+        resources.putMessages("WEB-INF/classes/ApplicationResources.properties");
+        strutsModule.setResources(resources);
+        
+        MockServletContext ctx = getMockFactory().getMockServletContext();
+        ctx.setRealPath("/", "");
+        rollerContext = new MockRollerContext();
+        rollerContext.init(ctx);
+    }
+

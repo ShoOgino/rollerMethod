@@ -1,21 +1,14 @@
-    public void shutdown()
-    {
-        if (useRAMIndex)
-        {
+    public void shutdown() {
+        if (useRAMIndex) {
             scheduleIndexOperation(getSaveIndexOperation());
-        }
-        else
-        {
+        } else {
             indexConsistencyMarker.delete();
         }
-
-        try
-        {
+        
+        try {
             if (reader != null)
                 reader.close();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             // won't happen, since it was
         }
     }

@@ -1,0 +1,11 @@
+    /**
+     * Flush changes to the datastore, commit transaction, release pm.
+     * @throws org.apache.roller.RollerException on any error
+     */
+    public void flush() 
+            throws RollerException {
+        PersistenceManager pm = getPersistenceManager(false);
+        if (isTransactionActive(pm))
+            pm.currentTransaction().commit();
+    }
+

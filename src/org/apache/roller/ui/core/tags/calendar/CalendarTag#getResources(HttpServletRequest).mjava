@@ -2,6 +2,6 @@
         ServletContext app = RollerContext.getServletContext();
         ModuleConfig moduleConfig = RequestUtils.getModuleConfig(request, app);
         return (MessageResources)app.getAttribute(Globals.MESSAGES_KEY +
-                                                  moduleConfig.getPrefix());
+                moduleConfig.getPrefix());
     }
 

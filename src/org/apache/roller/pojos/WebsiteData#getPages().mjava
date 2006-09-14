@@ -1,5 +1,6 @@
     /**
      * Get a list of all pages that are part of this website.
+     * @roller.wrapPojoMethod type="pojo-collection" class="org.apache.roller.pojos.Template"
      */
     public List getPages() {
         
@@ -16,12 +17,12 @@
             }
         } catch(Exception e) {
             // db error
-            mLogger.error(e);
+            log.error(e);
         }
         
         
         // now get theme pages if needed and put them in place of db pages
-        if(this.editorTheme != null && !this.editorTheme.equals(Theme.CUSTOM)) {
+        if (this.editorTheme != null && !this.editorTheme.equals(Theme.CUSTOM)) {
             try {
                 Template template = null;
                 ThemeManager themeMgr = RollerFactory.getRoller().getThemeManager();
@@ -36,7 +37,7 @@
                 }
             } catch(Exception e) {
                 // how??
-                mLogger.error(e);
+                log.error(e);
             }
         }
         

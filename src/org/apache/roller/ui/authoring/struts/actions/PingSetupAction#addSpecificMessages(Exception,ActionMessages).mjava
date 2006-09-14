@@ -1,11 +1,7 @@
-    private void addSpecificMessages(Exception ex, ActionMessages errors)
-    {
-        if (ex instanceof UnknownHostException)
-        {
+    private void addSpecificMessages(Exception ex, ActionMessages errors) {
+        if (ex instanceof UnknownHostException) {
             errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("ping.unknownHost"));
-        }
-        else if (ex instanceof SocketException)
-        {
+        } else if (ex instanceof SocketException) {
             errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("ping.networkConnectionFailed"));
         }
     }

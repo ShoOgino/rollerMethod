@@ -15,17 +15,18 @@
                     if (req.getContentType().startsWith("application/atom+xml")) {
 
                         // parse incoming entry
-                        Entry unsavedEntry = parseEntry(
-                            new InputStreamReader(req.getInputStream()));
+                        Entry unsavedEntry = parseEntry(new BufferedReader(
+                            new InputStreamReader(
+                                req.getInputStream(), "UTF-8")));
 
                         // call handler to post it
                         Entry savedEntry = handler.postEntry(pathInfo, unsavedEntry);
                         
                         // return alternate link as Location header
-                        Iterator links = savedEntry.getAlternateLinks().iterator();
+                        Iterator links = savedEntry.getOtherLinks().iterator();
                         while (links.hasNext()) {
                             Link link = (Link) links.next();
-                            if (link.getRel().equals("alternate") || link.getRel() == null) {
+                            if (link.getRel().equals("edit") || link.getRel() == null) {
                                 res.addHeader("Location", link.getHref());
                                 break;
                             }
@@ -39,21 +40,21 @@
                     
                     } else if (req.getContentType() != null) {
                         // get incoming file name from HTTP header
-                        String name = req.getHeader("Title");
+                        String title = req.getHeader("Title");
 
                         // hand input stream of to hander to post file
                         Entry resource = handler.postMedia(
-                            pathInfo, name, req.getContentType(), req.getInputStream());
+                            pathInfo, title, req.getContentType(), req.getInputStream());
                         
                         res.setStatus(HttpServletResponse.SC_CREATED);
                         com.sun.syndication.feed.atom.Content content = 
                             (com.sun.syndication.feed.atom.Content)resource.getContents().get(0);
 
                         // return alternate link as Location header
-                        Iterator links = resource.getAlternateLinks().iterator();
+                        Iterator links = resource.getOtherLinks().iterator();
                         while (links.hasNext()) {
                             Link link = (Link) links.next();
-                            if (link.getRel().equals("alternate") || link.getRel() == null) {
+                            if (link.getRel().equals("edit") || link.getRel() == null) {
                                 res.addHeader("Location", link.getHref());
                                 break;
                             }

@@ -8,14 +8,13 @@
      * @return
      */
     public Object getCategories(String blogid, String userid, String password)
-            throws Exception {
+    throws Exception {
         
         mLogger.debug("getCategories() Called =====[ SUPPORTED ]=====");
         mLogger.debug("     BlogId: " + blogid);
         mLogger.debug("     UserId: " + userid);
         
         WebsiteData website = validate(blogid, userid,password);
-        RollerRequest rreq = RollerRequest.getRollerRequest();
         Roller roller = RollerFactory.getRoller();
         try {
             Hashtable result = new Hashtable();

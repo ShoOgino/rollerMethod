@@ -7,8 +7,8 @@
             RequestUtils.lookup(pageContext, name, property, scope);  
         
         String sourceText = null;
-        boolean hasSummary = Utilities.isNotEmpty(entry.getSummary());
-        boolean hasText= Utilities.isNotEmpty(entry.getText());
+        boolean hasSummary = StringUtils.isNotEmpty(entry.getSummary());
+        boolean hasText= StringUtils.isNotEmpty(entry.getText());
         if (singleEntry) {
             if (hasText) sourceText = entry.getText();
             else if (hasSummary) sourceText = entry.getSummary();
@@ -16,20 +16,18 @@
             if (hasSummary) sourceText = entry.getSummary();
             else if (hasText) sourceText = entry.getText();
         }
-        if (Utilities.isNotEmpty(sourceText)) {
+        if (StringUtils.isNotEmpty(sourceText)) {
             try {
                 String xformed = sourceText;        
                 if (entry.getPlugins() != null) {
                     RollerContext rctx = 
                         RollerContext.getRollerContext();
                     try {
-                        PagePluginManager ppmgr = roller.getPagePluginManager();
-                        Map plugins = ppmgr.createAndInitPagePlugins(
-                                entry.getWebsite(), rctx.getServletContext(),
-                                rctx.getAbsoluteContextUrl((HttpServletRequest)pageContext.getRequest()),
-                                new VelocityContext());
+                        PluginManager ppmgr = roller.getPagePluginManager();
+                        Map plugins = ppmgr.getWeblogEntryPlugins(
+                                entry.getWebsite());
 
-                        xformed = ppmgr.applyPagePlugins(entry, plugins, sourceText, true);
+                        xformed = ppmgr.applyWeblogEntryPlugins(plugins, entry, sourceText);
 
                     } catch (Exception e) {
                         mLogger.error(e);
@@ -47,7 +45,7 @@
 
                 // somehow things (&#8220) are getting double-escaped
                 // but I cannot seem to track it down
-                xformed = Utilities.stringReplace(xformed, "&amp#", "&#");
+                xformed = StringUtils.replace(xformed, "&amp#", "&#");
 
                 pageContext.getOut().println(xformed);
                 

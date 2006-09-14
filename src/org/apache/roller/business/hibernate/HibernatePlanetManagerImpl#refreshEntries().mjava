@@ -17,8 +17,10 @@
                 "\\$\\{user.home}",System.getProperty("user.home"));
         
         // allow ${catalina.home} in cache dir property
-        cacheDirName = cacheDirName.replaceFirst(
-                "\\$\\{catalina.home}",System.getProperty("catalina.home"));
+        if (System.getProperty("catalina.home") != null) {
+            cacheDirName = cacheDirName.replaceFirst(
+                    "\\$\\{catalina.home}",System.getProperty("catalina.home"));
+        }
         
         // create cache  dir if it does not exist
         File cacheDir = null;
@@ -68,7 +70,7 @@
             // Fetch latest entries for each subscription
 //            Set newEntries = null;
 //            int count = 0;
-//            if (!StringUtils.isEmpty(localURL) && sub.getFeedUrl().startsWith(localURL)) {
+//            if (!StringUtils.isEmpty(localURL) && sub.getFeedURL().startsWith(localURL)) {
 //                newEntries = getNewEntriesLocal(sub, feedFetcher, feedInfoCache);
 //            } else {
 //                newEntries = getNewEntriesRemote(sub, feedFetcher, feedInfoCache);
@@ -87,7 +89,7 @@
             log.info("   " + count + " - "
                     + ((subEndTime-subStartTime)/1000.0)
                     + " seconds to process (" + count + ") entries of "
-                    + sub.getFeedUrl());
+                    + sub.getFeedURL());
         }
         // Clear the aggregation cache
         clearCachedAggregations();

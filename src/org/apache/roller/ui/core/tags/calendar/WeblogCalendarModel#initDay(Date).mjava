@@ -1,0 +1,28 @@
+    protected void initDay(Date month) {
+        this.day = day;
+        calendar = Calendar.getInstance(
+                weblog.getTimeZoneInstance(),
+                weblog.getLocaleInstance());
+        
+        Calendar cal = (Calendar)calendar.clone();
+        
+        // Compute first second of month
+        cal.setTime(month);
+        cal.set(Calendar.DAY_OF_MONTH, cal.getMinimum(Calendar.DAY_OF_MONTH));
+        cal.set(Calendar.HOUR_OF_DAY, cal.getMinimum(Calendar.HOUR_OF_DAY));
+        cal.set(Calendar.MINUTE, cal.getMinimum(Calendar.MINUTE));
+        cal.set(Calendar.SECOND, cal.getMinimum(Calendar.SECOND));
+        cal.set(Calendar.MILLISECOND, cal.getMinimum(Calendar.MILLISECOND));
+        Date startDate = cal.getTime();
+        
+        // Compute last second of month
+        cal.set(Calendar.DAY_OF_MONTH, cal.getMaximum(Calendar.DAY_OF_MONTH));
+        cal.set(Calendar.HOUR_OF_DAY, cal.getMaximum(Calendar.HOUR_OF_DAY));
+        cal.set(Calendar.MINUTE, cal.getMaximum(Calendar.MINUTE));
+        cal.set(Calendar.SECOND, cal.getMaximum(Calendar.SECOND));
+        cal.set(Calendar.MILLISECOND, cal.getMaximum(Calendar.MILLISECOND));
+        Date endDate = cal.getTime();
+        
+        loadWeblogEntries(startDate, endDate, cat);
+    }
+

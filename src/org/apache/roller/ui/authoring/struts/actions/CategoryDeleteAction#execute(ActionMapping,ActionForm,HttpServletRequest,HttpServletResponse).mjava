@@ -9,7 +9,7 @@
         CategoryDeleteForm form = (CategoryDeleteForm)actionForm;
         WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
 
-        String catid = request.getParameter(RollerRequest.WEBLOGCATEGORYID_KEY);
+        String catid = request.getParameter(RequestConstants.WEBLOGCATEGORY_ID);
         WeblogCategoryData catToDelete = 
                 wmgr.getWeblogCategory(catid);
         RollerSession rses = RollerSession.getRollerSession(request);
@@ -55,7 +55,7 @@
                     if (null != returnId) 
                     {
                         request.setAttribute(
-                                RollerRequest.WEBLOGCATEGORYID_KEY, returnId);
+                                RequestConstants.WEBLOGCATEGORY_ID, returnId);
                     }               
                 }
             }
@@ -70,7 +70,7 @@
                 CacheManager.invalidate(catToDelete);
                 
                 if (null != returnId) {
-                    request.setAttribute(RollerRequest.WEBLOGCATEGORYID_KEY, returnId);
+                    request.setAttribute(RequestConstants.WEBLOGCATEGORY_ID, returnId);
                 }               
             }
             else 
@@ -79,7 +79,7 @@
                 if (null != returnId) 
                 {
                     request.setAttribute(
-                       RollerRequest.WEBLOGCATEGORYID_KEY, returnId);
+                       RequestConstants.WEBLOGCATEGORY_ID, returnId);
                 }               
             }
         }

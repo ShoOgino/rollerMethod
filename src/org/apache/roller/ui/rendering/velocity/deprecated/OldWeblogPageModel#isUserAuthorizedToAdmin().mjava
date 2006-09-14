@@ -1,0 +1,13 @@
+    public boolean isUserAuthorizedToAdmin() {
+        try {
+            RollerSession rses =
+                    RollerSession.getRollerSession(mRequest);
+            if (rses.getAuthenticatedUser() != null && mWebsite != null) {
+                return rses.isUserAuthorizedToAdmin(mWebsite);
+            }
+        } catch (Exception e) {
+            mLogger.warn("PageModel.isUserAuthorizedToAdmin()", e);
+        }
+        return false;
+    }
+

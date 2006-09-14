@@ -1,0 +1,17 @@
+    /**
+     * Get list of WebsiteDisplay objects, ordered by number of hits.
+     * @param sinceDays Only consider weblogs updated in the last sinceDays
+     * @param len      Max number of results to return
+     */
+    public List getHotWeblogs(int sinceDays, int length) {
+        List results = new ArrayList();
+        try {            
+            Roller roller = RollerFactory.getRoller();
+            RefererManager rmgr = roller.getRefererManager();
+            results = rmgr.getHotWeblogs(sinceDays, 0, length);
+        } catch (Exception e) {
+            log.error("ERROR: fetching hot weblog list", e);
+        }
+        return results;
+    }
+

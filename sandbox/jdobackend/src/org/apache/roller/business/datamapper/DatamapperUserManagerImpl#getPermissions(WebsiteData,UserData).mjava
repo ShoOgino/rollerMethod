@@ -1,0 +1,7 @@
+    public PermissionsData getPermissions(WebsiteData website, UserData user) 
+            throws RollerException {
+        return (PermissionsData)strategy.newQuery(PermissionsData.class,
+                "getUniqueByWebsite&&User")
+            .execute(new Object[]{website, user});
+    }
+

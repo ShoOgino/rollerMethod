@@ -1,0 +1,43 @@
+    /**
+     * Load objects needed for RSS and Atom newsfeed generation.
+     */
+    private static void loadRssValues(
+            Map ctx,
+            HttpServletRequest request,
+            WebsiteData website,
+            WeblogCategoryData category)
+            throws RollerException {
+        
+        mLogger.debug("Loading rss values");
+        
+        int entryLength = -1;
+        String sExcerpts = request.getParameter("excerpts");
+        if ( sExcerpts!=null && sExcerpts.equalsIgnoreCase("true")) {
+            entryLength = 150;
+        }
+        ctx.put("entryLength",  new Integer(entryLength));
+        
+        // Display same number of entries in feed as displayed on page
+        int entryCount = website.getEntryDisplayCount();
+        
+        // But don't exceed installation-wide maxEntries settings
+        int maxEntries =
+                RollerRuntimeConfig.getIntProperty("site.newsfeeds.maxEntries");
+        int defaultEntries =
+                RollerRuntimeConfig.getIntProperty("site.newsfeeds.defaultEntries");
+        if (entryCount < 1) entryCount = defaultEntries;
+        if (entryCount > maxEntries) entryCount = maxEntries;
+        ctx.put("entryCount",  new Integer(entryCount));
+        
+        String catname = null;
+        String catPath = null;
+        if (category != null ) {
+            catname = category.getName();
+            catPath = category.getPath();
+        }
+        ctx.put("catname", (catname!=null) ? catname : "");
+        ctx.put("catPath", (catPath != null) ? catPath : "");
+        ctx.put("updateTime", website.getLastModified());
+        ctx.put("now", new Date());
+    }
+

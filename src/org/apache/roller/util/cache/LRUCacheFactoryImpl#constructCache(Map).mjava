@@ -4,6 +4,7 @@
     public Cache constructCache(Map properties) {
         
         int size = 100;
+        String id = "unknown";
         
         try {
             size = Integer.parseInt((String) properties.get("size"));
@@ -11,9 +12,14 @@
             // ignored
         }
         
-        Cache cache = new LRUCacheImpl(size);
+        String cacheId = (String) properties.get("id");
+        if(cacheId != null) {
+            id = cacheId;
+        }
         
-        mLogger.debug("new cache constructed. size="+size);
+        Cache cache = new LRUCacheImpl(id, size);
+        
+        log.debug("new cache constructed. size="+size);
         
         return cache;
     }

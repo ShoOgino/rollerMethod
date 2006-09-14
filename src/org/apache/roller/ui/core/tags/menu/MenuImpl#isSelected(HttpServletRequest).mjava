@@ -1,35 +1,30 @@
-	/** 
-     * Is this menu selected? 
-	 * @throws RollerException
-     */ 
-	public boolean isSelected( HttpServletRequest req ) throws RollerException
-	{
+    /**
+     * Is this menu selected?
+     * @throws RollerException
+     */
+    public boolean isSelected( HttpServletRequest req ) throws RollerException {
         boolean selected = false;
         HttpSession ses = req.getSession(false);
         
         // try to get state from request param then attribute
         String menuKey = req.getParameter(RollerMenuModel.MENU_KEY );
-        if (null == menuKey) 
-        {
+        if (null == menuKey) {
             menuKey = (String)req.getAttribute(RollerMenuModel.MENU_KEY);
         }
-        if (menuKey != null && menuKey.equals(mName)) 
-        {
+        if (menuKey != null && menuKey.equals(mName)) {
             selected = true;
         }
         // next, if submenu is selected, then we're selected
-        else if (getSelectedMenuItem(req, false) != null)
-		{
+        else if (getSelectedMenuItem(req, false) != null) {
             selected = true;
-		}
+        }
         // next, try to use Struts forward to determine state
-        else if (mForward != null)
-        {
-            ServletContext ctx = RollerContext.getServletContext();     
-			ModuleConfig mConfig = RequestUtils.getModuleConfig(req, ctx);
+        else if (mForward != null) {
+            ServletContext ctx = RollerContext.getServletContext();
+            ModuleConfig mConfig = RequestUtils.getModuleConfig(req, ctx);
             ActionMapping amapping = (ActionMapping)req.getAttribute(Globals.MAPPING_KEY);
             List fconfigs = new ArrayList();
-			fconfigs.add(mConfig.findForwardConfig(mForward));
+            fconfigs.add(mConfig.findForwardConfig(mForward));
             if (mSubforwards != null) {
                 String[] subforwards = mSubforwards.split(",");
                 for (int i=0; i<subforwards.length; i++) {
@@ -41,13 +36,12 @@
                 String fwdPath = fconfig.getPath();
                 int end = fwdPath.indexOf(".do");
                 fwdPath = (end == -1) ? fwdPath : fwdPath.substring(0, end);
-                if  (fwdPath.equals(amapping.getPath()))
-                {
+                if  (fwdPath.equals(amapping.getPath())) {
                     selected = true;
                     break;
-                } 
+                }
             }
         }
-		return selected;
-	}
+        return selected;
+    }
 

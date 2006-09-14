@@ -3,16 +3,11 @@
      *
      * @roller.wrapPojoMethod type="simple"
      */
-    public String getPath()
-    {
-        if (null == cachedPath)
-        {
-            try
-            {
+    public String getPath() {
+        if (null == cachedPath) {
+            try {
                 cachedPath = RollerFactory.getRoller().getWeblogManager().getPath(this);
-            }
-            catch (RollerException e)
-            {
+            } catch (RollerException e) {
                 throw new RuntimeException(e);
             }
         }

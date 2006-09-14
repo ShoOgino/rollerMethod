@@ -1,0 +1,24 @@
+    /**
+     * Get the previous occurring Entry.
+     */
+    public WeblogEntryDataWrapper getPreviousEntry() {
+        WeblogEntryDataWrapper currentEntry = getWeblogEntry();
+        if (mLastEntry != null) currentEntry = mLastEntry;
+        if (mPreviousEntry == null && currentEntry != null ) {
+            String catName = null;
+            if (mCategory != null) {
+                catName = mCategory.getName();
+            }
+            try {
+                WeblogEntryData prevEntry =
+                        mWeblogMgr.getPreviousEntry(currentEntry.getPojo(), catName, mLocale);
+                
+                if(prevEntry != null)
+                    mPreviousEntry = WeblogEntryDataWrapper.wrap(prevEntry);
+            } catch (RollerException e) {
+                mLogger.error("PageModel.getPreviousEntry)", e);
+            }
+        }
+        return mPreviousEntry;
+    }
+

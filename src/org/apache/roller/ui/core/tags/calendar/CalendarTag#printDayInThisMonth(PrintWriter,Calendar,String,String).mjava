@@ -1,29 +1,23 @@
-    private void printDayInThisMonth(PrintWriter pw, Calendar cal, String url, String content)
-    {
-        if ( content!=null )
-        {
+    private void printDayInThisMonth(PrintWriter pw, Calendar cal, String url, String content) {
+        if ( content!=null ) {
             pw.print("<td class=\"hCalendarDayCurrent"
-                +mClassSuffix+"\">");
+                    +mClassSuffix+"\">");
             pw.print( content );
             pw.print("</td>");
-        }
-        else if (url!=null)
-        {
+        } else if (url!=null) {
             pw.print("<td class=\"hCalendarDayLinked"
-                +mClassSuffix+"\">");
+                    +mClassSuffix+"\">");
             pw.print("<div class=\"hCalendarDayTitle"
-                +mClassSuffix+"\">");
+                    +mClassSuffix+"\">");
             pw.print("<a href=\""+url+"\">");
             pw.print(cal.get(Calendar.DAY_OF_MONTH));
             pw.print("</a></div>");
             pw.print("</td>");
-        }
-        else
-        {
+        } else {
             pw.print("<td class=\"hCalendarDay"
-                +mClassSuffix+"\">");
+                    +mClassSuffix+"\">");
             pw.print("<div class=\"hCalendarDayTitle"
-                +mClassSuffix+"\">");
+                    +mClassSuffix+"\">");
             pw.print(cal.get(Calendar.DAY_OF_MONTH));
             pw.print("</div>");
             pw.print("</td>");

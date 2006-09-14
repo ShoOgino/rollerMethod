@@ -1,11 +1,8 @@
     /*
      *  Check if the user has editing rights.
      */
-    protected boolean hasRequiredRights(RollerRequest rreq, WebsiteData website) 
-        throws RollerException
-    {
+    protected boolean hasRequiredRights(RollerRequest rreq, WebsiteData website) throws RollerException {
         RollerSession rses = RollerSession.getRollerSession(rreq.getRequest());
-        return (rses.isUserAuthorizedToAdmin(website)
-            && !PingConfig.getDisallowCustomTargets());
+        return (rses.isUserAuthorizedToAdmin(website) && !PingConfig.getDisallowCustomTargets());
     }
 

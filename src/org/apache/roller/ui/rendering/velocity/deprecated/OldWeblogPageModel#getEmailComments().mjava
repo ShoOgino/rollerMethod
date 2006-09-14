@@ -1,0 +1,8 @@
+    public boolean getEmailComments() {
+        if (mWebsite != null) {
+            boolean emailComments = RollerRuntimeConfig.getBooleanProperty("users.comments.emailnotify");
+            return (mWebsite.getEmailComments().booleanValue() && emailComments);
+        }
+        return false;
+    }
+

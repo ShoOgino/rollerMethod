@@ -3,6 +3,15 @@
      */
     public synchronized Object get(String key) {
         
-        return this.cache.get(key);
+        Object obj = this.cache.get(key);
+        
+        // for metrics
+        if(obj == null) {
+            misses++;
+        } else {
+            hits++;
+        }
+        
+        return obj;
     }
 

@@ -1,23 +1,13 @@
-    /* (non-Javadoc)
-     * @see java.lang.Runnable#run()
-     */
-    public void doRun()
-    {
+    public void doRun() {
         IndexReader reader = beginDeleting();
-        try
-        {
-            if (reader != null)
-            {
+        try {
+            if (reader != null) {
                 Term term = new Term(FieldConstants.ID, data.getId());
                 reader.delete(term);
             }
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             mLogger.error("Error deleting doc from index", e);
-        }
-        finally
-        {
+        } finally {
             endDeleting();
         }
     }

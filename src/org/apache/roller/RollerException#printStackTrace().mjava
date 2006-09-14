@@ -2,11 +2,9 @@
      * Print stack trace for exception and for root cause exception if htere is one.
      * @see java.lang.Throwable#printStackTrace()
      */
-    public void printStackTrace()
-    {
+    public void printStackTrace() {
         super.printStackTrace();
-        if (mRootCause != null)
-        {
+        if (mRootCause != null) {
             System.out.println("--- ROOT CAUSE ---");
             mRootCause.printStackTrace();
         }

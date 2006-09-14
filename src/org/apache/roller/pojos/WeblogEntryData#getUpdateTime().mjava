@@ -1,20 +1,19 @@
-    /** 
-     * <p>Update time is the last time that an weblog entry was saved in the 
-     * Roller weblog editor or via web services API (XML-RPC or Atom).</p> 
+    /**
+     * <p>Update time is the last time that an weblog entry was saved in the
+     * Roller weblog editor or via web services API (XML-RPC or Atom).</p>
      *
      * <p>Roller stores time using the timeZone of the server itself. When
-     * times are displayed  in a user's weblog they must be translated 
+     * times are displayed  in a user's weblog they must be translated
      * to the user's timeZone.</p>
      *
-     * <p>NOTE: Times are stored using the SQL TIMESTAMP datatype, which on 
+     * <p>NOTE: Times are stored using the SQL TIMESTAMP datatype, which on
      * MySQL has only a one-second resolution.</p>
      *
      * @roller.wrapPojoMethod type="simple"
-     * @ejb:persistent-field 
+     * @ejb:persistent-field
      * @hibernate.property column="updatetime" non-null="true" unique="false"
      */
-    public java.sql.Timestamp getUpdateTime()
-    {
+    public Timestamp getUpdateTime() {
         return this.updateTime;
     }
 

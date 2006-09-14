@@ -1,0 +1,6 @@
+    public List getApplicableAutoPings(WeblogEntryData changedWeblogEntry) 
+            throws RollerException {
+        return (List)strategy.newQuery(AutoPingData.class, "getByWebsite")
+            .execute(changedWeblogEntry.getWebsite());
+     }
+

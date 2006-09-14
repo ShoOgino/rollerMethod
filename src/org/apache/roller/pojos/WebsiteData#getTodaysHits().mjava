@@ -1,0 +1,15 @@
+    /**
+     * Get number of hits counted today.
+     * @roller.wrapPojoMethod type="simple"
+     */
+    public int getTodaysHits() {
+        try {
+            Roller roller = RollerFactory.getRoller();
+            RefererManager rmgr = roller.getRefererManager();
+            return rmgr.getDayHits(this);
+        } catch (RollerException e) {
+            log.error("PageModel getTotalHits()", e);
+        }
+        return 0;
+    }
+

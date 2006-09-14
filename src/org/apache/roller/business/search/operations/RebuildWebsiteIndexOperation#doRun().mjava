@@ -1,96 +1,73 @@
-    /* (non-Javadoc)
-     * @see java.lang.Runnable#run()
-     */
-    public void doRun()
-    {
+    public void doRun() {
         Date start = new Date();
-
+        
         IndexReader reader = beginDeleting();
-
-        try
-        {
-            if (reader != null)
-            {
+        
+        try {
+            if (reader != null) {
                 Term tWebsite = null;
-                if (website != null) 
-                {
+                if (website != null) {
                     tWebsite = IndexUtil.getTerm(
-                        FieldConstants.WEBSITE_HANDLE, website.getHandle());
+                            FieldConstants.WEBSITE_HANDLE, website.getHandle());
                 }
-                if (tWebsite != null)
-                {
+                if (tWebsite != null) {
                     reader.delete(tWebsite);
-                }
-                else
-                {
+                } else {
                     Term all =
-                        IndexUtil.getTerm(FieldConstants.CONSTANT,
-                                          FieldConstants.CONSTANT_V);
+                            IndexUtil.getTerm(FieldConstants.CONSTANT,
+                            FieldConstants.CONSTANT_V);
                     reader.delete(all);
                 }
             }
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             mLogger.info("Problems deleting doc from index", e);
-        }
-        finally
-        {
+        } finally {
             endDeleting();
         }
-
+        
         IndexWriter writer = beginWriting();
-
+        
         Roller roller = RollerFactory.getRoller();
-        try
-        {
-            if (writer != null)
-            {
+        try {
+            if (writer != null) {
                 WeblogManager weblogManager = roller.getWeblogManager();
-
+                
                 List entries = weblogManager .getWeblogEntries(
-                    website,                   // userName
-                    null,                      // startDate
-                    new Date(),                // endDate (don't index 'future' entries)
-                    null,                      // catName
-                    WeblogEntryData.PUBLISHED, // status
-                    null,                      // sortby (null mean pubTime)
-                    null);                     // maxEntries (null to get 'em all)
-
-                for (Iterator wbItr = entries.iterator(); wbItr.hasNext();) 
-                {
+                        website,                   // website            
+                        null,
+                        null,                      // startDate
+                        new Date(),                // endDate (don't index 'future' entries)
+                        null,                      // catName
+                        WeblogEntryData.PUBLISHED, // status
+                        null,                      // sortby (null means pubTime)
+null,                         0, -1);     // offset, length, locale
+                
+                for (Iterator wbItr = entries.iterator(); wbItr.hasNext();) {
                     WeblogEntryData entry = (WeblogEntryData) wbItr.next();
                     writer.addDocument(getDocument(entry));
                     mLogger.debug(
-                       MessageFormat.format("Indexed entry {0}: {1}",
-                       new Object[] {entry.getPubTime(), entry.getAnchor()}));
+                            MessageFormat.format("Indexed entry {0}: {1}",
+                            new Object[] {entry.getPubTime(), entry.getAnchor()}));
                 }
                 // release the database connection
                 roller.release();
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             mLogger.error("ERROR adding doc to index", e);
-        }
-        finally
-        {
+        } finally {
             endWriting();
             if (roller != null) roller.release();
         }
-
+        
         Date end = new Date();
         double length = (end.getTime() - start.getTime()) / (double) 1000;
-
-        if (website == null)
-        {
+        
+        if (website == null) {
             mLogger.info(
-               "Completed rebuilding index for all users in '" + length + "' secs");
-        }
-        else
-        {
+                    "Completed rebuilding index for all users in '" + length + "' secs");
+        } else {
             mLogger.info("Completed rebuilding index for website handle: '" +
-                 website.getHandle() + "' in '" + length + "' seconds");
+                    website.getHandle() + "' in '" + length + "' seconds");
         }
     }
 

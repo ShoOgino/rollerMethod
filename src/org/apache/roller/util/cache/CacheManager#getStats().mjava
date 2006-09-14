@@ -1,5 +1,5 @@
     /**
-     * Compile stats from all registered handlers.
+     * Compile stats from all registered caches.
      *
      * This is basically a hacky version of instrumentation which is being
      * thrown in because we don't have a full instrumentation strategy yet.
@@ -10,12 +10,12 @@
         
         Map allStats = new HashMap();
         
-        CacheHandler handler = null;
-        Iterator handlers = cacheHandlers.iterator();
-        while(handlers.hasNext()) {
-            handler = (CacheHandler) handlers.next();
+        Cache cache = null;
+        Iterator cachesIT = caches.values().iterator();
+        while(cachesIT.hasNext()) {
+            cache = (Cache) cachesIT.next();
             
-            allStats.put(handler.getClass().getName(), handler.getStats());
+            allStats.put(cache.getId(), cache.getStats());
         }
         
         return allStats;

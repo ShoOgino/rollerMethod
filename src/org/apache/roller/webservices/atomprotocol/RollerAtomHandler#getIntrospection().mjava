@@ -3,7 +3,6 @@
      * The workspace will contain collections for entries, categories and resources.
      */
     public AtomService getIntrospection() throws AtomException {
-        String absUrl = mRollerContext.getAbsoluteContextUrl(mRequest);
         AtomService service = new AtomService();
         List perms = null;
         try {
@@ -28,14 +27,14 @@
                 AtomService.Collection entryCol = new AtomService.Collection();
                 entryCol.setTitle("Weblog Entries");
                 entryCol.setAccept("entry");
-                entryCol.setHref(absUrl + "/app/"+handle+"/entries");
+                entryCol.setHref(URLUtilities.getAtomProtocolURL(true)+"/"+handle+"/entries");
                 workspace.addCollection(entryCol);
                 
                 
                 AtomService.Collection uploadCol = new AtomService.Collection();
                 uploadCol.setTitle("Media Files");
                 uploadCol.setAccept(accept);
-                uploadCol.setHref(absUrl + "/app/"+handle+"/resources");
+                uploadCol.setHref(URLUtilities.getAtomProtocolURL(true)+"/"+handle+"/resources");
                 workspace.addCollection(uploadCol);
             }
         }

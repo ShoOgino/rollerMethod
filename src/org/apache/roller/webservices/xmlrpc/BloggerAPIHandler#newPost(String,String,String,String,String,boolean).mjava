@@ -11,7 +11,7 @@
      * @return
      */
     public String newPost(String appkey, String blogid, String userid,
-                            String password, String content, boolean publish)
+            String password, String content, boolean publish)
             throws Exception {
         
         mLogger.debug("newPost() Called ===========[ SUPPORTED ]=====");
@@ -32,12 +32,11 @@
                     content.indexOf("</title>"));
             content = StringUtils.replace(content, "<title>"+title+"</title>", "");
         }
-        if (Utilities.isEmpty(title)) { 
+        if (StringUtils.isEmpty(title)) {
             title = Utilities.truncateNicely(content, 15, 15, "...");
         }
         
         try {
-            RollerRequest rreq = RollerRequest.getRollerRequest();
             Roller roller = RollerFactory.getRoller();
             WeblogManager weblogMgr = roller.getWeblogManager();
             
@@ -48,7 +47,7 @@
             entry.setText(content);
             entry.setPubTime(current);
             entry.setUpdateTime(current);
-            UserData user = roller.getUserManager().getUserByUsername(userid);
+            UserData user = roller.getUserManager().getUserByUserName(userid);
             entry.setCreator(user);
             entry.setWebsite(website);
             entry.setCategory(website.getBloggerCategory());
@@ -64,7 +63,7 @@
             
             // notify cache
             flushPageCache(entry.getWebsite());
-
+            
             return entry.getId();
         } catch (Exception e) {
             String msg = "ERROR in BlooggerAPIHander.newPost";

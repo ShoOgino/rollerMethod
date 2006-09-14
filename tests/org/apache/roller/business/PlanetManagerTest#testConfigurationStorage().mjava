@@ -7,11 +7,11 @@
             assertNotNull(config);
             assertEquals("test_title", config.getTitle());
             assertEquals("test_admin_email", config.getAdminEmail());
-            assertNull(config.getSiteUrl());
+            assertNull(config.getSiteURL());
         }
         {   // save config
             PlanetConfigData config = planet.getConfiguration();
-            config.setSiteUrl("http://footest/lskdf/null");
+            config.setSiteURL("http://footest/lskdf/null");
             planet.saveConfiguration(config);
             TestUtils.endSession(true);
         }
@@ -19,7 +19,7 @@
             // make sure config was saved
             PlanetConfigData config = planet.getConfiguration();
             assertNotNull(config);
-            assertEquals("http://footest/lskdf/null", config.getSiteUrl());
+            assertEquals("http://footest/lskdf/null", config.getSiteURL());
         }
     }
 

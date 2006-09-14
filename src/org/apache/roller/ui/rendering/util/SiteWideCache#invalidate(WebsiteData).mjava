@@ -1,0 +1,12 @@
+    /**
+     * A weblog has changed.
+     */
+    public void invalidate(WebsiteData website) {
+        
+        if(!cacheEnabled)
+            return;
+        
+        this.contentCache.clear();
+        this.lastUpdateTime = null;
+    }
+

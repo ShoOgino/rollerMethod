@@ -1,17 +1,13 @@
-    /** 
-     * Determine if category is in use. Returns true if any weblog entries 
+    /**
+     * Determine if category is in use. Returns true if any weblog entries
      * use this category or any of it's subcategories.
      *
      * @roller.wrapPojoMethod type="simple"
      */
-    public boolean isInUse() 
-    {
-        try
-        {
+    public boolean isInUse() {
+        try {
             return RollerFactory.getRoller().getWeblogManager().isWeblogCategoryInUse(this);
-        }
-        catch (RollerException e)
-        {
+        } catch (RollerException e) {
             throw new RuntimeException(e);
         }
     }
