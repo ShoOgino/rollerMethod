@@ -1,8 +1,7 @@
     /**
      * Load config data from XML using XPath.
      */
-    protected void initFromXML(Document doc) throws RollerException, JDOMException
-    {
+    protected void initFromXML(Document doc) throws Exception, JDOMException {
         Map subsByID = new HashMap();
         Element elem = doc.getRootElement();
         
@@ -12,7 +11,7 @@
         config.setGroupPage(  getString(elem,"/planet-config/group-page"));
         config.setAdminName(  getString(elem,"/planet-config/admin-name"));
         config.setAdminEmail( getString(elem,"/planet-config/admin-email"));
-        config.setSiteUrl(    getString(elem,"/planet-config/site-url"));
+        config.setSiteURL(    getString(elem,"/planet-config/site-url"));
         config.setOutputDir(  getString(elem,"/planet-config/output-dir"));
         config.setTemplateDir(getString(elem,"/planet-config/template-dir"));
         config.setTitle(      getString(elem,"/planet-config/title"));
@@ -20,24 +19,22 @@
         
         XPath subsPath = XPath.newInstance("/planet-config/subscription");
         Iterator subs = subsPath.selectNodes(doc).iterator();
-        while (subs.hasNext()) 
-        {
+        while (subs.hasNext()) {
             Element subElem = (Element)subs.next();
             PlanetSubscriptionData sub = new PlanetSubscriptionData();
             String id = subElem.getAttributeValue("id");
             sub.setTitle(   getString(subElem, "title"));
             sub.setAuthor(  getString(subElem, "author"));
-            sub.setFeedUrl( getString(subElem, "feed-url"));
-            sub.setSiteUrl( getString(subElem, "site-url"));           
-            subsByURL.put(sub.getFeedUrl(), sub);
+            sub.setFeedURL( getString(subElem, "feed-url"));
+            sub.setSiteURL( getString(subElem, "site-url"));
+            subsByURL.put(sub.getFeedURL(), sub);
             subsByID.put(id, sub);
         }
         logger.info("Found "+subsByID.size()+" subscriptions");
-                
+        
         XPath groupsPath = XPath.newInstance("/planet-config/group");
         Iterator groups = groupsPath.selectNodes(doc).iterator();
-        while (groups.hasNext()) 
-        {
+        while (groups.hasNext()) {
             Element groupElem = (Element)groups.next();
             PlanetGroupData group = new PlanetGroupData();
             group.setHandle(groupElem.getAttributeValue("handle"));
@@ -46,29 +43,24 @@
             group.setMaxFeedEntries( getInt(   groupElem, "max-feed-entries"));
             group.setMaxPageEntries( getInt(   groupElem, "max-page-entries"));
             group.setCategoryRestriction(
-                                     getString(groupElem, "category-restriction"));
-
+                    getString(groupElem, "category-restriction"));
+            
             XPath refsPath = XPath.newInstance("subscription-ref");
             Iterator refs = refsPath.selectNodes(groupElem).iterator();
-            while (refs.hasNext())
-            {
+            while (refs.hasNext()) {
                 Element refElem = (Element)refs.next();
                 String includeAll = refElem.getAttributeValue("include-all");
-                if (includeAll != null && includeAll.equals("true"))
-                {
+                if (includeAll != null && includeAll.equals("true")) {
                     //group.getSubscriptions().addAll(subsByID.values());
                     group.addSubscriptions(subsByID.values());
-                }
-                else 
-                {
+                } else {
                     String refid = refElem.getAttributeValue("refid");
                     PlanetSubscriptionData sub = (PlanetSubscriptionData)subsByID.get(refid);
-                    if (sub == null) 
-                    {
-                        throw new RollerException("No such subscription ["+refid+"]");
+                    if (sub == null) {
+                        throw new Exception("No such subscription ["+refid+"]");
                     }
                     //group.getSubscriptions().add(sub);
-                    group.addSubscription(sub); 
+                    group.addSubscription(sub);
                 }
             }
             groupsByHandle.put(group.getHandle(), group);

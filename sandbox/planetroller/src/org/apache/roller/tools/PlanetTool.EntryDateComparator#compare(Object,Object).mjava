@@ -1,21 +1,17 @@
-        public int compare(Object o1, Object o2)
-        {
+        public int compare(Object o1, Object o2) {
             PlanetEntryData e1 = (PlanetEntryData)o1;
             PlanetEntryData e2 = (PlanetEntryData)o2;
-            if (e1.getPublished() != null && e2.getPublished() != null)
-            {
-                return e2.getPublished().compareTo(e1.getPublished());
+            if (e1.getPubTime() != null && e2.getPubTime() != null) {
+                return e2.getPubTime().compareTo(e1.getPubTime());
             }
-            if (e1.getPublished() == null)
-            {
-                logger.warn("Entry missing pubDate in sub: " 
-                        + e1.getSubscription().getFeedUrl());
+            if (e1.getPubTime() == null) {
+                logger.warn("Entry missing pubDate in sub: "
+                        + e1.getSubscription().getFeedURL());
             }
-            if (e2.getPublished() == null)
-            {
-                logger.warn("Entry missing pubDate in sub: " 
-                        + e2.getSubscription().getFeedUrl());
-            }            
+            if (e2.getPubTime() == null) {
+                logger.warn("Entry missing pubDate in sub: "
+                        + e2.getSubscription().getFeedURL());
+            }
             return 0;
-        }            
+        }
 

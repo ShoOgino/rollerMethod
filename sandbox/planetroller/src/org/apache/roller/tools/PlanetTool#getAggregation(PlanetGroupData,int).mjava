@@ -1,33 +1,27 @@
     public List getAggregation(
-            PlanetGroupData group, int maxEntries) throws RollerException
-    {
+            PlanetGroupData group, int maxEntries) throws Exception {
         long startTime = System.currentTimeMillis();
         List aggregation = null;
-        try
-        {
+        try {
             // Get aggregation from cache
             aggregation = (List)aggregationsByGroup.get(group);
-            if (aggregation == null) 
-            {
+            if (aggregation == null) {
                 // No aggregation found in cache, let's create a new one
                 aggregation = new ArrayList();
                 
                 // Comparator to help us create reverse chrono sorted list of entries
-                Comparator entryDateComparator = new EntryDateComparator(); 
+                Comparator entryDateComparator = new EntryDateComparator();
                 
                 // Add all of group's subscription's entries to ordered collection
                 Set sortedEntries = new TreeSet(entryDateComparator);
                 Iterator subs = group.getSubscriptions().iterator();
-                while (subs.hasNext())
-                {
+                while (subs.hasNext()) {
                     PlanetSubscriptionData sub = (PlanetSubscriptionData)subs.next();
                     Iterator candidates = sub.getEntries().iterator();
-                    while (candidates.hasNext())
-                    {
+                    while (candidates.hasNext()) {
                         PlanetEntryData candidate = (PlanetEntryData) candidates.next();
-                        if (group.qualified(candidate))
-                        {
-                            sortedEntries.add(candidate);                        
+                        if (group.qualified(candidate)) {
+                            sortedEntries.add(candidate);
                         }
                     }
                 }
@@ -35,21 +29,18 @@
                 // Throw away all but first maxEntris of our new entry list
                 int count = 0;
                 Iterator entries = sortedEntries.iterator();
-                while (entries.hasNext() && count++ < maxEntries)
-                {
+                while (entries.hasNext() && count++ < maxEntries) {
                     aggregation.add(entries.next());
                 }
                 aggregationsByGroup.put(group, aggregation);
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             logger.error("ERROR: building aggregation for: "+group.getHandle(), e);
-            throw new RollerException(e);
+            throw new Exception(e);
         }
         long endTime = System.currentTimeMillis();
         logger.info("Generated aggregation in "
                 +((endTime-startTime)/1000.0)+" seconds");
-        return aggregation; 
+        return aggregation;
     }
 

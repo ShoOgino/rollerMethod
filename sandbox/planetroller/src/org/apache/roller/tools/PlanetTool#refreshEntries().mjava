@@ -1,0 +1,61 @@
+    public void refreshEntries() throws Exception {
+        Date now = new Date();
+        long startTime = System.currentTimeMillis();
+        PlanetConfigData config = getConfiguration();
+        if (config == null || config.getCacheDir() == null) {
+            logger.warn("Planet cache directory not set, aborting refresh");
+            return;
+        }
+        FeedFetcherCache feedInfoCache =
+                new DiskFeedInfoCache(config.getCacheDir());
+        
+        if (config.getProxyHost()!=null && config.getProxyPort() > 0) {
+            System.setProperty("proxySet", "true");
+            System.setProperty("http.proxyHost", config.getProxyHost());
+            System.setProperty("http.proxyPort",
+                    Integer.toString(config.getProxyPort()));
+        }
+        /** a hack to set 15 sec timeouts for java.net.HttpURLConnection */
+        System.setProperty("sun.net.client.defaultConnectTimeout", "15000");
+        System.setProperty("sun.net.client.defaultReadTimeout", "15000");
+        
+        FeedFetcher feedFetcher = new HttpURLFeedFetcher(feedInfoCache);
+        //FeedFetcher feedFetcher = new HttpClientFeedFetcher(feedInfoCache);
+        feedFetcher.setUsingDeltaEncoding(false);
+        feedFetcher.setUserAgent("RollerPlanetAggregator");
+                
+        // Loop through all subscriptions in the system
+        Iterator subs = getAllSubscriptions();
+        while (subs.hasNext()) {
+            long subStartTime = System.currentTimeMillis();
+            
+            // Fetch latest entries for each subscription
+            Set newEntries = null;
+            int count = 0;
+            PlanetSubscriptionData sub = (PlanetSubscriptionData)subs.next();
+            newEntries = getNewEntriesRemote(sub, feedFetcher, feedInfoCache);
+            count = newEntries.size();
+            
+            logger.debug("   Entry count: " + count);
+            if (count > 0) {
+                Iterator entryIter = sub.getEntries().iterator();
+                while (entryIter.hasNext()) {
+                    deleteEntry((PlanetEntryData)entryIter.next());
+                }
+                sub.purgeEntries();
+                sub.addEntries(newEntries);
+            }
+            long subEndTime = System.currentTimeMillis();
+            logger.info("   " + count + " - "
+                    + ((subEndTime-subStartTime)/1000.0)
+                    + " seconds to process (" + count + ") entries of "
+                    + sub.getFeedURL());
+        }
+        // Clear the aggregation cache
+        clearCachedAggregations();
+        
+        long endTime = System.currentTimeMillis();
+        logger.info("--- DONE --- Refreshed entries in "
+                + ((endTime-startTime)/1000.0) + " seconds");
+    }
+
