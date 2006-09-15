@@ -1,1 +1,9 @@
-    public static java.sql.Timestamp parseTimestampFromFormats(String aValue) {        if (StringUtils.isEmpty(aValue)) return null;                // call the regular Date formatter        Date myDate = DateUtil.parseFromFormats(aValue);        if (myDate != null) return new java.sql.Timestamp(myDate.getTime());        return null;    }
+    public static java.sql.Timestamp parseTimestampFromFormats(String aValue) {
+        if (StringUtils.isEmpty(aValue)) return null;
+        
+        // call the regular Date formatter
+        Date myDate = DateUtil.parseFromFormats(aValue);
+        if (myDate != null) return new java.sql.Timestamp(myDate.getTime());
+        return null;
+    }
+
