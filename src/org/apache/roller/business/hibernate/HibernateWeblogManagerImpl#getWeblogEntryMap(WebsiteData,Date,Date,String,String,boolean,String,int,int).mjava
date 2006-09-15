@@ -28,6 +28,7 @@ locale,             offset,
             cal.setTimeZone(website.getTimeZoneInstance());
         }
         
+        SimpleDateFormat formatter = DateUtil.get8charDateFormat();
         for (Iterator wbItr = entries.iterator(); wbItr.hasNext();) {
             WeblogEntryData entry = (WeblogEntryData) wbItr.next();
             Date sDate = DateUtil.getNoonOfDay(entry.getPubTime(), cal);

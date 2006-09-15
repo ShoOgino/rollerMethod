@@ -1,11 +1,12 @@
-    /** Returns a "friendly" date format.
-     *  @param mimimalFormat Should the date format allow single digits.
+    /** 
+     * Returns a "friendly" date format.
+     * @param mimimalFormat Should the date format allow single digits.
      **/
-    public static java.text.SimpleDateFormat friendlyDateFormat(boolean minimalFormat) {
+    public static SimpleDateFormat friendlyDateFormat(boolean minimalFormat) {
         if (minimalFormat) {
-            return new java.text.SimpleDateFormat("d.M.yy");
+            return new SimpleDateFormat(formatDefaultDateMinimal);
         }
         
-        return new java.text.SimpleDateFormat("dd.MM.yyyy");
+        return new SimpleDateFormat(formatDefaultDate);
     }
 

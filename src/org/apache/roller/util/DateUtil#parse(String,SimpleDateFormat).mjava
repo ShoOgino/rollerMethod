@@ -6,7 +6,8 @@
         if (StringUtils.isEmpty(aValue) || aFormat == null) {
             return null;
         }
-        
-        return aFormat.parse(aValue);
+        synchronized(aFormat) {
+            return aFormat.parse(aValue);
+        }
     }
 
