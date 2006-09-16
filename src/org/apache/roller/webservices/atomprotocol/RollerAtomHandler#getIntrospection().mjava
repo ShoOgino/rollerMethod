@@ -7,6 +7,7 @@
         List perms = null;
         try {
             perms = mRoller.getUserManager().getAllPermissions(user);
+
         } catch (RollerException re) {
             throw new AtomException("ERROR: getting user's weblogs", re);
         }
@@ -28,9 +29,24 @@
                 entryCol.setTitle("Weblog Entries");
                 entryCol.setAccept("entry");
                 entryCol.setHref(URLUtilities.getAtomProtocolURL(true)+"/"+handle+"/entries");
+                try {                    
+                    AtomService.Categories cats = new AtomService.Categories();
+                    cats.setFixed(true);
+                    cats.setScheme(URLUtilities.getWeblogURL(perm.getWebsite(), null, true));
+                    List rollerCats = mRoller.getWeblogManager().getWeblogCategories(perm.getWebsite());
+                    for (Iterator it = rollerCats.iterator(); it.hasNext();) {
+                        WeblogCategoryData rollerCat = (WeblogCategoryData)it.next();
+                        AtomService.Category cat = new AtomService.Category();
+                        cat.setTerm(rollerCat.getPath());
+                        cat.setLabel(rollerCat.getName());
+                        cats.addCategory(cat);
+                    } 
+                    entryCol.addCategories(cats);
+                } catch (Exception e) {
+                    throw new AtomException("ERROR fetching weblog categories");
+                }                               
                 workspace.addCollection(entryCol);
-                
-                
+                                
                 AtomService.Collection uploadCol = new AtomService.Collection();
                 uploadCol.setTitle("Media Files");
                 uploadCol.setAccept(accept);

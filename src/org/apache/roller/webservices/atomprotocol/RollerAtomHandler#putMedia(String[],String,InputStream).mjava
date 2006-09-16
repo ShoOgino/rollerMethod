@@ -6,7 +6,7 @@
             String contentType, InputStream is) throws AtomException {
         if (pathInfo.length > 2) {
             String name = pathInfo[2];
-            return postMedia(pathInfo, name, contentType, is);
+            return postMedia(pathInfo, name, name, contentType, is);
         }
         throw new AtomException("ERROR: bad pathInfo");
     }

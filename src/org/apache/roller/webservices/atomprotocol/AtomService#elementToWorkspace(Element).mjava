@@ -1,7 +1,13 @@
     /** Deserialize a Atom workspace XML element into an object */
     public static AtomService.Workspace elementToWorkspace(Element element) {
         AtomService.Workspace space = new AtomService.Workspace();
-        space.setTitle(element.getAttribute("title").getValue());
+        
+        Element titleElem = element.getChild("title", atomns);
+        space.setTitle(titleElem.getText());
+        if (titleElem.getAttribute("type", atomns) != null) {
+            space.setTitleType(titleElem.getAttribute("type", atomns).getValue());
+        }
+        
         List collections = element.getChildren("collection", ns);
         Iterator iter = collections.iterator();
         while (iter.hasNext()) {

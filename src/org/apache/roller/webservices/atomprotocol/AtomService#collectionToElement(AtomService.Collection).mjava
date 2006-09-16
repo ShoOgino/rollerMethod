@@ -1,9 +1,38 @@
     /** Serialize an AtomService.Collection object into an XML element */
     public static Element collectionToElement(AtomService.Collection collection) {
-        Namespace ns = Namespace.getNamespace("http://purl.org/atom/app#");
         Element element = new Element("collection", ns);
-        element.setAttribute("title", collection.getTitle());
         element.setAttribute("href", collection.getHref());
+                       
+        Element title = new Element("title", atomns);
+        title.setText(collection.getTitle());
+        element.addContent(title);
+        if (collection.getTitleType() != null && !collection.getTitleType().equals("TEXT")) {
+            element.setAttribute("type", collection.getTitleType(), atomns);
+        }
+                    
+        // Loop to create <app:categories> elements            
+        for (Iterator it = collection.getCategories(); it.hasNext();) {
+            Categories cats = (Categories)it.next();
+            Element catsElem = new Element("categories", ns);
+            catsElem.setAttribute("fixed", cats.isFixed() ? "yes" : "no", ns);
+            if (cats.getScheme() != null) {
+                catsElem.setAttribute("scheme", cats.getScheme(), ns);
+            }
+            // Loop to create <atom:category> elements
+            for (Iterator catIter = cats.getCategories(); catIter.hasNext();) {
+                Category cat = (Category) catIter.next();
+                Element catElem = new Element("category", atomns);
+                catElem.setAttribute("term", cat.getTerm(), atomns);
+                if (cat.getScheme() != null) { // optional
+                    catElem.setAttribute("scheme", cat.getScheme(), atomns);
+                }
+                if (cat.getLabel() != null) { // optional
+                    catElem.setAttribute("label", cat.getLabel(), atomns);
+                }
+                catsElem.addContent(catElem);
+            }
+            element.addContent(catsElem);
+        }
         
         Element memberType = new Element("accept", ns);
         memberType.setText(collection.getAccept());

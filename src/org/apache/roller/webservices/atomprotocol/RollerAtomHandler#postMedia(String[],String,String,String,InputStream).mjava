@@ -5,7 +5,7 @@
      * TODO: use Jakarta Commons File-upload?
      */
     public Entry postMedia(String[] pathInfo,
-            String title, String contentType, InputStream is)
+            String title, String slug, String contentType, InputStream is)
             throws AtomException {
         try {
             // authenticated client posted a weblog entry
@@ -16,10 +16,10 @@
                 mRoller.getUserManager().getWebsiteByHandle(handle);
             if (canEdit(website) && pathInfo.length > 1) {
                 // save to temp file
-                String fileName = createFileName(website, title, contentType);
+                String fileName = createFileName(website, (slug != null) ? slug : title, contentType);
                 try {
                     FileManager fmgr = mRoller.getFileManager();
-                    tempFile = File.createTempFile(fileName,"tmp");
+                    tempFile = File.createTempFile(fileName, "tmp");
                     FileOutputStream fos = new FileOutputStream(tempFile);
                     Utilities.copyInputToOutput(is, fos);
                     fos.close();

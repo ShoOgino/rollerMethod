@@ -1,9 +1,15 @@
     /** Serialize an AtomService.Workspace object into an XML element */
     public static Element workspaceToElement(Workspace space) {
-        Namespace ns = Namespace.getNamespace("http://purl.org/atom/app#");
         Element element = new Element("workspace", ns);
-        element.setAttribute("title", space.getTitle());
-        Iterator iter = space.getCollections().iterator();
+        
+        Element title = new Element("title", atomns);
+        title.setText(space.getTitle());
+        element.addContent(title);
+        if (space.getTitleType() != null && !space.getTitleType().equals("TEXT")) {
+            element.setAttribute("type", space.getTitleType(), atomns);
+        }
+        
+        Iterator iter = space.getCollections();
         while (iter.hasNext()) {
             AtomService.Collection col = (AtomService.Collection) iter.next();
             element.addContent(collectionToElement(col));
