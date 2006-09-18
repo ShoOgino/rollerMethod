@@ -1,9 +1,9 @@
-    public WeblogTemplate getWeblogPage() {
+    public Template getWeblogPage() {
         
         if(weblogPage == null && weblogPageName != null) {
             try {
                 UserManager umgr = RollerFactory.getRoller().getUserManager();
-                weblogPage = umgr.getPageByLink(getWeblog(), weblogPageName);
+                weblogPage = getWeblog().getPageByLink(weblogPageName);                
             } catch (RollerException ex) {
                 log.error("Error getting weblog page "+weblogPageName, ex);
             }
