@@ -9,7 +9,7 @@
     public void saveThemePages(WebsiteData website, Theme theme)
         throws RollerException {
         
-        mLogger.debug("Setting custom templates for website: "+website.getName());
+        log.debug("Setting custom templates for website: "+website.getName());
         
         try {
             UserManager userMgr = RollerFactory.getRoller().getUserManager();
@@ -70,7 +70,7 @@
                 // we have to go back to the db to figure out the id
                 WeblogTemplate template = userMgr.getPageByName(website, "Weblog");
                 if(template != null) {
-                    mLogger.debug("Setting default page to "+template.getId());
+                    log.debug("Setting default page to "+template.getId());
                     website.setDefaultPageId(template.getId());
                 }
             }
@@ -78,7 +78,7 @@
             // we also want to set the weblogdayid
             WeblogTemplate dayTemplate = userMgr.getPageByName(website, "_day");
             if(dayTemplate != null) {
-                mLogger.debug("Setting default day page to "+dayTemplate.getId());
+                log.debug("Setting default day page to "+dayTemplate.getId());
                 website.setWeblogDayPageId(dayTemplate.getId());
             }
             
@@ -86,7 +86,7 @@
             userMgr.saveWebsite(website);
             
         } catch (Exception e) {
-            mLogger.error("ERROR in action",e);
+            log.error("ERROR in action",e);
             throw new RollerException( e );
         }       
     }

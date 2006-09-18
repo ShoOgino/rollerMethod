@@ -4,7 +4,7 @@
      */
     private Theme loadThemeFromDisk(String theme_name, String themepath) {
         
-        mLogger.info("Loading theme "+theme_name);  
+        log.info("Loading theme "+theme_name);  
         
         Theme theme = new Theme();
         theme.setName(theme_name);
@@ -34,7 +34,7 @@
             // Continue reading theme even if problem encountered with one file
             String msg = "read theme template file ["+template_file+"]";
             if(!template_file.exists() && !template_file.canRead()) {
-                mLogger.error("Couldn't " + msg);
+                log.error("Couldn't " + msg);
                 continue;
             }
             char[] chars = null;
@@ -46,8 +46,8 @@
             	InputStreamReader reader = new InputStreamReader(stream, "UTF-8");
                 length = reader.read(chars);            
             } catch (Exception noprob) {
-                mLogger.error("Exception while attempting to " + msg);
-                if (mLogger.isDebugEnabled()) mLogger.debug(noprob);
+                log.error("Exception while attempting to " + msg);
+                if (log.isDebugEnabled()) log.debug(noprob);
                 continue;
             }
             
@@ -57,7 +57,7 @@
             if (template_name.startsWith("_") && template_name.length() > 1) {
                 navbar = false;
                 template_link = template_link.substring(1);
-                mLogger.debug("--- " + template_link);
+                log.debug("--- " + template_link);
             }
             
             String decorator = "_decorator";
