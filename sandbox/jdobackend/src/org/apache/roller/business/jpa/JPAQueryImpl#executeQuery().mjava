@@ -1,0 +1,8 @@
+    /**
+     * Helper that calls q.getSingleResult vs. q.getResultList depending on
+     * value of singleResult.
+     */
+    private Object executeQuery() {
+        return singleResult ? q.getSingleResult() : q.getResultList();
+    }
+

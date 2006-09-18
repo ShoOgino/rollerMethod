@@ -1,0 +1,11 @@
+    /**
+     * Construct by finding JPA EntityManagerFactory.
+     * @throws org.apache.roller.RollerException on any error
+     */
+    public JPAPersistenceStrategy() throws RollerException {
+        Properties emfProps = loadPropertiesFromResourceName(
+                "JPAEMF.properties", getContextClassLoader());
+        this.emf =
+                Persistence.createEntityManagerFactory("RollerPU", emfProps);
+    }
+

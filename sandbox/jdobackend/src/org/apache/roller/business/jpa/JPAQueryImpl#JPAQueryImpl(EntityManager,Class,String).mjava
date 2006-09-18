@@ -1,0 +1,8 @@
+    /**
+     * Creates a new instance of JPAQueryImpl
+     */
+    public JPAQueryImpl(EntityManager em, Class clazz, String queryName) {
+        this.em = em;
+        q = em.createNamedQuery(queryName);
+    }
+

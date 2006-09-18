@@ -1,0 +1,12 @@
+    /**
+     * Flush changes to the datastore, commit transaction, release em.
+     * @throws org.apache.roller.RollerException on any error
+     */
+    public void flush() throws RollerException {
+        EntityManager em = getEntityManager(false);
+        if (isTransactionActive(em)) {
+            em.getTransaction().commit();
+        }
+        em.close();
+    }
+
