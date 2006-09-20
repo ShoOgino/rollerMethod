@@ -7,8 +7,6 @@
             UserEntrySet ues2 = new UserEntrySet(stream, getEndpointUrl());
             
             assertEquals(ues1, ues2);
-        } catch (MissingElementException mee) {
-            fail(mee.getMessage());
         } catch (UnexpectedRootElementException uree) {
             fail(uree.getMessage());
         } catch (IOException ioe) {

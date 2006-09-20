@@ -1,16 +1,9 @@
     private EntrySet getEntry() throws HandlerException {
         String handle = getUri().getEntryId();
-        try {
-            WebsiteData wd = getRoller().getUserManager().getWebsiteByHandle(handle);
-            if (wd == null) {
-                throw new NotFoundException("ERROR: Unknown weblog handle: " + handle);
-            }
-            WebsiteData[] wds = new WebsiteData[] { wd };
-            EntrySet c = toWeblogEntrySet(wds);
-            
-            return c;
-        } catch (RollerException re) {
-            throw new InternalException("ERROR: Could not get weblog collection", re);
-        }
+        WebsiteData wd = getWebsiteData(handle);
+        WebsiteData[] wds = new WebsiteData[] { wd };
+        EntrySet c = toWeblogEntrySet(wds);
+        
+        return c;
     }
 

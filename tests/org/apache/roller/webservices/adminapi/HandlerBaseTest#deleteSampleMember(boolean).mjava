@@ -1,0 +1,19 @@
+    protected MemberEntrySet deleteSampleMember(boolean test) throws IOException, JDOMException, UnexpectedRootElementException {
+        MemberEntry me = getSampleMemberEntry();
+        
+        HttpResponse res = delete(me.getHref(), getUser(), getPassword());
+        if (test) {
+            assertEquals(200, res.getStatus());
+        } else if (res.getStatus() != 200) {
+            return null;
+        }
+        
+        MemberEntrySet mesResponse = null;
+        InputStream responseBody = res.getResponseBody();
+        if (responseBody != null) {
+            mesResponse = new MemberEntrySet(responseBody, getEndpointUrl());
+        }
+        
+        return mesResponse;
+    }
+

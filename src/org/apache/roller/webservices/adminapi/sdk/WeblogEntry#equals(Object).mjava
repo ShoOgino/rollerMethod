@@ -1,7 +1,7 @@
     /** Test if a user entry is equal to this user entry. */
     public boolean equals(Object o) {
-        if ( o == null || o.getClass() != this.getClass()) { 
-            return false;        
+        if ( o == null || o.getClass() != this.getClass()) {
+            return false;
         }
         
         WeblogEntry other = (WeblogEntry)o;
@@ -22,6 +22,9 @@
             return false;
         }
         if (!areEqual(getTimezone(), other.getTimezone())) {
+            return false;
+        }
+        if (!areEqual(getEnabled(), other.getEnabled())) {
             return false;
         }
         

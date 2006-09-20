@@ -12,7 +12,7 @@
         String name = getName();
         if (name != null) {
             Element nameElement = new Element(Tags.NAME, Service.NAMESPACE);
-            Text nameText = new Text(getName());
+            Text nameText = new Text(name);
             nameElement.addContent(nameText);
             userElement.addContent(nameElement);
         }
@@ -21,7 +21,7 @@
         String fullName = getFullName();
         if (fullName != null) {
             Element fullNameElement = new Element(Tags.FULL_NAME, NAMESPACE);
-            Text fullNameText = new Text(getFullName());
+            Text fullNameText = new Text(fullName);
             fullNameElement.addContent(fullNameText);
             userElement.addContent(fullNameElement);
         }
@@ -30,14 +30,14 @@
         String password = getPassword();
         if (password != null) {
             Element passwordElement = new Element(Tags.PASSWORD, NAMESPACE);
-            Text passwordText = new Text(getPassword());
+            Text passwordText = new Text(password);
             passwordElement.addContent(passwordText);
             userElement.addContent(passwordElement);
         }
         
         // locale
         Locale locale = getLocale();
-        if (locale != null ) {
+        if (locale != null) {
             Element localeElement = new Element(Tags.LOCALE, Service.NAMESPACE);
             Text localeText = new Text(getLocale().toString());
             localeElement.addContent(localeText);
@@ -57,18 +57,27 @@
         String emailAddress = getEmailAddress();
         if (emailAddress != null) {
             Element emailAddressElement = new Element(Tags.EMAIL_ADDRESS, Service.NAMESPACE);
-            Text emailAddressText = new Text(String.valueOf(emailAddress));
+            Text emailAddressText = new Text(emailAddress);
             emailAddressElement.addContent(emailAddressText);
             userElement.addContent(emailAddressElement);
         }
         
-        // creation date (optional)
+        // creation date
         Date datedCreated = getDateCreated();
         if (dateCreated != null) {
             Element dateCreatedElement = new Element(Tags.DATE_CREATED, Service.NAMESPACE);
             Text dateCreatedText = new Text(String.valueOf(dateCreated.getTime()));
             dateCreatedElement.addContent(dateCreatedText);
             userElement.addContent(dateCreatedElement);
+        }
+        
+        // enabled
+        Boolean enabled = getEnabled();
+        if (enabled != null) {
+            Element enabledElement = new Element(Tags.ENABLED, NAMESPACE);
+            Text enabledText = new Text(enabled.toString());
+            enabledElement.addContent(enabledText);
+            userElement.addContent(enabledElement);
         }
         
         return doc;

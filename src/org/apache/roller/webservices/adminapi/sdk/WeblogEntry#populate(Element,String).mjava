@@ -1,73 +1,72 @@
-    private void populate(Element e, String urlPrefix) throws MissingElementException {
-        // handle
+    private void populate(Element e, String urlPrefix) {
+        // handle (required)
         Element handleElement = e.getChild(Tags.HANDLE, Service.NAMESPACE);
-        if (handleElement == null) {
-            throw new MissingElementException("ERROR: Missing element", e.getName(), Tags.HANDLE);
+        if (handleElement != null) {
+            setHandle(handleElement.getText());
         }
-        setHandle(handleElement.getText());
         
         // href
-        String href = urlPrefix + "/" + EntrySet.Types.WEBLOGS + "/" + getHandle();        
-        setHref(href);        
+        String href = urlPrefix + "/" + EntrySet.Types.WEBLOGS + "/" + getHandle();
+        setHref(href);
         
         // name
         Element nameElement = e.getChild(Tags.NAME, Service.NAMESPACE);
-        if (nameElement == null) {
-            throw new MissingElementException("ERROR: Missing element", e.getName(), Tags.NAME);
+        if (nameElement != null) {
+            setName(nameElement.getText());
         }
-        setName(nameElement.getText());
         
         // description
         Element descElement = e.getChild(Tags.DESCRIPTION, Service.NAMESPACE);
-        if (descElement == null) {
-            throw new MissingElementException("ERROR: Missing element", e.getName(), Tags.DESCRIPTION);
+        if (descElement != null) {
+            setDescription(descElement.getText());
         }
-        setDescription(descElement.getText());
         
         // locale
         Element localeElement = e.getChild(Tags.LOCALE, Service.NAMESPACE);
-        if (localeElement == null) {
-            throw new MissingElementException("ERROR: Missing element", e.getName(), Tags.LOCALE);
+        if (localeElement != null) {
+            setLocale(localeElement.getText());
         }
-        setLocale(localeElement.getText());
         
         // timezone
         Element tzElement = e.getChild(Tags.TIMEZONE, Service.NAMESPACE);
-        if (tzElement == null) {
-            throw new MissingElementException("ERROR: Missing element", e.getName(), Tags.TIMEZONE);
+        if (tzElement != null) {
+            setTimezone(tzElement.getText());
         }
-        setTimezone(tzElement.getText());
         
         // creator
         Element creatorElement = e.getChild(Tags.CREATING_USER, Service.NAMESPACE);
-        if (creatorElement == null) {
-            throw new MissingElementException("ERROR: Missing element", e.getName(), Tags.CREATING_USER);
+        if (creatorElement != null) {
+            setCreatingUser(creatorElement.getText());
         }
-        setCreatingUser(creatorElement.getText());
         
         // email address
         Element emailElement = e.getChild(Tags.EMAIL_ADDRESS, Service.NAMESPACE);
-        if (emailElement == null) {
-            throw new MissingElementException("ERROR: Missing element: ", e.getName(), Tags.EMAIL_ADDRESS);
+        if (emailElement != null) {
+            setEmailAddress(emailElement.getText());
         }
-        setEmailAddress(emailElement.getText());        
         
-        // created (optional)
+        // created
         Element createdElement = e.getChild(Tags.DATE_CREATED, Service.NAMESPACE);
         if (createdElement != null) {
             setDateCreated(new Date(Long.valueOf(createdElement.getText()).longValue()));
-        }              
+        }
         
-        // APP entries URL (optional)
+        // APP entries URL
         Element appEntriesUrlElement = e.getChild(Tags.APP_ENTRIES_URL, Service.NAMESPACE);
         if (appEntriesUrlElement != null) {
             setAppEntriesUrl(appEntriesUrlElement.getText());
-        }                      
+        }
         
-        // APP resources URL (optional)
+        // APP resources URL
         Element appResourcesUrlElement = e.getChild(Tags.APP_RESOURCES_URL, Service.NAMESPACE);
         if (appResourcesUrlElement != null) {
             setAppResourcesUrl(appResourcesUrlElement.getText());
-        }                              
+        }
+        
+        // enabled
+        Element enabledElement = e.getChild(Tags.ENABLED, Service.NAMESPACE);
+        if (enabledElement != null) {
+            setEnabled(Boolean.valueOf(enabledElement.getText()));
+        }
     }
 

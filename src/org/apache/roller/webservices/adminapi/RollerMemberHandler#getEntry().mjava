@@ -7,18 +7,18 @@
             List perms;
             if (username == null) {
                 //get all entries for the given website handle
-                WebsiteData wd = getRoller().getUserManager().getWebsiteByHandle(handle);
+                WebsiteData wd = getWebsiteData(handle);
                 if (wd == null) {
                     throw new NotFoundException("ERROR: Unknown weblog handle: " + handle);
                 }
                 perms = getRoller().getUserManager().getAllPermissions(wd);
             } else {
                 //get all entries for the given website handle & username
-                WebsiteData wd = getRoller().getUserManager().getWebsiteByHandle(handle);
+                WebsiteData wd = getWebsiteData(handle);
                 if (wd == null) {
                     throw new NotFoundException("ERROR: Unknown weblog handle: " + handle);
                 }
-                UserData ud = getRoller().getUserManager().getUserByUserName(username);
+                UserData ud = getUserData(username);
                 if (ud == null) {
                     throw new NotFoundException("ERROR: Unknown user name: " + username);
                 }

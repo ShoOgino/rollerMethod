@@ -1,26 +1,25 @@
-    private void populate(Element e, String urlPrefix) throws MissingElementException {
+    private void populate(Element e, String urlPrefix) {
+        // all required
+        
         // name
         Element nameElement = e.getChild(Tags.NAME, NAMESPACE);
-        if (nameElement == null) {
-            throw new MissingElementException("ERROR: Missing element", e.getName(), Tags.NAME);
+        if (nameElement != null) {
+            setName(nameElement.getText());
         }
-        setName(nameElement.getText());
-                
+        
         // handle
         Element handleElement = e.getChild(Tags.HANDLE, NAMESPACE);
-        if (handleElement == null) {
-            throw new MissingElementException("ERROR: Missing element", e.getName(), Tags.HANDLE);
+        if (handleElement != null) {
+            setHandle(handleElement.getText());
         }
-        setHandle(handleElement.getText());
-
-        // href
-        setHref(urlPrefix + "/" + EntrySet.Types.MEMBERS + "/" + getHandle() + "/" + getName()); 
         
-        // password
+        // href
+        setHref(urlPrefix + "/" + EntrySet.Types.MEMBERS + "/" + getHandle() + "/" + getName());
+        
+        // permission
         Element permissionElement = e.getChild(Tags.PERMISSION, NAMESPACE);
-        if (permissionElement == null) {
-            throw new MissingElementException("ERROR: Missing element", e.getName(), Tags.PERMISSION);
+        if (permissionElement != null) {
+            setPermission(permissionElement.getText());
         }
-        setPermission(permissionElement.getText());
     }
 

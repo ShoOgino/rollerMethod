@@ -1,4 +1,4 @@
-    protected MemberEntrySet createSampleMember() throws IOException, JDOMException, MissingElementException, UnexpectedRootElementException {
+    protected MemberEntrySet createSampleMember() throws IOException, JDOMException, UnexpectedRootElementException {
         MemberEntrySet mes = getSampleMemberEntrySet();
         
         String url = mes.getHref();
@@ -13,7 +13,7 @@
         MemberEntrySet mesResponse = null;
         InputStream responseBody = res.getResponseBody();
         if (responseBody != null) {
-           mesResponse = new MemberEntrySet(responseBody, getEndpointUrl());
+            mesResponse = new MemberEntrySet(responseBody, getEndpointUrl());
         }
         
         return mesResponse;

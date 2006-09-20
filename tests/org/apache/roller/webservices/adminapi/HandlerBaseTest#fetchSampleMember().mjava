@@ -1,13 +1,13 @@
-    protected MemberEntrySet deleteSampleMember() throws IOException, JDOMException, MissingElementException, UnexpectedRootElementException {
+    protected MemberEntrySet fetchSampleMember() throws IOException, JDOMException, UnexpectedRootElementException {
         MemberEntry me = getSampleMemberEntry();
         
-        HttpResponse res = delete(me.getHref(), getUser(), getPassword());
+        HttpResponse res = get(me.getHref(), getUser(), getPassword());
         assertEquals(200, res.getStatus());
         
         MemberEntrySet mesResponse = null;
         InputStream responseBody = res.getResponseBody();
         if (responseBody != null) {
-           mesResponse = new MemberEntrySet(responseBody, getEndpointUrl());
+            mesResponse = new MemberEntrySet(responseBody, getEndpointUrl());
         }
         
         return mesResponse;

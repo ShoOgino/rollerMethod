@@ -1,0 +1,19 @@
+    protected void tearDown() throws Exception {
+        //System.err.println("HandlerTest.tearDown()");
+        try {
+            deleteSampleMember(false);
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+        try {
+            deleteSampleWeblog(false);
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+        try {
+            deleteSampleUser(false);
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+    }
+

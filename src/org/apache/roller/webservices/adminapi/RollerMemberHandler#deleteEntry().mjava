@@ -20,9 +20,9 @@
             mgr.removePermissions(pd);
             getRoller().flush();
             
-            UserData ud = getRoller().getUserManager().getUserByUserName(username);
+            UserData ud = getUserData(username);
             CacheManager.invalidate(ud);
-            WebsiteData wd = getRoller().getUserManager().getWebsiteByHandle(handle);
+            WebsiteData wd = getWebsiteData(handle);
             CacheManager.invalidate(wd);
             
             EntrySet es = toMemberEntrySet(pds);

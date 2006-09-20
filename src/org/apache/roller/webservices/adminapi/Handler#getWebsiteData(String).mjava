@@ -1,0 +1,16 @@
+    protected WebsiteData getWebsiteData(String handle) throws NotFoundException, InternalException {
+        try {
+            WebsiteData wd = getRoller().getUserManager().getWebsiteByHandle(handle, Boolean.TRUE);
+            if (wd == null) {
+                wd = getRoller().getUserManager().getWebsiteByHandle(handle, Boolean.FALSE);
+            }
+            if (wd == null) {
+                throw new NotFoundException("ERROR: Unknown weblog handle: " + handle);
+            }
+            
+            return wd;
+        } catch (RollerException re) {
+            throw new InternalException("ERROR: Could not get weblog: " + handle, re);
+        }
+    }
+

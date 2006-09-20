@@ -7,12 +7,10 @@
             return c;
         } catch (UnexpectedRootElementException ure) {
             throw new BadRequestException("ERROR: Failed to parse content", ure);            
-        } catch (MissingElementException mee) {
-            throw new BadRequestException("ERROR: Failed to parse content", mee);            
         } catch (JDOMException jde) {
             throw new BadRequestException("ERROR: Failed to parse content", jde);
         } catch (IOException ioe) {
             throw new InternalException("ERROR: Failed to parse content", ioe);
         }
-    }    
+    }
 

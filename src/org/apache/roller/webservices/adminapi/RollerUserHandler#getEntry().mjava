@@ -1,15 +1,8 @@
     private EntrySet getEntry() throws HandlerException {
-        try {
-            UserData ud = getRoller().getUserManager().getUserByUserName(getUri().getEntryId());
-            if (ud == null) {
-                throw new NotFoundException("ERROR: Unknown user: " + getUri().getEntryId());
-            }
-            UserData[] uds = new UserData[] { ud };
-            
-            EntrySet c = toUserEntrySet(uds);
-            return c;
-        } catch (RollerException re) {
-            throw new InternalException("ERROR: Could not get user collection", re);
-        }
+        UserData ud = getUserData(getUri().getEntryId());
+        UserData[] uds = new UserData[] { ud };
+        
+        EntrySet c = toUserEntrySet(uds);
+        return c;
     }
 

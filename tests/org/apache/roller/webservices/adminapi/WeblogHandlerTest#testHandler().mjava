@@ -24,31 +24,26 @@
             assertEquals(wesUpdate, updateSampleWeblogEntrySet(getSampleWeblogEntrySet()));
             
             //delete
-            WeblogEntrySet wesDelete = deleteSampleWeblog();
+            WeblogEntrySet wesDelete = deleteSampleWeblog(true);
             assertNotNull(wesDelete);
             assertNotNull(wesCreate.getEntries());
             assertEquals(wesCreate.getEntries().length, 1);
             assertEquals(wesDelete, wesUpdate);
-            
-            deleteSampleUser();
         } catch (IOException ioe) {
             fail(ioe.getMessage());
-            ioe.printStackTrace();            
+            ioe.printStackTrace();
         } catch (JDOMException je) {
             fail(je.getMessage());
             je.printStackTrace();
-        } catch (MissingElementException mee) {
-            fail(mee.getMessage());
-            mee.printStackTrace();
         } catch (UnexpectedRootElementException uree) {
             fail(uree.getMessage());
             uree.printStackTrace();
         } finally {
             try {
-                delete(getSampleWeblogEntry().getHref(), getUser(), getPassword());
-                delete(getSampleUserEntry().getHref(), getUser(), getPassword());                
+                deleteSampleWeblog(false);
+                deleteSampleUser(false);
             } catch (Exception e) {
-                // nothing
+                e.printStackTrace();
             }
         }
     }

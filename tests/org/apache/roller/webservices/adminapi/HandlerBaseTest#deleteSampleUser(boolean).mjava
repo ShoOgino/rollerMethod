@@ -1,0 +1,19 @@
+    protected UserEntrySet deleteSampleUser(boolean test) throws IOException, JDOMException, UnexpectedRootElementException {
+        UserEntry ue = getSampleUserEntry();
+        
+        HttpResponse res = delete(ue.getHref(), getUser(), getPassword());
+        if (test) {
+            assertEquals(200, res.getStatus());
+        } else if (res.getStatus() != 200) {
+            return null;
+        }
+        
+        UserEntrySet uesResponse = null;
+        InputStream responseBody = res.getResponseBody();
+        if (responseBody != null) {
+            uesResponse = new UserEntrySet(responseBody, getEndpointUrl());
+        }
+        
+        return uesResponse;
+    }
+

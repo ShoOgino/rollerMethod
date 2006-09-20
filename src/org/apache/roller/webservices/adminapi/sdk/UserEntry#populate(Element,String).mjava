@@ -1,10 +1,9 @@
-    private void populate(Element e, String urlPrefix) throws MissingElementException {
-        // name
+    private void populate(Element e, String urlPrefix) {
+        // name (required)
         Element nameElement = e.getChild(Tags.NAME, NAMESPACE);
-        if (nameElement == null) {
-            throw new MissingElementException("ERROR: Missing element", e.getName(), Tags.NAME);
+        if (nameElement != null) {
+            setName(nameElement.getText());
         }
-        setName(nameElement.getText());
         
         // href
         String href = urlPrefix + "/" + EntrySet.Types.USERS + "/" + getName();
@@ -12,43 +11,44 @@
         
         // full name
         Element fullNameElement = e.getChild(Tags.FULL_NAME, NAMESPACE);
-        if (fullNameElement == null) {
-            throw new MissingElementException("ERROR: Missing element", e.getName(), Tags.FULL_NAME);
+        if (fullNameElement != null) {
+            setFullName(fullNameElement.getText());
         }
-        setFullName(fullNameElement.getText());
         
         // password
-        // this is optional
         Element passwordElement = e.getChild(Tags.PASSWORD, NAMESPACE);
         if (passwordElement != null) {
-            setPassword(passwordElement.getText());            
+            setPassword(passwordElement.getText());
         }
         
         // locale
         Element localeElement = e.getChild(Tags.LOCALE, Service.NAMESPACE);
-        if (localeElement == null) {
-            throw new MissingElementException("ERROR: Missing element", e.getName(), Tags.LOCALE);
+        if (localeElement != null) {
+            setLocale(localeElement.getText());
         }
-        setLocale(localeElement.getText());
         
         // timezone
         Element tzElement = e.getChild(Tags.TIMEZONE, Service.NAMESPACE);
-        if (tzElement == null) {
-            throw new MissingElementException("ERROR: Missing element", e.getName(), Tags.TIMEZONE);
+        if (tzElement != null) {
+            setTimezone(tzElement.getText());
         }
-        setTimezone(tzElement.getText());
         
         // email address
         Element emailElement = e.getChild(Tags.EMAIL_ADDRESS, Service.NAMESPACE);
-        if (emailElement == null) {
-            throw new MissingElementException("ERROR: Missing element", e.getName(), Tags.EMAIL_ADDRESS);
+        if (emailElement != null) {
+            setEmailAddress(emailElement.getText());
         }
-        setEmailAddress(emailElement.getText());
         
         // created (optional)
         Element createdElement = e.getChild(Tags.DATE_CREATED, Service.NAMESPACE);
         if (createdElement != null) {
             setDateCreated(new Date(Long.valueOf(createdElement.getText()).longValue()));
+        }
+        
+        // enabled
+        Element enabledElement = e.getChild(Tags.ENABLED, Service.NAMESPACE);
+        if (enabledElement != null) {
+            setEnabled(Boolean.valueOf(enabledElement.getText()));
         }
     }
 

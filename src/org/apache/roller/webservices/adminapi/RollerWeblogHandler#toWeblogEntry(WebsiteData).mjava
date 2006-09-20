@@ -10,6 +10,8 @@
         we.setCreatingUser(wd.getCreator().getUserName());
         we.setEmailAddress(wd.getEmailAddress());
         we.setDateCreated(wd.getDateCreated());
+        we.setEnabled(wd.getEnabled());
+        
         try {
             AppUrl appUrl = new AppUrl(RollerRuntimeConfig.getAbsoluteContextURL(), wd.getHandle());
             we.setAppEntriesUrl(appUrl.getEntryUrl().toString());

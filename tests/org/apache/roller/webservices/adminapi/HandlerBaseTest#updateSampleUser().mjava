@@ -1,4 +1,4 @@
-    protected UserEntrySet updateSampleUser() throws IOException, JDOMException, MissingElementException, UnexpectedRootElementException {
+    protected UserEntrySet updateSampleUser() throws IOException, JDOMException, UnexpectedRootElementException {
         UserEntrySet ues = updateSampleUserEntrySet(getSampleUserEntrySet());
         
         String url = ues.getHref();
@@ -13,7 +13,7 @@
         UserEntrySet uesResponse = null;
         InputStream responseBody = res.getResponseBody();
         if (responseBody != null) {
-           uesResponse = new UserEntrySet(responseBody, getEndpointUrl());
+            uesResponse = new UserEntrySet(responseBody, getEndpointUrl());
         }
         
         return uesResponse;

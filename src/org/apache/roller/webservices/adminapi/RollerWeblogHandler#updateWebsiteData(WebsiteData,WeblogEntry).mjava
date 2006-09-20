@@ -14,11 +14,14 @@
         if (entry.getEmailAddress() != null) {
             wd.setEmailAddress(entry.getEmailAddress());
         }
+        if (entry.getEnabled() != null) {
+            wd.setEnabled(entry.getEnabled());
+        }
         
         try {
             UserManager mgr = getRoller().getUserManager();
             mgr.saveWebsite(wd);
-            getRoller().flush();            
+            getRoller().flush();
             CacheManager.invalidate(wd);
         } catch (RollerException re) {
             throw new InternalException("ERROR: Could not update website data", re);

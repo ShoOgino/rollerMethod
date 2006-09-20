@@ -4,25 +4,34 @@
         
         // href
         member.setAttribute(Attributes.HREF, getHref());
-               
+        
         // name
-        Element name = new Element(Tags.NAME, Service.NAMESPACE);
-        Text nameText = new Text(getName());
-        name.addContent(nameText);
-        member.addContent(name);
-       
+        String name = getName();
+        if (name != null) {
+            Element nameElement = new Element(Tags.NAME, Service.NAMESPACE);
+            Text nameText = new Text(name);
+            nameElement.addContent(nameText);
+            member.addContent(nameElement);
+        }
+        
         // handle
-        Element handle = new Element(Tags.HANDLE, NAMESPACE);
-        Text handleText = new Text(getHandle());
-        handle.addContent(handleText);
-        member.addContent(handle);
+        String handle = getHandle();
+        if (handle != null) {
+            Element handleElement = new Element(Tags.HANDLE, NAMESPACE);
+            Text handleText = new Text(handle);
+            handleElement.addContent(handleText);
+            member.addContent(handleElement);
+        }
         
         // permission
-        Element permission = new Element(Tags.PERMISSION, NAMESPACE);
-        Text permissionText = new Text(getPermission());
-        permission.addContent(permissionText);
-        member.addContent(permission);
-                
+        String perm = getPermission();
+        if (perm != null) {
+            Element permissionElement = new Element(Tags.PERMISSION, NAMESPACE);
+            Text permissionText = new Text(perm);
+            permissionElement.addContent(permissionText);
+            member.addContent(permissionElement);
+        }
+        
         return doc;
     }
 

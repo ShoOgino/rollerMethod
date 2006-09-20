@@ -1,4 +1,4 @@
-    protected WeblogEntrySet updateSampleWeblog() throws IOException, JDOMException, MissingElementException, UnexpectedRootElementException {
+    protected WeblogEntrySet updateSampleWeblog() throws IOException, JDOMException, UnexpectedRootElementException {
         WeblogEntrySet wes = updateSampleWeblogEntrySet(getSampleWeblogEntrySet());
         
         String url = wes.getHref();
@@ -13,7 +13,7 @@
         WeblogEntrySet wesResponse = null;
         InputStream responseBody = res.getResponseBody();
         if (responseBody != null) {
-           wesResponse = new WeblogEntrySet(responseBody, getEndpointUrl());
+            wesResponse = new WeblogEntrySet(responseBody, getEndpointUrl());
         }
         
         return wesResponse;

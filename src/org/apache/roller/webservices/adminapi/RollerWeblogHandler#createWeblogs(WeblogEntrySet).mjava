@@ -24,6 +24,11 @@
                 }
                 wd.setDateCreated(dateCreated);
                 
+                Boolean enabled = entry.getEnabled();
+                if (enabled != null) {
+                    wd.setEnabled(enabled);
+                }
+                
                 try {
                     String def = RollerRuntimeConfig.getProperty("users.editor.pages");
                     String[] defs = Utilities.stringToStringArray(def,",");
@@ -34,11 +39,11 @@
                 
                 mgr.addWebsite(wd);
                 getRoller().flush();
-                CacheManager.invalidate(wd);                
+                CacheManager.invalidate(wd);
                 websiteDatas.add(wd);
             }
             
-            return toWeblogEntrySet((WebsiteData[])websiteDatas.toArray(new WebsiteData[0]));            
+            return toWeblogEntrySet((WebsiteData[])websiteDatas.toArray(new WebsiteData[0]));
         } catch (RollerException re) {
             throw new InternalException("ERROR: Could not create weblogs: " + c, re);
         }

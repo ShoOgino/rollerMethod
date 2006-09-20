@@ -1,13 +1,12 @@
     private PermissionsData getPermissionsData(String handle, String username) throws HandlerException {
         try {
-            UserManager mgr = getRoller().getUserManager();
-            UserData ud = mgr.getUserByUserName(username);
-            WebsiteData wd = mgr.getWebsiteByHandle(handle);
-            PermissionsData pd = mgr.getPermissions(wd, ud);
+            UserData ud = getUserData(username);
+            WebsiteData wd = getWebsiteData(handle);
+            PermissionsData pd = getRoller().getUserManager().getPermissions(wd, ud);
             
             return pd;
         } catch (RollerException re) {
-            throw new InternalException("ERROR: Could not get permissions data", re);
+            throw new InternalException("ERROR: Could not get permissions data for weblog handle: " + handle + ", user name: " + username, re);
         }
     }
 

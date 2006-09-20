@@ -6,8 +6,8 @@
         }
         
         try {
-            UserData ud = getRoller().getUserManager().getUserByUserName(entry.getName());
-            WebsiteData wd = getRoller().getUserManager().getWebsiteByHandle(entry.getHandle());
+            UserData ud = getUserData(entry.getName());
+            WebsiteData wd = getWebsiteData(entry.getHandle());
             
             UserManager mgr = getRoller().getUserManager();
             mgr.savePermissions(pd);

@@ -1,25 +1,22 @@
     private EntrySet deleteEntry() throws HandlerException {
-        try {
-            UserManager mgr = getRoller().getUserManager();
-            UserData ud = mgr.getUserByUserName(getUri().getEntryId());
-            
-            if (ud == null) {
-                throw new NotFoundException("ERROR: Unknown user: " + getUri().getEntryId());
-            }
-            // don't allow deletion of the currently authenticated user
-            if (ud.getUserName().equals(getUserName())) {
-                throw new NotAllowedException("ERROR: Can't delete authenticated user: " + getUserName());
-            }
-            
-            UserData[] uds = new UserData[] { ud };
-            mgr.removeUser(ud);
-            getRoller().flush();            
-            CacheManager.invalidate(ud);
-
-            EntrySet es = toUserEntrySet(uds);
-            return es;
-        } catch (RollerException re) {
-            throw new InternalException("ERROR: Could not delete entry: " + getUri().getEntryId(), re);
+        UserData ud = getUserData(getUri().getEntryId());
+        
+        // don't allow deletion of the currently authenticated user
+        if (ud.getUserName().equals(getUserName())) {
+            throw new NotAllowedException("ERROR: Can't delete authenticated user: " + getUserName());
         }
+        
+        UserData[] uds = new UserData[] { ud };
+        
+        try {
+            getRoller().getUserManager().removeUser(ud);
+            getRoller().flush();
+            CacheManager.invalidate(ud);
+        } catch (RollerException re) {
+            throw new InternalException("ERROR: could not delete user data", re);
+        }
+        
+        EntrySet es = toUserEntrySet(uds);
+        return es;
     }
 
