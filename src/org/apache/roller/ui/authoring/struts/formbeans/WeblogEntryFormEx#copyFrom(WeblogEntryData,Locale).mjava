@@ -18,6 +18,12 @@
             pluginsArray = StringUtils.split(entry.getPlugins(), ",");
         }
         
+        String tags = entry.getTags();
+        if (tags != null && tags.length() > 0)
+        {
+          setTags(tags);
+        }
+                
         attributes = new HashMap();
         Iterator atts = entry.getEntryAttributes().iterator();
         while (atts.hasNext())

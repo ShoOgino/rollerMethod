@@ -1,0 +1,29 @@
+    public void testRemoveTagsViaShortcut() throws Exception {
+
+      WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+      
+      // setup some test entries to use
+      WeblogEntryData entry = TestUtils.setupWeblogEntry("entry1", testWeblog.getDefaultCategory(), testWeblog, testUser);
+      entry.addTag("testTag");
+      entry.addTag("testTag2");      
+      String id = entry.getId();
+      TestUtils.endSession(true);
+      
+      entry = mgr.getWeblogEntry(id);
+      assertEquals(2, entry.getTagSet().size());
+      TestUtils.endSession(true);
+      
+      entry = mgr.getWeblogEntry(id);
+      entry.removeTag("testTag");
+      entry.removeTag("testTag2");
+      TestUtils.endSession(true);
+
+      entry = mgr.getWeblogEntry(id);
+      assertEquals(0, entry.getTagSet().size());
+      TestUtils.endSession(true);
+      
+      // teardown our test entry
+      TestUtils.teardownWeblogEntry(id);
+      TestUtils.endSession(true);      
+    }
+

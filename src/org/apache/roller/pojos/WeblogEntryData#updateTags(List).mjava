@@ -1,0 +1,21 @@
+     public void updateTags(List tags) {
+       HashSet newTags = new HashSet(tags);
+              
+       // remove old ones no longer passed.
+       Iterator it = tagSet.iterator();
+       while(it.hasNext()) {
+         WeblogEntryTagData tag = (WeblogEntryTagData) it.next();
+         if(!newTags.contains(tag.getName())) {
+           it.remove();
+         } else {
+           newTags.remove(tag.getName());
+         }
+       }
+       
+       // add new ones, duplicates are taken care of by the db.
+       it = newTags.iterator();
+       while(it.hasNext()) {
+         addTag((String) it.next());
+       }
+    }
+

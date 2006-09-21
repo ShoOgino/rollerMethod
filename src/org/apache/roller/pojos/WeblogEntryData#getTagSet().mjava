@@ -1,0 +1,14 @@
+    /** 
+     * @roller.wrapPojoMethod type="pojo-collection" class="org.apache.roller.pojos.WeblogEntryTagData"
+     *
+     * @ejb:persistent-field
+     * 
+     * @hibernate.set lazy="true" order-by="name" inverse="true" cascade="all-delete-orphan" 
+     * @hibernate.collection-key column="entryid" 
+     * @hibernate.collection-one-to-many class="org.apache.roller.pojos.WeblogEntryTagData"
+     */
+     public Set getTagSet()
+     {
+         return tagSet;
+     }
+

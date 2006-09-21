@@ -5,6 +5,7 @@
                                                       String locale,
                                                       String category,
                                                       String dateString,
+                                                      List tags,
                                                       int pageNum,
                                                       boolean absolute) {
         
@@ -31,7 +32,9 @@
             
         } else if(dateString != null && cat == null) {
             pathinfo.append("date/").append(dateString);  
-            
+        
+        } else if(tags != null && tags.size() > 0) {
+            pathinfo.append("tags/").append(Utilities.stringArrayToString((String[])tags.toArray(), ","));
         } else {
             if(dateString != null) params.put("date", dateString);
             if(cat != null) params.put("cat", encode(cat));

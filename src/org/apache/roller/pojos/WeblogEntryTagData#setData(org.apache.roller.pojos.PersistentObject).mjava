@@ -1,0 +1,14 @@
+    /**
+     * Setter is needed in RollerImpl.storePersistentObject()
+     */
+    public void setData(org.apache.roller.pojos.PersistentObject otherData)
+    {
+        WeblogEntryTagData data = (WeblogEntryTagData) otherData;
+        this.id = data.getId();
+        this.website = data.getWebsite();
+        this.weblogEntry = data.getWeblogEntry();
+        this.user = data.getUser();
+        this.name = data.getName();
+        this.time = data.getTime();
+    }
+

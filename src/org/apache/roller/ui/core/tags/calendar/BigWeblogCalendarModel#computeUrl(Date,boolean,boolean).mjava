@@ -24,10 +24,10 @@
         try {
             if (nextPrevMonthURL && pageLink != null) { 
                 // next/prev month URLs point to current page
-                url = URLUtilities.getWeblogPageURL(weblog, locale, pageLink, null, cat, dateString, -1, false);
+                url = URLUtilities.getWeblogPageURL(weblog, locale, pageLink, null, cat, dateString, null, -1, false);
             } else { 
                 // all other URLs point back to main weblog page
-                url = URLUtilities.getWeblogCollectionURL(weblog, locale, cat, dateString, -1, false);
+                url = URLUtilities.getWeblogCollectionURL(weblog, locale, cat, dateString, null, -1, false);
             }
         } catch (Exception e) {
             mLogger.error("ERROR: creating URL",e);

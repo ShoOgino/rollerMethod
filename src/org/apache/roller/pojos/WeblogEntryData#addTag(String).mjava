@@ -1,0 +1,10 @@
+     public void addTag(String name) {
+       WeblogEntryTagData tag = new WeblogEntryTagData();
+       tag.setName(stripInvalidTagChars(name));
+       tag.setUser(getCreator());
+       tag.setWebsite(getWebsite());
+       tag.setWeblogEntry(this);
+       tag.setTime(getUpdateTime());       
+       tagSet.add(tag);
+     }
+

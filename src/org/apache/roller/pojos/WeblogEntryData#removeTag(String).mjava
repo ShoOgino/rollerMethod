@@ -1,0 +1,10 @@
+     public void removeTag(String name) {
+       Iterator it = tagSet.iterator();
+       while(it.hasNext()) {
+         WeblogEntryTagData tag = (WeblogEntryTagData) it.next();
+         if(tag.getName().equals(name)) {
+           it.remove();
+         }
+       }
+     }
+

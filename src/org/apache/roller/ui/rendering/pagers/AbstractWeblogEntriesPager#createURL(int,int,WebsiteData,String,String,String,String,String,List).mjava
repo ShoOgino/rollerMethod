@@ -10,16 +10,17 @@
             String             pageLink,
             String             entryAnchor,
             String             dateString,
-            String             catPath) {
+            String             catPath,
+            List               tags) {
         
         int pageNum = page + pageAdd;
         
         if (pageLink != null) {
-            return URLUtilities.getWeblogPageURL(website, locale, pageLink, entryAnchor, catPath, dateString, pageNum, false);
+            return URLUtilities.getWeblogPageURL(website, locale, pageLink, entryAnchor, catPath, dateString, tags, pageNum, false);
         } else if (entryAnchor != null) {
             return URLUtilities.getWeblogEntryURL(website, locale, entryAnchor, true);
         }
         
-        return URLUtilities.getWeblogCollectionURL(website, locale, catPath, dateString, pageNum, false);
+        return URLUtilities.getWeblogCollectionURL(website, locale, catPath, dateString, tags, pageNum, false);
     }
 

@@ -1,0 +1,13 @@
+     public void setTags(String tags)
+     {
+       if (tags == null)
+         return;
+       
+       String[] tagsarr = StringUtils.split(tags, ' ');
+       
+       if (tagsarr == null || tagsarr.length == 0)
+         return;
+       
+       updateTags(Arrays.asList(tagsarr));       
+     }
+

@@ -1,0 +1,23 @@
+    public void testAddMultipleTags() throws Exception {    
+    
+        WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+        
+        // setup some test entries to use
+        WeblogEntryData entry = TestUtils.setupWeblogEntry("entry1", testWeblog.getDefaultCategory(), testWeblog, testUser);
+        entry.addTag("testTag");
+        entry.addTag("whateverTag");
+        String id = entry.getId();
+        TestUtils.endSession(true);
+        
+        entry = mgr.getWeblogEntry(id);
+        entry.addTag("testTag2");
+        TestUtils.endSession(true);
+        
+        entry = mgr.getWeblogEntry(id);
+        assertEquals(3, entry.getTagSet().size());
+        
+        // teardown our test entry
+        TestUtils.teardownWeblogEntry(id);
+        TestUtils.endSession(true);      
+    }
+

@@ -1,0 +1,9 @@
+     public boolean checkValidTagChar(char c) {
+       return  c == 45 || c == 46 || c == 95 || 
+         (48 <= c && c <= 57) ||
+         (65 <= c && c <= 90) ||
+         (97 <= c && c <= 122) ||
+         Character.isUnicodeIdentifierPart(c) ||
+         Character.isUnicodeIdentifierStart(c);
+     }
+

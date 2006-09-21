@@ -24,6 +24,7 @@
                     pageRequest.getWeblogAnchor(),
                     pageRequest.getWeblogDate(),
                     cat,
+                    pageRequest.getTags(),
                     pageRequest.getPageNum());
         } else if (dateString != null && dateString.length() == 8) {
             return new WeblogEntriesDayPager(
@@ -33,6 +34,7 @@
                     pageRequest.getWeblogAnchor(),
                     pageRequest.getWeblogDate(),
                     cat,
+                    pageRequest.getTags(),
                     pageRequest.getPageNum());
         } else if (dateString != null && dateString.length() == 6) {
             return new WeblogEntriesMonthPager(
@@ -42,7 +44,9 @@
                     pageRequest.getWeblogAnchor(),
                     pageRequest.getWeblogDate(),
                     cat,
+                    pageRequest.getTags(),
                     pageRequest.getPageNum());
+          
         } else {
             return new WeblogEntriesLatestPager(
                     weblog,
@@ -51,6 +55,7 @@
                     pageRequest.getWeblogAnchor(),
                     pageRequest.getWeblogDate(),
                     cat,
+                    pageRequest.getTags(),
                     pageRequest.getPageNum());
         }
     }

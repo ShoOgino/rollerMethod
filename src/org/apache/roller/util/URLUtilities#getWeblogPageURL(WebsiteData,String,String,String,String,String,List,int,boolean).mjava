@@ -7,6 +7,7 @@
                                                 String entryAnchor,
                                                 String category,
                                                 String dateString,
+                                                List tags,
                                                 int pageNum,
                                                 boolean absolute) {
         
@@ -29,12 +30,15 @@
             if(category != null) {
                 params.put("cat", encode(category));
             }
+            if(tags != null && tags.size() > 0) {
+                params.put("tags",encode(Utilities.stringArrayToString((String[])tags.toArray(), "+")));
+            }
             if(pageNum > 0) {
                 params.put("page", Integer.toString(pageNum));
             }
         } else {
             // if there is no page link then this is just a typical collection url
-            return getWeblogCollectionURL(weblog, locale, category, dateString, pageNum, absolute);
+            return getWeblogCollectionURL(weblog, locale, category, dateString, tags, pageNum, absolute);
         }
         
         return pathinfo.toString() + getQueryString(params);

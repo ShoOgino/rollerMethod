@@ -1,0 +1,19 @@
+     /**
+      *
+      * @roller.wrapPojoMethod type="simple"
+      */     
+    public String getTags() 
+    {
+       StringBuffer sb = new StringBuffer();
+       for(Iterator it = getTagSet().iterator(); it.hasNext();)
+       {
+           sb.append(((WeblogEntryTagData)it.next()).getName()).append(" ");
+       }
+       if(sb.length() > 0)
+       {
+           sb.deleteCharAt(sb.length()-1);
+       }
+
+       return sb.toString();
+     }  
+

@@ -1,0 +1,17 @@
+   public boolean equals(Object pOther) {
+       if (pOther instanceof WeblogEntryTagData) {
+           WeblogEntryTagData lTest = (WeblogEntryTagData) pOther;
+           boolean lEquals = true;
+           
+           lEquals = PojoUtil.equals(lEquals, this.id, lTest.getId());
+           lEquals = PojoUtil.equals(lEquals, this.website, lTest.getWebsite());
+           lEquals = PojoUtil.equals(lEquals, this.weblogEntry, lTest.getWeblogEntry());
+           lEquals = PojoUtil.equals(lEquals, this.user, lTest.getUser());
+           lEquals = PojoUtil.equals(lEquals, this.name, lTest.getName());
+           lEquals = PojoUtil.equals(lEquals, this.time, lTest.getTime());
+           return lEquals;
+       } else {
+           return false;
+       }
+   }
+
