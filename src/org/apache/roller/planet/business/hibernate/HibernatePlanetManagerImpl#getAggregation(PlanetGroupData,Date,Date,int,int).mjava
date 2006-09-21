@@ -12,7 +12,7 @@
             
             if (group != null) {
                 StringBuffer sb = new StringBuffer();
-                sb.append("select entry from org.apache.roller.pojos.PlanetEntryData entry ");
+                sb.append("select entry from org.apache.roller.planet.pojos.PlanetEntryData entry ");
                 sb.append("join entry.subscription.groupSubscriptionAssocs assoc ");
                 sb.append("where assoc.group=:group and entry.pubTime < :endDate ");
                 if (startDate != null) {
@@ -30,7 +30,7 @@
                 ret = query.list();
             } else {
                 StringBuffer sb = new StringBuffer();
-                sb.append("select entry from org.apache.roller.pojos.PlanetEntryData entry ");
+                sb.append("select entry from org.apache.roller.planet.pojos.PlanetEntryData entry ");
                 sb.append("join entry.subscription.groupSubscriptionAssocs assoc ");
                 sb.append("where (assoc.group.handle='external' or assoc.group.handle='all') ");
                 sb.append("and entry.pubTime < :endDate ");

@@ -67,14 +67,6 @@
             // reattach sub.  sub gets detached as we iterate
             sub = this.getSubscriptionById(sub.getId());
             
-            // Fetch latest entries for each subscription
-//            Set newEntries = null;
-//            int count = 0;
-//            if (!StringUtils.isEmpty(localURL) && sub.getFeedURL().startsWith(localURL)) {
-//                newEntries = getNewEntriesLocal(sub, feedFetcher, feedInfoCache);
-//            } else {
-//                newEntries = getNewEntriesRemote(sub, feedFetcher, feedInfoCache);
-//            }
             Set newEntries = this.getNewEntries(sub, feedFetcher, feedInfoCache);
             int count = newEntries.size();
             

@@ -11,7 +11,7 @@
             // compatibility with the standaline version of the aggregator.
             if (config != null) {
                 config.setCacheDir(
-                        RollerConfig.getProperty("planet.aggregator.cache.dir"));
+                    PlanetConfig.getProperty("planet.aggregator.cache.dir"));
             }
         } catch (HibernateException e) {
             throw new RollerException(e);

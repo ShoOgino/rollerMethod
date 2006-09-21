@@ -3,7 +3,7 @@
      *
      * TODO BACKEND: force the use of remove(Object) moving forward.
      */
-    protected void remove(String id, Class clazz) throws HibernateException {
+    public void remove(String id, Class clazz) throws HibernateException {
         
         if(id == null || clazz == null) {
             throw new HibernateException("Cannot remove object when values are null");

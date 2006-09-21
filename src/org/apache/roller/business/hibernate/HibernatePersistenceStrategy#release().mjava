@@ -11,7 +11,7 @@
      * If not then we can close the Session without ever getting a jdbc
      * connection, which is important for scalability.
      */
-    protected void release() {
+    public void release() {
         
         try {
             Session session = sessionFactory.getCurrentSession();

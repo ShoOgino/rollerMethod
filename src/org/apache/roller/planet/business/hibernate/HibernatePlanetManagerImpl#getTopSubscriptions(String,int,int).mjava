@@ -7,7 +7,7 @@
             Query query = null;
             if (groupHandle != null) {
                 query = session.createQuery(
-                    "select sub from org.apache.roller.pojos.PlanetSubscriptionData sub "
+                    "select sub from org.apache.roller.planet.pojos.PlanetSubscriptionData sub "
                     +"join sub.groupSubscriptionAssocs assoc "
                     +"where "
                     +"assoc.group.handle=:groupHandle "
@@ -15,7 +15,7 @@
                 query.setString("groupHandle", groupHandle);
             } else {
                 query = session.createQuery(
-                    "select sub from org.apache.roller.pojos.PlanetSubscriptionData sub "
+                    "select sub from org.apache.roller.planet.pojos.PlanetSubscriptionData sub "
                     +"order by sub.inboundblogs desc");
             }
             if (offset != 0) {
