@@ -1,0 +1,12 @@
+    /**
+     * Instantiates and returns an instance of HibernatePlanetImpl.
+     */
+    public static Planet instantiate() throws RollerException {
+        if (me == null) {
+            mLogger.debug("Instantiating HibernatePlanetImpl");
+            me = new HibernatePlanetImpl();
+        }
+        
+        return me;
+    }
+

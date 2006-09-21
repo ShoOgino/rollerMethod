@@ -1,0 +1,7 @@
+    public PlanetManager getPlanetManager() throws RollerException {
+        if ( planetManager == null ) {
+            planetManager = new HibernatePlanetManagerImpl(strategy);  
+        }
+        return planetManager;
+    }
+

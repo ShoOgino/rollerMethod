@@ -1,0 +1,53 @@
+    /**
+     * Construct the actual Planet implemenation for this instance.
+     *
+     * Use reflection to call the implementation's instantiate() method.
+     * Should this fail (either no implementation is specified or
+     * instantiate() throws an Exception) then the DEFAULT_IMPL will be tried.
+     * If this should fail then we are in trouble :/
+     *
+     * @param planet_classname The name of the Planet implementation class
+     * to instantiate.
+     */
+    public static void setPlanet(String planet_classname) {
+        
+        if (StringUtils.isEmpty( planet_classname ))
+            planet_classname = DEFAULT_IMPL;
+        
+        try {
+            Class planetClass = Class.forName(planet_classname);
+            java.lang.reflect.Method instanceMethod =
+                    planetClass.getMethod("instantiate", (Class[])null);
+            
+            // do the invocation
+            planetInstance = (Planet)
+                instanceMethod.invoke(planetClass, (Object[])null);
+            
+            mLogger.info("Using Planet Impl: " + planet_classname);
+        } catch (Exception e) {
+            // uh oh
+            mLogger.error("Error instantiating " + planet_classname, e);
+            try {
+                // if we didn't already try DEFAULT_IMPL then try it now
+                if( ! DEFAULT_IMPL.equals(planet_classname)) {
+                    mLogger.info("** Trying DEFAULT_IMPL "+DEFAULT_IMPL+" **");
+                    
+                    Class planetClass = Class.forName(DEFAULT_IMPL);
+                    java.lang.reflect.Method instanceMethod =
+                            planetClass.getMethod("instantiate", (Class[])null);
+                    
+                    // do the invocation
+                    planetInstance = (Planet)
+                        instanceMethod.invoke(planetClass, (Object[])null);
+                } else {
+                    // we just do this so that the logger gets the message
+                    throw new Exception("Doh! Couldn't instantiate the planet class");
+                }
+                
+            } catch (Exception re) {
+                mLogger.fatal("Failed to instantiate fallback planet impl", re);
+            }
+        }
+        
+    }
+
