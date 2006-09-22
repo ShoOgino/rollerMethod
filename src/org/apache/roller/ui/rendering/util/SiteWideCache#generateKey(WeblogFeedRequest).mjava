@@ -41,6 +41,12 @@
             key.append("/excerpts");
         }
         
+        if(feedRequest.getTags() != null && feedRequest.getTags().size() > 0) {
+          String[] tags = new String[feedRequest.getTags().size()];
+          new TreeSet(feedRequest.getTags()).toArray(tags);
+          key.append("/tags/").append(Utilities.stringArrayToString(tags,"+"));
+        }       
+        
         return key.toString();
     }
 

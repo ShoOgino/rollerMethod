@@ -54,6 +54,11 @@
                 
                 key.append("/").append(cat);
             }
+            
+            if(pageRequest.getTags() != null && pageRequest.getTags().size() > 0) {
+              String[] tags = (String[])new TreeSet(pageRequest.getTags()).toArray();
+              key.append("/tags/").append(Utilities.stringArrayToString(tags,"+"));
+            }            
         }
         
         if(pageRequest.getLocale() != null) {

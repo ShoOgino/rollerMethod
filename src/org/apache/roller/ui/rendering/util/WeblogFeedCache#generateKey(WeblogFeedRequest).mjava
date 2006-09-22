@@ -32,6 +32,11 @@
             key.append("/").append(cat);
         }
         
+        if(feedRequest.getTags() != null && feedRequest.getTags().size() > 0) {
+          String[] tags = (String[])new TreeSet(feedRequest.getTags()).toArray();
+          key.append("/tags/").append(Utilities.stringArrayToString(tags,"+"));
+        }        
+        
         if(feedRequest.getLocale() != null) {
             key.append("/").append(feedRequest.getLocale());
         }

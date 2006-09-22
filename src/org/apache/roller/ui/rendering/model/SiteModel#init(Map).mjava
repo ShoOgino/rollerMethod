@@ -11,6 +11,8 @@
             pageLink = (weblogPage != null) ? weblogPage.getLink() : null;
             pageNum = ((WeblogPageRequest)weblogRequest).getPageNum();
             tags = ((WeblogPageRequest)weblogRequest).getTags();
+        } else if (weblogRequest instanceof WeblogFeedRequest) {
+            tags = ((WeblogFeedRequest)weblogRequest).getTags();
         }
         
         // extract weblog object

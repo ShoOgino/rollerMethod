@@ -8,11 +8,11 @@
       String id = entry.getId();
       TestUtils.endSession(true);
       
-      List results = mgr.getWeblogEntriesByTags(testWeblog, Arrays.asList(new String[] {"testTag"}));
+      List results = mgr.getWeblogEntries(testWeblog, null, null, null, null, Arrays.asList(new String[] {"testTag"}), null, null, null, 0, -1);
       assertEquals(1,results.size());
       WeblogEntryData testEntry = (WeblogEntryData) results.iterator().next();
       assertEquals(entry, testEntry);
-      
+
       // teardown our test entry
       TestUtils.teardownWeblogEntry(id);
       TestUtils.endSession(true);      

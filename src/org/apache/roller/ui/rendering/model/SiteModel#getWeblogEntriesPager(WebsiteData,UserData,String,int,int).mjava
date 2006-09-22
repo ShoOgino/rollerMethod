@@ -12,17 +12,10 @@
         String pagerUrl = URLUtilities.getWeblogPageURL(weblog, 
                 weblogRequest.getLocale(), pageLink, 
                 null, null, null, null, 0, false);
-        
-        if(tags.size() > 0) {
-          return new WeblogEntriesTagsPager(
-              pagerUrl, queryWeblog, user, tags,
-              weblogRequest.getLocale(),
-              sinceDays,
-              pageNum, 
-              length);        
-        }
+       
         return new WeblogEntriesListPager(
             pagerUrl, queryWeblog, user, cat,
+            tags,
             weblogRequest.getLocale(),
             sinceDays,
             pageNum, 
