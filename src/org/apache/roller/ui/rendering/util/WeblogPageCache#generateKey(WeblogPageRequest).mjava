@@ -56,7 +56,8 @@
             }
             
             if(pageRequest.getTags() != null && pageRequest.getTags().size() > 0) {
-              String[] tags = (String[])new TreeSet(pageRequest.getTags()).toArray();
+              Set ordered = new TreeSet(pageRequest.getTags());
+              String[] tags = (String[]) ordered.toArray(new String[ordered.size()]);  
               key.append("/tags/").append(Utilities.stringArrayToString(tags,"+"));
             }            
         }
