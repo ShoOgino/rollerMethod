@@ -19,7 +19,7 @@
                     
                     PlanetGroupData targetGroup = planet.getGroup(groupHandle);
                     
-                    targetGroup.removeSubscription(sub);
+                    targetGroup.getSubscriptions().remove(sub);
                     planet.deleteSubscription(sub);
                     roller.flush();
                     // TODO: why release here?

@@ -1,0 +1,10 @@
+    /** 
+     * @hibernate.set table="rag_group_subscription" lazy="true" cascade="save-update"
+     * @hibernate.collection-key column="subscription_id"
+     * @hibernate.collection-many-to-many column="group_id" class="org.apache.roller.planet.pojos.PlanetGroupData"
+     */
+    public Set getGroups()
+    {
+        return groups;
+    }
+

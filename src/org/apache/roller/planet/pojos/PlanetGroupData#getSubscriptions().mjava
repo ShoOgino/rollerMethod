@@ -1,13 +1,10 @@
-    public Set getSubscriptions() 
+    /** 
+     * @hibernate.set table="rag_group_subscription" lazy="true" invert="true" cascade="save-update"
+     * @hibernate.collection-key column="group_id"
+     * @hibernate.collection-many-to-many column="subscription_id" class="org.apache.roller.planet.pojos.PlanetSubscriptionData"
+     */
+    public Set getSubscriptions()
     {
-        Set set = new TreeSet();
-        Iterator assocs = getGroupSubscriptionAssocs().iterator();
-        while (assocs.hasNext())
-        {
-            PlanetGroupSubscriptionAssoc assoc = 
-                    (PlanetGroupSubscriptionAssoc)assocs.next();
-            set.add(assoc.getSubscription());
-        }
-        return set;
+        return subscriptions;
     }
 

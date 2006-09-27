@@ -1,4 +1,4 @@
-    public void testRefreshEntries() throws Exception {
+    public void _testRefreshEntries() throws Exception {
         
         PlanetManager planet = RollerFactory.getRoller().getPlanetManager();
         
@@ -15,7 +15,7 @@
             sub.setFeedURL(feed_url1);
             planet.saveSubscription(sub);
             
-            group.addSubscription(sub);
+            group.getSubscriptions().add(sub);
             planet.saveGroup(group);
             TestUtils.endSession(true);
         }
