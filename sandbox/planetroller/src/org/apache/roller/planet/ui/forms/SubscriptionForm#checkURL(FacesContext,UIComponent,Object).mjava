@@ -1,0 +1,13 @@
+    public void checkURL(FacesContext context, UIComponent component, Object value) {
+        if (value == null || !(value instanceof String)) return;
+        try {
+            URL url = new URL((String)value);
+        } catch (MalformedURLException ex) {
+            FacesMessage msg = new FacesMessage();
+            msg.setDetail(bundle.getString("errorBadURL"));
+            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(msg);
+        }
+        return;
+    }
+

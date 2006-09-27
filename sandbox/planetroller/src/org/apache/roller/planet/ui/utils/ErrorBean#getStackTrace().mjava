@@ -1,0 +1,10 @@
+   public String getStackTrace() {
+      FacesContext context = FacesContext.getCurrentInstance();
+      Map request = context.getExternalContext().getRequestMap();
+      Throwable ex = (Throwable) request.get("javax.servlet.error.exception");
+      StringWriter sw = new StringWriter();
+      PrintWriter pw = new PrintWriter(sw);
+      fillStackTrace(ex, pw);
+      return sw.toString();
+   }
+

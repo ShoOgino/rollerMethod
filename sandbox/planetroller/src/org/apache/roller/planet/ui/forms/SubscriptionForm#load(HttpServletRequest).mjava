@@ -1,0 +1,11 @@
+    public String load(HttpServletRequest request) throws Exception {
+        log.info("Loading Subscription...");
+        String subid = request.getParameter("subid");
+        if (subid != null) {
+            PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
+            setSubscription(pmgr.getSubscriptionById(subid));
+        }
+        groupid = request.getParameter("groupid");        
+        return "editSubscription";
+    }
+

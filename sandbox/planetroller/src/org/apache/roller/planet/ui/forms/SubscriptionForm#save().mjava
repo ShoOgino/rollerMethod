@@ -1,0 +1,23 @@
+    public String save() throws Exception {
+        log.info("Saving Subscription...");                
+        PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
+        if (StringUtils.isNotEmpty(getSubscription().getId())) {
+            PlanetSubscriptionData dbsub = pmgr.getSubscriptionById(getSubscription().getId());
+            dbsub.setTitle(subscription.getTitle());
+            dbsub.setName(subscription.getName());
+            dbsub.setFeedURL(subscription.getFeedURL());
+            dbsub.setSiteURL(subscription.getSiteURL());
+            pmgr.saveSubscription(dbsub); 
+        } else {
+            pmgr.saveSubscription(subscription);
+            // if we've got a group, add subscription to it
+            if (groupid != null) {
+                PlanetGroupData group = pmgr.getGroupById(groupid);
+                group.getSubscriptions().add(subscription);
+                pmgr.saveGroup(group);
+            }
+        }
+        PlanetFactory.getPlanet().flush();
+        return "editSubscription";
+    }    
+

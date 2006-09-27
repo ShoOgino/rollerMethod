@@ -1,0 +1,36 @@
+    public void doFilter(
+            ServletRequest servletRequest, 
+            ServletResponse servletResponse, 
+            FilterChain filterChain) throws IOException, ServletException {
+        
+        HttpServletRequest request = (HttpServletRequest)servletRequest;
+        
+        // only handle with HTTP GET requests with URIs ending in .faces
+        if ("GET".equals(request.getMethod()) 
+                && request.getRequestURI() != null 
+                && request.getRequestURI().endsWith(".faces")) {
+            String formName = null;
+            LoadableForm form = null; 
+            try { // to load form class based on page name in URI
+                String[] pathInfo = request.getRequestURI().split("/");
+                String lastSegment = pathInfo[pathInfo.length - 1];            
+                formName = lastSegment.substring(0, lastSegment.length() - 6);
+                String className = loadableFormsPackage + "." + StringUtils.capitalize(formName);
+                Class formClass = Class.forName(className);
+                form = (LoadableForm)formClass.newInstance();                    
+            } catch (Exception ignored) {
+                // that's OK, not every page has a loadable form
+                log.debug("Problem loading form for " + formName, ignored);
+            }                                
+            if (form != null) try { // to call form class load() method 
+                log.debug("Loading form: " + formName);  
+                form.load(request);                       
+                request.setAttribute(formName, form);
+            } catch (Exception e) {
+                // error during form load indicates real problem
+                throw new ServletException("ERROR loading form " + formName, e);
+            }                
+        }
+        filterChain.doFilter(servletRequest, servletResponse);               
+    }
+

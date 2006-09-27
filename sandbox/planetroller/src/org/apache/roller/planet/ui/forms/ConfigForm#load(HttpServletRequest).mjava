@@ -1,0 +1,9 @@
+    public String load(HttpServletRequest request) throws Exception { 
+        log.info("Loading PlanetConfig...");
+        Planet planet = PlanetFactory.getPlanet();
+        if (planet.getPlanetManager().getConfiguration() != null) {
+            planetConfig = planet.getPlanetManager().getConfiguration();
+        }
+        return "editConfig";
+    }
+

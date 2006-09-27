@@ -1,0 +1,12 @@
+    public Map getGroupHandles() throws Exception { 
+        PlanetManager pmgr= PlanetFactory.getPlanet().getPlanetManager(); 
+        Map map = new HashMap(); 
+        map.put("",""); // allow no-choice
+        List groups = pmgr.getGroups();
+        for (Iterator iter = groups.iterator(); iter.hasNext();) {
+            PlanetGroupData group = (PlanetGroupData)iter.next();
+            map.put(group.getHandle(), group.getHandle());
+        }
+        return map;
+    }
+

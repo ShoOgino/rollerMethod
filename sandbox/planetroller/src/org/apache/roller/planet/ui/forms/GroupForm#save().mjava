@@ -1,0 +1,16 @@
+    public String save() throws Exception {
+        log.info("Saving Group...");
+        Planet planet = PlanetFactory.getPlanet();
+        if (StringUtils.isNotEmpty(group.getId())) {
+            PlanetGroupData dbgroup = planet.getPlanetManager().getGroupById(group.getId());
+            dbgroup.setTitle(group.getTitle());
+            dbgroup.setHandle(group.getHandle());
+            dbgroup.setDescription(group.getDescription());
+            planet.getPlanetManager().saveGroup(dbgroup); 
+        } else {
+            planet.getPlanetManager().saveGroup(group); 
+        }
+        planet.flush();
+        return "editGroups";
+    }   
+

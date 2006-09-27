@@ -1,0 +1,23 @@
+    public String save() throws Exception {
+        log.info("Saving PlanetConfig...");
+        Planet planet = PlanetFactory.getPlanet();
+        PlanetManager pmgr= PlanetFactory.getPlanet().getPlanetManager(); 
+        if (StringUtils.isNotEmpty(planetConfig.getId())) {
+            PlanetConfigData dbconfig = pmgr.getConfiguration();
+            dbconfig.setTitle(planetConfig.getTitle());
+            dbconfig.setDescription(planetConfig.getDescription());
+            dbconfig.setAdminName(  planetConfig.getAdminName());
+            dbconfig.setAdminEmail( planetConfig.getAdminEmail());
+            dbconfig.setProxyHost(  planetConfig.getProxyHost());
+            dbconfig.setProxyPort(  planetConfig.getProxyPort());
+            if (StringUtils.isNotEmpty(groupHandle)) {
+                dbconfig.setDefaultGroup(pmgr.getGroup(groupHandle));
+            }
+            planet.getPlanetManager().saveConfiguration(dbconfig);
+        } else {
+            planet.getPlanetManager().saveConfiguration(planetConfig);
+        }         
+        planet.flush();
+        return "editConfig";
+    }
+
