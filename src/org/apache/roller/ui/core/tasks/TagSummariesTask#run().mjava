@@ -1,0 +1,51 @@
+    /**
+     * Excecute the task.
+     */
+    public void run() {
+        
+        log.info("task started");
+        
+        try {
+            Roller roller = RollerFactory.getRoller();
+            
+            // find the last time we ran
+            RollerPropertyData property = roller.getPropertiesManager().getProperty(LAST_RUN);
+            
+            Date lastRun = null;
+            
+            if (property == null)
+            {
+              // the first time we need to create a new property object
+              property = new RollerPropertyData();
+              property.setName(LAST_RUN);
+            }
+            else
+            {
+              // else, let's get last time we ran.
+              try {
+                lastRun = DateUtil.parse(property.getValue(), DateUtil.defaultTimestampFormat());
+              } catch (ParseException e) {
+                e.printStackTrace();
+              }      
+            }
+            
+            Date summarized = roller.getTagManager().summarize(lastRun);
+            
+            if(summarized != null) {
+              property.setValue(DateUtil.defaultTimestamp(summarized));
+              roller.getPropertiesManager().saveProperty(property);
+              roller.flush();
+            }
+                        
+            roller.release();
+            log.info("task completed");   
+            
+        } catch (RollerException e) {
+            log.error("Error while summarizing tag table.", e);
+        } catch (Exception ee) {
+            log.error("unexpected exception", ee);
+        }
+        
+        log.info("task completed");
+    }
+

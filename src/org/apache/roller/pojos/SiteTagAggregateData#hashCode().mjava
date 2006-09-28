@@ -1,0 +1,9 @@
+   public int hashCode() {
+       int result = 17;
+       result = PojoUtil.addHashCode(result, this.id);
+       result = PojoUtil.addHashCode(result, this.name);
+       result = PojoUtil.addHashCode(result, new Integer(this.count));
+       
+       return result;
+   }
+
