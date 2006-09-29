@@ -1,0 +1,54 @@
+    /**
+     * Construct the full real path to a resource in a weblog's uploads area.
+     */
+    private File getRealFile(String weblogHandle, String path) 
+            throws FileNotFoundException, FilePathException {
+        
+        // make sure uploads area exists for this weblog
+        File weblogDir = new File(this.upload_dir + weblogHandle);
+        if(!weblogDir.exists()) {
+            weblogDir.mkdirs();
+        }
+        
+        // crop leading slash if it exists
+        String relPath = path;
+        if(path != null && path.startsWith("/")) {
+            relPath = path.substring(1);
+        }
+        
+        // convert "/" to filesystem specific file separator
+        if(relPath != null) {
+            relPath.replaceAll("/", File.separator);
+        }
+        
+        // now form the absolute path
+        String filePath = weblogDir.getAbsolutePath();
+        if(relPath != null) {
+            filePath += File.separator + relPath;
+        }
+        
+        // make sure path exists and is readable
+        File file = new File(filePath);
+        if(!file.exists()) {
+            throw new FileNotFoundException("Invalid path ["+path+"], "+
+                    "directory doesn't exist.");
+        } else if(!file.canRead()) {
+            throw new FilePathException("Invalid path ["+path+"], "+
+                    "cannot read from path.");
+        }
+        
+        try {
+            // make sure someone isn't trying to sneek outside the uploads dir
+            File uploadDir = new File(this.upload_dir);
+            if(!file.getCanonicalPath().startsWith(uploadDir.getCanonicalPath())) {
+                throw new FilePathException("Invalid path ["+path+"], "+
+                        "trying to get outside uploads dir.");
+            }
+        } catch (IOException ex) {
+            // rethrow as FilePathException
+            throw new FilePathException(ex);
+        }
+        
+        return file;
+    }
+

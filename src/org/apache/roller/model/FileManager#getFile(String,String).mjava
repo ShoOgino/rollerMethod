@@ -1,0 +1,18 @@
+    /**
+     * Get a reference to a specific file in a weblog's uploads area.
+     * 
+     * This method always returns a valid file or will throw an exception
+     * if the specificed path doesn't exist, is a directory, or can't be read.
+     * 
+     * @param weblogHandle The handle of the weblog.
+     * @param path The relative path to the desired resource within 
+     * the weblog's uploads area.
+     *
+     * @throws FileNotFoundException If path does not exist.
+     * @throws FilePathException If path is invalid, is a directory, or can't be read.
+     *
+     * @return File representing the real file resource.
+     */
+    public File getFile(String weblogHandle, String path) 
+        throws FileNotFoundException, FilePathException;
+

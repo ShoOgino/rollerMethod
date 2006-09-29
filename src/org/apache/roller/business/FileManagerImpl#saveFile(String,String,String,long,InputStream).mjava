@@ -1,43 +1,42 @@
     /**
-     * Save file to website's resource directory.
-     * @param site Website to save to
-     * @param name Name of file to save
-     * @param size Size of file to be saved
-     * @param is Read file from input stream
+     * @see org.apache.roller.model.FileManager#saveFile(java.lang.String, java.lang.String, java.lang.String, long, java.io.InputStream)
      */
-    public void saveFile(String weblogHandle, String name, String contentType, 
-                         long size, InputStream is)
-            throws RollerException {
+    public void saveFile(String weblogHandle, 
+                         String path, 
+                         String contentType, 
+                         long size, 
+                         InputStream is)
+            throws FileNotFoundException, FilePathException, FileIOException {
         
-        if (!canSave(weblogHandle, name, contentType, size, new RollerMessages())) {
-            throw new RollerException("ERROR: upload denied");
+        // make sure we are allowed to save this file
+        RollerMessages msgs = new RollerMessages();
+        if (!canSave(weblogHandle, path, contentType, size, msgs)) {
+            throw new FileIOException(msgs.toString());
         }
+        
+        // make sure uploads area exists for this weblog
+        File dirPath = this.getRealFile(weblogHandle, null);
+        File saveFile = new File(dirPath.getAbsolutePath() + File.separator + path);
         
         byte[] buffer = new byte[8192];
         int bytesRead = 0;
-        String dir = this.upload_dir;
-        
-        File dirPath = new File(dir + File.separator + weblogHandle);
-        if (!dirPath.exists()) {
-            dirPath.mkdirs();
-        }
         OutputStream bos = null;
         try {
-            bos = new FileOutputStream(
-                    dirPath.getAbsolutePath() + File.separator + name);
+            bos = new FileOutputStream(saveFile);
             while ((bytesRead = is.read(buffer, 0, 8192)) != -1) {
                 bos.write(buffer, 0, bytesRead);
             }
+            
+            log.debug("The file has been written to ["+saveFile.getAbsolutePath()+"]");
         } catch (Exception e) {
-            throw new RollerException("ERROR uploading file", e);
+            throw new FileIOException("ERROR uploading file", e);
         } finally {
             try {
                 bos.flush();
                 bos.close();
             } catch (Exception ignored) {}
         }
-        if (mLogger.isDebugEnabled()) {
-            mLogger.debug("The file has been written to \"" + dir + weblogHandle + "\"");
-        }
+        
+        
     }
 

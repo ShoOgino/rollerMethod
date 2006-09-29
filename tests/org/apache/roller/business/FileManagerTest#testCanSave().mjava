@@ -1,17 +1,78 @@
+    /**
+     * Test FileManager.saveFile() checks.
+     *
+     * This should test all conditions where a save should fail.
+     */
     public void testCanSave() throws Exception {
         
-        // update roller properties to prepare for test
+        FileManager fmgr = RollerFactory.getRoller().getFileManager();
         PropertiesManager pmgr = RollerFactory.getRoller().getPropertiesManager();
-        Map config = pmgr.getProperties();
-        ((RollerPropertyData)config.get("uploads.enabled")).setValue("false");
-        ((RollerPropertyData)config.get("uploads.types.forbid")).setValue("gif");
+        Map config = config = pmgr.getProperties();
+        ((RollerPropertyData)config.get("uploads.dir.maxsize")).setValue("1.00");
+        ((RollerPropertyData)config.get("uploads.types.forbid")).setValue("");
+        ((RollerPropertyData)config.get("uploads.types.allowed")).setValue("");
+        ((RollerPropertyData)config.get("uploads.enabled")).setValue("true");
+        pmgr.saveProperties(config);
+        TestUtils.endSession(true);
+        
+        Exception exception = null;
+        InputStream is = null;
+        
+        try {
+            // path check should fail
+            fmgr.saveFile(testWeblog.getHandle(), "some/path/foo.gif", "text/plain", 10, is);
+        } catch (Exception ex) {
+            log.error(ex);
+            exception = ex;
+        }
+        assertNotNull(exception);
+        exception = null;
+        
+        config = pmgr.getProperties();
         ((RollerPropertyData)config.get("uploads.dir.maxsize")).setValue("1.00");
         pmgr.saveProperties(config);
         TestUtils.endSession(true);
         
-        // test quota functionality
-        FileManager fmgr = RollerFactory.getRoller().getFileManager();
-        RollerMessages msgs = new RollerMessages();
-        assertFalse(fmgr.canSave(testWeblog.getHandle(), "test.gif", "text/plain", 2500000, msgs));
+        try {
+            // quota check should fail
+            fmgr.saveFile(testWeblog.getHandle(), "test.gif", "text/plain", 2500000, is);
+        } catch (Exception ex) {
+            log.error(ex);
+            exception = ex;
+        }
+        assertNotNull(exception);
+        exception = null;
+        
+        
+        config = pmgr.getProperties();
+        ((RollerPropertyData)config.get("uploads.types.forbid")).setValue("gif");
+        pmgr.saveProperties(config);
+        TestUtils.endSession(true);
+        
+        try {
+            // forbidden types check should fail
+            fmgr.saveFile(testWeblog.getHandle(), "test.gif", "text/plain", 10, is);
+        } catch (Exception ex) {
+            log.error(ex);
+            exception = ex;
+        }
+        assertNotNull(exception);
+        exception = null;
+        
+        
+        config = pmgr.getProperties();
+        ((RollerPropertyData)config.get("uploads.enabled")).setValue("false");
+        pmgr.saveProperties(config);
+        TestUtils.endSession(true);
+        
+        try {
+            // uploads disabled should fail
+            fmgr.saveFile(testWeblog.getHandle(), "test.gif", "text/plain", 10, is);
+        } catch (Exception ex) {
+            log.error(ex);
+            exception = ex;
+        }
+        assertNotNull(exception);
+        exception = null;
     }
 

@@ -24,16 +24,13 @@
                     Utilities.copyInputToOutput(is, fos);
                     fos.close();
 
-                    // If save is allowed by Roller system-wide policies
-                    if (fmgr.canSave(website.getHandle(), fileName, contentType, tempFile.length(), msgs)) {
-                        // Then save the file
-                        FileInputStream fis = new FileInputStream(tempFile);
-                        fmgr.saveFile(website.getHandle(), fileName, contentType, tempFile.length(), fis);
-                        fis.close();
-
-                        File resource = new File(fmgr.getUploadDir() + File.separator + fileName);
-                        return createAtomResourceEntry(website, resource);
-                    }
+                    // Try saving file
+                    FileInputStream fis = new FileInputStream(tempFile);
+                    fmgr.saveFile(website.getHandle(), fileName, contentType, tempFile.length(), fis);
+                    fis.close();
+                    
+                    File resource = fmgr.getFile(website.getHandle(), fileName);
+                    return createAtomResourceEntry(website, resource);
 
                 } catch (IOException e) {
                     String msg = "ERROR reading posted file";

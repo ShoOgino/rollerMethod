@@ -1,44 +1,72 @@
     /**
      * Determine if file can be saved given current RollerConfig settings.
      */
-    public boolean canSave(String weblogHandle, String name, String contentType,
-                           long size, RollerMessages messages)
-            throws RollerException {
+    private boolean canSave(String weblogHandle, 
+                           String path, 
+                           String contentType,
+                           long size, 
+                           RollerMessages messages) {
         
-        Roller mRoller = RollerFactory.getRoller();
-        Map config = mRoller.getPropertiesManager().getProperties();
-        
-        if (!((RollerPropertyData)config.get("uploads.enabled")).getValue().equalsIgnoreCase("true")) {
+        // first check, is uploading enabled?
+        if(!RollerRuntimeConfig.getBooleanProperty("uploads.enabled")) {
             messages.addError("error.upload.disabled");
             return false;
         }
         
-        String allows = ((RollerPropertyData)config.get("uploads.types.allowed")).getValue();
-        String forbids = ((RollerPropertyData)config.get("uploads.types.forbid")).getValue();
+        // second check, does upload exceed max size for file?
+        BigDecimal maxFileMB = new BigDecimal(
+                RollerRuntimeConfig.getProperty("uploads.file.maxsize"));
+        int maxFileBytes = (int)(1024000 * maxFileMB.doubleValue());
+        log.debug("max allowed file size = "+maxFileBytes);
+        log.debug("attempted save file size = "+size);
+        if (size > maxFileBytes) {
+            messages.addError("error.upload.filemax", maxFileMB.toString());
+            return false;
+        }
+        
+        // third check, does file cause weblog to exceed quota?
+        BigDecimal maxDirMB = new BigDecimal(
+                RollerRuntimeConfig.getProperty("uploads.dir.maxsize"));
+        long maxDirBytes = (long)(1024000 * maxDirMB.doubleValue());
+        try {
+            File uploadsDir = this.getRealFile(weblogHandle, null);
+            long userDirSize = getDirSize(uploadsDir, true);
+            if (userDirSize + size > maxDirBytes) {
+                messages.addError("error.upload.dirmax", maxDirMB.toString());
+                return false;
+            }
+        } catch (Exception ex) {
+            // shouldn't ever happen, means the weblogs uploads dir is bad somehow
+            // rethrow as a runtime exception
+            throw new RuntimeException(ex);
+        }
+        
+        // fourth check, is upload type allowed?
+        String allows = RollerRuntimeConfig.getProperty("uploads.types.allowed");
+        String forbids = RollerRuntimeConfig.getProperty("uploads.types.forbid");
         String[] allowFiles = StringUtils.split(StringUtils.deleteWhitespace(allows), ",");
         String[] forbidFiles = StringUtils.split(StringUtils.deleteWhitespace(forbids), ",");
-        if (!checkFileType(allowFiles, forbidFiles, name, contentType)) {
+        if (!checkFileType(allowFiles, forbidFiles, path, contentType)) {
             messages.addError("error.upload.forbiddenFile", allows);
             return false;
         }
         
-        BigDecimal maxDirMB = new BigDecimal(
-                ((RollerPropertyData)config.get("uploads.dir.maxsize")).getValue());
-        int maxDirBytes = (int)(1024000 * maxDirMB.doubleValue());
-        int userDirSize = getWebsiteDirSize(weblogHandle, this.upload_dir);
-        if (userDirSize + size > maxDirBytes) {
-            messages.addError("error.upload.dirmax", maxDirMB.toString());
-            return false;
-        }
-        
-        BigDecimal maxFileMB = new BigDecimal(
-                ((RollerPropertyData)config.get("uploads.file.maxsize")).getValue());
-        int maxFileBytes = (int)(1024000 * maxFileMB.doubleValue());
-        mLogger.debug(""+maxFileBytes);
-        mLogger.debug(""+size);
-        if (size > maxFileBytes) {
-            messages.addError("error.upload.filemax", maxFileMB.toString());
-            return false;
+        // fifth check, is save path viable?
+        if(path.indexOf("/") != -1) {
+            // see if directory path exists already
+            String dirPath = path.substring(0, path.lastIndexOf("/"));
+            
+            try {
+                File parent = this.getRealFile(weblogHandle, dirPath);
+                if(parent == null || !parent.exists()) {
+                    messages.addError("error.upload.badPath");
+                }
+            } catch (Exception ex) {
+                // this is okay, just means that parent dir doesn't exist
+                messages.addError("blah");
+                return false;
+            }
+            
         }
         
         return true;

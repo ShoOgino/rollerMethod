@@ -58,15 +58,11 @@
                         
                         fileSize = files[i].getFileSize();
                         
-                        //retrieve the file data
-                        if (fmgr.canSave(website.getHandle(), fileName,
-                                files[i].getContentType(), fileSize, rollerMessages)) {
-                            InputStream stream = files[i].getInputStream();
-                            fmgr.saveFile(website.getHandle(), fileName,
-                                    files[i].getContentType(), fileSize, stream);
-                            lastUploads.add(fileName);
-                        }
-                        
+                        InputStream stream = files[i].getInputStream();
+                        fmgr.saveFile(website.getHandle(), fileName,
+                                files[i].getContentType(), fileSize, stream);
+                        lastUploads.add(fileName);
+
                         //destroy the temporary file created
                         files[i].destroy();
                     }
@@ -83,8 +79,7 @@
             pageModel.setWebsite(website);
             
             RollerContext rctx = RollerContext.getRollerContext();
-            String baseURL = RollerRuntimeConfig.getAbsoluteContextURL();
-            String resourcesBaseURL = baseURL + fmgr.getUploadUrl() + "/" + website.getHandle();
+            String resourcesBaseURL = URLUtilities.getWeblogResourceURL(website, "", true);
             Iterator uploads = lastUploads.iterator();
             if (uploads.hasNext()) {
                 messages.add(ActionMessages.GLOBAL_MESSAGE,

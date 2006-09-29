@@ -87,9 +87,11 @@
             theme.setTemplate(template_name, theme_template);
         }
         
-        // use the last mod date of the last template file
-        // as the last mod date of the theme
-        theme.setLastModified(theme_template.getLastModified());
+        // use the last mod date of the theme dir
+        theme.setLastModified(new Date(themedir.lastModified()));
+        
+        // load up resources as well
+        loadThemeResources(theme, themedir, themedir.getAbsolutePath());
         
         return theme;
     }

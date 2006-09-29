@@ -1,25 +1,24 @@
-    public boolean overQuota(String weblogHandle) throws RollerException {
+    /**
+     * @see org.apache.roller.model.FileManager#overQuota(java.lang.String)
+     */
+    public boolean overQuota(String weblogHandle) {
         
         String maxDir = RollerRuntimeConfig.getProperty("uploads.dir.maxsize");
         String maxFile = RollerRuntimeConfig.getProperty("uploads.file.maxsize");
         BigDecimal maxDirSize = new BigDecimal(maxDir); // in megabytes
         BigDecimal maxFileSize = new BigDecimal(maxFile); // in megabytes
         
-        // determine the number of bytes in website's directory
-        int maxDirBytes = (int)(1024000 * maxDirSize.doubleValue());
-        int userDirSize = 0;
-        String dir = getUploadDir();
-        File d = new File(dir + weblogHandle);
-        if (d.mkdirs() || d.exists()) {
-            File[] files = d.listFiles();
-            long dirSize = 0l;
-            for (int i=0; i<files.length; i++) {
-                if (!files[i].isDirectory()) {
-                    dirSize = dirSize + files[i].length();
-                }
-            }
-            userDirSize = new Long(dirSize).intValue();
+        long maxDirBytes = (long)(1024000 * maxDirSize.doubleValue());
+        
+        try {
+            File uploadsDir = this.getRealFile(weblogHandle, null);
+            long weblogDirSize = this.getDirSize(uploadsDir, true);
+            
+            return weblogDirSize > maxDirBytes;
+        } catch (Exception ex) {
+            // shouldn't ever happen, this means user's uploads dir is bad
+            // rethrow as a runtime exception
+            throw new RuntimeException(ex);
         }
-        return userDirSize > maxDirBytes;
     }
 

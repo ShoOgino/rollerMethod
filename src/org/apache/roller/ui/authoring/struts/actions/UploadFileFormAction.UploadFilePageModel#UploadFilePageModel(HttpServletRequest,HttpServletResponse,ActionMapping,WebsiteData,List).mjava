@@ -11,7 +11,6 @@
             PropertiesManager pmgr = roller.getPropertiesManager();
             FileManager fmgr = roller.getFileManager();
             
-            String dir = fmgr.getUploadDir();
             resourcesBaseURL = URLUtilities.getWeblogResourceURL(weblog, "", false);
             
             RollerRequest rreq = RollerRequest.getRollerRequest(req);
@@ -23,7 +22,7 @@
             uploadEnabled = RollerRuntimeConfig.getBooleanProperty("uploads.enabled");
             
             files = new ArrayList();
-            File[] rawFiles = fmgr.getFiles(weblog.getHandle());
+            File[] rawFiles = fmgr.getFiles(weblog.getHandle(), null);
             for (int i=0; i<rawFiles.length; i++) {
                 files.add(new FileBean(rawFiles[i]));
                 totalSize += rawFiles[i].length();

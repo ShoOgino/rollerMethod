@@ -1,0 +1,20 @@
+    /**
+     * @see org.apache.roller.model.FileManager#createDirectory(java.lang.String, java.lang.String)
+     */
+    public void createDirectory(String weblogHandle, String path)
+            throws FileNotFoundException, FilePathException, FileIOException {
+        
+        // get path to weblog's uploads area
+        File uploadDir = this.getRealFile(weblogHandle, null);
+        
+        // now construct path to new directory
+        File dir = new File(uploadDir.getAbsolutePath() + File.separator + path);
+        
+        // create it
+        if(!dir.mkdir()) {
+            // failed for some reason
+            throw new FileIOException("Failed to create directory ["+path+"], "+
+                    "probably doesn't have needed parent directories.");
+        }
+    }
+

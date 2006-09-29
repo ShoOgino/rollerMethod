@@ -1,11 +1,6 @@
     private void getXmlFiles(ActionForm actionForm, RollerRequest rreq)
     {
 		String dir = null;
-                try {
-                    RollerFactory.getRoller().getFileManager().getUploadDir();
-                } catch(RollerException re) {
-                    // shouldn't happen
-                }
                 
 		File d = new File(dir + rreq.getWebsite().getHandle());
 		ArrayList xmlFiles = new ArrayList();

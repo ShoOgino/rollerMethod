@@ -3,7 +3,6 @@
      */
     public FileManagerImpl() {
         String uploaddir = RollerConfig.getProperty("uploads.dir");
-        String uploadurl = RollerConfig.getProperty("uploads.url");
         
         // Note: System property expansion is now handled by RollerConfig.
         
@@ -13,10 +12,6 @@
         if( ! uploaddir.endsWith(File.separator))
             uploaddir += File.separator;
         
-        if(uploadurl == null || uploadurl.trim().length() < 1)
-            uploadurl = File.separator+"resources";
-        
         this.upload_dir = uploaddir.replace('/',File.separatorChar);
-        this.upload_url = uploadurl;
     }
 

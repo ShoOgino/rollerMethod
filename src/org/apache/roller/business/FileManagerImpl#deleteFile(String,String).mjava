@@ -1,10 +1,15 @@
     /**
-     * Delete named file from website's resource area.
+     * @see org.apache.roller.model.FileManager#deleteFile(java.lang.String, java.lang.String)
      */
-    public void deleteFile(String weblogHandle, String name) 
-            throws RollerException {
-        String dir = this.upload_dir + weblogHandle;
-        File f = new File(dir + File.separator + name);
-        f.delete();
+    public void deleteFile(String weblogHandle, String path) 
+            throws FileNotFoundException, FilePathException, FileIOException {
+        
+        // get path to delete file, checks that path exists and is readable
+        File delFile = this.getRealFile(weblogHandle, path);
+        
+        if(!delFile.delete()) {
+            throw new FileIOException("Delete failed for ["+path+"], "+
+                    "possibly a non-empty directory?");
+        }
     }
 

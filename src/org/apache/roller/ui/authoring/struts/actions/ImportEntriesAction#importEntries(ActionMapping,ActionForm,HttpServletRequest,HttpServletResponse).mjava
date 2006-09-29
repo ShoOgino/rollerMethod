@@ -25,9 +25,8 @@
                     WebsiteData website = rreq.getWebsite();
 
                     // load selected file
-                    String dir = RollerFactory.getRoller().getFileManager().getUploadDir();
-                    File f = new File(dir + website.getHandle() +
-                                      "/" + form.getImportFileName());
+                    FileManager fMgr = RollerFactory.getRoller().getFileManager();
+                    File f = fMgr.getFile(website.getHandle(), form.getImportFileName());
 
                     //ArchiveParser archiveParser =
                         //new ArchiveParser(RollerFactory.getRoller(), rreq.getWebsite(), f);
