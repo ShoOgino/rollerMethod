@@ -1,7 +1,7 @@
     public Date getWeblogLastPublishTime(WebsiteData website, String catName)
     throws RollerException {
         WeblogCategoryData cat = null;
-        Roller mRoller = RollerFactory.getRoller();
+
         if (catName != null && website != null) {
             cat = getWeblogCategoryByPath(website, null, catName);
             if (cat == null) catName = null;

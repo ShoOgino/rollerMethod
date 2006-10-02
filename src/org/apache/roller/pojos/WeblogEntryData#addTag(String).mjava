@@ -1,10 +1,16 @@
      public void addTag(String name) {
-       WeblogEntryTagData tag = new WeblogEntryTagData();
-       tag.setName(stripInvalidTagChars(name));
-       tag.setUser(getCreator());
-       tag.setWebsite(getWebsite());
-       tag.setWeblogEntry(this);
-       tag.setTime(getUpdateTime());       
-       tagSet.add(tag);
-     }
+        for (Iterator it = tagSet.iterator(); it.hasNext();) {
+            WeblogEntryTagData tag = (WeblogEntryTagData) it.next();
+            if(tag.getName().equals(name))
+                return;
+        }
+        
+        WeblogEntryTagData tag = new WeblogEntryTagData();
+        tag.setName(stripInvalidTagChars(name));
+        tag.setUser(getCreator());
+        tag.setWebsite(getWebsite());
+        tag.setWeblogEntry(this);
+        tag.setTime(getUpdateTime());
+        tagSet.add(tag);
+    }
 

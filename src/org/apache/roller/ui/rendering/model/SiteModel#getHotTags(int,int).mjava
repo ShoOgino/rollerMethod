@@ -11,9 +11,9 @@
         Date startDate = cal.getTime();
         try {            
             Roller roller = RollerFactory.getRoller();
-            TagManager tmgr = roller.getTagManager();
-            results = tmgr.getTags(
-                    startDate, new Date(), null, null, true, length);
+            WeblogManager wmgr = roller.getWeblogManager();
+            results = wmgr.getTags(
+                    startDate, new Date(), null, null, "count", length);
         } catch (Exception e) {
             log.error("ERROR: fetching site tags list", e);
         }
