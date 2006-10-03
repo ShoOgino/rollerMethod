@@ -17,8 +17,8 @@
                 form.copyTo(data, request.getLocale());
                 data.setWebsite(website);
                 data.setLastModified( new Date() );
-                data.setDescription("");
-                data.setContents("");
+                data.setDescription(data.getName());
+                data.setContents(bundle.getString("pageForm.newTemplateContent"));
                 validateLink( data );
                 
                 // all templates start out as velocity templates
