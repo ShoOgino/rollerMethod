@@ -1,0 +1,70 @@
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {    
+        
+        int limit = MAX_LENGTH;       
+        try { 
+            limit = Integer.parseInt(request.getParameter("limit"));
+        } catch (Throwable ignored) {}
+        
+        String pathInfo = request.getPathInfo();
+        String[] path = new String[0];
+        
+        if(!StringUtils.isEmpty(pathInfo)) {
+            path = StringUtils.split(pathInfo, '/');
+        }
+        
+        if(path == null || path.length == 0 || path.length > 2) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing either weblog handle or tag prefix.");
+            return;
+        }      
+                                
+        Roller roller = RollerFactory.getRoller();
+        try {
+            response.setContentType("text/html; charset=utf-8");
+            
+            WeblogManager wmgr = roller.getWeblogManager();
+            WebsiteData website = null;
+            String startsWith = null;
+            if(path.length == 2) {
+                startsWith = path[1];
+                try {
+                    UserManager umgr = RollerFactory.getRoller().getUserManager();
+                    website = umgr.getWebsiteByHandle(path[0], Boolean.TRUE);
+                    if (website == null)
+                        throw new RollerException();
+                    
+                } catch (RollerException ex) {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "Weblog handle not found.");
+                    return;
+                }
+            } else {
+                startsWith = path[0];
+            }
+            
+            if(startsWith == null || startsWith.trim().length() < 1) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing tag prefix.");
+                return;
+            }
+            
+            List tags = wmgr.getTags(website, null, startsWith.trim(), limit);
+            
+            response.getWriter().println("[");
+            for(Iterator it = tags.iterator(); it.hasNext();) {
+                TagStat stat = (TagStat) it.next();
+                response.getWriter().print("\t{ name : \"");
+                response.getWriter().print(stat.getName());
+                response.getWriter().print("\", ");
+                response.getWriter().print("count : ");
+                response.getWriter().print(stat.getCount());
+                response.getWriter().print(" }");
+                if(it.hasNext())
+                   response.getWriter().println(", ");
+            }
+            response.getWriter().println("\n]");
+            
+            response.flushBuffer();
+        } catch (RollerException e) {
+            throw new ServletException(e.getMessage());
+        }
+    }
+
