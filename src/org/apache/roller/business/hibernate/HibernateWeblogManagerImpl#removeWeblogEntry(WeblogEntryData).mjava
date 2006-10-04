@@ -29,6 +29,14 @@
             this.strategy.remove((CommentData) commentsIT.next());
         }
         
+        // remove tags aggregates
+        if(entry.getTagSet() != null) {
+            for(Iterator it = entry.getTagSet().iterator(); it.hasNext(); ) {
+                WeblogEntryTagData tag = (WeblogEntryTagData) it.next();
+                updateTagCount(tag.getName(), entry.getWebsite(), -1);
+            }
+        }
+        
         // remove entry
         this.strategy.remove(entry);
         

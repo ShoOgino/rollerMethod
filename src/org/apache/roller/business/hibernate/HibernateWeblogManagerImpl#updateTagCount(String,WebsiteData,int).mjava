@@ -1,0 +1,63 @@
+    public void updateTagCount(String name, WebsiteData website, int amount) throws RollerException {
+        
+        Session session = ((HibernatePersistenceStrategy) strategy)
+        .getSession();
+        
+        if(amount == 0) {
+            throw new RollerException("Tag increment amount cannot be zero.");
+        }
+        
+        if(website == null) {
+            throw new RollerException("Website cannot be NULL.");
+        }
+                        
+        Junction conjunction = Expression.conjunction();
+        conjunction.add(Expression.eq("name", name));
+        conjunction.add(Expression.eq("website", website));
+
+        Criteria criteria = session.createCriteria(WeblogTagAggregateData.class)
+            .add(conjunction);
+        
+        WeblogTagAggregateData weblogTagData = (WeblogTagAggregateData) criteria.uniqueResult();
+
+        conjunction = Expression.conjunction();
+        conjunction.add(Restrictions.eq("name", name));
+        conjunction.add(Restrictions.isNull("website"));
+        
+        criteria = session.createCriteria(WeblogTagAggregateData.class)
+            .add(conjunction);
+    
+        WeblogTagAggregateData siteTagData = (WeblogTagAggregateData) criteria.uniqueResult();
+        
+        // create it only if we are going to need it.
+        if(weblogTagData == null && amount > 0) {
+            weblogTagData = new WeblogTagAggregateData(null, website, name, 0);
+        }
+        
+        // create it only if we are going to need it.        
+        if(siteTagData == null && amount > 0) {
+            siteTagData = new WeblogTagAggregateData(null, null, name, 0);
+        }
+        
+        // 
+        if(weblogTagData != null) {
+            if ((amount + weblogTagData.getCount()) <= 0) {
+                if(weblogTagData.getId() != null)
+                    session.delete(weblogTagData);
+            } else {
+                weblogTagData.setCount(weblogTagData.getCount() + amount);
+                session.save(weblogTagData);
+            }
+        }        
+        
+        if(siteTagData != null) {
+            if ((amount + siteTagData.getCount()) <= 0) {
+                if(siteTagData.getId() != null)
+                    session.delete(siteTagData);
+            } else {
+                siteTagData.setCount(siteTagData.getCount() + amount);
+                session.save(siteTagData);
+            }
+        }   
+    }
+

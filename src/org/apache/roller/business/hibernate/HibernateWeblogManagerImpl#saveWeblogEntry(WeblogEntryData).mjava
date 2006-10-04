@@ -4,8 +4,18 @@
         if (entry.getAnchor() == null || entry.getAnchor().trim().equals("")) {
             entry.setAnchor(this.createAnchor(entry));
         }
+                
+        for(Iterator it = entry.getAddedTags().iterator(); it.hasNext();) {
+            String name = (String) it.next();
+            updateTagCount(name, entry.getWebsite(), 1);
+        }
         
-        this.strategy.store(entry);
+        for(Iterator it = entry.getRemovedTags().iterator(); it.hasNext();) {
+            String name = (String) it.next();
+            updateTagCount(name, entry.getWebsite(), -1);
+        }  
+        
+        this.strategy.store(entry);        
         
         // update weblog last modified date.  date updated by saveWebsite()
         if(entry.isPublished()) {

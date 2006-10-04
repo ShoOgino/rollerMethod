@@ -38,6 +38,11 @@
 
             this.status = "ALL".equals(queryForm.getStatus()) ? null: queryForm.getStatus();    
             this.maxEntries = maxEntries;
+            
+           String[] tagsarr = new String[0];
+           
+           if(queryForm.getTags() != null)
+               tagsarr = StringUtils.split(queryForm.getTags().toLowerCase(), ' ');
 
             entries = RollerFactory.getRoller().getWeblogManager().getWeblogEntries(
                     website,
@@ -45,10 +50,11 @@
                     startDate,
                     endDate,
                     category,
-                    null,
+                    Arrays.asList(tagsarr),
                     status,
                     queryForm.getSortby(),
-null,                     queryForm.getOffset(),
+                    null,
+                    queryForm.getOffset(),
                     queryForm.getCount() + 1);
            if (entries.size() > queryForm.getCount()) {
                more = true;
