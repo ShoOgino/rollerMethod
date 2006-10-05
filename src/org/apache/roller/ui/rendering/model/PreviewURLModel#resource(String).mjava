@@ -1,0 +1,10 @@
+    /**
+     * We need resource urls to point to our custom PreviewResourceServlet
+     * because when previewing a theme the ResourceServlet has no way of
+     * knowing what theme you are previewing and thus couldn't find the
+     * resources for that theme.
+     */
+    public String resource(String filePath) {
+        return URLUtilities.getPreviewWeblogResourceURL(previewRequest.getThemeName(), weblog, filePath, true);
+    }
+
