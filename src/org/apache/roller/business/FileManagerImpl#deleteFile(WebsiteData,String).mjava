@@ -1,11 +1,11 @@
     /**
      * @see org.apache.roller.model.FileManager#deleteFile(java.lang.String, java.lang.String)
      */
-    public void deleteFile(String weblogHandle, String path) 
+    public void deleteFile(WebsiteData weblog, String path) 
             throws FileNotFoundException, FilePathException, FileIOException {
         
         // get path to delete file, checks that path exists and is readable
-        File delFile = this.getRealFile(weblogHandle, path);
+        File delFile = this.getRealFile(weblog, path);
         
         if(!delFile.delete()) {
             throw new FileIOException("Delete failed for ["+path+"], "+

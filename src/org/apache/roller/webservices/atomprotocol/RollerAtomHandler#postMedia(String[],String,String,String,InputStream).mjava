@@ -26,10 +26,10 @@
 
                     // Try saving file
                     FileInputStream fis = new FileInputStream(tempFile);
-                    fmgr.saveFile(website.getHandle(), fileName, contentType, tempFile.length(), fis);
+                    fmgr.saveFile(website, fileName, contentType, tempFile.length(), fis);
                     fis.close();
                     
-                    File resource = fmgr.getFile(website.getHandle(), fileName);
+                    WeblogResource resource = fmgr.getFile(website, fileName);
                     return createAtomResourceEntry(website, resource);
 
                 } catch (IOException e) {

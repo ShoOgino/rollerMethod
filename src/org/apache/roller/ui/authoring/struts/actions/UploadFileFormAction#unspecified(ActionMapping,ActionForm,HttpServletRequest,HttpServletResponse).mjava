@@ -13,12 +13,17 @@
         WebsiteData website = getWebsite(request);
         
         if (rses.isUserAuthorizedToAuthor(website)) {
+            // this is the path in the uploads area that is being used
+            UploadFileForm uploadForm = (UploadFileForm) actionForm;
+            String path = uploadForm.getPath();
+            
             UploadFilePageModel pageModel = new UploadFilePageModel(
-                    request, response, mapping, website);
+                    request, response, mapping, website, path);
             pageModel.setWebsite(website);
             request.setAttribute("model", pageModel);
             fwd = mapping.findForward("uploadFiles.page");
         }
+        
         return fwd;
     }
 

@@ -27,7 +27,7 @@
                     || deleteFiles[i].indexOf("..") != -1) {
                         // ignore absolute paths, or paths that contiain '..'
                     } else {
-                        fmgr.deleteFile(website.getHandle(), deleteFiles[i]);
+                        fmgr.deleteFile(website, deleteFiles[i]);
                         count++;
                     }
                 }
@@ -41,8 +41,9 @@
                     new ActionMessage("uploadFiles.deletedFiles", new Integer(count)));
             saveMessages(request, messages);
             
+            String path = theForm.getPath();
             UploadFilePageModel pageModel = new UploadFilePageModel(
-                    request, response, mapping, website);
+                    request, response, mapping, website, path);
             pageModel.setWebsite(website);
             request.setAttribute("model", pageModel);
         }

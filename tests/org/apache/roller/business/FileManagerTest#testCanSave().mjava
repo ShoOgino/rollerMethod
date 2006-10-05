@@ -20,7 +20,7 @@
         
         try {
             // path check should fail
-            fmgr.saveFile(testWeblog.getHandle(), "some/path/foo.gif", "text/plain", 10, is);
+            fmgr.saveFile(testWeblog, "some/path/foo.gif", "text/plain", 10, is);
         } catch (Exception ex) {
             log.error(ex);
             exception = ex;
@@ -35,7 +35,7 @@
         
         try {
             // quota check should fail
-            fmgr.saveFile(testWeblog.getHandle(), "test.gif", "text/plain", 2500000, is);
+            fmgr.saveFile(testWeblog, "test.gif", "text/plain", 2500000, is);
         } catch (Exception ex) {
             log.error(ex);
             exception = ex;
@@ -51,7 +51,7 @@
         
         try {
             // forbidden types check should fail
-            fmgr.saveFile(testWeblog.getHandle(), "test.gif", "text/plain", 10, is);
+            fmgr.saveFile(testWeblog, "test.gif", "text/plain", 10, is);
         } catch (Exception ex) {
             log.error(ex);
             exception = ex;
@@ -67,7 +67,7 @@
         
         try {
             // uploads disabled should fail
-            fmgr.saveFile(testWeblog.getHandle(), "test.gif", "text/plain", 10, is);
+            fmgr.saveFile(testWeblog, "test.gif", "text/plain", 10, is);
         } catch (Exception ex) {
             log.error(ex);
             exception = ex;

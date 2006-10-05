@@ -1,14 +1,14 @@
-    private Entry createAtomResourceEntry(WebsiteData website, File file) {
+    private Entry createAtomResourceEntry(WebsiteData website, WeblogResource file) {
         String absUrl = RollerRuntimeConfig.getAbsoluteContextURL();
         String editURI = 
                 URLUtilities.getAtomProtocolURL(true)+"/"+website.getHandle()
-                + "/resource/" + file.getName() + ".media-link";
+                + "/resource/" + file.getPath() + ".media-link";
         String editMediaURI = 
                 URLUtilities.getAtomProtocolURL(true)+"/"+ website.getHandle()
-                + "/resource/" + file.getName();
+                + "/resource/" + file.getPath();
         String viewURI = absUrl
                 + "/resources/" + website.getHandle()
-                + "/" + file.getName();
+                + "/" + file.getPath();
         
         FileTypeMap map = FileTypeMap.getDefaultFileTypeMap();
         // TODO: figure out why PNG is missing from Java MIME types
@@ -17,12 +17,12 @@
                 ((MimetypesFileTypeMap)map).addMimeTypes("image/png png PNG");
             } catch (Exception ignored) {}
         }
-        String contentType = map.getContentType(file);
+        String contentType = map.getContentType(file.getName());
         
         Entry entry = new Entry();
         entry.setId(editMediaURI);
         entry.setTitle(file.getName());
-        entry.setUpdated(new Date(file.lastModified()));
+        entry.setUpdated(new Date(file.getLastModified()));
         
         List otherlinks = new ArrayList();        
         entry.setOtherLinks(otherlinks);

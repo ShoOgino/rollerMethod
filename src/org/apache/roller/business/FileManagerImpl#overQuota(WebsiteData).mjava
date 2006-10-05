@@ -1,7 +1,7 @@
     /**
      * @see org.apache.roller.model.FileManager#overQuota(java.lang.String)
      */
-    public boolean overQuota(String weblogHandle) {
+    public boolean overQuota(WebsiteData weblog) {
         
         String maxDir = RollerRuntimeConfig.getProperty("uploads.dir.maxsize");
         String maxFile = RollerRuntimeConfig.getProperty("uploads.file.maxsize");
@@ -11,7 +11,7 @@
         long maxDirBytes = (long)(1024000 * maxDirSize.doubleValue());
         
         try {
-            File uploadsDir = this.getRealFile(weblogHandle, null);
+            File uploadsDir = this.getRealFile(weblog, null);
             long weblogDirSize = this.getDirSize(uploadsDir, true);
             
             return weblogDirSize > maxDirBytes;

@@ -3,7 +3,7 @@
      * request params don't come accross in a file-upload post so we have to
      * stash the website handle in the session.
      */
-    public static WebsiteData getWebsite(HttpServletRequest request) throws RollerException {
+    private WebsiteData getWebsite(HttpServletRequest request) throws RollerException {
         RollerRequest rreq = RollerRequest.getRollerRequest(request);
         WebsiteData website = rreq.getWebsite();
         if (website != null) {

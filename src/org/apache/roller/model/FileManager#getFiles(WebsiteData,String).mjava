@@ -8,15 +8,15 @@
      * This method should return the files at the root of the weblog's uploads
      * area given a path value of null, "" (empty string), or "/"
      * 
-     * @param weblogHandle The handle of the weblog.
+     * @param weblog The weblog we are working on.
      * @param path The relative path to the desired resource within 
      * the weblog's uploads area.
      * 
      * @throws FileNotFoundException If path does not exist.
      * @throws FilePathException If path is invalid, is not a directory, or can't be read.
      *
-     * @return File[] of files in website's uploads area at given path.
+     * @return WeblogResource[] of files in website's uploads area at given path.
      */
-    public File[] getFiles(String weblogHandle, String path) 
+    public WeblogResource[] getFiles(WebsiteData weblog, String path) 
         throws FileNotFoundException, FilePathException;
 

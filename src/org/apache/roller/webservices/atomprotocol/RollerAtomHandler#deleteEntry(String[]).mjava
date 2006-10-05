@@ -31,7 +31,7 @@
                                 fileName = fileName.substring(0, pathInfo[2].length() - ".media-link".length());
                             }
                             FileManager fmgr = mRoller.getFileManager();
-                            fmgr.deleteFile(website.getHandle(), fileName);
+                            fmgr.deleteFile(website, fileName);
                         } catch (Exception e) {
                             String msg = "ERROR in atom.deleteResource";
                             mLogger.error(msg,e);

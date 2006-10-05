@@ -21,6 +21,7 @@
             ActionMessages messages = new ActionMessages();
             ActionErrors errors = new ActionErrors();
             UploadFileForm theForm = (UploadFileForm)actionForm;
+            String path = theForm.getPath();
             if (theForm.getUploadedFiles().length > 0) {
                 ServletContext app = servlet.getServletConfig().getServletContext();
                 
@@ -55,11 +56,14 @@
                             // disallow sneaky null terminated strings
                             fileName = fileName.substring(0, terminated).trim();
                         }
+                        if(path != null) {
+                            fileName = path + "/" + fileName;
+                        }
                         
                         fileSize = files[i].getFileSize();
                         
                         InputStream stream = files[i].getInputStream();
-                        fmgr.saveFile(website.getHandle(), fileName,
+                        fmgr.saveFile(website, fileName,
                                 files[i].getContentType(), fileSize, stream);
                         lastUploads.add(fileName);
 
@@ -74,12 +78,10 @@
             }
             
             UploadFilePageModel pageModel = new UploadFilePageModel(
-                    request, response, mapping, website, lastUploads);
+                    request, response, mapping, website, path, lastUploads);
             request.setAttribute("model", pageModel);
             pageModel.setWebsite(website);
             
-            RollerContext rctx = RollerContext.getRollerContext();
-            String resourcesBaseURL = URLUtilities.getWeblogResourceURL(website, "", true);
             Iterator uploads = lastUploads.iterator();
             if (uploads.hasNext()) {
                 messages.add(ActionMessages.GLOBAL_MESSAGE,

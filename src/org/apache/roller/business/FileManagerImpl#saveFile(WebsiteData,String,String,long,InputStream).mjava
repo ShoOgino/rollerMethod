@@ -1,7 +1,7 @@
     /**
      * @see org.apache.roller.model.FileManager#saveFile(java.lang.String, java.lang.String, java.lang.String, long, java.io.InputStream)
      */
-    public void saveFile(String weblogHandle, 
+    public void saveFile(WebsiteData weblog, 
                          String path, 
                          String contentType, 
                          long size, 
@@ -10,12 +10,12 @@
         
         // make sure we are allowed to save this file
         RollerMessages msgs = new RollerMessages();
-        if (!canSave(weblogHandle, path, contentType, size, msgs)) {
+        if (!canSave(weblog, path, contentType, size, msgs)) {
             throw new FileIOException(msgs.toString());
         }
         
         // make sure uploads area exists for this weblog
-        File dirPath = this.getRealFile(weblogHandle, null);
+        File dirPath = this.getRealFile(weblog, null);
         File saveFile = new File(dirPath.getAbsolutePath() + File.separator + path);
         
         byte[] buffer = new byte[8192];

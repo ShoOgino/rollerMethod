@@ -1,0 +1,40 @@
+        public UploadFilePageModel(
+                HttpServletRequest req,
+                HttpServletResponse res,
+                ActionMapping mapping,
+                WebsiteData weblog,
+                String uploadsPath,
+                List lastUploads) throws RollerException {
+            
+            super("uploadFiles.title", req, res, mapping);
+            
+            FileManager fmgr = RollerFactory.getRoller().getFileManager();
+            
+            path = uploadsPath;
+            
+            // are we showing the root of the weblog's upload area?
+            // are we in a subdirectory which has a parent path?
+            if(uploadsPath != null && !uploadsPath.trim().equals("")) {
+                showingRoot = false;
+                if(uploadsPath.indexOf("/") != -1) {
+                    parentPath = uploadsPath.substring(0, uploadsPath.lastIndexOf("/"));
+                }
+            }
+            
+            resourcesBaseURL = URLUtilities.getWeblogResourceURL(weblog, "", false);
+            
+            maxDirMB = RollerRuntimeConfig.getProperty("uploads.dir.maxsize");
+            maxFileMB = RollerRuntimeConfig.getProperty("uploads.file.maxsize");
+            
+            overQuota = fmgr.overQuota(weblog);
+            uploadEnabled = RollerRuntimeConfig.getBooleanProperty("uploads.enabled");
+            
+            WeblogResource[] resources = fmgr.getFiles(weblog, uploadsPath);
+            for (int i=0; i<resources.length; i++) {
+                totalSize += resources[i].getLength();
+            }
+            
+            files = Arrays.asList(resources);
+            Collections.sort(files, new WeblogResourceComparator());
+        }
+

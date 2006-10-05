@@ -1,7 +1,7 @@
     /**
      * Save a file to weblog's uploads area.
      * 
-     * @param weblogHandle The handle of the weblog.
+     * @param weblog The weblog we are working on.
      * @param path The relative path to the desired location within 
      * the weblog's uploads area where the file should be saved.
      * @param contentType Content type of the file.
@@ -12,7 +12,7 @@
      * @throws FilePathException If path is invalid, is not a directory, or can't be read.
      * @throws FileIOException If there is an unexpected error during the save.
      */
-    public void saveFile(String weblogHandle, 
+    public void saveFile(WebsiteData weblog, 
                          String path, 
                          String contentType, 
                          long size,

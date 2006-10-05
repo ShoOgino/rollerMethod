@@ -1,11 +1,11 @@
     /**
      * Construct the full real path to a resource in a weblog's uploads area.
      */
-    private File getRealFile(String weblogHandle, String path) 
+    private File getRealFile(WebsiteData weblog, String path) 
             throws FileNotFoundException, FilePathException {
         
         // make sure uploads area exists for this weblog
-        File weblogDir = new File(this.upload_dir + weblogHandle);
+        File weblogDir = new File(this.upload_dir + weblog.getHandle());
         if(!weblogDir.exists()) {
             weblogDir.mkdirs();
         }
