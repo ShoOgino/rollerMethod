@@ -12,13 +12,13 @@
             
             if (group != null) {
                 StringBuffer sb = new StringBuffer();
-                sb.append("select entry from org.apache.roller.planet.pojos.PlanetEntryData entry ");
-                sb.append("join entry.subscription.groupSubscriptionAssocs assoc ");
-                sb.append("where assoc.group=:group and entry.pubTime < :endDate ");
+                sb.append("select e from org.apache.roller.planet.pojos.PlanetEntryData e ");
+                sb.append("join e.subscription.groups g ");
+                sb.append("where g=:group and e.pubTime < :endDate ");
                 if (startDate != null) {
-                    sb.append("and entry.pubTime > :startDate ");
+                    sb.append("and e.pubTime > :startDate ");
                 }
-                sb.append("order by entry.pubTime desc");
+                sb.append("order by e.pubTime desc");
                 Query query = session.createQuery(sb.toString());
                 query.setEntity("group", group);
                 query.setFirstResult(offset);
@@ -30,14 +30,14 @@
                 ret = query.list();
             } else {
                 StringBuffer sb = new StringBuffer();
-                sb.append("select entry from org.apache.roller.planet.pojos.PlanetEntryData entry ");
-                sb.append("join entry.subscription.groupSubscriptionAssocs assoc ");
-                sb.append("where (assoc.group.handle='external' or assoc.group.handle='all') ");
-                sb.append("and entry.pubTime < :endDate ");
+                sb.append("select e from org.apache.roller.planet.pojos.PlanetEntryData e ");
+                sb.append("join e.subscription.groups g");
+                sb.append("where (g.handle='external' or g.handle='all') ");
+                sb.append("and e.pubTime < :endDate ");
                 if (startDate != null) {
-                    sb.append("and entry.pubTime > :startDate ");
+                    sb.append("and e.pubTime > :startDate ");
                 }
-                sb.append("order by entry.pubTime desc");
+                sb.append("order by e.pubTime desc");
                 Query query = session.createQuery(sb.toString());
                 query.setFirstResult(offset);
                 if (length != -1) query.setMaxResults(length);

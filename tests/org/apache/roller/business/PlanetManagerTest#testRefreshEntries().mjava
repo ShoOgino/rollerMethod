@@ -1,10 +1,14 @@
-    public void _testRefreshEntries() throws Exception {
+    public void testRefreshEntries() throws Exception {
         
         PlanetManager planet = RollerFactory.getRoller().getPlanetManager();
         
         String feed_url1 = "http://rollerweblogger.org/roller/feed/entries/rss";
         
         {
+            PlanetConfigData config = planet.getConfiguration();
+            config.setCacheDir("." + File.separator + "planet-cache");
+            planet.saveConfiguration(config);
+            
             PlanetGroupData group = new PlanetGroupData();
             group.setDescription("test_group_desc");
             group.setHandle("test_handle");
