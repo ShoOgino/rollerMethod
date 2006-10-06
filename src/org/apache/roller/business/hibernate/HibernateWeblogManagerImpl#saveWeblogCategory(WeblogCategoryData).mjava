@@ -1,7 +1,7 @@
     public void saveWeblogCategory(WeblogCategoryData cat) throws RollerException {
         
         if(this.isDuplicateWeblogCategoryName(cat)) {
-            throw new RollerException("Duplicate category name");
+            throw new RollerException("Duplicate category name, cannot save new category");
         }
         
         // update weblog last modified date.  date updated by saveWebsite()
