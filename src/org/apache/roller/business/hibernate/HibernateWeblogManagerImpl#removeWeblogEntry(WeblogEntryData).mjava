@@ -30,8 +30,8 @@
         }
         
         // remove tags aggregates
-        if(entry.getTagSet() != null) {
-            for(Iterator it = entry.getTagSet().iterator(); it.hasNext(); ) {
+        if(entry.getTags() != null) {
+            for(Iterator it = entry.getTags().iterator(); it.hasNext(); ) {
                 WeblogEntryTagData tag = (WeblogEntryTagData) it.next();
                 updateTagCount(tag.getName(), entry.getWebsite(), -1);
             }

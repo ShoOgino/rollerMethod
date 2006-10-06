@@ -10,7 +10,7 @@
       TestUtils.endSession(true);
       
       entry = mgr.getWeblogEntry(id);
-      assertEquals(2, entry.getTagSet().size());
+      assertEquals(2, entry.getTags().size());
       TestUtils.endSession(true);
       
       entry = mgr.getWeblogEntry(id);
@@ -19,7 +19,7 @@
       TestUtils.endSession(true);
 
       entry = mgr.getWeblogEntry(id);
-      assertEquals(0, entry.getTagSet().size());
+      assertEquals(0, entry.getTags().size());
       TestUtils.endSession(true);
       
       // teardown our test entry

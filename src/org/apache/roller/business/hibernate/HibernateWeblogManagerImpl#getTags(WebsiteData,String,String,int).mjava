@@ -1,27 +1,32 @@
-    public List getTags(WebsiteData website, String sortBy, String startsWith, int limit)
-            throws RollerException {
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.roller.model.WeblogManager#getTags(org.apache.roller.pojos.WebsiteData,
+     *      java.lang.String, java.lang.String, int)
+     */
+    public List getTags(WebsiteData website, String sortBy, String startsWith, int limit) throws RollerException {    
         try {
             List results = new ArrayList();
 
             Session session = ((HibernatePersistenceStrategy) strategy)
                     .getSession();
-            
+
             if (sortBy != null && sortBy.equals("count")) {
-                sortBy = "a.count desc"; 
+                sortBy = "a.count desc";
             } else {
                 sortBy = "a.name";
             }
-            
+
             StringBuffer queryString = new StringBuffer();
             queryString.append("select a.name, a.count ");
-            queryString.append("from WeblogTagAggregateData a where ");
+            queryString.append("from WeblogEntryTagAggregateData a where ");
             if (website != null)
                 queryString.append("a.website.id = '" + website.getId() + "' ");
             else
                 queryString.append("a.website = NULL ");
             if (startsWith != null && startsWith.length() > 0)
                 queryString.append("and a.name like '" + startsWith + "%' ");
-            
+
             queryString.append("order by " + sortBy);
 
             Query query = session.createQuery(queryString.toString());

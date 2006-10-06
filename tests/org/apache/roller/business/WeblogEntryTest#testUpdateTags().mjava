@@ -10,7 +10,7 @@
       TestUtils.endSession(true);
      
       entry = mgr.getWeblogEntry(id);
-      assertEquals(2, entry.getTagSet().size());
+      assertEquals(2, entry.getTags().size());
       
       List updateTags = new ArrayList();
       updateTags.add("testWillStayTag");
@@ -21,12 +21,12 @@
       
       entry = mgr.getWeblogEntry(id);
       HashSet tagNames = new HashSet();
-      for(Iterator it = entry.getTagSet().iterator(); it.hasNext();) {
+      for(Iterator it = entry.getTags().iterator(); it.hasNext();) {
         WeblogEntryTagData tagData = (WeblogEntryTagData) it.next();
         tagNames.add(tagData.getName());
       }
       
-      assertEquals(3, entry.getTagSet().size());      
+      assertEquals(3, entry.getTags().size());      
       assertEquals(3, tagNames.size());
       assertEquals(true, tagNames.contains("testWillStayTag"));
       assertEquals(true, tagNames.contains("testNewTag"));

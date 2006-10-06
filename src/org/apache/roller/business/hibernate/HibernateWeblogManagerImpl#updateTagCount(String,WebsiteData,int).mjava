@@ -15,49 +15,48 @@
         conjunction.add(Expression.eq("name", name));
         conjunction.add(Expression.eq("website", website));
 
-        Criteria criteria = session.createCriteria(WeblogTagAggregateData.class)
+        Criteria criteria = session.createCriteria(WeblogEntryTagAggregateData.class)
             .add(conjunction);
         
-        WeblogTagAggregateData weblogTagData = (WeblogTagAggregateData) criteria.uniqueResult();
+        WeblogEntryTagAggregateData weblogTagData = (WeblogEntryTagAggregateData) criteria.uniqueResult();
 
         conjunction = Expression.conjunction();
         conjunction.add(Restrictions.eq("name", name));
         conjunction.add(Restrictions.isNull("website"));
         
-        criteria = session.createCriteria(WeblogTagAggregateData.class)
+        criteria = session.createCriteria(WeblogEntryTagAggregateData.class)
             .add(conjunction);
     
-        WeblogTagAggregateData siteTagData = (WeblogTagAggregateData) criteria.uniqueResult();
+        WeblogEntryTagAggregateData siteTagData = (WeblogEntryTagAggregateData) criteria.uniqueResult();
+        
+        Timestamp lastUsed = new Timestamp((new Date()).getTime());
         
         // create it only if we are going to need it.
         if(weblogTagData == null && amount > 0) {
-            weblogTagData = new WeblogTagAggregateData(null, website, name, 0);
+            weblogTagData = new WeblogEntryTagAggregateData(null, website, name, amount);
+            weblogTagData.setLastUsed(lastUsed);
+            session.save(weblogTagData);
+        } else {
+            session.createQuery("update WeblogEntryTagAggregateData a set a.count = a.count + ?, a.lastUsed = current_time() where a.name = ? and a.website = ?")
+            .setInteger(0, amount)
+            .setString(1, weblogTagData.getName())
+            .setParameter(2, website)
+            .executeUpdate();
         }
         
         // create it only if we are going to need it.        
         if(siteTagData == null && amount > 0) {
-            siteTagData = new WeblogTagAggregateData(null, null, name, 0);
-        }
+            siteTagData = new WeblogEntryTagAggregateData(null, null, name, amount);
+            siteTagData.setLastUsed(lastUsed);
+            session.save(siteTagData);
+        } else {
+            session.createQuery("update WeblogEntryTagAggregateData a set a.count = a.count + ?, a.lastUsed = current_time() where a.name = ? and a.website is null")
+            .setInteger(0, amount)
+            .setString(1, weblogTagData.getName())
+            .executeUpdate();            
+        }       
         
-        // 
-        if(weblogTagData != null) {
-            if ((amount + weblogTagData.getCount()) <= 0) {
-                if(weblogTagData.getId() != null)
-                    session.delete(weblogTagData);
-            } else {
-                weblogTagData.setCount(weblogTagData.getCount() + amount);
-                session.save(weblogTagData);
-            }
-        }        
-        
-        if(siteTagData != null) {
-            if ((amount + siteTagData.getCount()) <= 0) {
-                if(siteTagData.getId() != null)
-                    session.delete(siteTagData);
-            } else {
-                siteTagData.setCount(siteTagData.getCount() + amount);
-                session.save(siteTagData);
-            }
-        }   
+        // delete all bad counts
+        session.createQuery("delete from WeblogEntryTagAggregateData a where a.count <= 0").executeUpdate();
     }
 

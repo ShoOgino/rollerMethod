@@ -10,19 +10,19 @@
 
         entry = mgr.getWeblogEntry(id);
         assertNotNull(entry);
-        assertNotNull(entry.getTagSet());
-        assertEquals(1, entry.getTagSet().size());
-        assertEquals("testTag",((WeblogEntryTagData) entry.getTagSet().iterator().next()).getName());
+        assertNotNull(entry.getTags());
+        assertEquals(1, entry.getTags().size());
+        assertEquals("testTag",((WeblogEntryTagData) entry.getTags().iterator().next()).getName());
 
         // update a weblog entry tag
-        WeblogEntryTagData tag = ((WeblogEntryTagData) entry.getTagSet().iterator().next());
+        WeblogEntryTagData tag = ((WeblogEntryTagData) entry.getTags().iterator().next());
         tag.setName("updatedTestTag");
         TestUtils.endSession(true);
 
         entry = mgr.getWeblogEntry(id);
         assertNotNull(entry);
-        assertEquals(1, entry.getTagSet().size());
-        assertEquals("updatedTestTag",((WeblogEntryTagData) entry.getTagSet().iterator().next()).getName());
+        assertEquals(1, entry.getTags().size());
+        assertEquals("updatedTestTag",((WeblogEntryTagData) entry.getTags().iterator().next()).getName());
       
         // teardown our test entry
         TestUtils.teardownWeblogEntry(id);

@@ -1,15 +1,14 @@
-    /**
-     * @roller.wrapPojoMethod type="simple"
+    /** 
+     * @roller.wrapPojoMethod type="pojo-collection" class="org.apache.roller.pojos.WeblogEntryTagData"
+     *
+     * @ejb:persistent-field
+     * 
+     * @hibernate.set lazy="true" order-by="name" inverse="true" cascade="all-delete-orphan" 
+     * @hibernate.collection-key column="entryid" 
+     * @hibernate.collection-one-to-many class="org.apache.roller.pojos.WeblogEntryTagData"
      */
-    public String getTags() {
-        StringBuffer sb = new StringBuffer();
-        for (Iterator it = getTagSet().iterator(); it.hasNext();) {
-            sb.append(((WeblogEntryTagData) it.next()).getName()).append(" ");
-        }
-        if (sb.length() > 0) {
-            sb.deleteCharAt(sb.length() - 1);
-        }
-
-        return sb.toString();
-    }
+     public Set getTags()
+     {
+         return tagSet;
+     }
 

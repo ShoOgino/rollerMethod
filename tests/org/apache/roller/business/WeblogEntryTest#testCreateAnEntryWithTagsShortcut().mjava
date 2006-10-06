@@ -26,9 +26,9 @@
         entry = mgr.getWeblogEntry(id);
         assertNotNull(entry);
         assertEquals(testEntry, entry);
-        assertNotNull(entry.getTagSet());
-        assertEquals(1, entry.getTagSet().size());
-        assertEquals("testTag",((WeblogEntryTagData) entry.getTagSet().iterator().next()).getName());
+        assertNotNull(entry.getTags());
+        assertEquals(1, entry.getTags().size());
+        assertEquals("testTag",((WeblogEntryTagData) entry.getTags().iterator().next()).getName());
         
         // teardown our test entry
         TestUtils.teardownWeblogEntry(id);

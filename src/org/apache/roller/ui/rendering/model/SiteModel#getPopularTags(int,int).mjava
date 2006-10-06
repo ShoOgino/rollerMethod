@@ -1,0 +1,26 @@
+    /**
+     * 
+     * @param sinceDays
+     * @param length
+     * @return
+     */
+    public List getPopularTags(int sinceDays, int length) {
+        List results = new ArrayList();
+        Date startDate = null;
+        if(sinceDays > 0) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            cal.add(Calendar.DATE, -1 * sinceDays);        
+            startDate = cal.getTime();     
+        }
+        
+        try {            
+            Roller roller = RollerFactory.getRoller();
+            WeblogManager wmgr = roller.getWeblogManager();
+            results = wmgr.getPopularTags(null, startDate, length);
+        } catch (Exception e) {
+            log.error("ERROR: fetching site tags list", e);
+        }
+        return results;
+    }    
+
