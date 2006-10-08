@@ -37,6 +37,13 @@
             if(folder != null) {
                 weblog = folder.getWebsite();
             }
+        } else if (request.getParameter(RequestConstants.BOOKMARK_ID) != null) {
+            String bookmarkId = request.getParameter(RequestConstants.BOOKMARK_ID);
+            BookmarkData bookmark = roller.getBookmarkManager().getBookmark(bookmarkId);
+            FolderData folder = bookmark.getFolder();
+            if(folder != null) {
+                weblog = folder.getWebsite();
+            }
         } else if (request.getSession().getAttribute(RequestConstants.WEBLOG_SESSION_STASH) != null) {
             String handle = (String)request.getSession().getAttribute(RequestConstants.WEBLOG_SESSION_STASH);
             weblog = roller.getUserManager().getWebsiteByHandle(handle);
