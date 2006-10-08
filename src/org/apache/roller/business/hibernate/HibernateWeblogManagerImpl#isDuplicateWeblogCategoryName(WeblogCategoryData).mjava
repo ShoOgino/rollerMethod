@@ -11,6 +11,7 @@
                 Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
                 Criteria criteria = session.createCriteria(WeblogCategoryAssoc.class);
                 criteria.createAlias("category", "c");
+                criteria.add(Expression.ne("c.id", cat.getId()));
                 criteria.add(Expression.eq("c.name", cat.getName()));
                 criteria.add(Expression.eq("ancestorCategory", parent));
                 criteria.add(Expression.eq("relation", Assoc.PARENT));
