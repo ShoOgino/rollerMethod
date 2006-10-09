@@ -9,7 +9,7 @@
 
             ArrayList params = new ArrayList();
             StringBuffer queryString = new StringBuffer();
-            queryString.append("select name, total ");
+            queryString.append("select name, sum(total) ");
             queryString.append("from WeblogEntryTagAggregateData where ");
             if (website != null) {
                 queryString.append("website.id = ? ");
@@ -22,7 +22,7 @@
                 params.add(startDate);
             }
 
-            queryString.append("order by total desc");
+            queryString.append("group by name order by total desc");
 
             Query query = session.createQuery(queryString.toString());
             if (limit > 0)

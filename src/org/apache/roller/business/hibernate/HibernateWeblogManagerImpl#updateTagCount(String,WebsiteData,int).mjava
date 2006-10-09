@@ -21,7 +21,7 @@
         // won't matter
         
         Criteria criteria = session.createCriteria(WeblogEntryTagAggregateData.class)
-            .add(conjunction).addOrder(Order.desc("lastUsed"));
+            .add(conjunction).addOrder(Order.desc("lastUsed")).setMaxResults(1);
         
         WeblogEntryTagAggregateData weblogTagData = (WeblogEntryTagAggregateData) criteria.uniqueResult();
 
@@ -30,7 +30,7 @@
         conjunction.add(Restrictions.isNull("website"));
         
         criteria = session.createCriteria(WeblogEntryTagAggregateData.class)
-            .add(conjunction).addOrder(Order.desc("lastUsed"));
+            .add(conjunction).addOrder(Order.desc("lastUsed")).setMaxResults(1);
     
         WeblogEntryTagAggregateData siteTagData = (WeblogEntryTagAggregateData) criteria.uniqueResult();
         
