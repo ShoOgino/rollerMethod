@@ -12,20 +12,20 @@
                     .getSession();
 
             if (sortBy != null && sortBy.equals("count")) {
-                sortBy = "a.count desc";
+                sortBy = "total desc";
             } else {
-                sortBy = "a.name";
+                sortBy = "name";
             }
 
             StringBuffer queryString = new StringBuffer();
-            queryString.append("select a.name, a.count ");
-            queryString.append("from WeblogEntryTagAggregateData a where ");
+            queryString.append("select name, total ");
+            queryString.append("from WeblogEntryTagAggregateData where ");
             if (website != null)
-                queryString.append("a.website.id = '" + website.getId() + "' ");
+                queryString.append("website.id = '" + website.getId() + "' ");
             else
-                queryString.append("a.website = NULL ");
+                queryString.append("website = NULL ");
             if (startsWith != null && startsWith.length() > 0)
-                queryString.append("and a.name like '" + startsWith + "%' ");
+                queryString.append("and name like '" + startsWith + "%' ");
 
             queryString.append("order by " + sortBy);
 
