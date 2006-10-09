@@ -1,9 +1,8 @@
-    public void testSystemProperty() throws Exception
-    {
+    public void testSystemProperty() throws Exception {
         String expanded =
-            PropertyExpander.expandSystemProperties("${java.home}");
+                PropertyExpander.expandSystemProperties("${java.home}");
         assertEquals("Expanded string doesn't match expected",
-            System.getProperty("java.home"),
-            expanded);
+                System.getProperty("java.home"),
+                expanded);
     }
 

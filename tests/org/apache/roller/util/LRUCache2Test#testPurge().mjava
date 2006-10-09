@@ -1,9 +1,8 @@
-    public void testPurge() 
-    {
+    public void testPurge() {
         // Create cache with 100 item limit and 15 second timeout
         TestEnvironment env = new TestEnvironment();
         LRUCache2 cache = new LRUCache2(env, 100, 15000);
-            
+        
         env.time = 1000;
         cache.put("key1", "string1");
         cache.put("key2", "string2");

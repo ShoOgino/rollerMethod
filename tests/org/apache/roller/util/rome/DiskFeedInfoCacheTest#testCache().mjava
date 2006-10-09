@@ -1,5 +1,4 @@
-    public void testCache() throws Exception  
-    {
+    public void testCache() throws Exception {
         URL url = new URL("http://cnn.com");
         SyndFeedInfo info = new SyndFeedInfo();
         info.setUrl(url);
@@ -11,10 +10,10 @@
         File file = new File(buildDir);
         
         assertTrue("buildDir exists", file.exists());
-        assertTrue("buildDir is directory", file.isDirectory());        
+        assertTrue("buildDir is directory", file.isDirectory());
         
-        DiskFeedInfoCache cache = 
-            new DiskFeedInfoCache(buildDir + "/tests/planet-cache");
+        DiskFeedInfoCache cache =
+                new DiskFeedInfoCache(buildDir + "/tests/planet-cache");
         cache.setFeedInfo(info.getUrl(), info);
         
         SyndFeedInfo info2 = cache.getFeedInfo(url);

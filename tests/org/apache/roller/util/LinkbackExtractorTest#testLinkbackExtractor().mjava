@@ -1,25 +1,23 @@
-    public void testLinkbackExtractor() throws Exception
-    {
-		String[][] testrefs = new String[][] 
-		{
-            { 
-                "http://www.rollerweblogger.org/page/roller", 
-                "http://staff.develop.com/halloway/weblog/2003/01/23.html" 
+    public void testLinkbackExtractor() throws Exception {
+        String[][] testrefs = new String[][]
+        {
+            {
+                "http://www.rollerweblogger.org/page/roller",
+                        "http://staff.develop.com/halloway/weblog/2003/01/23.html"
             },
-            { 
-                "http://postneo.com/", 
-                "http://www.rollerweblogger.org/page/roller/20030125" 
+            {
+                "http://postneo.com/",
+                        "http://www.rollerweblogger.org/page/roller/20030125"
             }
-		};
-		
-		for ( int i=0; i<testrefs.length; i++ )
-		{
-			String refurl = testrefs[i][0];
-			String requrl = testrefs[i][1];
-			LinkbackExtractor le = new LinkbackExtractor(refurl,requrl);
-			System.out.println(le.getTitle());
-			System.out.println(le.getPermalink());
-			System.out.println(le.getExcerpt());
-		}		
+        };
+        
+        for ( int i=0; i<testrefs.length; i++ ) {
+            String refurl = testrefs[i][0];
+            String requrl = testrefs[i][1];
+            LinkbackExtractor le = new LinkbackExtractor(refurl,requrl);
+            System.out.println(le.getTitle());
+            System.out.println(le.getPermalink());
+            System.out.println(le.getExcerpt());
+        }
     }
 
