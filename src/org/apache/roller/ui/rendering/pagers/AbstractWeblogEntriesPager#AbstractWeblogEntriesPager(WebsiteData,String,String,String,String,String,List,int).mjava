@@ -19,7 +19,12 @@
           this.tags = tags;
         
         // make sure offset, length, and page are valid
+        int maxLength = RollerRuntimeConfig.getIntProperty("site.pages.maxEntries");
         length = weblog.getEntryDisplayCount();
+        if(length > maxLength) {
+            length = maxLength;
+        }
+        
         if(page > 0) {
             this.page = page;
         }
