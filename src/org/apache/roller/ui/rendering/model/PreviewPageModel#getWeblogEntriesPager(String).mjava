@@ -1,0 +1,23 @@
+    /**
+     * Override method that returns pager so that we can introduce a custom
+     * pager for preview pages which can display things that we don't want
+     * available on the "live" weblog, like DRAFT entries.
+     */
+    public WeblogEntriesPager getWeblogEntriesPager(String catArgument) {
+        
+        String anchor = previewRequest.getPreviewEntry();
+        if(anchor == null) {
+            anchor = previewRequest.getWeblogAnchor();
+        }
+        
+        return new WeblogEntriesPreviewPager(
+                previewRequest.getWeblog(),
+                previewRequest.getLocale(),
+                previewRequest.getWeblogPageName(),
+                anchor,
+                previewRequest.getWeblogDate(),
+                null,
+                previewRequest.getTags(),
+                previewRequest.getPageNum());
+    }
+

@@ -1,0 +1,24 @@
+    public Map getEntries() {
+        if (entries == null) try {
+            Roller roller = RollerFactory.getRoller();
+            WeblogManager wmgr = roller.getWeblogManager();
+            currEntry = wmgr.getWeblogEntryByAnchor(weblog, entryAnchor);
+            if (currEntry != null) {
+                entries = new TreeMap();
+                
+                // if entry is not published then pubtime may be null
+                Date pubtime = currEntry.getPubTime();
+                if(pubtime == null) {
+                    pubtime = new Date();
+                }
+                
+                entries.put(pubtime,
+                        Collections.singletonList(WeblogEntryDataWrapper.wrap(currEntry)));
+            }
+        } catch (Exception e) {
+            log.error("ERROR: fetching entry", e);
+        }
+        
+        return entries;
+    }
+

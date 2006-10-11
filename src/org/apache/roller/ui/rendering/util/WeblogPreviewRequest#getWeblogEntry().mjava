@@ -1,0 +1,22 @@
+    // if we have a preview entry we would prefer to return that
+    public WeblogEntryData getWeblogEntry() {
+        
+        if(weblogEntry == null && 
+                (previewEntry != null || super.getWeblogAnchor() != null)) {
+            
+            String anchor = previewEntry;
+            if(previewEntry == null) {
+                anchor = super.getWeblogAnchor();
+            }
+            
+            try {
+                WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+                weblogEntry = wmgr.getWeblogEntryByAnchor(getWeblog(), anchor);
+            } catch (RollerException ex) {
+                log.error("Error getting weblog entry "+anchor, ex);
+            }
+        }
+        
+        return weblogEntry;
+    }
+

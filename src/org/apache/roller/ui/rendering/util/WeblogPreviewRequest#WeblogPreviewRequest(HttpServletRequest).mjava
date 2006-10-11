@@ -4,10 +4,14 @@
         // let parent go first
         super(request);
         
-        // all we need to worry about is the query params
-        // the only param we expect is "theme"
+        // we may have a specific theme to preview
         if(request.getParameter("theme") != null) {
             this.themeName = request.getParameter("theme");
+        }
+        
+        // we may also have a specific entry to preview
+        if(request.getParameter("previewEntry") != null) {
+            this.previewEntry = URLUtilities.decode(request.getParameter("previewEntry"));
         }
         
         if(log.isDebugEnabled()) {

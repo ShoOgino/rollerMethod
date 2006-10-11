@@ -1,0 +1,9 @@
+    public WeblogEntryDataWrapper getWeblogEntry() {
+        
+        if(previewRequest.getPreviewEntry() != null ||
+                previewRequest.getWeblogAnchor() != null) {
+            return WeblogEntryDataWrapper.wrap(previewRequest.getWeblogEntry());
+        }
+        return null;
+    }
+
