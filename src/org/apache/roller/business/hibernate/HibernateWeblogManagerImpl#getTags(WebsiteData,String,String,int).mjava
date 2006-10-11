@@ -18,7 +18,7 @@
             }
 
             StringBuffer queryString = new StringBuffer();
-            queryString.append("select distinct name, sum(total) ");
+            queryString.append("select name, sum(total) ");
             queryString.append("from WeblogEntryTagAggregateData where ");
             if (website != null)
                 queryString.append("website.id = '" + website.getId() + "' ");
@@ -27,7 +27,7 @@
             if (startsWith != null && startsWith.length() > 0)
                 queryString.append("and name like '" + startsWith + "%' ");
 
-            queryString.append("group by name order by " + sortBy);
+            queryString.append("group by name, total order by " + sortBy);
 
             Query query = session.createQuery(queryString.toString());
             if (limit > 0)

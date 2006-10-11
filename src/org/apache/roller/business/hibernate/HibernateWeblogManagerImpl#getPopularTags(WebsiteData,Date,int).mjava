@@ -22,7 +22,7 @@
                 params.add(startDate);
             }
 
-            queryString.append("group by name order by total desc");
+            queryString.append("group by name, total order by total desc");
 
             Query query = session.createQuery(queryString.toString());
             if (limit > 0)
@@ -36,7 +36,7 @@
             double min = Integer.MAX_VALUE;
             double max = Integer.MIN_VALUE;
 
-            TreeSet set = new TreeSet(tagStatComparator);
+            List results = new ArrayList(limit);
             
             for (Iterator iter = query.list().iterator(); iter.hasNext();) {
                 Object[] row = (Object[]) iter.next();
@@ -46,7 +46,7 @@
                 
                 min = Math.min(min, t.getCount());
                 max = Math.max(max, t.getCount());                
-                set.add(t);
+                results.add(t);
             }
             
             min = Math.log(1+min);
@@ -54,13 +54,16 @@
 
             double range = Math.max(.01, max - min) * 1.0001;
             
-            for (Iterator iter = set.iterator(); iter.hasNext(); )
+            for (Iterator iter = results.iterator(); iter.hasNext(); )
             {
                 TagStat t = (TagStat) iter.next();
                 t.setIntensity((int) (1 + Math.floor(5 * (Math.log(1+t.getCount()) - min) / range)));
             }            
 
-            return new ArrayList(set);
+            // sort results by name, because query had to sort by total
+            Collections.sort(results, tagStatComparator);
+            
+            return results;
 
         } catch (HibernateException e) {
             throw new RollerException(e);
