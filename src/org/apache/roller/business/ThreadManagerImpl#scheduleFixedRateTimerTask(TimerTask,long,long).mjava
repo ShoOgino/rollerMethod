@@ -1,7 +1,7 @@
     public void scheduleFixedRateTimerTask(TimerTask task, long delayMins, long periodMins) {
         if (periodMins < MIN_RATE_INTERVAL_MINS) {
             throw new IllegalArgumentException("Period (" + periodMins +
-                ") shorter than minimum allowed (" + MIN_RATE_INTERVAL_MINS + ")");
+                    ") shorter than minimum allowed (" + MIN_RATE_INTERVAL_MINS + ")");
         }
         scheduler.scheduleAtFixedRate(task, delayMins * 60 * 1000, periodMins * 60 * 1000);
     }
