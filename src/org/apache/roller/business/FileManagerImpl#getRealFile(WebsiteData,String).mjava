@@ -39,8 +39,7 @@
         
         try {
             // make sure someone isn't trying to sneek outside the uploads dir
-            File uploadDir = new File(this.upload_dir);
-            if(!file.getCanonicalPath().startsWith(uploadDir.getCanonicalPath())) {
+            if(!file.getCanonicalPath().startsWith(weblogDir.getCanonicalPath())) {
                 throw new FilePathException("Invalid path ["+path+"], "+
                         "trying to get outside uploads dir.");
             }

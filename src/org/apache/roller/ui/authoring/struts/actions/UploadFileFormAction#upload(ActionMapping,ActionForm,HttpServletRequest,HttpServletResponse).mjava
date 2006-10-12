@@ -1,108 +1,110 @@
     /**
-     * Request to upload files
+     * Upload selected file(s).
      */
-    public ActionForward upload(
-            ActionMapping       mapping,
-            ActionForm          actionForm,
-            HttpServletRequest  request,
-            HttpServletResponse response)
+    public ActionForward upload(ActionMapping mapping,
+                                ActionForm actionForm,
+                                HttpServletRequest request,
+                                HttpServletResponse response)
             throws Exception {
         
         ActionForward fwd = mapping.findForward("access-denied");
-        WebsiteData website = getWebsite(request);
-        RollerMessages rollerMessages = new RollerMessages();
-        RollerSession rses = RollerSession.getRollerSession(request);
-        List lastUploads = new ArrayList();
+        ActionMessages messages = new ActionMessages();
+        ActionErrors errors = new ActionErrors();
+        UploadFileForm theForm = (UploadFileForm) actionForm;
         
-        if ( rses.isUserAuthorizedToAuthor(website)) {
+        WebsiteData website = getWebsite(request);
+        RollerSession rses = RollerSession.getRollerSession(request);
+        if (rses.isUserAuthorizedToAuthor(website)) {
+            
+            // display the main uploads page with the results
+            fwd = mapping.findForward("uploadFiles.page");
             
             FileManager fmgr = RollerFactory.getRoller().getFileManager();
-            fwd = mapping.findForward("uploadFiles.page");
-            ActionMessages messages = new ActionMessages();
-            ActionErrors errors = new ActionErrors();
-            UploadFileForm theForm = (UploadFileForm)actionForm;
-            String path = theForm.getPath();
+            
+            List uploaded = new ArrayList();
             if (theForm.getUploadedFiles().length > 0) {
-                ServletContext app = servlet.getServletConfig().getServletContext();
                 
-                boolean uploadEnabled =
-                        RollerRuntimeConfig.getBooleanProperty("uploads.enabled");
-                
-                if ( !uploadEnabled ) {
+                // make sure uploads are enabled
+                if(!RollerRuntimeConfig.getBooleanProperty("uploads.enabled")) {
                     errors.add(ActionErrors.GLOBAL_ERROR,
-                            new ActionError("error.upload.disabled", ""));
+                            new ActionError("error.upload.disabled"));
                     saveErrors(request, errors);
                     return fwd;
                 }
                 
-                //this line is here for when the input page is upload-utf8.jsp,
-                //it sets the correct character encoding for the response
+                // this line is here for when the input page is upload-utf8.jsp,
+                // it sets the correct character encoding for the response
                 String encoding = request.getCharacterEncoding();
                 if ((encoding != null) && (encoding.equalsIgnoreCase("utf-8"))) {
                     response.setContentType("text/html; charset=utf-8");
                 }
                 
-                //retrieve the file representation
+                // loop over uploaded files and try saving them
                 FormFile[] files = theForm.getUploadedFiles();
-                int fileSize = 0;
-                try {
-                    for (int i=0; i<files.length; i++) {
-                        if (files[i] == null) continue;
-                        
-                        // retrieve the file name
-                        String fileName= files[i].getFileName();
-                        int terminated = fileName.indexOf("\000");
-                        if (terminated != -1) {
-                            // disallow sneaky null terminated strings
-                            fileName = fileName.substring(0, terminated).trim();
-                        }
-                        if(path != null) {
-                            fileName = path + "/" + fileName;
-                        }
-                        
-                        fileSize = files[i].getFileSize();
-                        
-                        InputStream stream = files[i].getInputStream();
+                for (int i=0; i < files.length; i++) {
+                    
+                    // skip null files
+                    if (files[i] == null) 
+                        continue;
+                    
+                    // figure file name and path
+                    String fileName= files[i].getFileName();
+                    int terminated = fileName.indexOf("\000");
+                    if (terminated != -1) {
+                        // disallow sneaky null terminated strings
+                        fileName = fileName.substring(0, terminated).trim();
+                    }
+                    if(theForm.getPath() != null && 
+                            theForm.getPath().trim().length() > 0) {
+                        fileName = theForm.getPath() + "/" + fileName;
+                    }
+                    
+                    try {
                         fmgr.saveFile(website, fileName,
-                                files[i].getContentType(), fileSize, stream);
-                        lastUploads.add(fileName);
-
+                                files[i].getContentType(), 
+                                files[i].getFileSize(), 
+                                files[i].getInputStream());
+                        
+                        uploaded.add(fileName);
+                        
                         //destroy the temporary file created
                         files[i].destroy();
+                    } catch (FilePathException ex) {
+                        errors.add(ActionErrors.GLOBAL_ERROR,
+                                new ActionError("uploadFiles.error.badPath", fileName));
+                    } catch (FileNotFoundException ex) {
+                        errors.add(ActionErrors.GLOBAL_ERROR,
+                                new ActionError("uploadFiles.error.badPath", fileName));
+                    } catch (FileIOException ex) {
+                        errors.add(ActionErrors.GLOBAL_ERROR,
+                                new ActionError("uploadFiles.error.upload", fileName));
                     }
-                } catch (Exception e) {
-                    errors.add(ActionErrors.GLOBAL_ERROR,
-                            new ActionError("error.upload.file",e.toString()));
-                    mLogger.error("Error saving uploaded file", e);
                 }
             }
             
-            UploadFilePageModel pageModel = new UploadFilePageModel(
-                    request, response, mapping, website, path, lastUploads);
-            request.setAttribute("model", pageModel);
-            pageModel.setWebsite(website);
-            
-            Iterator uploads = lastUploads.iterator();
-            if (uploads.hasNext()) {
+            if(uploaded.size() > 0) {
                 messages.add(ActionMessages.GLOBAL_MESSAGE,
                         new ActionMessage("uploadFiles.uploadedFiles"));
+                
+                Iterator uploads = uploaded.iterator();
+                while (uploads.hasNext()) {
+                    messages.add(ActionMessages.GLOBAL_MESSAGE,
+                            new ActionMessage("uploadFiles.uploadedFile",
+                            URLUtilities.getWeblogResourceURL(website, (String)uploads.next(), true)));
+                }
+                saveMessages(request, messages);
             }
-            while (uploads.hasNext()) {
-                messages.add(ActionMessages.GLOBAL_MESSAGE,
-                        new ActionMessage("uploadFiles.uploadedFile",
-                        URLUtilities.getWeblogResourceURL(website, (String)uploads.next(), true)));
-            }
-            saveMessages(request, messages);
             
-            Iterator iter = rollerMessages.getErrors();
-            while (iter.hasNext()) {
-                RollerMessages.RollerMessage error =
-                        (RollerMessages.RollerMessage)iter.next();
-                errors.add(ActionErrors.GLOBAL_ERROR,
-                        new ActionError(error.getKey(), error.getArgs()));
+            if(!errors.isEmpty()) {
+                saveErrors(request, errors);
             }
-            saveErrors(request, errors);
+            
+            UploadFilePageModel pageModel = new UploadFilePageModel(
+                    request, response, mapping, website, theForm.getPath(), uploaded);
+            request.setAttribute("model", pageModel);
+            pageModel.setWebsite(website);
         }
+        
         return fwd;
     }
 
