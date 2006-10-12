@@ -1,0 +1,18 @@
+    /**
+     * Run the task once.
+     */
+    public void runTask() {
+        // Call the ping queue processor to process the queue
+        Roller roller = null;
+        try {
+            roller = RollerFactory.getRoller();
+            PingQueueProcessor.getInstance().processQueue();
+            roller.flush();
+        } catch (RollerException e) {
+            // This is probably duplicate logging. May want to eliminate it, but should be rare.
+            logger.error("Error while processing ping queue", e);
+        } finally {
+            if (roller != null) roller.release();
+        }
+    }
+

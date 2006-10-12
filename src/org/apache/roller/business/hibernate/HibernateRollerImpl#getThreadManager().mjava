@@ -1,0 +1,10 @@
+    /**
+     * @see org.apache.roller.model.Roller#getThreadManager()
+     */
+    public ThreadManager getThreadManager() throws RollerException {
+        if (threadManager == null) {
+            threadManager = new HibernateThreadManagerImpl(strategy);
+        }
+        return threadManager;
+    }
+

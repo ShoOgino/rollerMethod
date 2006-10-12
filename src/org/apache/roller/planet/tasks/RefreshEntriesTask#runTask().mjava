@@ -1,0 +1,12 @@
+    public void runTask() {
+        try {
+            Roller roller = RollerFactory.getRoller();
+            roller.getPlanetManager().refreshEntries();
+            roller.flush();
+        } catch (RollerException e) {
+            log.error("ERROR refreshing entries", e);
+        } finally {
+            RollerFactory.getRoller().release();
+        }
+    }
+

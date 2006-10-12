@@ -1,0 +1,5 @@
+    public void scheduleDailyTimerTask(RollerTask task) {
+        scheduler.scheduleAtFixedRate(task,
+                DateUtil.getEndOfDay(new Date()), DateUtil.millisInDay);
+    }
+

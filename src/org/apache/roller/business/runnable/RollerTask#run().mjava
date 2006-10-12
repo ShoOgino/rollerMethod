@@ -1,0 +1,72 @@
+    /**
+     * The run() method as called by our thread manager.
+     *
+     * This method is purposely defined as "final" so that any tasks that are
+     * defined may not override it and remove any of its functionality.  It is
+     * setup to provide some basic functionality to the running of all tasks,
+     * such as lock acquisition and releasing.
+     *
+     * Roller tasks should put their logic in the runTask() method.
+     */
+    public final void run() {
+        
+        ThreadManager mgr = null;
+        try {
+            mgr = RollerFactory.getRoller().getThreadManager();
+        } catch (Exception ex) {
+            log.fatal("Unable to obtain TaskLockManager", ex);
+            return;
+        }
+        
+        boolean lockAcquired = false;
+        try {
+            // is task already locked
+            if(!mgr.isLocked(this)) {
+                // have we waited enough time since the last run?
+                Date nextRun = mgr.getNextRun(this);
+                Date now = new Date();
+                if(nextRun == null || now.after(nextRun)) {
+                    
+                    log.debug("Attempting to acquire lock");
+                    
+                    // acquire lock
+                    lockAcquired = mgr.acquireLock(this);
+                    
+                    if(lockAcquired) {
+                        log.debug("Lock acquired, about to begin real work");
+                    } else {
+                        log.debug("Lock not acquired, assuming race condition");
+                        return;
+                    }
+                } else {
+                    log.debug("Interval time hasn't elapsed since last run, nothing to do");
+                }
+            } else {
+                log.info("Task already locked, nothing to do");
+            }
+
+            // now if we have a lock then run the task
+            if(lockAcquired) {
+                this.runTask();
+            }
+            
+        } catch (Exception ex) {
+            log.error("Unexpected exception running task", ex);
+        } finally {
+            log.debug("in the finally block");
+            if(lockAcquired) {
+                log.debug("Attempting to release lock");
+                
+                // release lock
+                boolean lockReleased = mgr.releaseLock(this);
+                
+                if(lockReleased) {
+                    log.debug("Lock released, time to sleep");
+                } else {
+                    log.error("Lock NOT released, something went wrong");
+                }
+            }
+        }
+        
+    }
+

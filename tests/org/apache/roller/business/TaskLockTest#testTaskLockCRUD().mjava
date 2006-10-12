@@ -1,0 +1,31 @@
+    /**
+     * Test basic persistence operations ... Create, Update, Delete.
+     */
+    public void testTaskLockCRUD() throws Exception {
+        
+        ThreadManager mgr = RollerFactory.getRoller().getThreadManager();
+        
+        // need a test task to play with
+        RollerTask task = new TestTask();
+        
+        // try to acquire a lock
+        boolean lockAcquired = mgr.acquireLock(task);
+        assertTrue(lockAcquired);
+        TestUtils.endSession(true);
+        
+        // make sure task is locked
+        boolean stillLocked = mgr.isLocked(task);
+        assertTrue(stillLocked);
+        TestUtils.endSession(true);
+        
+        // try to release a lock
+        boolean lockReleased = mgr.releaseLock(task);
+        assertTrue(lockReleased);
+        TestUtils.endSession(true);
+        
+        // make sure task is not locked
+        stillLocked = mgr.isLocked(task);
+        assertFalse(stillLocked);
+        TestUtils.endSession(true);
+    }
+

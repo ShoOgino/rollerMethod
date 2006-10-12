@@ -1,0 +1,15 @@
+    public Date getNextRun(RollerTask task) {
+        
+        Date lastRun = this.getLastRun(task);
+        if(lastRun == null) {
+            return null;
+        }
+        
+        // calculate next run time
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(lastRun);
+        cal.add(Calendar.SECOND, task.getInterval());
+        
+        return cal.getTime();
+    }
+

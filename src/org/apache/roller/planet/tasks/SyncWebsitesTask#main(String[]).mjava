@@ -6,7 +6,7 @@
             RollerFactory.setRoller(
                     "org.apache.roller.business.hibernate.HibernateRollerImpl");
             SyncWebsitesTask task = new SyncWebsitesTask();
-            task.init(RollerFactory.getRoller(), "dummy");
+            task.init();
             task.run();
             System.exit(0);
         } catch (Throwable t) {

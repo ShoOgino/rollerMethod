@@ -10,10 +10,10 @@
                     StringUtils.split(hourlyString, ",") );
             for (int i=0; i<hourlyTasks.length; i++) {
                 mLogger.info("Setting hourly task: "+hourlyTasks[i]);
-                ScheduledTask task =
-                        (ScheduledTask)Class.forName(hourlyTasks[i]).newInstance();
-                task.init(roller, mContext.getRealPath("/"));
-                roller.getThreadManager().scheduleHourlyTimerTask((TimerTask)task);
+                RollerTask task =
+                        (RollerTask) Class.forName(hourlyTasks[i]).newInstance();
+                task.init();
+                roller.getThreadManager().scheduleHourlyTimerTask((RollerTask)task);
             }
         }
         
@@ -24,10 +24,10 @@
                     StringUtils.split(dailyString, ",") );
             for (int j=0; j<dailyTasks.length; j++) {
                 mLogger.info("Setting daily task: "+dailyTasks[j]);
-                ScheduledTask task =
-                        (ScheduledTask)Class.forName(dailyTasks[j]).newInstance();
-                task.init(roller, mContext.getRealPath("/"));
-                roller.getThreadManager().scheduleDailyTimerTask((TimerTask)task);
+                RollerTask task =
+                        (RollerTask) Class.forName(dailyTasks[j]).newInstance();
+                task.init();
+                roller.getThreadManager().scheduleDailyTimerTask((RollerTask)task);
             }
         }
     }

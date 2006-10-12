@@ -1,0 +1,44 @@
+    /**
+     * Try to aquire a lock for a given RollerTask.
+     */
+    public boolean acquireLock(RollerTask task) {
+        
+        boolean lockAcquired = false;
+        
+        TaskLockData taskLock = null;
+        try {
+            taskLock = this.getTaskLockByName(task.getName());
+            
+            // null here just means hasn't been initialized yet
+            if(taskLock == null) {
+                taskLock = new TaskLockData();
+                taskLock.setName(task.getName());
+                taskLock.setLocked(false);
+            }
+        } catch (RollerException ex) {
+            log.warn("Error getting TaskLockData", ex);
+            return false;
+        }
+        
+        if(taskLock != null && !taskLock.isLocked()) {
+            // set appropriate values for TaskLock and save it
+            Date now = new Date();
+            taskLock.setLocked(true);
+            taskLock.setTimeAquired(now);
+            taskLock.setTimeLeased(task.getLeaseTime());
+            taskLock.setLastRun(now);
+            
+            try {
+                // save it *and* flush
+                this.saveTaskLock(taskLock);
+                RollerFactory.getRoller().flush();
+                lockAcquired = true;
+            } catch (RollerException ex) {
+                log.warn("Error saving TaskLockData", ex);
+                lockAcquired = false;
+            }
+        }
+        
+        return lockAcquired;
+    }
+

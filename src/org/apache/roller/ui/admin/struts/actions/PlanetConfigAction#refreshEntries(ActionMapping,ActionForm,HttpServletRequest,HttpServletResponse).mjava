@@ -14,7 +14,7 @@
                 request.setAttribute("model",pageModel);                
                 Roller roller = RollerFactory.getRoller();
                 RefreshEntriesTask task = new RefreshEntriesTask();
-                task.init(roller, "dummy");
+                task.init();
                 roller.getThreadManager().executeInBackground(task);
                 
                 ActionMessages messages = new ActionMessages();
