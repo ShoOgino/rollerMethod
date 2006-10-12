@@ -67,8 +67,9 @@
         
         if(request.getParameter("tags") != null) {
           this.tags = Arrays.asList(StringUtils.split(URLUtilities.decode(request.getParameter("tags")),"+"));
-          if(this.tags.size() > 3)
-              throw new InvalidRequestException("max number of tags allowed is 3, " + request.getRequestURL());          
+          int maxSize = RollerConfig.getIntProperty("tags.queries.maxIntersectionSize", 3);                  
+          if(this.tags.size() > maxSize)
+              throw new InvalidRequestException("max number of tags allowed is " + maxSize + ", " + request.getRequestURL());
         }        
         
         if(request.getParameter("excerpts") != null) {
