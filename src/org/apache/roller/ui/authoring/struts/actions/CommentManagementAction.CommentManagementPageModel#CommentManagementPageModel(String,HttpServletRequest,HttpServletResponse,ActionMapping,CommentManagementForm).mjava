@@ -18,7 +18,7 @@
                 website = rreq.getWebsite();
             }
             WeblogManager blogmgr = roller.getWeblogManager();
-
+         
             int offset = queryForm.getOffset();
             comments = blogmgr.getComments(
                 website,
@@ -37,5 +37,29 @@
                 comments.remove(comments.size()-1);
             }
             this.queryForm.loadCheckboxes(comments);
+            
+            // If we have a query POST, then we know we're responding to a query so 
+            // we need to decide whether or not to show the bulk comment prompt.
+            if ("POST".equals(request.getMethod()) 
+                && "query".equals(request.getParameter("method"))) {
+                
+                // So we run the query again, except this time with no limit.
+                List allMatchingComments = blogmgr.getComments( 
+                    website,
+                    weblogEntry, 
+                    queryForm.getSearchString(),
+                    queryForm.getStartDate(request.getLocale()), 
+                    queryForm.getEndDate(request.getLocale()), 
+                    queryForm.getPending(),
+                    queryForm.getApproved(),
+                    queryForm.getSpam(),
+                    true, 
+                    0, -1);                
+                totalMatchingCommentCount = allMatchingComments.size();
+                
+                // If there are more comments than can be shown on one 
+                // page, then present the bulk-comment delete prompt.
+                showBulkDeleteLink = totalMatchingCommentCount > queryForm.getCount();
+            }
         }    
 

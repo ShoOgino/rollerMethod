@@ -9,6 +9,20 @@
         RollerRequest rreq = RollerRequest.getRollerRequest(request);
         RollerSession rses = RollerSession.getRollerSession(request);
         
+        ActionForward fwd = null;
+        // Ensure user is authorized to view comments in weblog
+        if (rreq.getWebsite() != null && rses.isUserAuthorized(rreq.getWebsite())) {
+            fwd =  mapping.findForward("commentManagement.page");
+        }
+        // Ensure only global admins can see all comments
+        else if (rses.isGlobalAdminUser()) {
+            fwd =  mapping.findForward("commentManagementGlobal.page");
+        } 
+        else {
+            // And everybody else gets...
+            return mapping.findForward("access-denied");
+        }        
+        
         if (rreq.getWeblogEntry() != null) {
             queryForm.setEntryid(rreq.getWeblogEntry().getId());
             queryForm.setWeblog(rreq.getWeblogEntry().getWebsite().getHandle());
@@ -21,17 +35,6 @@
         if (request.getAttribute("commentManagementForm") == null) {
             request.setAttribute("commentManagementForm", actionForm);
         }
-        
-        // Ensure user is authorized to view comments in weblog
-        if (rreq.getWebsite() != null && rses.isUserAuthorized(rreq.getWebsite())) {
-            return mapping.findForward("commentManagement.page");
-        }
-        // And ensure only global admins can see all comments
-        else if (rses.isGlobalAdminUser()) {
-            return mapping.findForward("commentManagementGlobal.page");
-        } 
-        else {
-            return mapping.findForward("access-denied");
-        }
+        return fwd;
     }
 
