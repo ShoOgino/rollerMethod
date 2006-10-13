@@ -39,40 +39,34 @@
                     if (wd.getActive() != null && !wd.getActive().booleanValue()) {
                         wd.setAllowComments(Boolean.FALSE);
                         messages.add(null, new ActionMessage(
-                            "websiteSettings.commentsOffForInactiveWeblog"));
+                                "websiteSettings.commentsOffForInactiveWeblog"));
                     }
-                                        
-                    umgr.saveWebsite(wd);  
+                    
+                    umgr.saveWebsite(wd);
                     
                     // ROL-1050: apply comment defaults to existing entries
                     if (form.getApplyCommentDefaults() != null && form.getApplyCommentDefaults().booleanValue()) {
                         wmgr.applyCommentDefaultsToEntries(wd);
                     }
-
+                    
                     RollerFactory.getRoller().getRefererManager().applyRefererFilters(wd);
                     
                     RollerFactory.getRoller().flush();
                     
                     messages.add(null,
-                        new ActionMessage("websiteSettings.savedChanges"));
+                            new ActionMessage("websiteSettings.savedChanges"));
                     
                     request.getSession().setAttribute(
-                        RequestConstants.WEBLOG_ID, form.getId());
+                            RequestConstants.WEBLOG_ID, form.getId());
                     
                     // Clear cache entries associated with website
                     CacheManager.invalidate(wd);
-            
+                    
                     actionForm.reset(mapping,request);
                 }
                 
                 // set the Editor Page list
-                ServletContext ctx = request.getSession().getServletContext();
-                String editorPages =
-                        RollerRuntimeConfig.getProperty("users.editor.pages");
-                
-                List epages = Arrays.asList(StringUtils.split(
-                        org.apache.commons.lang.StringUtils.deleteWhitespace(editorPages), ","));
-                request.setAttribute("editorPagesList", epages);
+                request.setAttribute("editorPagesList", this.getEditorsList());
                 
                 WebsitePageModel pageModel =
                         new WebsitePageModel("websiteSettings.title",

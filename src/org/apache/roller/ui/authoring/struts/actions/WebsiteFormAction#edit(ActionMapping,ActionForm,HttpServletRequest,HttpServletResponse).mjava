@@ -29,14 +29,8 @@
                 List pages = umgr.getPages(website);
                 request.setAttribute("pages",pages);
                 
-                ServletContext ctx = request.getSession().getServletContext();
-                String editorPages =
-                        RollerRuntimeConfig.getProperty("users.editor.pages");
-                
-                List epages = Arrays.asList(StringUtils.split(
-                        StringUtils.deleteWhitespace(editorPages), ","));
-                request.setAttribute("editorPagesList", epages);
-                
+                // set the Editor Page list
+                request.setAttribute("editorPagesList", this.getEditorsList());
                 
                 WebsitePageModel pageModel = new WebsitePageModel(
                         "websiteSettings.title", request, response, mapping, website);

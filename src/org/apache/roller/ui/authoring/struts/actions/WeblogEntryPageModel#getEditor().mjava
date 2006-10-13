@@ -1,0 +1,9 @@
+    public WeblogEntryEditor getEditor() {
+        try {
+            PluginManager pmgr = RollerFactory.getRoller().getPagePluginManager();
+            return pmgr.getWeblogEntryEditor(this.website.getEditorPage());
+        } catch (RollerException ex) {
+            throw new RuntimeException("Couldn't access plugin manager");
+        }
+    }
+

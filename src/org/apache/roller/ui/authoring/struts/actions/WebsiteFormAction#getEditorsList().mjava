@@ -1,0 +1,14 @@
+    private List getEditorsList() {
+        
+        List editorsList = new ArrayList();
+        
+        try {
+            PluginManager pmgr = RollerFactory.getRoller().getPagePluginManager();
+            editorsList = pmgr.getWeblogEntryEditors();
+        } catch (RollerException ex) {
+            mLogger.error(ex);
+        }
+        
+        return editorsList;
+    }
+

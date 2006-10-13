@@ -1,0 +1,14 @@
+    public void testEntryEditors() throws Exception {
+        
+        PluginManager pmgr = RollerFactory.getRoller().getPagePluginManager();
+        
+        // test getEditors() lis
+        assertEquals(2, pmgr.getWeblogEntryEditors().size());
+        
+        // test getting a single editor
+        assertEquals("TextEditor", pmgr.getWeblogEntryEditor("TextEditor").getId());
+        
+        // make sure we return default editor if editor id is not found
+        assertEquals("TextEditor", pmgr.getWeblogEntryEditor(null).getId());
+    }
+

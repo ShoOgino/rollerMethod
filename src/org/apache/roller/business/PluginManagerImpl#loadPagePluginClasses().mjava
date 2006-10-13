@@ -5,29 +5,29 @@
      * then later instantiated by PageHelper.
      */
     private void loadPagePluginClasses() {
-        mLogger.debug("Initializing page plugins");
+        log.debug("Initializing page plugins");
         
         String pluginStr = RollerConfig.getProperty("plugins.page");
-        if (mLogger.isDebugEnabled()) mLogger.debug(pluginStr);
+        if (log.isDebugEnabled()) log.debug(pluginStr);
         if (pluginStr != null) {
             String[] plugins = StringUtils.stripAll(
                     StringUtils.split(pluginStr, ",") );
             for (int i=0; i<plugins.length; i++) {
-                if (mLogger.isDebugEnabled()) mLogger.debug("try " + plugins[i]);
+                if (log.isDebugEnabled()) log.debug("try " + plugins[i]);
                 try {
                     Class pluginClass = Class.forName(plugins[i]);
                     if (isPagePlugin(pluginClass)) {
                         WeblogEntryPlugin plugin = (WeblogEntryPlugin)pluginClass.newInstance();
                         mPagePlugins.put(plugin.getName(), pluginClass);
                     } else {
-                        mLogger.warn(pluginClass + " is not a PagePlugin");
+                        log.warn(pluginClass + " is not a PagePlugin");
                     }
                 } catch (ClassNotFoundException e) {
-                    mLogger.error("ClassNotFoundException for " + plugins[i]);
+                    log.error("ClassNotFoundException for " + plugins[i]);
                 } catch (InstantiationException e) {
-                    mLogger.error("InstantiationException for " + plugins[i]);
+                    log.error("InstantiationException for " + plugins[i]);
                 } catch (IllegalAccessException e) {
-                    mLogger.error("IllegalAccessException for " + plugins[i]);
+                    log.error("IllegalAccessException for " + plugins[i]);
                 }
             }
         }
