@@ -1,0 +1,10 @@
+    public void scheduleFixedRateTimerTask(RollerTask task, Date startTime, long intervalMins) {
+        
+        if (intervalMins < MIN_RATE_INTERVAL_MINS) {
+            throw new IllegalArgumentException("Interval (" + intervalMins +
+                    ") shorter than minimum allowed (" + MIN_RATE_INTERVAL_MINS + ")");
+        }
+        
+        scheduler.scheduleAtFixedRate(task, startTime, intervalMins * 60 * 1000);
+    }
+

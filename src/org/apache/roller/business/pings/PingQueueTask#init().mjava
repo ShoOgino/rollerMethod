@@ -1,7 +1,35 @@
-    /**
-     * Initialize the task.
-     */
     public void init() throws RollerException {
+        
+        // get relevant props
+        Properties props = this.getTaskProperties();
+        
+        // extract start time
+        String startTimeStr = props.getProperty("startTime");
+        if(startTimeStr != null) {
+            this.startTimeDesc = startTimeStr;
+        }
+        
+        // extract interval
+        String intervalStr = props.getProperty("interval");
+        if(intervalStr != null) {
+            try {
+                this.interval = Integer.parseInt(intervalStr);
+            } catch (NumberFormatException ex) {
+                logger.warn("Invalid interval: "+intervalStr);
+            }
+        }
+        
+        // extract lease time
+        String leaseTimeStr = props.getProperty("leaseTime");
+        if(leaseTimeStr != null) {
+            try {
+                this.leaseTime = Integer.parseInt(leaseTimeStr);
+            } catch (NumberFormatException ex) {
+                logger.warn("Invalid leaseTime: "+leaseTimeStr);
+            }
+        }
+        
+        // initialize queue processor
         PingQueueProcessor.init();
     }
 
