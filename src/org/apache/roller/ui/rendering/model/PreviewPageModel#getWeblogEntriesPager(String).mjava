@@ -10,14 +10,27 @@
             anchor = previewRequest.getWeblogAnchor();
         }
         
-        return new WeblogEntriesPreviewPager(
-                previewRequest.getWeblog(),
-                previewRequest.getLocale(),
-                previewRequest.getWeblogPageName(),
-                anchor,
-                previewRequest.getWeblogDate(),
-                null,
-                previewRequest.getTags(),
-                previewRequest.getPageNum());
+        if (anchor != null) {
+            return new WeblogEntriesPreviewPager(
+                    previewRequest.getWeblog(),
+                    previewRequest.getLocale(),
+                    previewRequest.getWeblogPageName(),
+                    anchor,
+                    previewRequest.getWeblogDate(),
+                    null,
+                    previewRequest.getTags(),
+                    previewRequest.getPageNum());
+        } else {
+            return new WeblogEntriesLatestPager(
+                    previewRequest.getWeblog(),
+                    previewRequest.getLocale(),
+                    previewRequest.getWeblogPageName(),
+                    previewRequest.getWeblogAnchor(),
+                    previewRequest.getWeblogDate(),
+                    null,
+                    previewRequest.getTags(),
+                    previewRequest.getPageNum());
+        }
+        
     }
 
