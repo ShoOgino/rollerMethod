@@ -1,39 +1,42 @@
     public void testUpdateTags() throws Exception {
 
-      WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
-      
-      // setup some test entries to use
-      WeblogEntryData entry = TestUtils.setupWeblogEntry("entry1", testWeblog.getDefaultCategory(), testWeblog, testUser);
-      entry.addTag("testWillStayTag"); 
-      entry.addTag("testTagWillBeRemoved");
-      String id = entry.getId();
-      TestUtils.endSession(true);
-     
-      entry = mgr.getWeblogEntry(id);
-      assertEquals(2, entry.getTags().size());
-      
-      List updateTags = new ArrayList();
-      updateTags.add("testWillStayTag");
-      updateTags.add("testNewTag");
-      updateTags.add("testNewTag3");
-      entry.updateTags(updateTags);
-      TestUtils.endSession(true);
-      
-      entry = mgr.getWeblogEntry(id);
-      HashSet tagNames = new HashSet();
-      for(Iterator it = entry.getTags().iterator(); it.hasNext();) {
-        WeblogEntryTagData tagData = (WeblogEntryTagData) it.next();
-        tagNames.add(tagData.getName());
-      }
-      
-      assertEquals(3, entry.getTags().size());      
-      assertEquals(3, tagNames.size());
-      assertEquals(true, tagNames.contains("testWillStayTag"));
-      assertEquals(true, tagNames.contains("testNewTag"));
-      assertEquals(true, tagNames.contains("testNewTag3"));
-      
-      // teardown our test entry
-      TestUtils.teardownWeblogEntry(id);
-      TestUtils.endSession(true);    
+        WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+
+        // setup some test entries to use
+        WeblogEntryData entry = TestUtils.setupWeblogEntry("entry1", testWeblog
+                .getDefaultCategory(), testWeblog, testUser);
+        entry.addTag("testWillStayTag");
+        entry.addTag("testTagWillBeRemoved");
+        String id = entry.getId();
+        mgr.saveWeblogEntry(entry);
+        TestUtils.endSession(true);
+
+        entry = mgr.getWeblogEntry(id);
+        assertEquals(2, entry.getTags().size());
+
+        List updateTags = new ArrayList();
+        updateTags.add("testWillStayTag");
+        updateTags.add("testNewTag");
+        updateTags.add("testNewTag3");
+        entry.updateTags(updateTags);
+        mgr.saveWeblogEntry(entry);
+        TestUtils.endSession(true);
+
+        entry = mgr.getWeblogEntry(id);
+        HashSet tagNames = new HashSet();
+        for (Iterator it = entry.getTags().iterator(); it.hasNext();) {
+            WeblogEntryTagData tagData = (WeblogEntryTagData) it.next();
+            tagNames.add(tagData.getName());
+        }
+
+        assertEquals(3, entry.getTags().size());
+        assertEquals(3, tagNames.size());
+        assertEquals(true, tagNames.contains("testWillStayTag"));
+        assertEquals(true, tagNames.contains("testNewTag"));
+        assertEquals(true, tagNames.contains("testNewTag3"));
+
+        // teardown our test entry
+        TestUtils.teardownWeblogEntry(id);
+        TestUtils.endSession(true);
     }
 

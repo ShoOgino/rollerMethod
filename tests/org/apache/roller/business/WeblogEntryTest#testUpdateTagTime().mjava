@@ -11,9 +11,11 @@
         // setup some test entries to use
         WeblogEntryData entry = TestUtils.setupWeblogEntry("entry1", testWeblog
                 .getDefaultCategory(), testWeblog, testUser);
+        String id = entry.getId();
+
         entry.addTag("testWillStayTag");
         entry.addTag("testTagWillBeRemoved");
-        String id = entry.getId();
+        mgr.saveWeblogEntry(entry);
         TestUtils.endSession(true);
 
         entry = mgr.getWeblogEntry(id);
@@ -32,6 +34,7 @@
         updateTags.add("testNewTag");
         updateTags.add("testNewTag3");
         entry.updateTags(updateTags);
+        mgr.saveWeblogEntry(entry);
         TestUtils.endSession(true);
 
         entry = mgr.getWeblogEntry(id);
@@ -52,5 +55,5 @@
         // teardown our test entry
         TestUtils.teardownWeblogEntry(id);
         TestUtils.endSession(true);
-    }    
+    }
 
