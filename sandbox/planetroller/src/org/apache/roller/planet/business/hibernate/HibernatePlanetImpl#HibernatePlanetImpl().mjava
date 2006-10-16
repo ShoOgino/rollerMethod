@@ -1,9 +1,25 @@
+    /**
+     * Create HibernatePlanetImpl using Hibernate XML config file or config
+     * file plus JDBC overrides from planet-custom.properties.
+     */
     protected HibernatePlanetImpl() throws RollerException {
         try {
-            strategy = new HibernatePersistenceStrategy();
+            if (StringUtils.isNotEmpty(PlanetConfig.getProperty("jdbc.driverClass"))) {
+                // create and configure for JDBC access
+                strategy = new PlanetHibernatePersistenceStrategy(
+                    PlanetConfig.getProperty("hibernate.configResource"),
+                    PlanetConfig.getProperty("hibernate.dialect"),
+                    PlanetConfig.getProperty("jdbc.driverClass"),
+                    PlanetConfig.getProperty("jdbc.connectionURL"),
+                    PlanetConfig.getProperty("jdbc.username"),
+                    PlanetConfig.getProperty("jdbc.password"));
+            } else {
+                // create an configure via config resource only
+                strategy = new HibernatePersistenceStrategy(true); 
+            }
         } catch(Throwable t) {
             // if this happens then we are screwed
-            mLogger.fatal("Error initializing Hibernate", t);
+            log.fatal("Error initializing Hibernate", t);
             throw new RollerException(t);
         }
     }

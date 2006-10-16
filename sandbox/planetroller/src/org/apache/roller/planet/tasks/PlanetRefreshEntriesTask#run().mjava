@@ -1,0 +1,11 @@
+    public void run() {
+        try {
+            Planet planet = PlanetFactory.getPlanet();
+            planet.getPlanetManager().refreshEntries();
+            planet.flush();
+            planet.release();
+        } catch (RollerException e) {
+            logger.error("ERROR refreshing entries", e);
+        }
+    }
+

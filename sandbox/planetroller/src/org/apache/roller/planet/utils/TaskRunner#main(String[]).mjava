@@ -1,0 +1,46 @@
+    public static void main(String[] args) throws Exception {
+        if (args.length < 1) {
+            System.err.println(
+              "USAGE: java -cp roller-planet.jar TaskRunner <task-class-name>");
+            System.exit(-1);
+        }
+        String taskClassName = args[0];
+
+        Properties props = new Properties();
+        try {
+            props.load(new FileInputStream("taskrunner.properties"));
+        } catch (Exception e) {
+            System.err.println("ERROR: opening taskrunner.properties");
+            System.exit(-1);
+        }
+        
+        // Create collection of URLs needed for classloader
+        List urlList = new ArrayList();
+
+        // Add WEB-INF/lib jars
+        String libPath = props.getProperty(WEBAPP_DIR) 
+                + FS + "WEB-INF" + FS + "lib";
+        addURLs(libPath, urlList);
+        
+        // Added WEB-INF/classes
+        String classesPath = props.getProperty(WEBAPP_DIR) 
+                + FS + "WEB-INF" + FS + "classes" + FS;
+        urlList.add(new URL("file://" + classesPath));
+        
+        // Add additional jars
+        String jarsPath = props.getProperty(JARS_DIR);
+        addURLs(jarsPath, urlList);
+        
+        // Create classloader and make it load the task class to be run
+        URLClassLoader cl = URLClassLoader.newInstance(
+            (URL[])urlList.toArray(new URL[urlList.size()]), null);
+        Class taskClass = cl.loadClass(taskClassName);
+        Runnable task = (Runnable)taskClass.newInstance();
+        
+        // We're using the new classloader from here on out
+        Thread.currentThread().setContextClassLoader(cl);
+        
+        // Go!
+        task.run();
+    }
+

@@ -1,7 +1,5 @@
     public void refreshEntries() throws RollerException {
         
-        Roller roller = RollerFactory.getRoller();
-        
         Date now = new Date();
         long startTime = System.currentTimeMillis();
         PlanetConfigData config = getConfiguration();
@@ -19,7 +17,7 @@
         // allow ${catalina.home} in cache dir property
         if (System.getProperty("catalina.home") != null) {
             cacheDirName = cacheDirName.replaceFirst(
-                    "\\$\\{catalina.home}",System.getProperty("catalina.home"));
+                "\\$\\{catalina.home}",System.getProperty("catalina.home"));
         }
         
         // create cache  dir if it does not exist
@@ -75,7 +73,7 @@
                 sub.purgeEntries();
                 sub.addEntries(newEntries);
                 this.saveSubscription(sub);
-                if(roller != null) roller.flush();
+                this.strategy.flush();
             }
             long subEndTime = System.currentTimeMillis();
             log.info("   " + count + " - "
