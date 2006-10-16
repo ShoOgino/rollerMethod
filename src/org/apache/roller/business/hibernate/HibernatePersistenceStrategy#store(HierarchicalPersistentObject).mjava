@@ -3,7 +3,7 @@
      *
      * NOTE: if the object has proper cascade setting then is all this necessary?
      */
-    public void store(HierarchicalPersistentObject obj) 
+    public void store(HierarchicalPersistentObject obj)
             throws HibernateException, RollerException {
         
         if(obj == null) {
@@ -22,7 +22,7 @@
             // This makes obj into a persistent instance.
             session.save(obj);
         }
- 
+        
         if(!session.contains(obj)) {
             
             // Object has been written to database, but instance passed in

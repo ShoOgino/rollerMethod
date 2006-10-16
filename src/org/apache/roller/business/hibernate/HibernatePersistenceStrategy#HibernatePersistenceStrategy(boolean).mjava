@@ -3,7 +3,7 @@
      */
     public HibernatePersistenceStrategy(boolean configure) throws Exception {
         if (configure) {
-            log.debug("Initializing Hibernate SessionFactory");        
+            log.debug("Initializing Hibernate SessionFactory");
             Configuration config = new Configuration();
             config.configure("/hibernate.cfg.xml");
             this.sessionFactory = config.buildSessionFactory();
