@@ -1,4 +1,9 @@
-    public PlanetHibernatePersistenceStrategy(
+    /** 
+     * Construct self using Hibernate config resource and optional dialect.
+     * @param configResouce Classpath-based path to Hibernate config file (e.g. "/hibernate.cgf.xml")
+     * @parma dialect Classname of Hibernate dialect to be used (overriding any specified in the configResource)
+     */
+    public HibernatePersistenceStrategy(
             String configResource,
             String dialect) throws Exception {
         
@@ -15,7 +20,6 @@
         for (Iterator it = propertyElems.iterator(); it.hasNext();) {
             Element elem = (Element) it.next();
             if (elem.getAttribute("name") != null 
-                && dialect != null
                 && elem.getAttribute("name").getValue().equals("dialect")) {
                 removeList.add(elem);           
             }
@@ -34,6 +38,6 @@
         Configuration config = new Configuration();
         DOMOutputter outputter = new DOMOutputter();
         config.configure(outputter.output(configDoc));
-        this.sessionFactory = config.buildSessionFactory();
+        this.sessionFactory = config.buildSessionFactory(); 
     }
 
