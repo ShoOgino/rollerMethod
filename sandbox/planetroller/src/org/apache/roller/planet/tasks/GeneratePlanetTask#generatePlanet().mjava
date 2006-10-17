@@ -1,0 +1,38 @@
+    public void generatePlanet() throws RollerException {
+        try {
+            Planet planet = PlanetFactory.getPlanet();
+            PlanetManager planetManager = planet.getPlanetManager();
+            
+            // Fire up Velocity engine, point it at templates and init
+            VelocityEngine engine = new VelocityEngine();
+            engine.setProperty("resource.loader","file");
+            engine.setProperty("file.resource.loader.class",
+                    "org.apache.velocity.runtime.resource.loader.FileResourceLoader");
+            engine.setProperty("file.resource.loader.path",
+                    planetManager.getConfiguration().getTemplateDir());
+            engine.init();
+            
+            // Build context with current date 
+            VelocityContext context = new VelocityContext();
+            context.put("date", new Date());
+            context.put("utilities", new Utilities());
+            context.put("planet", new StaticPlanetModel());
+            
+            File outputDir = new File(planetManager.getConfiguration().getOutputDir());
+            if (!outputDir.exists()) outputDir.mkdirs();
+            
+            Generator generator = Generator.getInstance();
+            generator.setVelocityEngine(engine);
+            generator.setOutputEncoding("utf-8");
+            generator.setInputEncoding("utf-8");
+            generator.setOutputPath(planetManager.getConfiguration().getOutputDir());
+            generator.setTemplatePath(planetManager.getConfiguration().getTemplateDir());
+            generator.parse(planetManager.getConfiguration().getMainPage(), context);
+            generator.shutdown();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RollerException("Writing planet files",e);
+        }
+    }    
+

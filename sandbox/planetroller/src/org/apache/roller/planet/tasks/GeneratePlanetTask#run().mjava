@@ -1,9 +1,14 @@
     public void run() {
-        try {
+        try {            
+            // Update all feeds in planet
             Planet planet = PlanetFactory.getPlanet();
             planet.getPlanetManager().refreshEntries();
             planet.flush();
             planet.release();
+            
+            // Run the planet generation templates
+            generatePlanet(); 
+            
         } catch (RollerException e) {
             logger.error("ERROR refreshing entries", e);
         }
