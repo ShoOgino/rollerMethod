@@ -9,6 +9,7 @@
         
         // read configResource into DOM form
         SAXBuilder builder = new SAXBuilder();
+        builder.setEntityResolver(noOpEntityResolver); 
         Document configDoc = builder.build(
             getClass().getResourceAsStream(configResource));
         Element root = configDoc.getRootElement();

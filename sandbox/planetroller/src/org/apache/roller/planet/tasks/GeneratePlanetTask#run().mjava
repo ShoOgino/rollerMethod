@@ -1,16 +1,18 @@
     public void run() {
         try {            
             // Update all feeds in planet
+            log.info("Refreshing Planet entries");
             Planet planet = PlanetFactory.getPlanet();
             planet.getPlanetManager().refreshEntries();
             planet.flush();
             planet.release();
             
             // Run the planet generation templates
+            log.info("Generating Planet files");
             generatePlanet(); 
             
         } catch (RollerException e) {
-            logger.error("ERROR refreshing entries", e);
+            log.error("ERROR refreshing entries", e);
         }
     }
 
