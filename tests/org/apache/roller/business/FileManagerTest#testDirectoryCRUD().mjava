@@ -1,0 +1,35 @@
+    /**
+     * Test simple directory create/delete.
+     */
+    public void testDirectoryCRUD() throws Exception {
+        
+        // update roller properties to prepare for test
+        PropertiesManager pmgr = RollerFactory.getRoller().getPropertiesManager();
+        Map config = pmgr.getProperties();
+        ((RollerPropertyData)config.get("uploads.enabled")).setValue("true");
+        ((RollerPropertyData)config.get("uploads.types.allowed")).setValue("opml");
+        ((RollerPropertyData)config.get("uploads.dir.maxsize")).setValue("1.00");
+        pmgr.saveProperties(config);
+        TestUtils.endSession(true);
+        
+        FileManager fmgr = RollerFactory.getRoller().getFileManager();
+        
+        // we should be starting with 0 directories
+        assertEquals(0, fmgr.getDirectories(testWeblog).length);
+        
+        // create a directory
+        fmgr.createDirectory(testWeblog, "bucket0");
+        
+        // make sure directory was created
+        WeblogResource[] dirs = fmgr.getDirectories(testWeblog);
+        assertNotNull(dirs);
+        assertEquals(1, dirs.length);
+        assertEquals("bucket0", dirs[0].getName());
+        
+        // cleanup
+        fmgr.deleteFile(testWeblog, "bucket0");
+        
+        // make sure delete was successful
+        assertEquals(0, fmgr.getDirectories(testWeblog).length);
+    }
+

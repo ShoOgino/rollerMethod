@@ -1,3 +1,6 @@
+    /**
+     * Test simple file save/delete.
+     */
     public void testFileCRUD() throws Exception {
         
         // update roller properties to prepare for test
@@ -10,17 +13,11 @@
         TestUtils.endSession(true);
         
         /* NOTE: upload dir for unit tests is set in
-               roller/personal/testing/roller-custom.properties */
+               roller/testdata/roller-custom.properties */
         FileManager fmgr = RollerFactory.getRoller().getFileManager();
         
         // we should be starting with 0 files
         assertEquals(0, fmgr.getFiles(testWeblog, null).length);
-        
-        // create a directory
-        fmgr.createDirectory(testWeblog, "subdir");
-        
-        // make sure directory was created
-        assertEquals(1, fmgr.getFiles(testWeblog, null).length);
         
         // store a file
         InputStream is = getClass().getResourceAsStream("/bookmarks.opml");
@@ -28,21 +25,10 @@
         
         // make sure file was stored successfully
         assertEquals("bookmarks.opml", fmgr.getFile(testWeblog, "bookmarks.opml").getName());
-        assertEquals(2, fmgr.getFiles(testWeblog, null).length);
+        assertEquals(1, fmgr.getFiles(testWeblog, null).length);
         
-        // store a file into a subdirectory
-        is = getClass().getResourceAsStream("/bookmarks.opml");
-        fmgr.saveFile(testWeblog, "subdir/bookmarks.opml", "text/plain", 1545, is);
-        
-        // make sure file was stored successfully
-        assertEquals("subdir/bookmarks.opml", 
-                fmgr.getFile(testWeblog, "subdir/bookmarks.opml").getPath());
-        assertEquals(1, fmgr.getFiles(testWeblog, "subdir").length);
-        
-        // delete files and dirs
+        // delete file
         fmgr.deleteFile(testWeblog, "bookmarks.opml");
-        fmgr.deleteFile(testWeblog, "subdir/bookmarks.opml");
-        fmgr.deleteFile(testWeblog, "subdir");
         
         // make sure delete was successful
         assertEquals(0, fmgr.getFiles(testWeblog, null).length);

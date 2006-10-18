@@ -7,6 +7,11 @@
         // get path to weblog's uploads area
         File weblogDir = this.getRealFile(weblog, null);
         
+        if(path != null && path.indexOf('/') != -1) {
+            throw new FilePathException("Invalid path ["+path+"], "+
+                        "trying to use nested directories.");
+        }
+        
         // now construct path to new directory
         File dir = new File(weblogDir.getAbsolutePath() + File.separator + path);
         

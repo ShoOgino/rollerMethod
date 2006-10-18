@@ -16,6 +16,13 @@
             relPath = path.substring(1);
         }
         
+        // we only allow a single level of directories right now, so make
+        // sure that the path doesn't try to go multiple levels
+        if(relPath != null && (relPath.lastIndexOf('/') > relPath.indexOf('/'))) {
+            throw new FilePathException("Invalid path ["+path+"], "+
+                    "trying to use nested directories.");
+        }
+        
         // convert "/" to filesystem specific file separator
         if(relPath != null) {
             relPath = relPath.replace('/', File.separatorChar);
