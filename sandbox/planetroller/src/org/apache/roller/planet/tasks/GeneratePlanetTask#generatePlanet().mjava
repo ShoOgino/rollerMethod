@@ -32,14 +32,22 @@
             // Build context with current date 
             VelocityContext context = new VelocityContext();
             context.put("date", new Date());
-            context.put("utilities", new Utilities());
+            context.put("utils", new UtilitiesModel());
+            context.put("utilities", new OldUtilities());
             context.put("planet", new StaticPlanetModel());
             
-            // Ensure that output directory exists
+            // Ensure that output directories exists, one for each group
             File outputDirObj = new File(outputDir);
             if (!outputDirObj.exists()) outputDirObj.mkdirs();
+            List groups = planetManager.getGroupHandles();
+            for (Iterator it = groups.iterator(); it.hasNext();) {
+                String groupHandle = (String) it.next();
+                String groupDirName = outputDirObj + File.separator + groupHandle;
+                File groupDir = new File(groupDirName);
+                if (!groupDir.exists()) groupDir.mkdirs();
+            }
             
-            // Execute mainPage Texen control template
+            // Generate files: execute control template
             Generator generator = Generator.getInstance();
             generator.setVelocityEngine(engine);
             generator.setOutputEncoding("utf-8");
@@ -50,7 +58,7 @@
             generator.shutdown();
             
         } catch (Exception e) {
-            throw new RollerException("Writing planet files",e);
+            throw new RollerException("ERROR: writing planet files",e);
         }
     }    
 
