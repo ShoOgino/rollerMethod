@@ -14,7 +14,7 @@
         try {
             mgr = RollerFactory.getRoller().getThreadManager();
         } catch (Exception ex) {
-            log.fatal("Unable to obtain TaskLockManager", ex);
+            log.fatal("Unable to obtain ThreadManager", ex);
             return;
         }
         
@@ -42,7 +42,7 @@
                     log.debug("Interval time hasn't elapsed since last run, nothing to do");
                 }
             } else {
-                log.info("Task already locked, nothing to do");
+                log.debug("Task already locked, nothing to do");
             }
 
             // now if we have a lock then run the task
@@ -53,7 +53,6 @@
         } catch (Exception ex) {
             log.error("Unexpected exception running task", ex);
         } finally {
-            log.debug("in the finally block");
             if(lockAcquired) {
                 log.debug("Attempting to release lock");
                 
