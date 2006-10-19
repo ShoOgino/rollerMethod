@@ -1,6 +1,12 @@
-     public void addTag(String name) throws RollerException {
-        name = stripInvalidTagChars(name);
-        name = name.trim();
+    /**
+     * Roller lowercases all tags based on locale because there's not a 1:1 mapping
+     * between uppercase/lowercase characters across all languages.  
+     * @param name
+     * @throws RollerException
+     */
+    public void addTag(String name) throws RollerException {
+        Locale locale = getWebsite() != null ? getWebsite().getLocaleInstance() : Locale.getDefault();
+        name = Utilities.normalizeTag(name, locale);
         if(name.length() == 0)
             return;
         

@@ -4,13 +4,6 @@
             return;
         }
 
-        String[] tagsarr = StringUtils.split(tags, ' ');
-
-        if (tagsarr == null || tagsarr.length == 0) {
-            tagSet.clear();
-            return;
-        }
-
-        updateTags(Arrays.asList(tagsarr));
+        updateTags(Utilities.splitStringAsTags(tags));
     }  
 
