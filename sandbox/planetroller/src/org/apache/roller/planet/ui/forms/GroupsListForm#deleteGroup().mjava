@@ -1,7 +1,7 @@
     public String deleteGroup() {
         log.info("Delete Group...");
         Planet planet = PlanetFactory.getPlanet();
-        FacesContext fctx = FacesContext.getCurrentInstance();
+        FacesContext fctx = FacesContext.getCurrentInstance(); 
         Map params = fctx.getExternalContext().getRequestParameterMap();
         String groupid = (String)params.get("groupid");
         try {
