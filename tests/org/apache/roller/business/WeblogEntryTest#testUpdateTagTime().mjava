@@ -25,14 +25,14 @@
 
         for (Iterator it = entry.getTags().iterator(); it.hasNext();) {
             WeblogEntryTagData tagData = (WeblogEntryTagData) it.next();
-            if (tagData.getName().equals("testWillStayTag"))
+            if (tagData.getName().equals("testwillstaytag"))
                 original = tagData.getTime();
         }
 
         List updateTags = new ArrayList();
-        updateTags.add("testWillStayTag");
-        updateTags.add("testNewTag");
-        updateTags.add("testNewTag3");
+        updateTags.add("testwillstaytag");
+        updateTags.add("testnewtag");
+        updateTags.add("testnewtag3");
         entry.updateTags(updateTags);
         mgr.saveWeblogEntry(entry);
         TestUtils.endSession(true);
@@ -42,15 +42,15 @@
         for (Iterator it = entry.getTags().iterator(); it.hasNext();) {
             WeblogEntryTagData tagData = (WeblogEntryTagData) it.next();
             tagNames.add(tagData.getName());
-            if (tagData.getName().equals("testWillStayTag"))
+            if (tagData.getName().equals("testwillstaytag"))
                 assertEquals(original, tagData.getTime());
         }
 
         assertEquals(3, entry.getTags().size());
         assertEquals(3, tagNames.size());
-        assertEquals(true, tagNames.contains("testWillStayTag"));
-        assertEquals(true, tagNames.contains("testNewTag"));
-        assertEquals(true, tagNames.contains("testNewTag3"));
+        assertEquals(true, tagNames.contains("testwillstaytag"));
+        assertEquals(true, tagNames.contains("testnewtag"));
+        assertEquals(true, tagNames.contains("testnewtag3"));
 
         // teardown our test entry
         TestUtils.teardownWeblogEntry(id);
