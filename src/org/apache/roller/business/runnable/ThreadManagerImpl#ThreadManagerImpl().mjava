@@ -1,4 +1,7 @@
     public ThreadManagerImpl() {
+        
+        log.info("Intializing Thread Manager");
+        
         backgroundExecutor = new PooledExecutor(new BoundedBuffer(10), 25);
         backgroundExecutor.setMinimumPoolSize(4);
         backgroundExecutor.setKeepAliveTime(1000 * 60 * 5);

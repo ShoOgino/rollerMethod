@@ -1,5 +1,13 @@
     public void shutdown() {
-        backgroundExecutor.shutdownAfterProcessingCurrentlyQueuedTasks();
+        
+        log.debug("starting shutdown sequence");
+        
+        // trigger an immediate shutdown of any backgrounded tasks
+        backgroundExecutor.shutdownNow();
+        
+        // TODO: it appears that this doesn't affect tasks which may be running
+        //   when this is called and that may not be what we want.  It would be
+        //   nice if shutdown() meant shutdown immediately.
         scheduler.cancel();
     }
 
