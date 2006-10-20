@@ -1,7 +1,10 @@
     /** Encapsulates RefererManager */
     public int getDayHits() {
         try {
-            return mRefererMgr.getDayHits(mWebsite);
+            HitCountData hitCount = mWeblogMgr.getHitCountByWeblog(mWebsite);
+            
+            return (hitCount != null) ? hitCount.getDailyHits() : 0;
+            
         } catch (RollerException e) {
             mLogger.error("PageModel getDayHits()", e);
         }

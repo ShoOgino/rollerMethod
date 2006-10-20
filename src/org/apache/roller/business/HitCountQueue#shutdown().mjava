@@ -1,0 +1,19 @@
+    /**
+     * clean up.
+     */
+    public void shutdown() {
+        
+        if(this.workers != null && this.workers.size() > 0) {
+            log.info("stopping all HitCountQueue worker threads");
+            
+            // kill all of our threads
+            WorkerThread worker = null;
+            Iterator it = this.workers.iterator();
+            while(it.hasNext()) {
+                worker = (WorkerThread) it.next();
+                worker.interrupt();
+            }
+        }
+        
+    }
+

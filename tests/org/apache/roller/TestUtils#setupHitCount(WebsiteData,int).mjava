@@ -1,0 +1,23 @@
+    /**
+     * Convenience method for creating a hit count.
+     */
+    public static HitCountData setupHitCount(WebsiteData weblog, int amount)
+            throws Exception {
+        
+        WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+        
+        // store
+        HitCountData testCount = new HitCountData();
+        testCount.setWeblog(weblog);
+        testCount.setDailyHits(amount);
+        mgr.saveHitCount(testCount);
+        
+        // query for it
+        testCount = mgr.getHitCount(testCount.getId());
+        
+        if(testCount == null)
+            throw new RollerException("error setting up hit count");
+        
+        return testCount;
+    }
+

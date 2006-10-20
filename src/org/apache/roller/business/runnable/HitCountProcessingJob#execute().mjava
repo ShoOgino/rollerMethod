@@ -1,0 +1,61 @@
+    /**
+     * Execute the job.
+     *
+     * We want to extract the currently queued hits from the HitCounter and
+     * then propogate them to the db for persistent storage.
+     */
+    public void execute() {
+        
+        UserManager umgr = null;
+        WeblogManager wmgr = null;
+        try {
+            umgr = RollerFactory.getRoller().getUserManager();
+            wmgr = RollerFactory.getRoller().getWeblogManager();
+        } catch (RollerException ex) {
+            // if we can't even get the manager instances then bail now
+            log.error("Error getting managers", ex);
+            return;
+        }
+        
+        HitCountQueue counter = HitCountQueue.getInstance();
+        HitCountQueue hitCounter = (HitCountQueue) counter;
+        
+        // first get the current set of hits
+        Map currentHits = hitCounter.getHits();
+        
+        // now reset the queued hits
+        hitCounter.resetHits();
+        
+        // iterate over the hits and store them in the db
+        try {
+            long startTime = System.currentTimeMillis();
+            
+            WebsiteData weblog = null;
+            String key = null;
+            Iterator it = currentHits.keySet().iterator();
+            while(it.hasNext()) {
+                key = (String) it.next();
+                
+                try {
+                    weblog = umgr.getWebsiteByHandle(key);
+                    wmgr.incrementHitCount(weblog, ((Long)currentHits.get(key)).intValue());
+                } catch (RollerException ex) {
+                    log.error(ex);
+                }
+            }
+            
+            // make sure and flush the results
+            RollerFactory.getRoller().flush();
+            
+            long endTime = System.currentTimeMillis();
+            
+            log.debug("Completed: "+ (endTime-startTime)/1000 + " secs");
+            
+        } catch (RollerException ex) {
+            log.error("Error persisting updated hit counts", ex);
+        } finally {
+            // release session
+            RollerFactory.getRoller().release();
+        }
+    }
+

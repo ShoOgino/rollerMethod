@@ -87,6 +87,11 @@
             if(cachedContent != null) {
                 log.debug("HIT "+cacheKey);
                 
+                // allow for hit counting
+                if(!isSiteWide) {
+                    this.processHit(weblog, request.getRequestURL().toString(), request.getHeader("referer"));
+                }
+        
                 response.setContentLength(cachedContent.getContent().length);
                 response.setContentType(cachedContent.getContentType());
                 response.getOutputStream().write(cachedContent.getContent());
@@ -179,6 +184,12 @@
         }
         
         
+        // allow for hit counting
+        if(!isSiteWide) {
+            this.processHit(weblog, request.getRequestURL().toString(), request.getHeader("referer"));
+        }
+        
+
         // looks like we need to render content
         
         // set the content type

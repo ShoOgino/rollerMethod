@@ -1,0 +1,22 @@
+    // non-instantiable because we are a singleton
+    private HitCountQueue() {
+        
+        String sleep = RollerConfig.getProperty("hitcount.queue.sleepTime", "180");
+        
+        try {
+            // multiply by 1000 because we expect input in seconds
+            this.sleepTime = Integer.parseInt(sleep) * 1000;
+        } catch(NumberFormatException nfe) {
+            log.warn("Invalid sleep time ["+sleep+"], using default");
+        }
+        
+        // create the hits queue
+        this.queue = Collections.synchronizedMap(new HashMap());
+        
+        // start up a worker to process the hits at intervals
+        HitCountProcessingJob job = new HitCountProcessingJob();
+        ContinuousWorkerThread worker = 
+                new ContinuousWorkerThread("HitCountQueueProcessor", job, this.sleepTime);
+        worker.start();
+    }
+

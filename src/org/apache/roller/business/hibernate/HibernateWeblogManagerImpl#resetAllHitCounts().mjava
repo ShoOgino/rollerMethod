@@ -1,0 +1,10 @@
+    public void resetAllHitCounts() throws RollerException {
+        
+        try {
+            Session session = ((HibernatePersistenceStrategy)strategy).getSession();
+            session.createQuery("update HitCountData set dailyHits = 0").executeUpdate();
+        } catch (Exception e) {
+            throw new RollerException(e);
+        }
+    }
+

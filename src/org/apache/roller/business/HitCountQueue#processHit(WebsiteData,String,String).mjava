@@ -1,0 +1,12 @@
+    public void processHit(WebsiteData weblog, String url, String referrer) {
+        
+        // just update the count for the weblog
+        Long count = (Long) this.queue.get(weblog.getHandle());
+        if(count == null) {
+            count = new Long(1);
+        } else {
+            count = new Long(count.longValue()+1);
+        }
+        this.queue.put(weblog.getHandle(), count);
+    }
+

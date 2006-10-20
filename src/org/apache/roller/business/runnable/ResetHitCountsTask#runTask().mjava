@@ -1,0 +1,25 @@
+    /**
+     * Execute the task.
+     */
+    public void runTask() {
+        
+        try {
+            log.info("task started");
+            
+            WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+            mgr.resetAllHitCounts();
+            RollerFactory.getRoller().flush();
+            
+            log.info("task completed");
+            
+        } catch (RollerException e) {
+            log.error("Error while checking for referer turnover", e);
+        } catch (Exception ee) {
+            log.error("unexpected exception", ee);
+        } finally {
+            // always release
+            RollerFactory.getRoller().release();
+        }
+        
+    }
+
