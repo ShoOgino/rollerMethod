@@ -15,8 +15,7 @@
         
         // start up a worker to process the hits at intervals
         HitCountProcessingJob job = new HitCountProcessingJob();
-        ContinuousWorkerThread worker = 
-                new ContinuousWorkerThread("HitCountQueueProcessor", job, this.sleepTime);
+        worker = new ContinuousWorkerThread("HitCountQueueProcessor", job, this.sleepTime);
         worker.start();
     }
 
