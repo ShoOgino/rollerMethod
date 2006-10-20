@@ -15,13 +15,7 @@
         
         // parse the request object and figure out what we've got
         log.debug("parsing path "+pathInfo);
-        
-        // was this request bound for the resource servlet?
-        if(!isValidDestination(servlet)) {
-            throw new InvalidRequestException("invalid destination for request, "+
-                    request.getRequestURL());
-        }
-        
+                
         
         /* 
          * any path is okay ...
