@@ -1,17 +1,11 @@
     /**
-     * @see org.apache.roller.model.FileManager#getDirectories(java.lang.String)
+     * @see org.apache.roller.model.FileManager#getDirectories(weblog)
      */
     public WeblogResource[] getDirectories(WebsiteData weblog)
             throws FileNotFoundException, FilePathException {
         
         // get a reference to the root dir, checks that dir exists & is readable
         File dirFile = this.getRealFile(weblog, null);
-        
-        // make sure path is a directory
-        if(!dirFile.isDirectory()) {
-            throw new FilePathException("Invalid path [], "+
-                    "path is not a directory.");
-        }
         
         // we only want a list of directories
         File[] dirFiles = dirFile.listFiles(new FileFilter() {

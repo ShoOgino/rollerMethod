@@ -1,7 +1,14 @@
     /**
      * Get the collection of all resources associated with this Theme.
+     *
+     * It is assured that the resources are returned sorted by pathname.
      */
-    public Collection getResources() {
-        return this.resources.values();
+    public List getResources() {
+        
+        // make sure resources are sorted.
+        List myResources = new ArrayList(this.resources.values());
+        Collections.sort(myResources);
+        
+        return myResources;
     }
 
