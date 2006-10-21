@@ -4,6 +4,7 @@
             HttpServletRequest  request,
             HttpServletResponse response)
             throws IOException, ServletException {
+        
         ActionForward forward = mapping.findForward("editPages.page");
         try {
             request.setAttribute("model", new BasePageModel(
@@ -46,9 +47,10 @@
                 forward = mapping.findForward("access-denied");
             }
         } catch (Exception e) {
-            mLogger.error("ERROR in action",e);
+            log.error("ERROR in action",e);
             throw new ServletException(e);
         }
+        
         return forward;
     }
 

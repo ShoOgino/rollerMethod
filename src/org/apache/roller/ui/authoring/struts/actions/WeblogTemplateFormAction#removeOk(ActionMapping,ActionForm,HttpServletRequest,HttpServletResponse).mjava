@@ -1,4 +1,3 @@
-    //-----------------------------------------------------------------------
     /** Send user to remove confirmation page */
     public ActionForward removeOk(
             ActionMapping       mapping,
@@ -6,6 +5,7 @@
             HttpServletRequest  request,
             HttpServletResponse response)
             throws IOException, ServletException {
+        
         ActionForward forward = mapping.findForward("removePage.page");
         try {
             RollerSession rses = RollerSession.getRollerSession(request);
@@ -29,7 +29,7 @@
                 forward = mapping.findForward("access-denied");
             }
         } catch (Exception e) {
-            mLogger.error("ERROR in action",e);
+            log.error("ERROR in action",e);
             throw new ServletException(e);
         }
         return forward;

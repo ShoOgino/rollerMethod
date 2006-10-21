@@ -1,10 +1,10 @@
-    //-----------------------------------------------------------------------
     public ActionForward remove(
             ActionMapping       mapping,
             ActionForm          actionForm,
             HttpServletRequest  request,
             HttpServletResponse response)
             throws IOException, ServletException {
+        
         ActionForward forward = mapping.findForward("editPages");
         request.setAttribute("model", new BasePageModel(
                 "pagesForm.title", request, response, mapping));
@@ -30,7 +30,7 @@
                 }
                 
                 addModelObjects(
-                   request, response, mapping, template.getWebsite(), template);
+                        request, response, mapping, template.getWebsite(), template);
                 actionForm.reset(mapping, request);
             } else {
                 forward = mapping.findForward("access-denied");
@@ -41,7 +41,7 @@
                     "error.internationalized",e.getRootCauseMessage()));
             saveErrors(request, errors);
         } catch (Exception e) {
-            mLogger.error("ERROR in action",e);
+            log.error("ERROR in action",e);
             throw new ServletException(e);
         }
         return forward;

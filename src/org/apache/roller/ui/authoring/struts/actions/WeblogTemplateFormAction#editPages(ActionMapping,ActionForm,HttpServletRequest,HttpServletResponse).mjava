@@ -1,10 +1,10 @@
-    //-----------------------------------------------------------------------
     public ActionForward editPages(
             ActionMapping       mapping,
             ActionForm          actionForm,
             HttpServletRequest  request,
             HttpServletResponse response)
             throws IOException, ServletException {
+        
         ActionForward forward = mapping.findForward("editPages.page");
         try {
             WeblogTemplateForm form = (WeblogTemplateForm)actionForm;
@@ -26,7 +26,7 @@
                 forward = mapping.findForward("access-denied");
             }
         } catch (Exception e) {
-            mLogger.error("ERROR in action",e);
+            log.error("ERROR in action",e);
             throw new ServletException(e);
         }
         return forward;
