@@ -6,6 +6,9 @@
     public HibernatePersistenceStrategy(
             String configResource,
             String dialect) throws Exception {
+
+        log.info("configResource: " + configResource);
+        log.info("dialect:        " + dialect);
         
         // read configResource into DOM form
         SAXBuilder builder = new SAXBuilder();
