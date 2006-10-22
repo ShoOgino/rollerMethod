@@ -1,6 +1,6 @@
     public static void main(String[] args) throws Exception {
-        if (args.length < 1) {
-            System.err.println("USAGE: java -Dwebapp.dir=WEBAPPDIR -Djars.dir=JARSDIR -cp roller-planet.jar TaskRunner CLASSNAME");
+        if (args.length < 3) {
+            System.err.println("USAGE: java -cp roller-planet.jar TaskRunner WEBAPPDIR JARSDIR CLASSNAME");
             System.err.println("WEBAPPDIR: The directory path to the web application ");
             System.err.println("           (e.g. $CATALINA_HOME/webapps/roller)");
             System.err.println("JARSDIR:   The directory path to the additional jars ");
@@ -8,13 +8,12 @@
             System.err.println("CLASSNAME: The name of the class to be executed by TaskRunner ");
             System.exit(-1);
         }
-        String taskClassName = args[0];
-        String webappDir = System.getProperties().getProperty(WEBAPP_DIR);
-        String jarsDir = System.getProperties().getProperty(JARS_DIR);
-        if (webappDir == null || jarsDir == null) {
-            System.err.println("ERROR: system properties webapp.dir and jars.dir not found");
-            System.exit(-1);
-        }
+        String webappDir     = args[0];
+        String jarsDir       = args[1];
+        String taskClassName = args[2];
+        System.out.println("WEBAPPDIR = " + webappDir); 
+        System.out.println("JARSDIR   = " + jarsDir);
+        System.out.println("CLASSNAME = " + taskClassName);
         
         File webappDirFile = new File(webappDir);
         File jarsDirFile = new File(jarsDir);
@@ -23,23 +22,7 @@
             System.exit(-1);
         }        
         
-        // Create collection of URLs needed for classloader
-        List urlList = new ArrayList();
-
-        // Add WEB-INF/lib jars
-        String libPath = webappDir + FS + "WEB-INF" + FS + "lib";
-        addURLs(libPath, urlList);
-        
-        // Added WEB-INF/classes
-        String classesPath = webappDir + FS + "WEB-INF" + FS + "classes" + FS;
-        urlList.add(new URL("file://" + classesPath));
-        
-        // Add additional jars
-        addURLs(jarsDir, urlList);
-        
-        // Create classloader and make it load the task class to be run
-        URLClassLoader cl = new URLClassLoader(
-            (URL[])urlList.toArray(new URL[urlList.size()]), null);
+        ClassLoader cl = new StandaloneWebappClassLoader(webappDir, jarsDir, null);
        
         // We're using the new classloader from here on out
         Thread.currentThread().setContextClassLoader(cl);
