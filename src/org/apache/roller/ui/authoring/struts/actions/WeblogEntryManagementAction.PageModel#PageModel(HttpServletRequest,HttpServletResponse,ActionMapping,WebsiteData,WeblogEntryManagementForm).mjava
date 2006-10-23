@@ -1,4 +1,4 @@
-        public PageModel( 
+        public PageModel(
                 HttpServletRequest request,
                 HttpServletResponse response,
                 ActionMapping mapping,
@@ -9,13 +9,13 @@
             this.request = request;
             this.queryForm = queryForm;
             this.website = website;
-
+            
             if (null != queryForm.getCategoryId() && !queryForm.getCategoryId().equals("")) {
                 WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
                 WeblogCategoryData cd = wmgr.getWeblogCategory(queryForm.getCategoryId());
                 category = cd.getPath();
             }
-
+            
             final DateFormat df =
                     DateFormat.getDateInstance(DateFormat.SHORT, request.getLocale());
             String start = queryForm.getStartDateString();
@@ -26,7 +26,7 @@
                     throw new RollerException("ERROR parsing start date.");
                 }
             }
-
+            
             String end = queryForm.getEndDateString();
             if (null != end && end.trim().length() > 0) {
                 try {
@@ -35,15 +35,20 @@
                     throw new RollerException("ERROR parsing end date.");
                 }
             }
-
-            this.status = "ALL".equals(queryForm.getStatus()) ? null: queryForm.getStatus();    
+            
+            this.status = "ALL".equals(queryForm.getStatus()) ? null: queryForm.getStatus();
             this.maxEntries = maxEntries;
             
-           String[] tagsarr = new String[0];
-           
-           if(queryForm.getTags() != null)
-               tagsarr = StringUtils.split(queryForm.getTags().toLowerCase(), ' ');
-
+            String[] tagsarr = new String[0];
+            
+            if (queryForm.getTags() != null)
+                tagsarr = StringUtils.split(queryForm.getTags().toLowerCase(), ' ');
+            
+            int offset = queryForm.getOffset();
+            if ("POST".equals(request.getMethod())) { 
+                offset = 0;
+            }
+            
             entries = RollerFactory.getRoller().getWeblogManager().getWeblogEntries(
                     website,
                     null,
@@ -54,11 +59,11 @@
                     status,
                     queryForm.getSortby(),
                     null,
-                    queryForm.getOffset(),
+                    offset,
                     queryForm.getCount() + 1);
-           if (entries.size() > queryForm.getCount()) {
-               more = true;
-               entries.remove(entries.size()-1);
-           }
+            if (entries.size() > queryForm.getCount()) {
+                more = true;
+                entries.remove(entries.size()-1);
+            }
         }
 
