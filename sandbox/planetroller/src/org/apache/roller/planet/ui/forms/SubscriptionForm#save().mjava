@@ -9,13 +9,16 @@
             dbsub.setSiteURL(subscription.getSiteURL());
             pmgr.saveSubscription(dbsub); 
         } else {
-            pmgr.saveSubscription(subscription);
-            // if we've got a group, add subscription to it
-            if (groupid != null) {
-                PlanetGroupData group = pmgr.getGroupById(groupid);
-                group.getSubscriptions().add(subscription);
-                pmgr.saveGroup(group);
+            PlanetSubscriptionData existingSub = pmgr.getSubscription(subscription.getFeedURL());
+            if (existingSub != null) {
+                subscription = existingSub;
             }
+            else { 
+                pmgr.saveSubscription(subscription);
+            }
+            PlanetGroupData group = pmgr.getGroupById(groupid);
+            group.getSubscriptions().add(subscription);
+            pmgr.saveGroup(group);
         }
         PlanetFactory.getPlanet().flush();
         return "editSubscription";
