@@ -1,0 +1,50 @@
+    public String register() throws Exception {
+        StringBuffer sb = new StringBuffer();
+        
+        sb.append(bundle.getString("regBloggerRequestedAddition"));
+        sb.append("\n\n");
+        
+        sb.append(bundle.getString("regBlogTitle")).append(":\n    ");
+        sb.append(blogTitle);
+        sb.append("\n");
+        
+        sb.append(bundle.getString("regBlogURL")).append(":\n    ");
+        sb.append(blogURL);
+        sb.append("\n");
+        
+        sb.append(bundle.getString("regFeedURL")).append(":\n    ");
+        sb.append(feedURL);
+        sb.append("\n");
+        
+        sb.append(bundle.getString("regFullName")).append(":\n    ");
+        sb.append(fullName);
+        sb.append("\n");
+        
+        sb.append(bundle.getString("regEmail")).append(":\n    ");
+        sb.append(email);
+        sb.append("\n");
+        
+        sb.append(bundle.getString("regRelationship")).append(":\n    ");
+        sb.append(relationship);
+        sb.append("\n");
+        
+        sb.append(bundle.getString("regOtherID")).append(":\n    ");
+        sb.append(otherID);
+        sb.append("\n");
+        
+        sb.append(bundle.getString("regOtherURL")).append(":\n    ");
+        sb.append(otherURL);
+        sb.append("\n");
+                      
+        PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
+        PlanetConfigData config = pmgr.getConfiguration();
+        String subject = MessageFormat.format(bundle.getString("regSubject"), config.getSiteURL());
+        String content = sb.toString();
+        String adminEmail = config.getAdminEmail();            
+        Context ctx = (Context)new InitialContext().lookup("java:comp/env");
+        Session session = (Session) ctx.lookup("mail/Session");
+        MailUtil.sendTextMessage(session, adminEmail, new String[] {adminEmail}, null, null, subject, content);
+        
+        return "thanksForRegistering";
+    }
+

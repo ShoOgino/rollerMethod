@@ -1,0 +1,12 @@
+    public void checkAgreeToTerms(FacesContext context, UIComponent component, Object value) {
+        if (value == null || !(value instanceof Boolean)) return;
+        Boolean agreed = (Boolean)value;
+        if (!agreed.booleanValue()) {
+            FacesMessage msg = new FacesMessage();
+            msg.setDetail(bundle.getString("regMustAgreeToTerms"));
+            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(msg);
+        }
+        return;
+    }     
+
