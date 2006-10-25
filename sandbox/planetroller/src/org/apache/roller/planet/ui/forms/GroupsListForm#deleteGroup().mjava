@@ -6,7 +6,15 @@
         String groupid = (String)params.get("groupid");
         try {
             PlanetGroupData group = planet.getPlanetManager().getGroupById(groupid);
-            planet.getPlanetManager().deleteGroup(group);
+            PlanetManager pmgr = planet.getPlanetManager();
+            PlanetConfigData config = pmgr.getConfiguration();
+            if (config != null && config.getDefaultGroup() != null) {
+                if (group.getHandle().equals(config.getDefaultGroup().getHandle())) {
+                    config.setDefaultGroup(null);
+                    pmgr.saveConfiguration(config);
+                }
+            }
+            pmgr.deleteGroup(group);
             planet.flush();
         } catch (RollerException ex) {
             return "error";
