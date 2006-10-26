@@ -23,26 +23,28 @@
             
             int numDeleted = 0;
             String[] deleteFiles = theForm.getDeleteFiles();
-            for (int i=0; i < deleteFiles.length; i++) {
-                if (deleteFiles[i].trim().startsWith("/") || 
-                        deleteFiles[i].trim().startsWith("\\") || 
-                        deleteFiles[i].indexOf("..") != -1) {
-                    // ignore absolute paths, or paths that contiain '..'
-                } else {
-                    try {
-                        fmgr.deleteFile(website, deleteFiles[i]);
-                        numDeleted++;
-                    } catch (FileNotFoundException ex) {
-                        errors.add(ActionErrors.GLOBAL_ERROR,
-                                new ActionError("uploadFiles.error.badPath"));
-                    } catch (FilePathException ex) {
-                        errors.add(ActionErrors.GLOBAL_ERROR,
-                                new ActionError("uploadFiles.error.badPath"));
-                    } catch (FileIOException ex) {
-                        errors.add(ActionErrors.GLOBAL_ERROR,
-                                new ActionError("uploadFiles.error.delete", deleteFiles[i]));
+            if(deleteFiles != null) {
+                for (int i=0; i < deleteFiles.length; i++) {
+                    if (deleteFiles[i].trim().startsWith("/") ||
+                            deleteFiles[i].trim().startsWith("\\") ||
+                            deleteFiles[i].indexOf("..") != -1) {
+                        // ignore absolute paths, or paths that contiain '..'
+                    } else {
+                        try {
+                            fmgr.deleteFile(website, deleteFiles[i]);
+                            numDeleted++;
+                        } catch (FileNotFoundException ex) {
+                            errors.add(ActionErrors.GLOBAL_ERROR,
+                                    new ActionError("uploadFiles.error.badPath"));
+                        } catch (FilePathException ex) {
+                            errors.add(ActionErrors.GLOBAL_ERROR,
+                                    new ActionError("uploadFiles.error.badPath"));
+                        } catch (FileIOException ex) {
+                            errors.add(ActionErrors.GLOBAL_ERROR,
+                                    new ActionError("uploadFiles.error.delete", deleteFiles[i]));
+                        }
+                        
                     }
-                    
                 }
             }
             

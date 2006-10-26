@@ -22,7 +22,8 @@
             FileManager fmgr = RollerFactory.getRoller().getFileManager();
             
             List uploaded = new ArrayList();
-            if (theForm.getUploadedFiles().length > 0) {
+            if (theForm.getUploadedFiles() != null &&
+                    theForm.getUploadedFiles().length > 0) {
                 
                 // make sure uploads are enabled
                 if(!RollerRuntimeConfig.getBooleanProperty("uploads.enabled")) {
@@ -59,10 +60,19 @@
                         fileName = theForm.getPath() + "/" + fileName;
                     }
                     
+                    // make sure fileName is valid
+                    if (fileName.indexOf("/") != -1 || 
+                            fileName.indexOf("\\") != -1 ||
+                            fileName.indexOf("..") != -1) {
+                        errors.add(ActionErrors.GLOBAL_ERROR,
+                                new ActionError("uploadFiles.error.badPath", fileName));
+                        continue;
+                    }
+                    
                     try {
                         fmgr.saveFile(website, fileName,
-                                files[i].getContentType(), 
-                                files[i].getFileSize(), 
+                                files[i].getContentType(),
+                                files[i].getFileSize(),
                                 files[i].getInputStream());
                         
                         uploaded.add(fileName);

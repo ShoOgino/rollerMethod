@@ -23,8 +23,11 @@
             
             String path = theForm.getPath();
             String newDir = theForm.getNewDir();
-            if(newDir != null && newDir.trim().length() > 0 &&
-                    newDir.indexOf("/") == -1 && newDir.indexOf("\\") == -1) {
+            if(newDir != null && 
+                    newDir.trim().length() > 0 &&
+                    newDir.indexOf("/") == -1 && 
+                    newDir.indexOf("\\") == -1 &&
+                    newDir.indexOf("..") == -1) {
                 
                 // figure the new directory path
                 String newDirPath = newDir;
