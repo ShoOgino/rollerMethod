@@ -6,11 +6,12 @@
             dbgroup.setTitle(group.getTitle());
             dbgroup.setHandle(group.getHandle());
             dbgroup.setDescription(group.getDescription());
-            planet.getPlanetManager().saveGroup(dbgroup); 
+            planet.getPlanetManager().saveGroup(dbgroup);
         } else {
             planet.getPlanetManager().saveGroup(group); 
         }
         planet.flush();
+        setLastSave(new Date());
         return "editGroup";
     }   
 
