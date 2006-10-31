@@ -120,7 +120,7 @@
             }
             
             // only check for other params if we didn't find an anchor above or tags
-            if(this.weblogAnchor == null && tags.size() == 0) {
+            if(this.weblogAnchor == null && this.tags == null) {
                 if(request.getParameter("date") != null) {
                     String date = request.getParameter("date");
                     if(this.isValidDateString(date)) {
@@ -169,7 +169,7 @@
             log.debug("weblogAnchor = "+this.weblogAnchor);
             log.debug("weblogDate = "+this.weblogDate);
             log.debug("weblogCategory = "+this.weblogCategoryName);
-            log.debug("tags = "+ Utilities.stringArrayToString((String[])this.tags.toArray(new String[this.tags.size()]), ","));
+            log.debug("tags = "+this.tags);
             log.debug("weblogPage = "+this.weblogPageName);
             log.debug("pageNum = "+this.pageNum);
         }

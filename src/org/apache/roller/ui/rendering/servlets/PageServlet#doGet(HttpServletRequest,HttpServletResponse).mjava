@@ -145,7 +145,8 @@
         
         log.debug("page found, dealing with it");
         
-        // validation
+        
+        // validation.  make sure that request input makes sense.
         boolean invalid = false;
         if(pageRequest.getWeblogPageName() != null && page.isHidden()) {
             invalid = true;
@@ -180,8 +181,18 @@
             if(pageRequest.getWeblogCategory() == null) {
                 invalid = true;
             }
+            
+        } else if(pageRequest.getTags() != null && pageRequest.getTags().size() > 0) {
+            
+            try {
+                // tags specified.  make sure they exist.
+                WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+                invalid = !wmgr.getTagComboExists(pageRequest.getTags(), (isSiteWide) ? null : weblog);
+            } catch (RollerException ex) {
+                invalid = true;
+            }
         }
-       
+
         
         if(invalid) {
             if(!response.isCommitted()) response.reset();
