@@ -8,15 +8,20 @@
                          InputStream is)
             throws FileNotFoundException, FilePathException, FileIOException {
         
+        String savePath = path;
+        if(path.startsWith("/")) {
+            savePath = path.substring(1);
+        }
+        
         // make sure we are allowed to save this file
         RollerMessages msgs = new RollerMessages();
-        if (!canSave(weblog, path, contentType, size, msgs)) {
+        if (!canSave(weblog, savePath, contentType, size, msgs)) {
             throw new FileIOException(msgs.toString());
         }
         
         // make sure uploads area exists for this weblog
         File dirPath = this.getRealFile(weblog, null);
-        File saveFile = new File(dirPath.getAbsolutePath() + File.separator + path);
+        File saveFile = new File(dirPath.getAbsolutePath() + File.separator + savePath);
         
         byte[] buffer = new byte[8192];
         int bytesRead = 0;
