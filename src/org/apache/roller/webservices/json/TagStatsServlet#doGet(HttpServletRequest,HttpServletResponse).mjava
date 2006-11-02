@@ -2,9 +2,17 @@
             throws ServletException, IOException {    
         
         int limit = MAX_LENGTH;       
-        try { 
-            limit = Integer.parseInt(request.getParameter("limit"));
+        try {
+            // only change limit, if specified.
+            if(request.getParameter("limit") != null) {
+              limit = Integer.parseInt(request.getParameter("limit"));
+            }
         } catch (Throwable ignored) {}
+        
+        // if we didn't specify no limit and user is abusing, kill it.
+        if(MAX_LENGTH > -1 && limit > MAX_LENGTH) {
+          limit = MAX_LENGTH;
+        }
         
         String pathInfo = request.getPathInfo();
         String handle = null;
