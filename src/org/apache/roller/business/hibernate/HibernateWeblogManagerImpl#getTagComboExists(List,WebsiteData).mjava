@@ -24,9 +24,9 @@
             
             // are we checking a specific weblog, or site-wide?
             if (weblog != null)
-                queryString.append("and website.id = '" + weblog.getId() + "' ");
+                queryString.append("and weblog.id = '" + weblog.getId() + "' ");
             else
-                queryString.append("and website is null ");
+                queryString.append("and weblog is null ");
             
             Query query = session.createQuery(queryString.toString());
             query.setParameterList("tags", tags);
