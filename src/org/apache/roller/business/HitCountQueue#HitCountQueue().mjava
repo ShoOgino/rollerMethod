@@ -11,7 +11,7 @@
         }
         
         // create the hits queue
-        this.queue = Collections.synchronizedMap(new HashMap());
+        this.queue = Collections.synchronizedList(new ArrayList());
         
         // start up a worker to process the hits at intervals
         HitCountProcessingJob job = new HitCountProcessingJob();
