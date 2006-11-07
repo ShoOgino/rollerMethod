@@ -1,0 +1,18 @@
+    /**
+     * Get the time the lease for this lock will expire, or null if this task
+     * lock is not currently locked.
+     */
+    public Date getLeaseExpires() {
+        
+        if(!locked || timeAquired == null) {
+            return null;
+        }
+        
+        // calculate lease expiration time
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(timeAquired);
+        cal.add(Calendar.MINUTE, timeLeased);
+        
+        return cal.getTime();
+    }
+

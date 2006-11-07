@@ -1,5 +1,10 @@
     /**
      * Try to aquire a lock for a given RollerTask.
+     *
+     * Remember, locks are only given if ...
+     *   1. the task is not currently locked and it's past the next scheduled
+     *      run time for the particular task
+     *   2. the task *is* locked, but its lease has expired
      */
     public boolean acquireLock(RollerTask task) {
         
@@ -20,9 +25,11 @@
             return false;
         }
         
-        if(taskLock != null && !taskLock.isLocked()) {
+        Date now = new Date();
+        Date nextRun = taskLock.getNextRun(task.getInterval());
+        if( !taskLock.isLocked() && (nextRun == null || now.after(nextRun))) {
+            
             // set appropriate values for TaskLock and save it
-            Date now = new Date();
             taskLock.setLocked(true);
             taskLock.setTimeAquired(now);
             taskLock.setTimeLeased(task.getLeaseTime());

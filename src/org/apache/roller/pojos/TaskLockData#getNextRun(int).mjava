@@ -1,0 +1,19 @@
+    /**
+     * Calculate the next allowed time the task managed by this lock would
+     * be allowed to run.  i.e. lastRun + interval
+     */
+    public Date getNextRun(int interval) {
+        
+        Date lastRun = this.getLastRun();
+        if(lastRun == null) {
+            return null;
+        }
+        
+        // calculate next run time
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(lastRun);
+        cal.add(Calendar.MINUTE, interval);
+        
+        return cal.getTime();
+    }
+

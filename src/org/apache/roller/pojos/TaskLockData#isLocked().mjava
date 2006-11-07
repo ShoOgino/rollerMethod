@@ -3,6 +3,16 @@
      * @hibernate.property column="islocked" non-null="false" unique="false"
      */
     public boolean isLocked() {
-        return locked;
+        
+        // this method requires a little extra logic because we return false
+        // even if a task is locked when it's lease has expired
+        if(!locked) {
+            return false;
+        }
+        
+        Date now = new Date();
+        Date leaseExpiration = this.getLeaseExpires();
+        
+        return now.before(leaseExpiration);
     }
 
