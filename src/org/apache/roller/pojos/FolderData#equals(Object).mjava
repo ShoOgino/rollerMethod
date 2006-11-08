@@ -1,10 +1,8 @@
-    public boolean equals(Object pOther)
-    {
-        if (pOther instanceof FolderData)
-        {
+    public boolean equals(Object pOther) {
+        if (pOther instanceof FolderData) {
             FolderData lTest = (FolderData) pOther;
             boolean lEquals = true;
-
+            
 //            if (this.bookmarks == null)
 //            {
 //                lEquals = lEquals && (lTest.bookmarks == null);
@@ -13,48 +11,34 @@
 //            {
 //                lEquals = lEquals && this.bookmarks.equals(lTest.bookmarks);
 //            }
-
-            if (this.id == null)
-            {
+            
+            if (this.id == null) {
                 lEquals = lEquals && (lTest.getId() == null);
-            }
-            else
-            {
+            } else {
                 lEquals = lEquals && this.id.equals(lTest.getId());
             }
-
-            if (this.name == null)
-            {
+            
+            if (this.name == null) {
                 lEquals = lEquals && (lTest.getName() == null);
-            }
-            else
-            {
+            } else {
                 lEquals = lEquals && this.name.equals(lTest.getName());
             }
-
-            if (this.description == null)
-            {
+            
+            if (this.description == null) {
                 lEquals = lEquals && (lTest.getDescription() == null);
+            } else {
+                lEquals = lEquals &&
+                        this.description.equals(lTest.getDescription());
             }
-            else
-            {
-                lEquals = lEquals && 
-                          this.description.equals(lTest.getDescription());
-            }
-
-            if (this.website == null)
-            {
+            
+            if (this.website == null) {
                 lEquals = lEquals && (lTest.getWebsite() == null);
-            }
-            else
-            {
+            } else {
                 lEquals = lEquals && this.website.equals(lTest.getWebsite());
             }
-
+            
             return lEquals;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }

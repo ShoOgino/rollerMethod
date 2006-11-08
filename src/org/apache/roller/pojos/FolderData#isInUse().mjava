@@ -1,14 +1,10 @@
     /**
      * @roller.wrapPojoMethod type="simple"
      */
-    public boolean isInUse()
-    {
-        try
-        {
-            return RollerFactory.getRoller().getBookmarkManager().isFolderInUse(this); 
-        }
-        catch (RollerException e)
-        {
+    public boolean isInUse() {
+        try {
+            return RollerFactory.getRoller().getBookmarkManager().isFolderInUse(this);
+        } catch (RollerException e) {
             throw new RuntimeException(e);
         }
     }

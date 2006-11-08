@@ -3,16 +3,13 @@
      *
      * @roller.wrapPojoMethod type="simple"
      */
-    public String getPath() throws RollerException
-    {
-        if (mNewParent != null) 
-        {
+    public String getPath() throws RollerException {
+        if (mNewParent != null) {
             throw new RollerException(
-                "Folder has a new parent and must be saved before getPath() will work");
+                    "Folder has a new parent and must be saved before getPath() will work");
         }
         
-        if (null == path)
-        {
+        if (null == path) {
             path = RollerFactory.getRoller().getBookmarkManager().getPath(this);
         }
         return path;

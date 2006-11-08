@@ -1,12 +1,10 @@
-    /** 
+    /**
      * Move all bookmarks that exist in this folder and all
      * subfolders of this folder to a single new folder.
-     */ 
-    public void moveContents(FolderData dest) throws RollerException
-    {
+     */
+    public void moveContents(FolderData dest) throws RollerException {
         Iterator entries = retrieveBookmarks(true).iterator();
-        while (entries.hasNext())
-        {
+        while (entries.hasNext()) {
             BookmarkData bookmark = (BookmarkData) entries.next();
             
             // just add bookmarks to new folder

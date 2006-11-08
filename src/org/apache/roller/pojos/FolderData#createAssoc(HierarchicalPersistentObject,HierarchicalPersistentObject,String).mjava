@@ -1,17 +1,16 @@
-    /** 
+    /**
      * @see org.apache.roller.pojos.HierarchicalPersistentObject#createAssoc(
-     *    org.apache.roller.pojos.HierarchicalPersistentObject, 
+     *    org.apache.roller.pojos.HierarchicalPersistentObject,
      *    org.apache.roller.pojos.HierarchicalPersistentObject, java.lang.String)
      */
     public Assoc createAssoc(
-        HierarchicalPersistentObject object, 
-        HierarchicalPersistentObject associatedObject, 
-        String relation) throws RollerException
-    {
+            HierarchicalPersistentObject object,
+            HierarchicalPersistentObject associatedObject,
+            String relation) throws RollerException {
         return new FolderAssoc(
                 null,
-            (FolderData)object, 
-            (FolderData)associatedObject, 
-            relation);
+                (FolderData)object,
+                (FolderData)associatedObject,
+                relation);
     }
 

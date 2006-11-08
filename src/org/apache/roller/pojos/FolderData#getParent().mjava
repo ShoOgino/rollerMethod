@@ -3,20 +3,14 @@
      *
      * @roller.wrapPojoMethod type="pojo"
      */
-    public FolderData getParent() throws RollerException
-    {
-        if (mNewParent != null)
-        {
+    public FolderData getParent() throws RollerException {
+        if (mNewParent != null) {
             // Category has new parent, so return that
             return (FolderData)mNewParent;
-        }
-        else if (getParentAssoc() != null)
-        {
+        } else if (getParentAssoc() != null) {
             // Return parent found in database
             return ((FolderAssoc)getParentAssoc()).getAncestorFolder();
-        }
-        else 
-        {
+        } else {
             return null;
         }
     }

@@ -3,17 +3,14 @@
      *
      * @roller.wrapPojoMethod type="pojo-collection" class="org.apache.roller.pojos.FolderData"
      */
-    public List getFolders() throws RollerException
-    {
-        if (folders == null)
-        {
+    public List getFolders() throws RollerException {
+        if (folders == null) {
             folders = new LinkedList();
             List childAssocs = getChildAssocs();
             Iterator childIter = childAssocs.iterator();
-            while (childIter.hasNext())
-            {
+            while (childIter.hasNext()) {
                 FolderAssoc assoc =
-                    (FolderAssoc) childIter.next();
+                        (FolderAssoc) childIter.next();
                 folders.add(assoc.getFolder());
             }
         }
