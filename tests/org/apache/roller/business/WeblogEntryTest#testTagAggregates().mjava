@@ -60,7 +60,9 @@
         entry.addTag("three");
         entry.addTag("four");
         mgr.saveWeblogEntry(entry);
-
+        
+        TestUtils.endSession(true);
+        
         // let's fetch "site" tags now
         tags = mgr.getTags(null, null, null, -1);
         assertEquals(4, tags.size());
