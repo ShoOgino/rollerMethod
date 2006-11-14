@@ -1,56 +1,46 @@
-    //---------------------------------------------------------------- Construction
-    /** 
+    /**
      * Get RollerSession from request (and add user if not already present).
      */
-    public static RollerSession getRollerSession(HttpServletRequest request)
-    {
+    public static RollerSession getRollerSession(HttpServletRequest request) {
         RollerSession rollerSession = null;
         HttpSession session = request.getSession(false);
-        if (session != null) 
-        {
+        if (session != null) {
             rollerSession = (RollerSession)session.getAttribute(ROLLER_SESSION);
-            if (rollerSession == null) 
-            {
-                // HttpSession with no RollerSession? 
+            if (rollerSession == null) {
+                // HttpSession with no RollerSession?
                 // Must be a session that was de-serialized from a previous run.
                 rollerSession = new RollerSession();
                 session.setAttribute(ROLLER_SESSION, rollerSession);
             }
             Principal principal = request.getUserPrincipal();
-            if (rollerSession.getAuthenticatedUser() == null && principal != null)
-            {
-                try 
-                {
+            if (rollerSession.getAuthenticatedUser() == null && principal != null) {
+                try {
                     UserManager umgr = RollerFactory.getRoller().getUserManager();
                     UserData user = umgr.getUserByUserName(principal.getName());
-
+                    
                     // try one time to auto-provision, only happens if user==null
                     // which means installation has SSO-enabled in security.xml
-                     if(user == null && RollerConfig.getBooleanProperty("users.sso.autoProvision.enabled")) {                    
-                       // provisioning enabled, get provisioner and execute
-                       AutoProvision provisioner = RollerContext.getAutoProvision();
-                       if(provisioner != null) 
-                       {
-                           boolean userProvisioned = provisioner.execute();
-                           if(userProvisioned) 
-                           {
-                               // try lookup again real quick
-                               user = umgr.getUserByUserName(principal.getName());
-                           }
-                       }
-                     }
+                    if(user == null && RollerConfig.getBooleanProperty("users.sso.autoProvision.enabled")) {
+                        // provisioning enabled, get provisioner and execute
+                        AutoProvision provisioner = RollerContext.getAutoProvision();
+                        if(provisioner != null) {
+                            boolean userProvisioned = provisioner.execute();
+                            if(userProvisioned) {
+                                // try lookup again real quick
+                                user = umgr.getUserByUserName(principal.getName());
+                            }
+                        }
+                    }
                     // only set authenticated user if user is enabled
-                    if(user != null && user.getEnabled().booleanValue()) 
-                    {
-                        rollerSession.setAuthenticatedUser(user);  
-                    }                    
-                }
-                catch (RollerException e)
-                {
-                    mLogger.error("ERROR: getting user object",e);
+                    if(user != null && user.getEnabled().booleanValue()) {
+                        rollerSession.setAuthenticatedUser(user);
+                    }
+                } catch (RollerException e) {
+                    log.error("ERROR: getting user object",e);
                 }
             }
         }
+        
         return rollerSession;
     }
 

@@ -1,11 +1,11 @@
-    /** 
+    /**
      * Is session's authenticated user authorized to post in current weblog?
      */
-    public boolean isUserAuthorizedToAuthor(WebsiteData website) 
-        throws RollerException
-    {
+    public boolean isUserAuthorizedToAuthor(WebsiteData website)
+            throws RollerException {
+        
         UserData user = getAuthenticatedUser();
-        if (user != null && user.getEnabled().booleanValue()) 
+        if (user != null && user.getEnabled().booleanValue())
             return hasPermissions(website, PermissionsData.AUTHOR);
         return false;
     }
