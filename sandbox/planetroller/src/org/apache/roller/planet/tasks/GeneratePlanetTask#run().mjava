@@ -4,7 +4,7 @@
             log.info("Refreshing Planet entries");
             Planet planet = PlanetFactory.getPlanet();
             planet.getPlanetManager().refreshEntries(
-                RollerConfig.getProperty("planet.aggregator.cache.dir"));                        
+                PlanetConfig.getProperty("planet.aggregator.cache.dir"));                        
             planet.flush();
             planet.release();
             
