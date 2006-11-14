@@ -1,0 +1,13 @@
+    public void checkHandle(FacesContext context, UIComponent component, Object value) throws Exception {
+        if (value == null || !(value instanceof String)) return;
+        if (group != null && StringUtils.isNotEmpty(group.getId())) return;
+        Planet planet = PlanetFactory.getPlanet();
+        PlanetGroupData dbgroup = planet.getPlanetManager().getGroup((String) value);
+        if (dbgroup != null) {
+            FacesMessage msg = new FacesMessage();
+            msg.setDetail(bundle.getString("groupErrorDuplicateHandle"));
+            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(msg);
+        }
+    }
+
