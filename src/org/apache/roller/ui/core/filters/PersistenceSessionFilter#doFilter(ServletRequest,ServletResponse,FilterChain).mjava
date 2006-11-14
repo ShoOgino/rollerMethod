@@ -7,16 +7,15 @@
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
         
-        mLogger.debug("Entered PersistenceSessionFilter");
+        log.debug("Entered "+request.getRequestURI());
         
-        Roller roller = RollerFactory.getRoller();
         try {
             chain.doFilter(request, response);
         } finally {
-            mLogger.debug("Releasing Roller Session");
-            roller.release();
+            log.debug("Releasing Roller Session");
+            RollerFactory.getRoller().release();
         }
         
-        mLogger.debug("Exiting PersistenceSessionFilter");
+        log.debug("Exiting "+request.getRequestURI());
     }
 
