@@ -12,6 +12,9 @@
         PingTargetManager pingMgr = RollerFactory.getRoller().getPingTargetManager();
         pingMgr.savePingTarget(testPing);
         
+        // flush to db
+        RollerFactory.getRoller().flush();
+        
         // query for it
         PingTargetData ping = pingMgr.getPingTarget(testPing.getId());
         

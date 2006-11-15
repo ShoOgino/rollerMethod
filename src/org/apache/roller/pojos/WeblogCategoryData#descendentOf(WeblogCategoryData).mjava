@@ -1,8 +1,19 @@
     /**
      * @roller.wrapPojoMethod type="simple"
      */
-    public boolean descendentOf(WeblogCategoryData ancestor)
-    throws RollerException {
-        return RollerFactory.getRoller().getWeblogManager().isDescendentOf(this, ancestor);
+    public boolean descendentOf(WeblogCategoryData ancestor) {
+        
+        // if this is root then we can't be a descendent
+        if(getParent() == null) {
+            return false;
+        } else {
+            // if ancestor is our parent then we are a descendent
+            if(getParent().equals(ancestor)) {
+                return true;
+            } else {
+                // see if our parent is a descendent
+                return getParent().descendentOf(ancestor);
+            }
+        }
     }
 

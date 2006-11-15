@@ -10,6 +10,9 @@
         AutoPingData autoPing = new AutoPingData(null, ping, weblog);
         mgr.saveAutoPing(autoPing);
         
+        // flush to db
+        RollerFactory.getRoller().flush();
+        
         // query for it
         autoPing = mgr.getAutoPing(autoPing.getId());
         

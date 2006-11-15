@@ -1,8 +1,8 @@
     /**
      * @roller.wrapPojoMethod type="pojo-collection" class="org.apache.roller.pojos.WeblogCategoryData"
      */
-    public List getWeblogCategories(String categoryPath) {
-        List ret = new ArrayList();
+    public Set getWeblogCategories(String categoryPath) {
+        Set ret = new HashSet();
         try {
             Roller roller = RollerFactory.getRoller();
             WeblogManager wmgr = roller.getWeblogManager();            

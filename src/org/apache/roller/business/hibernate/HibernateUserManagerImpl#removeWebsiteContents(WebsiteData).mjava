@@ -91,16 +91,16 @@
             this.strategy.remove(rootFolder);
             
             // Still cannot get all Bookmarks cleared!
-            Iterator allFolders = bmgr.getAllFolders(website).iterator();
-            while (allFolders.hasNext()) {
-                FolderData aFolder = (FolderData)allFolders.next();
-                bmgr.removeFolderContents(aFolder);
-                this.strategy.remove(aFolder);
-            }
+//            Iterator allFolders = bmgr.getAllFolders(website).iterator();
+//            while (allFolders.hasNext()) {
+//                FolderData aFolder = (FolderData)allFolders.next();
+//                bmgr.removeFolderContents(aFolder);
+//                this.strategy.remove(aFolder);
+//            }
         }
         
         // remove categories
-        WeblogCategoryData rootCat = wmgr.getRootWeblogCategory(website);
+        WeblogCategoryData rootCat = website.getDefaultCategory();
         if (null != rootCat) {
             this.strategy.remove(rootCat);
         }

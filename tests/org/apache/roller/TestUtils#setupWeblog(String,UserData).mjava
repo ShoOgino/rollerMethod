@@ -21,6 +21,9 @@
         UserManager mgr = RollerFactory.getRoller().getUserManager();
         mgr.addWebsite(testWeblog);
         
+        // flush to db
+        RollerFactory.getRoller().flush();
+        
         // query for the new weblog and return it
         WebsiteData weblog = mgr.getWebsiteByHandle(handle);
         

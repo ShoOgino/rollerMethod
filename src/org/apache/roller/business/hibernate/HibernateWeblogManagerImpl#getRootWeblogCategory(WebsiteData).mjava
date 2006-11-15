@@ -5,17 +5,14 @@
         
         try {
             Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
-            Criteria criteria = session.createCriteria(WeblogCategoryAssoc.class);
-            criteria.createAlias("category","c");
+            Criteria criteria = session.createCriteria(WeblogCategoryData.class);
             
-            criteria.add(Expression.eq("c.website", website));
-            criteria.add(Expression.isNull("ancestorCategory"));
-            criteria.add(Expression.eq("relation", WeblogCategoryAssoc.PARENT));
-            
+            criteria.add(Expression.eq("website", website));
+            criteria.add(Expression.isNull("parent"));
             criteria.setMaxResults(1);
             
-            List list = criteria.list();
-            return ((WeblogCategoryAssoc)list.get(0)).getCategory();
+            return (WeblogCategoryData) criteria.uniqueResult();
+            
         } catch (HibernateException e) {
             throw new RollerException(e);
         }

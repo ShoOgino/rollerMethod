@@ -9,5 +9,8 @@
         
         // remove the entry
         mgr.removeWeblogEntry(entry);
+        
+        // flush to db
+        RollerFactory.getRoller().flush();
     }
 

@@ -2,16 +2,10 @@
      * Return parent category, or null if category is root of hierarchy.
      *
      * @roller.wrapPojoMethod type="pojo"
+     *
+     * @hibernate.many-to-one column="parentid" cascade="none" not-null="false"
      */
-    public WeblogCategoryData getParent() throws RollerException {
-        if (mNewParent != null) {
-            // Category has new parent, so return that
-            return (WeblogCategoryData)mNewParent;
-        } else if (getParentAssoc() != null) {
-            // Return parent found in database
-            return ((WeblogCategoryAssoc)getParentAssoc()).getAncestorCategory();
-        } else {
-            return null;
-        }
+    public WeblogCategoryData getParent() {
+        return this.parentCategory;
     }
 

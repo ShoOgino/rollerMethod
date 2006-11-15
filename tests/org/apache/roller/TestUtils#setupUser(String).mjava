@@ -17,6 +17,9 @@
         UserManager mgr = RollerFactory.getRoller().getUserManager();
         mgr.addUser(testUser);
         
+        // flush to db
+        RollerFactory.getRoller().flush();
+        
         // query for the user to make sure we return the persisted object
         UserData user = mgr.getUserByUserName(username);
         

@@ -8,10 +8,7 @@
         this.description = other.getDescription();
         this.image = other.getImage();
         
-        try {
-            this.mNewParent = other.getParent();
-        } catch(RollerException re) {
-            // why does this throw an exception?
-        }
+        this.parentCategory = other.getParent();
+        this.childCategories = other.getWeblogCategories();
     }
 

@@ -23,6 +23,9 @@
         WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
         mgr.saveWeblogEntry(testEntry);
         
+        // flush to db
+        RollerFactory.getRoller().flush();
+        
         // query for object
         WeblogEntryData entry = mgr.getWeblogEntry(testEntry.getId());
         

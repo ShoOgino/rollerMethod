@@ -6,6 +6,12 @@
      *          b1
      *          f2/
      *             f3/
+     *
+     * TODO: it is unclear exactly what the expected behavior of this test is
+     * supposed to be.  i.e. how the moveContents() methods are supposed to
+     * work.  they could move only bookmarks, only bookmarks and folders from
+     * the specified src folder, all bookmarks (recursively), or all bookmarks
+     * and folder recursively.
      */
     public void testMoveFolderContents() throws Exception {
         
@@ -63,44 +69,41 @@
         
         TestUtils.endSession(true);
         
+        // verify our new tree
+        dest = bmgr.getFolder(dest.getId());
+        f1 = bmgr.getFolder(f1.getId());
+        f2 = bmgr.getFolder(f2.getId());
+        f3 = bmgr.getFolder(f3.getId());
+        assertEquals(0, dest.getBookmarks().size());
+        assertEquals(1, f1.getBookmarks().size());
+        assertEquals(1, f2.getBookmarks().size());
+        assertEquals(1, f3.getBookmarks().size());
+        assertEquals(0, dest.retrieveBookmarks(true).size());
+        assertEquals(3, f1.retrieveBookmarks(true).size());
+        
         // test that parent cannot be moved into child
         boolean safe = false;
         try {
-            
             // Move folder into one of it's children
-            f1 = bmgr.getFolder(f1.getId());
-            f3 = bmgr.getFolder(f3.getId());
             bmgr.moveFolderContents(f1, f3);
-            //f3.save();
-            //f1.save();
             TestUtils.endSession(true);
         } catch (RollerException e) {
             safe = true;
         }
         assertTrue(safe);
         
-        // verify number of entries in each folder
-        dest = bmgr.getFolder(dest.getId());
-        f1 = bmgr.getFolder(f1.getId());
-        assertEquals(0, dest.retrieveBookmarks(true).size());
-        assertEquals(0, dest.retrieveBookmarks(false).size());
-        assertEquals(1, f1.retrieveBookmarks(false).size());
-        
-        List f1list = f1.retrieveBookmarks(true);
-        assertEquals(3, f1list.size());
-        
-        // move contents of source category c1 to destination catetory dest
-        f1.moveContents(dest);
-        bmgr.saveFolder(f1);
-        bmgr.saveFolder(dest);
+        // move contents of f1 to dest
+        bmgr.moveFolderContents(f1, dest);
         TestUtils.endSession(true);
         
         // after move, verify number of entries in eacch folder
         dest = bmgr.getFolder(dest.getId());
         f1 = bmgr.getFolder(f1.getId());
-        assertEquals(3, dest.retrieveBookmarks(true).size());
-        assertEquals(3, dest.retrieveBookmarks(false).size());
-        assertEquals(0, f1.retrieveBookmarks(true).size());
-        assertEquals(0, f1.retrieveBookmarks(false).size());
+        assertEquals(1, dest.retrieveBookmarks(true).size());
+        assertEquals(2, f1.retrieveBookmarks(true).size());
+        
+        bmgr.removeFolder(f1);
+        bmgr.removeFolder(dest);
+        TestUtils.endSession(true);
     }
 

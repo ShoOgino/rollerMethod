@@ -1,4 +1,3 @@
-    //----------------------------------------------------------------
     public void moveFolderContents(FolderData src, FolderData dest)
             throws RollerException {
         
@@ -7,33 +6,17 @@
                     "ERROR cannot move parent folder into it's own child");
         }
         
-        try {
-            // Add to destination folder
-            LinkedList deleteList = new LinkedList();
-            Iterator srcBookmarks = src.getBookmarks().iterator();
-            while (srcBookmarks.hasNext()) {
-                BookmarkData bd = (BookmarkData)srcBookmarks.next();
-                deleteList.add(bd);
-                
-                BookmarkData movedBd = new BookmarkData();
-                movedBd.setData(bd);
-                movedBd.setId(null);
-                
-                dest.addBookmark(movedBd);
-                this.strategy.store(movedBd);
-            }
+        // iterator over src bookmarks and add them to dest
+        BookmarkData bookmark = null;
+        Iterator srcBookmarks = src.getBookmarks().iterator();
+        while(srcBookmarks.hasNext()) {
+            bookmark = (BookmarkData) srcBookmarks.next();
             
-            // Remove from source folder
-            Iterator deleteIter = deleteList.iterator();
-            while (deleteIter.hasNext()) {
-                BookmarkData bd = (BookmarkData)deleteIter.next();
-                src.removeBookmark(bd);
-                // TODO: this won't conflict with the bookmark we store above right?
-                this.strategy.remove(bd);
-            }
-            
-        } catch (Exception ex) {
-            throw new RollerException(ex);
+            // add to dest
+            dest.addBookmark(bookmark);
         }
+        
+        // now just save the dest folder
+        this.saveFolder(dest);
     }
 

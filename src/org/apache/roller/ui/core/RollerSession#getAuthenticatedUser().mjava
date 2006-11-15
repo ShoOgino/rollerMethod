@@ -2,6 +2,17 @@
      * Authenticated user associated with this session.
      */
     public UserData getAuthenticatedUser() {
-        return authenticatedUser;
+        
+        UserData authenticUser = null;
+        if(userId != null) {
+            try {
+                UserManager mgr = RollerFactory.getRoller().getUserManager();
+                authenticUser = mgr.getUser(userId);
+            } catch (RollerException ex) {
+                log.warn("Error looking up authenticated user "+userId, ex);
+            }
+        }
+        
+        return authenticUser;
     }
 

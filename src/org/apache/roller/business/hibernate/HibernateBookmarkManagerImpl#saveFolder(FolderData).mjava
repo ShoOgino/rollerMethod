@@ -1,6 +1,6 @@
     public void saveFolder(FolderData folder) throws RollerException {
         
-        if(isDuplicateFolderName(folder)) {
+        if(folder.getId() == null && isDuplicateFolderName(folder)) {
             throw new RollerException("Duplicate folder name");
         }
         

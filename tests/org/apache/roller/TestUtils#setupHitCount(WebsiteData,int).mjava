@@ -12,6 +12,9 @@
         testCount.setDailyHits(amount);
         mgr.saveHitCount(testCount);
         
+        // flush to db
+        RollerFactory.getRoller().flush();
+        
         // query for it
         testCount = mgr.getHitCount(testCount.getId());
         

@@ -1,4 +1,15 @@
     public void testBookmarkImport() throws Exception {
-        importBookmarks("/bookmarks.opml");
+        
+        InputStream fis = this.getClass().getResourceAsStream("/bookmarks.opml");
+        getRoller().getBookmarkManager().importBookmarks(
+                testWeblog, "ZZZ_imports_ZZZ", fileToString(fis));
+        TestUtils.endSession(true);
+        
+        FolderData fd = null;
+        
+        fd = getRoller().getBookmarkManager().getFolder(testWeblog, "ZZZ_imports_ZZZ");
+        assertTrue(fd.retrieveBookmarks(true).size() > 0 );
+        getRoller().getBookmarkManager().removeFolder(fd);
+        TestUtils.endSession(true);
     }
 

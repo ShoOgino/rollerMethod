@@ -1,0 +1,12 @@
+    public void setData(PersistentObject other) {
+        FolderData otherData = (FolderData) other;
+        
+        this.id = otherData.getId();
+        this.name = otherData.getName();
+        this.description = otherData.getDescription();
+        this.website = otherData.getWebsite();
+        this.parentFolder = otherData.getParent();
+        this.childFolders = otherData.getFolders();
+        this.setBookmarks(otherData.getBookmarks());
+    }
+

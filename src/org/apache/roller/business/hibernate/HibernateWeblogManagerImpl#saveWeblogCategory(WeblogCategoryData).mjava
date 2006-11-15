@@ -1,6 +1,6 @@
     public void saveWeblogCategory(WeblogCategoryData cat) throws RollerException {
         
-        if(this.isDuplicateWeblogCategoryName(cat)) {
+        if(cat.getId() == null && this.isDuplicateWeblogCategoryName(cat)) {
             throw new RollerException("Duplicate category name, cannot save category");
         }
         

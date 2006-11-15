@@ -19,6 +19,9 @@
         WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
         mgr.saveComment(testComment);
         
+        // flush to db
+        RollerFactory.getRoller().flush();
+        
         // query for object
         CommentData comment = mgr.getComment(testComment.getId());
         

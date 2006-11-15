@@ -2,18 +2,12 @@
      * Query to get child categories of this category.
      *
      * @roller.wrapPojoMethod type="pojo-collection" class="org.apache.roller.pojos.FolderData"
+     *
+     * @hibernate.set lazy="true" inverse="true" cascade="delete"
+     * @hibernate.collection-key column="parentid"
+     * @hibernate.collection-one-to-many class="org.apache.roller.pojos.FolderData"
      */
-    public List getFolders() throws RollerException {
-        if (folders == null) {
-            folders = new LinkedList();
-            List childAssocs = getChildAssocs();
-            Iterator childIter = childAssocs.iterator();
-            while (childIter.hasNext()) {
-                FolderAssoc assoc =
-                        (FolderAssoc) childIter.next();
-                folders.add(assoc.getFolder());
-            }
-        }
-        return folders;
+    public Set getFolders() {
+        return this.childFolders;
     }
 

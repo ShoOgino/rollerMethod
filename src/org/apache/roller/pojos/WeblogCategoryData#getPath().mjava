@@ -1,16 +1,22 @@
     /**
-     * Get path in category hierarhcy.
+     * Get path in category hierarchy.
+     *
+     * TODO: category path should be persisted.
      *
      * @roller.wrapPojoMethod type="simple"
      */
     public String getPath() {
+        
         if (null == cachedPath) {
-            try {
-                cachedPath = RollerFactory.getRoller().getWeblogManager().getPath(this);
-            } catch (RollerException e) {
-                throw new RuntimeException(e);
+            if (getParent() == null) {
+                return "/";
+            } else {
+                String parentPath = getParent().getPath();
+                parentPath = "/".equals(parentPath) ? "" : parentPath;
+                return parentPath + "/" + this.name;
             }
         }
+        
         return cachedPath;
     }
 

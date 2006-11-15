@@ -1,0 +1,71 @@
+    public void testBookmarkCRUD() throws Exception {
+        
+        BookmarkManager bmgr = getRoller().getBookmarkManager();
+        
+        FolderData root = bmgr.getRootFolder(testWeblog);
+        
+        FolderData folder = new FolderData();
+        folder.setName("TestFolder2");
+        folder.setDescription("created by testBookmarkCRUD()");
+        folder.setWebsite(testWeblog);
+        folder.setParent(root);
+        bmgr.saveFolder(folder);
+        TestUtils.endSession(true);
+        
+        // query for folder again since session ended
+        folder = bmgr.getFolder(folder.getId());
+        
+        // Add bookmark by adding to folder
+        BookmarkData bookmark1 = new BookmarkData(
+                folder,
+                "TestBookmark1",
+                "created by testBookmarkCRUD()",
+                "http://www.example.com",
+                "http://www.example.com/rss.xml",
+                new Integer(1),
+                new Integer(12),
+                "test.jpg");
+        folder.addBookmark(bookmark1);
+        
+        // Add another bookmark
+        BookmarkData bookmark2 = new BookmarkData(
+                folder,
+                "TestBookmark2",
+                "created by testBookmarkCRUD()",
+                "http://www.example.com",
+                "http://www.example.com/rss.xml",
+                new Integer(1),
+                new Integer(12),
+                "test.jpf");
+        folder.addBookmark(bookmark2);
+        
+        TestUtils.endSession(true);
+        
+        
+        FolderData testFolder = null;
+        BookmarkData bookmarkb = null, bookmarka = null;
+        
+        // See that two bookmarks were stored
+        testFolder = bmgr.getFolder(folder.getId());
+        assertEquals(2, testFolder.getBookmarks().size());
+        bookmarka = (BookmarkData)testFolder.getBookmarks().iterator().next();
+        bookmarkb = (BookmarkData)testFolder.getBookmarks().iterator().next();
+        
+        // Remove one bookmark
+        testFolder.removeBookmark(bookmarka);
+        bmgr.saveFolder(testFolder);
+        TestUtils.endSession(true);
+        
+        // Folder should now contain one bookmark
+        testFolder = bmgr.getFolder(folder.getId());
+        assertEquals(1, testFolder.getBookmarks().size());
+        
+        // Remove folder
+        bmgr.removeFolder(testFolder);
+        TestUtils.endSession(true);
+        
+        // Folder and one remaining bookmark should be gone
+        assertNull( bmgr.getBookmark(bookmarkb.getId()) );
+        assertNull( bmgr.getFolder(folder.getId()) );
+    }
+
