@@ -1,7 +1,12 @@
     /**
-     * Add new user object to Roller. User will be given the global editor role,
-     * unless it's the first user, who will get the global admin role.
-     * @param user User object to be added, initialized with name, password, etc.
+     * Add a new user.
+     * 
+     * This method is used to provide supplemental data to new user accounts,
+     * such as adding the proper roles for the user.  This method should see
+     * if the new user is the first user and give that user the admin role if so.
+     *
+     * @param newUser User object to be added.
+     * @throws RollerException If there is a problem.
      */
     public void addUser(UserData newUser) throws RollerException;
 
