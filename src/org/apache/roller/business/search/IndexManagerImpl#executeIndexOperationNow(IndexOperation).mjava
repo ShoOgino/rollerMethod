@@ -8,8 +8,6 @@
                 mLogger.debug("Executing index operation now: "+op.getClass().getName());
                 RollerFactory.getRoller().getThreadManager().executeInForeground(op);
             }
-        } catch (RollerException re) {
-            mLogger.error("Error getting thread manager", re);
         } catch (InterruptedException e) {
             mLogger.error("Error executing operation", e);
         }
