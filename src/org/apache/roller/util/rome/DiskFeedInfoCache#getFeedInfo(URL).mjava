@@ -1,7 +1,8 @@
     public SyndFeedInfo getFeedInfo(URL url)
     {
         SyndFeedInfo info = null;
-        String fileName = cachePath + File.separator + "feed_" + url.hashCode();
+        String fileName = cachePath + File.separator + "feed_" 
+                + Utilities.replaceNonAlphanumeric(url.toString(),'_').trim();        
         FileInputStream fis;
         try
         {

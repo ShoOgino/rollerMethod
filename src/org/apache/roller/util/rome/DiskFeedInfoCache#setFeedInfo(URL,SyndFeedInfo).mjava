@@ -1,6 +1,7 @@
     public void setFeedInfo(URL url, SyndFeedInfo feedInfo)
     {
-        String fileName = cachePath + File.separator + "feed_" + url.hashCode();
+        String fileName = cachePath + File.separator + "feed_" 
+                + Utilities.replaceNonAlphanumeric(url.toString(),'_').trim();  
         FileOutputStream fos;
         try
         {
