@@ -4,7 +4,7 @@
         if (StringUtils.isNotEmpty(group.getId())) {
             PlanetGroupData dbgroup = planet.getPlanetManager().getGroupById(group.getId());
             dbgroup.setTitle(group.getTitle());
-            dbgroup.setHandle(group.getHandle());
+            dbgroup.setHandle(Utilities.replaceNonAlphanumeric(group.getHandle()));
             dbgroup.setDescription(group.getDescription());
             planet.getPlanetManager().saveGroup(dbgroup);
         } else {
