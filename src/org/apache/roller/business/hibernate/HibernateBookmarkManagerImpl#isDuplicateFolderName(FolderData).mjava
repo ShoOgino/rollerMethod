@@ -1,7 +1,7 @@
     /**
-     * @see org.apache.roller.model.BookmarkManager#isDuplicateFolderName(org.apache.roller.pojos.FolderData)
+     * make sure the given folder doesn't already exist.
      */
-    public boolean isDuplicateFolderName(FolderData folder) throws RollerException {
+    private boolean isDuplicateFolderName(FolderData folder) throws RollerException {
         
         // ensure that no sibling folders share the same name
         FolderData parent = folder.getParent();

@@ -1,9 +1,11 @@
     /** 
-     * Get folder specified by website and folderPath.
+     * Get a folder from a weblog based on its path.
      *
-     * @param website Website of folder.
-     * @param folderPath Path of folder, relative to folder root.
+     * @param weblog The weblog we want the folder from.
+     * @param path The full path of the folder.
+     * @returns FolderData The folder from the given path, or null if not found.
+     * @throws RollerException If there is a problem.
      */
-    public FolderData getFolder(WebsiteData website, String folderPath)
+    public FolderData getFolder(WebsiteData weblog, String path)
             throws RollerException;
 
