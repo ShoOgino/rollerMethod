@@ -3,7 +3,7 @@
             throws RollerException {
         
         WeblogEntryData entry = null;
-        List entryList = getNextEntries(current, catName, locale, 1);
+        List entryList = getNextPrevEntries(current, catName, locale, 1, true);
         if (entryList != null && entryList.size() > 0) {
             entry = (WeblogEntryData)entryList.get(0);
         }
