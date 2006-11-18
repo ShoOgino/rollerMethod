@@ -5,22 +5,13 @@
         
         root = mgr.getRootWeblogCategory(testWeblog);
         
-        WeblogCategoryData f1 = new WeblogCategoryData();
-        f1.setName("f1");
-        f1.setParent(root);
-        f1.setWebsite(testWeblog);
+        WeblogCategoryData f1 = new WeblogCategoryData(testWeblog, root, "f1", null, null);
         mgr.saveWeblogCategory(f1);
         
-        WeblogCategoryData f2 = new WeblogCategoryData();
-        f2.setName("f2");
-        f2.setParent(f1);
-        f2.setWebsite(testWeblog);
+        WeblogCategoryData f2 = new WeblogCategoryData(testWeblog, f1, "f2", null, null);
         mgr.saveWeblogCategory(f2);
         
-        WeblogCategoryData f3 = new WeblogCategoryData();
-        f3.setName("f3");
-        f3.setParent(f2);
-        f3.setWebsite(testWeblog);
+        WeblogCategoryData f3 = new WeblogCategoryData(testWeblog, f2, "f3", null, null);
         mgr.saveWeblogCategory(f3);
         
         TestUtils.endSession(true);
