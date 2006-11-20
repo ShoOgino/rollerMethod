@@ -1,31 +1,22 @@
+    // TODO: this method should be removed and it's functionality moved to getWeblogEntries()
     public List getWeblogEntries(WeblogCategoryData cat, boolean subcats)
         throws RollerException {
         
         try {
             Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
-            List entries = new LinkedList();
+            Criteria criteria = session.createCriteria(WeblogEntryData.class);
             
-            // Get entries in category
-            Criteria entriesQuery = session.createCriteria(WeblogEntryData.class);
-            entriesQuery.add(Expression.eq("category", cat));
-            Iterator entryIter = entriesQuery.list().iterator();
-            while (entryIter.hasNext()) {
-                WeblogEntryData entry = (WeblogEntryData)entryIter.next();
-                entries.add(entry);
+            if(!subcats) {
+                // if no subcats then this is an equals query
+                criteria.add(Expression.eq("category", cat));
+            } else {
+                // if we are doing subcats then do a case sensitive
+                // query using category path
+                criteria.createAlias("category", "cat");
+                criteria.add(Expression.like("cat.path", cat.getPath()+"%"));
             }
             
-            if (subcats) {
-                // recursive call for child categories
-                WeblogCategoryData childCat = null;
-                Iterator childCats = cat.getWeblogCategories().iterator();
-                while(childCats.hasNext()) {
-                    childCat = (WeblogCategoryData) childCats.next();
-                    
-                    entries.addAll(childCat.retrieveWeblogEntries(subcats));
-                }
-            }
-            
-            return entries;
+            return criteria.list();
             
         } catch (HibernateException e) {
             throw new RollerException(e);

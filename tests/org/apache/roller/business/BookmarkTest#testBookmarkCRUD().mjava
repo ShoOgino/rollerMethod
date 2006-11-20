@@ -4,11 +4,7 @@
         
         FolderData root = bmgr.getRootFolder(testWeblog);
         
-        FolderData folder = new FolderData();
-        folder.setName("TestFolder2");
-        folder.setDescription("created by testBookmarkCRUD()");
-        folder.setWebsite(testWeblog);
-        folder.setParent(root);
+        FolderData folder = new FolderData(root, "TestFolder2", null, testWeblog);
         bmgr.saveFolder(folder);
         TestUtils.endSession(true);
         

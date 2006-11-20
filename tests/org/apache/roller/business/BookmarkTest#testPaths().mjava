@@ -8,22 +8,13 @@
         try {
             FolderData root = bmgr.getRootFolder(testWeblog);
             
-            FolderData f1 = new FolderData();
-            f1.setName("f1");
-            f1.setParent(root);
-            f1.setWebsite(testWeblog);
+            FolderData f1 = new FolderData(root, "f1", null, testWeblog);
             bmgr.saveFolder(f1);
             
-            FolderData f2 = new FolderData();
-            f2.setName("f2");
-            f2.setParent(f1);
-            f2.setWebsite(testWeblog);
+            FolderData f2 = new FolderData(f1, "f2", null, testWeblog);
             bmgr.saveFolder(f2);
             
-            FolderData f3 = new FolderData();
-            f3.setName("f3");
-            f3.setParent(f2);
-            f3.setWebsite(testWeblog);
+            FolderData f3 = new FolderData(f2, "f3", null, testWeblog);
             bmgr.saveFolder(f3);
             
             TestUtils.endSession(true);

@@ -5,11 +5,20 @@
             java.lang.String description,
             java.lang.String image) {
         
-        this.id = null;
-        this.website = website;
         this.name = name;
         this.description = description;
         this.image = image;
+        
+        this.website = website;
         this.parentCategory = parent;
+        
+        // calculate path
+        if(parent == null) {
+            this.path = "/";
+        } else if("/".equals(parent.getPath())) {
+            this.path = "/"+name;
+        } else {
+            this.path = parent.getPath() + "/" + name;
+        }
     }
 

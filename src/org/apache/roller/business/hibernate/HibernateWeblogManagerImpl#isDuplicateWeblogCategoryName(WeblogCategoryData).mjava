@@ -1,22 +1,11 @@
-    // TODO: need to fix this method and provide unit test case
+    // TODO: provide unit test case
     public boolean isDuplicateWeblogCategoryName(WeblogCategoryData cat)
             throws RollerException {
         
         // ensure that no sibling categories share the same name
         WeblogCategoryData parent = cat.getParent();
         if (null != parent) {
-            // TODO: if cat.equals() worked right then we should be able
-            // to use parent.getWeblogCategories().contains(cat) instead of this loop
-            
-            WeblogCategoryData sibling = null;
-            Iterator siblings = parent.getWeblogCategories().iterator();
-            while(siblings.hasNext()) {
-                sibling = (WeblogCategoryData) siblings.next();
-                
-                if(cat.getName().equals(sibling.getName())) {
-                    return true;
-                }
-            }
+            return (getWeblogCategoryByPath(cat.getWebsite(), cat.getPath()) != null);
         }
         
         return false;

@@ -1,22 +1,11 @@
     /**
-     * Get path in category hierarchy.
-     *
-     * TODO: category path should be persisted.
+     * The full path to this category in the hierarchy.
      *
      * @roller.wrapPojoMethod type="simple"
+     *
+     * @hibernate.property column="path" non-null="true" unique="false"
      */
     public String getPath() {
-        
-        if (null == cachedPath) {
-            if (getParent() == null) {
-                return "/";
-            } else {
-                String parentPath = getParent().getPath();
-                parentPath = "/".equals(parentPath) ? "" : parentPath;
-                return parentPath + "/" + this.name;
-            }
-        }
-        
-        return cachedPath;
+        return this.path;
     }
 

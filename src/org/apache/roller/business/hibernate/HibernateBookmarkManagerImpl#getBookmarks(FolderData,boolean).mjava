@@ -5,22 +5,24 @@
     public List getBookmarks(FolderData folder, boolean subfolders)
             throws RollerException {
         
-        List bkmrks = new LinkedList();
-        
-        // Get bookmarks in current folder
-        bkmrks.addAll(folder.getBookmarks());
-        
-        if (subfolders) {
-            // recursive call for child folders
-            FolderData childFolder = null;
-            Iterator childFolders = folder.getFolders().iterator();
-            while(childFolders.hasNext()) {
-                childFolder = (FolderData) childFolders.next();
-                
-                bkmrks.addAll(this.getBookmarks(childFolder, subfolders));
+        try {
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
+            Criteria criteria = session.createCriteria(BookmarkData.class);
+            
+            if(!subfolders) {
+                // if no subfolders then this is an equals query
+                criteria.add(Expression.eq("folder", folder));
+            } else {
+                // if we are doing subfolders then do a case sensitive
+                // query using folder path
+                criteria.createAlias("folder", "fd");
+                criteria.add(Expression.like("fd.path", folder.getPath()+"%"));
             }
+            
+            return criteria.list();
+            
+        } catch (HibernateException e) {
+            throw new RollerException(e);
         }
-        
-        return bkmrks;
     }
 

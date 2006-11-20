@@ -1,5 +1,23 @@
-    public FolderData getFolder(WebsiteData website, String folderPath)
+    public FolderData getFolder(WebsiteData website, String path)
             throws RollerException {
-        return getFolderByPath(website, null, folderPath);
+        
+        if (path == null || path.trim().equals("/")) {
+            return getRootFolder(website);
+        } else {
+            String folderPath = path;
+            
+            // all folder paths must begin with a '/'
+            if(!folderPath.startsWith("/")) {
+                folderPath = "/"+folderPath;
+            }
+            
+            // now just do simple lookup by path
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
+            
+            Criteria criteria = session.createCriteria(FolderData.class);
+            criteria.add(Expression.eq("path", folderPath));
+            
+            return (FolderData) criteria.uniqueResult();
+        }
     }
 

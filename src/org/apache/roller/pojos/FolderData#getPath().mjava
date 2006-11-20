@@ -1,20 +1,11 @@
     /**
-     * Get path to this bookmark folder.
+     * The full path to this folder in the hierarchy.
      *
      * @roller.wrapPojoMethod type="simple"
+     *
+     * @hibernate.property column="path" non-null="true" unique="false"
      */
-    public String getPath() throws RollerException {
-        
-        if (null == path) {
-            if (getParent() == null) {
-                return "/";
-            } else {
-                String parentPath = getParent().getPath();
-                parentPath = "/".equals(parentPath) ? "" : parentPath;
-                return parentPath + "/" + this.name;
-            }
-        }
-        
-        return path;
+    public String getPath() {
+        return this.path;
     }
 

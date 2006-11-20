@@ -3,21 +3,10 @@
      */
     private boolean isDuplicateFolderName(FolderData folder) throws RollerException {
         
-        // ensure that no sibling folders share the same name
+        // ensure that no sibling categories share the same name
         FolderData parent = folder.getParent();
         if (null != parent) {
-            // TODO: if folder.equals() worked right then we should be able
-            // to use parent.getFolders().contains(folder) instead of this loop
-            
-            FolderData sibling = null;
-            Iterator siblings = parent.getFolders().iterator();
-            while(siblings.hasNext()) {
-                sibling = (FolderData) siblings.next();
-                
-                if(folder.getName().equals(sibling.getName())) {
-                    return true;
-                }
-            }
+            return (getFolder(folder.getWebsite(), folder.getPath()) != null);
         }
         
         return false;

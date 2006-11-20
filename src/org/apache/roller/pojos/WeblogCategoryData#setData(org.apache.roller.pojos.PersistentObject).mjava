@@ -1,4 +1,3 @@
-    /** Setter is needed in RollerImpl.storePersistentObject(). */
     public void setData(org.apache.roller.pojos.PersistentObject otherData) {
         WeblogCategoryData other = (WeblogCategoryData) otherData;
         
@@ -7,6 +6,7 @@
         this.name = other.getName();
         this.description = other.getDescription();
         this.image = other.getImage();
+        this.path = other.getPath();
         
         this.parentCategory = other.getParent();
         this.childCategories = other.getWeblogCategories();
