@@ -1,0 +1,30 @@
+    /** 
+     * Test bookmark folder paths. 
+     */
+    public void testFolderPaths() throws Exception {
+        
+        BookmarkManager bmgr = getRoller().getBookmarkManager();
+        
+        FolderData root = bmgr.getRootFolder(testWeblog);
+        
+        FolderData f1 = new FolderData(root, "f1", null, testWeblog);
+        bmgr.saveFolder(f1);
+        FolderData f2 = new FolderData(f1, "f2", null, testWeblog);
+        bmgr.saveFolder(f2);
+        FolderData f3 = new FolderData(f2, "f3", null, testWeblog);
+        bmgr.saveFolder(f3);
+        
+        TestUtils.endSession(true);
+        
+        assertEquals("f1",bmgr.getFolder(testWeblog, "/f1").getName());
+        assertEquals("f2",bmgr.getFolder(testWeblog, "/f1/f2").getName());
+        assertEquals("f3",bmgr.getFolder(testWeblog, "/f1/f2/f3").getName());
+        
+        f3 = bmgr.getFolder(testWeblog, "/f1/f2/f3");
+        String pathString = f3.getPath();
+        String[] pathArray = Utilities.stringToStringArray(pathString,"/");
+        assertEquals("f1", pathArray[0]);
+        assertEquals("f2", pathArray[1]);
+        assertEquals("f3", pathArray[2]);
+    }
+

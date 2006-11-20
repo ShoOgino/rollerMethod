@@ -1,0 +1,57 @@
+    /**
+     * Test all bookmark lookup methods.
+     */
+    public void testBookmarkLookups() throws Exception {
+        
+        BookmarkManager bmgr = getRoller().getBookmarkManager();
+        
+        FolderData root = bmgr.getRootFolder(testWeblog);
+        
+        // add some folders
+        FolderData f1 = new FolderData(root, "f1", null, testWeblog);
+        bmgr.saveFolder(f1);
+        FolderData f2 = new FolderData(f1, "f2", null, testWeblog);
+        bmgr.saveFolder(f2);
+        FolderData f3 = new FolderData(root, "f3", null, testWeblog);
+        bmgr.saveFolder(f3);
+        
+        // add some bookmarks
+        BookmarkData b1 = new BookmarkData(
+                f1, "b1", "testbookmark",
+                "http://example.com", "http://example.com/rss",
+                new Integer(1), new Integer(1), "image.gif");
+        bmgr.saveBookmark(b1);
+        BookmarkData b2 = new BookmarkData(
+                f1, "b2", "testbookmark",
+                "http://example.com", "http://example.com/rss",
+                new Integer(1), new Integer(1), "image.gif");
+        bmgr.saveBookmark(b2);
+        BookmarkData b3 = new BookmarkData(
+                f2, "b3", "testbookmark",
+                "http://example.com", "http://example.com/rss",
+                new Integer(1), new Integer(1), "image.gif");
+        bmgr.saveBookmark(b3);
+        
+        TestUtils.endSession(true);
+        
+        // test lookup by id
+        BookmarkData testBookmark = bmgr.getBookmark(b1.getId());
+        assertNotNull(testBookmark);
+        assertEquals("b1", testBookmark.getName());
+        
+        // test lookup of all bookmarks in single folder
+        FolderData testFolder = bmgr.getFolder(f1.getId());
+        List allBookmarks = bmgr.getBookmarks(testFolder, false);
+        assertNotNull(allBookmarks);
+        assertEquals(2, allBookmarks.size());
+        
+        // getBookmarks(folder, false) should also match folder.getBookmarks()
+        assertEquals(allBookmarks.size(), testFolder.getBookmarks().size());
+        
+        // test lookup of all bookmarks in folder branch (including subfolders)
+        testFolder = bmgr.getFolder(f1.getId());
+        allBookmarks = bmgr.getBookmarks(testFolder, true);
+        assertNotNull(allBookmarks);
+        assertEquals(3, allBookmarks.size());
+    }
+
