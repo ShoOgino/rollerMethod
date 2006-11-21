@@ -9,7 +9,7 @@
         BookmarkFormEx form = (BookmarkFormEx)actionForm;
         RollerRequest rreq = RollerRequest.getRollerRequest(request);
         BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
-
+        
         BookmarkData bd = null;
         if (null != form.getId() && !form.getId().trim().equals("")) 
         {
@@ -22,6 +22,14 @@
                 request.getParameter(RequestConstants.FOLDER_ID));
             bd.setFolder(fd);
         }
+
+        // Fix for ROL-1279, check for valid bookmark URLs
+        ActionErrors errors = validateBookmark(null, form);
+        if (errors.size() > 0) {
+            saveErrors(request, errors);
+            return mapping.findForward("BookmarkForm");
+        }
+
         RollerSession rses = RollerSession.getRollerSession(request);
         if (bd.getFolder().getWebsite().hasUserPermissions(
                 rses.getAuthenticatedUser(), PermissionsData.AUTHOR))
@@ -37,7 +45,6 @@
         }
         else 
         {
-            ActionErrors errors = new ActionErrors();
             errors.add(null, new ActionError("error.permissions.deniedSave"));
             saveErrors(request, errors);
             forward = mapping.findForward("access-denied");

@@ -1,0 +1,14 @@
+    public ActionErrors validateBookmark(ActionErrors errors, BookmarkFormEx form) {
+        if (errors == null) errors = new ActionErrors();
+        if (StringUtils.isNotEmpty(form.getUrl()) && !validURL(form.getUrl())) {
+            errors.add("url", new ActionError("bookmarkForm.error.invalidURL", form.getUrl()));
+        }
+        if (StringUtils.isNotEmpty(form.getFeedUrl()) && !validURL(form.getFeedUrl())) {
+            errors.add("feedUrl", new ActionError("bookmarkForm.error.invalidURL", form.getFeedUrl()));
+        }
+        if (StringUtils.isNotEmpty(form.getImage()) && !validURL(form.getImage())) {
+            errors.add("image", new ActionError("bookmarkForm.error.invalidURL", form.getImage()));
+        }
+        return errors;
+    }
+
