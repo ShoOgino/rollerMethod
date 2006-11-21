@@ -1,20 +1,15 @@
     public String toString() {
+        
         StringBuffer str = new StringBuffer("{");
+        str.append("id=").append(id);
+        str.append(",");
+        str.append("path=").append(path);
+        str.append(",");
+        str.append("desc=").append(description);
+        str.append(",");
+        str.append("image=").append(image);
+        str.append("}");
         
-        str.append(
-                "id="
-                + id
-                + " "
-                + "name="
-                + name
-                + " "
-                + "description="
-                + description
-                + " "
-                + "image="
-                + image);
-        str.append('}');
-        
-        return (str.toString());
+        return str.toString();
     }
 

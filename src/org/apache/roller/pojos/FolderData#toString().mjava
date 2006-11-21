@@ -1,11 +1,13 @@
     public String toString() {
+        
         StringBuffer str = new StringBuffer("{");
-        str.append(
-                "bookmarks=" + bookmarks + " "
-                + "id=" + id + " "
-                + "name=" + name + " "
-                + "description=" + description);
-        str.append('}');
-        return (str.toString());
+        str.append("id=").append(id);
+        str.append(",");
+        str.append("path=").append(path);
+        str.append(",");
+        str.append("desc=").append(description);
+        str.append("}");
+        
+        return str.toString();
     }
 
