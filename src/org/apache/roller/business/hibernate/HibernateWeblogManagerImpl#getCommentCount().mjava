@@ -1,0 +1,16 @@
+    /**
+     * Get site-wide comment count 
+     */
+    public long getCommentCount() throws RollerException {
+        long ret = 0;
+        try {
+            Session session = ((HibernatePersistenceStrategy)strategy).getSession();
+            String query = "select count(distinct c) from CommentData c";
+            List result = session.createQuery(query).list();
+            ret = ((Integer)result.get(0)).intValue();
+        } catch (Exception e) {
+            throw new RollerException(e);
+        }
+        return ret;
+    }
+

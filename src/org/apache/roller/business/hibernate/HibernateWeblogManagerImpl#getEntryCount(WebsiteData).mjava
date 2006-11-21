@@ -1,0 +1,16 @@
+    /**
+     * Get weblog entry count 
+     */    
+    public long getEntryCount(WebsiteData website) throws RollerException {
+        long ret = 0;
+        try {
+            Session session = ((HibernatePersistenceStrategy)strategy).getSession();
+            String query = "select count(distinct e) from WeblogEntryData e where e.status='PUBLISHED' and e.website=?";
+            List result = session.createQuery(query).setParameter(0,website).list();
+            ret = ((Integer)result.get(0)).intValue();
+        } catch (Exception e) {
+            throw new RollerException(e);
+        }
+        return ret;
+    }
+

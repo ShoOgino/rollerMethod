@@ -1,0 +1,12 @@
+    public long getUserCount() {
+        long count = 0;
+        try {
+            Roller roller = RollerFactory.getRoller();
+            UserManager mgr = roller.getUserManager();
+            count = mgr.getUserCount();            
+        } catch (RollerException e) {
+            log.error("Error getting user count for site", e);
+        }
+        return count;
+    }
+

@@ -1,0 +1,12 @@
+    public long getEntryCount() {
+        long count = 0;
+        try {
+            Roller roller = RollerFactory.getRoller();
+            WeblogManager mgr = roller.getWeblogManager();
+            count = mgr.getEntryCount();            
+        } catch (RollerException e) {
+            log.error("Error getting entry count for site", e);
+        }
+        return count;
+    }
+
