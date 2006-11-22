@@ -1,14 +1,11 @@
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {    
-                
+        
         Roller roller = RollerFactory.getRoller();
         try {
-            WeblogManager wmgr = roller.getWeblogManager();
-            CommentData c = wmgr.getComment(request.getParameter("id"));
-            String content = Utilities.escapeHTML(c.getContent());
-            content = WordUtils.wrap(content, 72);
-            content = StringEscapeUtils.escapeJavaScript(content);
-            String json = "{ id: \"" + c.getId() + "\"," + "content: \"" + content + "\" }"; 
+            UserManager umgr = roller.getUserManager();
+            WebsiteData w = umgr.getWebsiteByHandle(request.getParameter("weblog"));
+            String json = "{ handle: \"" + w.getHandle() + "\"," + "count: \"" + w.getTodaysHits() + "\" }"; 
             response.setContentType("text/html; charset=utf-8");
             response.getWriter().print(json);   
             response.flushBuffer();
