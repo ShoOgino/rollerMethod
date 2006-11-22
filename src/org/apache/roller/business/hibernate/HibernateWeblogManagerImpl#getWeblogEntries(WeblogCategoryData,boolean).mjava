@@ -14,6 +14,7 @@
                 // query using category path
                 criteria.createAlias("category", "cat");
                 criteria.add(Expression.like("cat.path", cat.getPath()+"%"));
+                criteria.add(Expression.eq("website", cat.getWebsite()));
             }
             
             return criteria.list();

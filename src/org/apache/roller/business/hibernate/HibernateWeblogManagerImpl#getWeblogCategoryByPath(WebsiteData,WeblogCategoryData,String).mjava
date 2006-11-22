@@ -18,6 +18,7 @@
             
             Criteria criteria = session.createCriteria(WeblogCategoryData.class);
             criteria.add(Expression.eq("path", catPath));
+            criteria.add(Expression.eq("website", website));
             
             return (WeblogCategoryData) criteria.uniqueResult();
         }
