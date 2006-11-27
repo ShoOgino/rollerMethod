@@ -14,8 +14,7 @@
             }
             
             // now just do simple lookup by path
-            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
-            
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();            
             Criteria criteria = session.createCriteria(WeblogCategoryData.class);
             criteria.add(Expression.eq("path", catPath));
             criteria.add(Expression.eq("website", website));
