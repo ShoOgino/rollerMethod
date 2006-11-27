@@ -1,0 +1,14 @@
+    public void execute() throws BuildException {
+        try {
+            System.out.println("Stopping Derby");
+            System.setProperty("derby.drda.portNumber", port);
+            System.setProperty("derby.drda.host", "localhost");
+            NetworkServerControl server = new NetworkServerControl();
+            server.shutdown();
+            try {Thread.sleep(2000);} catch (Exception ignored) {}
+
+        } catch (Exception e) {
+            throw new BuildException(e.getMessage());
+        }
+    }
+
