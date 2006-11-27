@@ -14,7 +14,10 @@
             String reset = "update RefererData set dayHits=0";
             session.createQuery(reset).executeUpdate();
             String delete = null;
-            if ( currentDialect instanceof SQLServerDialect || currentDialect instanceof OracleDialect ){
+            // Some databases can't handle comparing CLOBs, use like as a workaround
+            if (   currentDialect instanceof SQLServerDialect 
+                || currentDialect instanceof OracleDialect 
+                || currentDialect instanceof DerbyDialect) {
                 delete = "delete RefererData where excerpt is null or excerpt like ''";
             } else {
                 delete = "delete RefererData where excerpt is null or excerpt=''";
