@@ -27,7 +27,7 @@
         ActionErrors errors = validateBookmark(null, form);
         if (errors.size() > 0) {
             saveErrors(request, errors);
-            return mapping.findForward("BookmarkForm");
+            return mapping.findForward("BookmarkEdit");
         }
 
         RollerSession rses = RollerSession.getRollerSession(request);
