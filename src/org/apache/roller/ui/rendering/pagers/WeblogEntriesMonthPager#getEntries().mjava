@@ -4,14 +4,12 @@
         cal.setTime(date);
         cal.add(Calendar.DATE, 1);
         date = cal.getTime();
-        Date startDate = DateUtil.getStartOfMonth(date, cal);;
-        Date endDate = DateUtil.getEndOfMonth(date, cal);;
+        Date startDate = DateUtil.getStartOfMonth(date, cal);
+        Date endDate = DateUtil.getEndOfMonth(date, cal);
         
         if (entries == null) {
             entries = new TreeMap(new ReverseComparator());
             try {
-                Roller roller = RollerFactory.getRoller();
-                WeblogManager wmgr = roller.getWeblogManager();
                 Map mmap = RollerFactory.getRoller().getWeblogManager().getWeblogEntryObjectMap(
                         weblog,
                         startDate,

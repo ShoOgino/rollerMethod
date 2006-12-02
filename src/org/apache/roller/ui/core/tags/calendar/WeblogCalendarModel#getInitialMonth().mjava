@@ -1,0 +1,7 @@
+    public Date getInitialMonth() {
+        Calendar cal = getCalendar();
+        // if there is no dateCreated value, default to beginning of epoch.
+        cal.setTime(weblog.getDateCreated() != null ? weblog.getDateCreated() : new Date(0));
+        return getFirstDayOfMonth(cal).getTime();
+    }
+
