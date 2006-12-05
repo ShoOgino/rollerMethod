@@ -1,6 +1,10 @@
     /** Creates a new instance of DatamapperPropertiesManagerImpl */
-    public DatamapperPropertiesManagerImpl
-            (DatamapperPersistenceStrategy strategy) {
+    public DatamapperPropertiesManagerImpl (DatamapperPersistenceStrategy strategy) {
+        log.debug("Instantiating Hibernate Properties Manager");
+
         this.strategy = strategy;
+
+        // TODO: and new method initialize(props)
+        init();
     }
 

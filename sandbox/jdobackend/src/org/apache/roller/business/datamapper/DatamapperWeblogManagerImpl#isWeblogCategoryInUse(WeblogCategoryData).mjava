@@ -1,8 +1,30 @@
     /**
      * Check if weblog category is in use.
      */
-    public boolean isWeblogCategoryInUse(WeblogCategoryData data)
+    public boolean isWeblogCategoryInUse(WeblogCategoryData cat)
             throws RollerException {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        int entryCount = ((List) strategy.newQuery(WeblogEntryData.class, "").execute(cat)).size();
+            
+        if (entryCount > 0) {
+            return true;
+        }
+            
+        Iterator cats = cat.getWeblogCategories().iterator();
+        while (cats.hasNext()) {
+            WeblogCategoryData childCat = (WeblogCategoryData)cats.next();
+            if (childCat.isInUse()) {
+                return true;
+            }
+        }
+            
+        if (cat.getWebsite().getBloggerCategory().equals(cat)) {
+            return true;
+        }
+            
+        if (cat.getWebsite().getDefaultCategory().equals(cat)) {
+            return true;
+        }
+            
+        return false;
     }
 

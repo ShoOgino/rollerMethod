@@ -5,6 +5,11 @@
      */
     public List getWeblogEntriesPinnedToMain(Integer max)
             throws RollerException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        DatamapperQuery query = strategy.newQuery(WeblogCategoryData.class, 
+                "WeblogEntryData.getByPinnedToMainOrderByPubTime");
+        if (max != null) {
+            query.setRange(0, max.intValue());
+        }
+        return (List) query.execute(Boolean.TRUE);   
     }
 

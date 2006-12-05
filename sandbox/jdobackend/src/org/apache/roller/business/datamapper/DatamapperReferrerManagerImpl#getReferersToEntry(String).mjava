@@ -5,6 +5,11 @@
      * @throws org.apache.roller.RollerException
      */
     public List getReferersToEntry(String entryid) throws RollerException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        if (null == entryid)
+            throw new RollerException("entryid is null");
+        
+        return (List) strategy.newQuery(RefererData.class, 
+                "RefererData.getByEntryId&TitleNotNull&ExcerptNotNullOrderByTotalHitsDesc").
+                execute(entryid);
     }
 

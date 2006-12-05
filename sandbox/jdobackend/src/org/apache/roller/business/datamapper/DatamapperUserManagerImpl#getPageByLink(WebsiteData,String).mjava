@@ -1,13 +1,19 @@
-    public WeblogTemplate getPageByLink(WebsiteData website, String pageLink) 
+    /**
+     * Use Datamapper directly because Roller's Query API does too much allocation.
+     */
+    public WeblogTemplate getPageByLink(WebsiteData website, String pagelink)
             throws RollerException {
+
         if (website == null)
-            throw new RollerException(
-                    "getPageByLink: website cannot be null");
-        if (pageLink == null)
-            throw new RollerException(
-                    "getPageByLink: Page link cannot be null");
-        return (WeblogTemplate)strategy.newQuery(WeblogTemplate.class,
-                "getUniqueByWebsite&&Link")
-            .execute(new Object[]{website, pageLink});
+            throw new RollerException("userName is null");
+
+        if (pagelink == null)
+            throw new RollerException("Pagelink is null");
+
+        DatamapperQuery query = strategy.newQuery(
+                WeblogTemplate.class, "WeblogTemplate.getByWebsite&Link");
+        query.setRange(1, 2);  // => query.setFirstResult(1).setMaxResult(1)
+        List list = (List)query.execute(new Object[] {website, pagelink});
+        return list.size()!=0 ? (WeblogTemplate)list.get(0) : null;
     }
 

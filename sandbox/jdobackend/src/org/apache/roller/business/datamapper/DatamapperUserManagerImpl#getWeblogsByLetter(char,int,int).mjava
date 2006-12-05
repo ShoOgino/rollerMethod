@@ -1,8 +1,13 @@
-    /**
-     * Get collection of weblogs whose handles begin with specified letter
-     */
     public List getWeblogsByLetter(char letter, int offset, int length)
-            throws RollerException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        throws RollerException {
+        // TODO: ATLAS getWeblogsByLetter DONE
+        DatamapperQuery query = strategy.newQuery(WebsiteData.class, "WebsiteData.getByHandleOrderByHandle");
+        if (offset != 0 || length != -1) {
+            if (length == -1) {
+                length = Integer.MAX_VALUE - offset;
+            }            
+            query.setRange(offset, offset + length);
+        }
+        return (List) query.execute(letter + "%");
     }
 

@@ -1,7 +1,7 @@
     /**
-     * @see org.apache.roller.model.Roller#getPingTargetManager()
+     * @see org.apache.roller.business.Roller#getPingTargetManager()
      */
-    public PingTargetManager getPingTargetManager() throws RollerException {
+    public PingTargetManager getPingTargetManager() {
         if (pingTargetManager == null) {
             pingTargetManager = new DatamapperPingTargetManagerImpl(strategy);
         }

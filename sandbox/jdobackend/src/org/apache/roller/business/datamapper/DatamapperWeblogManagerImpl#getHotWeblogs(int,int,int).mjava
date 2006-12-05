@@ -1,0 +1,19 @@
+    public List getHotWeblogs(int sinceDays, int offset, int length) 
+        throws RollerException {
+        
+        // figure out start date
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.DATE, -1 * sinceDays);
+        Date startDate = cal.getTime();
+        
+        DatamapperQuery query = strategy.newQuery(HitCountData.class, 
+                "HitCountData.getByWeblogEnabledTrueAndActiveTrue&DailyHitsGreaterZero&WeblogLastModifiedGreaterOrderByDailyHitsDesc");
+
+        if (length != -1) {
+            query.setRange(offset, length);
+        }
+        
+        return (List) query.execute(startDate);
+    }
+

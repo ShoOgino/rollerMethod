@@ -3,6 +3,10 @@
      */
     public List getFeedEntries(
             String feedUrl, int offset, int len) throws RollerException {
-        return null;
+        // TODO: ATLAS getFeedEntries DONE       
+        List result = (List) strategy.newQuery(PlanetEntryData.class, 
+                "PlanetEntryData.getByFeedURL").execute(feedUrl); 
+        // TODO handle offset and length
+        return result;
     }
 

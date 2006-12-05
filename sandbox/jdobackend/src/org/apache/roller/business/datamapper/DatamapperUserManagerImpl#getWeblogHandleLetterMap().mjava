@@ -1,8 +1,13 @@
-    /**
-     * Get map with 26 entries, one for each letter A-Z and containing integers
-     * reflecting the number of weblogs whose names start with each letter.
-     */
     public Map getWeblogHandleLetterMap() throws RollerException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        String lc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        Map results = new TreeMap();
+        DatamapperQuery query = strategy.newQuery(WebsiteData.class, "WebsiteData.getCountByHandleLike");
+        for (int i=0; i<26; i++) {
+            char currentChar = lc.charAt(i);
+            List row = (List) query.execute(currentChar + "%");
+            Integer count = (Integer) row.get(0);
+            results.put(String.valueOf(currentChar), count);
+        }
+        return results;
     }
 

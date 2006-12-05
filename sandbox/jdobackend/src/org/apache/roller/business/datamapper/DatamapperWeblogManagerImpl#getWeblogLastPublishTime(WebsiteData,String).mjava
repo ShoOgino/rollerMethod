@@ -6,6 +6,33 @@
      */
     public Date getWeblogLastPublishTime(WebsiteData website, String catName)
             throws RollerException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        WeblogCategoryData cat = null;
+
+        if (catName != null && website != null) {
+            cat = getWeblogCategoryByPath(website, null, catName);
+        }
+    
+        List list = null;
+        if (website != null) {
+            if (cat != null) {
+                  list = (List) strategy.newQuery(WeblogEntryData.class, 
+                          "WeblogEntryData.getByStatus&PubTimeLessEqual&Category&WebsiteOrderByPubTimeDesc").setRange(0, 1)
+                          .execute(new Object[] {WeblogEntryData.PUBLISHED, new Date(), cat, website});
+            } else {
+                list = (List) strategy.newQuery(WeblogEntryData.class, 
+                        "WeblogEntryData.getByStatus&PubTimeLessEqual&WebsiteOrderByPubTimeDesc").setRange(0, 1)
+                        .execute(new Object[] {WeblogEntryData.PUBLISHED, new Date(), website});
+            }
+        } else {
+            // cat must also be null
+            list = (List) strategy.newQuery(WeblogEntryData.class, 
+                    "WeblogEntryData.getByStatus&PubTimeLessEqualOrderByPubTimeDesc").setRange(0, 1)
+                    .execute(new Object[] {WeblogEntryData.PUBLISHED, new Date()});
+        }
+        if (list.size() > 0) {
+            return ((WeblogEntryData)list.get(0)).getPubTime();
+        } else {
+            return null;
+        }
     }
 

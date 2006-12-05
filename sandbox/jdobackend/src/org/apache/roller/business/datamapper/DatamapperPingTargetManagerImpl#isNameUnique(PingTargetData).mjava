@@ -2,14 +2,13 @@
             throws RollerException {
         String name = pingTarget.getName();
         if (name == null || name.trim().length() == 0) return false;
-        int count = ((Integer)
+        List results = (List)
             strategy.newQuery(PingTargetData.class,
-                    "countByWebsite&&NameEqual&&IdNotEqual")
+                    "PingTargetData.getByWebsite&Name&IdNotEqual")
                 .execute(new Object[]{
                     pingTarget.getWebsite(), 
                     name,
-                    pingTarget.getId()}))
-            .intValue();
-        return (count != 0);
+                    pingTarget.getId()});
+        return (results.size() != 0);
     }
 

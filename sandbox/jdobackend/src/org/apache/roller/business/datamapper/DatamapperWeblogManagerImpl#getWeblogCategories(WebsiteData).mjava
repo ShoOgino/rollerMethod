@@ -3,6 +3,7 @@
      */
     public List getWeblogCategories(WebsiteData website)
             throws RollerException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return (List) strategy.newQuery(WeblogCategoryData.class, 
+                "WeblogCategoryData.getByWebsite").execute(website);
     }
 

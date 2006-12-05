@@ -3,10 +3,14 @@
      * @throws org.apache.roller.RollerException on any error
      */
     public void flush() throws RollerException {
-        EntityManager em = getEntityManager(false);
-        if (isTransactionActive(em)) {
-            em.getTransaction().commit();
+        try {
+            EntityManager em = getEntityManager(false);
+            if (isTransactionActive(em)) {
+                em.getTransaction().commit();
+            }
+            em.close();
+        } catch (PersistenceException pe) {
+            throw new RollerException(pe);
         }
-        em.close();
     }
 

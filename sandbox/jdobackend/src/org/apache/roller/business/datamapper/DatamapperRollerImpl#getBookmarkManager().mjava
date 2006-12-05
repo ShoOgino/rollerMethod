@@ -1,7 +1,7 @@
     /**
-     * @see org.apache.roller.model.Roller#getBookmarkManager()
+     * @see org.apache.roller.business.Roller#getBookmarkManager()
      */
-    public BookmarkManager getBookmarkManager() throws RollerException {
+    public BookmarkManager getBookmarkManager() {
         if ( bookmarkManager == null ) {
             bookmarkManager = new DatamapperBookmarkManagerImpl(strategy);
         }

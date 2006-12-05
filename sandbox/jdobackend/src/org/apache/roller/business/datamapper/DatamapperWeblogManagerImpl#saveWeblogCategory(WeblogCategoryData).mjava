@@ -3,6 +3,13 @@
      */
     public void saveWeblogCategory(WeblogCategoryData cat)
             throws RollerException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if(this.isDuplicateWeblogCategoryName(cat)) {
+            throw new RollerException("Duplicate category name");
+        }
+        
+        // update weblog last modified date.  date updated by saveWebsite()
+        RollerFactory.getRoller().getUserManager().saveWebsite(cat.getWebsite());
+        
+        this.strategy.store(cat);
     }
 

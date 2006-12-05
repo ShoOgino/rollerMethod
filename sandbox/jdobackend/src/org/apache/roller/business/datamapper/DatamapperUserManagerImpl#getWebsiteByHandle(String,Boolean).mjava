@@ -1,8 +1,48 @@
-    public WebsiteData getWebsiteByHandle(String handle, Boolean enabled) 
-            throws RollerException {
-        // XXX cache websites by handle?
-        return (WebsiteData)strategy.newQuery(WebsiteData.class,
-                "getByHandle&&Enabled")
-            .execute(new Object[]{handle, enabled});
+    /**
+     * Return website specified by handle.
+     */
+    public WebsiteData getWebsiteByHandle(String handle, Boolean enabled)
+    throws RollerException {
+
+        if (handle==null )
+            throw new RollerException("Handle cannot be null");
+
+        // check cache first
+        // NOTE: if we ever allow changing handles then this needs updating
+        if(this.weblogHandleToIdMap.containsKey(handle)) {
+
+            WebsiteData weblog = this.getWebsite((String) this.weblogHandleToIdMap.get(handle));
+            if(weblog != null) {
+                // only return weblog if enabled status matches
+                if(enabled == null || enabled.equals(weblog.getEnabled())) {
+                    log.debug("weblogHandleToId CACHE HIT - "+handle);
+                    return weblog;
+                }
+            } else {
+                // mapping hit with lookup miss?  mapping must be old, remove it
+                this.weblogHandleToIdMap.remove(handle);
+            }
+        }
+
+        // cache failed, do lookup
+        DatamapperQuery query;
+        Object[] params;
+        if (enabled != null) {
+            query = strategy.newQuery(WebsiteData.class,"WebsiteData.getByHandle&enabled");
+            params = new Object[] {handle, enabled};
+        } else {
+            query = strategy.newQuery(WebsiteData.class,"WebsiteData.getByHandle");
+            params = new Object[] {handle};
+        }
+        query.setUnique();
+        WebsiteData website = (WebsiteData) query.execute(params);
+
+        // add mapping to cache
+        if(website != null) {
+            log.debug("weblogHandleToId CACHE MISS - "+handle);
+            this.weblogHandleToIdMap.put(website.getHandle(), website.getId());
+        }
+
+        return website;
     }
 

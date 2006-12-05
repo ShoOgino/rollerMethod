@@ -1,9 +1,0 @@
-    public List getUsersStartingWith
-            (String startsWith, int offset, int length, Boolean enabled) 
-            throws RollerException {
-        return (List)strategy.newQuery(UserData.class,
-                "getByEnabled&&UserNameStartsWith||EmailStartsWith.range")
-            .setRange(offset, offset+length)
-            .execute(new Object[]{enabled, startsWith});
-    }
-

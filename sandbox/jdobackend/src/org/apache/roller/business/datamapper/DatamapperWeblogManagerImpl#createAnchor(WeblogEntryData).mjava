@@ -1,7 +1,26 @@
     /**
      * Create unique anchor for weblog entry.
      */
-    public String createAnchor(WeblogEntryData data) throws RollerException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public String createAnchor(WeblogEntryData entry) throws RollerException {
+        // Check for uniqueness of anchor
+        String base = entry.createAnchorBase();
+        String name = base;
+        int count = 0;
+            
+        while (true) {
+            if (count > 0) {
+                name = base + count;
+            }
+                
+            List results = (List) strategy.newQuery(WeblogEntryData.class, 
+                "WeblogEntryData.getByWeblogEntry&Anchor").execute(new Object[] {entry, name});
+                
+            if (results.size() < 1) {
+                break;
+            } else {
+                count++;
+            }
+        }
+        return name;
     }
 

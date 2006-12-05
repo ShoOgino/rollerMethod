@@ -1,8 +1,45 @@
-    /**
-     * Get user object by user name, optionally include dis-enabled users
-     */
     public UserData getUserByUserName(String userName, Boolean enabled)
-            throws RollerException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    throws RollerException {
+
+        if (userName==null )
+            throw new RollerException("userName cannot be null");
+
+        // check cache first
+        // NOTE: if we ever allow changing usernames then this needs updating
+        if(this.userNameToIdMap.containsKey(userName)) {
+
+            UserData user = this.getUser((String) this.userNameToIdMap.get(userName));
+            if(user != null) {
+                // only return the user if the enabled status matches
+                if(enabled == null || enabled.equals(user.getEnabled())) {
+                    log.debug("userNameToIdMap CACHE HIT - "+userName);
+                    return user;
+                }
+            } else {
+                // mapping hit with lookup miss?  mapping must be old, remove it
+                this.userNameToIdMap.remove(userName);
+            }
+        }
+
+        // cache failed, do lookup
+        DatamapperQuery query;
+        Object[] params;
+        if (enabled != null) {
+            query = strategy.newQuery(UserData.class,"UserData.getByUserName&enabled");
+            params = new Object[] {userName, enabled};
+        } else {
+            query = strategy.newQuery(WebsiteData.class,"UserData.getByUserName");
+            params = new Object[] {userName};
+        }
+        query.setUnique();
+        UserData user = (UserData) query.execute(params);
+
+        // add mapping to cache
+        if(user != null) {
+            log.debug("userNameToIdMap CACHE MISS - "+userName);
+            this.userNameToIdMap.put(user.getUserName(), user.getId());
+        }
+
+        return user;
     }
 

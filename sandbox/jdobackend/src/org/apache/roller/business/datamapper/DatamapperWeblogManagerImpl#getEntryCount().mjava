@@ -1,0 +1,10 @@
+    /**
+     * Get site-wide entry count 
+     */
+    public long getEntryCount() throws RollerException {
+        List results = (List) strategy.newQuery(WeblogEntryData.class, 
+                "WeblogEntryData.getCountDistinctByStatus").execute("PUBLISHED");
+        
+        return ((Integer)results.get(0)).intValue();
+    }
+

@@ -1,23 +1,115 @@
     /**
-     * Get websites optionally restricted by user, enabled and active status.
-     * @param user    Get all websites for this user (or null for all)
-     * @param offset  Offset into results (for paging)
-     * @param len     Maximum number of results to return (for paging)
-     * @param enabled Get all with this enabled state (or null or all)
-     * @param active  Get all with this active state (or null or all)
-     * @param startDate Restrict to those created after (or null for all)
-     * @param endDate Restrict to those created before (or null for all)
-     * @returns List of WebsiteData objects.
+     * Get websites of a user
      */
     public List getWebsites(
-            UserData user, 
-            Boolean  enabled, 
-            Boolean  active, 
-            Date     startDate, 
-            Date     endDate, 
-            int      offset, 
-            int      length) 
-            throws RollerException {
-        return null;
+        UserData user, Boolean enabled, Boolean active,
+        Date startDate, Date endDate, int offset, int length) throws RollerException {
+        
+        DatamapperQuery query = null;
+        List results = null;
+        boolean setRange = offset != 0 || length != -1;
+        
+        // TODO: ATLAS getWebsites DONE TESTED
+        if (endDate == null) endDate = new Date();
+
+        if (length == -1) {
+            length = Integer.MAX_VALUE - offset;
+        }
+        
+        if (startDate != null) {
+           if (enabled != null) {
+               if (active != null) {
+                  if (user != null) {
+                      query = strategy.newQuery(UserData.class, "WebsiteData.getByEndDate&StartDate&Enabled&Active&Permissions.user&Permissions.pendingOrderByDateCreatedDesc");
+                      if (setRange) query.setRange(offset, offset + length);
+                      results = (List) query.execute(new Object[] {endDate, startDate, enabled, active, user, Boolean.FALSE});                
+                  } else {
+                      query = strategy.newQuery(UserData.class, "WebsiteData.getByEndDate&StartDate&Enabled&ActiveOrderByDateCreatedDesc");
+                      if (setRange) query.setRange(offset, offset + length);
+                      results = (List) query.execute(new Object[] {endDate, startDate, enabled, active});                                      
+                  }
+               } else {
+                   if (user != null) {
+                       query = strategy.newQuery(UserData.class, "WebsiteData.getByEndDate&StartDate&Enabled&Permissions.user&Permissions.pendingOrderByDateCreatedDesc");
+                       if (setRange) query.setRange(offset, offset + length);
+                       results = (List) query.execute(new Object[] {endDate, startDate, enabled, user, Boolean.FALSE});                
+                   } else {
+                       query = strategy.newQuery(UserData.class, "WebsiteData.getByEndDate&StartDate&EnabledOrderByDateCreatedDesc");
+                       if (setRange) query.setRange(offset, offset + length);
+                       results = (List) query.execute(new Object[] {endDate, startDate, enabled});                
+                   }
+               }
+           } else {
+               if (active != null) {
+                   if (user != null) {
+                       query = strategy.newQuery(UserData.class, "WebsiteData.getByEndDate&StartDate&Active&Permissions.user&Permissions.pendingOrderByDateCreatedDesc");
+                       if (setRange) query.setRange(offset, offset + length);
+                       results = (List) query.execute(new Object[] {endDate, startDate, active, user, Boolean.FALSE});                
+                   } else {
+                       query = strategy.newQuery(UserData.class, "WebsiteData.getByEndDate&StartDate&ActiveOrderByDateCreatedDesc");
+                       if (setRange) query.setRange(offset, offset + length);
+                       results = (List) query.execute(new Object[] {endDate, startDate, active});                
+                   }
+               } else {
+                   if (user != null) {
+                       query = strategy.newQuery(UserData.class, "WebsiteData.getByEndDate&StartDate&Permissions.user&Permissions.pendingOrderByDateCreatedDesc");
+                       if (setRange) query.setRange(offset, offset + length);
+                       results = (List) query.execute(new Object[] {endDate, startDate, user, Boolean.FALSE});                
+                   } else {
+                       query = strategy.newQuery(UserData.class, "WebsiteData.getByEndDate&StartDateOrderByDateCreatedDesc");
+                       if (setRange) query.setRange(offset, offset + length);
+                       results = (List) query.execute(new Object[] {endDate, startDate});                
+                   }
+               }
+           }
+        } else {
+            if (enabled != null) {
+                if (active != null) {
+                   if (user != null) {
+                       query = strategy.newQuery(UserData.class, "WebsiteData.getByEndDate&Enabled&Active&Permissions.user&Permissions.pendingOrderByDateCreatedDesc");
+                       if (setRange) query.setRange(offset, offset + length);
+                       results = (List) query.execute(new Object[] {endDate, enabled, active, user, Boolean.FALSE});                
+                   } else {
+                       query = strategy.newQuery(UserData.class, "WebsiteData.getByEndDate&Enabled&ActiveOrderByDateCreatedDesc");
+                       if (setRange) query.setRange(offset, offset + length);
+                       results = (List) query.execute(new Object[] {endDate, enabled, active});                                      
+                   }
+                } else {
+                    if (user != null) {
+                        query = strategy.newQuery(UserData.class, "WebsiteData.getByEndDate&Enabled&Permissions.user&Permissions.pendingOrderByDateCreatedDesc");
+                        if (setRange) query.setRange(offset, offset + length);
+                        results = (List) query.execute(new Object[] {endDate, enabled, user, Boolean.FALSE});                
+                    } else {
+                        query = strategy.newQuery(UserData.class, "WebsiteData.getByEndDate&EnabledOrderByDateCreatedDesc");
+                        if (setRange) query.setRange(offset, offset + length);
+                        results = (List) query.execute(new Object[] {endDate, enabled});                
+                    }
+                }
+            } else {
+                if (active != null) {
+                    if (user != null) {
+                        query = strategy.newQuery(UserData.class, "WebsiteData.getByEndDate&Active&Permissions.user&Permissions.pendingOrderByDateCreatedDesc");
+                        if (setRange) query.setRange(offset, offset + length);
+                        results = (List) query.execute(new Object[] {endDate, active, user, Boolean.FALSE});                
+                    } else {
+                        query = strategy.newQuery(UserData.class, "WebsiteData.getByEndDate&ActiveOrderByDateCreatedDesc");
+                        if (setRange) query.setRange(offset, offset + length);
+                        results = (List) query.execute(new Object[] {endDate, active});                
+                    }
+                } else {
+                    if (user != null) {
+                        query = strategy.newQuery(UserData.class, "WebsiteData.getByEndDate&Permissions.user&Permissions.pendingOrderByDateCreatedDesc");
+                        if (setRange) query.setRange(offset, offset + length);
+                        results = (List) query.execute(new Object[] {endDate, user, Boolean.FALSE});                
+                    } else {
+                        query = strategy.newQuery(UserData.class, "WebsiteData.getByEndDateOrderByDateCreatedDesc");
+                        if (setRange) query.setRange(offset, offset + length);
+                        results = (List) query.execute(endDate);                
+                    }
+                }
+            }
+        }        
+        
+        return results;
     }
 

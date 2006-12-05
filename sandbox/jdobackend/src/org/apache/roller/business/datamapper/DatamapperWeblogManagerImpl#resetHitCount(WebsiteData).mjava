@@ -1,0 +1,9 @@
+    public void resetHitCount(WebsiteData weblog) throws RollerException {
+
+        HitCountData hitCount = (HitCountData) strategy.newQuery(HitCountData.class, 
+                "HitCountData.getByWeblog").setUnique().execute(weblog);
+
+        hitCount.setDailyHits(0);
+        strategy.store(hitCount);
+    }
+

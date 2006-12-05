@@ -1,0 +1,7 @@
+    public HitCountData getHitCountByWeblog(WebsiteData weblog) 
+        throws RollerException {
+        
+        return (HitCountData) strategy.newQuery(HitCountData.class, 
+                "HitCountData.getByWeblog").setUnique().execute(weblog);
+    }
+

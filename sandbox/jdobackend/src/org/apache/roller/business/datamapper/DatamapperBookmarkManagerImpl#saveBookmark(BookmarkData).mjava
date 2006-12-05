@@ -1,9 +1,7 @@
-    public void saveBookmark(BookmarkData bookmark)
-            throws RollerException {
+    public void saveBookmark(BookmarkData bookmark) throws RollerException {
         this.strategy.store(bookmark);
         
         // update weblog last modified date (date is updated by saveWebsite())
-        RollerFactory.getRoller().getUserManager()
-            .saveWebsite(bookmark.getWebsite());
+        RollerFactory.getRoller().getUserManager().saveWebsite(bookmark.getWebsite());
     }
 

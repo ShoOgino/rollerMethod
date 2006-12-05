@@ -1,13 +1,19 @@
-    public WeblogTemplate getPageByName(WebsiteData website, String pageName) 
+    /**
+     * @see org.apache.roller.business.UserManager#getPageByName(WebsiteData, java.lang.String)
+     */
+    public WeblogTemplate getPageByName(WebsiteData website, String pagename)
             throws RollerException {
+
         if (website == null)
-            throw new RollerException(
-                    "getPageByName: website cannot be null");
-        if (pageName == null)
-            throw new RollerException(
-                    "getPageByName: Page name cannot be null");
-        return (WeblogTemplate)strategy.newQuery(WeblogTemplate.class,
-                "getUniqueByWebsite&&Name")
-            .execute(new Object[]{website, pageName});
+            throw new RollerException("website is null");
+
+        if (pagename == null)
+            throw new RollerException("Page name is null");
+
+        DatamapperQuery query = strategy.newQuery(
+                WeblogTemplate.class, "WeblogTemplate.getByWebsite&Name");
+        query.setRange(1, 2);  // => query.setFirstResult(1).setMaxResult(1)
+        List list = (List)query.execute(new Object[] {website, pagename}); 
+        return list.size()!=0? (WeblogTemplate)list.get(0) : null;
     }
 

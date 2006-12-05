@@ -1,0 +1,9 @@
+    public HitCountData getHitCount(String id) throws RollerException {
+
+        if(id == null) {
+            throw new RollerException("Id field cannot be NULL.");
+        }
+
+        return (HitCountData) strategy.load(HitCountData.class, id);
+    }
+

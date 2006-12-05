@@ -1,7 +1,10 @@
-    public List getPages(WebsiteData website) 
-            throws RollerException {
-        return (List)strategy.newQuery(WeblogTemplate.class,
-                "getByWebsite.orderByName")
-            .execute(website);
+    /**
+     * @see org.apache.roller.business.UserManager#getPages(WebsiteData)
+     */
+    public List getPages(WebsiteData website) throws RollerException {
+        if (website == null)
+            throw new RollerException("website is null");
+        return (List) strategy.newQuery(WeblogTemplate.class,
+                "WeblogTemplate.getByWebsiteOrderByName").execute(website);
     }
 

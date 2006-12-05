@@ -1,4 +1,5 @@
     public int getSubscriptionCount() throws RollerException {
-        return -1;
+        return ((List)strategy.newQuery(PlanetSubscriptionData.class, 
+                "PlanetSubscriptionData.getAll")).size(); 
     }
 

@@ -1,4 +1,5 @@
     public List getGroups() throws RollerException {
-        return null;
+        return (List) strategy.newQuery(PlanetGroupData.class, 
+                "PlanetGroupData.getAll").execute(); 
     }
 

@@ -1,12 +1,12 @@
     public void addQueueEntry(AutoPingData autoPing) 
             throws RollerException {
-        // first, determine if an entry already exists
-        Integer count = (Integer)strategy.newQuery(PingQueueEntryData.class,
-                "countGetByPingTarget&&website")
-                .execute(new Object[]
-                    {autoPing.getPingTarget(), autoPing.getWebsite()});
-        if (count.intValue() > 0)
+        log.debug("Creating new ping queue entry for auto ping configuration: " + autoPing);
+        
+        // First check if there is an existing ping queue entry for the same target and website
+        if (isAlreadyQueued(autoPing)) {
+            log.debug("A ping queue entry is already present for this ping target and website: " + autoPing);
             return;
+        }
 
         // create and store a new entry
         Timestamp now = new Timestamp(System.currentTimeMillis());

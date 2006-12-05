@@ -1,12 +1,36 @@
-    /**
-     * Get all users, optionally include dis-enabled users.
-     * @param enabled True for enabled only, false for disabled only, null for
-     * all
-     * @param startDate Restrict to those created after (or null for all)
-     * @param endDate Restrict to those created before (or null for all)
-     */
-    public List getUsers(Boolean enabled, Date startDate, Date endDate,
-            int offset, int length) throws RollerException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public List getUsers(Boolean enabled, Date startDate, Date endDate, int offset, int length) throws RollerException {
+        DatamapperQuery query = null;
+        List results = null;
+        boolean setRange = offset != 0 || length != -1;
+
+        if (endDate == null) endDate = new Date();
+
+        if (length == -1) {
+            length = Integer.MAX_VALUE - offset;
+        }
+
+        if (enabled != null) {
+              if (startDate != null) {
+                  query = strategy.newQuery(UserData.class, "UserData.getByEnabled&EndDate&StartDateOrderByStartDateDesc");
+                  if (setRange) query.setRange(offset, offset + length);
+                  results = (List) query.execute(new Object[] {enabled, endDate, startDate});                
+              } else {
+                  query = strategy.newQuery(UserData.class, "UserData.getByEnabled&EndDateOrderByStartDateDesc");
+                  if (setRange) query.setRange(offset, offset + length);
+                  results = (List) query.execute(new Object[] {enabled, endDate});                
+              }
+        } else {
+            if (startDate != null) {
+                query = strategy.newQuery(UserData.class, "UserData.getByEndDate&StartDateOrderByStartDateDesc");
+                if (setRange) query.setRange(offset, offset + length);
+                results = (List) query.execute(new Object[] {endDate, startDate});                
+            } else {
+                query = strategy.newQuery(UserData.class, "UserData.getByEndDateOrderByStartDateDesc");
+                if (setRange) query.setRange(offset, offset + length);
+                results = (List) query.execute(endDate);                
+            }
+        }
+
+        return results;
     }
 

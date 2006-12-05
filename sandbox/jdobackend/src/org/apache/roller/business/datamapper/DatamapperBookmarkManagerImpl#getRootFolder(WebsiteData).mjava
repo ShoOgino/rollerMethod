@@ -1,6 +1,9 @@
-    public FolderData getRootFolder(WebsiteData website) 
+    public FolderData getRootFolder(WebsiteData website)
             throws RollerException {
-        // todo
-        return null;
+        if (website == null)
+            throw new RollerException("website is null");
+        
+        return (FolderData) strategy.newQuery(FolderData.class, 
+                "FolderData.getByWebsite&ParentNull").setUnique().execute(website);
     }
 

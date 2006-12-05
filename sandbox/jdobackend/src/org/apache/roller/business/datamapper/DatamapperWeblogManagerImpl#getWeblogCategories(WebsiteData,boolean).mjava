@@ -3,6 +3,12 @@
      */
     public List getWeblogCategories(WebsiteData website, boolean includeRoot)
             throws RollerException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        if (website == null)
+            throw new RollerException("website is null");
+        
+        if (includeRoot) return getWeblogCategories(website);
+        
+        return (List) strategy.newQuery(WeblogCategoryData.class, 
+                "WeblogCategoryData.getByWebsite&ParentNull").execute(website);
     }
 

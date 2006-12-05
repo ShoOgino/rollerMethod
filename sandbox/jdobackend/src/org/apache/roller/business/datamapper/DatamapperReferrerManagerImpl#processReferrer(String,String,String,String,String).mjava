@@ -2,7 +2,135 @@
      * Process an incoming referer.
      */
     public void processReferrer(String requestUrl, String referrerUrl,
-            String weblogHandle, String weblogAnchor, String weblogDateString) {
-        //To change body of implemented methods use File | Settings | File Templates.
+            String weblogHandle, String entryAnchor, String dateString) {
+        log.debug("processing referrer ["+referrerUrl+
+                "] accessing ["+requestUrl+"]");
+
+        if (weblogHandle == null)
+            return;
+
+        String selfSiteFragment = "/"+weblogHandle;
+        WebsiteData weblog = null;
+        WeblogEntryData entry = null;
+
+        // lookup the weblog now
+        try {
+            UserManager userMgr = RollerFactory.getRoller().getUserManager();
+            weblog = userMgr.getWebsiteByHandle(weblogHandle);
+            if (weblog == null) return;
+
+            // now lookup weblog entry if possible
+            if (entryAnchor != null) {
+                WeblogManager weblogMgr = RollerFactory.getRoller().getWeblogManager();
+                entry = weblogMgr.getWeblogEntryByAnchor(weblog, entryAnchor);
+            }
+        } catch (RollerException re) {
+            // problem looking up website, gotta bail
+            log.error("Error looking up website object", re);
+            return;
+        }
+
+        try {
+            List matchRef = null;
+
+            // try to find existing RefererData for referrerUrl
+            if (referrerUrl == null || referrerUrl.trim().length() < 8) {
+                referrerUrl = "direct";
+
+                // Get referer specified by referer URL of direct
+                matchRef = getReferersToWebsite(weblog, referrerUrl);
+            } else {
+                referrerUrl = Utilities.stripJsessionId(referrerUrl);
+
+                // Query for referer with same referer and request URLs
+                matchRef = getMatchingReferers(weblog, requestUrl, referrerUrl);
+
+                // If referer was not found, try adding or leaving off 'www'
+                if ( matchRef.size() == 0 ) {
+                    String secondTryUrl = null;
+                    if ( referrerUrl.startsWith("http://www") ) {
+                        secondTryUrl = "http://"+referrerUrl.substring(11);
+                    } else {
+                        secondTryUrl = "http://www"+referrerUrl.substring(7);
+                    }
+
+                    matchRef = getMatchingReferers(weblog, requestUrl, secondTryUrl);
+                    if ( matchRef.size() == 1 ) {
+                        referrerUrl = secondTryUrl;
+                    }
+                }
+            }
+
+            if (matchRef.size() == 1) {
+                // Referer was found in database, so bump up hit count
+                RefererData ref = (RefererData)matchRef.get(0);
+
+                ref.setDayHits(new Integer(ref.getDayHits().intValue() + 1));
+                ref.setTotalHits(new Integer(ref.getTotalHits().intValue() + 1));
+
+                log.debug("Incrementing hit count on existing referer: "+referrerUrl);
+
+                saveReferer(ref);
+
+            } else if (matchRef.size() == 0) {
+
+                // Referer was not found in database, so new Referer object
+                Integer one = new Integer(1);
+                RefererData ref =
+                        new RefererData(
+                        null,
+                        weblog,
+                        entry,
+                        dateString,
+                        referrerUrl,
+                        null,
+                        requestUrl,
+                        null,
+                        "", // Read comment above regarding Derby bug
+                        Boolean.FALSE,
+                        Boolean.FALSE,
+                        one,
+                        one);
+
+                if (log.isDebugEnabled()) {
+                    log.debug("newReferer="+ref.getRefererUrl());
+                }
+
+                String refurl = ref.getRefererUrl();
+
+                // If not a direct or search engine then search for linkback
+                boolean doLinkbackExtraction =
+                        RollerRuntimeConfig.getBooleanProperty("site.linkbacks.enabled");
+                if (doLinkbackExtraction
+                        && entry != null
+                        && !refurl.equals("direct")
+                        && !refurl.startsWith("http://google")
+                        && !refurl.startsWith("http://www.google")
+                        && !refurl.startsWith("http://search.netscape")
+                        && !refurl.startsWith("http://www.blinkpro")
+                        && !refurl.startsWith("http://search.msn")
+                        && !refurl.startsWith("http://search.yahoo")
+                        && !refurl.startsWith("http://uk.search.yahoo")
+                        && !refurl.startsWith("http://www.javablogs.com")
+                        && !refurl.startsWith("http://www.teoma")
+                        ) {
+                    // Launch thread to extract referer linkback
+
+                    try {
+                        Roller mRoller = RollerFactory.getRoller();
+                        mRoller.getThreadManager().executeInBackground(
+                                new LinkbackExtractorRunnable(ref));
+                    } catch (InterruptedException e) {
+                        log.warn("Interrupted during linkback extraction",e);
+                    }
+                } else {
+                    saveReferer(ref);
+                }
+            }
+        } catch (RollerException pe) {
+            log.error(pe);
+        } catch (NullPointerException npe) {
+            log.error(npe);
+        }
     }
 

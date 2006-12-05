@@ -10,6 +10,50 @@
     public List getMostCommentedWeblogEntries(WebsiteData website,
             Date startDate, Date endDate, int offset,
             int length) throws RollerException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        DatamapperQuery query = null;
+        List queryResults = null;
+        boolean setRange = offset != 0 || length != -1;
+
+        if (length == -1) {
+            length = Integer.MAX_VALUE - offset;
+        }
+
+        if (endDate == null) endDate = new Date();
+
+        if (website != null) {
+            if (startDate != null) {
+                query = strategy.newQuery(CommentData.class, "CommentData.getMostCommentedWeblogEntryByWebsite&EndDate&StartDate");
+                if (setRange) query.setRange(offset, offset + length);
+                queryResults = (List) query.execute(new Object[] {website, endDate, startDate});
+            } else {
+                query = strategy.newQuery(CommentData.class, "CommentData.getMostCommentedWeblogEntryByWebsite&EndDate");
+                if (setRange) query.setRange(offset, offset + length);
+                queryResults = (List) query.execute(new Object[] {website, endDate});            
+            }
+        } else {
+            if (startDate != null) {
+                query = strategy.newQuery(CommentData.class, "CommentData.getMostCommentedWeblogEntryByEndDate&StartDate");
+                if (setRange) query.setRange(offset, offset + length);
+                queryResults = (List) query.execute(new Object[] {endDate, startDate});
+            } else {
+                query = strategy.newQuery(CommentData.class, "CommentData.getMostCommentedWeblogEntryByEndDate");
+                if (setRange) query.setRange(offset, offset + length);
+                queryResults = (List) query.execute(endDate);            
+            }
+        }
+        
+        List results = new ArrayList();
+        for (Iterator iter = queryResults.iterator(); iter.hasNext();) {
+            Object[] row = (Object[]) iter.next();
+            results.add(new StatCount(
+                (String)row[1],
+                (String)row[2],
+                (String)row[3],
+                "statCount.weblogEntryCommentCountType",
+                new Long(((Integer)row[0]).intValue()).longValue()));
+        }
+        // TODO Collections.sort(results, StatCount.getComparator());
+        Collections.reverse(results);
+        return results;
     }
 

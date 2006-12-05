@@ -3,6 +3,15 @@
      */
     public List getTopSubscriptions(
             String groupHandle, int offset, int len) throws RollerException {
-        return null;
+        List result = null;
+        if (groupHandle != null) {
+            result = (List) strategy.newQuery(PlanetSubscriptionData.class,
+                            "PlanetSubscriptionData.getByGroupHandleOrderByInboundBlogsDesc").execute(groupHandle);
+        } else {
+            result = (List) strategy.newQuery(PlanetSubscriptionData.class,
+                    "PlanetSubscriptionData.getAllOrderByInboundBlogsDesc").execute();
+        }
+        // TODO handle offset and length
+        return result;
     }
 

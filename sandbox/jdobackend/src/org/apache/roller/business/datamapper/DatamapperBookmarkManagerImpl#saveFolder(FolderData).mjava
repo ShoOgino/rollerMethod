@@ -1,5 +1,11 @@
-    public void saveFolder(FolderData folder) 
-            throws RollerException {
-        strategy.store(folder);
+    public void saveFolder(FolderData folder) throws RollerException {
+        if(isDuplicateFolderName(folder)) {
+            throw new RollerException("Duplicate folder name");
+        }
+
+        this.strategy.store(folder);
+
+        // update weblog last modified date.  date updated by saveWebsite()
+        RollerFactory.getRoller().getUserManager().saveWebsite(folder.getWebsite());
     }
 

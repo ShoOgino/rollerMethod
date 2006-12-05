@@ -1,0 +1,64 @@
+    public void updateTagCount(String name, WebsiteData website, int amount) throws RollerException {
+        if(amount == 0) {
+            throw new RollerException("Tag increment amount cannot be zero.");
+        }
+        
+        if(website == null) {
+            throw new RollerException("Website cannot be NULL.");
+        }
+
+//        Junction conjunction = Expression.conjunction();
+//        conjunction.add(Expression.eq("name", name));
+//        conjunction.add(Expression.eq("weblog", website));
+//
+//        // The reason why add order lastUsed desc is to make sure we keep picking the most recent
+//        // one in the case where we have multiple rows (clustered environment)
+//        // eventually that second entry will have a very low total (most likely 1) and
+//        // won't matter
+//        
+//        Criteria criteria = session.createCriteria(WeblogEntryTagAggregateData.class)
+//            .add(conjunction).addOrder(Order.desc("lastUsed")).setMaxResults(1);
+//        
+//        WeblogEntryTagAggregateData weblogTagData = (WeblogEntryTagAggregateData) criteria.uniqueResult();
+//
+//        conjunction = Expression.conjunction();
+//        conjunction.add(Restrictions.eq("name", name));
+//        conjunction.add(Restrictions.isNull("weblog"));
+//        
+//        criteria = session.createCriteria(WeblogEntryTagAggregateData.class)
+//            .add(conjunction).addOrder(Order.desc("lastUsed")).setMaxResults(1);
+//    
+//        WeblogEntryTagAggregateData siteTagData = (WeblogEntryTagAggregateData) criteria.uniqueResult();
+//        
+//        Timestamp lastUsed = new Timestamp((new Date()).getTime());
+//        
+//        // create it only if we are going to need it.
+//        if(weblogTagData == null && amount > 0) {
+//            weblogTagData = new WeblogEntryTagAggregateData(null, website, name, amount);
+//            weblogTagData.setLastUsed(lastUsed);
+//            session.save(weblogTagData);
+//        } else if(weblogTagData != null) {
+//            session.createQuery("update WeblogEntryTagAggregateData set total = total + ?, lastUsed = current_timestamp() where name = ? and weblog = ?")
+//            .setInteger(0, amount)
+//            .setString(1, weblogTagData.getName())
+//            .setParameter(2, website)
+//            .executeUpdate();
+//        }
+//        
+//        // create it only if we are going to need it.        
+//        if(siteTagData == null && amount > 0) {
+//            siteTagData = new WeblogEntryTagAggregateData(null, null, name, amount);
+//            siteTagData.setLastUsed(lastUsed);
+//            session.save(siteTagData);
+//        } else if(siteTagData != null) {
+//            session.createQuery("update WeblogEntryTagAggregateData set total = total + ?, lastUsed = current_timestamp() where name = ? and weblog is null")
+//            .setInteger(0, amount)
+//            .setString(1, siteTagData.getName())
+//            .executeUpdate();            
+//        }       
+        
+        // delete all bad counts
+        strategy.newRemoveQuery(WeblogEntryTagAggregateData.class, "WeblogEntryTagAggregateData.removeByTotalLessEqual").removeAll(new Integer(0));
+        // TODO not implemented
+    }
+

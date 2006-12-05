@@ -1,10 +1,4 @@
     public void saveGroup(PlanetGroupData group) throws RollerException {
-        Iterator assocs = group.getGroupSubscriptionAssocs().iterator();
-        while (assocs.hasNext()) {
-            PlanetGroupSubscriptionAssoc assoc = (PlanetGroupSubscriptionAssoc) assocs
-                    .next();
-            strategy.store(assoc);
-        }
         strategy.store(group);
     }
 

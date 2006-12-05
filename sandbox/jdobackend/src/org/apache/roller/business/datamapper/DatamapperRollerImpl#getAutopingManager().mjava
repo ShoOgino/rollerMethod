@@ -1,7 +1,7 @@
     /**
-     * @see org.apache.roller.model.Roller#getAutopingManager()
+     * @see org.apache.roller.business.Roller#getAutopingManager()
      */
-    public AutoPingManager getAutopingManager() throws RollerException {
+    public AutoPingManager getAutopingManager() {
         if (autoPingManager == null) {
             autoPingManager = new DatamapperAutoPingManagerImpl(strategy);
         }

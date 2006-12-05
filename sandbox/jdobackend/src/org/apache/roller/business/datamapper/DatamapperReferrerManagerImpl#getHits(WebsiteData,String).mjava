@@ -1,0 +1,27 @@
+    protected int getHits(WebsiteData website, String type) throws RollerException {
+        int hits = -1;
+        if (log.isDebugEnabled()) {
+            log.debug("getHits: " + website.getName());
+        }
+        
+        List results = null;
+            
+        DatamapperQuery query = strategy.newQuery(RefererData.class, "RefererData.getHitsByWebsite.enabled&Website.id");
+
+        Object[] resultsArray = (Object[]) results.get(0);
+        
+        if (resultsArray.length > 0 && type.equals(DAYHITS)) {
+            if ( resultsArray[0] != null ) {
+                hits = ((Integer) resultsArray[0]).intValue();
+            }
+        } else if ( resultsArray.length > 0 ) {
+            if ( resultsArray[0] != null ) {
+                hits = ((Integer) resultsArray[1]).intValue();
+            }
+        } else {
+            hits = 0;
+        }
+        
+        return hits;
+    }
+

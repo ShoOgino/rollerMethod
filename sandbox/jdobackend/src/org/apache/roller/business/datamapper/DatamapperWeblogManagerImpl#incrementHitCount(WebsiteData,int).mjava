@@ -1,0 +1,26 @@
+    public void incrementHitCount(WebsiteData weblog, int amount)
+        throws RollerException {
+
+        if(amount == 0) {
+            throw new RollerException("Tag increment amount cannot be zero.");
+        }
+        
+        if(weblog == null) {
+            throw new RollerException("Weblog cannot be NULL.");
+        }
+
+        HitCountData hitCount = (HitCountData) strategy.newQuery(HitCountData.class, 
+                "HitCountData.getByWeblog").setUnique().execute(weblog);
+        
+        // create it if it doesn't exist
+        if(hitCount == null && amount > 0) {
+            hitCount = new HitCountData();
+            hitCount.setWeblog(weblog);
+            hitCount.setDailyHits(amount);
+            strategy.store(hitCount);
+        } else if(hitCount != null) {
+            hitCount.setDailyHits(hitCount.getDailyHits() + amount);
+            strategy.store(hitCount);
+        }
+    }
+

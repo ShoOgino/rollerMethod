@@ -2,6 +2,9 @@
      * Save comment.
      */
     public void saveComment(CommentData comment) throws RollerException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        this.strategy.store(comment);
+        
+        // update weblog last modified date.  date updated by saveWebsite()
+        RollerFactory.getRoller().getUserManager().saveWebsite(comment.getWeblogEntry().getWebsite());
     }
 

@@ -1,7 +1,7 @@
     /**
-     * @see org.apache.roller.model.Roller#getUserManager()
+     * @see org.apache.roller.business.Roller#getUserManager()
      */
-    public UserManager getUserManager() throws RollerException {
+    public UserManager getUserManager() {
         if ( userManager == null ) {
             userManager = new DatamapperUserManagerImpl(strategy);
         }

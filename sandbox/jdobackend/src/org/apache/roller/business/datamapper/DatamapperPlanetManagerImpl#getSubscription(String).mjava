@@ -1,5 +1,7 @@
     public PlanetSubscriptionData getSubscription(String feedUrl)
             throws RollerException {
-        return null;
+        List results = (List) strategy.newQuery(PlanetSubscriptionData.class, 
+                "PlanetSubscriptionData.getByFeedURL"); 
+        return results.size()!=0 ? (PlanetSubscriptionData)results.get(0) : null;
     }
 

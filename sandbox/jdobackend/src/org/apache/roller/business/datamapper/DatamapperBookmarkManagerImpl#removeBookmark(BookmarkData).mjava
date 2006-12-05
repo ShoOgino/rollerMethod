@@ -1,5 +1,7 @@
-    public void removeBookmark(BookmarkData bookmark)
-            throws RollerException {
+    public void removeBookmark(BookmarkData bookmark) throws RollerException {
         strategy.remove(bookmark);
+        
+        // update weblog last modified date.  date updated by saveWebsite()
+        RollerFactory.getRoller().getUserManager().saveWebsite(bookmark.getWebsite());
     }
 

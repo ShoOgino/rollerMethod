@@ -1,10 +1,36 @@
     /**
-     * Get all users or a website.
-     * @param website Get all users of this website (or null for all)
-     * @returns List of UserData objects.
+     * Get users of a website
      */
-    public List getUsers(WebsiteData website, Boolean enabled, int offset,
-            int length) throws RollerException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public List getUsers(WebsiteData website, Boolean enabled, int offset, int length) throws RollerException {
+        DatamapperQuery query = null;
+        List results = null;
+        boolean setRange = offset != 0 || length != -1;
+
+        if (length == -1) {
+            length = Integer.MAX_VALUE - offset;
+        }
+
+        if (enabled != null) {
+            if (website != null) {
+                query = strategy.newQuery(UserData.class, "UserData.getByEnabled&Permissions.website");
+                if (setRange) query.setRange(offset, offset + length);
+                results = (List) query.execute(new Object[] {enabled, website});                
+            } else {
+                query = strategy.newQuery(UserData.class, "UserData.getByEnabled");
+                if (setRange) query.setRange(offset, offset + length);
+                results = (List) query.execute(enabled);                
+            }
+        } else {
+            if (website != null) {
+                query = strategy.newQuery(UserData.class, "UserData.getByPermissions.website");
+                if (setRange) query.setRange(offset, offset + length);
+                results = (List) query.execute(website);                
+            } else {
+                query = strategy.newQuery(UserData.class, "UserData.getAll");
+                if (setRange) query.setRange(offset, offset + length);
+                results = (List) query.execute();                
+            }
+        }
+        return results;
     }
 

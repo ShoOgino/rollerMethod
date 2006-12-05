@@ -3,6 +3,15 @@
      */
     public WeblogEntryData getWeblogEntryByAnchor(WebsiteData website,
             String anchor) throws RollerException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        if (website == null)
+            throw new RollerException("Website is null");
+        
+        if (anchor == null)
+            throw new RollerException("Anchor is null");
+        
+        // TODO Impl entryAnchorToIdMap CACHE
+        
+        return (WeblogEntryData)strategy.newQuery(WeblogEntryData.class, "getByAnchor")
+            .execute(anchor);
     }
 

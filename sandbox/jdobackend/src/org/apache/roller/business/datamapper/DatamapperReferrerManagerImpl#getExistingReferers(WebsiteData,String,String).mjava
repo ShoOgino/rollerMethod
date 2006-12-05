@@ -1,0 +1,8 @@
+    protected List getExistingReferers(WebsiteData website, String dateString,
+            String permalink) throws RollerException {
+
+        return (List) strategy.newQuery(RefererData.class, 
+                "RefererData.getByWebsite&DateString&RefererPermalink").
+                execute(new Object[] {website, dateString, permalink});
+    }
+

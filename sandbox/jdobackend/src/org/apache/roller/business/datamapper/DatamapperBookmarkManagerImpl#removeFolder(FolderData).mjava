@@ -1,5 +1,7 @@
-    public void removeFolder(FolderData folder) 
-            throws RollerException {
-        strategy.remove(folder);
+    public void removeFolder(FolderData folder) throws RollerException {
+        this.strategy.remove(folder);
+
+        // update weblog last modified date.  date updated by saveWebsite()
+        RollerFactory.getRoller().getUserManager().saveWebsite(folder.getWebsite());
     }
 

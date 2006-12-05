@@ -1,0 +1,83 @@
+    /**
+     * convenience method for removing contents of a weblog.
+     * TODO BACKEND: use manager methods instead of queries here
+     * TODO DatamapperPort: Use bulk deletes instead of current approach
+     */
+    private void removeWebsiteContents(WebsiteData website) throws  RollerException {
+
+        BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
+        WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+
+        // Remove the website's ping queue entries
+        List queueEntries = (List)strategy.newQuery(PingQueueEntryData.class,
+                "PingQueueEntryData.getByWebsite").execute(website);
+        Iterator it = queueEntries.iterator();
+        while(it.hasNext()) {
+            this.strategy.remove((PingQueueEntryData) it.next());
+        }
+
+        // Remove the website's auto ping configurations
+        AutoPingManager autoPingMgr = RollerFactory.getRoller().getAutopingManager();
+        List autopings = autoPingMgr.getAutoPingsByWebsite(website);
+        it = autopings.iterator();
+        while(it.hasNext()) {
+            this.strategy.remove((AutoPingData) it.next());
+        }
+
+        // Remove the website's custom ping targets
+        PingTargetManager pingTargetMgr = RollerFactory.getRoller().getPingTargetManager();
+        List pingtargets = pingTargetMgr.getCustomPingTargets(website);
+        it = pingtargets.iterator();
+        while(it.hasNext()) {
+            this.strategy.remove((PingTargetData) it.next());
+        }
+
+        // remove entries
+        List entries = (List)strategy.newQuery(PingQueueEntryData.class,
+                "WeblogEntryData.getByWebsite").execute();
+
+        for (Iterator iter = entries.iterator(); iter.hasNext();) {
+            WeblogEntryData entry = (WeblogEntryData) iter.next();
+
+            this.strategy.remove(entry);
+        }
+
+        // remove associated referers
+        List referers = (List)strategy.newQuery(RefererData.class,
+                "RefererData.getByWebsite").execute();
+        for (Iterator iter = referers.iterator(); iter.hasNext();) {
+            RefererData referer = (RefererData) iter.next();
+            this.strategy.remove(referer);
+        }
+
+        // remove associated pages
+        List pages = (List)strategy.newQuery(WeblogTemplate.class,
+                "WeblogTemplate.getByWebsite").execute();
+
+        for (Iterator iter = pages.iterator(); iter.hasNext();) {
+            WeblogTemplate page = (WeblogTemplate) iter.next();
+            this.strategy.remove(page);
+        }
+
+        // remove folders (including bookmarks)
+        FolderData rootFolder = bmgr.getRootFolder(website);
+        if (null != rootFolder) {
+            this.strategy.remove(rootFolder);
+
+            // Still cannot get all Bookmarks cleared!
+//            Iterator allFolders = bmgr.getAllFolders(website).iterator();
+//            while (allFolders.hasNext()) {
+//                FolderData aFolder = (FolderData)allFolders.next();
+//                bmgr.removeFolderContents(aFolder);
+//                this.strategy.remove(aFolder);
+//            }
+        }
+
+        // remove categories
+        WeblogCategoryData rootCat = wmgr.getRootWeblogCategory(website);
+        if (null != rootCat) {
+            this.strategy.remove(rootCat);
+        }
+
+    }
+

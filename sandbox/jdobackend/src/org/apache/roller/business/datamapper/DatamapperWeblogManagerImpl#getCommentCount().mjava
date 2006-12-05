@@ -1,0 +1,9 @@
+    /**
+     * Get site-wide comment count 
+     */
+    public long getCommentCount() throws RollerException {
+        List results = (List) strategy.newQuery(CommentData.class, "CommentData.getCountAllDistinct").execute();
+        
+        return ((Integer)results.get(0)).intValue();
+    }
+

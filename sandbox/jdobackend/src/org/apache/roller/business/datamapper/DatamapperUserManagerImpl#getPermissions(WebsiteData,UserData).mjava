@@ -1,7 +1,10 @@
-    public PermissionsData getPermissions(WebsiteData website, UserData user) 
-            throws RollerException {
-        return (PermissionsData)strategy.newQuery(PermissionsData.class,
-                "getUniqueByWebsite&&User")
-            .execute(new Object[]{website, user});
+    /**
+     * Return permissions for specified user in website
+     */
+    public PermissionsData getPermissions(
+            WebsiteData website, UserData user) throws RollerException {
+        List list = (List) strategy.newQuery(PermissionsData.class, "PermissionsData.getByWebsiteAndUser").
+                execute(new Object[] {website, user} );
+        return list.size()!=0 ? (PermissionsData)list.get(0) : null;
     }
 

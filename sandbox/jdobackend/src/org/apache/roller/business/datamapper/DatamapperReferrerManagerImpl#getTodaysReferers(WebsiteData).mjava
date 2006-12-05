@@ -1,9 +1,10 @@
     /**
      * Get all referers for specified user that were made today.
-     * @param userName Name of user.
+     * @param website Web site.
      * @return List of type RefererData
      */
     public List getTodaysReferers(WebsiteData website) throws RollerException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return (List) strategy.newQuery(RefererData.class, 
+                "RefererData.getByWebsite&DayHitsGreaterZeroOrderByDayHitsDesc").execute(website);
     }
 

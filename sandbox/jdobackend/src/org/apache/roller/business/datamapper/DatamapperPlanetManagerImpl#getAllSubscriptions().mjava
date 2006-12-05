@@ -1,4 +1,10 @@
     public Iterator getAllSubscriptions() {
-        return null;
+        try {
+            return ((List)strategy.newQuery(PlanetSubscriptionData.class, 
+                    "PlanetSubscriptionData.getAll")).iterator(); 
+        } catch (Throwable e) {
+            throw new RuntimeException(
+                    "ERROR fetching subscription collection", e);
+        }
     }
 

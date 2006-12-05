@@ -3,11 +3,60 @@
      * Respects category constraints of group.
      * @param group Restrict to entries from one subscription group.
      * @param offset    Offset into results (for paging)
-     * @param len       Maximum number of results to return (for paging)
+     * @param length    Maximum number of results to return (for paging)
      */
     public List getAggregation(
             PlanetGroupData group, Date startDate, Date endDate,
-            int offset, int len) throws RollerException {
-        return null;
+            int offset, int length) throws RollerException {
+        // TODO: ATLAS getAggregation DONE TESTED
+        List result = null;
+        if (endDate == null) endDate = new Date();
+        try {
+            String groupHandle = (group == null) ? NO_GROUP : group.getHandle();
+            long startTime = System.currentTimeMillis();
+            DatamapperQuery query;
+            Object[] params;
+            if (group != null) {
+                if (startDate != null) {
+                    params = new Object[] {groupHandle, endDate, startDate};
+                    query = strategy.newQuery(PlanetEntryData.class,
+                            "PlanetEntryData.getByGroup&EndDate&StartDateOrderByPubTimeDesc");
+                } else {
+                    params = new Object[] {groupHandle, endDate};
+                    query = strategy.newQuery(PlanetEntryData.class,
+                            "PlanetEntryData.getByGroup&EndDateOrderByPubTimeDesc");
+                }
+                // TODO handle offset and length
+            } else {
+                if (startDate != null) {
+                    params = new Object[] {endDate, startDate};
+                    query = strategy.newQuery(PlanetEntryData.class,
+                            "PlanetEntryData.getByExternalOrInternalGroup&amp;EndDate&amp;StartDateOrderByPubTimeDesc");
+                } else {
+                    params = new Object[] {endDate};
+                    query = strategy.newQuery(PlanetEntryData.class,
+                            "PlanetEntryData.getByExternalOrInternalGroup&amp;EndDateOrderByPubTimeDesc");
+                }
+                // TODO handle offset and length
+            }
+            result = (List) query.execute(params);
+            Date retLastUpdated;
+            if (result.size() > 0) {
+                PlanetEntryData entry = (PlanetEntryData)result.get(0);
+                retLastUpdated = entry.getPubTime();
+            } else {
+                retLastUpdated = new Date();
+            }
+            lastUpdatedByGroup.put(groupHandle, retLastUpdated);
+            
+            long endTime = System.currentTimeMillis();
+            log.debug("Generated aggregation in "
+                    + ((endTime-startTime)/1000.0) + " seconds");
+            
+        } catch (Throwable e) {
+            log.error("ERROR: building aggregation for: " + group, e);
+            throw new RollerException(e);
+        }
+        return result;
     }
 

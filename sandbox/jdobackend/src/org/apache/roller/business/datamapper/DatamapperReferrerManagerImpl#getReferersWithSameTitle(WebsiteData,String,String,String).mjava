@@ -1,0 +1,13 @@
+    /**
+     * Query for collection of referers.
+     */
+    protected List getReferersWithSameTitle(WebsiteData website,
+                                            String requestUrl,
+                                            String title,
+                                            String excerpt)
+            throws RollerException {
+        return (List) strategy.newQuery(RefererData.class, 
+                "RefererData.getByWebsite&RequestURL&TitleOrExcerpt").
+                execute(new Object[] {website, requestUrl, title, excerpt});
+    }
+

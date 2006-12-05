@@ -1,6 +1,12 @@
-    public boolean isDuplicateFolderName(FolderData data)
+    public boolean isDuplicateFolderName(FolderData folder)
             throws RollerException {
-        // todo
-        return true;
+
+        // ensure that no sibling categories share the same name
+        FolderData parent = folder.getParent();
+        if (null != parent) {
+            return (getFolder(folder.getWebsite(), folder.getPath()) != null);
+        }
+        
+        return false;
     }
 

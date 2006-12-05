@@ -5,8 +5,18 @@
      * @param subcats True if sub-categories are to be fetched
      * @return List of weblog entries in category
      */
+    // TODO: this method should be removed and it's functionality moved to getWeblogEntries()
     public List getWeblogEntries(WeblogCategoryData cat, boolean subcats)
             throws RollerException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        List results = null;
+        
+        if (!subcats) {
+            results = (List) strategy.newQuery(WeblogEntryData.class, "WeblogEntryData.getByCategory").execute(cat);
+        } else {
+            results = (List) strategy.newQuery(WeblogEntryData.class, 
+                    "WeblogEntryData.getByCategory.pathLike&amp;Website").execute(new Object[] {cat, cat.getPath(), cat.getWebsite()});  
+        }
+        
+        return results;
     }
 

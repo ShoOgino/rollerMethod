@@ -1,0 +1,22 @@
+    public int removeMatchingComments(
+            WebsiteData     website, 
+            WeblogEntryData entry, 
+            String  searchString, 
+            Date    startDate, 
+            Date    endDate, 
+            Boolean pending, 
+            Boolean approved, 
+            Boolean spam) throws RollerException {
+        List comments = getComments( 
+            website, entry, searchString, startDate, endDate, 
+            pending, approved, spam, true, 0, -1);
+        int count = 0;
+        for (Iterator it = comments.iterator(); it.hasNext();) {
+            CommentData comment = (CommentData) it.next();
+            removeComment(comment);
+            count++;
+        }
+        return count;
+        // TODO use Bulk Delete
+    }
+
