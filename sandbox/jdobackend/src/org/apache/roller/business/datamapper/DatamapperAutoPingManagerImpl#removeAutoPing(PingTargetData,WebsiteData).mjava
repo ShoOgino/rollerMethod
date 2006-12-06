@@ -1,6 +1,7 @@
     public void removeAutoPing(PingTargetData pingTarget, WebsiteData website)
             throws RollerException {
-        strategy.newRemoveQuery(AutoPingData.class, "AutoPingData.removeByPingTarget&Website")
+        strategy.newRemoveQuery(AutoPingData.class, 
+                "AutoPingData.removeByPingTarget&Website")
                 .removeAll(new Object[]{pingTarget, website});
     }
 

@@ -3,7 +3,8 @@
      */    
     public long getUserCount() throws RollerException {
         long ret = 0;
-        List results = (List) strategy.newQuery(UserData.class, "UserData.getCountEnabledDistinct").execute(Boolean.TRUE);
+        List results = (List) strategy.newQuery(UserData.class, 
+            "UserData.getCountEnabledDistinct").execute(Boolean.TRUE);
 
         ret =((Integer)results.get(0)).intValue();
 

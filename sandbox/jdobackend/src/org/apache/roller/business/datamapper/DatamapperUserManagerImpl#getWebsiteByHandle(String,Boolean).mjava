@@ -11,7 +11,8 @@
         // NOTE: if we ever allow changing handles then this needs updating
         if(this.weblogHandleToIdMap.containsKey(handle)) {
 
-            WebsiteData weblog = this.getWebsite((String) this.weblogHandleToIdMap.get(handle));
+            WebsiteData weblog = this.getWebsite(
+                (String) this.weblogHandleToIdMap.get(handle));
             if(weblog != null) {
                 // only return weblog if enabled status matches
                 if(enabled == null || enabled.equals(weblog.getEnabled())) {
@@ -28,10 +29,12 @@
         DatamapperQuery query;
         Object[] params;
         if (enabled != null) {
-            query = strategy.newQuery(WebsiteData.class,"WebsiteData.getByHandle&enabled");
+            query = strategy.newQuery(WebsiteData.class,
+                "WebsiteData.getByHandle&enabled");
             params = new Object[] {handle, enabled};
         } else {
-            query = strategy.newQuery(WebsiteData.class,"WebsiteData.getByHandle");
+            query = strategy.newQuery(WebsiteData.class,
+                "WebsiteData.getByHandle");
             params = new Object[] {handle};
         }
         query.setUnique();

@@ -8,7 +8,8 @@
         // NOTE: if we ever allow changing usernames then this needs updating
         if(this.userNameToIdMap.containsKey(userName)) {
 
-            UserData user = this.getUser((String) this.userNameToIdMap.get(userName));
+            UserData user = this.getUser(
+                (String) this.userNameToIdMap.get(userName));
             if(user != null) {
                 // only return the user if the enabled status matches
                 if(enabled == null || enabled.equals(user.getEnabled())) {
@@ -25,10 +26,12 @@
         DatamapperQuery query;
         Object[] params;
         if (enabled != null) {
-            query = strategy.newQuery(UserData.class,"UserData.getByUserName&enabled");
+            query = strategy.newQuery(UserData.class,
+                "UserData.getByUserName&enabled");
             params = new Object[] {userName, enabled};
         } else {
-            query = strategy.newQuery(WebsiteData.class,"UserData.getByUserName");
+            query = strategy.newQuery(WebsiteData.class,
+                "UserData.getByUserName");
             params = new Object[] {userName};
         }
         query.setUnique();

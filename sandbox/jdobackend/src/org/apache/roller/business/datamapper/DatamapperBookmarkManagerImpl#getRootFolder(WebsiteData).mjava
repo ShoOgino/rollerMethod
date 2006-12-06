@@ -4,6 +4,7 @@
             throw new RollerException("website is null");
         
         return (FolderData) strategy.newQuery(FolderData.class, 
-                "FolderData.getByWebsite&ParentNull").setUnique().execute(website);
+                "FolderData.getByWebsite&ParentNull").
+                setUnique().execute(website);
     }
 

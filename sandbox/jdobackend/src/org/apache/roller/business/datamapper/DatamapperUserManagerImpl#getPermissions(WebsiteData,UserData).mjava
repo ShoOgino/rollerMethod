@@ -3,7 +3,8 @@
      */
     public PermissionsData getPermissions(
             WebsiteData website, UserData user) throws RollerException {
-        List list = (List) strategy.newQuery(PermissionsData.class, "PermissionsData.getByWebsiteAndUser").
+        List list = (List) strategy.newQuery(PermissionsData.class, 
+            "PermissionsData.getByWebsiteAndUser").
                 execute(new Object[] {website, user} );
         return list.size()!=0 ? (PermissionsData)list.get(0) : null;
     }

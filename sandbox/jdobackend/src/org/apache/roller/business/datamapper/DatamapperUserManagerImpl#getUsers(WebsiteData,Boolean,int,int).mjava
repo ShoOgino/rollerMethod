@@ -12,17 +12,20 @@
 
         if (enabled != null) {
             if (website != null) {
-                query = strategy.newQuery(UserData.class, "UserData.getByEnabled&Permissions.website");
+                query = strategy.newQuery(UserData.class, 
+                    "UserData.getByEnabled&Permissions.website");
                 if (setRange) query.setRange(offset, offset + length);
                 results = (List) query.execute(new Object[] {enabled, website});                
             } else {
-                query = strategy.newQuery(UserData.class, "UserData.getByEnabled");
+                query = strategy.newQuery(UserData.class, 
+                    "UserData.getByEnabled");
                 if (setRange) query.setRange(offset, offset + length);
                 results = (List) query.execute(enabled);                
             }
         } else {
             if (website != null) {
-                query = strategy.newQuery(UserData.class, "UserData.getByPermissions.website");
+                query = strategy.newQuery(UserData.class, 
+                    "UserData.getByPermissions.website");
                 if (setRange) query.setRange(offset, offset + length);
                 results = (List) query.execute(website);                
             } else {

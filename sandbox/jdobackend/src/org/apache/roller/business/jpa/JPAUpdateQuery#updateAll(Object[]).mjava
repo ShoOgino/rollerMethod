@@ -1,0 +1,7 @@
+    public int updateAll(Object[] params) {
+        for (int i = 0; i < params.length ; i++) {
+            q.setParameter(i + 1, params[i]);
+        }
+        return q.executeUpdate();
+    }
+

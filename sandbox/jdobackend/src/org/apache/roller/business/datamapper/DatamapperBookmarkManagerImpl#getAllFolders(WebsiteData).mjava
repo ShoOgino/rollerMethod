@@ -3,6 +3,7 @@
         if (website == null)
             throw new RollerException("Website is null");
         
-        return (List) strategy.newQuery(FolderData.class, "FolderData.getByWebsite").execute(website);
+        return (List) strategy.newQuery(FolderData.class, 
+            "FolderData.getByWebsite").execute(website);
     }
 

@@ -1,5 +1,7 @@
-    // private helper to determine if an has already been queued for the same website and ping target.
-    private boolean isAlreadyQueued(AutoPingData autoPing) throws RollerException {
+    // private helper to determine if an has already been queued 
+    // for the same website and ping target.
+    private boolean isAlreadyQueued(AutoPingData autoPing) 
+        throws RollerException {
         // first, determine if an entry already exists
         List results = (List)strategy.newQuery(PingQueueEntryData.class,
                 "PingQueueEntryData.getByPingTarget&website")

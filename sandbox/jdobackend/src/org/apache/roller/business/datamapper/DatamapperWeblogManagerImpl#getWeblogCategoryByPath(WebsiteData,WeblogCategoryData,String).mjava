@@ -17,7 +17,8 @@
         if (path.trim().equals("/")) {
             return getRootWeblogCategory(website);
         } else if (category == null || path.trim().startsWith("/")) {
-            cats = getRootWeblogCategory(website).getWeblogCategories().iterator();
+            cats = getRootWeblogCategory(website)
+            .getWeblogCategories().iterator();
         } else {
             cats = category.getWeblogCategories().iterator();
         }

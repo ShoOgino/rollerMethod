@@ -2,8 +2,8 @@
      * Get all permissions of a website (pendings not including)
      */
     public List getAllPermissions(WebsiteData website) throws RollerException {
-        return (List) strategy.newQuery(PermissionsData.class, "PermissionsData.getByWebsiteAndPending").
-                execute(new Object[] {website, Boolean.FALSE} );
-
+        return (List) strategy.newQuery(PermissionsData.class, 
+            "PermissionsData.getByWebsiteAndPending")
+            .execute(new Object[] {website, Boolean.FALSE} );
     }
 

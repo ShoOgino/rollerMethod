@@ -6,9 +6,11 @@
         String localURL = RollerRuntimeConfig.getProperty("site.absoluteurl");
 
         // if this is not a local url then let parent deal with it
-        if (StringUtils.isEmpty(localURL) || !sub.getFeedURL().startsWith(localURL)) {
+        if (StringUtils.isEmpty(localURL) || 
+            !sub.getFeedURL().startsWith(localURL)) {
 
-            log.debug("Feed is remote, letting parent handle it "+sub.getFeedURL());
+            log.debug("Feed is remote, letting parent handle it " +
+                sub.getFeedURL());
 
             return super.getNewEntries(sub, feedFetcher, feedInfoCache);
         }
@@ -23,13 +25,16 @@
                 Set newEntries = new TreeSet();
 
                 // get corresponding website object
-                UserManager usermgr = RollerFactory.getRoller().getUserManager();
-                WebsiteData website = usermgr.getWebsiteByHandle(sub.getAuthor());
+                UserManager usermgr = RollerFactory.getRoller()
+                    .getUserManager();
+                WebsiteData website = usermgr
+                    .getWebsiteByHandle(sub.getAuthor());
                 if (website == null)
                     return newEntries;
 
                 // figure website last update time
-                WeblogManager blogmgr = RollerFactory.getRoller().getWeblogManager();
+                WeblogManager blogmgr = RollerFactory.getRoller()
+                    .getWeblogManager();
 
                 Date siteUpdated = website.getLastModified();
                 if (siteUpdated == null) { // Site never updated, skip it
@@ -40,7 +45,8 @@
 
                 // if website last update time > subsciption last update time
                 List entries = new ArrayList();
-                if (sub.getLastUpdated()==null || siteUpdated.after(sub.getLastUpdated())) {
+                if (sub.getLastUpdated()==null || 
+                        siteUpdated.after(sub.getLastUpdated())) {
                     int entryCount = RollerRuntimeConfig.getIntProperty(
                             "site.newsfeeds.defaultEntries");
                     entries = blogmgr.getWeblogEntries(
@@ -69,15 +75,17 @@
                 }
 
                 // Populate subscription object with new entries
-                PluginManager ppmgr = RollerFactory.getRoller().getPagePluginManager();
+                PluginManager ppmgr = RollerFactory.getRoller()
+                    .getPagePluginManager();
                 Map pagePlugins = ppmgr.getWeblogEntryPlugins(website);
                 Iterator entryIter = entries.iterator();
                 while (entryIter.hasNext()) {
                     try {
                         WeblogEntryData rollerEntry =
-                                (WeblogEntryData)entryIter.next();
+                            (WeblogEntryData)entryIter.next();
                         PlanetEntryData entry =
-                                new PlanetEntryData(rollerEntry, sub, pagePlugins);
+                            new PlanetEntryData(rollerEntry, sub, 
+                                pagePlugins);
                         saveEntry(entry);
                         newEntries.add(entry);
                     } catch (Exception e) {

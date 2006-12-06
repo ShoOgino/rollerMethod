@@ -1,20 +1,24 @@
     /**
-     * @see org.apache.roller.business.BookmarkManager#getBookmarks(
+     * @see org.apache.roller.model.BookmarkManager#retrieveBookmarks(
      *      org.apache.roller.pojos.FolderData, boolean)
      */
-    public List getBookmarks(FolderData folder, boolean subfolders) throws RollerException {
+    public List getBookmarks(FolderData folder, boolean subfolders) 
+            throws RollerException {
         DatamapperQuery query = null;
         List results = null;
 
         if(!subfolders) {
             // if no subfolders then this is an equals query
-            query = strategy.newQuery(BookmarkData.class, "BoomarkData.getByFolder");
+            query = strategy.newQuery(
+                BookmarkData.class, "BoomarkData.getByFolder");
             results = (List) query.execute(folder);
         } else {
             // if we are doing subfolders then do a case sensitive
             // query using folder path
-            query = strategy.newQuery(BookmarkData.class, "BoomarkData.getByFolder.pathLike&Folder.website");
-            results = (List) query.execute(new Object[] {folder.getPath(), folder.getWebsite()});
+            query = strategy.newQuery(BookmarkData.class, 
+                "BoomarkData.getByFolder.pathLike&Folder.website");
+            results = (List) query.execute(
+                new Object[] {folder.getPath(), folder.getWebsite()});
         }
             
         return results;

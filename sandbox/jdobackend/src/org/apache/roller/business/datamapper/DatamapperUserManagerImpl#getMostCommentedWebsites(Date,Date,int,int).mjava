@@ -1,4 +1,5 @@
-    public List getMostCommentedWebsites(Date startDate, Date endDate, int offset, int length)
+    public List getMostCommentedWebsites(Date startDate, Date endDate, 
+        int offset, int length)
         throws RollerException {
         // TODO: ATLAS getMostCommentedWebsites DONE TESTED
 
@@ -13,11 +14,14 @@
         if (endDate == null) endDate = new Date();
         
         if (startDate != null) {
-            query = strategy.newQuery(CommentData.class, "CommentData.getMostCommentedWebsiteByEndDate&StartDate");
+            query = strategy.newQuery(CommentData.class, 
+                "CommentData.getMostCommentedWebsiteByEndDate&StartDate");
             if (setRange) query.setRange(offset, offset + length);
-            queryResults = (List) query.execute(new Object[] {endDate, startDate});            
+            queryResults = (List) query.execute(
+                new Object[] {endDate, startDate});            
         } else {
-            query = strategy.newQuery(CommentData.class, "CommentData.getMostCommentedWebsiteByEndDate");
+            query = strategy.newQuery(CommentData.class, 
+                "CommentData.getMostCommentedWebsiteByEndDate");
             if (setRange) query.setRange(offset, offset + length);
             queryResults = (List) query.execute(endDate);
         }
@@ -38,7 +42,8 @@
                 "statCount.weblogCommentCountType",
                 new Long(((Integer)row[0]).intValue()).longValue()));
         }
-        // TODO Collections.sort(results, StatCount.getComparator());
+        //TODO Uncomment following once integrated with code
+        //Collections.sort(results, StatCount.getComparator());
         Collections.reverse(results);
         return results;
     }

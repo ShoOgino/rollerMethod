@@ -21,7 +21,8 @@
 
             // now lookup weblog entry if possible
             if (entryAnchor != null) {
-                WeblogManager weblogMgr = RollerFactory.getRoller().getWeblogManager();
+                WeblogManager weblogMgr = RollerFactory.getRoller().
+                    getWeblogManager();
                 entry = weblogMgr.getWeblogEntryByAnchor(weblog, entryAnchor);
             }
         } catch (RollerException re) {
@@ -54,7 +55,8 @@
                         secondTryUrl = "http://www"+referrerUrl.substring(7);
                     }
 
-                    matchRef = getMatchingReferers(weblog, requestUrl, secondTryUrl);
+                    matchRef = getMatchingReferers(weblog, requestUrl, 
+                        secondTryUrl);
                     if ( matchRef.size() == 1 ) {
                         referrerUrl = secondTryUrl;
                     }
@@ -68,7 +70,8 @@
                 ref.setDayHits(new Integer(ref.getDayHits().intValue() + 1));
                 ref.setTotalHits(new Integer(ref.getTotalHits().intValue() + 1));
 
-                log.debug("Incrementing hit count on existing referer: "+referrerUrl);
+                log.debug("Incrementing hit count on existing referer: " +
+                    referrerUrl);
 
                 saveReferer(ref);
 
@@ -100,7 +103,8 @@
 
                 // If not a direct or search engine then search for linkback
                 boolean doLinkbackExtraction =
-                        RollerRuntimeConfig.getBooleanProperty("site.linkbacks.enabled");
+                    RollerRuntimeConfig.getBooleanProperty(
+                        "site.linkbacks.enabled");
                 if (doLinkbackExtraction
                         && entry != null
                         && !refurl.equals("direct")

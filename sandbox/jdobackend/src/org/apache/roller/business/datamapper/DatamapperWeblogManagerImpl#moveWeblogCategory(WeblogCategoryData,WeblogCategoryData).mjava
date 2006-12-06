@@ -1,4 +1,5 @@
-    public void moveWeblogCategory(WeblogCategoryData srcCat, WeblogCategoryData destCat)
+    public void moveWeblogCategory(WeblogCategoryData srcCat, 
+        WeblogCategoryData destCat)
             throws RollerException {
         
         // TODO: this check should be made before calling this method?
@@ -7,7 +8,8 @@
                     "ERROR cannot move parent category into it's own child");
         }
         
-        log.debug("Moving category "+srcCat.getPath()+" under "+destCat.getPath());
+        log.debug("Moving category "+srcCat.getPath() +
+            " under "+destCat.getPath());
         
         srcCat.setParent(destCat);
         if("/".equals(destCat.getPath())) {

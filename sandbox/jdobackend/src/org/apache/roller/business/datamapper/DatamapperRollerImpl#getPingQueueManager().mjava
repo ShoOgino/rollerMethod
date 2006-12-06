@@ -3,7 +3,7 @@
      */
     public PingQueueManager getPingQueueManager() {
         if (pingQueueManager == null) {
-            pingQueueManager = new DatamapperPingQueueManagerImpl(strategy);
+            pingQueueManager = createDatamapperPingQueueManager(strategy);
         }
         return pingQueueManager;
     }

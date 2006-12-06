@@ -3,7 +3,8 @@
      */
     public boolean isWeblogCategoryInUse(WeblogCategoryData cat)
             throws RollerException {
-        int entryCount = ((List) strategy.newQuery(WeblogEntryData.class, "").execute(cat)).size();
+        int entryCount = ((List) strategy.newQuery(
+            WeblogEntryData.class, "").execute(cat)).size();
             
         if (entryCount > 0) {
             return true;

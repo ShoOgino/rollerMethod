@@ -9,8 +9,10 @@
             throw new RollerException("Weblog cannot be NULL.");
         }
 
-        HitCountData hitCount = (HitCountData) strategy.newQuery(HitCountData.class, 
-                "HitCountData.getByWeblog").setUnique().execute(weblog);
+        HitCountData hitCount = (HitCountData) strategy.newQuery(
+                HitCountData.class, 
+                "HitCountData.getByWeblog")
+            .setUnique().execute(weblog);
         
         // create it if it doesn't exist
         if(hitCount == null && amount > 0) {

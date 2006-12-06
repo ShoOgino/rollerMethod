@@ -17,21 +17,27 @@
         if (weblog != null) {
             if (enabled != null) {
                 if (startDate != null) {
-                    query = strategy.newQuery(UserData.class, "UserData.getByPermissions.website&Enabled&EndDate&StartDate");
+                    query = strategy.newQuery(UserData.class, 
+                        "UserData.getByPermissions.website&Enabled&EndDate&StartDate");
                     if (setRange) query.setRange(offset, offset + length);
                     results = (List) query.execute(new Object[] {weblog, enabled, endDate, startDate});
                 } else {
-                    query = strategy.newQuery(UserData.class, "UserData.getByEnabled&Permissions.website");
+                    query = strategy.newQuery(UserData.class, 
+                        "UserData.getByEnabled&Permissions.website");
                     if (setRange) query.setRange(offset, offset + length);
-                    results = (List) query.execute(new Object[] {enabled, weblog});
+                    results = (List) query.execute(
+                        new Object[] {enabled, weblog});
                 }
             } else {
                 if (startDate != null) {
-                    query = strategy.newQuery(UserData.class, "UserData.getByPermissions.website&EndDate&StartDate");
+                    query = strategy.newQuery(UserData.class, 
+                        "UserData.getByPermissions.website&EndDate&StartDate");
                     if (setRange) query.setRange(offset, offset + length);
-                    results = (List) query.execute(new Object[] {weblog, endDate, startDate});
+                    results = (List) query.execute(
+                        new Object[] {weblog, endDate, startDate});
                 } else {
-                    query = strategy.newQuery(UserData.class, "UserData.getByPermissions.website");
+                    query = strategy.newQuery(UserData.class, 
+                        "UserData.getByPermissions.website");
                     if (setRange) query.setRange(offset, offset + length);
                     results = (List) query.execute(weblog);
                 }
@@ -39,21 +45,27 @@
         } else {
             if (enabled != null) {
                 if (startDate != null) {
-                    query = strategy.newQuery(UserData.class, "UserData.getByEnabled&EndDate&StartDate");
+                    query = strategy.newQuery(UserData.class, 
+                        "UserData.getByEnabled&EndDate&StartDate");
                     if (setRange) query.setRange(offset, offset + length);
-                    results = (List) query.execute(new Object[] {enabled, endDate, startDate});
+                    results = (List) query.execute(
+                        new Object[] {enabled, endDate, startDate});
                 } else {
-                    query = strategy.newQuery(UserData.class, "UserData.getByEnabled");
+                    query = strategy.newQuery(UserData.class, 
+                        "UserData.getByEnabled");
                     if (setRange) query.setRange(offset, offset + length);
                     results = (List) query.execute(new Object[] {enabled});
                 }
             } else {
                 if (startDate != null) {
-                    query = strategy.newQuery(UserData.class, "UserData.getByPermissions.website&EndDate&StartDate");
+                    query = strategy.newQuery(UserData.class, 
+                        "UserData.getByPermissions.website&EndDate&StartDate");
                     if (setRange) query.setRange(offset, offset + length);
-                    results = (List) query.execute(new Object[] {endDate, startDate});
+                    results = (List) query.execute(
+                        new Object[] {endDate, startDate});
                 } else {
-                    query = strategy.newQuery(UserData.class, "UserData.getAll");
+                    query = strategy.newQuery(UserData.class, 
+                        "UserData.getAll");
                     if (setRange) query.setRange(offset, offset + length);
                     results = (List) query.execute();
                 }

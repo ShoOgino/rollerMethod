@@ -5,6 +5,7 @@
      */
     public List getTodaysReferers(WebsiteData website) throws RollerException {
         return (List) strategy.newQuery(RefererData.class, 
-                "RefererData.getByWebsite&DayHitsGreaterZeroOrderByDayHitsDesc").execute(website);
+                "RefererData.getByWebsite&DayHitsGreaterZeroOrderByDayHitsDesc")
+                .execute(website);
     }
 

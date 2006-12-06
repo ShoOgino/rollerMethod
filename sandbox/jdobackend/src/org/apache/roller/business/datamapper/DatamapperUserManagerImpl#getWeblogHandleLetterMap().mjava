@@ -1,7 +1,8 @@
     public Map getWeblogHandleLetterMap() throws RollerException {
         String lc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         Map results = new TreeMap();
-        DatamapperQuery query = strategy.newQuery(WebsiteData.class, "WebsiteData.getCountByHandleLike");
+        DatamapperQuery query = strategy.newQuery(WebsiteData.class, 
+            "WebsiteData.getCountByHandleLike");
         for (int i=0; i<26; i++) {
             char currentChar = lc.charAt(i);
             List row = (List) query.execute(currentChar + "%");

@@ -3,7 +3,7 @@
      */
     public WeblogManager getWeblogManager() {
         if ( weblogManager == null ) {
-            weblogManager = new DatamapperWeblogManagerImpl(strategy);
+            weblogManager = createDatamapperWeblogManager(strategy);
         }
         return weblogManager;
     }

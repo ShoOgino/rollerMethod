@@ -3,7 +3,7 @@
      */
     public BookmarkManager getBookmarkManager() {
         if ( bookmarkManager == null ) {
-            bookmarkManager = new DatamapperBookmarkManagerImpl(strategy);
+            bookmarkManager = createDatamapperBookmarkManager(strategy);
         }
         return bookmarkManager;
     }

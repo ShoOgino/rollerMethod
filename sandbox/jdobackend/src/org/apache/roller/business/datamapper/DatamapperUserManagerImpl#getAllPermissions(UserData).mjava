@@ -2,8 +2,9 @@
      * Get all permissions of a user.
      */
     public List getAllPermissions(UserData user) throws RollerException {
-        return (List) strategy.newQuery(PermissionsData.class, "PermissionsData.getByUserAndPending").
-                execute(new Object[] {user, Boolean.FALSE} );
+        return (List) strategy.newQuery(PermissionsData.class, 
+            "PermissionsData.getByUserAndPending")
+            .execute(new Object[] {user, Boolean.FALSE} );
 
     }
 

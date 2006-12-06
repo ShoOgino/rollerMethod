@@ -2,7 +2,8 @@
      * Get pending permissions for website
      */
     public List getPendingPermissions(WebsiteData website) throws RollerException {
-        return (List) strategy.newQuery(PermissionsData.class, "PermissionsData.getByWebsiteAndPending").
-                execute(new Object[] {website, Boolean.TRUE} );
+        return (List) strategy.newQuery(PermissionsData.class, 
+            "PermissionsData.getByWebsiteAndPending")
+            .execute(new Object[] {website, Boolean.TRUE} );
     }
 

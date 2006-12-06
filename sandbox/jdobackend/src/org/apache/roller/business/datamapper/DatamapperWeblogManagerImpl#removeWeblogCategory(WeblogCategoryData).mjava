@@ -12,18 +12,21 @@
         
         // update website default cats if needed
         if(cat.getWebsite().getBloggerCategory().equals(cat)) {
-            WeblogCategoryData rootCat = this.getRootWeblogCategory(cat.getWebsite());
+            WeblogCategoryData rootCat = this.getRootWeblogCategory(
+                cat.getWebsite());
             cat.getWebsite().setBloggerCategory(rootCat);
             this.strategy.store(cat.getWebsite());
         }
         
         if(cat.getWebsite().getDefaultCategory().equals(cat)) {
-            WeblogCategoryData rootCat = this.getRootWeblogCategory(cat.getWebsite());
+            WeblogCategoryData rootCat = this.getRootWeblogCategory(
+                cat.getWebsite());
             cat.getWebsite().setDefaultCategory(rootCat);
             this.strategy.store(cat.getWebsite());
         }
         
         // update weblog last modified date.  date updated by saveWebsite()
-        RollerFactory.getRoller().getUserManager().saveWebsite(cat.getWebsite());
+        RollerFactory.getRoller().getUserManager().saveWebsite(
+                cat.getWebsite());
     }
 

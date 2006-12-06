@@ -3,7 +3,8 @@
      */
     public void removeWeblogEntry(WeblogEntryData entry)
             throws RollerException {
-        List referers = (List) strategy.newQuery(RefererData.class, "RefererData.getByWeblogEntry").execute(entry);
+        List referers = (List) strategy.newQuery(RefererData.class, 
+            "RefererData.getByWeblogEntry").execute(entry);
         for (Iterator iter = referers.iterator(); iter.hasNext();) {
             RefererData referer = (RefererData) iter.next();
             this.strategy.remove(referer);
@@ -40,7 +41,8 @@
         
         // update weblog last modified date.  date updated by saveWebsite()
         if(entry.isPublished()) {
-            RollerFactory.getRoller().getUserManager().saveWebsite(entry.getWebsite());
+            RollerFactory.getRoller().getUserManager()
+                .saveWebsite(entry.getWebsite());
         }
         
         // TODO: remove entry from cache mapping

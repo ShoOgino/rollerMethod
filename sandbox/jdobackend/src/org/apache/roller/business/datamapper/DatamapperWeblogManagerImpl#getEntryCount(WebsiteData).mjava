@@ -3,7 +3,8 @@
      */
     public long getEntryCount(WebsiteData website) throws RollerException {
         List results = (List) strategy.newQuery(WeblogEntryData.class, 
-                "WeblogEntryData.getCountDistinctByStatus&Website").execute(new Object[] {"PUBLISHED", website});
+            "WeblogEntryData.getCountDistinctByStatus&Website")
+            .execute(new Object[] {"PUBLISHED", website});
         
         return ((Integer)results.get(0)).intValue();
     }

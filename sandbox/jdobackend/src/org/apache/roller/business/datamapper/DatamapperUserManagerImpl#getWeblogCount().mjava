@@ -3,7 +3,8 @@
      */    
     public long getWeblogCount() throws RollerException {
         long ret = 0;
-        List results = (List) strategy.newQuery(WebsiteData.class, "WebsiteData.getCountAllDistinct").execute();
+        List results = (List) strategy.newQuery(WebsiteData.class, 
+            "WebsiteData.getCountAllDistinct").execute();
 
         ret = ((Integer)results.get(0)).intValue();
         

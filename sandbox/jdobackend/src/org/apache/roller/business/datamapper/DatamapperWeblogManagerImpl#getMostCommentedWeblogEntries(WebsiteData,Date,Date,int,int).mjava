@@ -22,21 +22,28 @@
 
         if (website != null) {
             if (startDate != null) {
-                query = strategy.newQuery(CommentData.class, "CommentData.getMostCommentedWeblogEntryByWebsite&EndDate&StartDate");
+                query = strategy.newQuery(CommentData.class, 
+                    "CommentData.getMostCommentedWeblogEntryByWebsite&EndDate&StartDate");
                 if (setRange) query.setRange(offset, offset + length);
-                queryResults = (List) query.execute(new Object[] {website, endDate, startDate});
+                queryResults = (List) query.execute(
+                    new Object[] {website, endDate, startDate});
             } else {
-                query = strategy.newQuery(CommentData.class, "CommentData.getMostCommentedWeblogEntryByWebsite&EndDate");
+                query = strategy.newQuery(CommentData.class, 
+                    "CommentData.getMostCommentedWeblogEntryByWebsite&EndDate");
                 if (setRange) query.setRange(offset, offset + length);
-                queryResults = (List) query.execute(new Object[] {website, endDate});            
+                queryResults = (List) query.execute(
+                    new Object[] {website, endDate});            
             }
         } else {
             if (startDate != null) {
-                query = strategy.newQuery(CommentData.class, "CommentData.getMostCommentedWeblogEntryByEndDate&StartDate");
+                query = strategy.newQuery(CommentData.class, 
+                    "CommentData.getMostCommentedWeblogEntryByEndDate&StartDate");
                 if (setRange) query.setRange(offset, offset + length);
-                queryResults = (List) query.execute(new Object[] {endDate, startDate});
+                queryResults = (List) query.execute(
+                    new Object[] {endDate, startDate});
             } else {
-                query = strategy.newQuery(CommentData.class, "CommentData.getMostCommentedWeblogEntryByEndDate");
+                query = strategy.newQuery(CommentData.class, 
+                    "CommentData.getMostCommentedWeblogEntryByEndDate");
                 if (setRange) query.setRange(offset, offset + length);
                 queryResults = (List) query.execute(endDate);            
             }
@@ -52,7 +59,8 @@
                 "statCount.weblogEntryCommentCountType",
                 new Long(((Integer)row[0]).intValue()).longValue()));
         }
-        // TODO Collections.sort(results, StatCount.getComparator());
+        //TODO Uncomment following once integrated with code
+        //Collections.sort(results, StatCount.getComparator());
         Collections.reverse(results);
         return results;
     }

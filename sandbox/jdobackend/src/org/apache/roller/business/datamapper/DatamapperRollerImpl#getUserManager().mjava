@@ -3,7 +3,7 @@
      */
     public UserManager getUserManager() {
         if ( userManager == null ) {
-            userManager = new DatamapperUserManagerImpl(strategy);
+            userManager = createDatamapperUserManager(strategy);
         }
         return userManager;
     }

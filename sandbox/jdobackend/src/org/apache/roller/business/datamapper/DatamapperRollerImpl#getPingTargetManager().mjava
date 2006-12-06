@@ -3,7 +3,7 @@
      */
     public PingTargetManager getPingTargetManager() {
         if (pingTargetManager == null) {
-            pingTargetManager = new DatamapperPingTargetManagerImpl(strategy);
+            pingTargetManager = createDatamapperPingTargetManager(strategy);
         }
         return pingTargetManager;
     }

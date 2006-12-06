@@ -1,7 +1,8 @@
     public List getUsersByLetter(char letter, int offset, int length)
         throws RollerException {
         // TODO: ATLAS getUsersByLetter DONE
-        DatamapperQuery query = strategy.newQuery(UserData.class, "UserData.getByUserNameOrderByUserName");
+        DatamapperQuery query = strategy.newQuery(UserData.class, 
+            "UserData.getByUserNameOrderByUserName");
         query.setRange(offset, offset + length);
         return (List) query.execute(letter + "%");
     }

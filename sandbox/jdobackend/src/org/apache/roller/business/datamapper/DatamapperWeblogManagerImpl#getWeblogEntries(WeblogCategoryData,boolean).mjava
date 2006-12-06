@@ -11,10 +11,13 @@
         List results = null;
         
         if (!subcats) {
-            results = (List) strategy.newQuery(WeblogEntryData.class, "WeblogEntryData.getByCategory").execute(cat);
+            results = (List) strategy.newQuery(WeblogEntryData.class, 
+                "WeblogEntryData.getByCategory")
+                .execute(cat);
         } else {
             results = (List) strategy.newQuery(WeblogEntryData.class, 
-                    "WeblogEntryData.getByCategory.pathLike&amp;Website").execute(new Object[] {cat, cat.getPath(), cat.getWebsite()});  
+                "WeblogEntryData.getByCategory.pathLike&amp;Website")
+                .execute(new Object[] {cat, cat.getPath(), cat.getWebsite()});  
         }
         
         return results;

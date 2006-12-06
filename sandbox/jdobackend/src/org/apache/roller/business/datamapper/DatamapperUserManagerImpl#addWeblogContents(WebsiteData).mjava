@@ -1,4 +1,5 @@
-    private void addWeblogContents(WebsiteData newWeblog) throws RollerException {
+    private void addWeblogContents(WebsiteData newWeblog) 
+            throws RollerException {
 
         // grant weblog creator ADMIN permissions
         PermissionsData perms = new PermissionsData();
@@ -67,8 +68,10 @@
         }
 
         // add any auto enabled ping targets
-        PingTargetManager pingTargetMgr = RollerFactory.getRoller().getPingTargetManager();
-        AutoPingManager autoPingMgr = RollerFactory.getRoller().getAutopingManager();
+        PingTargetManager pingTargetMgr = RollerFactory.getRoller()
+            .getPingTargetManager();
+        AutoPingManager autoPingMgr = RollerFactory.getRoller()
+            .getAutopingManager();
 
         Iterator pingTargets = pingTargetMgr.getCommonPingTargets().iterator();
         PingTargetData pingTarget = null;
@@ -76,7 +79,8 @@
             pingTarget = (PingTargetData) pingTargets.next();
 
             if(pingTarget.isAutoEnabled()) {
-                AutoPingData autoPing = new AutoPingData(null, pingTarget, newWeblog);
+                AutoPingData autoPing = new AutoPingData(
+                   null, pingTarget, newWeblog);
                 autoPingMgr.saveAutoPing(autoPing);
             }
         }

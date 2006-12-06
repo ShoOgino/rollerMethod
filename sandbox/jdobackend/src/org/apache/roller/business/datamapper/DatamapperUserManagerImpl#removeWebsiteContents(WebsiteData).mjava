@@ -3,10 +3,23 @@
      * TODO BACKEND: use manager methods instead of queries here
      * TODO DatamapperPort: Use bulk deletes instead of current approach
      */
-    private void removeWebsiteContents(WebsiteData website) throws  RollerException {
+    private void removeWebsiteContents(WebsiteData website) 
+            throws  RollerException {
 
         BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
         WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+
+        // remove tags
+        DatamapperQuery tagQuery = strategy.newQuery(WeblogEntryTagData.class,
+                "WeblogEntryTagData.getByWeblog");
+        for(Iterator iter = ( (List)tagQuery.execute(website) ) .iterator(); iter.hasNext();) {
+            WeblogEntryTagData tagData = (WeblogEntryTagData) iter.next();
+            this.strategy.remove(tagData);
+        }
+
+        // remove site tag aggregates
+        List tags = wmgr.getTags(website, null, null, -1);
+        updateTagAggregates(tags);
 
         // Remove the website's ping queue entries
         List queueEntries = (List)strategy.newQuery(PingQueueEntryData.class,
@@ -17,7 +30,8 @@
         }
 
         // Remove the website's auto ping configurations
-        AutoPingManager autoPingMgr = RollerFactory.getRoller().getAutopingManager();
+        AutoPingManager autoPingMgr = RollerFactory.getRoller()
+            .getAutopingManager();
         List autopings = autoPingMgr.getAutoPingsByWebsite(website);
         it = autopings.iterator();
         while(it.hasNext()) {

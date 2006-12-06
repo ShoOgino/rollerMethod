@@ -1,0 +1,11 @@
+    /**
+     * Create query used for bulk update operations.
+     * @param queryName the name of the query
+     * @throws org.apache.roller.RollerException on any error
+     */
+    public JPAUpdateQuery newUpdateQuery(String queryName)
+            throws RollerException {
+        EntityManager em = getEntityManager(false);
+        return new JPAUpdateQuery(em, queryName);
+    }
+

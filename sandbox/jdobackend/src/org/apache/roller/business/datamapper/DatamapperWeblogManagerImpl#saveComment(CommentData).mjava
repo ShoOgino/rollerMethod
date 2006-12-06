@@ -5,6 +5,7 @@
         this.strategy.store(comment);
         
         // update weblog last modified date.  date updated by saveWebsite()
-        RollerFactory.getRoller().getUserManager().saveWebsite(comment.getWeblogEntry().getWebsite());
+        RollerFactory.getRoller().getUserManager()
+            .saveWebsite(comment.getWeblogEntry().getWebsite());
     }
 

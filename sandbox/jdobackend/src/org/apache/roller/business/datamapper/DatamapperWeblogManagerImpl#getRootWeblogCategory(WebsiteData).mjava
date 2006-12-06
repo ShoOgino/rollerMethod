@@ -8,6 +8,7 @@
             throw new RollerException("website is null");
         
         return (WeblogCategoryData) strategy.newQuery(WeblogCategoryData.class, 
-                "WeblogCategoryData.getByWebsite&ParentNull").setUnique().execute(website);
+                "WeblogCategoryData.getByWebsite&ParentNull")
+                        .setUnique().execute(website);
     }
 

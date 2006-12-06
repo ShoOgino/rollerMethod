@@ -2,7 +2,8 @@
         List results = (List) strategy.newQuery(PlanetGroupData.class, 
                 "PlanetGroupData.getByHandle").execute(handle); 
         // TODO handle max result == 1
-        PlanetGroupData group = results.size()!=0 ? (PlanetGroupData)results.get(0) : null;
+        PlanetGroupData group = results.size()!=0 ? 
+            (PlanetGroupData)results.get(0) : null;
         return group;
     }
 

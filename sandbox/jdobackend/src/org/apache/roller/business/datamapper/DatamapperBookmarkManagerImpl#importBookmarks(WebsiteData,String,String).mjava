@@ -1,5 +1,5 @@
-    //------------------------------------------------------------ Operations
-    public void importBookmarks(WebsiteData website, String folderName, String opml)
+    public void importBookmarks(
+            WebsiteData website, String folderName, String opml)
             throws RollerException {
         String msg = "importBookmarks";
         try {
@@ -11,7 +11,8 @@
             FolderData newFolder = getFolder(website, folderName);
             if (newFolder == null) {
                 newFolder = new FolderData(
-                        getRootFolder(website), folderName, folderName, website);
+                        getRootFolder(website), 
+                        folderName, folderName, website);
                 this.strategy.store(newFolder);
             }
 

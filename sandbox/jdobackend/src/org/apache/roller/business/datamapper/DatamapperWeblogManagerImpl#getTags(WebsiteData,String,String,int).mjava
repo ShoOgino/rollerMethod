@@ -4,7 +4,8 @@
      * @see org.apache.roller.business.WeblogManager#getTags(org.apache.roller.pojos.WebsiteData,
      *      java.lang.String, java.lang.String, int)
      */
-    public List getTags(WebsiteData website, String sortBy, String startsWith, int limit) throws RollerException {    
+    public List getTags(WebsiteData website, String sortBy, 
+            String startsWith, int limit) throws RollerException {    
         DatamapperQuery query = null;
         List queryResults = null;
         boolean sortByName = sortBy == null || !sortBy.equals("count");
@@ -12,21 +13,27 @@
         if (website != null) {
             if (startsWith != null) {
                 if (sortByName) {
-                    query = strategy.newQuery(WeblogEntryTagAggregateData.class, "WeblogEntryTagAggregateData.getTagsByWebsite&NameStartsWithOrderByName");
+                    query = strategy.newQuery(WeblogEntryTagAggregateData.class, 
+                        "WeblogEntryTagAggregateData.getTagsByWebsite&NameStartsWithOrderByName");
                     if (limit > 0) query.setRange(0, limit);
-                    queryResults = (List) query.execute(new Object[] {website, startsWith});
+                    queryResults = (List) query.execute(
+                        new Object[] {website, startsWith});
                 } else {
-                    query = strategy.newQuery(WeblogEntryTagAggregateData.class, "WeblogEntryTagAggregateData.getTagsByWebsite&NameStartsWith");
+                    query = strategy.newQuery(WeblogEntryTagAggregateData.class,
+                        "WeblogEntryTagAggregateData.getTagsByWebsite&NameStartsWith");
                     if (limit > 0) query.setRange(0, limit);
-                    queryResults = (List) query.execute(new Object[] {website, startsWith});
+                    queryResults = (List) query.execute(
+                        new Object[] {website, startsWith});
                 }
             } else {
                 if (sortByName) {
-                    query = strategy.newQuery(WeblogEntryTagAggregateData.class, "WeblogEntryTagAggregateData.getTagsByWebsiteOrderByName");
+                    query = strategy.newQuery(WeblogEntryTagAggregateData.class,
+                        "WeblogEntryTagAggregateData.getTagsByWebsiteOrderByName");
                     if (limit > 0) query.setRange(0, limit);
                     queryResults = (List) query.execute(startsWith);   
                 } else {
-                    query = strategy.newQuery(WeblogEntryTagAggregateData.class, "WeblogEntryTagAggregateData.getTagsByWebsite");
+                    query = strategy.newQuery(WeblogEntryTagAggregateData.class,
+                        "WeblogEntryTagAggregateData.getTagsByWebsite");
                     if (limit > 0) query.setRange(0, limit);
                     queryResults = (List) query.execute(startsWith);   
                 }
@@ -34,21 +41,25 @@
         } else {
             if (startsWith != null) {
                 if (sortByName) {
-                    query = strategy.newQuery(WeblogEntryTagAggregateData.class, "WeblogEntryTagAggregateData.getTagsByWebsiteNull&NameStartsWithOrderByName");
+                    query = strategy.newQuery(WeblogEntryTagAggregateData.class,
+                        "WeblogEntryTagAggregateData.getTagsByWebsiteNull&NameStartsWithOrderByName");
                     if (limit > 0) query.setRange(0, limit);
                     queryResults = (List) query.execute(startsWith);
                 } else {
-                    query = strategy.newQuery(WeblogEntryTagAggregateData.class, "WeblogEntryTagAggregateData.getTagsByWebsiteNull&NameStartsWith");
+                    query = strategy.newQuery(WeblogEntryTagAggregateData.class,
+                        "WeblogEntryTagAggregateData.getTagsByWebsiteNull&NameStartsWith");
                     if (limit > 0) query.setRange(0, limit);
                     queryResults = (List) query.execute(startsWith);
                 }
             } else {
                 if (sortByName) {
-                    query = strategy.newQuery(WeblogEntryTagAggregateData.class, "WeblogEntryTagAggregateData.getTagsByWebsiteNullOrderByName");
+                    query = strategy.newQuery(WeblogEntryTagAggregateData.class,
+                        "WeblogEntryTagAggregateData.getTagsByWebsiteNullOrderByName");
                     if (limit > 0) query.setRange(0, limit);
                     queryResults = (List) query.execute();
                 } else {
-                    query = strategy.newQuery(WeblogEntryTagAggregateData.class, "WeblogEntryTagAggregateData.getTagsByWebsiteNull");
+                    query = strategy.newQuery(WeblogEntryTagAggregateData.class,
+                        "WeblogEntryTagAggregateData.getTagsByWebsiteNull");
                     if (limit > 0) query.setRange(0, limit);
                     queryResults = (List) query.execute();
                 }

@@ -7,6 +7,6 @@
     public DatamapperQuery newQuery(Class clazz, String queryName)
             throws RollerException {
         EntityManager em = getEntityManager(false);
-        return new JPAQueryImpl(em, clazz, queryName);
+        return new JPANamedQueryImpl(em, queryName);
     }
 

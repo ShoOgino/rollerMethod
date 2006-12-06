@@ -8,21 +8,26 @@
         
         if (website != null) {
             if (startDate != null) {
-                query = strategy.newQuery(WeblogEntryTagAggregateData.class, "WeblogEntryTagAggregateData.getPopularTagsByWebsite&StartDate");
+                query = strategy.newQuery(WeblogEntryTagAggregateData.class, 
+                    "WeblogEntryTagAggregateData.getPopularTagsByWebsite&StartDate");
                 if (limit > 0) query.setRange(0, limit);
-                queryResults = (List) query.execute(new Object[] {website, startDate});
+                queryResults = (List) query.execute(
+                    new Object[] {website, startDate});
             } else {
-                query = strategy.newQuery(WeblogEntryTagAggregateData.class, "WeblogEntryTagAggregateData.getPopularTagsByWebsite");
+                query = strategy.newQuery(WeblogEntryTagAggregateData.class, 
+                    "WeblogEntryTagAggregateData.getPopularTagsByWebsite");
                 if (limit > 0) query.setRange(0, limit);
                 queryResults = (List) query.execute(startDate);                
             }
         } else {
             if (startDate != null) {
-                query = strategy.newQuery(WeblogEntryTagAggregateData.class, "WeblogEntryTagAggregateData.getPopularTagsByWebsiteNull&StartDate");
+                query = strategy.newQuery(WeblogEntryTagAggregateData.class, 
+                    "WeblogEntryTagAggregateData.getPopularTagsByWebsiteNull&StartDate");
                 if (limit > 0) query.setRange(0, limit);
                 queryResults = (List) query.execute(startDate);
             } else {
-                query = strategy.newQuery(WeblogEntryTagAggregateData.class, "WeblogEntryTagAggregateData.getPopularTagsByWebsiteNull");
+                query = strategy.newQuery(WeblogEntryTagAggregateData.class, 
+                    "WeblogEntryTagAggregateData.getPopularTagsByWebsiteNull");
                 if (limit > 0) query.setRange(0, limit);
                 queryResults = (List) query.execute();                
             }

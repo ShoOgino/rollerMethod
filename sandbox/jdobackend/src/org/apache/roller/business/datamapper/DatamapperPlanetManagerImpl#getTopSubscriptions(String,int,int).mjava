@@ -6,10 +6,12 @@
         List result = null;
         if (groupHandle != null) {
             result = (List) strategy.newQuery(PlanetSubscriptionData.class,
-                            "PlanetSubscriptionData.getByGroupHandleOrderByInboundBlogsDesc").execute(groupHandle);
+                "PlanetSubscriptionData.getByGroupHandleOrderByInboundBlogsDesc")
+            .execute(groupHandle);
         } else {
             result = (List) strategy.newQuery(PlanetSubscriptionData.class,
-                    "PlanetSubscriptionData.getAllOrderByInboundBlogsDesc").execute();
+                "PlanetSubscriptionData.getAllOrderByInboundBlogsDesc")
+                .execute();
         }
         // TODO handle offset and length
         return result;
