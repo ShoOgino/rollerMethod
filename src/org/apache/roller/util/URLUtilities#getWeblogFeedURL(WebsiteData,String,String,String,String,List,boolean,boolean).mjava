@@ -24,7 +24,7 @@
             params.put("cat", encode(category));
         }
         if(tags != null && tags.size() > 0) {
-          params.put("tags",encode(Utilities.stringArrayToString((String[])tags.toArray(), "+")));
+          params.put("tags", getEncodedTagsString(tags));
         }
         if(excerpts) {
             params.put("excerpts", "true");
