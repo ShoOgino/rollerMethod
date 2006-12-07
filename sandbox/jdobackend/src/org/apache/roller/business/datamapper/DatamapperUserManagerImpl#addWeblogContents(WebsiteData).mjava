@@ -9,7 +9,7 @@
         perms.setPermissionMask(PermissionsData.ADMIN);
         this.strategy.store(perms);
 
-        // add default categories
+        // add default category
         WeblogCategoryData rootCat = new WeblogCategoryData(
                 newWeblog, // newWeblog
                 null,      // parent
@@ -20,7 +20,7 @@
 
         String cats = RollerConfig.getProperty("newuser.categories");
         WeblogCategoryData firstCat = rootCat;
-        if (cats != null) {
+        if (cats != null && cats.trim().length() > 0) {
             String[] splitcats = cats.split(",");
             for (int i=0; i<splitcats.length; i++) {
                 WeblogCategoryData c = new WeblogCategoryData(
@@ -33,6 +33,7 @@
                 this.strategy.store(c);
             }
         }
+        
         // Use first category as default for Blogger API
         newWeblog.setBloggerCategory(firstCat);
 

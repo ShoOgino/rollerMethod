@@ -21,6 +21,17 @@
         List tags = wmgr.getTags(website, null, null, -1);
         updateTagAggregates(tags);
 
+        // delete all weblog tag aggregates
+        strategy.newRemoveQuery(
+                WeblogEntryTagAggregateData.class,
+                "WeblogEntryTagAggregateData.deleteByWeblog").removeAll(website);
+
+        // delete all bad counts
+        strategy.newRemoveQuery(
+                WeblogEntryTagAggregateData.class,
+                "WeblogEntryTagAggregateData.deleteByTotalLEZero").removeAll(website);
+
+
         // Remove the website's ping queue entries
         List queueEntries = (List)strategy.newQuery(PingQueueEntryData.class,
                 "PingQueueEntryData.getByWebsite").execute(website);

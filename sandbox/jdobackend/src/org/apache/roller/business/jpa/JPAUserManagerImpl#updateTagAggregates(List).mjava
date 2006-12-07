@@ -1,7 +1,7 @@
     protected void updateTagAggregates(List tags) throws RollerException {
         for(Iterator iter = tags.iterator(); iter.hasNext();) {
                 TagStat stat = (TagStat) iter.next();
-                JPAUpdateQuery query = strategy.newUpdateQuery(
+                JPAUpdateQuery query = ((JPAPersistenceStrategy)strategy).newUpdateQuery(
                     "WeblogEntryTagAggregateData.updateTotalByName&ampWeblogNull");
                 query.updateAll(
                     new Object[] {Integer.valueOf(stat.getCount()), 

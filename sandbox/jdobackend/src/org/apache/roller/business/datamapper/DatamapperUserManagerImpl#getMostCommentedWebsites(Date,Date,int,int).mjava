@@ -36,11 +36,11 @@
         for (Iterator iter = queryResults.iterator(); iter.hasNext();) {
             Object[] row = (Object[]) iter.next();
             results.add(new StatCount(
-                (String)row[1],
-                (String)row[2],
-                (String)row[3],
-                "statCount.weblogCommentCountType",
-                new Long(((Integer)row[0]).intValue()).longValue()));
+                    (String)row[1],                     // website id
+                    (String)row[2],                     // website handle
+                    (String)row[3],                     // website name
+                    "statCount.weblogCommentCountType", // stat type 
+                    new Long(((Integer)row[0]).intValue()).longValue())); // # comments
         }
         //TODO Uncomment following once integrated with code
         //Collections.sort(results, StatCount.getComparator());
