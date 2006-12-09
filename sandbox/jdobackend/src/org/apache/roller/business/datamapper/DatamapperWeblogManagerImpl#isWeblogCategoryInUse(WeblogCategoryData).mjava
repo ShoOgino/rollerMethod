@@ -1,5 +1,5 @@
     /**
-     * Check if weblog category is in use.
+     * @inheritDoc
      */
     public boolean isWeblogCategoryInUse(WeblogCategoryData cat)
             throws RollerException {
@@ -10,21 +10,21 @@
             return true;
         }
             
-        Iterator cats = cat.getWeblogCategories().iterator();
-        while (cats.hasNext()) {
-            WeblogCategoryData childCat = (WeblogCategoryData)cats.next();
-            if (childCat.isInUse()) {
+            Iterator cats = cat.getWeblogCategories().iterator();
+            while (cats.hasNext()) {
+                WeblogCategoryData childCat = (WeblogCategoryData)cats.next();
+                if (childCat.isInUse()) {
+                    return true;
+                }
+            }
+            
+            if (cat.getWebsite().getBloggerCategory().equals(cat)) {
                 return true;
             }
-        }
             
-        if (cat.getWebsite().getBloggerCategory().equals(cat)) {
-            return true;
-        }
-            
-        if (cat.getWebsite().getDefaultCategory().equals(cat)) {
-            return true;
-        }
+            if (cat.getWebsite().getDefaultCategory().equals(cat)) {
+                return true;
+            }
             
         return false;
     }

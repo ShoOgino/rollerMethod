@@ -1,11 +1,5 @@
     /**
-     * Get weblog enties ordered by descending number of comments.
-     * @param website Weblog or null to get for all weblogs.
-     * @param startDate Start date or null for no start date.
-     * @param endDate End date or null for no end date.
-     * @param offset Offset into results for paging
-     * @param length Max comments to return (or -1 for no limit)
-     * @return List of WeblogEntryData objects.
+     * @inheritDoc
      */
     public List getMostCommentedWeblogEntries(WebsiteData website,
             Date startDate, Date endDate, int offset,
@@ -53,12 +47,12 @@
         for (Iterator iter = queryResults.iterator(); iter.hasNext();) {
             Object[] row = (Object[]) iter.next();
             results.add(new StatCount(
-                (String)row[1],
-                (String)row[2],
-                (String)row[3],
-                "statCount.weblogEntryCommentCountType",
-                new Long(((Integer)row[0]).intValue()).longValue()));
-        }
+                    (String)row[1],                             // entry id
+                    (String)row[2],                             // entry anchor
+                    (String)row[3],                             // entry title
+                    "statCount.weblogEntryCommentCountType",    // stat desc
+                    new Long(((Integer)row[0]).intValue()).longValue())); // count
+          }
         //TODO Uncomment following once integrated with code
         //Collections.sort(results, StatCount.getComparator());
         Collections.reverse(results);

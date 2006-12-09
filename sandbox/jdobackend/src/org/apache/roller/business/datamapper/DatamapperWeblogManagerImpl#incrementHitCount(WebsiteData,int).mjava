@@ -1,3 +1,6 @@
+    /**
+     * @inheritDoc
+     */
     public void incrementHitCount(WebsiteData weblog, int amount)
         throws RollerException {
 
@@ -6,7 +9,7 @@
         }
         
         if(weblog == null) {
-            throw new RollerException("Weblog cannot be NULL.");
+            throw new RollerException("Website cannot be NULL.");
         }
 
         HitCountData hitCount = (HitCountData) strategy.newQuery(

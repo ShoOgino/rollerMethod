@@ -1,18 +1,40 @@
     /**
-     * Get weblog entry by anchor.
+     * @inheritDoc
      */
     public WeblogEntryData getWeblogEntryByAnchor(WebsiteData website,
             String anchor) throws RollerException {
-        if (website == null)
-            throw new RollerException("Website is null");
         
         if (anchor == null)
             throw new RollerException("Anchor is null");
         
-        // TODO Impl entryAnchorToIdMap CACHE
+        // mapping key is combo of weblog + anchor
+        String mappingKey = website.getHandle()+":"+anchor;
         
-        return (WeblogEntryData)strategy.newQuery(WeblogEntryData.class, 
+        // check cache first
+        // NOTE: if we ever allow changing anchors then this needs updating
+        if(this.entryAnchorToIdMap.containsKey(mappingKey)) {
+            
+            WeblogEntryData entry = this.getWeblogEntry((String) this.entryAnchorToIdMap.get(mappingKey));
+            if(entry != null) {
+                log.debug("entryAnchorToIdMap CACHE HIT - "+mappingKey);
+                return entry;
+            } else {
+                // mapping hit with lookup miss?  mapping must be old, remove it
+                this.entryAnchorToIdMap.remove(mappingKey);
+            }
+        }
+
+        // cache failed, do lookup
+        WeblogEntryData entry = (WeblogEntryData)strategy.newQuery(WeblogEntryData.class, 
             "getByAnchor")
             .execute(anchor);
+
+        // add mapping to cache
+        if(entry != null) {
+            log.debug("entryAnchorToIdMap CACHE MISS - "+mappingKey);
+            this.entryAnchorToIdMap.put(mappingKey, entry.getId());
+        }
+    
+        return entry;
     }
 

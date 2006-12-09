@@ -1,5 +1,5 @@
     /**
-     * Remove weblog entry.
+     * @inheritDoc
      */
     public void removeWeblogEntry(WeblogEntryData entry)
             throws RollerException {
@@ -45,6 +45,7 @@
                 .saveWebsite(entry.getWebsite());
         }
         
-        // TODO: remove entry from cache mapping
+        // remove entry from cache mapping
+        this.entryAnchorToIdMap.remove(entry.getWebsite().getHandle()+":"+entry.getAnchor());
     }
 

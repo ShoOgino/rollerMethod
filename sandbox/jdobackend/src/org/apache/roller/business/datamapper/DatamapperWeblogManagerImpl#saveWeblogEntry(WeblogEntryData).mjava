@@ -1,8 +1,9 @@
     /**
-     * Save weblog entry.
+     * @inheritDoc
      */
     // TODO: perhaps the createAnchor() and queuePings() items should go outside this method?
     public void saveWeblogEntry(WeblogEntryData entry) throws RollerException {
+        
         if (entry.getAnchor() == null || entry.getAnchor().trim().equals("")) {
             entry.setAnchor(this.createAnchor(entry));
         }

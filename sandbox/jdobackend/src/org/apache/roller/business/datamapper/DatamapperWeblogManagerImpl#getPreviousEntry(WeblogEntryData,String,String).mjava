@@ -1,13 +1,10 @@
     /**
-     * Get the WeblogEntry prior to, chronologically, the current entry.
-     * Restrict by the Category, if named.
-     * @param current The "current" WeblogEntryData.
-     * @param catName The value of the requested Category Name.
+     * @inheritDoc
      */
     public WeblogEntryData getPreviousEntry(WeblogEntryData current,
             String catName, String locale) throws RollerException {
         WeblogEntryData entry = null;
-        List entryList = getPreviousEntries(current, catName, locale, 1);
+        List entryList = getNextPrevEntries(current, catName, locale, 1, false);
         if (entryList != null && entryList.size() > 0) {
             entry = (WeblogEntryData)entryList.get(0);
         }

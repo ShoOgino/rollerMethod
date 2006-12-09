@@ -1,20 +1,6 @@
     /**
-     * Apply comment default settings from website to all of website's entries.
+     * @inheritDoc
      */
-    public void applyCommentDefaultsToEntries(WebsiteData website)
-            throws RollerException {
-        if (log.isDebugEnabled()) {
-            log.debug("applyCommentDefaults");
-        }       
-//        String updateString = "update WeblogEntryData set "
-//            +"allowComments=:allowed, commentDays=:days, "
-//            +"pubTime=pubTime, updateTime=updateTime " // ensure timestamps are NOT reset
-//            +"where website=:site";
-//        Query update = session.createQuery(updateString);
-//        update.setParameter("allowed", website.getDefaultAllowComments());
-//        update.setParameter("days", new Integer(website.getDefaultCommentDays()));
-//        update.setParameter("site", website);
-//        update.executeUpdate();            
-        // TODO not implemented
-    }
+    public abstract void applyCommentDefaultsToEntries(WebsiteData website)
+            throws RollerException;
 

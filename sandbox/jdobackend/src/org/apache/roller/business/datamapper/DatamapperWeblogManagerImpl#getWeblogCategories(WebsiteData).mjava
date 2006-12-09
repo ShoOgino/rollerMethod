@@ -1,8 +1,11 @@
     /**
-     * Get WebLogCategory objects for a website.
+     * @inheritDoc
      */
     public List getWeblogCategories(WebsiteData website)
             throws RollerException {
+        if (website == null)
+            throw new RollerException("website is null");
+
         return (List) strategy.newQuery(WeblogCategoryData.class, 
                 "WeblogCategoryData.getByWebsite").execute(website);
     }
