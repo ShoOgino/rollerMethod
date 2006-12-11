@@ -1,0 +1,9 @@
+    public List getFeedEntries(String feedUrl, int maxEntries) throws Exception {
+        try {
+            return planetManager.getFeedEntries(feedUrl, 0, maxEntries);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
