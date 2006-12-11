@@ -8,12 +8,12 @@
     public List getRankedSubscriptions(String groupHandle, int sinceDays, int length) {
         List list = new ArrayList();
         try {
-            Roller roller = RollerFactory.getRoller();
-            PlanetManager planetManager = roller.getPlanetManager();
+            PlanetManager planetManager = PlanetFactory.getPlanet().getPlanetManager();
             List subs = planetManager.getTopSubscriptions(groupHandle, 0, length);
             for (Iterator it = subs.iterator(); it.hasNext();) {
                 PlanetSubscriptionData sub = (PlanetSubscriptionData) it.next();
-                list.add(PlanetSubscriptionDataWrapper.wrap(sub)); 
+                // TODO needs pojo wrapping from planet
+                list.add(sub); 
             }
         } catch (Exception e) {
             log.error("ERROR: get ranked blogs", e);

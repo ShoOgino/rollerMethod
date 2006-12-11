@@ -1,0 +1,29 @@
+    public void testGroupStorage() throws Exception {
+        
+        PlanetManager planet = PlanetFactory.getPlanet().getPlanetManager();
+        
+        {   // save group
+            PlanetGroupData group = new PlanetGroupData();
+            group.setDescription("test_group_desc");
+            group.setHandle("test_handle");
+            group.setTitle("test_title");
+            planet.saveGroup(group);
+            TestUtils.endSession(true);
+        }
+        {   // retrieve group
+            PlanetGroupData group = planet.getGroup("test_handle");
+            assertEquals("test_group_desc",group.getDescription());
+            assertEquals("test_title",group.getTitle());
+            assertTrue(planet.getGroupHandles().size() > 0);
+        }
+        {   // remove group
+            PlanetGroupData group = planet.getGroup("test_handle");
+            planet.deleteGroup(group);
+            TestUtils.endSession(true);
+        }
+        {   // verify that it is gone
+            PlanetGroupData group = planet.getGroup("test_handle");
+            assertNull(group);
+        }
+    }
+

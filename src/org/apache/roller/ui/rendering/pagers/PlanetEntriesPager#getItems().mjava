@@ -14,8 +14,7 @@
             
             List results = new ArrayList();
             try {
-                Roller roller = RollerFactory.getRoller();
-                PlanetManager planetManager = roller.getPlanetManager();
+                PlanetManager planetManager = PlanetFactory.getPlanet().getPlanetManager();
                 
                 List rawEntries = null;
                 if (feedURL != null) {
@@ -36,7 +35,8 @@
                 // wrap 'em
                 for (Iterator it = rawEntries.iterator(); it.hasNext();) {
                     PlanetEntryData entry = (PlanetEntryData) it.next();
-                    results.add(PlanetEntryDataWrapper.wrap(entry));
+                    // TODO needs pojo wrapping from planet
+                    results.add(entry);
                 }
                 
             } catch (Exception e) {

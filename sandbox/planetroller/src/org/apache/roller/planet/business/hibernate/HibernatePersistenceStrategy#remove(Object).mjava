@@ -1,0 +1,12 @@
+    /**
+     * Remove object.
+     */
+    public void remove(Object obj) throws HibernateException {
+        
+        if(obj == null) {
+            throw new HibernateException("Cannot remove null object");
+        }
+        
+        getSession().delete(obj);
+    }
+

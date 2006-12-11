@@ -1,0 +1,37 @@
+    /** Populate page model and forward to subscription page */
+    public ActionForward getSubscriptions(ActionMapping mapping,
+            ActionForm actionForm, HttpServletRequest request,
+            HttpServletResponse response) throws IOException, ServletException {
+        ActionForward forward = mapping.findForward("planetSubscriptions.page");
+        try {
+            if (RollerSession.getRollerSession(request).isGlobalAdminUser()) {
+                PlanetManager planet = PlanetFactory.getPlanet().getPlanetManager();
+                PlanetSubscriptionFormEx form = (PlanetSubscriptionFormEx)actionForm;
+                if (request.getParameter("feedUrl") != null) {
+                    String feedUrl = request.getParameter("feedUrl");
+                    PlanetSubscriptionData sub =
+                            planet.getSubscription(feedUrl);
+                    form.copyFrom(sub, request.getLocale());
+                } else {
+                    form.doReset(mapping, request);
+                }
+                
+                String groupHandle = request.getParameter("groupHandle");
+                groupHandle = (groupHandle == null) ? form.getGroupHandle() : groupHandle;
+                groupHandle = (groupHandle == null) ? "external" : groupHandle;
+                
+                PlanetGroupData targetGroup = planet.getGroup(groupHandle);
+                form.setGroupHandle(groupHandle);
+                request.setAttribute("model",
+                        new SubscriptionsPageModel(
+                        targetGroup, request, response, mapping, form));
+            } else {
+                forward = mapping.findForward("access-denied");
+            }
+        } catch (Exception e) {
+            request.getSession().getServletContext().log("ERROR", e);
+            throw new ServletException(e);
+        }
+        return forward;
+    }
+

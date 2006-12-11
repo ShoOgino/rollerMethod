@@ -1,0 +1,12 @@
+    /**
+     * Expand system properties in the input string.  This is equivalent to calling <code>expandProperties(input,
+     * System.getProperties())</code>.
+     *
+     * @param input
+     * @return the result of replacing property expressions with the values of the corresponding system properties.
+     * @see System#getProperties()
+     */
+    public static String expandSystemProperties(String input) {
+        return expandProperties(input, System.getProperties());
+    }
+

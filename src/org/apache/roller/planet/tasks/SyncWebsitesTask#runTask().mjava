@@ -12,7 +12,7 @@
         }
         
         try {
-            PlanetManager planet = RollerFactory.getRoller().getPlanetManager();
+            PlanetManager planet = PlanetFactory.getPlanet().getPlanetManager();
             UserManager userManager = RollerFactory.getRoller().getUserManager();
             
             // first, make sure there is an "all" planet group
@@ -85,13 +85,14 @@
             
             // all done, lets save
             planet.saveGroup(group);
-            RollerFactory.getRoller().flush();
+            PlanetFactory.getPlanet().flush();
             
         } catch (RollerException e) {
             log.error("ERROR refreshing entries", e);
         } finally {
             // don't forget to release
             RollerFactory.getRoller().release();
+            PlanetFactory.getPlanet().release();
         }
     }
 

@@ -1,13 +1,12 @@
     public void runTask() {
         try {
-            Roller roller = RollerFactory.getRoller();
-            roller.getPlanetManager().refreshEntries(
-                RollerConfig.getProperty("planet.aggregator.cache.dir"));
-            roller.flush();
+            PlanetFactory.getPlanet().getPlanetManager().refreshEntries(
+                PlanetConfig.getProperty("planet.aggregator.cache.dir"));
+            PlanetFactory.getPlanet().flush();
         } catch (RollerException e) {
             log.error("ERROR refreshing entries", e);
         } finally {
-            RollerFactory.getRoller().release();
+            PlanetFactory.getPlanet().release();
         }
     }
 

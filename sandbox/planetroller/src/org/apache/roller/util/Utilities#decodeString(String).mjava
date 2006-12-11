@@ -1,0 +1,14 @@
+    /**
+     * Decode a string using Base64 encoding.
+     *
+     * @param str
+     * @return String
+     * @throws IOException
+     */
+    public static String decodeString(String str) throws IOException {
+        BASE64Decoder dec = new BASE64Decoder();
+        String value = new String(dec.decodeBuffer(str));
+        
+        return (value);
+    }
+

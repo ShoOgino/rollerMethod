@@ -1,0 +1,64 @@
+    /** Save posted config form data */
+    public ActionForward saveConfig(ActionMapping mapping,
+            ActionForm actionForm, HttpServletRequest request,
+            HttpServletResponse response) throws IOException, ServletException
+    {
+        ActionForward forward = mapping.findForward("planetConfig.page");
+        try
+        {
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);
+            if (RollerSession.getRollerSession(request).isGlobalAdminUser())
+            {
+                BasePageModel pageModel = new BasePageModel(
+                    "planetConfig.pageTitle", request, response, mapping);
+                request.setAttribute("model",pageModel);                
+                PlanetManager planet = PlanetFactory.getPlanet().getPlanetManager();
+                PlanetConfigData config = planet.getConfiguration();
+                if (config == null)
+                {
+                    config = new PlanetConfigData();
+                }
+                PlanetConfigForm form = (PlanetConfigForm) actionForm;
+                ActionErrors errors = validate(form);
+                if (errors.isEmpty())
+                {
+                    form.copyTo(config, request.getLocale());
+                    
+                    // the form copy is a little dumb and will set the id value
+                    // to empty string if it didn't have a value before, which means
+                    // that this object would not be considered new
+                    if(config.getId() != null && config.getId().trim().equals("")) {
+                        config.setId(null);
+                    }
+                    
+                    planet.saveConfiguration(config);
+                    if (planet.getGroup("external") == null) 
+                    {
+                        PlanetGroupData group = new PlanetGroupData();
+                        group.setHandle("external");
+                        group.setTitle("external");
+                        planet.saveGroup(group);
+                    }
+                    PlanetFactory.getPlanet().flush();
+                    ActionMessages messages = new ActionMessages();
+                    messages.add(null, new ActionMessage("planetConfig.success.saved"));
+                    saveMessages(request, messages);
+                }                
+                else
+                {
+                    saveErrors(request, errors);
+                }
+            }
+            else
+            {
+                forward = mapping.findForward("access-denied");
+            }
+        }
+        catch (Exception e)
+        {
+            request.getSession().getServletContext().log("ERROR", e);
+            throw new ServletException(e);
+        }
+        return forward;
+    }
+
