@@ -32,9 +32,9 @@
             // Build context with current date 
             VelocityContext context = new VelocityContext();
             context.put("date", new Date());
-            // TODO fix
-            //context.put("utils", new UtilitiesModel());
-            //context.put("utilities", new OldUtilities());
+            // TODO fix: Use one utilities model and not one of the below
+            context.put("utils", new UtilitiesModel());
+            context.put("utilities", new OldUtilities());
             context.put("planet", new StaticPlanetModel());
             
             // Ensure that output directories exists, one for each group

@@ -1,0 +1,7 @@
+    // convenience method returns minimal date format
+    public static SimpleDateFormat getRfc822DateFormat() {
+        // http://www.w3.org/Protocols/rfc822/Overview.html#z28
+        // Using Locale.US to fix ROL-725 and ROL-628
+        return new SimpleDateFormat(formatRfc822, Locale.US);
+    }
+
