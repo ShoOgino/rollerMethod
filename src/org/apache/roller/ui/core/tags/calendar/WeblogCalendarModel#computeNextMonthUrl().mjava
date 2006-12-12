@@ -1,11 +1,4 @@
     public String computeNextMonthUrl() {
-        // Create yyyyMMdd dates for next month, prev month and today
-        Calendar nextCal = getCalendar();
-        nextCal.setTime( day );
-        nextCal.add( Calendar.MONTH, 1 );
-        String nextMonth = computeUrl(nextCal.getTime(), true, true);
-        
-        // and strip off last two digits to get a month URL
-        return nextMonth;
+        return computeUrl(nextMonth, true, true);
     }
 

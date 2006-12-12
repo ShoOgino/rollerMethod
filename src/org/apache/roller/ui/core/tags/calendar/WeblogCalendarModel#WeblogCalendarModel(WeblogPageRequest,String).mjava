@@ -2,26 +2,25 @@
         
         this.pageRequest = pRequest;
         try {
-            this.weblog = pageRequest.getWeblog();
-            
-            pageLink = pageRequest.getWeblogPageName();
-            
-            day = DateUtil.parseWeblogURLDateString(pageRequest.getWeblogDate(),
-                    weblog.getTimeZoneInstance(), weblog.getLocaleInstance());
-            initDay(day);
-            
-            locale = pageRequest.getLocale();
-            
+            this.weblog = pageRequest.getWeblog();            
             if(weblog == null) {
                 throw new RollerException("unable to lookup weblog: "+
                         pageRequest.getWeblogHandle());
             }
+            pageLink = pageRequest.getWeblogPageName();            
+            day = DateUtil.parseWeblogURLDateString(pageRequest.getWeblogDate(),
+                  weblog.getTimeZoneInstance(), weblog.getLocaleInstance());
+            locale = pageRequest.getLocale();
+            
+            initDay(day);  
+            
             // Category method argument overrides category from URL
             if (catArgument != null) {
                 cat = catArgument;
             } else if (pageRequest.getWeblogCategoryName() != null) {
                 cat = pageRequest.getWeblogCategoryName();
             }
+            
         } catch (Exception e) {
             // some kind of error parsing the request or looking up weblog
             log.debug("ERROR: initializing calendar", e);

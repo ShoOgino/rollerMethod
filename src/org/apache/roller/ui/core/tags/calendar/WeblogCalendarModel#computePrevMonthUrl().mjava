@@ -1,12 +1,4 @@
     public String computePrevMonthUrl() {
-        // Create yyyyMMdd dates for prev month, prev month and today
-        Calendar prevCal = getCalendar();
-        prevCal.setTime(day);
-        prevCal.add(Calendar.MONTH, -1);
-        //getLastDayOfMonth( prevCal );
-        String prevMonth = computeUrl(prevCal.getTime(), true, true);
-        
-        // and strip off last two digits to get a month URL
-        return prevMonth;
+        return computeUrl(prevMonth, true, true);
     }
 

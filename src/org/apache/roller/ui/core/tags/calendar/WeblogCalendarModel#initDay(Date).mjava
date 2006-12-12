@@ -4,23 +4,58 @@
                 weblog.getLocaleInstance());
         
         Calendar cal = (Calendar)calendar.clone();
+        Date startDate = DateUtil.getStartOfMonth(month);
+        Date endDate = DateUtil.getEndOfMonth(month);
         
-        // Compute first second of month
-        cal.setTime(month);
-        cal.set(Calendar.DAY_OF_MONTH, cal.getMinimum(Calendar.DAY_OF_MONTH));
-        cal.set(Calendar.HOUR_OF_DAY, cal.getMinimum(Calendar.HOUR_OF_DAY));
-        cal.set(Calendar.MINUTE, cal.getMinimum(Calendar.MINUTE));
-        cal.set(Calendar.SECOND, cal.getMinimum(Calendar.SECOND));
-        cal.set(Calendar.MILLISECOND, cal.getMinimum(Calendar.MILLISECOND));
-        Date startDate = cal.getTime();
+        // Determine previous non-empty month
+        // Get entries before startDate, using category restriction limit 1
+        // Use entry's date as previous month
+        try {
+            WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+            List prevEntries = mgr.getWeblogEntries(
+                    weblog,                    // website
+                    null,                      // user
+                    null,                      // startDate
+                    startDate,                 // endDate 
+                    cat,                       // cat
+                    null,                      // tags
+                    WeblogEntryData.PUBLISHED, // status
+                    null,                      // sortby (null means pubTime)
+                    WeblogManager.DESCENDING,  // sortorder, null means DESCENDING
+                    locale,                    // locale
+                    0, 1);                     // offset, range
+            if (prevEntries.size() > 0) {
+                WeblogEntryData prevEntry = (WeblogEntryData)prevEntries.get(0);
+                prevMonth = DateUtil.getStartOfMonth(new Date(prevEntry.getPubTime().getTime()));
+            }
+        } catch (RollerException e) {
+            log.error("ERROR determining previous non-empty month");
+        }
         
-        // Compute last second of month
-        cal.set(Calendar.DAY_OF_MONTH, cal.getMaximum(Calendar.DAY_OF_MONTH));
-        cal.set(Calendar.HOUR_OF_DAY, cal.getMaximum(Calendar.HOUR_OF_DAY));
-        cal.set(Calendar.MINUTE, cal.getMaximum(Calendar.MINUTE));
-        cal.set(Calendar.SECOND, cal.getMaximum(Calendar.SECOND));
-        cal.set(Calendar.MILLISECOND, cal.getMaximum(Calendar.MILLISECOND));
-        Date endDate = cal.getTime();
+        // Determine next non-empty month
+        // Get entries after endDate, using category restriction limit 1
+        // Use entry's date as next month
+        try {
+            WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+            List nextEntries = mgr.getWeblogEntries(
+                    weblog,                    // website
+                    null,                      // user
+                    endDate,                   // startDate
+                    null,                      // endDate 
+                    cat,                       // cat
+                    null,                      // tags
+                    WeblogEntryData.PUBLISHED, // status
+                    null,                      // sortby (null means pubTime)
+                    WeblogManager.ASCENDING,   // sortorder
+                    locale,                    // locale
+                    0, 1);                     // offset, range
+            if (nextEntries.size() > 0) {
+                WeblogEntryData nextEntry = (WeblogEntryData)nextEntries.get(0);
+                nextMonth = DateUtil.getStartOfMonth(new Date(nextEntry.getPubTime().getTime()));
+            }
+        } catch (RollerException e) {
+            log.error("ERROR determining next non-empty month");
+        }  
         
         // Fix for ROL-840 Don't include future entries
         Date now = new Date();
