@@ -1,0 +1,9 @@
+    protected List getBlackListedReferer(WebsiteData website, String[] blacklist) 
+            throws RollerException {
+        StringBuffer queryString = getQueryStringForBlackList(blacklist);
+        queryString.append(" AND r.website = ?1 ");
+        DatamapperQuery query =
+                ((JPAPersistenceStrategy) strategy).newDynamicQuery(queryString.toString());
+        return (List) query.execute(website);
+    }
+

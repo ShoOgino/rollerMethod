@@ -1,0 +1,31 @@
+    /**
+     * @inheritDoc
+     */
+    public boolean getTagComboExists(List tags, WebsiteData weblog) {
+
+        List results = null;
+
+        if(tags == null) {
+            return false;
+        }
+        
+        // TODO: Non-standard JPA query, passing List as argument
+        try {
+            // are we checking a specific weblog, or site-wide?
+            if (weblog != null)
+                results = (List) strategy.newQuery(
+                    WeblogEntryTagAggregateData.class, 
+                    "WeblogEntryTagAggregateData.getNameByNameIn&Website")
+                    .execute(new Object[] {tags, weblog});
+            else
+                results = (List) strategy.newQuery(
+                    WeblogEntryTagAggregateData.class, 
+                    "WeblogEntryTagAggregateData.getNameByNameIn&WebsiteNull")
+                    .execute(tags);
+        } catch (RollerException re) {
+            throw new RuntimeException(re);
+        }
+
+        return (results != null && results.size() == tags.size());
+    }
+

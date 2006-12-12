@@ -1,0 +1,20 @@
+    /**
+     * Apply ignoreWord/spam filters to all referers in website.
+     */
+    public void applyRefererFilters(WebsiteData website)
+            throws RollerException {
+        // TODO not implemented
+        
+        if (null == website) throw new RollerException("website is null");
+        if (null == website.getBlacklist()) return;
+        
+        String[] blacklist = StringUtils.split(
+                StringUtils.deleteWhitespace(website.getBlacklist()),",");
+        if (blacklist.length == 0) return;
+        List referers = getBlackListedReferer(website, blacklist);
+        for (Iterator iterator = referers.iterator(); iterator.hasNext();) {
+            RefererData referer= (RefererData) iterator.next();
+            this.strategy.remove(referer);
+        }
+    }
+

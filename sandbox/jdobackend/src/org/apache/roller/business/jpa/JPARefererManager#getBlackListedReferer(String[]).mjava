@@ -1,0 +1,8 @@
+    protected List getBlackListedReferer(String[] blacklist) throws
+            RollerException {
+        StringBuffer queryString = getQueryStringForBlackList(blacklist);
+        DatamapperQuery query =
+                ((JPAPersistenceStrategy) strategy).newDynamicQuery(queryString.toString());
+        return (List) query.execute();
+    }
+

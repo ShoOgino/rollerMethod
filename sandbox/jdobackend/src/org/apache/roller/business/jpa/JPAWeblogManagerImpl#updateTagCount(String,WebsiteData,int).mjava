@@ -1,0 +1,72 @@
+    /**
+     * @inheritDoc
+     */
+    public void updateTagCount(String name, WebsiteData website, int amount)
+            throws RollerException {
+        if(amount == 0) {
+            throw new RollerException("Tag increment amount cannot be zero.");
+        }
+
+        if(website == null) {
+            throw new RollerException("Website cannot be NULL.");
+        }
+
+        // The reason why add order lastUsed desc is to make sure we keep picking the most recent
+        // one in the case where we have multiple rows (clustered environment)
+        // eventually that second entry will have a very low total (most likely 1) and
+        // won't matter
+        WeblogEntryTagAggregateData weblogTagData = 
+            (WeblogEntryTagAggregateData)
+            strategy.newQuery(WeblogEntryTagAggregateData.class,
+                "WeblogEntryTagAggregateData.getByName&WebsiteOrderByLastUsedDesc")
+            .setRange(0,1)
+            .setUnique()
+            .execute(new Object[] {name, website});
+
+        WeblogEntryTagAggregateData siteTagData = 
+            (WeblogEntryTagAggregateData)
+            strategy.newQuery(WeblogEntryTagAggregateData.class,
+                "WeblogEntryTagAggregateData.getByName&WebsiteNullOrderByLastUsedDesc")
+            .setRange(0,1)
+            .setUnique()
+            .execute(new Object[] {name, website});
+
+        Timestamp lastUsed = new Timestamp((new Date()).getTime());
+
+        // create it only if we are going to need it.
+        if(weblogTagData == null && amount > 0) {
+            weblogTagData = new WeblogEntryTagAggregateData(
+                null, website, name, amount);
+            weblogTagData.setLastUsed(lastUsed);
+            strategy.store(weblogTagData);
+        } else if(weblogTagData != null) {
+            ((JPAPersistenceStrategy) strategy).newUpdateQuery(
+                "WeblogEntryTagAggregateData.updateAddToTotalByName&Weblog")
+                .updateAll(new Object[] {
+                    new Long(amount),
+                    weblogTagData.getName(),
+                    website
+                    });
+        }
+
+        // create it only if we are going to need it.        
+        if(siteTagData == null && amount > 0) {
+            siteTagData = new WeblogEntryTagAggregateData(null, null, name, amount);
+            siteTagData.setLastUsed(lastUsed);
+            strategy.store(siteTagData);
+        } else if(siteTagData != null) {
+            ((JPAPersistenceStrategy) strategy).newUpdateQuery(
+                "WeblogEntryTagAggregateData.updateAddToTotalByName&WeblogNull")
+                .updateAll(new Object[] {
+                    new Long(amount),
+                    weblogTagData.getName(),
+                    website
+                    });
+        }
+
+        // delete all bad counts
+        strategy.newRemoveQuery(WeblogEntryTagAggregateData.class, 
+            "WeblogEntryTagAggregateData.removeByTotalLessEqual")
+            .removeAll(new Integer(0));
+    }
+

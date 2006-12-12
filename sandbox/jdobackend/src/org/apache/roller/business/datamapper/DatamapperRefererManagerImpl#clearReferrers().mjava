@@ -1,0 +1,15 @@
+    /**
+     * Clear referrer dayhits and remove referrers without excerpts.
+     */
+    public void clearReferrers() throws RollerException {
+        clearDayHits();
+
+        //TODO: Datamapper port: The original code used two different expressions
+        // to find empty exerpt
+        // (1) excerpt like '' for mssql, oracle and derby
+        // (2) excerpt = '' for all other
+        // I could verify that (1) works for mssql, oralce, derby, and mysql
+        strategy.newRemoveQuery(RefererData.class,
+                "RefererData.deleteByNullOrEmptyExcerpt").removeAll();
+    }
+

@@ -5,9 +5,9 @@
      * @return the object retrieved
      * @throws RollerException on any error retrieving object
      */
-    public PersistentObject load(Class clazz, String id)
+    public Object load(Class clazz, String id)
             throws RollerException {
         EntityManager em = getEntityManager(false);
-        return (PersistentObject) em.find(clazz, id);
+        return em.find(clazz, id);
     }
 

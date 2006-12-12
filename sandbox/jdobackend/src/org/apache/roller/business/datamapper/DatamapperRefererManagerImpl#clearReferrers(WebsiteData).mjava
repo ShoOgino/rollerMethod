@@ -1,0 +1,12 @@
+    /**
+     * Clear referrer dayhits and remove referrers without excerpts.
+     */
+    public void clearReferrers(WebsiteData website) throws RollerException {
+        clearDayHitsByWebsite(website);
+
+        //TODO: Datamapper port: Same comments as for method clearReferrers() apply for the expression
+        strategy.newRemoveQuery(RefererData.class,
+                "RefererData.deleteByNullOrEmptyExcerpt&website").removeAll(website);
+
+    }
+

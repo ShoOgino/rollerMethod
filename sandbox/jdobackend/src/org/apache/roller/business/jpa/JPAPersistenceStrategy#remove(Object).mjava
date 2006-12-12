@@ -3,9 +3,8 @@
      * @param po the persistent object to remove
      * @throws org.apache.roller.RollerException on any error
      */
-    public void remove(PersistentObject po) 
-            throws RollerException {
-        PersistenceManager pm = getPersistenceManager(true);
-        pm.deletePersistent(po);
+    public void remove(Object po) throws RollerException {
+        EntityManager em = getEntityManager(true);
+        em.remove(po);
     }
 

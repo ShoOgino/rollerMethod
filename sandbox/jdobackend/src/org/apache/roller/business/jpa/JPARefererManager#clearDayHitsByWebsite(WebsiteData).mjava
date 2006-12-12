@@ -1,0 +1,7 @@
+    protected void clearDayHitsByWebsite(WebsiteData website) throws
+            RollerException {
+        JPAUpdateQuery query = ((JPAPersistenceStrategy) strategy).
+                newUpdateQuery("RefererData.clearDayHitsByWebsite");
+        query.updateAll(website);    
+    }
+

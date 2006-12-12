@@ -1,0 +1,6 @@
+    protected void clearDayHits() throws RollerException {
+        JPAUpdateQuery query = ((JPAPersistenceStrategy) strategy).
+                newUpdateQuery("RefererData.clearDayHits");
+        query.updateAll();
+    }
+

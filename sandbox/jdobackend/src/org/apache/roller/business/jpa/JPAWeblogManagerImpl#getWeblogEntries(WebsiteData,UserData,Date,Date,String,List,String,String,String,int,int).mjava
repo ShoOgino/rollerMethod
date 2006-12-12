@@ -1,0 +1,95 @@
+    /**
+     * @inheritDoc
+     */
+    public List getWeblogEntries(
+            WebsiteData website,
+            UserData    user,
+            Date        startDate,
+            Date        endDate,
+            String      catName,
+            List        tags,
+            String      status,
+            String      sortby,
+            String      locale,
+            int         offset,
+            int         length) throws RollerException {
+        
+        WeblogCategoryData cat = null;
+        if (StringUtils.isNotEmpty(catName) && website != null) {
+            cat = getWeblogCategoryByPath(website, catName);
+            if (cat == null) catName = null;
+        }
+        if (catName != null && catName.trim().equals("/")) {
+            catName = null;
+        }
+                
+        List params = new ArrayList();
+        int size = 0;
+        StringBuffer queryString = new StringBuffer();
+        queryString.append("SELECT e FROM WeblogEntryData e WHERE ");
+
+        if (website != null) {
+            params.add(++size, website.getId());
+            queryString.append("website.id = ?").append(size);                
+        } else {
+            params.add(++size, Boolean.TRUE);                
+            queryString.append("website.enabled = ?").append(size);                
+        }
+            
+        if (user != null) {
+            params.add(++size, user.getId());
+            queryString.append(" AND creator.id = ?").append(size);
+        }
+
+        if (startDate != null) {
+            params.add(++size, startDate);
+            queryString.append(" AND pubTime >= ?").append(size);
+        }
+            
+        if (endDate != null) {
+            params.add(++size, endDate);                
+            queryString.append(" AND pubTime <= ?").append(size);
+        }
+            
+        if (cat != null && website != null) {
+            params.add(++size, cat.getId());                
+            queryString.append(" AND category.id = ?").append(size);
+        }
+            
+        if (tags != null && tags.size() > 0) {
+          for(int i = 0; i < tags.size(); i++) {
+              params.add(++size, tags.get(i));
+              queryString.append(" AND tags.name = ?").append(size);
+          }
+        }
+            
+        if (status != null) {
+            params.add(++size, status);
+            queryString.append(" AND status = ?").append(size);
+        }
+            
+        if (locale != null) {
+            params.add(++size, locale + '%');
+            queryString.append(" AND locale like ?").append(size);
+        }
+            
+        if (sortby != null && sortby.equals("updateTime")) {
+            queryString.append("ORDER BY updateTime DESC");
+        } else {
+            queryString.append("ORDER BY pubTime DESC");
+        }
+            
+        JPADynamicQueryImpl query = (JPADynamicQueryImpl) 
+            ((JPAPersistenceStrategy) strategy)
+            .newDynamicQuery(queryString.toString());
+            
+        if (offset != 0 || length != -1) {
+            if (length == -1) {
+                length = Integer.MAX_VALUE - offset;
+            }
+            query.setRange(offset, length);
+        }
+                        
+        return (List) query.execute(params.toArray());
+    }
+
