@@ -3,6 +3,17 @@
      * value of singleResult.
      */
     private Object executeQuery() {
-        return singleResult ? q.getSingleResult() : q.getResultList();
+        Object result = null;
+        if (singleResult) {
+            try {
+                result = q.getSingleResult();
+            } catch (NoResultException e) {
+                // Roller code expects a null for this condition
+                result = null;
+            }
+        } else {
+            result = q.getResultList();
+        }
+        return result;
     }
 

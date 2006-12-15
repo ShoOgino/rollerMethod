@@ -8,7 +8,6 @@
             if (isTransactionActive(em)) {
                 em.getTransaction().commit();
             }
-            em.close();
         } catch (PersistenceException pe) {
             throw new RollerException(pe);
         }
