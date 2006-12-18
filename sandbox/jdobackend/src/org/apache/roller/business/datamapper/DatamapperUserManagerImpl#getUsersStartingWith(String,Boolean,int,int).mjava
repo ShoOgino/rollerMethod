@@ -14,7 +14,7 @@
                     "UserData.getByEnabled&UserNameOrEmailAddressStartsWith");
                 if (setRange) query.setRange(offset, offset + length);
                 results = (List) query.execute(
-                    new Object[] {enabled, startsWith});
+                    new Object[] {enabled, startsWith + '%'});
             } else {
                 query = strategy.newQuery(UserData.class, 
                     "UserData.getByEnabled");
@@ -26,7 +26,7 @@
                 query = strategy.newQuery(UserData.class, 
                     "UserData.getByUserNameOrEmailAddressStartsWith");
                 if (setRange) query.setRange(offset, offset + length);
-                results = (List) query.execute(startsWith);
+                results = (List) query.execute(startsWith +  '%');
             } else {
                 query = strategy.newQuery(UserData.class, "UserData.getAll");
                 if (setRange) query.setRange(offset, offset + length);
