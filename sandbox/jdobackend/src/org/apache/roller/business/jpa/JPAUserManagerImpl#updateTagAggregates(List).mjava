@@ -2,7 +2,7 @@
         for(Iterator iter = tags.iterator(); iter.hasNext();) {
                 TagStat stat = (TagStat) iter.next();
                 JPAUpdateQuery query = ((JPAPersistenceStrategy)strategy).newUpdateQuery(
-                    "WeblogEntryTagAggregateData.updateTotalByName&ampWeblogNull");
+                    "WeblogEntryTagAggregateData.updateTotalByName&WeblogNull");
                 query.updateAll(
                     new Object[] {Integer.valueOf(stat.getCount()), 
                     stat.getName() });

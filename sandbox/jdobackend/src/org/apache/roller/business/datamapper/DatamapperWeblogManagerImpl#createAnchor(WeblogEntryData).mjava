@@ -13,8 +13,8 @@
             }
                 
             List results = (List) strategy.newQuery(WeblogEntryData.class, 
-                "WeblogEntryData.getByWeblogEntry&Anchor")
-                .execute(new Object[] {entry, name});
+                "WeblogEntryData.getByWebsite&Anchor")
+                .execute(new Object[] {entry.getWebsite(), name});
                 
             if (results.size() < 1) {
                 break;

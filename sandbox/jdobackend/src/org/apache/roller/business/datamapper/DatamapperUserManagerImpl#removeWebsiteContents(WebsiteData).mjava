@@ -29,7 +29,7 @@
         // delete all bad counts
         strategy.newRemoveQuery(
                 WeblogEntryTagAggregateData.class,
-                "WeblogEntryTagAggregateData.deleteByTotalLEZero").removeAll(website);
+                "WeblogEntryTagAggregateData.deleteByTotalLEZero").removeAll();
 
 
         // Remove the website's ping queue entries
@@ -59,7 +59,7 @@
 
         // remove entries
         List entries = (List)strategy.newQuery(PingQueueEntryData.class,
-                "WeblogEntryData.getByWebsite").execute();
+                "WeblogEntryData.getByWebsite").execute(website);
 
         for (Iterator iter = entries.iterator(); iter.hasNext();) {
             WeblogEntryData entry = (WeblogEntryData) iter.next();
@@ -69,7 +69,7 @@
 
         // remove associated referers
         List referers = (List)strategy.newQuery(RefererData.class,
-                "RefererData.getByWebsite").execute();
+                "RefererData.getByWebsite").execute(website);
         for (Iterator iter = referers.iterator(); iter.hasNext();) {
             RefererData referer = (RefererData) iter.next();
             this.strategy.remove(referer);
@@ -77,7 +77,7 @@
 
         // remove associated pages
         List pages = (List)strategy.newQuery(WeblogTemplate.class,
-                "WeblogTemplate.getByWebsite").execute();
+                "WeblogTemplate.getByWebsite").execute(website);
 
         for (Iterator iter = pages.iterator(); iter.hasNext();) {
             WeblogTemplate page = (WeblogTemplate) iter.next();
@@ -104,5 +104,8 @@
             this.strategy.remove(rootCat);
         }
 
+        // flush the changes before returning. This is required as there is a
+        // circular dependency between WeblogCategoryData and WebsiteData
+        this.strategy.flush();
     }
 

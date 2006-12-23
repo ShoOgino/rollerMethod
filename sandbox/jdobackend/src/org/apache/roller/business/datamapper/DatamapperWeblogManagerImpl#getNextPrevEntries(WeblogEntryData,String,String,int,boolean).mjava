@@ -14,7 +14,7 @@
             if (locale != null) {
                 if (next) {
                     query = strategy.newQuery(WeblogEntryData.class, 
-                            "WeblogEntryData.getByWebsite&Status&PubTimeGreater&Category&LocaleLikeOrderByPubTimeAsc");
+                            "WeblogEntryData.getByWebsite&Status&PubTimeGreaterThen&Category&LocaleLikeOrderByPubTimeAsc");
                     if (maxEntries > -1) query.setRange(0, maxEntries);
                     results = (List) query.execute(
                         new Object[] {current.getWebsite(), 
@@ -22,7 +22,7 @@
                             current.getPubTime(), category, locale});
                 } else {
                     query = strategy.newQuery(WeblogEntryData.class, 
-                            "WeblogEntryData.getByWebsite&Status&PubTimeLess&Category&LocaleLikeOrderByPubTimeDesc");
+                            "WeblogEntryData.getByWebsite&Status&PubTimeLessThen&Category&LocaleLikeOrderByPubTimeDesc");
                     if (maxEntries > -1) query.setRange(0, maxEntries);
                     results = (List) query.execute(
                         new Object[] {current.getWebsite(), 
@@ -31,8 +31,8 @@
                 }
             } else {
                 if (next) {
-                    results = (List) strategy.newQuery(WeblogEntryData.class, 
-                            "WeblogEntryData.getByWebsite&Status&PubTimeGreater&CategoryOrderByPubTimeAsc");
+                    query = strategy.newQuery(WeblogEntryData.class,
+                            "WeblogEntryData.getByWebsite&Status&PubTimeGreaterThen&CategoryOrderByPubTimeAsc");
                     if (maxEntries > -1) query.setRange(0, maxEntries);
                     results = (List) query.execute(
                         new Object[] {current.getWebsite(), 
@@ -40,8 +40,8 @@
                         category});
                 
                 } else {
-                    results = (List) strategy.newQuery(WeblogEntryData.class, 
-                            "WeblogEntryData.getByWebsite&Status&PubTimeLess&CategoryOrderByPubTimeDesc");
+                    query = strategy.newQuery(WeblogEntryData.class,
+                            "WeblogEntryData.getByWebsite&Status&PubTimeLessThen&CategoryOrderByPubTimeDesc");
                     if (maxEntries > -1) query.setRange(0, maxEntries);
                     results = (List) query.execute(
                         new Object[] {current.getWebsite(), 
@@ -53,33 +53,33 @@
             if (locale != null) {
                 if (next) {
                     query = strategy.newQuery(WeblogEntryData.class, 
-                            "WeblogEntryData.getByWebsite&Status&PubTimeGreater&LocaleLikeOrderByPubTimeAsc");
+                            "WeblogEntryData.getByWebsite&Status&PubTimeGreaterThen&LocaleLikeOrderByPubTimeAsc");
                     if (maxEntries > -1) query.setRange(0, maxEntries);
                     results = (List) query.execute(
                         new Object[] {current.getWebsite(), 
                         WeblogEntryData.PUBLISHED, current.getPubTime(), 
-                        locale});
+                        locale + '%'});
                 } else {
                     query = strategy.newQuery(WeblogEntryData.class, 
-                            "WeblogEntryData.getByWebsite&Status&PubTimeLess&LocaleLikeOrderByPubTimeDesc");
+                            "WeblogEntryData.getByWebsite&Status&PubTimeLessThen&LocaleLikeOrderByPubTimeDesc");
                     if (maxEntries > -1) query.setRange(0, maxEntries);
                     results = (List) query.execute(
                         new Object[] {current.getWebsite(), 
                         WeblogEntryData.PUBLISHED, current.getPubTime(), 
-                        locale});  
+                        locale + '%'});  
                 }
             } else {
                 if (next) {
-                    results = (List) strategy.newQuery(WeblogEntryData.class, 
-                            "WeblogEntryData.getByWebsite&Status&PubTimeGreater&OrderByPubTimeAsc");
+                    query = strategy.newQuery(WeblogEntryData.class,
+                            "WeblogEntryData.getByWebsite&Status&PubTimeGreaterThenOrderByPubTimeAsc");
                     if (maxEntries > -1) query.setRange(0, maxEntries);
                     results = (List) query.execute(
                         new Object[] {current.getWebsite(), 
                         WeblogEntryData.PUBLISHED, current.getPubTime()});
                 
                 } else {
-                    results = (List) strategy.newQuery(WeblogEntryData.class, 
-                            "WeblogEntryData.getByWebsite&Status&PubTimeLessOrderByPubTimeDesc");
+                    query = strategy.newQuery(WeblogEntryData.class,
+                            "WeblogEntryData.getByWebsite&Status&PubTimeLessThenOrderByPubTimeDesc");
                     if (maxEntries > -1) query.setRange(0, maxEntries);
                     results = (List) query.execute(
                         new Object[] {current.getWebsite(), 

@@ -4,10 +4,8 @@
      */
     public void flush() throws RollerException {
         try {
-            EntityManager em = getEntityManager(false);
-            if (isTransactionActive(em)) {
-                em.getTransaction().commit();
-            }
+            EntityManager em = getEntityManager(true);
+            em.getTransaction().commit();
         } catch (PersistenceException pe) {
             throw new RollerException(pe);
         }

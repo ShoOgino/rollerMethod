@@ -4,7 +4,7 @@
         throws RollerException {
         // first, determine if an entry already exists
         List results = (List)strategy.newQuery(PingQueueEntryData.class,
-                "PingQueueEntryData.getByPingTarget&website")
+                "PingQueueEntryData.getByPingTarget&Website")
                 .execute(new Object[]
                     {autoPing.getPingTarget(), autoPing.getWebsite()});
         return results.size() > 0;

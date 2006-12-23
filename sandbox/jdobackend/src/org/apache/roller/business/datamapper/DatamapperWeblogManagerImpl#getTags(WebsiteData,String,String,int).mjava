@@ -27,12 +27,12 @@
                     query = strategy.newQuery(WeblogEntryTagAggregateData.class,
                         "WeblogEntryTagAggregateData.getTagsByWebsiteOrderByName");
                     if (limit > 0) query.setRange(0, limit);
-                    queryResults = (List) query.execute(startsWith + '%');
+                    queryResults = (List) query.execute(website);
                 } else {
                     query = strategy.newQuery(WeblogEntryTagAggregateData.class,
                         "WeblogEntryTagAggregateData.getTagsByWebsite");
                     if (limit > 0) query.setRange(0, limit);
-                    queryResults = (List) query.execute(startsWith + '%');
+                    queryResults = (List) query.execute(website);
                 }
             }
         } else {

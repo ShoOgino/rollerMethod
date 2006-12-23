@@ -4,7 +4,7 @@
     protected List getReferersToWebsite(WebsiteData website, String refererUrl)
             throws RollerException {
         return (List) strategy.newQuery(RefererData.class, 
-                "RefererData.getByWebsite&RefererURL").
+                "RefererData.getByWebsite&RefererUrl").
                 execute(new Object[] {website, refererUrl});
     }
 

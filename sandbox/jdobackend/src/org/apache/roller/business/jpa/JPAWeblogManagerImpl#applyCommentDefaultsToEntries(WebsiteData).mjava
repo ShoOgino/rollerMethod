@@ -9,7 +9,7 @@
 
         // TODO: Non-standard JPA bulk update, using parameter values in set clause
         ((JPAPersistenceStrategy) strategy).newUpdateQuery(
-            "WeblogEntryData.updateAllowComments&amp;CommentDaysByWebsite")
+            "WeblogEntryData.updateAllowComments&CommentDaysByWebsite")
             .updateAll(new Object[] {
                 website.getDefaultAllowComments(),
                 new Integer(website.getDefaultCommentDays()),

@@ -6,7 +6,12 @@
      */
     public Object store(Object obj) throws RollerException {
         EntityManager em = getEntityManager(true);
-        em.persist(obj);
+        // Roller code calls store even on already managed entity
+        // Till Roller code is fixed, we will need to have following
+        // check
+        if ( !em.contains(obj) ) {
+            em.persist(obj);
+        }
         return obj;
     }
 

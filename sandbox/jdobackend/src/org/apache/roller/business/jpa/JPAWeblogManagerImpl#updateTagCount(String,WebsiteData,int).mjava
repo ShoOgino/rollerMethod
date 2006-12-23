@@ -19,7 +19,6 @@
             (WeblogEntryTagAggregateData)
             strategy.newQuery(WeblogEntryTagAggregateData.class,
                 "WeblogEntryTagAggregateData.getByName&WebsiteOrderByLastUsedDesc")
-            .setRange(0,1)
             .setUnique()
             .execute(new Object[] {name, website});
 
@@ -29,7 +28,7 @@
                 "WeblogEntryTagAggregateData.getByName&WebsiteNullOrderByLastUsedDesc")
             .setRange(0,1)
             .setUnique()
-            .execute(new Object[] {name, website});
+            .execute(name);
 
         Timestamp lastUsed = new Timestamp((new Date()).getTime());
 

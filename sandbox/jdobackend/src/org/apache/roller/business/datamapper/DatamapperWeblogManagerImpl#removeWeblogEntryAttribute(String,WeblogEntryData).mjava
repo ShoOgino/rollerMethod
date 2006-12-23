@@ -1,0 +1,15 @@
+    public void removeWeblogEntryAttribute(String name, WeblogEntryData entry)
+            throws RollerException {
+        for (Iterator it = entry.getEntryAttributes().iterator(); it.hasNext();) {
+            EntryAttributeData entryAttribute = (EntryAttributeData) it.next();
+            if (entryAttribute.getName().equals(name)) {
+                //Call back the entity to adjust its internal state
+                entry.onRemoveEntryAttribute(entryAttribute);
+                //Remove it from database
+                this.strategy.remove(entryAttribute);
+                //Remove it from the collection
+                it.remove();
+            }
+        }
+    }
+

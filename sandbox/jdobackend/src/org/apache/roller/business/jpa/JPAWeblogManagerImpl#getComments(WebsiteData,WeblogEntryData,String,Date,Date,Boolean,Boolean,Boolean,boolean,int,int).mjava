@@ -20,41 +20,41 @@
         queryString.append("SELECT c FROM CommentData c WHERE ");
 
         if (entry != null) {
-            params.add(++size, entry);
+            params.add(size++, entry);
             queryString.append("c.weblogEntry = ?").append(size);
         } else if (website != null) {
-            params.add(++size, website);
+            params.add(size++, website);
             queryString.append("c.weblogEntry.website = ?").append(size);
         }
             
         if (searchString != null) {
-            params.add(++size, "%" + searchString + "%");
+            params.add(size++, "%" + searchString + "%");
             queryString.append(" AND (url LIKE ?").append(size).
                         append(" OR content LIKE ?").append(size).append(")");
         }
             
         if (startDate != null) {
-            params.add(++size, startDate);
+            params.add(size++, startDate);
             queryString.append("c.postTime >= ?").append(size);
         }
             
         if (endDate != null) {
-            params.add(++size, endDate);
+            params.add(size++, endDate);
             queryString.append("c.postTime =< ?").append(size);
         }
             
         if (pending != null) {
-            params.add(++size, pending);
+            params.add(size++, pending);
             queryString.append("c.pending = ?").append(size);
         }
             
         if (approved != null) {
-            params.add(++size, approved);
+            params.add(size++, approved);
             queryString.append("c.approved = ?").append(size);
         }
             
         if (spam != null) {
-            params.add(++size, spam);
+            params.add(size++, spam);
             queryString.append("c.spam = ?").append(size);
         }
             

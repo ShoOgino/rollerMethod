@@ -5,7 +5,7 @@
      */
     public JPAUpdateQuery newUpdateQuery(String queryName)
             throws RollerException {
-        EntityManager em = getEntityManager(false);
+        EntityManager em = getEntityManager(true);
         return new JPAUpdateQuery(em, queryName);
     }
 

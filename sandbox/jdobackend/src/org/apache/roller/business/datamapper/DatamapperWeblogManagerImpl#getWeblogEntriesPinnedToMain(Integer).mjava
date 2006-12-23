@@ -4,7 +4,7 @@
     public List getWeblogEntriesPinnedToMain(Integer max)
             throws RollerException {
         DatamapperQuery query = strategy.newQuery(WeblogCategoryData.class, 
-                "WeblogEntryData.getByPinnedToMainOrderByPubTime");
+                "WeblogEntryData.getByPinnedToMainOrderByPubTimeDesc");
         if (max != null) {
             query.setRange(0, max.intValue());
         }
