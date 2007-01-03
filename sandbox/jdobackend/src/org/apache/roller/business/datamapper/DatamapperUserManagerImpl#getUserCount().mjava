@@ -6,7 +6,7 @@
         List results = (List) strategy.newQuery(UserData.class, 
             "UserData.getCountEnabledDistinct").execute(Boolean.TRUE);
 
-        ret =((Integer)results.get(0)).intValue();
+        ret =((Long)results.get(0)).longValue();
 
         return ret;
     }

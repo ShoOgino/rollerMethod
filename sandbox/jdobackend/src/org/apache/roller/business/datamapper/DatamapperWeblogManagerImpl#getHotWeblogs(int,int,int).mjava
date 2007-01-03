@@ -11,7 +11,7 @@
         Date startDate = cal.getTime();
         
         DatamapperQuery query = strategy.newQuery(HitCountData.class, 
-                "HitCountData.getByWeblogEnabledTrueAndActiveTrue&DailyHitsGreaterThenZero&WeblogLastModifiedGreaterThenOrderByDailyHitsDesc");
+                "HitCountData.getByWeblogEnabledTrueAndActiveTrue&DailyHitsGreaterThenZero&WeblogLastModifiedGreaterOrderByDailyHitsDesc");
 
         if (length != -1) {
             query.setRange(offset, length);

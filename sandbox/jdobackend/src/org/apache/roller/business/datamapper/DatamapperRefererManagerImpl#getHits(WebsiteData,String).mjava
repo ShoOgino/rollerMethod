@@ -4,21 +4,23 @@
         if (log.isDebugEnabled()) {
             log.debug("getHits: " + website.getName());
         }
-        
-        List results = null;
-            
-        DatamapperQuery query = strategy.newQuery(RefererData.class, 
+        //TODO: DatamapperPort. This original query retrieves both SUM(r.dayHits), SUM(r.totalHits)
+        //The method only comsumes one of them. We can optimize the logic to retrive only the 
+        //requied SUM
+        DatamapperQuery query = strategy.newQuery(RefererData.class,
             "RefererData.getHitsByWebsite.enabled&Website.id");
+
+        List results = (List) query.execute(new Object[] {Boolean.TRUE, website.getId()});
 
         Object[] resultsArray = (Object[]) results.get(0);
         
         if (resultsArray.length > 0 && type.equals(DAYHITS)) {
             if ( resultsArray[0] != null ) {
-                hits = ((Integer) resultsArray[0]).intValue();
+                hits = ((Long) resultsArray[0]).intValue();
             }
         } else if ( resultsArray.length > 0 ) {
             if ( resultsArray[0] != null ) {
-                hits = ((Integer) resultsArray[1]).intValue();
+                hits = ((Long) resultsArray[1]).intValue();
             }
         } else {
             hits = 0;

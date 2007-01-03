@@ -17,47 +17,51 @@
         List params = new ArrayList();
         int size = 0;
         StringBuffer queryString = new StringBuffer();
-        queryString.append("SELECT c FROM CommentData c WHERE ");
+        queryString.append("SELECT c FROM CommentData c ");
 
+        StringBuffer whereClause = new StringBuffer();
         if (entry != null) {
             params.add(size++, entry);
-            queryString.append("c.weblogEntry = ?").append(size);
+            whereClause.append("c.weblogEntry = ?").append(size);
         } else if (website != null) {
             params.add(size++, website);
-            queryString.append("c.weblogEntry.website = ?").append(size);
+            whereClause.append("c.weblogEntry.website = ?").append(size);
         }
             
         if (searchString != null) {
             params.add(size++, "%" + searchString + "%");
-            queryString.append(" AND (url LIKE ?").append(size).
-                        append(" OR content LIKE ?").append(size).append(")");
+            whereClause.append(" AND (url LIKE ?").append(size).
+                        append(" OR content LIKE ?)").append(size).append(")");
         }
             
         if (startDate != null) {
             params.add(size++, startDate);
-            queryString.append("c.postTime >= ?").append(size);
+            whereClause.append("c.postTime >= ?").append(size);
         }
             
         if (endDate != null) {
             params.add(size++, endDate);
-            queryString.append("c.postTime =< ?").append(size);
+            whereClause.append("c.postTime =< ?").append(size);
         }
             
         if (pending != null) {
             params.add(size++, pending);
-            queryString.append("c.pending = ?").append(size);
+            whereClause.append("c.pending = ?").append(size);
         }
             
         if (approved != null) {
             params.add(size++, approved);
-            queryString.append("c.approved = ?").append(size);
+            whereClause.append("c.approved = ?").append(size);
         }
             
         if (spam != null) {
             params.add(size++, spam);
-            queryString.append("c.spam = ?").append(size);
+            whereClause.append("c.spam = ?").append(size);
         }
-            
+
+        if(whereClause.length() != 0) {
+            queryString.append(" WHERE ").append(whereClause);
+        }
         if (reverseChrono) {
             queryString.append(" ORDER BY c.postTime DESC");
         } else {

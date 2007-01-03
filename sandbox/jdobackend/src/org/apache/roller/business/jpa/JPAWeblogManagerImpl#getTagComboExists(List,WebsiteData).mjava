@@ -1,31 +1,46 @@
     /**
      * @inheritDoc
      */
-    public boolean getTagComboExists(List tags, WebsiteData weblog) {
+    public boolean getTagComboExists(List tags, WebsiteData weblog) throws RollerException{
 
-        List results = null;
-
-        if(tags == null) {
+        if(tags == null || tags.size() == 0) {
             return false;
         }
         
-        // TODO: Non-standard JPA query, passing List as argument
-        try {
-            // are we checking a specific weblog, or site-wide?
-            if (weblog != null)
-                results = (List) strategy.newQuery(
-                    WeblogEntryTagAggregateData.class, 
-                    "WeblogEntryTagAggregateData.getNameByNameIn&Website")
-                    .execute(new Object[] {tags, weblog});
-            else
-                results = (List) strategy.newQuery(
-                    WeblogEntryTagAggregateData.class, 
-                    "WeblogEntryTagAggregateData.getNameByNameIn&WebsiteNull")
-                    .execute(tags);
-        } catch (RollerException re) {
-            throw new RuntimeException(re);
+        StringBuffer queryString = new StringBuffer();
+        queryString.append("SELECT DISTINCT w.name ");
+        queryString.append("FROM WeblogEntryTagAggregateData w WHERE w.name IN (");
+//?1) AND w.weblog = ?2");
+        //Append tags as parameter markers to avoid potential escaping issues
+        //The IN clause would be of form (?1, ?2, ?3, ..)
+        ArrayList params = new ArrayList(tags.size() + 1);
+        final String PARAM_SEPERATOR = ", ";
+        int i;
+        for (i=0; i < tags.size(); i++) {
+            queryString.append('?').append(i+1).append(PARAM_SEPERATOR);
+            params.add(tags.get(i));
         }
 
+        // Remove the trailing PARAM_SEPERATOR
+        queryString.delete(queryString.length() - PARAM_SEPERATOR.length(),
+                queryString.length());
+        // Close the brace of IN clause
+        queryString.append(')');
+
+        if(weblog != null) {
+            queryString.append(" AND w.weblog = ?").append(i+1);
+            params.add(weblog);
+        } else {
+            queryString.append(" AND w.weblog IS NULL");
+        }
+
+        DatamapperQuery q = ((JPAPersistenceStrategy) strategy).
+                newDynamicQuery(queryString.toString());
+        List results = (List)q.execute(params.toArray());
+
+        //TODO: DatamapperPort: Since we are only interested in knowing whether
+        //results.size() == tags.size(). This query can be optimized to just fetch COUNT
+        //instead of objects as done currently
         return (results != null && results.size() == tags.size());
     }
 

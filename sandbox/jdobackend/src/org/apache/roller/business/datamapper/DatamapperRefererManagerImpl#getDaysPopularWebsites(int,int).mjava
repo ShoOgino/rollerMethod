@@ -27,7 +27,7 @@
         
         for (Iterator it = queryResults.iterator(); it.hasNext(); ) {
             Object[] row = (Object[])it.next();
-            Integer hits = (Integer)row[0];
+            Long hits = (Long)row[0];
             String websiteId = (String)row[1];
             String websiteName = (String)row[2];
             String websiteHandle = (String)row[3];
@@ -35,7 +35,9 @@
                 websiteId,
                 websiteName,
                 websiteHandle,
-                hits));              
+                // TODO: DataMapperport The query is retrieving SUM(DISTINCT r.dayHits) which should be a long
+                // Change WebsiteDisplayData to accept hits as long 
+                Integer.valueOf(hits.intValue())));
         }
         //TODO Uncomment following once integrated with code
         //Collections.sort(results, StatCount.getComparator());

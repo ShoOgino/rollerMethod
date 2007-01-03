@@ -18,7 +18,7 @@
             query = strategy.newQuery(BookmarkData.class, 
                 "BoomarkData.getByFolder.pathLike&Folder.website");
             results = (List) query.execute(
-                new Object[] {folder.getPath(), folder.getWebsite()});
+                new Object[] {folder.getPath() + '%', folder.getWebsite()});
         }
             
         return results;

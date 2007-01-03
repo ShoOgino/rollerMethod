@@ -5,6 +5,6 @@
         List results = (List) strategy.newQuery(CommentData.class, 
             "CommentData.getCountDistinctByWebsite").execute(website);
         
-        return ((Integer)results.get(0)).intValue();
+        return ((Long)results.get(0)).longValue();
     }
 
