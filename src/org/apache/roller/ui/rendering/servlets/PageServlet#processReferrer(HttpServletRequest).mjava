@@ -77,7 +77,7 @@
                     
                     if (referrerUrl.matches(requestSite + ".*\\.do.*")) {
                         referrerUrl = null;
-                    } else if(SpamChecker.checkReferrer(pageRequest.getWeblog(), referrerUrl)) {
+                    } else if(BlacklistChecker.checkReferrer(pageRequest.getWeblog(), referrerUrl)) {
                         return true;
                     }
                 }

@@ -1,0 +1,27 @@
+    public CommentValidationManager() {
+        
+        // instantiate the validators that are configured
+        try {
+            String vals = RollerConfig.getProperty("comment.validator.classnames");
+            String[] valsarray = Utilities.stringToStringArray(vals, ",");
+            for(int i=0; i < valsarray.length; i++) {
+                try {
+                    Class valClass = Class.forName(valsarray[i]);
+                    CommentValidator val = (CommentValidator)valClass.newInstance();
+                    validators.add(val);
+                    log.info("Configured CommentValidator: " + val.getName() + " / " + valClass.getName());
+                } catch (ClassNotFoundException cnfe) {
+                    log.warn("Error finding comment validator: " + valsarray[i]);
+                } catch (InstantiationException ie) {
+                    log.warn("Error insantiating comment validator: " + valsarray[i]);
+                } catch (IllegalAccessException iae) {
+                    log.warn("Error accessing comment validator: " + valsarray[i]);
+                }
+            }
+                        
+        } catch (Exception e) {
+            log.error("Error instantiating comment validators");
+        }
+        log.info("Configured " + validators.size() + " CommentValidators");
+    }
+

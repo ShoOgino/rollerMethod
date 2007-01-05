@@ -1,14 +1,22 @@
     /**
-     * Send email notification of comment.
-     *
+     * Send email notification of new or newly approved comment.
      * TODO: Make the addressing options configurable on a per-website basis.
+     *
+     * @param commentObject      The new comment
+     * @param notifySubscribers  True if subscribers are to be notified
+     * @param messages           Messages to be included in e-mail (or null). 
+     *                           Errors will be assumed to be "validation errors" 
+     *                           and messages will be assumed to be "from the system"
+     * @param rootURL            Root URL of the Roller site
      */
-    public static void sendEmailNotification(CommentData cd, String rootURL) {
+    public static void sendEmailNotification(
+            CommentData commentObject, boolean notifySubscribers,
+            RollerMessages messages, String rootURL) {
         
         // Send commment notifications in locale of server
         ResourceBundle resources = ResourceBundle.getBundle("ApplicationResources");
-
-        WeblogEntryData entry = cd.getWeblogEntry();
+        
+        WeblogEntryData entry = commentObject.getWeblogEntry();
         WebsiteData site = entry.getWebsite();
         UserData user = entry.getCreator();
         
@@ -18,10 +26,8 @@
             log.debug("Comment notification enabled ... preparing email");
             
             // Determine message and addressing options from init parameters
-            boolean separateMessages =
-                    RollerConfig.getBooleanProperty("comment.notification.separateOwnerMessage");
-            boolean hideCommenterAddrs =
-                    RollerConfig.getBooleanProperty("comment.notification.hideCommenterAddresses");
+            boolean hideCommenterAddrs = RollerConfig.getBooleanProperty(
+                    "comment.notification.hideCommenterAddresses");
             
             //------------------------------------------
             // --- Determine the "from" address
@@ -37,23 +43,31 @@
             
             List comments = entry.getComments(true, true);
             
-            // Get all the subscribers to this comment thread
             Set subscribers = new TreeSet();
-            for (Iterator it = comments.iterator(); it.hasNext();) {
-                CommentData comment = (CommentData) it.next();
-                if (!StringUtils.isEmpty(comment.getEmail())) {
-                    // If user has commented twice,
-                    // count the most recent notify setting
-                    if (comment.getNotify().booleanValue()) {
-                        // only add those with valid email
-                        if (comment.getEmail().matches(EMAIL_ADDR_REGEXP)) {
-                            subscribers.add(comment.getEmail());
+            
+            // If we are to notify subscribers, then...
+            if (notifySubscribers) {
+                log.debug("Sending notification email to all subscribers");
+                
+                // Get all the subscribers to this comment thread
+                for (Iterator it = comments.iterator(); it.hasNext();) {
+                    CommentData comment = (CommentData) it.next();
+                    if (!StringUtils.isEmpty(comment.getEmail())) {
+                        // If user has commented twice,
+                        // count the most recent notify setting
+                        if (comment.getNotify().booleanValue()) {
+                            // only add those with valid email
+                            if (comment.getEmail().matches(EMAIL_ADDR_REGEXP)) {
+                                subscribers.add(comment.getEmail());
+                            }
+                        } else {
+                            // remove user who doesn't want to be notified
+                            subscribers.remove(comment.getEmail());
                         }
-                    } else {
-                        // remove user who doesn't want to be notified
-                        subscribers.remove(comment.getEmail());
                     }
                 }
+            } else {
+                log.debug("Sending notification email only to weblog owner");
             }
             
             // Form array of commenter addrs
@@ -61,35 +75,37 @@
             
             //------------------------------------------
             // --- Form the messages to be sent -
-            // For simplicity we always build separate owner and commenter messages even if sending a single one
+            // Build separate owner and commenter (aka subscriber) messages
             
             // Determine with mime type to use for e-mail
             StringBuffer msg = new StringBuffer();
             StringBuffer ownermsg = new StringBuffer();
             boolean escapeHtml = RollerRuntimeConfig.getBooleanProperty("users.comments.escapehtml");
             
+            // first the commenter message
+            
             if (!escapeHtml) {
                 msg.append("<html><body style=\"background: white; ");
                 msg.append(" color: black; font-size: 12px\">");
             }
             
-            if (!StringUtils.isEmpty(cd.getName())) {
-                msg.append(cd.getName() + " "
+            if (!StringUtils.isEmpty(commentObject.getName())) {
+                msg.append(commentObject.getName() + " "
                         + resources.getString("email.comment.wrote")+": ");
             } else {
                 msg.append(resources.getString("email.comment.anonymous")+": ");
             }
             
             msg.append((escapeHtml) ? "\n\n" : "<br /><br />");
-                        
-            msg.append((escapeHtml) ? Utilities.escapeHTML(cd.getContent()) 
-                : UtilitiesModel.transformToHTMLSubset(Utilities.escapeHTML(cd.getContent())));
+            
+            msg.append((escapeHtml) ? Utilities.escapeHTML(commentObject.getContent())
+            : UtilitiesModel.transformToHTMLSubset(Utilities.escapeHTML(commentObject.getContent())));
             
             msg.append((escapeHtml) ? "\n\n----\n"
                     : "<br /><br /><hr /><span style=\"font-size: 11px\">");
             msg.append(resources.getString("email.comment.respond") + ": ");
             msg.append((escapeHtml) ? "\n" : "<br />");
-
+            
             // Build link back to comment
             StringBuffer commentURL = new StringBuffer(rootURL);
             commentURL.append(entry.getPermaLink());
@@ -99,6 +115,42 @@
                 msg.append(commentURL.toString());
             } else {
                 msg.append("<a href=\""+commentURL+"\">"+commentURL+"</a></span>");
+            }
+            
+            // next the owner message
+            
+            // First, list any messages from the system that were passed in:
+            if (messages.getMessageCount() > 0) {
+                ownermsg.append((escapeHtml) ? "" : "<p>");
+                ownermsg.append(resources.getString("commentServlet.email.thereAreSystemMessages"));
+                ownermsg.append((escapeHtml) ? "\n\n" : "</p>");
+                ownermsg.append((escapeHtml) ? "" : "<ul>");
+            }
+            for (Iterator it = messages.getMessages(); it.hasNext();) {
+                RollerMessage rollerMessage = (RollerMessage)it.next();
+                ownermsg.append((escapeHtml) ? "" : "<li>");
+                ownermsg.append(MessageFormat.format(resources.getString(rollerMessage.getKey()), rollerMessage.getArgs()) );
+                ownermsg.append((escapeHtml) ? "\n\n" : "</li>");
+            }
+            if (messages.getMessageCount() > 0) {
+                ownermsg.append((escapeHtml) ? "\n\n" : "</ul>");
+            }
+            
+            // Next, list any validation error messages that were passed in:
+            if (messages.getErrorCount() > 0) {
+                ownermsg.append((escapeHtml) ? "" : "<p>");
+                ownermsg.append(resources.getString("commentServlet.email.thereAreErrorMessages"));
+                ownermsg.append((escapeHtml) ? "\n\n" : "</p>");
+                ownermsg.append((escapeHtml) ? "" : "<ul>");
+            }
+            for (Iterator it = messages.getErrors(); it.hasNext();) {
+                RollerMessage rollerMessage = (RollerMessage)it.next();
+                ownermsg.append((escapeHtml) ? "" : "<li>");
+                ownermsg.append(MessageFormat.format(resources.getString(rollerMessage.getKey()), rollerMessage.getArgs()) );
+                ownermsg.append((escapeHtml) ? "\n\n" : "</li>");
+            }
+            if (messages.getErrorCount() > 0) {
+                ownermsg.append((escapeHtml) ? "\n\n" : "</ul>");
             }
             
             ownermsg.append(msg);
@@ -123,7 +175,7 @@
             
             String subject = null;
             if ((subscribers.size() > 1) ||
-                    (StringUtils.equals(cd.getEmail(), user.getEmailAddress()))) {
+                    (StringUtils.equals(commentObject.getEmail(), user.getEmailAddress()))) {
                 subject= "RE: "+resources.getString("email.comment.title")+": ";
             } else {
                 subject = resources.getString("email.comment.title") + ": ";
@@ -137,23 +189,15 @@
                 new InitialContext().lookup("java:comp/env");
                 Session session = (Session)ctx.lookup("mail/Session");
                 boolean isHtml = !escapeHtml;
-                if (separateMessages) {
-                    // Send separate messages to owner and commenters
-                    sendMessage(session, from,
-                            new String[]{user.getEmailAddress()}, null, null, subject, ownermsg.toString(), isHtml);
-                            if (commenterAddrs.length > 0) {
-                                // If hiding commenter addrs, they go in Bcc: otherwise in the To: of the second message
-                                String[] to = hideCommenterAddrs ? null : commenterAddrs;
-                                String[] bcc = hideCommenterAddrs ? commenterAddrs : null;
-                                sendMessage(session, from, to, null, bcc, subject, msg.toString(), isHtml);
-                                
-                            }
-                } else {
-                    // Single message.  User in To: header, commenters in either cc or bcc depending on hiding option
-                    String[] cc = hideCommenterAddrs ? null : commenterAddrs;
+                // Send separate messages to owner and commenters
+                sendMessage(session, from,
+                        new String[]{user.getEmailAddress()}, null, null, subject, ownermsg.toString(), isHtml);
+                if (notifySubscribers && commenterAddrs.length > 0) {
+                    // If hiding commenter addrs, they go in Bcc: otherwise in the To: of the second message
+                    String[] to = hideCommenterAddrs ? null : commenterAddrs;
                     String[] bcc = hideCommenterAddrs ? commenterAddrs : null;
-                    sendMessage(session, from, new String[]{user.getEmailAddress()}, cc, bcc, subject,
-                            ownermsg.toString(), isHtml);
+                    sendMessage(session, from, to, null, bcc, subject, msg.toString(), isHtml);
+
                 }
             } catch (NamingException ne) {
                 log.error("Unable to lookup mail session.  Check configuration.  NamingException: " + ne.getMessage());

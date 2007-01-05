@@ -1,0 +1,22 @@
+    public int validate(CommentData comment, RollerMessages messages) {
+        int ret = 0;
+        LinkbackExtractor linkback = null;
+        try {
+            linkback = new LinkbackExtractor(
+                    comment.getUrl(), 
+                    URLUtilities.getWeblogEntryURL(
+                        comment.getWeblogEntry().getWebsite(), 
+                        null, 
+                        comment.getWeblogEntry().getAnchor(), 
+                        true));
+        } catch (MalformedURLException ignored1) {
+        } catch (IOException ignored2) {}
+        
+        if (linkback == null && linkback.getExcerpt() != null) {
+            ret = 100;
+        } else {
+            messages.addError("comment.validator.trackbackLinkbackMessage");
+        }
+        return ret;
+    }
+

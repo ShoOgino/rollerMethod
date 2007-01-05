@@ -1,4 +1,4 @@
-    /** 
+    /**
      * Initialization.
      */
     public void init(ServletConfig servletConfig) throws ServletException {
@@ -6,6 +6,8 @@
         super.init(servletConfig);
         
         log.info("Initializing CommentServlet");
+        
+        commentValidationManager = new CommentValidationManager();
         
         // lookup the authenticator we are going to use and instantiate it
         try {
@@ -18,7 +20,8 @@
             log.error(e);
             this.authenticator = new DefaultCommentAuthenticator();
         }
-
+        
+        
         // are we doing throttling?
         if(RollerConfig.getBooleanProperty("comment.throttle.enabled")) {
             

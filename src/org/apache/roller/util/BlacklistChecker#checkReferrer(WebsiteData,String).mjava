@@ -1,4 +1,7 @@
-    /** Test referrer URL, applying blacklist and website blacklist only if configured */
+    /** 
+     * Test referrer URL, applying blacklist and website blacklist only if configured 
+     * @return True if comment matches blacklist term
+     */
     public static boolean checkReferrer(WebsiteData website, String referrerURL) {
         if (RollerConfig.getBooleanProperty("site.blacklist.enable.referrers")) {
             List stringRules = new ArrayList();

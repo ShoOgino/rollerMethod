@@ -1,0 +1,20 @@
+    /**
+     * @param comment Comment to be validated
+     * @param messages Messages object to which errors will be added
+     * @return Number indicating confidence that comment is valid (100 meaning 100%)
+     */
+    public int validateComment(CommentData comment, RollerMessages messages) {
+        int total = 0;
+        if (validators.size() > 0) {
+            for (Iterator it = validators.iterator(); it.hasNext();) {
+                CommentValidator val = (CommentValidator) it.next();
+                total += val.validate(comment, messages);
+            }
+            total = total / validators.size();
+        } else {
+            // When no validators: consider all comments valid
+            total = 100;
+        }
+        return total;
+    }
+

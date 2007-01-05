@@ -11,14 +11,14 @@
         WeblogEntryData entry = cd.getWeblogEntry();
         WebsiteData site = entry.getWebsite();
         UserData user = entry.getCreator();
-            
+        
         // Only send email if email notificaiton is enabled
         boolean notify = RollerRuntimeConfig.getBooleanProperty("users.comments.emailnotify");
         if (notify && site.getEmailComments().booleanValue()) {
             log.debug("Comment notification enabled ... preparing email");
             
-
-                                
+            
+            
             //------------------------------------------
             // --- Determine the "from" address
             // --- Use either the site configured from address or the user's address
@@ -27,7 +27,7 @@
                     (StringUtils.isEmpty(site.getEmailFromAddress()))
                     ? user.getEmailAddress()
                     : site.getEmailFromAddress();
-                        
+            
             //------------------------------------------
             // --- Form the message to be sent -
             
@@ -35,7 +35,7 @@
             
             StringBuffer msg = new StringBuffer();
             msg.append(resources.getString("email.comment.commentApproved"));
-
+            
             // Build link back to comment
             StringBuffer commentURL = new StringBuffer(rootURL);
             commentURL.append(entry.getPermaLink());
@@ -50,11 +50,11 @@
                 Session session = (Session)ctx.lookup("mail/Session");
                 String[] cc = null;
                 String[] bcc = null;
-                sendMessage(session, from, 
-                    new String[] {cd.getEmail()}, 
-                    null, // cc
-                    null, // bcc
-                    subject, msg.toString(), false);
+                sendMessage(session, from,
+                        new String[] {cd.getEmail()},
+                        null, // cc
+                        null, // bcc
+                        subject, msg.toString(), false);
             } catch (NamingException ne) {
                 log.error("Unable to lookup mail session.  Check configuration.  NamingException: " + ne.getMessage());
             } catch (Exception e) {

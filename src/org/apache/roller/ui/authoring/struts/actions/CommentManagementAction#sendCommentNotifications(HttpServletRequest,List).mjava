@@ -17,7 +17,9 @@
             CommentData comment = (CommentData)iter.next();
             
             // Send email notifications because a new comment has been approved
-            CommentServlet.sendEmailNotification(comment, rootURL);
+            RollerMessages systemMessages = new RollerMessages();
+            systemMessages.addMessage("commentManagement.sendingApprovalNotification");
+            CommentServlet.sendEmailNotification(comment, true, systemMessages, rootURL);
             
             // Send approval notification to author of approved comment
             CommentServlet.sendEmailApprovalNotification(comment, rootURL);

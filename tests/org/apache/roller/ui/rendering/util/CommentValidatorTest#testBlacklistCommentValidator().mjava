@@ -1,0 +1,11 @@
+    public void testBlacklistCommentValidator() {
+        RollerMessages msgs = new RollerMessages();
+        CommentData comment = createEmptyComment();
+       
+        comment.setContent("nice friendly stuff"); 
+        assertEquals(100, mgr.validateComment(comment, msgs));
+
+        comment.setContent("blah blah 01-suonerie.com blah"); 
+        assertTrue(mgr.validateComment(comment, msgs) != 100);
+    }  
+

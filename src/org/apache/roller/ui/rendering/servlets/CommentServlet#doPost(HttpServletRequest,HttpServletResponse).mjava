@@ -4,18 +4,28 @@
      * Here we handle incoming comment postings.
      */
     public void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException {
+    throws IOException, ServletException {
         
         String error = null;
-        String message = null;
         String dispatch_url = null;
         
         WebsiteData weblog = null;
         WeblogEntryData entry = null;
         
+        String message = null;
+        RollerMessages messages = new RollerMessages();
+        
         // are we doing a preview?  or a post?
         String method = request.getParameter("method");
-        boolean preview = (method != null && method.equals("preview")) ? true : false;
+        final boolean preview;
+        if (method != null && method.equals("preview")) {
+            preview = true;
+            messages.addMessage("commentServlet.previewCommentOnly");
+            log.debug("Handling comment preview post");
+        } else {
+            preview = false;
+            log.debug("Handling regular comment post");
+        }
         
         // throttling protection against spammers
         if(commentThrottle != null &&
@@ -79,14 +89,17 @@
         
         WeblogEntryCommentForm cf = new WeblogEntryCommentForm();
         cf.setData(comment);
+        if (preview) {
+            cf.setPreview(comment);
+        }
         
         // check if comments are allowed for this entry
         // this checks site-wide settings, weblog settings, and entry settings
         if(!entry.getCommentsStillAllowed() || !entry.isPublished()) {
             error = bundle.getString("comments.disabled");
-        
-        // make sure comment authentication passed
-        } else if(!this.authenticator.authenticate(request)) {
+            
+            // if this is a real comment post then authenticate request
+        } else if(!preview && !this.authenticator.authenticate(request)) {
             error = bundle.getString("error.commentAuthFailed");
             log.debug("Comment failed authentication");
         }
@@ -100,31 +113,19 @@
             return;
         }
         
+        int validationScore = commentValidationManager.validateComment(comment, messages);
+        log.debug("Comment Validation score: " + validationScore);
         
-        if (preview) {
-            // TODO: i18n
-            message = "This is a comment preview only";
-            cf.setPreview(comment);
-            
-            // If comment contains blacklisted text, warn commenter
-            SpamChecker checker = new SpamChecker();
-            if (checker.checkComment(comment)) {
-                error = bundle.getString("commentServlet.previewMarkedAsSpam");
-                log.debug("Comment marked as spam");
-            }
-            log.debug("Comment is a preview");
-            
-        } else {
-            // If comment contains blacklisted text, mark as spam
-            SpamChecker checker = new SpamChecker();
-            if (checker.checkComment(comment)) {
+        if (!preview) {
+            // If validation score is not perfect, mark as spam
+            if (validationScore != 100) {
                 comment.setSpam(Boolean.TRUE);
                 error = bundle.getString("commentServlet.commentMarkedAsSpam");
                 log.debug("Comment marked as spam");
             }
             
-            // If comment moderation is on, set comment as pending
-            if (weblog.getCommentModerationRequired()) {
+            // If moderation is enabled or comment is spam, put comment into moderation
+            if (weblog.getCommentModerationRequired() || validationScore != 100) {
                 comment.setPending(Boolean.TRUE);
                 comment.setApproved(Boolean.FALSE);
                 message = bundle.getString("commentServlet.submittedToModerator");
@@ -133,11 +134,20 @@
                 comment.setApproved(Boolean.TRUE);
             }
             
-            try {
+            try {               
+                
+                // Send email notifications, but only to subscribers if comment is 100% valid
+                boolean notifySubscribers = (validationScore == 100);
+                String rootURL = RollerRuntimeConfig.getAbsoluteContextURL();
+                if (rootURL == null || rootURL.trim().length()==0) {
+                    rootURL = RequestUtils.serverURL(request) + request.getContextPath();
+                }
+                sendEmailNotification(comment, notifySubscribers, messages, rootURL);
+                
                 WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
                 mgr.saveComment(comment);
                 RollerFactory.getRoller().flush();
-                
+
                 // only re-index/invalidate the cache if comment isn't moderated
                 if(!weblog.getCommentModerationRequired()) {
                     reindexEntry(entry);
@@ -145,13 +155,6 @@
                     // Clear all caches associated with comment
                     CacheManager.invalidate(comment);
                 }
-                
-                // Send email notifications
-                String rootURL = RollerRuntimeConfig.getAbsoluteContextURL();
-                if (rootURL == null || rootURL.trim().length()==0) {
-                    rootURL = RequestUtils.serverURL(request) + request.getContextPath();
-                }
-                sendEmailNotification(comment, rootURL);
                 
                 // comment was successful, clear the comment form
                 cf = new WeblogEntryCommentForm();
@@ -162,12 +165,14 @@
             }
         }
         
-
+        
         // the work has been done, now send the user back to the entry page
-        if (error != null)
+        if (error != null) {
             cf.setError(error);
-        if (message != null)
+        }
+        if (message != null) {
             cf.setMessage(message);
+        }
         request.setAttribute("commentForm", cf);
         
         log.debug("comment processed, forwarding to "+dispatch_url);
