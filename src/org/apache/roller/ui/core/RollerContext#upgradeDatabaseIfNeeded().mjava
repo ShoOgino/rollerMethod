@@ -4,7 +4,7 @@
             InitialContext ic = new InitialContext();
             DataSource ds = (DataSource)ic.lookup("java:comp/env/jdbc/rollerdb");
             Connection con = ds.getConnection();
-            UpgradeDatabase.upgradeDatabase(con, mVersion);
+            UpgradeDatabase.upgradeDatabase(con, RollerFactory.getRoller().getVersion());
             con.close();
         } catch (NamingException e) {
             mLogger.warn("Unable to access DataSource", e);

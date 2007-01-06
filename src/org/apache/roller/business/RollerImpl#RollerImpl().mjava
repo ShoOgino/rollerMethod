@@ -1,4 +1,14 @@
     public RollerImpl() {
-        // nothing to do here yet
+                
+        Properties props = new Properties();
+        try {
+            props.load(getClass().getResourceAsStream("/version.properties"));
+        } catch (IOException e) {
+            mLogger.error("version.properties not found", e);
+        }
+        
+        version = props.getProperty("ro.version", "UNKNOWN");
+        buildTime = props.getProperty("ro.buildTime", "UNKNOWN");
+        buildUser = props.getProperty("ro.buildUser", "UNKNOWN");
     }
 

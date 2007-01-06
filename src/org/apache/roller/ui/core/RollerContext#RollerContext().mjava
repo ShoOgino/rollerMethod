@@ -3,16 +3,5 @@
      */
     public RollerContext() {
         super();
-        
-        Properties props = new Properties();
-        try {
-            props.load(getClass().getResourceAsStream("/version.properties"));
-        } catch (IOException e) {
-            mLogger.error("version.properties not found", e);
-        }
-        
-        mVersion = props.getProperty("ro.version", "UNKNOWN");
-        mBuildTime = props.getProperty("ro.buildTime", "UNKNOWN");
-        mBuildUser = props.getProperty("ro.buildUser", "UNKNOWN");
     }
 
