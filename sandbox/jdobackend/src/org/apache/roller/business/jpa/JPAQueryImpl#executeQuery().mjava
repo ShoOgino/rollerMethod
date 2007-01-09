@@ -4,6 +4,8 @@
      */
     private Object executeQuery() {
         Object result = null;
+        //Never flush for queries. Roller code assumes this behavior
+        q.setFlushMode(FlushModeType.COMMIT);
         if (singleResult) {
             try {
                 result = q.getSingleResult();

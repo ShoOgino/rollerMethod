@@ -1,0 +1,15 @@
+    /**
+     * Returns whether given object is already persistent. An object is 
+     * persistent if and only if its id field is intialized.
+     * Ideally, all callers of this method should be modified so that a call
+     * to this method is not needed. This requires that Roller code is 
+     * changed to distinguish between new, managed, and detached objects.
+     * @param obj
+     * @return true if object is already persistent; false otherwise
+     * @see org.apache.roller.business.jpa.JPAPersistenceStrategy#store(org.apache.roller.pojos.PersistentObject)
+     * for a description of changes needed
+     */
+    public static boolean isObjectPersistent(PersistentObject obj) {
+        return !( obj.getId() == null || obj.getId().trim().equals("") );
+    }
+
