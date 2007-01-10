@@ -6,10 +6,10 @@
         while (it.hasNext()) {
             CommentData comment = (CommentData)it.next();
             all.add(comment.getId());
-            if (comment.getApproved().booleanValue()) {
+            if (CommentData.APPROVED.equals(comment.getStatus())) {
                 approvedList.add(comment.getId());
             }            
-            if (comment.getSpam().booleanValue()) {
+            if (CommentData.SPAM.equals(comment.getStatus())) {
                 spamList.add(comment.getId());
             }
         }

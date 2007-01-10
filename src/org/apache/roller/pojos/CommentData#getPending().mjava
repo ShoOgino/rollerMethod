@@ -1,10 +1,9 @@
     /**
-     * True if comment has is pending approval.
+     * True if comment has is pending moderator approval.
+     *
      * @roller.wrapPojoMethod type="simple"
-     * @ejb:persistent-field
-     * @hibernate.property column="pending" non-null="false" unique="false"
      */
     public Boolean getPending() {
-        return this.pending;
+        return new Boolean(PENDING.equals(this.status));
     }
 

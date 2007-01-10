@@ -13,8 +13,7 @@
         comment.setContent("this is a test comment");
         comment.setPostTime(new java.sql.Timestamp(new java.util.Date().getTime()));
         comment.setWeblogEntry(testEntry);
-        comment.setPending(Boolean.FALSE);
-        comment.setApproved(Boolean.TRUE);
+        comment.setStatus(CommentData.APPROVED);
         
         // create a comment
         mgr.saveComment(comment);

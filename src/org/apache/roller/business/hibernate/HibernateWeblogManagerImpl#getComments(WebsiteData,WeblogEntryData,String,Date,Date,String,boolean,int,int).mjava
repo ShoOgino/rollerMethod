@@ -4,9 +4,7 @@
             String          searchString,
             Date            startDate,
             Date            endDate,
-            Boolean         pending,
-            Boolean         approved,
-            Boolean         spam,
+            String          status,
             boolean         reverseChrono,
             int             offset,
             int             length
@@ -37,16 +35,14 @@
                 criteria.add(Expression.le("postTime", endDate));
             }
             
-            if (pending != null) {
-                criteria.add(Expression.eq("pending", pending));
-            }
-            
-            if (approved != null) {
-                criteria.add(Expression.eq("approved", approved));
-            }
-            
-            if (spam != null) {
-                criteria.add(Expression.eq("spam", spam));
+            if (status != null) {
+                if("ALL_IGNORE_SPAM".equals(status)) {
+                    // we want all comments, expect spam
+                    // so that means where status != SPAM
+                    criteria.add(Expression.ne("status", "SPAM"));
+                } else {
+                    criteria.add(Expression.eq("status", status));
+                }
             }
             
             if (length != -1) {

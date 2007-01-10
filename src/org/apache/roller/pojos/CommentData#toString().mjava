@@ -1,20 +1,14 @@
     public String toString() {
+        
         StringBuffer str = new StringBuffer("{");
+        str.append("id=" + id + ", " +
+                "name=" + name + ", " +
+                "email=" + email + ", " +
+                "url=" + url + ", " +
+                "postTime=" + postTime + ", " +
+                "status=" + status);
+        str.append("}");
         
-        str.append("id=" + id + " " +
-                "name=" + name + " " +
-                "email=" + email + " " +
-                "url=" + url + " " +
-                "content=" + content + " " +
-                "postTime=" + postTime + " " +
-                "spam=" + spam +
-                "notify=" + notify +
-                "pending" + pending +
-                "approved" + getApproved() + 
-                "referrer" + getReferrer() + 
-                "userAgent" + getUserAgent());
-        str.append('}');
-        
-        return (str.toString());
+        return str.toString();
     }
 

@@ -8,7 +8,7 @@
             if (getWebsite() != null) { 
                 for (Iterator iter = comments.iterator(); iter.hasNext();) {
                     CommentData cd = (CommentData)iter.next();
-                    if (cd.getPending().booleanValue()) count++;
+                    if (CommentData.PENDING.equals(cd.getStatus())) count++;
                 }
             }
             return count;

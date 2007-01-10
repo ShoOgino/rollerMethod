@@ -26,9 +26,7 @@
                 queryForm.getSearchString(),
                 queryForm.getStartDate(request.getLocale()), 
                 queryForm.getEndDate(request.getLocale()), 
-                queryForm.getPending(),
-                queryForm.getApproved(),
-                queryForm.getSpam(),
+                queryForm.getStatus(),
                 true, // reverse  chrono order
                 queryForm.getOffset(), 
                 queryForm.getCount() + 1); 
@@ -50,9 +48,7 @@
                     queryForm.getSearchString(),
                     queryForm.getStartDate(request.getLocale()), 
                     queryForm.getEndDate(request.getLocale()), 
-                    queryForm.getPending(),
-                    queryForm.getApproved(),
-                    queryForm.getSpam(),
+                    queryForm.getStatus(),
                     true, 
                     0, -1);                
                 totalMatchingCommentCount = allMatchingComments.size();
