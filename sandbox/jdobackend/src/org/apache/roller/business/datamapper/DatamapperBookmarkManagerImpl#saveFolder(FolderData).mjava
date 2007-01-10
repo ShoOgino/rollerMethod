@@ -4,6 +4,15 @@
             throw new RollerException("Duplicate folder name");
         }
 
+        if(!PersistentObjectHelper.isObjectPersistent(folder)) {
+            // Newly added object. If it has a parent,
+            // maintain relationship from both sides
+            FolderData parent = folder.getParent();
+            if(parent != null) {
+                parent.getFolders().add(folder);
+            }
+        }
+
         this.strategy.store(folder);
 
         // update weblog last modified date.  date updated by saveWebsite()

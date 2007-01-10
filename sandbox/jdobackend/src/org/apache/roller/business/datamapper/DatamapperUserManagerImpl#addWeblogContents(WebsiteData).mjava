@@ -7,7 +7,7 @@
         perms.setWebsite(newWeblog);
         perms.setPending(false);
         perms.setPermissionMask(PermissionsData.ADMIN);
-        this.strategy.store(perms);
+        savePermissions(perms);
 
         // add default category
         WeblogCategoryData rootCat = new WeblogCategoryData(
@@ -33,7 +33,7 @@
                 this.strategy.store(c);
             }
         }
-        
+
         // Use first category as default for Blogger API
         newWeblog.setBloggerCategory(firstCat);
 

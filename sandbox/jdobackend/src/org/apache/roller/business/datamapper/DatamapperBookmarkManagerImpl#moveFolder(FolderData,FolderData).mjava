@@ -10,7 +10,14 @@
         log.debug("Moving folder " + srcFolder.getPath() + " under " +
             destFolder.getPath());
         
+        // Manage relationships
+        FolderData oldParent = srcFolder.getParent();
+        if(oldParent != null) {
+            oldParent.getFolders().add(srcFolder);
+        }
         srcFolder.setParent(destFolder);
+        destFolder.getFolders().add(srcFolder);
+        
         if("/".equals(destFolder.getPath())) {
             srcFolder.setPath("/"+srcFolder.getName());
         } else {

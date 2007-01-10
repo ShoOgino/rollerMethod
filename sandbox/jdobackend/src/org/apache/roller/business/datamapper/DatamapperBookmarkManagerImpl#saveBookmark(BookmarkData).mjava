@@ -1,6 +1,12 @@
     public void saveBookmark(BookmarkData bookmark) throws RollerException {
+        if(!PersistentObjectHelper.isObjectPersistent(bookmark)) {
+            // This is a new object make sure that relationship is set on managed
+            // copy of other side
+            bookmark.getFolder().getBookmarks().add(bookmark);
+        }
+
         this.strategy.store(bookmark);
-        
+
         // update weblog last modified date (date is updated by saveWebsite())
         RollerFactory.getRoller().getUserManager().
             saveWebsite(bookmark.getWebsite());

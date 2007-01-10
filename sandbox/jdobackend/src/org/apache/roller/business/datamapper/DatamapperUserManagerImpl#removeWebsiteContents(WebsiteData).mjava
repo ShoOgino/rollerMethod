@@ -102,7 +102,21 @@
         WeblogCategoryData rootCat = wmgr.getRootWeblogCategory(website);
         if (null != rootCat) {
             this.strategy.remove(rootCat);
-    }
+        }
+
+        //remove permissions
+        //TODO: Datamapper: this is a workaround for toplink bug that requires
+        //to clean up from non owning side for removed objects.
+        for (Iterator iterator = website.getPermissions().iterator(); iterator.hasNext();) {
+            PermissionsData perms = (PermissionsData) iterator.next();
+            //Remove it from database
+            this.strategy.remove(perms);
+            //Remove it from website
+            iterator.remove();
+            //Remove it from corresponding user
+            UserData user = (UserData) getManagedObject(perms.getUser());
+            user.getPermissions().remove(perms);
+        }
 
         // flush the changes before returning. This is required as there is a
         // circular dependency between WeblogCategoryData and WebsiteData

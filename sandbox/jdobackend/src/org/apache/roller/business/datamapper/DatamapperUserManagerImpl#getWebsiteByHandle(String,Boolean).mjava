@@ -25,20 +25,9 @@
             }
         }
 
-        // cache failed, do lookup
-        DatamapperQuery query;
-        Object[] params;
-        if (enabled != null) {
-            query = strategy.newQuery(WebsiteData.class,
-                "WebsiteData.getByHandle&enabled");
-            params = new Object[] {handle, enabled};
-        } else {
-            query = strategy.newQuery(WebsiteData.class,
-                "WebsiteData.getByHandle");
-            params = new Object[] {handle};
-        }
+        DatamapperQuery query = strategy.newQuery(WebsiteData.class, "WebsiteData.getByHandle");
         query.setUnique();
-        WebsiteData website = (WebsiteData) query.execute(params);
+        WebsiteData website = (WebsiteData) query.execute(handle);
 
         // add mapping to cache
         if(website != null) {
@@ -46,6 +35,11 @@
             this.weblogHandleToIdMap.put(website.getHandle(), website.getId());
         }
 
-        return website;
+        if(website != null &&
+                (enabled == null || enabled.equals(website.getEnabled()))) {
+            return website;
+        } else {
+            return null;
+        }
     }
 

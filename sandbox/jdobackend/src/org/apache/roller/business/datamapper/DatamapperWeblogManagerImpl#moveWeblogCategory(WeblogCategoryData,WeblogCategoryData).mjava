@@ -12,8 +12,15 @@
         
         log.debug("Moving category "+srcCat.getPath() +
             " under "+destCat.getPath());
-        
+
+
+        WeblogCategoryData oldParent = srcCat.getParent();
+        if(oldParent != null) {
+            oldParent.getWeblogCategories().remove(srcCat);
+        }
         srcCat.setParent(destCat);
+        destCat.getWeblogCategories().add(srcCat);
+
         if("/".equals(destCat.getPath())) {
             srcCat.setPath("/"+srcCat.getName());
         } else {

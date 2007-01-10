@@ -6,6 +6,15 @@
         if(cat.getId() == null && this.isDuplicateWeblogCategoryName(cat)) {
             throw new RollerException("Duplicate category name, cannot save category");
         }
+
+        if(!PersistentObjectHelper.isObjectPersistent(cat)) {
+            // Newly added object. If it has a parent,
+            // maintain relationship from both sides
+            WeblogCategoryData parent = cat.getParent();
+            if(parent != null) {
+                parent.getWeblogCategories().add(cat);
+            }
+        }
         
         // update weblog last modified date.  date updated by saveWebsite()
         RollerFactory.getRoller().getUserManager().saveWebsite(cat.getWebsite());
