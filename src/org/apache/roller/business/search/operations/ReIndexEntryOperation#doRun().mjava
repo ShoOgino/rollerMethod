@@ -1,4 +1,16 @@
     public void doRun() {
+        
+        // since this operation can be run on a separate thread we must treat
+        // the weblog object passed in as a detached object which is proned to
+        // lazy initialization problems, so requery for the object now
+        try {
+            WeblogManager wMgr = RollerFactory.getRoller().getWeblogManager();
+            this.data = wMgr.getWeblogEntry(this.data.getId());
+        } catch (RollerException ex) {
+            mLogger.error("Error getting weblogentry object", ex);
+            return;
+        }
+        
         IndexReader reader = beginDeleting();
         try {
             if (reader != null) {
