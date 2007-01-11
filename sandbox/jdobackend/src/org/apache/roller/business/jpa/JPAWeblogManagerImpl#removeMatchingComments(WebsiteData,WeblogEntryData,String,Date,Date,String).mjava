@@ -7,9 +7,7 @@
             String  searchString,
             Date    startDate,
             Date    endDate,
-            Boolean pending,
-            Boolean approved,
-            Boolean spam) throws RollerException {
+            String status) throws RollerException {
 
         // TODO dynamic bulk delete query
         /* I'd MUCH rather use a bulk delete, but MySQL says "General error,  
@@ -100,8 +98,6 @@
                 searchString,
                 startDate,
                 endDate,
-                pending,
-                approved,
-                spam);
+                status);
     }
 
