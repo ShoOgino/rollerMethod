@@ -1,0 +1,61 @@
+    private WeblogEntriesPager getWeblogEntriesPager(String catArgument, String tagArgument) {
+        
+        // category specified by argument wins over request parameter
+        String cat = pageRequest.getWeblogCategoryName();
+        if (catArgument != null && !StringUtils.isEmpty(catArgument) && !"nil".equals(catArgument)) {
+            cat = catArgument;
+        }
+        
+        List tags = pageRequest.getTags();
+        if (tagArgument != null && !StringUtils.isEmpty(tagArgument) && !"nil".equals(tagArgument)) {
+            tags = new ArrayList();
+            tags.add(tagArgument);
+        }
+        
+        String dateString = pageRequest.getWeblogDate();
+        
+        // determine which mode to use
+        if (pageRequest.getWeblogAnchor() != null) {
+            return new WeblogEntriesPermalinkPager(
+                    weblog,
+                    pageRequest.getLocale(),
+                    pageRequest.getWeblogPageName(),
+                    pageRequest.getWeblogAnchor(),
+                    pageRequest.getWeblogDate(),
+                    cat,
+                    tags,
+                    pageRequest.getPageNum());
+        } else if (dateString != null && dateString.length() == 8) {
+            return new WeblogEntriesDayPager(
+                    weblog,
+                    pageRequest.getLocale(),
+                    pageRequest.getWeblogPageName(),
+                    pageRequest.getWeblogAnchor(),
+                    pageRequest.getWeblogDate(),
+                    cat,
+                    tags,
+                    pageRequest.getPageNum());
+        } else if (dateString != null && dateString.length() == 6) {
+            return new WeblogEntriesMonthPager(
+                    weblog,
+                    pageRequest.getLocale(),
+                    pageRequest.getWeblogPageName(),
+                    pageRequest.getWeblogAnchor(),
+                    pageRequest.getWeblogDate(),
+                    cat,
+                    tags,
+                    pageRequest.getPageNum());
+          
+        } else {
+            return new WeblogEntriesLatestPager(
+                    weblog,
+                    pageRequest.getLocale(),
+                    pageRequest.getWeblogPageName(),
+                    pageRequest.getWeblogAnchor(),
+                    pageRequest.getWeblogDate(),
+                    cat,
+                    tags,
+                    pageRequest.getPageNum());
+        }
+    }
+
