@@ -20,9 +20,10 @@
         // try to release lease, just set lease time to 0
         try {
             Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
-            String queryHQL = "update TaskLockData set timeLeased=0 "+
+            String queryHQL = "update TaskLockData set timeLeased=:interval "+
                     "where name=:name and client=:client";
             Query query = session.createQuery(queryHQL);
+            query.setString("interval", ""+task.getInterval());
             query.setString("name", task.getName());
             query.setString("client", task.getClientId());
             int result = query.executeUpdate();

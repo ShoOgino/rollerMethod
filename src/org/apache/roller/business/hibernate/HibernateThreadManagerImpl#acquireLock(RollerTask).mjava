@@ -28,6 +28,12 @@
         
         // try to acquire lease
         try {
+            // calculate lease expiration time
+            // expireTime = startTime + (timeLeased * 60sec/min) - 1 sec
+            // we remove 1 second to adjust for precision differences
+            long leaseExpireTime = taskLock.getTimeAquired().getTime()+
+                    (60000*taskLock.getTimeLeased())-1000;
+            
             Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
             String queryHQL = "update TaskLockData "+
                     "set client=:client, timeacquired=current_timestamp(), timeleased=:timeleased "+
@@ -38,7 +44,7 @@
             query.setString("timeleased", ""+task.getLeaseTime());
             query.setString("name", task.getName());
             query.setTimestamp("timeacquired", taskLock.getTimeAquired());
-            query.setTimestamp("leaseends", new Date(taskLock.getTimeAquired().getTime()+(60000*taskLock.getTimeLeased())));
+            query.setTimestamp("leaseends", new Date(leaseExpireTime));
             int result = query.executeUpdate();
             
             // this may not be needed
