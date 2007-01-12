@@ -5,6 +5,7 @@
                     ") shorter than minimum allowed (" + MIN_RATE_INTERVAL_MINS + ")");
         }
         
-        scheduler.scheduleAtFixedRate(task, startTime, intervalMins * 60 * 1000);
+        //scheduler.scheduleAtFixedRate(task, startTime, intervalMins * 60 * 1000);
+        scheduler.scheduleAtFixedRate(new TaskExecutor(task), startTime, intervalMins * 60 * 1000);
     }
 
