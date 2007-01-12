@@ -5,6 +5,7 @@
         try {
             Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
             Criteria criteria = session.createCriteria(WeblogEntryData.class);
+            criteria.add(Expression.eq("status", WeblogEntryData.PUBLISHED));
             
             if(!subcats) {
                 // if no subcats then this is an equals query
