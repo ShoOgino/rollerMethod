@@ -1,6 +1,7 @@
-    public void execute() {
-        
-        log.debug("starting");
+    /**
+     * Execute the task.
+     */
+    public void runTask() {
         
         try {
             WeblogManager wMgr = RollerFactory.getRoller().getWeblogManager();
@@ -39,11 +40,15 @@
                 // trigger search index on entry
                 searchMgr.addEntryReIndexOperation(entry);
             }
-
+            
+        } catch (RollerException e) {
+            log.error("Error getting scheduled entries", e);
         } catch(Exception e) {
-            log.error(e);
+            log.error("Unexpected exception running task", e);
+        } finally {
+            // always release
+            RollerFactory.getRoller().release();
         }
         
-        log.debug("finished");
     }
 
