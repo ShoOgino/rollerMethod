@@ -3,6 +3,12 @@
         // get relevant props
         Properties props = this.getTaskProperties();
         
+        // extract clientId
+        String client = props.getProperty("clientId");
+        if(client != null) {
+            this.clientId = client;
+        }
+        
         // extract start time
         String startTimeStr = props.getProperty("startTime");
         if(startTimeStr != null) {

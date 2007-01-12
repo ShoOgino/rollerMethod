@@ -3,35 +3,42 @@
      */
     public boolean releaseLock(RollerTask task) {
         
-        boolean lockReleased = false;
-        
+        // query for existing lease record first
         TaskLockData taskLock = null;
         try {
             taskLock = this.getTaskLockByName(task.getName());
+            
+            if(taskLock == null) {
+                return false;
+            }
+            
         } catch (RollerException ex) {
             log.warn("Error getting TaskLockData", ex);
             return false;
         }
         
-        if(taskLock != null && taskLock.isLocked()) {
-            // set appropriate values for TaskLock and save it
-            Date now = new Date();
-            taskLock.setLocked(false);
+        // try to release lease, just set lease time to 0
+        try {
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
+            String queryHQL = "update TaskLockData set timeLeased=0 "+
+                    "where name=:name and client=:client";
+            Query query = session.createQuery(queryHQL);
+            query.setString("name", task.getName());
+            query.setString("client", task.getClientId());
+            int result = query.executeUpdate();
             
-            try {
-                // save it *and* flush
-                this.saveTaskLock(taskLock);
-                RollerFactory.getRoller().flush();
-                lockReleased = true;
-            } catch (RollerException ex) {
-                log.warn("Error saving TaskLockData", ex);
-                lockReleased = false;
+            // this may not be needed
+            RollerFactory.getRoller().flush();
+            
+            if(result == 1) {
+                return true;
             }
-        } else if(taskLock != null && !taskLock.isLocked()) {
-            // if lock is already released then don't fret about it
-            lockReleased = true;
+            
+        } catch (Exception e) {
+            log.warn("Error releasing lease.", e);
+            return false;
         }
         
-        return lockReleased;
+        return false;
     }
 

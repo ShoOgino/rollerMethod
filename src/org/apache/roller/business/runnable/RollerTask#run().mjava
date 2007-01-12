@@ -10,36 +10,21 @@
      */
     public final void run() {
         
-        ThreadManager mgr = null;
-        try {
-            mgr = RollerFactory.getRoller().getThreadManager();
-        } catch (Exception ex) {
-            log.fatal("Unable to obtain ThreadManager", ex);
-            return;
-        }
+        ThreadManager mgr = RollerFactory.getRoller().getThreadManager();
         
         boolean lockAcquired = false;
         try {
+            log.debug("Attempting to acquire lock");
             
-            if(!mgr.isLocked(this)) {
-                
-                log.debug("Attempting to acquire lock");
-                
-                lockAcquired = mgr.acquireLock(this);
-                
-                // now if we have a lock then run the task
-                if(lockAcquired) {
-                    log.debug("Lock acquired, running task");
-                    this.runTask();
-                } else {
-                    log.debug("Lock NOT acquired, cannot continue");
-                    
-                    // when we don't have a lock we can't continue, so bail
-                    return;
-                }
-                
+            lockAcquired = mgr.acquireLock(this);
+            
+            // now if we have a lock then run the task
+            if(lockAcquired) {
+                log.debug("Lock acquired, running task");
+                this.runTask();
             } else {
-                log.debug("Task already locked, nothing to do");
+                log.debug("Lock NOT acquired, cannot continue");
+                return;
             }
             
         } catch (Exception ex) {
