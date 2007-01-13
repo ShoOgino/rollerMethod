@@ -8,12 +8,12 @@
         
         if (!subcats) {
             results = (List) strategy.newQuery(WeblogEntryData.class, 
-                "WeblogEntryData.getByCategory")
-                .execute(cat);
+                "WeblogEntryData.getByStatus&Category")
+                .execute(new Object[] {WeblogEntryData.PUBLISHED, cat});
         } else {
             results = (List) strategy.newQuery(WeblogEntryData.class, 
-                "WeblogEntryData.getByCategory.pathLike&Website")
-                .execute(new Object[] {cat.getPath() + '%', cat.getWebsite()});
+                "WeblogEntryData.getByStatus&Category.pathLike&Website")
+                .execute(new Object[] {WeblogEntryData.PUBLISHED, cat.getPath() + '%', cat.getWebsite()});
         }
         
         return results;

@@ -1,0 +1,33 @@
+    /**
+     * Try to release the lock for a given RollerTask.
+     */
+    public boolean unregisterLease(RollerTask task) {
+
+        // query for existing lease record first
+        TaskLockData taskLock = null;
+        try {
+            taskLock = this.getTaskLockByName(task.getName());
+
+            if(taskLock == null) {
+                return false;
+            }
+
+        } catch (RollerException ex) {
+            log.warn("Error getting TaskLockData", ex);
+            return false;
+        }
+
+        // try to release lease, just set lease time to 0
+        try {
+            if (releaseLeaseInDatabase(task))
+                return true;
+
+        } catch (Exception e) {
+            log.warn("Error releasing lease.", e);
+            return false;
+        }
+
+        return false;
+
+    }
+
