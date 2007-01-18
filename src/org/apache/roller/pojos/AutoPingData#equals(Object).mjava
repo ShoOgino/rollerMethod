@@ -1,21 +1,11 @@
-    /**
-     * @see Object#equals(Object)
-     */
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AutoPingData)) return false;
-
-        final AutoPingData autoPingData = (AutoPingData) o;
-
-        if (id != null ? !id.equals(autoPingData.getId()) : autoPingData.getId() != null) return false;
-        if (pingTarget != null ? !pingTarget.equals(autoPingData.getPingTarget()) : autoPingData.getPingTarget() != null)
-        {
-            return false;
-        }
-        if (getWebsite() != null ? !getWebsite().equals(autoPingData.getWebsite()) : autoPingData.getWebsite() != null) {
-            return false;
-        }
-
-        return true;
+    public boolean equals(Object other) {
+        if (other == this) return true;
+        if (other instanceof AutoPingData != true) return false;
+        AutoPingData o = (AutoPingData)other;
+        return new EqualsBuilder()
+            .append(getId(), o.getId())
+            .append(getPingTarget(), o.getPingTarget()) 
+            .append(getWebsite(), o.getWebsite()) 
+            .isEquals();
     }
 

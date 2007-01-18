@@ -1,10 +1,7 @@
-   public int hashCode() {
-       int result = 17;
-       result = PojoUtil.addHashCode(result, this.id);
-       result = PojoUtil.addHashCode(result, this.website);
-       result = PojoUtil.addHashCode(result, this.name);
-       result = PojoUtil.addHashCode(result, new Integer(this.total));
-       
-       return result;
-   }
+    public int hashCode() { 
+        return new HashCodeBuilder()
+            .append(getName())
+            .append(getWeblog())
+            .toHashCode();
+    }
 

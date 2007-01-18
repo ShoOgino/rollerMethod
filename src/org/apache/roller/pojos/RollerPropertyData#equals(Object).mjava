@@ -1,0 +1,9 @@
+    public boolean equals(Object other) {
+        if (other == this) return true;
+        if (other instanceof RollerPropertyData != true) return false;
+        RollerPropertyData o = (RollerPropertyData)other;
+        return new EqualsBuilder()
+            .append(getName(), o.getName())  
+            .isEquals();
+    }
+

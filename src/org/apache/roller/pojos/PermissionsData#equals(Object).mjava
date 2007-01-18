@@ -1,0 +1,10 @@
+    public boolean equals(Object other) {
+        if (other == this) return true;
+        if (other instanceof PermissionsData != true) return false;
+        PermissionsData o = (PermissionsData)other;
+        return new EqualsBuilder()
+            .append(user, o.user) 
+            .append(website, o.website) 
+            .isEquals();
+    }
+

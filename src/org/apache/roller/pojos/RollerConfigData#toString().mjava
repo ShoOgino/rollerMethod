@@ -1,25 +1,4 @@
-    /** nice output for debugging */
-    public String toString()
-    {
-        StringBuffer buf = new StringBuffer();
-        buf.append("RollerConfig \n");
-        Class clazz = getClass();
-        Field[] fields = clazz.getDeclaredFields();
-
-        try {
-            AccessibleObject.setAccessible(fields, true);
-            for (int i = 0; i < fields.length; i++) {
-                buf.append(
-                    "\t["
-                        + fields[i].getName()
-                        + "="
-                        + fields[i].get(this)
-                        + "], \n");
-            }
-        } catch (Exception e) {
-            // ignored!
-        }
-
-        return buf.toString();
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 

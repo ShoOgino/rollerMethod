@@ -15,7 +15,9 @@
         testEntry.setUpdateTime(new java.sql.Timestamp(new java.util.Date().getTime()));
         testEntry.setWebsite(testWeblog);
         testEntry.setCreator(testUser);
-        testEntry.setCategory(testWeblog.getDefaultCategory());
+        
+        WeblogCategoryData cat = mgr.getWeblogCategory(testWeblog.getDefaultCategory().getId());
+        testEntry.setCategory(cat);
         
         // create a weblog entry
         mgr.saveWeblogEntry(testEntry);

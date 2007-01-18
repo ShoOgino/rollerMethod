@@ -1,0 +1,10 @@
+    public boolean equals(Object other) {
+        if (other == this) return true;
+        if (other instanceof EntryAttributeData != true) return false;
+        EntryAttributeData o = (EntryAttributeData)other;
+        return new EqualsBuilder()
+            .append(getName(), o.getName()) 
+            .append(getEntry(), o.getEntry()) 
+            .isEquals();
+    }
+

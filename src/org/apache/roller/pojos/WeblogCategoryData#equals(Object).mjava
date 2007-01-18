@@ -3,15 +3,12 @@
         if (other == null) return false;
         
         if (other instanceof WeblogCategoryData) {
-            
-            // NOTE: currently we are implementing equals only using the path
-            //   of the category.  technically the business key should be for
-            //   both the weblog & path, but we don't expect to be comparing
-            //   categories from 2 different weblogs so this should be fine
-            WeblogCategoryData that = (WeblogCategoryData) other;
-            return this.path.equals(that.getPath());
-        }
-        
+            WeblogCategoryData o = (WeblogCategoryData)other;
+            return new EqualsBuilder()
+                .append(getPath(), o.getPath()) 
+                .append(getWebsite(), o.getWebsite()) 
+                .isEquals();
+        }        
         return false;
     }
 

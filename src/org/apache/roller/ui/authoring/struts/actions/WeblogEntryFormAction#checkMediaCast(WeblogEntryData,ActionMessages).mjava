@@ -41,14 +41,14 @@
             mLogger.debug("No MediaCast specified, but that is OK");
             valid = true;
         }
-        if (!valid || empty) {
+        if (!valid) {
             mLogger.debug("Removing MediaCast attributes");
             WeblogManager weblogManager = RollerFactory.getRoller().getWeblogManager();
             try {
                 weblogManager.removeWeblogEntryAttribute("att_mediacast_url", entry);
                 weblogManager.removeWeblogEntryAttribute("att_mediacast_type", entry);
                 weblogManager.removeWeblogEntryAttribute("att_mediacast_length", entry);
-            } catch (RollerException e) {
+            } catch (Exception e) {
                 mLogger.error("ERROR removing invalid MediaCast attributes");
             }
         }

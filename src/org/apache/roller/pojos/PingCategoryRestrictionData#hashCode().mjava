@@ -1,7 +1,7 @@
-    /**
-     * @see Object#hashCode()
-     */
-    public int hashCode() {
-        return (id != null ? id.hashCode() : 0);
+    public int hashCode() { 
+        return new HashCodeBuilder()
+            .append(getWeblogCategory())
+            .append(getAutoping())
+            .toHashCode();
     }
 

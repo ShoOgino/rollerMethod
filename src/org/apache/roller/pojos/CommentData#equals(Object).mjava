@@ -1,25 +1,11 @@
-    /**
-     * TODO: figure out business key.  entry, status, posttime, name?
-     */
-    public boolean equals(Object pOther) {
-        if (pOther instanceof CommentData) {
-            CommentData lTest = (CommentData) pOther;
-            boolean lEquals = true;
-            
-            lEquals = PojoUtil.equals(lEquals, this.id, lTest.getId());
-            lEquals = PojoUtil.equals(lEquals, this.weblogEntry, lTest.getWeblogEntry());
-            lEquals = PojoUtil.equals(lEquals, this.name, lTest.getName());
-            lEquals = PojoUtil.equals(lEquals, this.email, lTest.getEmail());
-            lEquals = PojoUtil.equals(lEquals, this.url, lTest.getUrl());
-            lEquals = PojoUtil.equals(lEquals, this.content, lTest.getContent());
-            lEquals = PojoUtil.equals(lEquals, this.postTime, lTest.getPostTime());
-            lEquals = PojoUtil.equals(lEquals, this.status, lTest.getStatus());
-            lEquals = PojoUtil.equals(lEquals, this.notify, lTest.getNotify());
-            lEquals = PojoUtil.equals(lEquals, this.getReferrer(), lTest.getApproved());
-            lEquals = PojoUtil.equals(lEquals, this.getUserAgent(), lTest.getUserAgent());
-            return lEquals;
-        } else {
-            return false;
-        }
+    public boolean equals(Object other) {
+        if (other == this) return true;
+        if (other instanceof CommentData != true) return false;
+        CommentData o = (CommentData)other;
+        return new EqualsBuilder()
+            .append(getName(), o.getName()) 
+            .append(getPostTime(), o.getPostTime()) 
+            .append(getWeblogEntry(), o.getWeblogEntry()) 
+            .isEquals();
     }
 

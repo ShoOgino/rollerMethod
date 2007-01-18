@@ -1,27 +1,10 @@
-    /**
-     * @see Object#equals(Object o)
-     */
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof PingQueueEntryData)) return false;
-
-        final PingQueueEntryData pingQueueEntryData = (PingQueueEntryData) o;
-
-        if (attempts != pingQueueEntryData.getAttempts()) return false;
-        if (entryTime != null ? !entryTime.equals(pingQueueEntryData.getEntryTime()) : pingQueueEntryData.getEntryTime() != null)
-        {
-            return false;
-        }
-        if (id != null ? !id.equals(pingQueueEntryData.getId()) : pingQueueEntryData.getId() != null) return false;
-        if (pingTarget != null ? !pingTarget.equals(pingQueueEntryData.getPingTarget()) : pingQueueEntryData.getPingTarget() != null)
-        {
-            return false;
-        }
-        if (getWebsite() != null ? !getWebsite().equals(pingQueueEntryData.getWebsite()) : pingQueueEntryData.getWebsite() != null)
-        {
-            return false;
-        }
-
-        return true;
+    public boolean equals(Object other) {
+        if (other == this) return true;
+        if (other instanceof PingQueueEntryData != true) return false;
+        PingQueueEntryData o = (PingQueueEntryData)other;
+        return new EqualsBuilder()
+            .append(getEntryTime(), o.getEntryTime()) 
+            .append(getWebsite(), o.getWebsite()) 
+            .isEquals();
     }
 

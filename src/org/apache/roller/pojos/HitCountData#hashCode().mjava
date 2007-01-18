@@ -1,5 +1,6 @@
-    public int hashCode() {
-        // our natrual key, or business key, is our weblog
-        return this.getWeblog().hashCode();
+    public int hashCode() { 
+        return new HashCodeBuilder()
+            .append(getWeblog())
+            .toHashCode();
     }
 

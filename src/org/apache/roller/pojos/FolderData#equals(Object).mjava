@@ -3,15 +3,13 @@
         if (other == null) return false;
         
         if (other instanceof FolderData) {
-            
-            // NOTE: currently we are implementing equals only using the path
-            //   of the folder.  technically the business key should be for
-            //   both the weblog & path, but we don't expect to be comparing
-            //   folders from 2 different weblogs so this should be fine
-            FolderData that = (FolderData) other;
-            return this.path.equals(that.getPath());
+            FolderData o = (FolderData) other;
+            return new EqualsBuilder()
+                .append(getPath(), o.getPath()) 
+                .append(getWebsite(), o.getWebsite()) 
+                .isEquals();
         }
         
         return false;
-    }
+    }    
 

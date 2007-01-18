@@ -1,19 +1,8 @@
-    /**
-     * TODO: figure out business key.  entry, status, posttime, name?
-     */
-    public int hashCode() {
-        int result = 17;
-        result = PojoUtil.addHashCode(result, this.id);
-        result = PojoUtil.addHashCode(result, this.weblogEntry);
-        result = PojoUtil.addHashCode(result, this.name);
-        result = PojoUtil.addHashCode(result, this.email);
-        result = PojoUtil.addHashCode(result, this.url);
-        result = PojoUtil.addHashCode(result, this.content);
-        result = PojoUtil.addHashCode(result, this.postTime);
-        result = PojoUtil.addHashCode(result, this.status);
-        result = PojoUtil.addHashCode(result, this.notify);
-        result = PojoUtil.addHashCode(result, this.getReferrer());
-        result = PojoUtil.addHashCode(result, this.getUserAgent());
-        return result;
+    public int hashCode() { 
+        return new HashCodeBuilder()
+            .append(getName())
+            .append(getPostTime())
+            .append(getWeblogEntry())
+            .toHashCode();
     }
 

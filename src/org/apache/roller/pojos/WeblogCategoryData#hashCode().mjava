@@ -1,6 +1,7 @@
     public int hashCode() {
-        // NOTE: just like equals() it's possibly better if this is the combo
-        //   of both the path hashCode and the weblog hashCode
-        return this.path.hashCode();
+        return new HashCodeBuilder()
+            .append(getPath())
+            .append(getWebsite())
+            .toHashCode();
     }
 

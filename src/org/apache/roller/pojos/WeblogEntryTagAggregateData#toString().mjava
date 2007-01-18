@@ -1,13 +1,4 @@
-   public String toString() {
-     StringBuffer str = new StringBuffer("{");
-     
-     str.append("id=" + id + " " +
-             "website=" + website +
-             "name=" + name + " " +
-             "total=" + total + " " +
-             "lastUsed=" + lastUsed);
-     str.append('}');
-     
-     return (str.toString());
- }
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
 

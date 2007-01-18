@@ -39,7 +39,8 @@
         
         if (getCategoryId() != null) 
         {
-            entry.setCategoryId(getCategoryId());
+            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+            entry.setCategory(wmgr.getWeblogCategory(getCategoryId()));
         }             
         if (getAllowComments() == null)
         {
@@ -59,7 +60,7 @@
         {
             String name = (String)params.next();
             String[] value = (String[])paramMap.get(name);
-            if (name.startsWith("att_") && value.length > 0)
+            if (name.startsWith("att_") && value.length > 0 && value[0].trim().length() > 0)
             {
                 try
                 {
@@ -70,6 +71,10 @@
                     throw new RollerException("ERROR setting attributes",e);
                 }
             }
+        }
+        
+        if (entry.getId() != null && entry.getId().trim().length() == 0) {
+            entry.setId(null);
         }
     }
 
