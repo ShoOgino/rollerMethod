@@ -1,0 +1,26 @@
+    private RollerMessages parseTrackbackResponse(
+        String response, RollerMessages messages) throws JDOMException, IOException {
+        
+        SAXBuilder builder = new SAXBuilder();
+        Document doc = builder.build( 
+            new StringReader(StringEscapeUtils.unescapeHtml(response))); 
+        Element root = doc.getRootElement();
+        if ("response".equals(root.getName())) {
+            int code = -99;
+            boolean failure = true;
+            try {
+                code = Integer.parseInt(root.getChildText("error"));
+                failure = code != 0;
+            } catch (NumberFormatException ignoredByDesign) {}
+            String message = root.getChildText("message");
+            if (failure) {
+                messages.addError("weblogEdit.trackbackStatusCodeBad", 
+                    new String[] {Integer.toString(code), Utilities.removeHTML(message)});
+            } else {
+                messages.addMessage("weblogEdit.trackbackStatusCodeGood", 
+                    Utilities.removeHTML(message));
+            }
+        }
+        return messages;
+    }
+
