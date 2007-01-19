@@ -1,3 +1,7 @@
+    /**
+     * Sends trackback from entry to remote URL.
+     * See Trackback spec for details: http://www.sixapart.com/pronet/docs/trackback_spec
+     */ 
     public RollerMessages sendTrackback(
             WeblogEntryData entry, String trackbackURL) throws RollerException {
         
@@ -75,10 +79,12 @@
                     try {
                         messages = parseTrackbackResponse(resultBuff.toString(), messages);
                     } catch (Exception e) {
+                        // Cannot parse response, indicates failure
                         messages.addError("weblogEdit.trackbackUnknownError",                            
                            new String[] {Integer.toString(conn.getResponseCode()), conn.getResponseMessage()});
                     }
                 } else {
+                    // No response from target, indicates failure
                     messages.addError("weblogEdit.trackbackUnknownError",                            
                        new String[] {Integer.toString(conn.getResponseCode()), conn.getResponseMessage()});                    
                 }
