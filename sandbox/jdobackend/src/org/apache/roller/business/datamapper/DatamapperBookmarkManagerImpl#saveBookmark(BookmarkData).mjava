@@ -1,5 +1,5 @@
     public void saveBookmark(BookmarkData bookmark) throws RollerException {
-        if(!PersistentObjectHelper.isObjectPersistent(bookmark)) {
+        if (bookmark.getId() == null) { //(!PersistentObjectHelper.isObjectPersistent(bookmark)) {
             // This is a new object make sure that relationship is set on managed
             // copy of other side
             bookmark.getFolder().getBookmarks().add(bookmark);

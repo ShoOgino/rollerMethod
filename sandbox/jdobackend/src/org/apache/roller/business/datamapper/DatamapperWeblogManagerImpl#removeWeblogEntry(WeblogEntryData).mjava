@@ -31,6 +31,8 @@
             for(Iterator it = entry.getTags().iterator(); it.hasNext(); ) {
                 WeblogEntryTagData tag = (WeblogEntryTagData) it.next();
                 updateTagCount(tag.getName(), entry.getWebsite(), -1);
+                it.remove();
+                this.strategy.remove(tag);
             }
         }
         

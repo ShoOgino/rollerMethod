@@ -1,0 +1,10 @@
+    /**
+     * @see org.apache.roller.business.Roller#getBookmarkManager()
+     */
+    public PlanetManager getPlanetManager() {
+        if ( planetManager == null ) {
+            planetManager = createDatamapperPlanetManager(strategy);
+        }
+        return planetManager;
+    }
+

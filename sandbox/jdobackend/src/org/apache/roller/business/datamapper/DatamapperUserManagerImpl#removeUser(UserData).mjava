@@ -9,7 +9,7 @@
                 //Remove it from website
                 iterator.remove();
                 //Remove it from corresponding user
-                WebsiteData website = (WebsiteData) getManagedObject(perms.getWebsite());
+                WebsiteData website = perms.getWebsite(); //(WebsiteData) getManagedObject(perms.getWebsite());
                 website.getPermissions().remove(perms);
         }
 

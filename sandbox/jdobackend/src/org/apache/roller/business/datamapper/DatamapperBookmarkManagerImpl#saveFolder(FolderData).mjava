@@ -4,12 +4,12 @@
             throw new RollerException("Duplicate folder name");
         }
 
-        if(!PersistentObjectHelper.isObjectPersistent(folder)) {
+        if (folder.getId() == null) { //(!PersistentObjectHelper.isObjectPersistent(folder)) {
             // Newly added object. If it has a parent,
             // maintain relationship from both sides
             FolderData parent = folder.getParent();
             if(parent != null) {
-                parent.getFolders().add(folder);
+                //parent.getFolders().add(folder);
             }
         }
 

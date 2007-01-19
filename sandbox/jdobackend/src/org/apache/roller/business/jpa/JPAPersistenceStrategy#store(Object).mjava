@@ -1,0 +1,15 @@
+    /**
+     * Store object using an existing transaction.
+     * @param obj the object to persist
+     * @return the object persisted
+     * @throws org.apache.roller.RollerException on any error
+     */
+    public Object store(Object obj) throws RollerException {
+        EntityManager em = getEntityManager(true);
+        if (!em.contains(obj)) {
+            // If entity is not managed we can assume it is new
+            em.persist(obj);
+        }
+        return obj;
+    }
+

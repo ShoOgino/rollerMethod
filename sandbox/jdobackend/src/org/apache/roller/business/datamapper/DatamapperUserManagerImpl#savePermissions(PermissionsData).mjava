@@ -1,12 +1,12 @@
     public void savePermissions(PermissionsData perms) 
             throws RollerException {
-        if(!PersistentObjectHelper.isObjectPersistent(perms)) {
+        if (perms.getId() == null) { //(!PersistentObjectHelper.isObjectPersistent(perms)) {
             // This is a new object make sure that relationship is set on managed
             // copy of other side
-            WebsiteData website = (WebsiteData) getManagedObject(perms.getWebsite());
+            WebsiteData website = perms.getWebsite(); //(WebsiteData) getManagedObject(perms.getWebsite());
             website.getPermissions().add(perms);
 
-            UserData user = (UserData) getManagedObject(perms.getUser());
+            UserData user = perms.getUser(); //(UserData) getManagedObject(perms.getUser());
             user.getPermissions().add(perms);
         }
         this.strategy.store(perms);

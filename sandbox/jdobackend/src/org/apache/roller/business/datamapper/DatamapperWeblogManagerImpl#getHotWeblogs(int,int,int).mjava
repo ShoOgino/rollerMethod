@@ -10,13 +10,15 @@
         cal.add(Calendar.DATE, -1 * sinceDays);
         Date startDate = cal.getTime();
         
-        DatamapperQuery query = strategy.newQuery(HitCountData.class, 
+        DatamapperQuery query = strategy.newQuery(HitCountData.class,
                 "HitCountData.getByWeblogEnabledTrueAndActiveTrue&DailyHitsGreaterThenZero&WeblogLastModifiedGreaterOrderByDailyHitsDesc");
 
         if (length != -1) {
-            query.setRange(offset, length);
+            // Commented out due to https://glassfish.dev.java.net/issues/show_bug.cgi?id=2084
+            // Should uncomment once the issue is fixed
+            //query.setRange(offset, length);
         }
-        
+
         return (List) query.execute(startDate);
     }
 

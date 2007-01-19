@@ -3,10 +3,10 @@
         this.strategy.remove(perms);
         // make sure that relationship is set on managed
         // copy of other side
-        WebsiteData website = (WebsiteData) getManagedObject(perms.getWebsite());
+        WebsiteData website = perms.getWebsite(); //WebsiteData) getManagedObject(perms.getWebsite());
         website.getPermissions().remove(perms);
 
-        UserData user = (UserData) getManagedObject(perms.getUser());
+        UserData user = perms.getUser(); //(UserData) getManagedObject(perms.getUser());
         user.getPermissions().remove(perms);
     }
 
