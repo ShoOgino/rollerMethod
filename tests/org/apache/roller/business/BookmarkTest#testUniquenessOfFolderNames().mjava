@@ -22,7 +22,7 @@
         boolean exception = false;
         try {
             // child folder with same name as first
-            FolderData f3 = new FolderData(f1, "f2", null, testWeblog);
+            FolderData f3 = new FolderData(f1, "f2", null, TestUtils.getManagedWebsite(testWeblog));
             bmgr.saveFolder(f3);
             TestUtils.endSession(true);
         } catch (RollerException e) {

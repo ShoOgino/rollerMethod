@@ -34,7 +34,7 @@
         f1.addBookmark(b1);
         
         // create folder f2 inside f1
-        FolderData f2 = new FolderData(f1, "f2", null, testWeblog);
+        FolderData f2 = new FolderData(f1, "f2", null, TestUtils.getManagedWebsite(testWeblog));
         bmgr.saveFolder(f2);
         
         // create bookmark b2 inside folder f2
@@ -45,7 +45,7 @@
         f2.addBookmark(b2);
         
         // create folder f3 inside folder f2
-        FolderData f3 = new FolderData(f2, "f3", null, testWeblog);
+        FolderData f3 = new FolderData(f2, "f3", null, TestUtils.getManagedWebsite(testWeblog));
         bmgr.saveFolder(f3);
         
         // crete bookmark b3 inside folder f3
@@ -81,6 +81,8 @@
         assertTrue(safe);
         
         // move f1 to dest
+        f1   = bmgr.getFolder( f1.getId());   //Get managed copy
+        dest = bmgr.getFolder( dest.getId()); //Get managed copy
         bmgr.moveFolder(f1, dest);
         TestUtils.endSession(true);
         

@@ -1,0 +1,8 @@
+    /**
+     * Convenience method that returns managed copy of given WeblogEntry.
+     */
+    public static WeblogEntryData getManagedWeblogEntry(WeblogEntryData weblogEntry) throws RollerException {
+        WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+        return mgr.getWeblogEntry(weblogEntry.getId());
+    }
+

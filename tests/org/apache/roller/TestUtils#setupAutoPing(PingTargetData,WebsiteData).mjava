@@ -7,7 +7,7 @@
         AutoPingManager mgr = RollerFactory.getRoller().getAutopingManager();
         
         // store auto ping
-        AutoPingData autoPing = new AutoPingData(null, ping, weblog);
+        AutoPingData autoPing = new AutoPingData(null, ping, getManagedWebsite(weblog) );
         mgr.saveAutoPing(autoPing);
         
         // flush to db

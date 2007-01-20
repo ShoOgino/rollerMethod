@@ -12,7 +12,7 @@
         assertEquals(0, root.getBookmarks().size());
         
         // add a folder
-        FolderData folder = new FolderData(root, "TestFolder1", null, testWeblog);
+        FolderData folder = new FolderData(root, "TestFolder1", null, TestUtils.getManagedWebsite(testWeblog));
         bmgr.saveFolder(folder);
         TestUtils.endSession(true);
         
@@ -32,7 +32,7 @@
         assertEquals("folderTest1", folder.getName());
         
         // add a subfolder
-        FolderData subfolder = new FolderData(folder, "subfolderTest1", null, testWeblog);
+        FolderData subfolder = new FolderData(folder, "subfolderTest1", null, TestUtils.getManagedWebsite(testWeblog));
         bmgr.saveFolder(subfolder);
         TestUtils.endSession(true);
         

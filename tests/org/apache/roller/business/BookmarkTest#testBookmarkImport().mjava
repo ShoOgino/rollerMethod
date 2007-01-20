@@ -2,7 +2,7 @@
         
         InputStream fis = this.getClass().getResourceAsStream("/bookmarks.opml");
         getRoller().getBookmarkManager().importBookmarks(
-                testWeblog, "ZZZ_imports_ZZZ", fileToString(fis));
+                TestUtils.getManagedWebsite(testWeblog), "ZZZ_imports_ZZZ", fileToString(fis));
         TestUtils.endSession(true);
         
         FolderData fd = null;
