@@ -32,15 +32,15 @@
         assertNotNull(perm);
         assertEquals(PermissionsData.ADMIN, perm.getPermissionMask());
         
-//        // update permissions
-//        perm.setPermissionMask(PermissionsData.LIMITED);
-//        mgr.savePermissions(perm);
-//        TestUtils.endSession(true);
-//        
-//        // check that update was successful
-//        perm = null;
-//        perm = mgr.getPermissions(testWeblog, testUser);
-//        assertNotNull(perm);
-//        assertEquals(PermissionsData.LIMITED, perm.getPermissionMask());
+        // update permissions
+        perm.setPermissionMask(PermissionsData.LIMITED);
+        mgr.savePermissions(perm);
+        TestUtils.endSession(true);
+
+        // check that update was successful
+        perm = null;
+        perm = mgr.getPermissions(testWeblog, testUser);
+        assertNotNull(perm);
+        assertEquals(PermissionsData.LIMITED, perm.getPermissionMask());
     }
 

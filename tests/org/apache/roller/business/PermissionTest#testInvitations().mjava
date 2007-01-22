@@ -1,0 +1,55 @@
+    /**
+     * Tests weblog invitation process.
+     */
+    public void testInvitations() throws Exception {
+
+        // we need a second user for this test
+        UserData user = TestUtils.setupUser("foobee");
+        TestUtils.endSession(true);
+
+        UserManager mgr = RollerFactory.getRoller().getUserManager();
+        PermissionsData perm = null;
+        List perms = null;
+
+        // invite user to weblog
+        perm = mgr.inviteUser(TestUtils.getManagedWebsite(testWeblog), user, PermissionsData.LIMITED);
+        String id = perm.getId();
+        TestUtils.endSession(true);
+
+        // accept invitation
+        perm = mgr.getPermissions(testWeblog, user);
+        perm.setPending(false);
+        mgr.savePermissions(perm);
+        TestUtils.endSession(true);
+
+        // re-query now that we have changed things
+        user = mgr.getUserByUserName(user.getUserName());
+        testWeblog = mgr.getWebsiteByHandle(testWeblog.getHandle());
+
+        // assert that invitation list is empty
+        assertTrue(mgr.getPendingPermissions(user).isEmpty());
+        assertTrue(mgr.getPendingPermissions(testWeblog).isEmpty());
+
+        // assert that user is member of weblog
+        assertFalse(mgr.getPermissions(testWeblog, user).isPending());
+        List weblogs = mgr.getWebsites(user, null, null, null, null, 0, -1);
+        assertEquals(1, weblogs.size());
+        assertEquals(testWeblog.getId(), ((WebsiteData)weblogs.get(0)).getId());
+
+        // assert that website has user
+        List users = mgr.getUsers(testWeblog, null, null, null, 0, -1);
+        assertEquals(2, users.size());
+
+        // test user can be retired from website
+        mgr.retireUser(testWeblog, user);
+        TestUtils.endSession(true);
+
+        user = mgr.getUser(user.getId());
+        weblogs = mgr.getWebsites(user, null, null, null, null, 0, -1);
+        assertEquals(0, weblogs.size());
+
+        // cleanup the extra test user
+        TestUtils.teardownUser(user.getId());
+        TestUtils.endSession(true);
+    }
+

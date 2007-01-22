@@ -8,13 +8,13 @@
         
         root = mgr.getRootWeblogCategory(testWeblog);
         
-        WeblogCategoryData f1 = new WeblogCategoryData(testWeblog, root, "f1", null, null);
+        WeblogCategoryData f1 = new WeblogCategoryData(TestUtils.getManagedWebsite(testWeblog), root, "f1", null, null);
         mgr.saveWeblogCategory(f1);
         
-        WeblogCategoryData f2 = new WeblogCategoryData(testWeblog, f1, "f2", null, null);
+        WeblogCategoryData f2 = new WeblogCategoryData(TestUtils.getManagedWebsite(testWeblog), f1, "f2", null, null);
         mgr.saveWeblogCategory(f2);
         
-        WeblogCategoryData f3 = new WeblogCategoryData(testWeblog, f2, "f3", null, null);
+        WeblogCategoryData f3 = new WeblogCategoryData(TestUtils.getManagedWebsite(testWeblog), f2, "f3", null, null);
         mgr.saveWeblogCategory(f3);
         
         TestUtils.endSession(true);

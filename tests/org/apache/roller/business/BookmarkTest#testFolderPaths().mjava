@@ -7,11 +7,11 @@
         
         FolderData root = bmgr.getRootFolder(testWeblog);
         
-        FolderData f1 = new FolderData(root, "f1", null, testWeblog);
+        FolderData f1 = new FolderData(root, "f1", null, TestUtils.getManagedWebsite(testWeblog));
         bmgr.saveFolder(f1);
-        FolderData f2 = new FolderData(f1, "f2", null, testWeblog);
+        FolderData f2 = new FolderData(f1, "f2", null, TestUtils.getManagedWebsite(testWeblog));
         bmgr.saveFolder(f2);
-        FolderData f3 = new FolderData(f2, "f3", null, testWeblog);
+        FolderData f3 = new FolderData(f2, "f3", null, TestUtils.getManagedWebsite(testWeblog));
         bmgr.saveFolder(f3);
         
         TestUtils.endSession(true);

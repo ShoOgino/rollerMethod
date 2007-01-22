@@ -19,11 +19,11 @@
         
         FolderData root = bmgr.getRootFolder(testWeblog);
         
-        FolderData dest = new FolderData(root, "dest", null, testWeblog);
+        FolderData dest = new FolderData(root, "dest", null, TestUtils.getManagedWebsite(testWeblog));
         bmgr.saveFolder(dest);
         
         // create source folder f1
-        FolderData f1 = new FolderData(root, "f1", null, testWeblog);
+        FolderData f1 = new FolderData(root, "f1", null, TestUtils.getManagedWebsite(testWeblog));
         bmgr.saveFolder(f1);
         
         // create bookmark b1 inside source folder f1

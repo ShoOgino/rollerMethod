@@ -7,10 +7,10 @@
         
         FolderData root = bmgr.getRootFolder(testWeblog);
         
-        FolderData testFolder = new FolderData(null, "root", "root", testWeblog);
+        FolderData testFolder = new FolderData(null, "root", "root", TestUtils.getManagedWebsite(testWeblog));
         assertTrue(root.equals(testFolder));
         
-        testFolder = new FolderData(root, "root", "root", testWeblog);
+        testFolder = new FolderData(root, "root", "root", TestUtils.getManagedWebsite(testWeblog));
         assertFalse(root.equals(testFolder));
     }
 
