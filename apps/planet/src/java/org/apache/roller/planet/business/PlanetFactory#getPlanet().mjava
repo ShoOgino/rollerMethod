@@ -1,20 +1,4 @@
-    /**
-     * Static accessor for the instance of Planet
-     * held by this class.
-     *
-     * @return Planet
-     */
     public static Planet getPlanet() {
-        // check to see if we need to instantiate
-        if(planetInstance == null) {
-            // lookup value for the planet classname to use
-            String planet_classname =
-                    PlanetConfig.getProperty("persistence.planet.classname");
-            
-            // now call setPlanet ourselves
-            PlanetFactory.setPlanet(planet_classname);
-        }
-        
         return planetInstance;
     }
 
