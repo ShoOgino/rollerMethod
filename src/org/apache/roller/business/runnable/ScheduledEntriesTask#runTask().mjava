@@ -3,6 +3,8 @@
      */
     public void runTask() {
         
+        log.debug("task started");
+        
         try {
             WeblogManager wMgr = RollerFactory.getRoller().getWeblogManager();
             IndexManager searchMgr = RollerFactory.getRoller().getIndexManager();
@@ -49,6 +51,8 @@
             // always release
             RollerFactory.getRoller().release();
         }
+        
+        log.debug("task completed");
         
     }
 
