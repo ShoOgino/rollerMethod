@@ -61,9 +61,7 @@
         entryQuery.add(Expression.eq("website", website));
         List entries = entryQuery.list();
         for (Iterator iter = entries.iterator(); iter.hasNext();) {
-            WeblogEntryData entry = (WeblogEntryData) iter.next();
-            
-            this.strategy.remove(entry);
+            wmgr.removeWeblogEntry((WeblogEntryData) iter.next());
         }
         
         // remove associated referers
@@ -81,8 +79,7 @@
         pageQuery.add(Expression.eq("website", website));
         List pages = pageQuery.list();
         for (Iterator iter = pages.iterator(); iter.hasNext();) {
-            WeblogTemplate page = (WeblogTemplate) iter.next();
-            this.strategy.remove(page);
+            this.removePage((WeblogTemplate) iter.next());
         }
         
         // remove folders (including bookmarks)
@@ -97,5 +94,10 @@
             this.strategy.remove(rootCat);
         }
         
+        // remove permissions
+        List permissions = this.getAllPermissions(website);
+        for (Iterator iter = permissions.iterator(); iter.hasNext(); ) {
+            this.removePermissions((PermissionsData) iter.next());
+        }
     }
 
