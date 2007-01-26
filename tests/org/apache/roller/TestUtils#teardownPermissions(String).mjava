@@ -1,0 +1,16 @@
+    /**
+     * Convenience method for removing a permission.
+     */
+    public static void teardownPermissions(String id) throws Exception {
+        
+        // lookup the permissions
+        UserManager mgr = RollerFactory.getRoller().getUserManager();
+        PermissionsData perm = mgr.getPermissions(id);
+        
+        // remove the permissions
+        mgr.removePermissions(perm);
+        
+        // flush to db
+        RollerFactory.getRoller().flush();
+    }
+
