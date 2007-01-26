@@ -3,6 +3,8 @@
      */
     public void testPermissionsCRUD() throws Exception {
         
+        log.info("BEGIN");
+        
         UserManager mgr = RollerFactory.getRoller().getUserManager();
         PermissionsData perm = null;
         
@@ -42,5 +44,7 @@
         perm = mgr.getPermissions(testWeblog, testUser);
         assertNotNull(perm);
         assertEquals(PermissionsData.LIMITED, perm.getPermissionMask());
+        
+        log.info("END");
     }
 

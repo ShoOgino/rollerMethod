@@ -2,6 +2,9 @@
      * All tests in this suite require a user and a weblog.
      */
     public void setUp() throws Exception {
+        
+        log.info("BEGIN");
+        
         try {
             testUser = TestUtils.setupUser("permsTestUser");
             testWeblog = TestUtils.setupWeblog("permsTestWeblog", testUser);
@@ -10,5 +13,7 @@
             log.error(ex);
             throw new Exception("Test setup failed", ex);
         }
+        
+        log.info("END");
     }
 

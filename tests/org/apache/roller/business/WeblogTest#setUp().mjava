@@ -3,6 +3,8 @@
      */
     public void setUp() throws Exception {
         
+        log.info("BEGIN");
+        
         try {
             testUser = TestUtils.setupUser("weblogTestUser");
             TestUtils.endSession(true);
@@ -10,5 +12,7 @@
             log.error(ex);
             throw new Exception("Test setup failed", ex);
         }
+        
+        log.info("END");
     }
 
