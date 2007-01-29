@@ -33,8 +33,6 @@
             }
         }
 
-        // TODO queryString.append("order by sum(total) desc");  ???
-        
         double min = Integer.MAX_VALUE;
         double max = Integer.MIN_VALUE;
 
@@ -62,7 +60,7 @@
         }            
 
         // sort results by name, because query had to sort by total
-        Collections.sort(results, tagStatComparator);
+        Collections.sort(results, tagStatNameComparator);
             
         return results;
     }

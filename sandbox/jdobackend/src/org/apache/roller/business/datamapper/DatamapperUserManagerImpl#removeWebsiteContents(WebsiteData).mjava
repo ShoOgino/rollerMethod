@@ -1,7 +1,6 @@
     /**
      * convenience method for removing contents of a weblog.
      * TODO BACKEND: use manager methods instead of queries here
-     * TODO DatamapperPort: Use bulk deletes instead of current approach
      */
     private void removeWebsiteContents(WebsiteData website) 
             throws  RollerException {
@@ -24,12 +23,12 @@
         // delete all weblog tag aggregates
         strategy.newRemoveQuery(
                 WeblogEntryTagAggregateData.class,
-                "WeblogEntryTagAggregateData.deleteByWeblog").removeAll(website);
+                "WeblogEntryTagAggregateData.removeByWeblog").removeAll(website);
 
         // delete all bad counts
         strategy.newRemoveQuery(
                 WeblogEntryTagAggregateData.class,
-                "WeblogEntryTagAggregateData.deleteByTotalLEZero").removeAll();
+                "WeblogEntryTagAggregateData.removeByTotalLessEqual").removeAll(new Integer(0));
 
 
         // Remove the website's ping queue entries
@@ -96,9 +95,8 @@
             this.strategy.remove(rootCat);
         }
 
-        //remove permissions
-        //TODO: Datamapper: this is a workaround for toplink bug that requires
-        //to clean up from non owning side for removed objects.
+        // remove permissions
+        // make sure that both sides of the relationship are maintained
         for (Iterator iterator = website.getPermissions().iterator(); iterator.hasNext();) {
             PermissionsData perms = (PermissionsData) iterator.next();
             //Remove it from database
@@ -106,7 +104,7 @@
             //Remove it from website
             iterator.remove();
             //Remove it from corresponding user
-            UserData user = perms.getUser(); //(UserData) getManagedObject(perms.getUser());
+            UserData user = perms.getUser();
             user.getPermissions().remove(perms);
         }
 

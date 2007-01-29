@@ -4,8 +4,8 @@
         if (log.isDebugEnabled()) {
             log.debug("getHits: " + website.getName());
         }
-        //TODO: DatamapperPort. This original query retrieves both SUM(r.dayHits), SUM(r.totalHits)
-        //The method only comsumes one of them. We can optimize the logic to retrive only the 
+        //TODO: DatamapperPort. This query retrieves both SUM(r.dayHits), SUM(r.totalHits)
+        //The method only comsumes one of them. We can optimize the logic to retrieve only the 
         //requied SUM
         DatamapperQuery query = strategy.newQuery(RefererData.class,
             "RefererData.getHitsByWebsite.enabled&Website.id");

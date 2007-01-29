@@ -1,7 +1,6 @@
     public void removeUser(UserData user) throws RollerException {
         //remove permissions
-        //TODO: Datamapper: this is a workaround for toplink bug that requires
-        //to clean up from non owning side for removed objects.
+        // make sure that both sides of the relationship are maintained
         for (Iterator iterator = user.getPermissions().iterator(); iterator.hasNext();) {
                 PermissionsData perms = (PermissionsData) iterator.next();
                 //Remove it from database
@@ -9,7 +8,7 @@
                 //Remove it from website
                 iterator.remove();
                 //Remove it from corresponding user
-                WebsiteData website = perms.getWebsite(); //(WebsiteData) getManagedObject(perms.getWebsite());
+                WebsiteData website = perms.getWebsite();
                 website.getPermissions().remove(perms);
         }
 

@@ -42,9 +42,10 @@
                 "statCount.weblogDayHits",
                 hits.longValue()));              
         }
-        //TODO Uncomment following once integrated with code
-        //Collections.sort(results, StatCount.getComparator());
-        Collections.reverse(results);
+        // Original query ordered by desc hits.
+        // JPA QL doesn't allow queries to be ordered by agregates; do it in memory
+        Collections.sort(results, statCountCountReverseComparator);
+
         return results;
     }
 

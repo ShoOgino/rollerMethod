@@ -68,14 +68,15 @@
             Object[] row = (Object[]) iter.next();
             TagStat ce = new TagStat();
             ce.setName((String) row[0]);
-            //TODO: DatamapperPort. The query retrieves SUM(w.total) which is always long
-            //TagStat should be changed to receive count as long
+            // The JPA query retrieves SUM(w.total) always as long
             ce.setCount(((Long) row[1]).intValue());
             results.add(ce);
         }
         
-        if (!sortByName) {
-            Collections.sort(results, tagStatComparator);
+        if (sortByName) {
+            Collections.sort(results, tagStatNameComparator);
+        } else {
+            Collections.sort(results, tagStatCountReverseComparator);
         }
         
         return results;

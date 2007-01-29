@@ -53,9 +53,10 @@
                     "statCount.weblogEntryCommentCountType",    // stat desc
                     ((Long)row[0]).longValue())); // count
           }
-        //TODO Uncomment following once integrated with code
-        //Collections.sort(results, StatCount.getComparator());
-        Collections.reverse(results);
+        // Original query ordered by desc count.
+        // JPA QL doesn't allow queries to be ordered by agregates; do it in memory
+        Collections.sort(results, statCountCountReverseComparator);
+
         return results;
     }
 

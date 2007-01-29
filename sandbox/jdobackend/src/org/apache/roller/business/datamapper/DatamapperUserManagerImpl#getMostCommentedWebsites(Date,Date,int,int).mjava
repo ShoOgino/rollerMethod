@@ -25,12 +25,6 @@
             queryResults = (List) query.execute(endDate);
         }
 
-        // TODO: DatamapperPort - The original query list column not present in group by clause in select clause
-        // this is not allowed by JPA spec (and many db vendors).
-        // Changed the select clause to match group by clause.
-        // Currently, the only caller of this method is SiteModel.getMostCommentedWeblogs() (apart from a junit test)
-        // check with roller developers what is the expected behavior of this query 
-
         List results = new ArrayList();
         for (Iterator iter = queryResults.iterator(); iter.hasNext();) {
             Object[] row = (Object[]) iter.next();
@@ -41,9 +35,10 @@
                     "statCount.weblogCommentCountType", // stat type 
                     ((Long)row[0]).longValue())); // # comments
         }
-        //TODO Uncomment following once integrated with code
-        //Collections.sort(results, StatCount.getComparator());
-        Collections.reverse(results);
+        // Original query ordered by desc # comments.
+        // JPA QL doesn't allow queries to be ordered by agregates; do it in memory
+        Collections.sort(results, statCountCountReverseComparator);
+
         return results;
     }
 

@@ -4,9 +4,8 @@
     public void clearReferrers(WebsiteData website) throws RollerException {
         clearDayHitsByWebsite(website);
 
-        //TODO: Datamapper port: Same comments as for method clearReferrers() apply for the expression
         strategy.newRemoveQuery(RefererData.class,
-                "RefererData.deleteByNullOrEmptyExcerpt&Website").removeAll(website);
+                "RefererData.removeByNullOrEmptyExcerpt&Website").removeAll(website);
 
     }
 
