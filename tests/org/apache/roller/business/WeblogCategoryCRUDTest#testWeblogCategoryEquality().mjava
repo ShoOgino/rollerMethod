@@ -3,6 +3,8 @@
      */
     public void testWeblogCategoryEquality() throws Exception {
         
+        log.info("BEGIN");
+        
         WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
         
         WeblogCategoryData root = mgr.getRootWeblogCategory(testWeblog);
@@ -12,5 +14,7 @@
         
         testCat = new WeblogCategoryData(testWeblog, root, "root", "root", null);
         assertFalse(root.equals(testCat));
+        
+        log.info("END");
     }
 

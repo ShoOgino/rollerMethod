@@ -1,0 +1,16 @@
+    /**
+     * Lookup category by id.
+     */
+    public void testLookupCategoryById() throws Exception {
+        
+        log.info("BEGIN");
+        
+        WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+        
+        WeblogCategoryData cat = mgr.getWeblogCategory(testCat.getId());
+        assertNotNull(cat);
+        assertEquals(cat, testCat);
+        
+        log.info("END");
+    }
+

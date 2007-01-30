@@ -3,11 +3,10 @@
         log.info("BEGIN");
         
         try {
-            TestUtils.teardownWeblog(testWeblog.getId());
             TestUtils.teardownUser(testUser.getId());
             TestUtils.endSession(true);
-        } catch (Throwable t) {
-            log.error(t);
+        } catch (Exception ex) {
+            log.error(ex);
         }
         
         log.info("END");

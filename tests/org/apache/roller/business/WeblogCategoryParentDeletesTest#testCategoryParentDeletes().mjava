@@ -1,0 +1,35 @@
+    /**
+     * Test that deleting a categories parent object deletes all categories.
+     */
+    public void testCategoryParentDeletes() throws Exception {
+        
+        log.info("BEGIN");
+        
+        WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+        
+        // root category is always available
+        WeblogCategoryData root = mgr.getRootWeblogCategory(testWeblog);
+        
+        // add a small category tree /subcat/subcat2
+        WeblogCategoryData subcat = new WeblogCategoryData(testWeblog, root, "categoryParentDeletes1", null, null);
+        root.addCategory(subcat);
+        mgr.saveWeblogCategory(subcat);
+        WeblogCategoryData subcat2 = new WeblogCategoryData(testWeblog, subcat, "categoryParentDeletes2", null, null);
+        subcat.addCategory(subcat2);
+        mgr.saveWeblogCategory(subcat2);
+        TestUtils.endSession(true);
+        
+        // now delete the weblog owning these categories
+        Exception ex = null;
+        try {
+            UserManager umgr = RollerFactory.getRoller().getUserManager();
+            umgr.removeWebsite(TestUtils.getManagedWebsite(testWeblog));
+            TestUtils.endSession(true);
+        } catch (RollerException e) {
+            ex = e;
+        }
+        assertNull(ex);
+        
+        log.info("END");
+    }
+

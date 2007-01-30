@@ -1,12 +1,15 @@
     /**
      * Test basic persistence operations ... Create, Update, Delete.
      */
-    public void testWeblogCategoryCRUD() throws Exception {
+    public void testBasicCRUD() throws Exception {
+        
+        log.info("BEGIN");
         
         WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
         WeblogCategoryData cat = null;
         List cats = null;
         
+        // root category is always available
         WeblogCategoryData root = mgr.getRootWeblogCategory(testWeblog);
         
         // make sure we are starting with 0 categories (beneath root)
@@ -38,33 +41,19 @@
         assertNotNull(cat);
         assertEquals("testtest", cat.getName());
         
-        // add a subcat
-        WeblogCategoryData subcat = new WeblogCategoryData(TestUtils.getManagedWebsite(testWeblog), cat, "subcatTest1", null, null);
-        mgr.saveWeblogCategory(subcat);
-        TestUtils.endSession(true);
-        
-        // check that subcat was saved and we can navigate to it
-        root = mgr.getRootWeblogCategory(testWeblog);
-        assertEquals(1, root.getWeblogCategories().size());
-        cat = (WeblogCategoryData) root.getWeblogCategories().iterator().next();
-        assertEquals("testtest", cat.getName());
-        assertEquals(1, cat.getWeblogCategories().size());
-        subcat = (WeblogCategoryData) cat.getWeblogCategories().iterator().next();
-        assertEquals("subcatTest1", subcat.getName());
-        
-        // remove category, should cascade to subcat
+        // remove category
         mgr.removeWeblogCategory(cat);
         TestUtils.endSession(true);
         
-        // make sure folder and subfolder was removed
+        // make sure cat was removed
         cat = null;
         cat = mgr.getWeblogCategory(newCat.getId());
-        assertNull(cat);
-        cat = mgr.getWeblogCategory(subcat.getId());
         assertNull(cat);
         
         // make sure category count decreased
         root = mgr.getRootWeblogCategory(testWeblog);
         assertEquals(0, root.getWeblogCategories().size());
+        
+        log.info("END");
     }
 

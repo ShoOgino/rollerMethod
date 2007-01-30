@@ -1,0 +1,27 @@
+    /**
+     * Lookup all categories for a weblog.
+     */
+    public void testLookupAllCategoriesByWeblog() throws Exception {
+        
+        log.info("BEGIN");
+        
+        WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+        
+        // default, including root
+        List cats = mgr.getWeblogCategories(testWeblog);
+        assertNotNull(cats);
+        assertEquals(5, cats.size());
+        
+        // including root
+        cats = mgr.getWeblogCategories(testWeblog, true);
+        assertNotNull(cats);
+        assertEquals(5, cats.size());
+        
+        // not including root
+        cats = mgr.getWeblogCategories(testWeblog, false);
+        assertNotNull(cats);
+        assertEquals(4, cats.size());
+        
+        log.info("END");
+    }
+

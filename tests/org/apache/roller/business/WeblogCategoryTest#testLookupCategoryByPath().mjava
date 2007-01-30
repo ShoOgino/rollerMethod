@@ -1,0 +1,20 @@
+    /**
+     * Lookup category by path.
+     */
+    public void testLookupCategoryByPath() throws Exception {
+        
+        log.info("BEGIN");
+        
+        WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+        
+        WeblogCategoryData cat = mgr.getWeblogCategoryByPath(testWeblog, "/catTest-cat1");
+        assertNotNull(cat);
+        assertEquals(cat, cat1);
+        
+        cat = mgr.getWeblogCategoryByPath(testWeblog, "/catTest-cat1/catTest-cat2/catTest-cat3");
+        assertNotNull(cat);
+        assertEquals(cat, cat3);
+        
+        log.info("END");
+    }
+

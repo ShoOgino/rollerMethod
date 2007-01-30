@@ -1,0 +1,18 @@
+    /**
+     * All tests in this suite require a user and a weblog.
+     */
+    public void setUp() {
+        
+        log.info("BEGIN");
+        
+        try {
+            testUser = TestUtils.setupUser("categoryCRUDTestUser");
+            testWeblog = TestUtils.setupWeblog("categoryCRUDTestWeblog", testUser);
+            TestUtils.endSession(true);
+        } catch (Exception ex) {
+            log.error(ex);
+        }
+        
+        log.info("END");
+    }
+
