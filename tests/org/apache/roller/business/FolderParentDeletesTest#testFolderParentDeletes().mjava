@@ -1,0 +1,34 @@
+    /**
+     * Test that deleting a folders parent object deletes all folders.
+     */
+    public void testFolderParentDeletes() throws Exception {
+        
+        log.info("BEGIN");
+        
+        BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
+        
+        FolderData root = bmgr.getRootFolder(testWeblog);
+        
+        // add a small tree /parentDelete-fold1/parentDelete-fold2
+        FolderData fold1 = new FolderData(root, "parentDelete-fold1", null, TestUtils.getManagedWebsite(testWeblog));
+        root.addFolder(fold1);
+        bmgr.saveFolder(fold1);
+        FolderData fold2 = new FolderData(fold1, "parentDelete-fold2", null, TestUtils.getManagedWebsite(testWeblog));
+        fold1.addFolder(fold2);
+        bmgr.saveFolder(fold2);
+        TestUtils.endSession(true);
+        
+        // now delete the weblog owning these categories
+        Exception ex = null;
+        try {
+            UserManager umgr = RollerFactory.getRoller().getUserManager();
+            umgr.removeWebsite(TestUtils.getManagedWebsite(testWeblog));
+            TestUtils.endSession(true);
+        } catch (RollerException e) {
+            ex = e;
+        }
+        assertNull(ex);
+        
+        log.info("END");
+    }
+
