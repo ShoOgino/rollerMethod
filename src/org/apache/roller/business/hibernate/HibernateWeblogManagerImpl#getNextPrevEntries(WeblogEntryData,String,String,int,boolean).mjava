@@ -14,7 +14,7 @@
         
         if (catName != null && !catName.trim().equals("/")) {
             WeblogCategoryData category =
-                    getWeblogCategoryByPath(current.getWebsite(), null, catName);
+                    getWeblogCategoryByPath(current.getWebsite(), catName);
             if (category != null) {
                 conjunction.add(Expression.eq("category", category));
             } else {
