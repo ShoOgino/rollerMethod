@@ -1,0 +1,41 @@
+    /**
+     * Make sure that deleting a folder deletes all child folders.
+     */
+    public void testFolderCascadingDelete() throws Exception {
+        
+        log.info("BEGIN");
+        
+        BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
+        
+        FolderData root = bmgr.getRootFolder(testWeblog);
+        
+        // add a small tree /fold1/fold2
+        FolderData fold1 = new FolderData(root, "fold1", null, TestUtils.getManagedWebsite(testWeblog));
+        root.addFolder(fold1);
+        bmgr.saveFolder(fold1);
+        FolderData fold2 = new FolderData(fold1, "fold2", null, TestUtils.getManagedWebsite(testWeblog));
+        fold1.addFolder(fold2);
+        bmgr.saveFolder(fold2);
+        TestUtils.endSession(true);
+        
+        // check that tree can be navigated
+        root = bmgr.getRootFolder(testWeblog);
+        assertEquals(1, root.getFolders().size());
+        fold1 = (FolderData) root.getFolders().iterator().next();
+        assertEquals("fold1", fold1.getName());
+        assertEquals(1, fold1.getFolders().size());
+        fold2 = (FolderData) fold1.getFolders().iterator().next();
+        assertEquals("fold2", fold2.getName());
+        
+        // now delete folder and subfolders should be deleted by cascade
+        bmgr.removeFolder(fold1);
+        TestUtils.endSession(true);
+        
+        // verify cascading delete succeeded
+        root = bmgr.getRootFolder(testWeblog);
+        assertEquals(0, root.getFolders().size());
+        assertNull(bmgr.getFolder(TestUtils.getManagedWebsite(testWeblog), "/fold1/fold2"));
+        
+        log.info("END");
+    }
+

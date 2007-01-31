@@ -1,0 +1,14 @@
+    public void testLookupAllFoldersByWeblog() throws Exception {
+        
+        log.info("BEGIN");
+        
+        BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
+        
+        // get all folders, including root
+        List allFolders = bmgr.getAllFolders(testWeblog);
+        assertNotNull(allFolders);
+        assertEquals(5, allFolders.size());
+        
+        log.info("END");
+    }
+

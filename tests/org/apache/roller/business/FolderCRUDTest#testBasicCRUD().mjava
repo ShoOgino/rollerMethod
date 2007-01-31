@@ -1,0 +1,49 @@
+    /**
+     * Test add/modify/remove of folders.
+     */
+    public void testBasicCRUD() throws Exception {
+        
+        log.info("BEGIN");
+        
+        BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
+        
+        FolderData root = bmgr.getRootFolder(testWeblog);
+        
+        // start out with no folders and no bookmarks
+        assertEquals(0, root.getFolders().size());
+        assertEquals(0, root.getBookmarks().size());
+        
+        // add a folder
+        FolderData newFolder = new FolderData(root, "folderBasicCRUD", null, TestUtils.getManagedWebsite(testWeblog));
+        bmgr.saveFolder(newFolder);
+        TestUtils.endSession(true);
+        
+        // check that folder was saved
+        root = bmgr.getRootFolder(testWeblog);
+        assertEquals(1, root.getFolders().size());
+        FolderData folder = (FolderData) root.getFolders().iterator().next();
+        assertEquals(newFolder, folder);
+        
+        // modify folder
+        folder.setName("folderTest1");
+        bmgr.saveFolder(folder);
+        TestUtils.endSession(true);
+        
+        // check that folder was saved
+        root = bmgr.getRootFolder(testWeblog);
+        folder = (FolderData) root.getFolders().iterator().next();
+        assertEquals("folderTest1", folder.getName());
+        
+        // test remove folder
+        bmgr.removeFolder(folder);
+        TestUtils.endSession(true);
+        
+        // make sure folder was removed
+        root = bmgr.getRootFolder(testWeblog);
+        assertEquals(0, root.getFolders().size());
+        folder = bmgr.getFolder(newFolder.getId());
+        assertNull(folder);
+        
+        log.info("END");
+    }
+

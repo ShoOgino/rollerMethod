@@ -1,0 +1,26 @@
+    /** 
+     * Ensure that duplicate folder name will throw RollerException 
+     */
+    public void testUniquenessOfFolderNames() throws Exception {
+        
+        log.info("BEGIN");
+        
+        BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
+        
+        FolderData root = bmgr.getRootFolder(testWeblog);
+        
+        boolean exception = false;
+        try {
+            // child folder with same name as first
+            FolderData dupeFolder = new FolderData(root, testFolder.getName(), null, TestUtils.getManagedWebsite(testWeblog));
+            bmgr.saveFolder(dupeFolder);
+            TestUtils.endSession(true);
+        } catch (RollerException e) {
+            exception = true;
+        }
+        
+        assertTrue(exception);
+        
+        log.info("END");
+    }
+
