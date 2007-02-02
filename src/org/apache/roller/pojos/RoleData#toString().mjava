@@ -1,4 +1,10 @@
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        StringBuffer buf = new StringBuffer();
+        buf.append("{");
+        buf.append(this.id);
+        buf.append(", ").append(this.userName);
+        buf.append(", ").append(this.role);
+        buf.append("}");
+        return buf.toString();
     }
 
