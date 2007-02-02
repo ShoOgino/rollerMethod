@@ -8,6 +8,7 @@
         if (validators.size() > 0) {
             for (Iterator it = validators.iterator(); it.hasNext();) {
                 CommentValidator val = (CommentValidator) it.next();
+                log.debug("Invoking comment validator "+val.getName());
                 total += val.validate(comment, messages);
             }
             total = total / validators.size();
