@@ -1,9 +1,7 @@
     public void init(ServletConfig config) throws ServletException {
         commentValidationManager = new CommentValidationManager();
         
-        // use configured comment validators, plus linkback validator if enabled
-        if (RollerRuntimeConfig.getBooleanProperty("site.trackbackVerification.enabled")) {
-            commentValidationManager.addCommentValidator(new TrackbackLinkbackCommentValidator());
-        }
+        // add trackback verification validator just for trackbacks
+        commentValidationManager.addCommentValidator(new TrackbackLinkbackCommentValidator());
     }
 
