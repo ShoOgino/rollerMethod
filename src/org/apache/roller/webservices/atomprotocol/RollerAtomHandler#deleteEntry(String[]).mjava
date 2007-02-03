@@ -14,8 +14,8 @@
                         WeblogManager mgr = mRoller.getWeblogManager();
                         mgr.removeWeblogEntry(rollerEntry);
                         mRoller.flush();
-                        CacheManager.invalidate(rollerEntry.getWebsite());
-                        mRoller.getIndexManager().removeEntryIndexOperation(rollerEntry);
+                        CacheManager.invalidate(rollerEntry.getWebsite());                        
+                        reindexEntry(rollerEntry);
                         return;
                     } 
                 } else if (pathInfo[1].equals("resource")) {

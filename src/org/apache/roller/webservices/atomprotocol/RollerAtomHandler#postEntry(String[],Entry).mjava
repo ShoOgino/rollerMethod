@@ -24,9 +24,7 @@
                 try { Thread.sleep(1000); } catch (Exception ignored) {}
 
                 CacheManager.invalidate(website);
-                if (rollerEntry.isPublished()) {
-                    mRoller.getIndexManager().addEntryReIndexOperation(rollerEntry);
-                }
+                reindexEntry(rollerEntry);
                 return createAtomEntry(rollerEntry);
             }
             throw new AtomNotAuthorizedException(

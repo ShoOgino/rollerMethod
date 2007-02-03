@@ -17,6 +17,9 @@
             Content content = (Content)entry.getContents().get(0);
             rollerEntry.setText(content.getValue());
         }
+        if (entry.getSummary() != null) {
+            rollerEntry.setSummary(entry.getSummary().getValue());
+        }
         rollerEntry.setPubTime(pubTime);
         rollerEntry.setUpdateTime(updateTime);
         
