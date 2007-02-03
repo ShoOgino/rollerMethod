@@ -3,9 +3,9 @@
      */
     public void deleteEntry(String[] pathInfo) throws AtomException {
         try {
-            if (pathInfo.length == 3) // URI is /blogname/entry/entryid
-            {
-                if (pathInfo[1].equals("entry")) {
+            if (pathInfo.length > 2) {
+                if (pathInfo[1].equals("entry")) // URI is /blogname/entry/entryid
+                {                    
                     WeblogEntryData rollerEntry = mRoller.getWeblogManager().getWeblogEntry(pathInfo[2]);
                     if (rollerEntry == null) {
                         throw new AtomNotFoundException("ERROR: cannot find specified entry/resource");
@@ -26,10 +26,8 @@
                     }
                     if (canEdit(website) && pathInfo.length > 1) {
                         try {                            
-                            String fileName = pathInfo[2];
-                            if (pathInfo[2].endsWith(".media-link")) {
-                                fileName = fileName.substring(0, pathInfo[2].length() - ".media-link".length());
-                            }
+                            String path = filePathFromPathInfo(pathInfo);
+                            String fileName = path.substring(0, path.length() - ".media-link".length());
                             FileManager fmgr = mRoller.getFileManager();
                             fmgr.deleteFile(website, fileName);
                         } catch (Exception e) {

@@ -21,37 +21,71 @@
             for (Iterator iter=perms.iterator(); iter.hasNext();) {
                 PermissionsData perm = (PermissionsData)iter.next();
                 String handle = perm.getWebsite().getHandle();
+                
+                // Create workspace to represent weblog
                 AtomService.Workspace workspace = new AtomService.Workspace();
                 workspace.setTitle(Utilities.removeHTML(perm.getWebsite().getName()));
                 service.addWorkspace(workspace);
                 
+                // Create collection for entries within that workspace
                 AtomService.Collection entryCol = new AtomService.Collection();
                 entryCol.setTitle("Weblog Entries");
                 entryCol.setAccept("entry");
                 entryCol.setHref(URLUtilities.getAtomProtocolURL(true)+"/"+handle+"/entries");
-                try {                    
+                try {  
+                    // Add fixed categories using scheme that points to 
+                    // weblog because categories are weblog specific
                     AtomService.Categories cats = new AtomService.Categories();
                     cats.setFixed(true);
-                    cats.setScheme(URLUtilities.getWeblogURL(perm.getWebsite(), null, true));
+                    cats.setScheme(getWeblogCategoryScheme(perm.getWebsite()));
                     List rollerCats = mRoller.getWeblogManager().getWeblogCategories(perm.getWebsite(), false);
                     for (Iterator it = rollerCats.iterator(); it.hasNext();) {
                         WeblogCategoryData rollerCat = (WeblogCategoryData)it.next();
                         AtomService.Category cat = new AtomService.Category();
-                        cat.setTerm(rollerCat.getPath());
+                        cat.setTerm(rollerCat.getPath().substring(1));
                         cat.setLabel(rollerCat.getName());
                         cats.addCategory(cat);
                     } 
                     entryCol.addCategories(cats);
+                    
+                    // Add tags as free-form categories using scheme that points
+                    // to site because tags can be considered site-wide
+                    AtomService.Categories tags = new AtomService.Categories();
+                    tags.setFixed(false);
+                    tags.setScheme(getSiteTagScheme());
+                    entryCol.addCategories(tags);
+                    
                 } catch (Exception e) {
                     throw new AtomException("ERROR fetching weblog categories");
                 }                               
                 workspace.addCollection(entryCol);
-                                
+
+                // Add media collection for upload dir
                 AtomService.Collection uploadCol = new AtomService.Collection();
                 uploadCol.setTitle("Media Files");
                 uploadCol.setAccept(accept);
-                uploadCol.setHref(URLUtilities.getAtomProtocolURL(true)+"/"+handle+"/resources");
+                uploadCol.setHref(
+                    URLUtilities.getAtomProtocolURL(true)+"/"+handle+"/resources/");
                 workspace.addCollection(uploadCol);
+
+                // And add one media collection for each of weblog's upload sub-directories
+                WeblogResource[] dirs;
+                try {
+                    dirs = mRoller.getFileManager().getDirectories(perm.getWebsite());
+                    for (int i=0; i<dirs.length; i++) {
+                        AtomService.Collection uploadSubCol = new AtomService.Collection();
+                        uploadSubCol.setTitle("Media Files: " + dirs[i].getPath());
+                        uploadSubCol.setAccept(accept);
+                        uploadSubCol.setHref(
+                            URLUtilities.getAtomProtocolURL(true)+"/"+handle+"/resources/" + dirs[i].getPath());
+                        workspace.addCollection(uploadSubCol);
+                    }
+                } catch (FilePathException fpe) {
+                    throw new AtomException("ERROR getting uploads directories information", fpe);
+                } catch (FileNotFoundException fnfe) {
+                    throw new AtomException("ERROR getting uploads directories information", fnfe);
+                }
+
             }
         }
         return service;

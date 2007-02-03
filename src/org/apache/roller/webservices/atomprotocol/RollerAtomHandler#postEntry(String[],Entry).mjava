@@ -13,13 +13,14 @@
             if (canEdit(website)) {
                 // Save it and commit it
                 WeblogManager mgr = mRoller.getWeblogManager();
-                WeblogEntryData rollerEntry = createRollerEntry(website, entry);
+                WeblogEntryData rollerEntry = new WeblogEntryData();
+                rollerEntry.setWebsite(website);
                 rollerEntry.setCreator(this.user);
+                copyToRollerEntry(entry, rollerEntry);
                 mgr.saveWeblogEntry(rollerEntry);
                 mRoller.flush();
 
                 // Throttle one entry per second
-                // (MySQL timestamp has 1 sec resolution, damnit)
                 try { Thread.sleep(1000); } catch (Exception ignored) {}
 
                 CacheManager.invalidate(website);

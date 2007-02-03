@@ -24,10 +24,21 @@
         author.setEmail(        creator.getEmailAddress());
         atomEntry.setAuthors(   Collections.singletonList(author));
         
+        // Add Atom category for Roller category, using category scheme
         List categories = new ArrayList();
         Category atomCat = new Category();
-        atomCat.setTerm(entry.getCategory().getPath());
+        atomCat.setScheme(getWeblogCategoryScheme(entry.getWebsite()));
+        atomCat.setTerm(entry.getCategory().getPath().substring(1));
         categories.add(atomCat);
+        
+        // Add Atom categories for each Roller tag, using tag scheme
+        for (Iterator tagit = entry.getTags().iterator(); tagit.hasNext();) {
+            WeblogEntryTagData tag = (WeblogEntryTagData) tagit.next();
+            Category newcat = new Category();
+            newcat.setTerm(tag.getName());
+            newcat.setScheme(getSiteTagScheme());
+            categories.add(newcat);
+        }        
         atomEntry.setCategories(categories);
         
         Link altlink = new Link();

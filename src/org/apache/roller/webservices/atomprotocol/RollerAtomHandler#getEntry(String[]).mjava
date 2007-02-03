@@ -3,7 +3,7 @@
      */
     public Entry getEntry(String[] pathInfo) throws AtomException {
         try {
-            if (pathInfo.length == 3) // URI is /blogname/entries/entryid
+            if (pathInfo.length > 2) // URI is /blogname/entries/entryid
             {
                 if (pathInfo[1].equals("entry")) {
                     WeblogEntryData entry = 
@@ -18,15 +18,15 @@
                     } else {
                         return createAtomEntry(entry);
                     }
-                } else if (pathInfo[1].equals("resource") && pathInfo[2].endsWith(".media-link")) {
-                    String fileName = 
-                        pathInfo[2].substring(0, pathInfo[2].length() - ".media-link".length());
+                } else if (pathInfo[1].equals("resource") && pathInfo[pathInfo.length - 1].endsWith(".media-link")) {
+                    String path = filePathFromPathInfo(pathInfo);                    
+                    String fileName = path.substring(0, path.length() - ".media-link".length());
                     String handle = pathInfo[0];
                     WebsiteData website = 
                         mRoller.getUserManager().getWebsiteByHandle(handle);                    
                     WeblogResource resource = 
                         mRoller.getFileManager().getFile(website, fileName);
-                    return createAtomResourceEntry(website, resource);
+                    if (resource != null) return createAtomResourceEntry(website, resource);
                 }
             }
             throw new AtomNotFoundException(

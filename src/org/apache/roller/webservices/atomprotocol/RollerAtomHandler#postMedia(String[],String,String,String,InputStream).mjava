@@ -23,13 +23,20 @@
                     FileOutputStream fos = new FileOutputStream(tempFile);
                     Utilities.copyInputToOutput(is, fos);
                     fos.close();
-
-                    // Try saving file
-                    FileInputStream fis = new FileInputStream(tempFile);
-                    fmgr.saveFile(website, fileName, contentType, tempFile.length(), fis);
+                                        
+                    // Parse pathinfo to determine file path
+                    String path = filePathFromPathInfo(pathInfo);
+                    
+                    if (path.length() > 0) path = path + File.separator;
+                    FileInputStream fis = new FileInputStream(tempFile);                   
+                    fmgr.saveFile(website, path + fileName, contentType, tempFile.length(), fis);
                     fis.close();
                     
-                    WeblogResource resource = fmgr.getFile(website, fileName);
+                    WeblogResource resource = fmgr.getFile(website, path + fileName);
+                    
+                    // Throttle one entry per second
+                    try { Thread.sleep(1000); } catch (Exception ignored) {}
+
                     return createAtomResourceEntry(website, resource);
 
                 } catch (IOException e) {

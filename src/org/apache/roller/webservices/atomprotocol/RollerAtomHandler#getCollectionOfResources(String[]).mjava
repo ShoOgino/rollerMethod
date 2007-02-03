@@ -1,9 +1,25 @@
     /**
      * Helper method that returns collection of resources, called by getCollection().
+     *   /handle/resources/offset
+     *   /handle/resources/path/offset
      */
-    public Feed getCollectionOfResources(
-            String[] pathInfo, int start, int max) throws AtomException {
+    public Feed getCollectionOfResources(String[] rawPathInfo) throws AtomException {
         try {
+            int start = 0;
+            int max = mMaxEntries;
+            String[] pathInfo = rawPathInfo;
+            if (rawPathInfo.length > 2) {
+                try {
+                    start = Integer.parseInt(rawPathInfo[rawPathInfo.length - 1]);
+                    pathInfo = new String[rawPathInfo.length - 1];
+                    for (int i=0; i<rawPathInfo.length - 1; i++) {
+                        pathInfo[i] = rawPathInfo[i];
+                    }
+                } catch (Exception ingored) {}
+            }
+            String path = filePathFromPathInfo(pathInfo);
+            if (!path.equals("")) path = path + File.separator;
+            
             String handle = pathInfo[0];
             String absUrl = RollerRuntimeConfig.getAbsoluteContextURL();
             WebsiteData website = 
@@ -13,12 +29,12 @@
                     "ERROR: cannot find specified weblog");
             }
             FileManager fmgr = mRoller.getFileManager();
-            WeblogResource[] files = fmgr.getFiles(website, null);
+            WeblogResource[] files = fmgr.getFiles(website, path);
                         
             if (canView(website)) {
                 Feed feed = new Feed();
                 feed.setId(URLUtilities.getAtomProtocolURL(true)
-                    +"/"+website.getHandle() + "/entries/" + start);                
+                    +"/"+website.getHandle() + "/resources/" + path + start);                
                 feed.setTitle(website.getName());
                 
                 Link link = new Link();
@@ -56,28 +72,26 @@
                     }
                     count++;
                 }
+                List otherLinks = new ArrayList();
                 if (start + count < files.length) { // add next link
                     int nextOffset = start + max;
                     String url = URLUtilities.getAtomProtocolURL(true)
-                        +"/"+ website.getHandle() + "/resources/" + nextOffset;
+                        +"/"+ website.getHandle() + "/resources/" + path + nextOffset;
                     Link nextLink = new Link();
                     nextLink.setRel("next");
                     nextLink.setHref(url);
-                    List next = new ArrayList();
-                    next.add(nextLink);
-                    feed.setOtherLinks(next);
+                    otherLinks.add(nextLink);
                 }
                 if (start > 0) { // add previous link
                     int prevOffset = start > max ? start - max : 0;
                     String url = URLUtilities.getAtomProtocolURL(true)
-                        +"/"+website.getHandle() + "/resources/" + prevOffset;
+                        +"/"+website.getHandle() + "/resources/" + path + prevOffset;
                     Link prevLink = new Link();
                     prevLink.setRel("previous");
                     prevLink.setHref(url);
-                    List prev = new ArrayList();
-                    prev.add(prevLink);
-                    feed.setOtherLinks(prev);
+                    otherLinks.add(prevLink);
                 }
+                feed.setOtherLinks(otherLinks);
                 feed.setEntries(atomEntries);
                 return feed;
             }

@@ -1,11 +1,11 @@
     /**
      * Update resource specified by pathInfo using data from input stream.
-     * Expects pathInfo of form /blog-name/resource/name
+     * Expects pathInfo of form /blog-name/resource/path/name
      */
     public Entry putMedia(String[] pathInfo,
             String contentType, InputStream is) throws AtomException {
         if (pathInfo.length > 2) {
-            String name = pathInfo[2];
+            String name = pathInfo[pathInfo.length - 1];
             return postMedia(pathInfo, name, name, contentType, is);
         }
         throw new AtomException("ERROR: bad pathInfo");

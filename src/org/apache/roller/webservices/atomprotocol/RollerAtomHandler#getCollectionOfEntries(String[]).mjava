@@ -1,9 +1,18 @@
     /**
      * Helper method that returns collection of entries, called by getCollection().
      */
-    public Feed getCollectionOfEntries(
-            String[] pathInfo, int start, int max) throws AtomException {
+    public Feed getCollectionOfEntries(String[] pathInfo) throws AtomException {
         try {
+            int start = 0;
+            int max = mMaxEntries;
+            if (pathInfo.length > 2) {
+                try {
+                    String s = pathInfo[2].trim();
+                    start = Integer.parseInt(s);
+                } catch (Throwable t) {
+                    mLogger.warn("Unparsable range: " + pathInfo[2]);
+                }
+            }        
             String handle = pathInfo[0];
             String absUrl = RollerRuntimeConfig.getAbsoluteContextURL();
             WebsiteData website = 
