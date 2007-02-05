@@ -37,12 +37,11 @@
         atomCat.setTerm(entry.getCategory().getPath().substring(1));
         categories.add(atomCat);
         
-        // Add Atom categories for each Roller tag, using tag scheme
+        // Add Atom categories for each Roller tag with null scheme
         for (Iterator tagit = entry.getTags().iterator(); tagit.hasNext();) {
             WeblogEntryTagData tag = (WeblogEntryTagData) tagit.next();
             Category newcat = new Category();
             newcat.setTerm(tag.getName());
-            newcat.setScheme(getSiteTagScheme());
             categories.add(newcat);
         }        
         atomEntry.setCategories(categories);
