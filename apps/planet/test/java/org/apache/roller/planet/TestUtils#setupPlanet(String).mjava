@@ -1,0 +1,23 @@
+    /**
+     * Convenience method that creates a planet and stores it.
+     */
+    public static PlanetData setupPlanet(String handle) throws Exception {
+        
+        PlanetData testPlanet = new PlanetData(handle, handle);
+        
+        // store
+        PlanetManager mgr = PlanetFactory.getPlanet().getPlanetManager();
+        mgr.savePlanet(testPlanet);
+        
+        // flush
+        PlanetFactory.getPlanet().flush();
+        
+        // query to make sure we return the persisted object
+        PlanetData planet = mgr.getPlanet(handle);
+        
+        if(planet == null)
+            throw new RollerException("error inserting new planet");
+        
+        return planet;
+    }
+

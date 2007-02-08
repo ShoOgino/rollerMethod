@@ -1,0 +1,17 @@
+    private DisplayGroup elementToDisplayGroup(Element element) {
+        
+        DisplayGroup displaygroup = new DisplayGroup();
+        
+        displaygroup.setName(element.getAttributeValue("name"));
+        displaygroup.setKey(element.getAttributeValue("key"));
+        
+        List displaygroups = element.getChildren("property-def");
+        Iterator iter = displaygroups.iterator();
+        while (iter.hasNext()) {
+            Element e = (Element) iter.next();
+            displaygroup.addPropertyDef(this.elementToPropertyDef(e));
+        }
+        
+        return displaygroup;
+    }
+

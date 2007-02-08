@@ -1,0 +1,41 @@
+    public void testPlanetCRUD() throws Exception {
+        
+        PlanetManager mgr = PlanetFactory.getPlanet().getPlanetManager();
+        
+        PlanetData testPlanet = new PlanetData("testPlanet", "testPlanet");
+        PlanetData planet = null;
+        
+        planet = mgr.getPlanet("testPlanet");
+        assertNull(planet);
+        
+        // add
+        mgr.savePlanet(testPlanet);
+        TestUtils.endSession(true);
+        
+        // verify
+        planet = null;
+        planet = mgr.getPlanetById(testPlanet.getId());
+        assertNotNull(planet);
+        assertEquals("testPlanet", planet.getHandle());
+        
+        // modify
+        planet.setName("foo");
+        mgr.savePlanet(planet);
+        TestUtils.endSession(true);
+        
+        // verify
+        planet = null;
+        planet = mgr.getPlanetById(testPlanet.getId());
+        assertNotNull(planet);
+        assertEquals("foo", planet.getName());
+        
+        // remove
+        mgr.deletePlanet(planet);
+        TestUtils.endSession(true);
+        
+        // verify
+        planet = null;
+        planet = mgr.getPlanet(testPlanet.getId());
+        assertNull(planet);
+    }
+

@@ -1,0 +1,28 @@
+    public String save() {
+        
+        if(this.planet != null) {
+            // save planet
+            log.debug("Saving Planet ...");
+            
+            try {
+                PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
+                pmgr.savePlanet(this.planet);
+                PlanetFactory.getPlanet().flush();
+                
+                // need to set planetid attribute
+                setPlanetid(this.planet.getId());
+            } catch (RollerException ex) {
+                log.error("Error saving planet ", ex);
+                setError("PlanetForm.error.saveFailed");
+                return INPUT;
+            }
+            
+            setSuccess("PlanetForm.message.saveSucceeded");
+            return INPUT;
+        } else {
+            setError("PlanetForm.error.planetNull");
+            return INPUT;
+        }
+
+    }
+

@@ -1,0 +1,25 @@
+    public MultiPlanetRequestMapper() {
+        
+        this.restricted = new HashSet();
+        
+        // build roller restricted list
+        String restrictList = 
+                PlanetConfig.getProperty("rendering.multiPlanetMapper.rollerProtectedUrls");
+        if(restrictList != null && restrictList.trim().length() > 0) {
+            String[] restrict = restrictList.split(",");
+            for(int i=0; i < restrict.length; i++) {
+                this.restricted.add(restrict[i]);
+            }
+        }
+        
+        // add user restricted list
+        restrictList = 
+                PlanetConfig.getProperty("rendering.multiPlanetMapper.userProtectedUrls");
+        if(restrictList != null && restrictList.trim().length() > 0) {
+            String[] restrict = restrictList.split(",");
+            for(int i=0; i < restrict.length; i++) {
+                this.restricted.add(restrict[i]);
+            }
+        }
+    }
+

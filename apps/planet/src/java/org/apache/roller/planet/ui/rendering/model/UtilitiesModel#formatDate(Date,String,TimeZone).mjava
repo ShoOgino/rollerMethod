@@ -1,0 +1,12 @@
+    /**
+     * Format date using SimpleDateFormat format string.
+     */
+    public static String formatDate(Date d, String fmt, TimeZone tzOverride) {
+        if(d == null || fmt == null)
+            return fmt;
+        
+        SimpleDateFormat format = new SimpleDateFormat(fmt);
+        format.setTimeZone(tzOverride);
+        return format.format(d);
+    }
+

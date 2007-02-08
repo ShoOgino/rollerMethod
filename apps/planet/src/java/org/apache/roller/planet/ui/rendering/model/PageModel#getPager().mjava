@@ -1,0 +1,13 @@
+    public Pager getPager() {
+        
+        String pagerUrl = URLUtilities.getPlanetGroupURL(planet.getHandle(), pageRequest.getGroupHandle());
+        
+        return new PlanetEntriesPager(
+                null,
+                pageRequest.getGroup(),
+                pagerUrl,
+                0,
+                0,
+                30);
+    }
+

@@ -1,0 +1,14 @@
+    public PlanetData getPlanet(String handle) throws RollerException {
+        PlanetData planet = null;
+        try {
+            Session session = ((HibernatePersistenceStrategy)strategy).getSession();
+            Criteria criteria = session.createCriteria(PlanetData.class);
+            criteria.add(Expression.ilike("handle", handle));
+            criteria.setMaxResults(1);
+            planet = (PlanetData) criteria.uniqueResult();
+        } catch (HibernateException e) {
+            throw new RollerException(e);
+        }
+        return planet;
+    }
+

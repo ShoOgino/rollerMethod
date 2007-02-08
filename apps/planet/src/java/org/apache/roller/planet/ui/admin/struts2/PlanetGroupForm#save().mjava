@@ -1,0 +1,21 @@
+    public String save() {
+        // save a group group
+        log.debug("Saving Planet Group ...");
+        
+        try {
+            PlanetManager pMgr = PlanetFactory.getPlanet().getPlanetManager();
+            pMgr.saveGroup(this.group);
+            PlanetFactory.getPlanet().flush();
+            
+            // call setGroupid() just in case this was a new group with no id yet
+            setGroupid(this.group.getId());
+        } catch (RollerException ex) {
+            log.error("Error saving planet group", ex);
+            setError("PlanetGroupForm.error.saveFailed");
+            return INPUT;
+        }
+        
+        setSuccess("PlanetGroupForm.message.saveSucceeded");
+        return INPUT;
+    }
+

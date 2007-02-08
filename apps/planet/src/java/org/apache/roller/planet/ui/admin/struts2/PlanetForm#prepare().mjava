@@ -1,0 +1,18 @@
+    /**
+     * Load relevant form data if possible.
+     */
+    public void prepare() throws Exception {
+        
+        PlanetManager pMgr = PlanetFactory.getPlanet().getPlanetManager();
+        
+        // load existing planet
+        if(getPlanetid() != null && !"".equals(getPlanetid())) {
+            log.debug("Loading Planet ... "+getPlanetid());
+            this.planet = pMgr.getPlanetById(getPlanetid());
+        } else {
+            // new planet
+            log.debug("No planet specified, constructing new one");
+            this.planet = new PlanetData();
+        }
+    }
+

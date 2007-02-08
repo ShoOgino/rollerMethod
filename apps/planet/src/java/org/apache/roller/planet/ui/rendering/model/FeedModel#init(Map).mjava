@@ -1,0 +1,30 @@
+    /** 
+     * Init page model based on request. 
+     */
+    public void init(Map initData) throws RollerException {
+        
+        // we expect the init data to contain a weblogRequest object
+        PlanetRequest planetRequest = (PlanetRequest) initData.get("planetRequest");
+        if(planetRequest == null) {
+            throw new RollerException("expected planetRequest from init data");
+        }
+        
+        // PageModel only works on page requests, so cast planetRequest
+        // into a PlanetRequest and if it fails then throw exception
+        if(planetRequest instanceof PlanetGroupFeedRequest) {
+            this.feedRequest = (PlanetGroupFeedRequest) planetRequest;
+        } else {
+            throw new RollerException("weblogRequest is not a WeblogPageRequest."+
+                    "  PageModel only supports page requests.");
+        }
+        
+        // custom request parameters
+        this.requestParameters = (Map)initData.get("requestParameters");
+        
+        // extract planet object
+        planet = feedRequest.getPlanet();
+        
+        // extract weblog object
+        group = feedRequest.getGroup();
+    }
+

@@ -1,0 +1,37 @@
+    /**
+     * Responds to context initialization event by processing context
+     * paramters for easy access by the rest of the application.
+     */
+    public void contextInitialized(ServletContextEvent sce) {
+        
+        log.debug("Roller Planet Initializing");
+        
+        // keep a reverence to ServletContext object
+        this.context = sce.getServletContext();
+        
+        // call Spring's context ContextLoaderListener to initialize
+        // all the context files specified in web.xml. This is necessary
+        // because listeners don't initialize in the order specified in
+        // 2.3 containers
+        super.contextInitialized(sce);
+        
+        try {
+            // always upgrade database first
+            upgradeDatabaseIfNeeded();
+            
+            Planet planet = PlanetFactory.getPlanet();
+            
+            setupRuntimeProperties();
+            setupVelocity();
+            
+            planet.flush();
+            planet.release();
+            
+        } catch (Throwable t) {
+            log.fatal("Roller Planet initialization failed", t);
+            throw new RuntimeException(t);
+        }
+        
+        log.debug("Initialization Complete");
+    }
+

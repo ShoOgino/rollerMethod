@@ -1,10 +1,4 @@
     public List getGroups() throws RollerException {
-        try {
-            Session session = ((HibernatePersistenceStrategy)strategy).getSession();
-            Criteria criteria = session.createCriteria(PlanetGroupData.class);
-            return criteria.list();
-        } catch (HibernateException e) {
-            throw new RollerException(e);
-        }
+        return getGroups(null);
     }
 

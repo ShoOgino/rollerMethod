@@ -1,0 +1,34 @@
+    /**
+     * @see org.apache.velocity.runtime.resource.loader.ResourceLoader#getResourceStream(java.lang.String)
+     */
+    public InputStream getResourceStream(String name) 
+            throws ResourceNotFoundException {
+        
+        log.debug("Looking up resource named ... "+name);
+        
+        if (name == null || name.length() == 0) {
+            throw new ResourceNotFoundException("No template name provided");
+        }
+        
+        InputStream result = null;
+        
+        try {
+            if(!name.startsWith("/"))
+                name = templateDir + "/" + name;
+            else {
+                name = templateDir + name;
+            }
+            
+            result = new FileInputStream(name);
+            
+        } catch(Exception e) {
+            throw new ResourceNotFoundException(e.getMessage());
+        }
+        
+        if(result == null) {
+            throw new ResourceNotFoundException("Couldn't find "+name);
+        }
+        
+        return result;
+    }
+

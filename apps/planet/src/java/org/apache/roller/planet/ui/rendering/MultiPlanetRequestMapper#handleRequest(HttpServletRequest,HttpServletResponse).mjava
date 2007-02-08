@@ -1,0 +1,106 @@
+    public boolean handleRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        // kinda silly, but we need to keep track of whether or not the url had
+        // a trailing slash so that we can act accordingly
+        boolean trailingSlash = false;
+        
+        String planetHandle = null;
+        String planetContext = null;
+        String groupHandle = null;
+        String groupContext = null;
+        String extraRequestData = null;
+        
+        log.debug("evaluating ["+request.getRequestURI()+"]");
+        
+        // figure out potential planet handle
+        String uri = request.getRequestURI();
+        String pathInfo = null;
+                
+        if(uri != null && uri.trim().length() > 1) {
+            
+            if(request.getContextPath() != null)
+                uri = uri.substring(request.getContextPath().length());
+            
+            // strip off the leading slash
+            uri = uri.substring(1);
+            
+            // strip off trailing slash if needed
+            if(uri.endsWith("/")) {
+                uri = uri.substring(0, uri.length() - 1);
+                trailingSlash = true;
+            }
+            
+            if(uri.indexOf("/") != -1) {
+                planetHandle = uri.substring(0, uri.indexOf("/"));
+                pathInfo = uri.substring(uri.indexOf("/")+1);
+            } else {
+                planetHandle = uri;
+            }
+        }
+        
+        log.debug("potential planet handle = "+planetHandle);
+        
+        // check if it's a valid planet handle
+        if(restricted.contains(planetHandle) || !this.isPlanet(planetHandle)) {
+            log.debug("SKIPPED "+planetHandle);
+            return false;
+        }
+        
+        log.debug("PLANET_URL "+request.getServletPath());
+        
+        // parse the rest of the url
+        if(pathInfo != null) {
+            
+            // parse the next portion of the url
+            // we expect <context>/<groupHandle>/<groupContext>/<extra>/<info>
+            String[] urlPath = pathInfo.split("/", 4);
+            planetContext = urlPath[0];
+            
+            if(urlPath.length == 2) {
+                groupHandle = urlPath[1];
+            } else if(urlPath.length == 3) {
+                groupHandle = urlPath[1];
+                groupContext = urlPath[2];
+            } else if(urlPath.length == 4) {
+                groupHandle = urlPath[1];
+                groupContext = urlPath[2];
+                extraRequestData = urlPath[3];
+            }
+        }
+        
+        // special handling for trailing slash issue
+        // we need this because by http standards the urls /foo and /foo/ are
+        // supposed to be considered different, so we must enforce that
+        if(planetContext == null && !trailingSlash) {
+            // this means someone referred to a planet index page with the 
+            // shortest form of url /<planet> and we need to do a redirect 
+            // to /<planet>/
+            String redirectUrl = request.getRequestURI() + "/";
+            if(request.getQueryString() != null) {
+                redirectUrl += "?"+request.getQueryString();
+            }
+            
+            response.sendRedirect(redirectUrl);
+            return true;
+            
+        }
+        
+        // calculate forward url
+        String forwardUrl = calculateForwardUrl(request, planetHandle, 
+                planetContext, groupHandle, groupContext, extraRequestData);
+        
+        // if we don't have a forward url then the request was invalid somehow
+        if(forwardUrl == null) {
+            return false;
+        }
+        
+        // dispatch to forward url
+        log.debug("forwarding to "+forwardUrl);
+        RequestDispatcher dispatch = request.getRequestDispatcher(forwardUrl);
+        dispatch.forward(request, response);
+        
+        // we dealt with this request ourselves, so return "true"
+        return true;
+    }
+

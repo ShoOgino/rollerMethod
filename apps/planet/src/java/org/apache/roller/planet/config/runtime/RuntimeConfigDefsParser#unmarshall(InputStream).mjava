@@ -1,0 +1,26 @@
+    /**
+     * Unmarshall the given input stream into our defined
+     * set of Java objects.
+     **/
+    public RuntimeConfigDefs unmarshall(InputStream instream)
+            throws IOException, JDOMException {
+        
+        if(instream == null)
+            throw new IOException("InputStream is null!");
+        
+        RuntimeConfigDefs configs = new RuntimeConfigDefs();
+        
+        SAXBuilder builder = new SAXBuilder();
+        Document doc = builder.build(instream);
+        
+        Element root = doc.getRootElement();
+        List configdefs = root.getChildren("config-def");
+        Iterator iter = configdefs.iterator();
+        while (iter.hasNext()) {
+            Element e = (Element) iter.next();
+            configs.addConfigDef(this.elementToConfigDef(e));
+        }
+        
+        return configs;
+    }
+
