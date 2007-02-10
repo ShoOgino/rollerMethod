@@ -1,0 +1,13 @@
+    /**
+     * URL encode a string using UTF-8.
+     */
+    public String encode(String str) {
+        String encodedStr = str;
+        try {
+            encodedStr = URLEncoder.encode(str, "UTF-8");
+        } catch (UnsupportedEncodingException ex) {
+            // ignored
+        }
+        return encodedStr;
+    }
+
