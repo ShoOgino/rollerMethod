@@ -1,6 +1,14 @@
     public void release() {
-                
-        // tell Hibernate to close down
+        // allow managers to do any session cleanup
+        if(this.propertiesManager != null) {
+            this.propertiesManager.release();
+        }
+        
+        if(this.planetManager != null) {
+            this.planetManager.release();
+        }
+        
+        // close down the session
         this.strategy.release();
     }
 

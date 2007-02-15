@@ -1,6 +1,14 @@
     public void shutdown() {
+        // allow managers to do any shutdown needed
+        if(this.propertiesManager != null) {
+            this.propertiesManager.shutdown();
+        }
         
-        // do our own shutdown first
+        if(this.planetManager != null) {
+            this.planetManager.shutdown();
+        }
+        
+        // trigger the final release()
         this.release();
     }
 
