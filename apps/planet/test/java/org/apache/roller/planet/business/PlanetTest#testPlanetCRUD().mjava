@@ -19,7 +19,7 @@
         assertEquals("testPlanet", planet.getHandle());
         
         // modify
-        planet.setName("foo");
+        planet.setTitle("foo");
         mgr.savePlanet(planet);
         TestUtils.endSession(true);
         
@@ -27,7 +27,7 @@
         planet = null;
         planet = mgr.getPlanetById(testPlanet.getId());
         assertNotNull(planet);
-        assertEquals("foo", planet.getName());
+        assertEquals("foo", planet.getTitle());
         
         // remove
         mgr.deletePlanet(planet);

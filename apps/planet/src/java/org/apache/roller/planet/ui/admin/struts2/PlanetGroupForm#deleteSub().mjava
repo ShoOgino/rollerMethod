@@ -15,15 +15,17 @@
                     pmgr.saveGroup(group);
                     PlanetFactory.getPlanet().flush();
                 }
+                
+                setSuccess("PlanetGroupForm.message.subscriptionDeleteSucceeded", sub.getTitle());
             }
+            
+            setError("PlanetGroupForm.error.subscriptionNull");
+            return INPUT;
             
         } catch (RollerException ex) {
             log.error("Unable to lookup planet group", ex);
             setError("PlanetGroupForm.error.subscriptionDeleteFailed", getSubid());
             return INPUT;
         }
-        
-        setSuccess("PlanetGroupForm.message.subscriptionDeleteSucceeded", getSubid());
-        return INPUT;
     }
 
