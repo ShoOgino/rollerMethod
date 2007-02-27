@@ -38,8 +38,8 @@
         FeedFetcherCache feedInfoCache =
                 new DiskFeedInfoCache(cacheDirName);
         
-        String proxyHost = PlanetRuntimeConfig.getProperty("site.proxyHost");
-        int proxyPort = PlanetRuntimeConfig.getIntProperty("site.proxyPort");
+        String proxyHost = PlanetRuntimeConfig.getProperty("site.proxyhost");
+        int proxyPort = PlanetRuntimeConfig.getIntProperty("site.proxyport");
         if (proxyHost != null && proxyPort > 0) {
             System.setProperty("proxySet", "true");
             System.setProperty("http.proxyHost", proxyHost);
@@ -70,7 +70,7 @@
             
             log.debug("   Entry count: " + count);
             if (count > 0) {
-                sub.purgeEntries();
+                this.deleteEntries(sub);
                 sub.addEntries(newEntries);
                 this.saveSubscription(sub);
                 this.strategy.flush();
