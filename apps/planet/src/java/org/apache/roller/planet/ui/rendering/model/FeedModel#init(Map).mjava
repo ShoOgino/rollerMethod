@@ -3,6 +3,9 @@
      */
     public void init(Map initData) throws RollerException {
         
+        // parent gets to go first
+        super.init(initData);
+        
         // we expect the init data to contain a weblogRequest object
         PlanetRequest planetRequest = (PlanetRequest) initData.get("planetRequest");
         if(planetRequest == null) {
@@ -17,14 +20,5 @@
             throw new RollerException("weblogRequest is not a WeblogPageRequest."+
                     "  PageModel only supports page requests.");
         }
-        
-        // custom request parameters
-        this.requestParameters = (Map)initData.get("requestParameters");
-        
-        // extract planet object
-        planet = feedRequest.getPlanet();
-        
-        // extract weblog object
-        group = feedRequest.getGroup();
     }
 
