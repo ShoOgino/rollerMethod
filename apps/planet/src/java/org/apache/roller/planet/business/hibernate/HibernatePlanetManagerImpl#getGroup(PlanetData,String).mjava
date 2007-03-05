@@ -6,8 +6,6 @@
             criteria.add(Expression.eq("handle", handle));
             if(planet != null) {
                 criteria.add(Expression.eq("planet", planet));
-            } else {
-                criteria.add(Expression.isNull("planet"));
             }
             return (PlanetGroupData) criteria.uniqueResult();
         } catch (HibernateException e) {

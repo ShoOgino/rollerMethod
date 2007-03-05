@@ -4,8 +4,6 @@
             Criteria criteria = session.createCriteria(PlanetGroupData.class);
             if(planet != null) {
                 criteria.add(Expression.eq("planet", planet));
-            } else {
-                criteria.add(Expression.isNull("planet"));
             }
             return criteria.list();
         } catch (HibernateException e) {
