@@ -41,7 +41,7 @@
                     "and :leaseends < current_timestamp()";
             Query query = session.createQuery(queryHQL);
             query.setString("client", task.getClientId());
-            query.setString("timeleased", ""+task.getLeaseTime());
+            query.setInteger("timeleased", task.getLeaseTime());
             query.setString("name", task.getName());
             query.setTimestamp("timeacquired", taskLock.getTimeAquired());
             query.setTimestamp("leaseends", new Date(leaseExpireTime));

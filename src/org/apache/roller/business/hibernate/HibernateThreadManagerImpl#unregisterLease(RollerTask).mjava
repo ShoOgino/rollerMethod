@@ -23,7 +23,7 @@
             String queryHQL = "update TaskLockData set timeLeased=:interval "+
                     "where name=:name and client=:client";
             Query query = session.createQuery(queryHQL);
-            query.setString("interval", ""+task.getInterval());
+            query.setInteger("interval", task.getInterval());
             query.setString("name", task.getName());
             query.setString("client", task.getClientId());
             int result = query.executeUpdate();
