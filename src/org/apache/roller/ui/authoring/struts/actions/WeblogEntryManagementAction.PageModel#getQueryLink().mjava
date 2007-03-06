@@ -29,6 +29,11 @@
                 sb.append(queryForm.getTags());
             }
             
+            if (StringUtils.isNotEmpty(queryForm.getText())) {
+                sb.append("&text=");
+                sb.append(queryForm.getText());
+            }
+            
             if (StringUtils.isNotEmpty(queryForm.getSortby())) {
                 sb.append("&sortBy=");
                 sb.append(queryForm.getSortby());

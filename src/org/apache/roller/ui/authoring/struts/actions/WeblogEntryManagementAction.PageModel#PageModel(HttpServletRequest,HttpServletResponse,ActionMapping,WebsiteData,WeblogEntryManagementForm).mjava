@@ -38,6 +38,7 @@
             
             this.status = "ALL".equals(queryForm.getStatus()) ? null: queryForm.getStatus();
             this.maxEntries = maxEntries;
+            this.text = queryForm.getText();
             
             String[] tagsarr = new String[0];
             
@@ -57,6 +58,7 @@
                     category,
                     Arrays.asList(tagsarr),
                     status,
+                    text,
                     queryForm.getSortby(),
                     null,
                     null,
