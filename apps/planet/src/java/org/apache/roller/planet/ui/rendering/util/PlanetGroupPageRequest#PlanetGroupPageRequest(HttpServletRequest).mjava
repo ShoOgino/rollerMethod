@@ -18,5 +18,15 @@
             throw new InvalidRequestException("not a valid planet group page, "+
                     request.getRequestURL());
         }
+        
+        // parse request parameters, right now we only allow for a "page" param
+        if(request.getParameter("page") != null) {
+            String pageInt = request.getParameter("page");
+            try {
+                this.pageNum = Integer.parseInt(pageInt);
+            } catch(NumberFormatException e) {
+                // ignored, bad input
+            }
+        }
     }
 
