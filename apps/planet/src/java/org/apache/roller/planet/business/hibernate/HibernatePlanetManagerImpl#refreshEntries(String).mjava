@@ -56,7 +56,7 @@
         feedFetcher.setUserAgent("RollerPlanetAggregator");
         
         // Loop through all subscriptions in the system
-        Iterator subs = getAllSubscriptions();
+        Iterator subs = getSubscriptions().iterator();
         while (subs.hasNext()) {
             
             long subStartTime = System.currentTimeMillis();
@@ -82,8 +82,6 @@
                     + " seconds to process (" + count + ") entries of "
                     + sub.getFeedURL());
         }
-        // Clear the aggregation cache
-        clearCachedAggregations();
         
         long endTime = System.currentTimeMillis();
         log.info("--- DONE --- Refreshed entries in "

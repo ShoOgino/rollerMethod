@@ -1,14 +1,12 @@
     // lookup all Subscriptions
-    // TODO: return List, not Iterator
     // TODO: make pageable
-    public Iterator getAllSubscriptions() throws RollerException {
+    public List getSubscriptions() throws RollerException {
         try {
             Session session = ((HibernatePersistenceStrategy)strategy).getSession();
             Criteria criteria =
                     session.createCriteria(PlanetSubscriptionData.class);
             criteria.addOrder(Order.asc("feedURL"));
-            List list = criteria.list();
-            return list.iterator();
+            return criteria.list();
         } catch (Throwable e) {
             throw new RollerException("ERROR fetching subscription collection", e);
         }

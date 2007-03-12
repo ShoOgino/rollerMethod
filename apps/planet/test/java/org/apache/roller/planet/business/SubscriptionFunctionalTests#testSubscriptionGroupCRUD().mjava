@@ -1,0 +1,35 @@
+    public void testSubscriptionGroupCRUD() throws Exception {
+        
+        PlanetManager planet = PlanetFactory.getPlanet().getPlanetManager();
+        
+        // retrieve subscriptions and add to group
+        PlanetSubscriptionData sub1 = planet.getSubscriptionById(testSub1.getId());
+        PlanetSubscriptionData sub2 = planet.getSubscriptionById(testSub2.getId());
+        PlanetGroupData group = planet.getGroupById(testGroup1.getId());
+        
+        // make sure no subs in group yet
+        assertEquals(0, group.getSubscriptions().size());
+        
+        // add
+        group.getSubscriptions().add(sub1);
+        group.getSubscriptions().add(sub2);
+        planet.saveGroup(group);
+        TestUtils.endSession(true);
+        
+        // verify
+        group = null;
+        group = planet.getGroupById(testGroup1.getId());
+        assertEquals(2, group.getSubscriptions().size());
+        
+        // remove
+        group.getSubscriptions().remove(sub1);
+        group.getSubscriptions().remove(sub2);
+        planet.saveGroup(group);
+        TestUtils.endSession(true);
+        
+        // verify
+        group = null;
+        group = planet.getGroupById(testGroup1.getId());
+        assertEquals(0, group.getSubscriptions().size());
+    }
+

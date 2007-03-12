@@ -18,11 +18,15 @@
                 
                 List rawEntries = null;
                 if (feedURL != null) {
-                    rawEntries = planetManager.getFeedEntries(feedURL, offset, length+1);
+                    PlanetSubscriptionData sub = planetManager.getSubscription(feedURL);
+                    if(sub != null) {
+                        rawEntries = planetManager.getEntries(sub, offset, length+1);
+                    }
                 } else if (group != null) {
-                    rawEntries = planetManager.getAggregation(group, startDate, null, offset, length+1);
+                    rawEntries = planetManager.getEntries(group, startDate, null, offset, length+1);
                 } else {
-                    rawEntries = planetManager.getAggregation(startDate, null, offset, length+1);
+                    //rawEntries = planetManager.getEntries(startDate, null, offset, length+1);
+                    rawEntries = Collections.EMPTY_LIST;
                 }
                 
                 // check if there are more results for paging

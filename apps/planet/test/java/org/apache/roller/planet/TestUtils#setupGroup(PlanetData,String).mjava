@@ -1,0 +1,28 @@
+    /**
+     * Convenience method that creates a group and stores it.
+     */
+    public static PlanetGroupData setupGroup(PlanetData planet, String handle) 
+            throws Exception {
+        
+        PlanetManager mgr = PlanetFactory.getPlanet().getPlanetManager();
+        
+        // make sure we are using a persistent object
+        PlanetData testPlanet = mgr.getPlanetById(planet.getId());
+        
+        // store
+        PlanetGroupData testGroup = new PlanetGroupData(testPlanet, handle, handle, handle);
+        testPlanet.getGroups().add(testGroup);
+        mgr.saveGroup(testGroup);
+        
+        // flush
+        PlanetFactory.getPlanet().flush();
+        
+        // query to make sure we return the persisted object
+        PlanetGroupData group = mgr.getGroupById(testGroup.getId());
+        
+        if(group == null)
+            throw new RollerException("error inserting new group");
+        
+        return group;
+    }
+

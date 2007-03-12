@@ -1,0 +1,26 @@
+    /**
+     * Convenience method that creates a sub and stores it.
+     */
+    public static PlanetSubscriptionData setupSubscription(String feedUrl) 
+            throws Exception {
+        
+        PlanetManager mgr = PlanetFactory.getPlanet().getPlanetManager();
+        
+        // store
+        PlanetSubscriptionData testSub = new PlanetSubscriptionData();
+        testSub.setFeedURL(feedUrl);
+        testSub.setTitle(feedUrl);
+        mgr.saveSubscription(testSub);
+        
+        // flush
+        PlanetFactory.getPlanet().flush();
+        
+        // query to make sure we return the persisted object
+        PlanetSubscriptionData sub = mgr.getSubscriptionById(testSub.getId());
+        
+        if(sub == null)
+            throw new RollerException("error inserting new subscription");
+        
+        return sub;
+    }
+

@@ -1,12 +1,15 @@
-    // TODO: remove method
-    public List getFeedEntries(String feedURL, int offset, int length)
+    // lookup Entries from a specific Subscription
+    public List getEntries(PlanetSubscriptionData sub, int offset, int length)
             throws RollerException {
             
+        if(sub == null) {
+            throw new RollerException("subscription cannot be null");
+        }
+        
         try {
             Session session = ((HibernatePersistenceStrategy)strategy).getSession();
             Criteria criteria = session.createCriteria(PlanetEntryData.class);
-            criteria.createAlias("subscription", "sub");
-            criteria.add(Expression.eq("sub.feedURL", feedURL));
+            criteria.add(Expression.eq("subscription", sub));
             criteria.addOrder(Order.desc("pubTime"));
             criteria.setFirstResult(offset);
             if (length != -1) criteria.setMaxResults(length);

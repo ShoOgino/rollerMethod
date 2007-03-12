@@ -1,0 +1,17 @@
+    /**
+     * Convenience method for removing a group.
+     */
+    public static void teardownGroup(String id) throws Exception {
+        
+        // lookup
+        PlanetManager mgr = PlanetFactory.getPlanet().getPlanetManager();
+        PlanetGroupData group = mgr.getGroupById(id);
+        
+        // remove
+        mgr.deleteGroup(group);
+        group.getPlanet().getGroups().remove(group);
+        
+        // flush
+        PlanetFactory.getPlanet().flush();
+    }
+
