@@ -6,7 +6,6 @@
             Criteria criteria =
                     session.createCriteria(PlanetSubscriptionData.class);
             criteria.add(Expression.eq("feedURL", feedURL));
-            criteria.setMaxResults(1);
             return (PlanetSubscriptionData) criteria.uniqueResult();
         } catch (HibernateException e) {
             throw new RollerException(e);

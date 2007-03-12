@@ -1,6 +1,8 @@
     // refresh Entries for all Subscriptions
     public void refreshEntries(String cacheDirPath) throws RollerException {
         
+        PlanetManager mgr = PlanetFactory.getPlanet().getPlanetManager();
+        
         Date now = new Date();
         long startTime = System.currentTimeMillis();
         
@@ -50,13 +52,14 @@
         System.setProperty("sun.net.client.defaultConnectTimeout", "15000");
         System.setProperty("sun.net.client.defaultReadTimeout", "15000");
         
-        FeedFetcher feedFetcher = new HttpURLFeedFetcher(feedInfoCache);
+        com.sun.syndication.fetcher.FeedFetcher feedFetcher = 
+                new HttpURLFeedFetcher(feedInfoCache);
         //FeedFetcher feedFetcher = new HttpClientFeedFetcher(feedInfoCache);
         feedFetcher.setUsingDeltaEncoding(false);
         feedFetcher.setUserAgent("RollerPlanetAggregator");
         
         // Loop through all subscriptions in the system
-        Iterator subs = getSubscriptions().iterator();
+        Iterator subs = mgr.getSubscriptions().iterator();
         while (subs.hasNext()) {
             
             long subStartTime = System.currentTimeMillis();
@@ -64,18 +67,18 @@
             PlanetSubscriptionData sub = (PlanetSubscriptionData)subs.next();
             
             // reattach sub.  sub gets detached as we iterate
-            sub = this.getSubscriptionById(sub.getId());
+            sub = mgr.getSubscriptionById(sub.getId());
             
             Set newEntries = this.getNewEntries(sub, feedFetcher, feedInfoCache);
             int count = newEntries.size();
             
             log.debug("   Entry count: " + count);
             if (count > 0) {
-                this.deleteEntries(sub);
+                mgr.deleteEntries(sub);
                 sub.addEntries(newEntries);
-                this.saveSubscription(sub);
-                this.strategy.flush();
+                mgr.saveSubscription(sub);
             }
+            
             long subEndTime = System.currentTimeMillis();
             log.debug("   " + count + " - "
                     + ((subEndTime-subStartTime)/1000.0)

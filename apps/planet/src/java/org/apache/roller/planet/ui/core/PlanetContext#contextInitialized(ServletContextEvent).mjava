@@ -4,7 +4,7 @@
      */
     public void contextInitialized(ServletContextEvent sce) {
         
-        log.debug("Roller Planet Initializing");
+        log.debug("Roller Planet Initializing ... ");
         
         // keep a reverence to ServletContext object
         this.context = sce.getServletContext();
@@ -23,6 +23,7 @@
             
             setupRuntimeProperties();
             setupURLStrategy();
+            setupFeedFetcher();
             
             planet.flush();
             planet.release();
@@ -32,6 +33,6 @@
             throw new RuntimeException(t);
         }
         
-        log.debug("Initialization Complete");
+        log.debug("Roller Planet Initialization Complete");
     }
 
