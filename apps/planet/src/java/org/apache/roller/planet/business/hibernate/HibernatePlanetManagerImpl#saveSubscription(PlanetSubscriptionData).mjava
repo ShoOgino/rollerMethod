@@ -1,6 +1,6 @@
     // save a Subscription
     public void saveSubscription(PlanetSubscriptionData sub) 
-        throws RollerException {
+            throws RollerException {
         PlanetSubscriptionData existing = getSubscription(sub.getFeedURL());
         if (existing == null || (existing.getId().equals(sub.getId()))) {
             this.strategy.store(sub);

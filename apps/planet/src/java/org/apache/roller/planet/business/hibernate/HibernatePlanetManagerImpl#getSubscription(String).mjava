@@ -1,14 +1,13 @@
-    // lookup a Subscription by feed url
+    // lookup a Subscription by url
     public PlanetSubscriptionData getSubscription(String feedURL) 
-        throws RollerException {
+            throws RollerException {
         try {
             Session session = ((HibernatePersistenceStrategy)strategy).getSession();
             Criteria criteria =
                     session.createCriteria(PlanetSubscriptionData.class);
-            criteria.setMaxResults(1);
             criteria.add(Expression.eq("feedURL", feedURL));
-            List list = criteria.list();
-            return list.size()!=0 ? (PlanetSubscriptionData)list.get(0) : null;
+            criteria.setMaxResults(1);
+            return (PlanetSubscriptionData) criteria.uniqueResult();
         } catch (HibernateException e) {
             throw new RollerException(e);
         }

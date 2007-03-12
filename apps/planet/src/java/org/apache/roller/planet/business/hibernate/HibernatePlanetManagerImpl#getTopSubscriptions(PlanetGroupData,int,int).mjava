@@ -1,19 +1,19 @@
-    // get popular subscriptions
-    public synchronized List getTopSubscriptions(String groupHandle, int offset, int length) 
+    // get popular Subscriptions from a specific Group
+    // TODO: test this method
+    public List getTopSubscriptions(PlanetGroupData group, int offset, int length) 
             throws RollerException {
         
         List ret = null;
         try {
             Session session = ((HibernatePersistenceStrategy)strategy).getSession();
             Query query = null;
-            if (groupHandle != null) {
+            if (group != null) {
                 query = session.createQuery(
                     "select sub from org.apache.roller.planet.pojos.PlanetSubscriptionData sub "
                     +"join sub.groups group "
-                    +"where "
-                    +"group.handle=:groupHandle "
+                    +"where group=:group "
                     +"order by sub.inboundblogs desc");
-                query.setString("groupHandle", groupHandle);
+                query.setSerializable("group", group);
             } else {
                 query = session.createQuery(
                     "select sub from org.apache.roller.planet.pojos.PlanetSubscriptionData sub "

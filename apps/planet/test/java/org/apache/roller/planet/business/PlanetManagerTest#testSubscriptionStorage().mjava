@@ -26,7 +26,7 @@
             
             PlanetSubscriptionData sub = planet.getSubscription("test_url");
             PlanetSubscriptionData sub1 = planet.getSubscription("test_url1");
-            PlanetGroupData group = planet.getGroup("test_handle");
+            PlanetGroupData group = planet.getGroup(testPlanet, "test_handle");
             
             group.getSubscriptions().add(sub);
             sub.getGroups().add(group);
@@ -42,19 +42,19 @@
         }
         {   // get group and remove one subscription
             PlanetSubscriptionData sub = planet.getSubscription("test_url");
-            PlanetGroupData group = planet.getGroup("test_handle");
+            PlanetGroupData group = planet.getGroup(testPlanet, "test_handle");
             group.getSubscriptions().remove(sub);
             TestUtils.endSession(true);
         }
         {   // get group and check it's subscriptions, remove it
-            PlanetGroupData group = planet.getGroup("test_handle");
+            PlanetGroupData group = planet.getGroup(testPlanet, "test_handle");
             Set subs = group.getSubscriptions();
             assertEquals(1, subs.size());
             planet.deleteGroup(group);
             TestUtils.endSession(true);
         }
         {   // make sure group gone, subs still there, then remove them too
-            PlanetGroupData group = planet.getGroup("test_handle");
+            PlanetGroupData group = planet.getGroup(testPlanet, "test_handle");
             assertNull(group);
             PlanetSubscriptionData sub = planet.getSubscription("test_url");
             assertNotNull(sub);

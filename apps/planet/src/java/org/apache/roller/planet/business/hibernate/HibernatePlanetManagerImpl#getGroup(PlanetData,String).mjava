@@ -1,13 +1,17 @@
     // lookup a Group by Planet & handle
-    public PlanetGroupData getGroup(PlanetData planet, String handle) throws RollerException {
+    public PlanetGroupData getGroup(PlanetData planet, String handle) 
+            throws RollerException {
+        
+        if(planet == null) {
+            throw new RollerException("planet cannot be null");
+        }
+        
         try {
             Session session = strategy.getSession();
             Criteria criteria = session.createCriteria(PlanetGroupData.class);
-            criteria.setMaxResults(1);
+            criteria.add(Expression.eq("planet", planet));
             criteria.add(Expression.eq("handle", handle));
-            if(planet != null) {
-                criteria.add(Expression.eq("planet", planet));
-            }
+            criteria.setMaxResults(1);
             return (PlanetGroupData) criteria.uniqueResult();
         } catch (HibernateException e) {
             throw new RollerException(e);

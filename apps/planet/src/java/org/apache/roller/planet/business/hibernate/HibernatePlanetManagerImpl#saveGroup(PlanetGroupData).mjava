@@ -1,5 +1,6 @@
     // save a Group
     public void saveGroup(PlanetGroupData group)  throws RollerException {
+        // TODO: move this check outside this method?
         if (group.getId() == null || getGroupById(group.getId()) == null) {
             // If new group, make sure hadnle is unique within Planet
             if (getGroup(group.getPlanet(), group.getHandle()) != null) {

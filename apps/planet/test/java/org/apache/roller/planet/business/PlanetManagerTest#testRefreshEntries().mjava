@@ -33,7 +33,7 @@
             PlanetSubscriptionData sub = planet.getSubscription(feed_url1);
             int entriesSize = sub.getEntries().size();
             
-            PlanetGroupData group = planet.getGroup("test_handle");
+            PlanetGroupData group = planet.getGroup(testPlanet, "test_handle");
             assertNotNull(group);
             
             planet.deleteGroup(group);
