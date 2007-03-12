@@ -3,9 +3,9 @@
         if(template.getTemplateLanguage() == null || template.getId() == null) {
             return null;
         }        
-        if("groovy".equals(template.getTemplateLanguage())) {             
+        if("groovlet".equals(template.getTemplateLanguage())) {             
             try {
-               renderer = new GroovyRenderer(template);
+               renderer = new GroovletRenderer(template);
             } catch(Exception ex) {
                 return null;
             }                        

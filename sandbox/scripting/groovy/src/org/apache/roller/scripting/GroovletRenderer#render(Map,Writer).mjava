@@ -1,18 +1,17 @@
     public void render(Map model, Writer writer) throws RenderingException {
         try {
+            long startTime = System.currentTimeMillis();            
             Binding binding = new GroovyRollerBinding(model, writer);
             GroovyShell shell = new GroovyShell(binding);
-            
-            long startTime = System.currentTimeMillis();
-            
-            shell.evaluate(template.getContents());  
-            
+            shell.evaluate(template.getContents());              
             long endTime = System.currentTimeMillis();
+
             long renderTime = (endTime - startTime)/1000;
             log.debug("Rendered ["+template.getId()+"] in "+renderTime+" secs"); 
             
-        } catch (Exception ex) {
-            throw new RenderingException("Error during rendering", ex);
+        } catch (Throwable ex) {
+            log.debug("Executing Groovy script", ex);
+            renderThrowable(ex, writer);
         }
     }
 

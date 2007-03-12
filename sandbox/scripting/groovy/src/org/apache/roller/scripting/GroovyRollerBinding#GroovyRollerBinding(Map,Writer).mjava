@@ -1,5 +1,5 @@
     public GroovyRollerBinding(Map model, Writer writer) {
-        this.writer = writer;
+        this.printWriter = new PrintWriter(writer);
         binding = new Binding(model);
         binding.setVariable("utils", new UtilitiesModel()); 
     }
