@@ -1,6 +1,7 @@
-     public List getFeedEntries(String feedURL, int offset, int length)
-        throws RollerException {
-        // TODO: ATLAS getFeedEntries DONE       
+    // TODO: remove method
+    public List getFeedEntries(String feedURL, int offset, int length)
+            throws RollerException {
+            
         try {
             Session session = ((HibernatePersistenceStrategy)strategy).getSession();
             Criteria criteria = session.createCriteria(PlanetEntryData.class);
@@ -13,5 +14,5 @@
         } catch (HibernateException e) {
             throw new RollerException(e);
         }
-    }    
+    }
 
