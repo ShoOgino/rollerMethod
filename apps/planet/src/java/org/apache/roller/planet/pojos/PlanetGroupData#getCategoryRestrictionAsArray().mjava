@@ -1,13 +1,10 @@
-    private String[] getCategoryRestrictionAsArray()
-    {
-        if (catArray == null && categoryRestriction != null)
-        {
+    private String[] getCategoryRestrictionAsArray() {
+        if (catArray == null && categoryRestriction != null) {
             StringTokenizer toker = new StringTokenizer(categoryRestriction,",");
             catArray = new String[toker.countTokens()];
             int i = 0;
-    
-            while (toker.hasMoreTokens())
-            {
+            
+            while (toker.hasMoreTokens()) {
                 catArray[i++] = toker.nextToken();
             }
         }

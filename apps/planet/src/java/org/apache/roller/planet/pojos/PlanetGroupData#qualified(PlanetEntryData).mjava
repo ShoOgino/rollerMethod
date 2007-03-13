@@ -1,12 +1,10 @@
     /**
      * Returns true if entry is qualified for inclusion in this group.
      */
-    public boolean qualified(PlanetEntryData entry)
-    {
+    public boolean qualified(PlanetEntryData entry) {
         String[] cats = getCategoryRestrictionAsArray();
         if (cats == null || cats.length == 0) return true;
-        for (int i=0; i<cats.length; i++) 
-        {
+        for (int i=0; i<cats.length; i++) {
             if (entry.inCategory(cats[i])) return true;
         }
         return  false;
