@@ -3,6 +3,7 @@
         try {
             Session session = ((HibernatePersistenceStrategy)strategy).getSession();
             Criteria criteria = session.createCriteria(PlanetData.class);
+            criteria.addOrder(Order.asc("title"));
             return criteria.list();
         } catch (HibernateException e) {
             throw new RollerException(e);
