@@ -6,9 +6,17 @@
      */
     public Pager getCommentsPager(int sinceDays, int length) {
         
-        String pagerUrl = URLUtilities.getWeblogPageURL(weblog, 
+        String pagerUrl = null;
+        if (feedRequest != null) {
+            pagerUrl = URLUtilities.getWeblogFeedURL(weblog, 
+                    weblogRequest.getLocale(), feedRequest.getType(),
+                    feedRequest.getFormat(), null, null, 
+                    feedRequest.isExcerpts(), true);
+        } else {        
+            pagerUrl = URLUtilities.getWeblogPageURL(weblog, 
                 weblogRequest.getLocale(), pageLink, 
                 null, null, null, null, 0, false);
+        }
         
         return new CommentsPager(
             pagerUrl,

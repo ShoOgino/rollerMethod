@@ -5,9 +5,18 @@
      */
     public Pager getWeblogEntriesPager(int sinceDays, int length) {
         
-        String pagerUrl = URLUtilities.getWeblogPageURL(weblog, 
+        String pagerUrl = null;
+        
+        if (feedRequest != null) {
+            pagerUrl = URLUtilities.getWeblogFeedURL(weblog, 
+                    weblogRequest.getLocale(), feedRequest.getType(),
+                    feedRequest.getFormat(), feedRequest.getWeblogCategoryName(), 
+                    feedRequest.getTags(), feedRequest.isExcerpts(), true);
+        } else {        
+            pagerUrl = URLUtilities.getWeblogPageURL(weblog, 
                 weblogRequest.getLocale(), pageLink, 
                 null, null, null, tags, 0, false);
+        }
         
         return new WeblogEntriesListPager(
             pagerUrl, null, null, null,

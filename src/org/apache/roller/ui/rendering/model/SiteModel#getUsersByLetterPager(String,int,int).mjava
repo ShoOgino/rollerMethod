@@ -1,9 +1,16 @@
     /* Get pager of users whose names begin with specified letter */
     public Pager getUsersByLetterPager(String letter, int sinceDays, int length) {
         
-        String pagerUrl = URLUtilities.getWeblogPageURL(weblog, 
+        String pagerUrl = null;
+        if (feedRequest != null) {
+            pagerUrl = URLUtilities.getWeblogFeedURL(weblog, 
+                    weblogRequest.getLocale(), feedRequest.getType(),
+                    feedRequest.getFormat(), null, null, feedRequest.isExcerpts(), true);
+        } else {        
+            pagerUrl = URLUtilities.getWeblogPageURL(weblog, 
                 weblogRequest.getLocale(), pageLink, 
                 null, null, null, null, 0, false);
+        }        
         
         if(letter != null && StringUtils.isEmpty(letter)) {
             letter = null;

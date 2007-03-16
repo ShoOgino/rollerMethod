@@ -1,0 +1,23 @@
+    /**
+     * Gets most recent comments limited by: weblog specified in request and 
+     * the weblog.entryDisplayCount.
+     */
+    public Pager getCommentsPager() {
+            
+        // all feeds get the site-wide default # of entries
+        int entryCount =
+                RollerRuntimeConfig.getIntProperty("site.newsfeeds.defaultEntries");
+        
+        String pagerUrl = URLUtilities.getWeblogFeedURL(weblog, 
+                    feedRequest.getLocale(), feedRequest.getType(),
+                    feedRequest.getFormat(), null, null, 
+                    feedRequest.isExcerpts(), true);
+        
+        return new CommentsPager(
+            pagerUrl,
+            feedRequest.getLocale(),
+            -1,
+            feedRequest.getPage(), 
+            entryCount);        
+    }
+
