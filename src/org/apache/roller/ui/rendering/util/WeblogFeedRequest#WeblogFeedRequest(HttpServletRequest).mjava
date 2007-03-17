@@ -83,6 +83,11 @@
             } catch(NumberFormatException e) {
                 // 
             }
+        }     
+        
+        if(request.getParameter("q") != null &&
+                request.getParameter("q").trim().length() > 0) {
+            this.term = URLUtilities.decode(request.getParameter("q"));
         }        
         
         if((this.tags != null && this.tags.size() > 0) && this.weblogCategoryName != null) {

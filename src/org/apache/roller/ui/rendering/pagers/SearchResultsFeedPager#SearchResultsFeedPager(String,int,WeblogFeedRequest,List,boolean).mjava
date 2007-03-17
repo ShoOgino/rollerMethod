@@ -1,0 +1,19 @@
+    public SearchResultsFeedPager(String baseUrl, int pageNum,
+            WeblogFeedRequest feedRequest, List entries, boolean more) {
+        
+        super(baseUrl, pageNum);
+        
+        this.url = baseUrl;
+        
+        this.feedRequest = feedRequest;
+        
+        // store search results
+        this.entries = entries;
+        
+        // data from search request
+        this.weblog = feedRequest.getWeblog();
+        
+        // does this pager have more results?
+        this.moreResults = more;
+    }
+

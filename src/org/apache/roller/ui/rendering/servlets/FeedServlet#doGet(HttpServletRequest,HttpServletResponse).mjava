@@ -155,6 +155,11 @@
 
             // Load weblog custom models
             ModelLoader.loadCustomModels(weblog, model, initData);
+            
+            if("search".equals(feedRequest.getType())) {
+                pageId = "templates/feeds/weblog-search-atom.vm";                
+                ModelLoader.loadModels(SearchResultsFeedModel.class.getName(), model, initData, true);
+            }                        
 
         } catch (RollerException ex) {
             log.error("ERROR loading model for page", ex);

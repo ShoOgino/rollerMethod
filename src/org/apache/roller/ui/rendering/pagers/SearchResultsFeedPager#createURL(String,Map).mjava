@@ -1,0 +1,12 @@
+    protected String createURL(String url, Map params) {
+        String category = feedRequest.getWeblogCategoryName();
+        if(category != null && category.trim().length() > 0) {
+            params.put("cat", URLUtilities.encode(category));
+        }
+        String term = feedRequest.getTerm();
+        if(term != null && term.trim().length() > 0) {
+            params.put("q", URLUtilities.encode(term.trim()));
+        }        
+        return super.createURL(url, params);
+    }
+
