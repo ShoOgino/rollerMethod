@@ -29,7 +29,8 @@
 
         // Go!
         Class taskClass = cl.loadClass(taskClassName);
-        Runnable task = (Runnable)taskClass.newInstance();
+        PlanetTask task = (PlanetTask) taskClass.newInstance();
+        task.initialize();
         task.run();
     }
 
