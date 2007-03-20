@@ -7,12 +7,10 @@
         
         ActionForward forward = mapping.findForward("editPages.page");
         try {
-            WeblogTemplateForm form = (WeblogTemplateForm)actionForm;
+            WeblogTemplateFormEx form = (WeblogTemplateFormEx)actionForm;
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             RollerSession rses = RollerSession.getRollerSession(request);
-            request.setAttribute("model", new BasePageModel(
-                    "pagesForm.title", request, response, mapping));
-            
+
             WebsiteData website = rreq.getWebsite();
             if (website == null && form.getId()!=null) {
                 UserManager mgr = RollerFactory.getRoller().getUserManager();
@@ -20,11 +18,13 @@
                 website = template.getWebsite();
             }
             
-            if ( rses.isUserAuthorizedToAdmin(website)) {
-                addModelObjects(request, response, mapping, website, null);
-            } else {
+            request.setAttribute("model", 
+                new WeblogTemplateFormModel("pagesForm.title", request, response, mapping, null));
+            
+            if (!rses.isUserAuthorizedToAdmin(website)) {
                 forward = mapping.findForward("access-denied");
             }
+            
         } catch (Exception e) {
             log.error("ERROR in action",e);
             throw new ServletException(e);

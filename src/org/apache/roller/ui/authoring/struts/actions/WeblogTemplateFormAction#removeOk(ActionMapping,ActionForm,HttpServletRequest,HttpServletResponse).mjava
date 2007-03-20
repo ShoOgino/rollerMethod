@@ -13,18 +13,13 @@
             WeblogTemplate page = (WeblogTemplate) rreq.getPage();
             WebsiteData website = page.getWebsite();
             if ( rses.isUserAuthorizedToAdmin(website) ) {
-                WeblogTemplateForm form = (WeblogTemplateForm)actionForm;
+                WeblogTemplateFormEx form = (WeblogTemplateFormEx)actionForm;
                 form.copyFrom(page, request.getLocale());
                 
-                addModelObjects(request, response, mapping, page.getWebsite(), page);
-                
-                BasePageModel pageModel = new BasePageModel(
-                        "editPages.title.removeOK", request, response, mapping);
-                pageModel.setWebsite(website);
+                WeblogTemplateFormModel pageModel = 
+                    new WeblogTemplateFormModel("editPages.title.removeOK", request, response, mapping, page);
                 request.setAttribute("model", pageModel);
                 
-                UserData ud = rses.getAuthenticatedUser();
-                request.setAttribute("user",ud);
             } else {
                 forward = mapping.findForward("access-denied");
             }

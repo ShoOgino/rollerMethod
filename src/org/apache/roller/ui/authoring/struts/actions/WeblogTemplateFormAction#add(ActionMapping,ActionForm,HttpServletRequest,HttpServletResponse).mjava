@@ -6,15 +6,14 @@
             throws IOException, ServletException {
         
         ActionForward forward = mapping.findForward("editPages.page");
-        WeblogTemplateForm form = (WeblogTemplateForm)actionForm;
+        WeblogTemplateFormEx form = (WeblogTemplateFormEx)actionForm;
         try {
-            request.setAttribute("model", new BasePageModel(
-                    "pagesForm.title", request, response, mapping));
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             RollerSession rses = RollerSession.getRollerSession(request);
             WebsiteData website = rreq.getWebsite();
             if ( rses.isUserAuthorizedToAdmin(website) ) {
                 
+
                 UserManager mgr = RollerFactory.getRoller().getUserManager();
                 
                 // first off, check if template already exists
@@ -23,33 +22,35 @@
                     ActionErrors errors = new ActionErrors();
                     errors.add(null, new ActionError("pagesForm.error.alreadyExists", form.getName()));
                     saveErrors(request, errors);
-                    addModelObjects(request, response, mapping, website, null);
+                    request.setAttribute("model",
+                        new WeblogTemplateFormModel("pagesForm.title", request, response, mapping, null));
                     return forward;
                 }
                 
-                WeblogTemplate data = new WeblogTemplate();
-                form.copyTo(data, request.getLocale());
-                data.setWebsite(website);
-                data.setLastModified( new Date() );
-                data.setDescription(data.getName());
-                data.setContents(bundle.getString("pageForm.newTemplateContent"));
-                validateLink( data );
+                WeblogTemplate page = new WeblogTemplate();
+                form.copyTo(page, request.getLocale());
+                page.setWebsite(website);
+                page.setLastModified( new Date() );
+                page.setDescription(page.getName());
+                page.setContents(bundle.getString("pageForm.newTemplateContent"));
+                
+                validateLink(page);
                 
                 // all templates start out as velocity templates
-                data.setTemplateLanguage("velocity");
+                page.setTemplateLanguage("velocity");
                 
                 // for now, all templates just use _decorator
-                if(!"_decorator".equals(data.getName())) {
-                    data.setDecoratorName("_decorator");
+                if(!"_decorator".equals(page.getName())) {
+                    page.setDecoratorName("_decorator");
                 }
                 
                 // save the page
-                mgr.savePage( data );
+                mgr.savePage( page );
                 
                 // if this person happened to create a Weblog template from
                 // scratch then make sure and set the defaultPageId
-                if(WeblogTemplate.DEFAULT_PAGE.equals(data.getName())) {
-                    website.setDefaultPageId(data.getId());
+                if(WeblogTemplate.DEFAULT_PAGE.equals(page.getName())) {
+                    website.setDefaultPageId(page.getId());
                     mgr.saveWebsite(website);
                 }
                 
@@ -59,12 +60,14 @@
                 ActionMessages uiMessages = new ActionMessages();
                 uiMessages.add(ActionMessages.GLOBAL_MESSAGE,
                         new ActionMessage("pagesForm.addNewPage.success",
-                        data.getName()));
+                        page.getName()));
                 saveMessages(request, uiMessages);
                 
                 actionForm.reset(mapping,request);
                 
-                addModelObjects(request, response, mapping, website, data);
+                request.setAttribute("model",
+                    new WeblogTemplateFormModel("pagesForm.title", request, response, mapping, page));
+                
             } else {
                 forward = mapping.findForward("access-denied");
             }

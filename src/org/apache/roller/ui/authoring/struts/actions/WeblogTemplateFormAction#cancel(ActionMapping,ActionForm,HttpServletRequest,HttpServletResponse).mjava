@@ -4,8 +4,13 @@
             HttpServletRequest  request,
             HttpServletResponse response)
             throws IOException, ServletException {
-        request.setAttribute("model", new BasePageModel(
-                "pagesForm.title", request, response, mapping));
-        return (mapping.findForward("editPages"));
+        try {
+            request.setAttribute("model", new WeblogTemplateFormModel(
+                    "pagesForm.title", request, response, mapping, null));
+            return (mapping.findForward("editPages"));
+        } catch (Exception e) {
+            log.error("ERROR in action",e);
+            throw new ServletException(e);
+        }
     }
 

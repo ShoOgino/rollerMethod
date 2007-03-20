@@ -7,38 +7,46 @@
         
         ActionForward forward = mapping.findForward("editPage.page");
         try {
-            RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            WeblogTemplateForm form = (WeblogTemplateForm)actionForm;
-            UserManager mgr = RollerFactory.getRoller().getUserManager();
-            WeblogTemplate data = mgr.getPage(form.getId());
-            WebsiteData website = data.getWebsite();
+            WeblogTemplateFormEx form = (WeblogTemplateFormEx)actionForm;
+
+            RollerRequest  rreq = RollerRequest.getRollerRequest(request);
+            UserManager    mgr = RollerFactory.getRoller().getUserManager();
+            WeblogTemplate page = mgr.getPage(form.getId());
+            WebsiteData    website = page.getWebsite();
+            
             
             RollerSession rses = RollerSession.getRollerSession(request);
             if (rses.isUserAuthorizedToAdmin(website)) {
-                form.copyTo(data, request.getLocale());
-                data.setLastModified( new Date() );
                 
-                validateLink( data );
+
+                form.copyTo(page, request.getLocale());
+                page.setLastModified( new Date() );                                
                 
-                mgr.savePage( data );
+                if (form.getAutoContentType() == null || !form.getAutoContentType().booleanValue()) { 
+                    page.setOutputContentType(form.getManualContentType());
+                } else {
+                    // empty content-type indicates that page uses auto content-type detection
+                    page.setOutputContentType(null);
+                }
+                
+                validateLink(page);
+
+                mgr.savePage( page );
                 RollerFactory.getRoller().flush();
                 
                 // set the (possibly) new link back into the Form bean
-                ((WeblogTemplateForm)actionForm).setLink( data.getLink() );
+                ((WeblogTemplateFormEx)actionForm).setLink( page.getLink() );
                 
                 ActionMessages uiMessages = new ActionMessages();
                 uiMessages.add(ActionMessages.GLOBAL_MESSAGE,
                         new ActionMessage("pageForm.save.success",
-                        data.getName()));
+                        page.getName()));
                 saveMessages(request, uiMessages);
                 
-                CacheManager.invalidate(data);
+                CacheManager.invalidate(page);
                 
-                addModelObjects(request, response, mapping, data.getWebsite(), data);
-                
-                BasePageModel pageModel = new BasePageModel(
-                        "pageForm.title", request, response, mapping);
-                pageModel.setWebsite(website);
+                WeblogTemplateFormModel pageModel = 
+                    new WeblogTemplateFormModel("pageForm.title", request, response, mapping, page);
                 request.setAttribute("model", pageModel);
                 
             } else {

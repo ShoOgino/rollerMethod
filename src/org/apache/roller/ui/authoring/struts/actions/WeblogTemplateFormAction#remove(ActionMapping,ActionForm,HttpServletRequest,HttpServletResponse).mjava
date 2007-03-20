@@ -6,14 +6,16 @@
             throws IOException, ServletException {
         
         ActionForward forward = mapping.findForward("editPages");
-        request.setAttribute("model", new BasePageModel(
-                "pagesForm.title", request, response, mapping));
         try {
             UserManager mgr = RollerFactory.getRoller().getUserManager();
-            WeblogTemplateForm form = (WeblogTemplateForm)actionForm;
+            WeblogTemplateFormEx form = (WeblogTemplateFormEx)actionForm;
             WeblogTemplate template = mgr.getPage(form.getId());
             WebsiteData website = template.getWebsite();
             
+            WeblogTemplateFormModel pageModel = 
+                new WeblogTemplateFormModel("pagesForm.title", request, response, mapping, null);
+            request.setAttribute("model", pageModel);
+
             RollerSession rses = RollerSession.getRollerSession(request);
             if ( rses.isUserAuthorizedToAdmin(website) ) {
                 if(!template.isRequired()) {
@@ -29,8 +31,6 @@
                     throw new RollerException("Cannot remove required page");
                 }
                 
-                addModelObjects(
-                        request, response, mapping, template.getWebsite(), template);
                 actionForm.reset(mapping, request);
             } else {
                 forward = mapping.findForward("access-denied");

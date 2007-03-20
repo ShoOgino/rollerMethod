@@ -210,11 +210,17 @@
         // looks like we need to render content
         
         // set the content type
-        String mimeType = RollerContext.getServletContext().getMimeType(page.getLink());
         String contentType = "text/html; charset=utf-8";
-        if(mimeType != null) {
-            // we found a match ... set the content type
-            contentType = mimeType+"; charset=utf-8";
+        if (StringUtils.isNotEmpty(page.getOutputContentType())) {
+            contentType = page.getOutputContentType() + "; charset=utf-8";
+        } else {
+            String mimeType = RollerContext.getServletContext().getMimeType(page.getLink()); 
+            if (mimeType != null) {
+                // we found a match ... set the content type
+                contentType = mimeType + "; charset=utf-8";
+            } else {
+                contentType = "text/html; charset=utf-8";
+            }
         }
 
         HashMap model = new HashMap();

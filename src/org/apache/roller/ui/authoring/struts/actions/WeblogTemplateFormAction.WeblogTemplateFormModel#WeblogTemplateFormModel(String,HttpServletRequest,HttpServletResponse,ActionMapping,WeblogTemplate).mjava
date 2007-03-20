@@ -1,0 +1,32 @@
+        public WeblogTemplateFormModel(
+                String titleKey,
+                HttpServletRequest request,
+                HttpServletResponse response,
+                ActionMapping mapping,
+                WeblogTemplate page) throws RollerException {
+
+            super(titleKey, request, response, mapping);
+
+            UserManager mgr = RollerFactory.getRoller().getUserManager();
+            RollerSession rses = RollerSession.getRollerSession(request);
+            RollerRequest rreq = RollerRequest.getRollerRequest(request);  
+            
+            if (page != null) {
+                this.setWebsite(page.getWebsite());
+            } else {
+                this.setWebsite(rreq.getWebsite());
+            }
+ 
+            this.setUser(rses.getAuthenticatedUser());        
+            this.setPages(mgr.getPages(getWebsite()));
+            this.setPage(page); 
+            
+            if (page != null) {
+                String langs = RollerConfig.getProperty("rendering.templateLanguages","velocity");
+                String[] langsArray = Utilities.stringToStringArray(langs, ",");
+                for (int i = 0; i < langsArray.length; i++) {
+                    getLanguages().add(new LabelValueBean(langsArray[i], langsArray[i]));
+                }
+            }
+        }
+
