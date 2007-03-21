@@ -2,7 +2,7 @@
      * @see org.apache.roller.model.ThemeManager#importTheme(website, theme)
      */
     public void importTheme(WebsiteData website, Theme theme)
-        throws RollerException {
+            throws RollerException {
         
         log.debug("Importing theme "+theme.getName()+" to weblog "+website.getName());
         
@@ -67,13 +67,14 @@
             // now lets import all the theme resources
             FileManager fileMgr = RollerFactory.getRoller().getFileManager();
             
-            Iterator iterat = theme.getResources().iterator();
+            List resources = theme.getResources();
+            Iterator iterat = resources.iterator();
             File resourceFile = null;
             while ( iterat.hasNext() ) {
                 resourceFile = (File) iterat.next();
                 
                 String path = resourceFile.getAbsolutePath().substring(
-                        this.themeDir.length()+theme.getName().length()+1);
+                        this.themeDir.length()+theme.getId().length()+1);
                 
                 // make sure path isn't prefixed with a /
                 if(path.startsWith("/")) {

@@ -1,0 +1,25 @@
+    private ThemeMetadataTemplate elementToTemplateMetadata(Element element) {
+        
+        ThemeMetadataTemplate template = new ThemeMetadataTemplate();
+        
+        template.setAction(element.getAttributeValue("action"));
+        template.setName(element.getChildText("name"));
+        template.setDescription(element.getChildText("description"));
+        template.setLink(element.getChildText("link"));
+        template.setTemplateLanguage(element.getChildText("templateLanguage"));
+        template.setContentType(element.getChildText("contentType"));
+        template.setContentsFile(element.getChildText("contentsFile"));
+        
+        String navbar = element.getChildText("navbar");
+        if("true".equalsIgnoreCase(navbar)) {
+            template.setNavbar(true);
+        }
+        
+        String hidden = element.getChildText("hidden");
+        if("true".equalsIgnoreCase(hidden)) {
+            template.setHidden(true);
+        }
+        
+        return template;
+    }
+

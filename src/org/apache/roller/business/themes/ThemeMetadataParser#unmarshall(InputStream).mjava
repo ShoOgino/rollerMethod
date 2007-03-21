@@ -1,0 +1,47 @@
+    /**
+     * Unmarshall the given input stream into our defined
+     * set of Java objects.
+     **/
+    public ThemeMetadata unmarshall(InputStream instream) 
+        throws IOException, JDOMException {
+        
+        if(instream == null)
+            throw new IOException("InputStream is null!");
+        
+        ThemeMetadata theme = new ThemeMetadata();
+        
+        SAXBuilder builder = new SAXBuilder();
+        Document doc = builder.build(instream);
+        
+        // start at root and get theme id, name, and author
+        Element root = doc.getRootElement();
+        theme.setId(root.getChildText("id"));
+        theme.setName(root.getChildText("name"));
+        theme.setAuthor(root.getChildText("author"));
+        
+        // now grab the preview image path
+        Element previewImage = root.getChild("preview-image");
+        theme.setPreviewImage(previewImage.getAttributeValue("path"));
+        
+        // now grab the static resources
+        List resources = root.getChildren("resource");
+        Iterator resourcesIter = resources.iterator();
+        while (resourcesIter.hasNext()) {
+            Element resource = (Element) resourcesIter.next();
+            theme.addResource(resource.getAttributeValue("path"));
+        }
+        
+        // now grab the templates
+        List templates = root.getChildren("template");
+        Iterator templatesIter = templates.iterator();
+        while (templatesIter.hasNext()) {
+            Element template = (Element) templatesIter.next();
+            theme.addTemplate(this.elementToTemplateMetadata(template));
+        }
+        
+        // TODO: validation
+        // make sure all required elements are present and values are valid
+        
+        return theme;
+    }
+

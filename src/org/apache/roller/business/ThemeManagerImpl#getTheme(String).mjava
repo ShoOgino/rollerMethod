@@ -1,12 +1,16 @@
     /**
      * @see org.apache.roller.model.ThemeManager#getTheme(java.lang.String)
      */
-    public Theme getTheme(String name) 
-        throws ThemeNotFoundException, RollerException {
+    public Theme getTheme(String id) 
+            throws ThemeNotFoundException, RollerException {
         
-        Theme theme = (Theme) this.themes.get(name);
-        if(theme == null)
-            throw new ThemeNotFoundException("Couldn't find theme ["+name+"]");
+        // try to lookup theme from library
+        Theme theme = (Theme) this.themes.get(id);
+        
+        // no theme?  throw exception.
+        if(theme == null) {
+            throw new ThemeNotFoundException("Couldn't find theme ["+id+"]");
+        }
         
         return theme;
     }
