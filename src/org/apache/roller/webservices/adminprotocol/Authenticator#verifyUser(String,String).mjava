@@ -14,7 +14,7 @@
         }
         
         if (!ud.hasRole("admin")) {
-            throw new UnauthorizedException("ERROR: User must have the admin role to use the AAPP endpoint: " + userName);
+            throw new UnauthorizedException("ERROR: User must have the admin role to use the RAP endpoint: " + userName);
         }
         if (!ud.getEnabled().booleanValue()) {
             throw new UnauthorizedException("ERROR: User is disabled: " + userName);

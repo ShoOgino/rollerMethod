@@ -1,0 +1,14 @@
+    public void populate(Document doc) {
+        Element root = doc.getRootElement();
+        List workspaces = new ArrayList();
+        List spaces = root.getChildren("workspace", NAMESPACE);
+        Iterator iter = spaces.iterator();
+        while (iter.hasNext()) {
+            Element e = (Element) iter.next();
+            Workspace ws = new Workspace();
+            ws.populate(e);
+            workspaces.add(ws);
+        }
+        setEntries((Entry[])workspaces.toArray(new Workspace[0]));
+    }
+

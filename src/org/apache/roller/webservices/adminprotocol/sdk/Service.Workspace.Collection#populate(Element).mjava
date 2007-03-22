@@ -1,0 +1,7 @@
+            public void populate(Element elem) {
+                setTitle(elem.getAttributeValue(Attributes.TITLE)); //, NAMESPACE));
+                setHref(elem.getAttributeValue(Entry.Attributes.HREF)); //, NAMESPACE));
+                Element typeElem = elem.getChild(Tags.MEMBER_TYPE, NAMESPACE);
+                setMemberType(typeElem.getText());
+            }
+
