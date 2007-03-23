@@ -16,6 +16,12 @@
         assertNotNull(page);
         assertEquals(testPage.getContents(), page.getContents());
         
+        // lookup by action
+        page = null;
+        page = mgr.getPageByAction(testWeblog, testPage.getAction());
+        assertNotNull(page);
+        assertEquals(testPage.getContents(), page.getContents());
+        
         // lookup by name
         page = null;
         page = mgr.getPageByName(testWeblog, testPage.getName());
