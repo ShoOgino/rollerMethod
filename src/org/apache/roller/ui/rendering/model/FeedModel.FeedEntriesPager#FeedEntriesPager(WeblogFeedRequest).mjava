@@ -1,0 +1,9 @@
+        public FeedEntriesPager(WeblogFeedRequest feedRequest) {
+            super(URLUtilities.getWeblogFeedURL(feedRequest.getWeblog(), 
+                    feedRequest.getLocale(), feedRequest.getType(),
+                    feedRequest.getFormat(), null, null, null, false, true), 
+                    feedRequest.getWeblog(), null, null, feedRequest.getTags(),
+                    feedRequest.getLocale(), -1, feedRequest.getPage(), DEFAULT_ENTRIES);
+            this.feedRequest = feedRequest;
+        }
+

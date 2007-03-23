@@ -3,22 +3,6 @@
      * request plus the weblog.entryDisplayCount.
      */
     public Pager getWeblogEntriesPager() {
-        
-        // all feeds get the site-wide default # of entries
-        int entryCount =
-                RollerRuntimeConfig.getIntProperty("site.newsfeeds.defaultEntries");
-        
-        String  pagerUrl = URLUtilities.getWeblogFeedURL(weblog, 
-                    feedRequest.getLocale(), feedRequest.getType(),
-                    feedRequest.getFormat(), feedRequest.getWeblogCategoryName(), 
-                    null, feedRequest.getTags(), feedRequest.isExcerpts(), true);
-       
-        return new WeblogEntriesListPager(
-            pagerUrl, weblog, null, feedRequest.getWeblogCategoryName(),
-            feedRequest.getTags(),
-            feedRequest.getLocale(),
-            -1,
-            feedRequest.getPage(), 
-            entryCount);        
+        return new FeedEntriesPager(feedRequest);        
     }
 
