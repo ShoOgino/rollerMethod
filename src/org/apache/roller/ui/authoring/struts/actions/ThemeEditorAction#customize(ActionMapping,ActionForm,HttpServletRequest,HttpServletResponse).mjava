@@ -32,7 +32,7 @@
                 String username = rses.getAuthenticatedUser().getUserName();
                 
                 try {
-                    Theme usersTheme = themeMgr.getTheme(website.getEditorTheme());
+                    Theme usersTheme = website.getTheme();
                     
                     // only if custom themes are allowed
                     if(RollerRuntimeConfig.getBooleanProperty("themes.customtheme.allowed")) {

@@ -14,18 +14,9 @@
         
         // first check if this user has selected a theme
         // if so then return the proper theme template
-        if(this.editorTheme != null && !this.editorTheme.equals(Theme.CUSTOM)) {
-            
-            try {
-                ThemeManager themeMgr = RollerFactory.getRoller().getThemeManager();
-                Theme usersTheme = themeMgr.getTheme(this.editorTheme);
-                template = usersTheme.getTemplateByAction(action);
-                
-            } catch(ThemeNotFoundException tnfe) {
-                // i sure hope not!
-                log.error(tnfe);
-            }
-            
+        Theme weblogTheme = getTheme();
+        if(weblogTheme != null) {
+            template = weblogTheme.getTemplateByAction(action);
         } else {
         
             // NOTE: we specifically do *NOT* return templates by action from the
