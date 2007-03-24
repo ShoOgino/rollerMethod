@@ -16,7 +16,6 @@
             saveErrors(request, errors);
             forward = mapping.findForward("createWebsite.page");
         } else try {
-            RollerContext rollerContext = RollerContext.getRollerContext();
             UserData user =
                     RollerSession.getRollerSession(request).getAuthenticatedUser();
             UserManager mgr = roller.getUserManager();

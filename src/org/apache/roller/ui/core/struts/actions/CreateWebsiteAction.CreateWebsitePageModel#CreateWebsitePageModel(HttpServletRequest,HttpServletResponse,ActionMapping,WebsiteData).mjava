@@ -2,7 +2,6 @@
                 HttpServletResponse response, ActionMapping mapping, WebsiteData wd)
                 throws RollerException {
             super("createWebsite.title", request, response, mapping);
-            RollerContext rollerContext = RollerContext.getRollerContext();
             Roller roller = RollerFactory.getRoller();
             ThemeManager themeMgr = roller.getThemeManager();
             themes = themeMgr.getEnabledThemesList();

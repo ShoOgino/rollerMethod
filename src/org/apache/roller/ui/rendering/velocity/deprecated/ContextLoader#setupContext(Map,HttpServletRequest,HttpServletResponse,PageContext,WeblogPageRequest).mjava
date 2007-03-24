@@ -11,8 +11,6 @@
         
         mLogger.debug("setupContext( ctx = "+ctx+")");
         
-        RollerContext rollerCtx = RollerContext.getRollerContext( );
-        
         WebsiteData weblog = null;
         WeblogEntryData entry = null;
         WeblogCategoryData category = null;
@@ -96,9 +94,9 @@
         
         // Load standard Roller objects and values into the context
         loadWeblogValues(ctx, weblog, pageRequest.getLocaleInstance(), request);
-        loadPathValues(ctx, request, rollerCtx, weblog, locale);
+        loadPathValues(ctx, request, weblog, locale);
         loadRssValues(ctx, request, weblog, category);
-        loadUtilityObjects(ctx, request, rollerCtx, weblog, page);
+        loadUtilityObjects(ctx, request, weblog, page);
         loadRequestParamKeys(ctx);
         loadStatusMessage(ctx, request);
         

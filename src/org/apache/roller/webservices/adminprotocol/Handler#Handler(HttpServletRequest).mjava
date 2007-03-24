@@ -1,7 +1,6 @@
     public Handler(HttpServletRequest request) throws HandlerException {
         this.request = request;
         this.uri = new URI(request);
-        this.rollerContext = RollerContext.getRollerContext();
         this.roller = RollerFactory.getRoller();
         //TODO: is this the right thing to do? hardcode roller-services?
         this.urlPrefix = RollerRuntimeConfig.getAbsoluteContextURL() + "/roller-services" + ENDPOINT;
