@@ -18,8 +18,31 @@
                 website = template.getWebsite();
             }
             
-            request.setAttribute("model", 
-                new WeblogTemplateFormModel("pagesForm.title", request, response, mapping, null));
+            WeblogTemplateFormModel model = 
+                    new WeblogTemplateFormModel("pagesForm.title", request, response, mapping, null);
+            request.setAttribute("model", model);
+            
+            List availableActions = new ArrayList();
+            availableActions.add(WeblogTemplate.ACTION_CUSTOM);
+            
+            if(Theme.CUSTOM.equals(website.getEditorTheme())) {
+                // if the weblog is using a custom theme then determine which
+                // action templates are still available to be created
+                availableActions.add(WeblogTemplate.ACTION_PERMALINK);
+                availableActions.add(WeblogTemplate.ACTION_SEARCH);
+                availableActions.add(WeblogTemplate.ACTION_WEBLOG);
+                
+                WeblogTemplate tmpPage = null;
+                Iterator pagesIter = model.getPages().iterator();
+                while(pagesIter.hasNext()) {
+                    tmpPage = (WeblogTemplate) pagesIter.next();
+                    
+                    if(!WeblogTemplate.ACTION_CUSTOM.equals(tmpPage.getAction())) {
+                        availableActions.remove(tmpPage.getAction());
+                    }
+                }
+            }
+            request.setAttribute("availableActions", availableActions);
             
             if (!rses.isUserAuthorizedToAdmin(website)) {
                 forward = mapping.findForward("access-denied");

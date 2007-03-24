@@ -30,10 +30,14 @@
                 WeblogTemplate page = new WeblogTemplate();
                 form.copyTo(page, request.getLocale());
                 page.setWebsite(website);
-                page.setAction(WeblogTemplate.ACTION_CUSTOM);
                 page.setLastModified( new Date() );
                 page.setDescription(page.getName());
                 page.setContents(bundle.getString("pageForm.newTemplateContent"));
+                
+                // if no action specified then it's a custom page
+                if(page.getAction() == null) {
+                    page.setAction(WeblogTemplate.ACTION_CUSTOM);
+                }
                 
                 validateLink(page);
                 
@@ -68,6 +72,9 @@
                 
                 request.setAttribute("model",
                     new WeblogTemplateFormModel("pagesForm.title", request, response, mapping, page));
+                
+                // TODO: when a new template is successfully added then we should
+                // take the user directly to edit that new page
                 
             } else {
                 forward = mapping.findForward("access-denied");
