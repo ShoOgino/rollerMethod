@@ -1,4 +1,7 @@
-    protected void upgradeDatabaseIfNeeded() throws RollerException {
+    /**
+     * Trigger any database upgrade work that needs to be done.
+     */
+    private void upgradeDatabaseIfNeeded() throws Exception {
         
         try {
             InitialContext ic = new InitialContext();
@@ -7,9 +10,9 @@
             UpgradeDatabase.upgradeDatabase(con, RollerFactory.getRoller().getVersion());
             con.close();
         } catch (NamingException e) {
-            mLogger.warn("Unable to access DataSource", e);
+            log.warn("Unable to access DataSource", e);
         } catch (SQLException e) {
-            mLogger.warn(e);
+            log.warn(e);
         }
     }
 

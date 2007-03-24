@@ -15,7 +15,7 @@
       try {
         clazz = Class.forName(clazzName);
       } catch (ClassNotFoundException e) {
-        mLogger.warn("Unable to found specified Auto Provision class.", e);
+        log.warn("Unable to found specified Auto Provision class.", e);
         return null;
       }
       
@@ -30,9 +30,9 @@
             try {
               return (AutoProvision) clazz.newInstance();
             } catch (InstantiationException e) {
-              mLogger.warn("InstantiationException while creating: " + clazzName, e);
+              log.warn("InstantiationException while creating: " + clazzName, e);
             } catch (IllegalAccessException e) {
-              mLogger.warn("IllegalAccessException while creating: " + clazzName, e);
+              log.warn("IllegalAccessException while creating: " + clazzName, e);
             }
           }
       }

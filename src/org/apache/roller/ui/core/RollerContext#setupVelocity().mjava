@@ -1,12 +1,15 @@
-    private void setupVelocity() throws RollerException {
+    /**
+     * Initialize the Velocity rendering engine.
+     */
+    private void setupVelocity() throws Exception {
         
-        mLogger.info("Initializing Velocity");
+        log.info("Initializing Velocity");
         
         // initialize the Velocity engine
         Properties velocityProps = new Properties();
         
         try {
-            InputStream instream = mContext.getResourceAsStream("/WEB-INF/velocity.properties");
+            InputStream instream = servletContext.getResourceAsStream("/WEB-INF/velocity.properties");
             
             velocityProps.load(instream);
             
@@ -19,7 +22,7 @@
                 velocityProps.setProperty("velocimacro.library", oldLibraries+","+macroLibraries);
             }
             
-            mLogger.debug("Velocity props = "+velocityProps);
+            log.debug("Velocity props = "+velocityProps);
             
             // init velocity
             RuntimeSingleton.init(velocityProps);

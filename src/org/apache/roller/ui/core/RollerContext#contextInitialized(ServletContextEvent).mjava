@@ -1,9 +1,11 @@
     /**
-     * Responds to context initialization event by processing context
-     * paramters for easy access by the rest of the application.
+     * Responds to app-init event and triggers startup procedures.
      */
     public void contextInitialized(ServletContextEvent sce) {
         
+        log.info("Roller Weblogger Initializing ...");
+        
+        // check that Hibernate code is in place
         try {
             Class.forName("org.hibernate.Session");
         } catch (Throwable t) {
@@ -12,14 +14,17 @@
                "FATAL ERROR: Hibernate not found, please refer to the Roller Installation Guide for instructions on how to install the required Hibernate jars");
         }
         
-        mLogger.debug("RollerContext initializing");
+        // keep a reverence to ServletContext object
+        this.servletContext = sce.getServletContext();
         
-        // Save context in self and self in context
-        mContext = sce.getServletContext();
-        mContext.setAttribute(ROLLER_CONTEXT, this);
-        
+        // call Spring's context ContextLoaderListener to initialize
+        // all the context files specified in web.xml. This is necessary
+        // because listeners don't initialize in the order specified in
+        // 2.3 containers
+        super.contextInitialized(sce);
+            
         // get the *real* path to <context>/resources
-        String ctxPath = mContext.getRealPath("/");
+        String ctxPath = servletContext.getRealPath("/");
         if(!ctxPath.endsWith(File.separator))
             ctxPath += File.separator + "resources";
         else
@@ -43,7 +48,7 @@
         // also, the RollerConfig.setThemesDir() method is smart
         // enough to disregard this call unless the themes.dir
         // is set to ${webapp.context}
-        RollerConfig.setThemesDir(mContext.getRealPath("/")+File.separator+"themes");
+        RollerConfig.setThemesDir(servletContext.getRealPath("/")+File.separator+"themes");
         
         try {
             // always upgrade database first
@@ -51,29 +56,22 @@
             
             Roller roller = RollerFactory.getRoller();
             
-            setupRollerProperties();
-            
-            // call Spring's context ContextLoaderListener to initialize
-            // all the context files specified in web.xml. This is necessary
-            // because listeners don't initialize in the order specified in
-            // 2.3 containers
-            super.contextInitialized(sce);
-            
-            initializeSecurityFeatures(mContext);
-            
+            setupRuntimeProperties();
+            initializeSecurityFeatures(servletContext);
+            setupSearch();
+            initializePingFeatures();
+            setupThemeLibrary();
+            setupScheduledTasks();
             setupVelocity();
-            roller.getThemeManager();
-            setupIndexManager(roller);
-            initializePingFeatures(roller);
-            setupTasks();
             
             roller.flush();
             roller.release();
             
         } catch (Throwable t) {
-            mLogger.fatal("RollerContext initialization failed", t);
+            log.fatal("Roller Weblogger initialization failed", t);
+            throw new RuntimeException(t);
         }
         
-        mLogger.debug("RollerContext initialization complete");
+        log.info("Roller Weblogger Initialization Complete");
     }
 

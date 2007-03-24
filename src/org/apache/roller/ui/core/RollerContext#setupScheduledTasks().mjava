@@ -1,4 +1,7 @@
-    private void setupTasks() throws RollerException {
+    /**
+     * Start up any scheduled background jobs.
+     */
+    private void setupScheduledTasks() throws Exception {
         
         ThreadManager tmgr = RollerFactory.getRoller().getThreadManager();
         
@@ -11,7 +14,7 @@
             
             String taskClassName = RollerConfig.getProperty("tasks."+tasks[i]+".class");
             if(taskClassName != null) {
-                mLogger.info("Initializing task: "+tasks[i]);
+                log.info("Initializing task: "+tasks[i]);
                 
                 try {
                     Class taskClass = Class.forName(taskClassName);
@@ -27,11 +30,11 @@
                     tmgr.scheduleFixedRateTimerTask(task, startTime, task.getInterval());
                     
                 } catch (ClassCastException ex) {
-                    mLogger.warn("Task does not extend RollerTask class", ex);
+                    log.warn("Task does not extend RollerTask class", ex);
                 } catch (RollerException ex) {
-                    mLogger.error("Error scheduling task", ex);
+                    log.error("Error scheduling task", ex);
                 } catch (Exception ex) {
-                    mLogger.error("Error instantiating task", ex);
+                    log.error("Error instantiating task", ex);
                 }
             }
         }

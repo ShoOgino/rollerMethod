@@ -1,5 +1,5 @@
     // Initialize ping features
-    private void initializePingFeatures(Roller roller) throws RollerException {
+    private void initializePingFeatures() throws RollerException {
         
         // Initialize common targets from the configuration
         PingConfig.initializeCommonTargets();
@@ -7,13 +7,13 @@
         PingConfig.initializePingVariants();
         // Remove custom ping targets if they have been disallowed
         if (PingConfig.getDisallowCustomTargets()) {
-            mLogger.info("Custom ping targets have been disallowed.  Removing any existing custom targets.");
-            roller.getPingTargetManager().removeAllCustomPingTargets();
+            log.info("Custom ping targets have been disallowed.  Removing any existing custom targets.");
+            RollerFactory.getRoller().getPingTargetManager().removeAllCustomPingTargets();
         }
         // Remove all autoping configurations if ping usage has been disabled.
         if (PingConfig.getDisablePingUsage()) {
-            mLogger.info("Ping usage has been disabled.  Removing any existing auto ping configurations.");
-            roller.getAutopingManager().removeAllAutoPings();
+            log.info("Ping usage has been disabled.  Removing any existing auto ping configurations.");
+            RollerFactory.getRoller().getAutopingManager().removeAllAutoPings();
         }
     }
 
