@@ -8,7 +8,10 @@
         
         try {
             PropertiesManager pmgr = RollerFactory.getRoller().getPropertiesManager();
-            value = pmgr.getProperty(name).getValue();
+            RollerPropertyData prop = pmgr.getProperty(name);
+            if(prop != null) {
+                value = prop.getValue();
+            }
         } catch(Exception e) {
             log.warn("Trouble accessing property: "+name, e);
         }
