@@ -55,10 +55,13 @@
                 key.append("/").append(cat);
             }
             
-            if(pageRequest.getTags() != null && pageRequest.getTags().size() > 0) {
-              String[] tags = new String[pageRequest.getTags().size()];
-              new TreeSet(pageRequest.getTags()).toArray(tags);
-              key.append("/tags/").append(Utilities.stringArrayToString(tags,"+"));
+            if("tags".equals(pageRequest.getContext())) {
+                key.append("/tags/");
+                if(pageRequest.getTags() != null && pageRequest.getTags().size() > 0) {
+                    Set ordered = new TreeSet(pageRequest.getTags());
+                    String[] tags = (String[]) ordered.toArray(new String[ordered.size()]);
+                    key.append(Utilities.stringArrayToString(tags,"+"));
+                }
             }
         }
         
