@@ -1,0 +1,14 @@
+    public String getCustomStylesheet() {
+        try {
+            Theme weblogTheme = getTheme();
+            if(weblogTheme != null) {
+                return weblogTheme.getCustomStylesheet();
+            } else {
+                return getCustomStylesheetPath();
+            }
+        } catch(RollerException re) {
+            // hmmm, some exception getting theme
+            return null;
+        }
+    }
+
