@@ -19,6 +19,11 @@
         newUser.grantRole("editor");
         if(adminUser) {
             newUser.grantRole("admin");
+            
+            //if user was disabled (because of activation user account with e-mail property), 
+            //enable it for admin user
+            newUser.setEnabled(Boolean.TRUE);
+            newUser.setActivationCode(null);
         }
         
         this.strategy.store(newUser);

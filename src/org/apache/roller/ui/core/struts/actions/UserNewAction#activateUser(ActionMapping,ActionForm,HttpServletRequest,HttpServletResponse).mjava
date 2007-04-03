@@ -1,0 +1,56 @@
+    /**
+     * Process GET of new user account activation page
+     * (allows to activate the user account )
+     */
+    public ActionForward activateUser(ActionMapping mapping,
+            ActionForm actionForm, HttpServletRequest request,
+            HttpServletResponse response) throws IOException, ServletException {
+        
+        ActionMessages errors = new ActionMessages();
+        
+        try {
+            UserManager mgr = RollerFactory.getRoller().getUserManager();
+            
+            if (request.getParameter("activationCode") == null) {
+                errors.add(ActionErrors.GLOBAL_ERROR, new ActionError(
+                        "error.activate.user.missingActivationCode"));
+            } else {
+                String activationCode = request.getParameter("activationCode").toString();                
+                UserData user = mgr.getUserByActivationCode(activationCode);
+                
+                if (user != null) {
+                    // enable user account
+                    user.setEnabled(Boolean.TRUE);
+                    user.setActivationCode(null);
+                    mgr.saveUser(user);
+                    RollerFactory.getRoller().flush();
+                    
+                    /**
+                     * activationStatus = 1:activated, 0:has to be activated,
+                     * -1:error
+                     */
+                    request.setAttribute("activationStatus", "1");
+                    
+                } else {
+                    errors.add(ActionErrors.GLOBAL_ERROR, new ActionError(
+                            "error.activate.user.invalidActivationCode"));
+                }
+            }
+            
+        } catch (RollerException e) {
+            errors.add(ActionErrors.GLOBAL_ERROR, new ActionError(e.getMessage()));
+            saveErrors(request, errors);
+            mLogger.error("ERROR in activateUser", e);
+        }
+        
+        if (!errors.isEmpty()) {
+            saveErrors(request, errors);
+            /**
+             * activationStatus = 1:activated, 0:has to be activated, -1:error
+             */
+            request.setAttribute("activationStatus", "-1");
+        }
+        
+        return mapping.findForward("welcome.page");
+    }
+
