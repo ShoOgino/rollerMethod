@@ -3,14 +3,8 @@
         try {
             props = this.getProperties();
             
-            if(props.size() < 1) {
-                // empty props table ... try migrating, then load defaults
-                props = migrateOldRollerConfig(props);
-                props = initializeMissingProps(props);
-            } else {
-                // found existing props ... check for new props
-                props = initializeMissingProps(props);
-            }
+            // check for new props
+            props = initializeMissingProps(props);
             
             // save our changes
             this.saveProperties(props);
