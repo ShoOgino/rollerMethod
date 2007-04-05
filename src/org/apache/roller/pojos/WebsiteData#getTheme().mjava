@@ -1,20 +1,10 @@
     /**
      * Get the Theme object in use by this weblog, or null if no theme selected.
      */
-    public Theme getTheme() throws RollerException {
+    public WeblogTheme getTheme() throws RollerException {
         
-        // if theme is custom or null then just return null
-        if(getEditorTheme() == null || Theme.CUSTOM.equals(getEditorTheme())) {
-            return null;
-        } else {
-            try {
-                ThemeManager themeMgr = RollerFactory.getRoller().getThemeManager();
-                return themeMgr.getTheme(getEditorTheme());
-            } catch(ThemeNotFoundException tnfe) {
-                // i sure hope not!
-                log.error("Unable to find theme = "+getEditorTheme(), tnfe);
-                return null;
-            }
-        }
+        // let the ThemeManager handle it
+        ThemeManager themeMgr = RollerFactory.getRoller().getThemeManager();
+        return themeMgr.getTheme(this);
     }
 

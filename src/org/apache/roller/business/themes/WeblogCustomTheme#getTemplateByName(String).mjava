@@ -1,0 +1,12 @@
+    /**
+     * Lookup the specified template by name.
+     * Returns null if the template cannot be found.
+     */
+    public ThemeTemplate getTemplateByName(String name) throws RollerException {
+        if(name == null)
+            return null;
+        
+        UserManager userMgr = RollerFactory.getRoller().getUserManager();
+        return userMgr.getPageByName(this.weblog, name);
+    }
+

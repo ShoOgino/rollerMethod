@@ -32,11 +32,16 @@
         // Get the pages, put into context & load map
         if (mWebsite != null) {
             
-            // Get the pages, put into context & load map
-            List pages = mWebsite.getPages();
+            List pages = Collections.EMPTY_LIST;
+            try {
+                pages = mWebsite.getPages();
+            } catch (RollerException ex) {
+                mLogger.error("error getting weblog pages", ex);
+            }
+            
             Iterator pageIter = pages.iterator();
             while (pageIter.hasNext()) {
-                Template page = (Template) pageIter.next();
+                ThemeTemplate page = (ThemeTemplate) pageIter.next();
                 mPageMap.put(page.getName(), TemplateWrapper.wrap(page));
             }
         }

@@ -1,0 +1,12 @@
+    /**
+     * Lookup the specified template by action.
+     * Returns null if the template cannot be found.
+     */
+    public ThemeTemplate getTemplateByAction(String action) throws RollerException {
+        if(action == null)
+            return null;
+        
+        UserManager userMgr = RollerFactory.getRoller().getUserManager();
+        return userMgr.getPageByAction(this.weblog, action);
+    }
+

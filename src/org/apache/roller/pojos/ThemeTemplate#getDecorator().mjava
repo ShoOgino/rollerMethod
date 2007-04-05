@@ -1,7 +1,6 @@
-    public Template getDecorator() {
-        if(decoratorName != null && !id.equals(decoratorName)) {
-            return myTheme.getTemplate(decoratorName);
-        }
-        return null;
-    }
+    /**
+     * The decorator Template to apply.  This returns null if no decorator
+     * should be applied.
+     */
+    public ThemeTemplate getDecorator();
 

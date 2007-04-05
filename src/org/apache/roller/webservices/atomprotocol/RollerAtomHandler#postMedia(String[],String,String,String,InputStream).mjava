@@ -32,7 +32,7 @@
                     fmgr.saveFile(website, path + fileName, contentType, tempFile.length(), fis);
                     fis.close();
                     
-                    WeblogResource resource = fmgr.getFile(website, path + fileName);
+                    ThemeResource resource = fmgr.getFile(website, path + fileName);
                     
                     // Throttle one entry per second
                     try { Thread.sleep(1000); } catch (Exception ignored) {}

@@ -1,0 +1,11 @@
+    public ThemeTemplate getDecorator() {
+        if(decoratorName != null && !id.equals(decoratorName)) {
+            try {
+                return myTheme.getTemplateByName(decoratorName);
+            } catch (RollerException ex) {
+                // some kind of error getting decorator
+            }
+        }
+        return null;
+    }
+

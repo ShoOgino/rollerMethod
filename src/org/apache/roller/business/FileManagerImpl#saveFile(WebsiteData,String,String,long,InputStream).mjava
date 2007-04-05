@@ -1,5 +1,5 @@
     /**
- * @see org.apache.roller.model.FileManager#saveFile(weblog, java.lang.String, java.lang.String, long, java.io.InputStream)
+     * @see org.apache.roller.model.FileManager#saveFile(weblog, java.lang.String, java.lang.String, long, java.io.InputStream)
      */
     public void saveFile(WebsiteData weblog, 
                          String path, 
@@ -21,6 +21,19 @@
         
         // make sure uploads area exists for this weblog
         File dirPath = this.getRealFile(weblog, null);
+        
+        // if we are saving into a subfolder, make sure it exists
+        if(path.indexOf("/") != -1) {
+            String subDir = path.substring(0, path.indexOf("/"));
+            File subDirFile = new File(dirPath.getAbsolutePath() + File.separator + subDir);
+            if(!subDirFile.exists()) {
+                // directory doesn't exist yet, create it
+                log.debug("Creating directory ["+subDir+"] automatically");
+                subDirFile.mkdir();
+            }
+        }
+        
+        // create File that we are about to save
         File saveFile = new File(dirPath.getAbsolutePath() + File.separator + savePath);
         
         byte[] buffer = new byte[8192];

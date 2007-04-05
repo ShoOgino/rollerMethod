@@ -35,22 +35,22 @@
         // first, see if we have a preview theme to operate from
         if(resourceRequest.getThemeName() != null) {
             Theme theme = resourceRequest.getTheme();
-            File resource = theme.getResource(resourceRequest.getResourcePath());
+            ThemeResource resource = theme.getResource(resourceRequest.getResourcePath());
             if(resource != null) {
-                resourceLastMod = resource.lastModified();
-                resourceStream = new FileInputStream(resource);
+                resourceLastMod = resource.getLastModified();
+                resourceStream = resource.getInputStream();
             }
         }
         
         // second, see if resource comes from weblog's configured shared theme
         if(resourceStream == null) {
             try {
-                Theme weblogTheme = weblog.getTheme();
+                WeblogTheme weblogTheme = weblog.getTheme();
                 if(weblogTheme != null) {
-                    File resource = weblogTheme.getResource(resourceRequest.getResourcePath());
+                    ThemeResource resource = weblogTheme.getResource(resourceRequest.getResourcePath());
                     if(resource != null) {
-                        resourceLastMod = resource.lastModified();
-                        resourceStream = new FileInputStream(resource);
+                        resourceLastMod = resource.getLastModified();
+                        resourceStream = resource.getInputStream();
                     }
                 }
             } catch (Exception ex) {
@@ -64,7 +64,7 @@
         if(resourceStream == null) {
             try {
                 FileManager fileMgr = RollerFactory.getRoller().getFileManager();
-                WeblogResource resource = fileMgr.getFile(weblog, 
+                ThemeResource resource = fileMgr.getFile(weblog, 
                         resourceRequest.getResourcePath());
                 resourceLastMod = resource.getLastModified();
                 resourceStream = resource.getInputStream();

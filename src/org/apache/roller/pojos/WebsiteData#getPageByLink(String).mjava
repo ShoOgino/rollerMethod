@@ -2,31 +2,17 @@
      * Lookup a template for this website by link.
      * @roller.wrapPojoMethod type="pojo"
      */
-    public Template getPageByLink(String link) throws RollerException {
+    public ThemeTemplate getPageByLink(String link) throws RollerException {
         
         if(link == null)
             return null;
         
-        log.debug("looking up template ["+link+"]");
-        
-        Template template = null;
-        
-        // first check if this user has selected a theme
-        // if so then return the proper theme template
+        // look for the page in our Theme
         Theme weblogTheme = getTheme();
         if(weblogTheme != null) {
-            template = weblogTheme.getTemplateByLink(link);
+            return weblogTheme.getTemplateByLink(link);
         }
         
-        // if we didn't get the Template from a theme then look in the db
-        if(template == null) {
-            UserManager userMgr = RollerFactory.getRoller().getUserManager();
-            template = userMgr.getPageByLink(this, link);
-        }
-        
-        if(template != null)
-            log.debug("returning template ["+template.getId()+"]");
-        
-        return template;
+        return null;
     }
 

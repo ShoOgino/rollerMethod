@@ -1,0 +1,41 @@
+    /**
+     * Get the collection of all templates associated with this Theme.
+     */
+    public List getTemplates() throws RollerException {
+        
+        Map pages = new TreeMap();
+        
+        // first get the pages from the db
+        try {
+            ThemeTemplate template = null;
+            UserManager userMgr = RollerFactory.getRoller().getUserManager();
+            Iterator dbPages = userMgr.getPages(this.weblog).iterator();
+            while(dbPages.hasNext()) {
+                template = (ThemeTemplate) dbPages.next();
+                pages.put(template.getName(), template);
+            }
+        } catch(Exception e) {
+            // db error
+            log.error(e);
+        }
+        
+        
+        // now get theme pages if needed and put them in place of db pages
+        try {
+            ThemeTemplate template = null;
+            Iterator themePages = this.theme.getTemplates().iterator();
+            while(themePages.hasNext()) {
+                template = (ThemeTemplate) themePages.next();
+                
+                // note that this will put theme pages over custom
+                // pages in the pages list, which is what we want
+                pages.put(template.getName(), template);
+            }
+        } catch(Exception e) {
+            // how??
+            log.error(e);
+        }
+        
+        return new ArrayList(pages.values());
+    }
+

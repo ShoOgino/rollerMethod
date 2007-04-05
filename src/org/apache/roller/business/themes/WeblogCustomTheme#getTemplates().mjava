@@ -1,0 +1,8 @@
+    /**
+     * Get the collection of all templates associated with this Theme.
+     */
+    public List getTemplates() throws RollerException {
+        UserManager userMgr = RollerFactory.getRoller().getUserManager();
+        return userMgr.getPages(this.weblog);
+    }
+

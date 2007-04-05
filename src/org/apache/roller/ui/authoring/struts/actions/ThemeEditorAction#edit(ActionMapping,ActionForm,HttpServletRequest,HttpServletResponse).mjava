@@ -29,16 +29,7 @@
                 String username = rses.getAuthenticatedUser().getUserName();
                 List themes = themeMgr.getEnabledThemesList();
                 
-                // TODO: hack to make 'custom' an actual Theme object
-                // maybe there should be an actual Theme representing custom themes?
-                Theme currentTheme = null;
-                if(Theme.CUSTOM.equals(website.getEditorTheme())) {
-                    currentTheme = new Theme();
-                    currentTheme.setId(Theme.CUSTOM);
-                    currentTheme.setName(Theme.CUSTOM);
-                } else {
-                    currentTheme = website.getTheme();
-                }
+                Theme currentTheme = website.getTheme();
                 
                 // this checks if the website has a default page template
                 // if not then we don't allow for a custom theme

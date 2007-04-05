@@ -1,0 +1,18 @@
+    /**
+     * Lookup the specified resource by path.
+     * Returns null if the resource cannot be found.
+     */
+    public ThemeResource getResource(String path) {
+        
+        ThemeResource resource = null;
+        
+        try {
+            FileManager fileMgr = RollerFactory.getRoller().getFileManager();
+            resource = fileMgr.getFile(this.weblog, path);
+        } catch (RollerException ex) {
+            // ignored, resource considered not found
+        }
+        
+        return resource;
+    }
+

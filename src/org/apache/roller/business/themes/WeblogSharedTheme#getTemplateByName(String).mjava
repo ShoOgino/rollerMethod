@@ -1,0 +1,24 @@
+    /**
+     * Lookup the specified template by name.
+     * Returns null if the template cannot be found.
+     */
+    public ThemeTemplate getTemplateByName(String name) throws RollerException {
+        
+        if(name == null)
+            return null;
+        
+        ThemeTemplate template = null;
+        
+        // first check if this user has selected a theme
+        // if so then return the proper theme template
+        template = this.theme.getTemplateByName(name);
+        
+        // if we didn't get the Template from a theme then look in the db
+        if(template == null) {
+            UserManager userMgr = RollerFactory.getRoller().getUserManager();
+            template = userMgr.getPageByName(this.weblog, name);
+        }
+        
+        return template;
+    }
+

@@ -1,7 +1,7 @@
     /**
      * @see org.apache.roller.model.FileManager#getFiles(weblog, java.lang.String)
      */
-    public WeblogResource[] getFiles(WebsiteData weblog, String path) 
+    public ThemeResource[] getFiles(WebsiteData weblog, String path) 
             throws FileNotFoundException, FilePathException {
         
         // get a reference to the dir, checks that dir exists & is readable
@@ -14,7 +14,7 @@
         }
         
         // everything looks good, list contents
-        WeblogResource dir = new WeblogResourceFile(weblog, path, dirFile);
+        ThemeResource dir = new WeblogResourceFile(weblog, path, dirFile);
         
         return dir.getChildren();
     }

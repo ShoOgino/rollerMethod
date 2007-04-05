@@ -1,0 +1,106 @@
+    /**
+     * Load all the elements of this theme from disk and cache them.
+     */
+    private void loadThemeFromDisk() {
+        
+        log.debug("Parsing theme descriptor for "+this.themeDir);
+        
+        ThemeMetadata themeMetadata = null;
+        try {
+            // lookup theme descriptor and parse it
+            ThemeMetadataParser parser = new ThemeMetadataParser();
+            InputStream is = new FileInputStream(this.themeDir + File.separator + "theme.xml");
+            themeMetadata = parser.unmarshall(is);
+        } catch (Exception ex) {
+            log.warn("Unable to parse theme descriptor for theme "+this.themeDir, ex);
+            return;
+        }
+        
+        log.debug("Loading Theme "+themeMetadata.getName());
+        
+        // use parsed theme descriptor to load Theme data
+        setId(themeMetadata.getId());
+        setName(themeMetadata.getName());
+        setDescription(themeMetadata.getName());
+        setAuthor(themeMetadata.getAuthor());
+        setCustomStylesheet(themeMetadata.getCustomStylesheet());
+        setLastModified(new Date());
+        setEnabled(true);
+        
+        // go through static resources and add them to the theme
+        String resourcePath = null;
+        Iterator resourcesIter = themeMetadata.getResources().iterator();
+        while (resourcesIter.hasNext()) {
+            resourcePath = (String) resourcesIter.next();
+            
+            // construct ThemeResource object from resource
+            File resourceFile = new File(this.themeDir + File.separator + resourcePath);
+            
+            // Continue reading theme even if problem encountered with one file
+            if(!resourceFile.exists() || !resourceFile.canRead()) {
+                log.warn("Couldn't read theme resource file ["+resourcePath+"]");
+                continue;
+            }
+            
+            // add it to the theme
+            setResource(resourcePath, new SharedThemeResourceFromDir(resourcePath, resourceFile));
+        }
+        
+        // go through templates and read in contents to a ThemeTemplate
+        ThemeTemplate theme_template = null;
+        ThemeMetadataTemplate templateMetadata = null;
+        Iterator templatesIter = themeMetadata.getTemplates().iterator();
+        while (templatesIter.hasNext()) {
+            templateMetadata = (ThemeMetadataTemplate) templatesIter.next();
+            
+            // construct File object from path
+            File templateFile = new File(this.themeDir + File.separator + 
+                    templateMetadata.getContentsFile());
+            
+            // Continue reading theme even if problem encountered with one file
+            if(!templateFile.exists() && !templateFile.canRead()) {
+                log.error("Couldn't read theme template file ["+templateFile+"]");
+                continue;
+            }
+            
+            char[] chars = null;
+            int length;
+            try {
+                chars = new char[(int) templateFile.length()];
+            	FileInputStream stream = new FileInputStream(templateFile);
+            	InputStreamReader reader = new InputStreamReader(stream, "UTF-8");
+                length = reader.read(chars);            
+            } catch (Exception noprob) {
+                log.error("Exception reading template file ["+templateFile+"]");
+                if (log.isDebugEnabled()) 
+                    log.debug(noprob);
+                continue;
+            }
+            
+            String decorator = "_decorator";
+            if("_decorator".equals(templateMetadata.getName())) {
+                decorator = null;
+            }
+            
+            // construct ThemeTemplate representing this file
+            // a few restrictions for now:
+            //   - decorator is always "_decorator" or null
+            theme_template = new SharedThemeTemplate(
+                    this,
+                    themeMetadata.getId()+":"+templateMetadata.getName(),
+                    templateMetadata.getAction(),
+                    templateMetadata.getName(),
+                    templateMetadata.getDescription(),
+                    new String(chars, 0, length),
+                    templateMetadata.getLink(),
+                    new Date(templateFile.lastModified()),
+                    templateMetadata.getTemplateLanguage(),
+                    templateMetadata.isHidden(),
+                    templateMetadata.isNavbar(),
+                    decorator);
+
+            // add it to the theme
+            addTemplate(theme_template);
+        }
+    }
+

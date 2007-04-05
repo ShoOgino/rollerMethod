@@ -1,0 +1,24 @@
+    /**
+     * Lookup the specified template by link.
+     * Returns null if the template cannot be found.
+     */
+    public ThemeTemplate getTemplateByLink(String link) throws RollerException {
+        
+        if(link == null)
+            return null;
+        
+        ThemeTemplate template = null;
+        
+        // first check if this user has selected a theme
+        // if so then return the proper theme template
+        template = this.theme.getTemplateByLink(link);
+        
+        // if we didn't get the Template from a theme then look in the db
+        if(template == null) {
+            UserManager userMgr = RollerFactory.getRoller().getUserManager();
+            template = userMgr.getPageByLink(this.weblog, link);
+        }
+        
+        return template;
+    }
+

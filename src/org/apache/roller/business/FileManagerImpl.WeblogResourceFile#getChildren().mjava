@@ -1,4 +1,4 @@
-        public WeblogResource[] getChildren() {
+        public ThemeResource[] getChildren() {
             
             if(!resourceFile.isDirectory()) {
                 return null;
@@ -11,8 +11,8 @@
                 }
             });
             
-            // convert Files into WeblogResources
-            WeblogResource[] resources = new WeblogResource[dirFiles.length];
+            // convert Files into ThemeResources
+            ThemeResource[] resources = new ThemeResource[dirFiles.length];
             for(int i=0; i < dirFiles.length; i++) {
                 String filePath = dirFiles[i].getName();
                 if(relativePath != null && !relativePath.trim().equals("")) {

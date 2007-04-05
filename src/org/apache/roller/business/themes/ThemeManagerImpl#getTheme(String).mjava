@@ -1,11 +1,11 @@
     /**
      * @see org.apache.roller.model.ThemeManager#getTheme(java.lang.String)
      */
-    public Theme getTheme(String id) 
+    public SharedTheme getTheme(String id) 
             throws ThemeNotFoundException, RollerException {
         
         // try to lookup theme from library
-        Theme theme = (Theme) this.themes.get(id);
+        SharedTheme theme = (SharedTheme) this.themes.get(id);
         
         // no theme?  throw exception.
         if(theme == null) {

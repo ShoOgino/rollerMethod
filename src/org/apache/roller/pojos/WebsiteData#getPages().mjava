@@ -2,44 +2,14 @@
      * Get a list of all pages that are part of this website.
      * @roller.wrapPojoMethod type="pojo-collection" class="org.apache.roller.pojos.Template"
      */
-    public List getPages() {
+    public List getPages() throws RollerException {
         
-        Map pages = new TreeMap();
-        
-        // first get the pages from the db
-        try {
-            Template template = null;
-            UserManager userMgr = RollerFactory.getRoller().getUserManager();
-            Iterator dbPages = userMgr.getPages(this).iterator();
-            while(dbPages.hasNext()) {
-                template = (Template) dbPages.next();
-                pages.put(template.getName(), template);
-            }
-        } catch(Exception e) {
-            // db error
-            log.error(e);
+        // look for the pages in our Theme
+        Theme weblogTheme = getTheme();
+        if(weblogTheme != null) {
+            return weblogTheme.getTemplates();
         }
         
-        
-        // now get theme pages if needed and put them in place of db pages
-        try {
-            Theme weblogTheme = getTheme();
-            if(weblogTheme != null) {
-                Template template = null;
-                Iterator themePages = weblogTheme.getTemplates().iterator();
-                while(themePages.hasNext()) {
-                    template = (Template) themePages.next();
-                    
-                    // note that this will put theme pages over custom
-                    // pages in the pages list, which is what we want
-                    pages.put(template.getName(), template);
-                }
-            }
-        } catch(Exception e) {
-            // how??
-            log.error(e);
-        }
-        
-        return new ArrayList(pages.values());
+        return Collections.EMPTY_LIST;
     }
 

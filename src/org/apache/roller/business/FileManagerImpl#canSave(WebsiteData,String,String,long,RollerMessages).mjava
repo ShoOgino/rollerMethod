@@ -53,20 +53,12 @@
         
         // fifth check, is save path viable?
         if(path.indexOf("/") != -1) {
-            // see if directory path exists already
-            String dirPath = path.substring(0, path.lastIndexOf("/"));
-            
-            try {
-                File parent = this.getRealFile(weblog, dirPath);
-                if(parent == null || !parent.exists()) {
-                    messages.addError("error.upload.badPath");
-                }
-            } catch (Exception ex) {
-                // this is okay, just means that parent dir doesn't exist
+            // just make sure there is only 1 directory, we don't allow multi
+            // level directory hierarchies right now
+            if(path.lastIndexOf("/") != path.indexOf("/")) {
                 messages.addError("error.upload.badPath");
                 return false;
             }
-            
         }
         
         return true;

@@ -1,7 +1,7 @@
     /**
      * @see org.apache.roller.model.FileManager#getDirectories(weblog)
      */
-    public WeblogResource[] getDirectories(WebsiteData weblog)
+    public ThemeResource[] getDirectories(WebsiteData weblog)
             throws FileNotFoundException, FilePathException {
         
         // get a reference to the root dir, checks that dir exists & is readable
@@ -14,8 +14,8 @@
             }
         });
         
-        // convert 'em to WeblogResource objects
-        WeblogResource[] resources = new WeblogResource[dirFiles.length];
+        // convert 'em to ThemeResource objects
+        ThemeResource[] resources = new ThemeResource[dirFiles.length];
         for(int i=0; i < dirFiles.length; i++) {
             String filePath = dirFiles[i].getName();
             resources[i] = new WeblogResourceFile(weblog, filePath, dirFiles[i]);

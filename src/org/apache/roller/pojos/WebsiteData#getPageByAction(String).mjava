@@ -3,32 +3,17 @@
      * 
      * @roller.wrapPojoMethod type="pojo"
      */
-    public Template getPageByAction(String action) throws RollerException {
+    public ThemeTemplate getPageByAction(String action) throws RollerException {
         
         if(action == null)
             return null;
         
-        log.debug("looking up template for action ["+action+"]");
-        
-        Template template = null;
-        
-        // first check if this user has selected a theme
-        // if so then return the proper theme template
+        // look for the page in our Theme
         Theme weblogTheme = getTheme();
         if(weblogTheme != null) {
-            template = weblogTheme.getTemplateByAction(action);
-        } else {
-        
-            // NOTE: we specifically do *NOT* return templates by action from the
-            // weblog's custom templates if the weblog is using a theme because we
-            // don't want old templates to take effect when using a specific theme
-            UserManager userMgr = RollerFactory.getRoller().getUserManager();
-            template = userMgr.getPageByAction(this, action);
+            return weblogTheme.getTemplateByAction(action);
         }
-
-        if(template != null)
-            log.debug("returning template ["+template.getId()+"]");
         
-        return template;
+        return null;
     }
 

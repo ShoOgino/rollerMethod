@@ -104,7 +104,7 @@
         
         
         // figure out what template to use
-        Template page = null;
+        ThemeTemplate page = null;
         
         // If this is a popup request, then deal with it specially
         // TODO: do we really need to keep supporting this?
@@ -118,7 +118,7 @@
             
             // User doesn't have one so return the default
             if(page == null) {
-                page = new StaticTemplate("templates/weblog/popupcomments.vm", null, "velocity");
+                page = new StaticThemeTemplate("templates/weblog/popupcomments.vm", "velocity");
             }
             
         // If request specified the page, then go with that
@@ -129,7 +129,7 @@
         } else if("tags".equals(pageRequest.getContext()) &&
                 pageRequest.getTags() == null) {
             try {
-                page = weblog.getPageByAction(Template.ACTION_TAGSINDEX);
+                page = weblog.getPageByAction(ThemeTemplate.ACTION_TAGSINDEX);
             } catch(Exception e) {
                 log.error("Error getting weblog page for action 'tagsIndex'", e);
             }
@@ -145,7 +145,7 @@
         // If this is a permalink then look for a permalink template
         } else if(pageRequest.getWeblogAnchor() != null) {
             try {
-                page = weblog.getPageByAction(Template.ACTION_PERMALINK);
+                page = weblog.getPageByAction(ThemeTemplate.ACTION_PERMALINK);
             } catch(Exception e) {
                 log.error("Error getting weblog page for action 'permalink'", e);
             }

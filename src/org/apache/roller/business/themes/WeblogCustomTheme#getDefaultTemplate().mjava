@@ -1,0 +1,5 @@
+    public ThemeTemplate getDefaultTemplate() throws RollerException {
+        UserManager userMgr = RollerFactory.getRoller().getUserManager();
+        return userMgr.getPageByAction(this.weblog, ThemeTemplate.ACTION_WEBLOG);
+    }
+
