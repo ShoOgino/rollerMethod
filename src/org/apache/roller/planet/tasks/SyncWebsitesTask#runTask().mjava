@@ -16,7 +16,8 @@
             UserManager userManager = RollerFactory.getRoller().getUserManager();
             
             // first, make sure there is an "all" planet group
-            PlanetGroupData group = planet.getGroup("all");
+            PlanetData planetObject = planet.getPlanet("all");
+            PlanetGroupData group = planet.getGroup(planetObject, "all");
             if(group == null) {
                 group = new PlanetGroupData();
                 group.setHandle("all");

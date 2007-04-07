@@ -5,7 +5,7 @@
         ActionForward forward = mapping.findForward("planetSubscriptions.page");
         try {
             if (RollerSession.getRollerSession(request).isGlobalAdminUser()) {
-                PlanetManager planet = PlanetFactory.getPlanet().getPlanetManager();
+                PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
                 PlanetSubscriptionFormEx form = (PlanetSubscriptionFormEx)actionForm;
                 
                 form.doReset(mapping, request);
@@ -14,7 +14,8 @@
                 groupHandle = (groupHandle == null) ? form.getGroupHandle() : groupHandle;
                 groupHandle = (groupHandle == null) ? "external" : groupHandle;
                 
-                PlanetGroupData targetGroup = planet.getGroup(groupHandle);
+                PlanetData defaultPlanet = pmgr.getPlanet("default_planet");
+                PlanetGroupData targetGroup = pmgr.getGroup(defaultPlanet, groupHandle);
                 form.setGroupHandle(groupHandle);
                 request.setAttribute("model",
                         new SubscriptionsPageModel(

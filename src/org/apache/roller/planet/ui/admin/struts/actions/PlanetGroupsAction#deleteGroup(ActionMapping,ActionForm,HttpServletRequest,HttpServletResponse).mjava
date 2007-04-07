@@ -9,12 +9,13 @@
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             if (RollerSession.getRollerSession(request).isGlobalAdminUser())
             {
-                PlanetManager planet = PlanetFactory.getPlanet().getPlanetManager();
+                PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
                 PlanetGroupForm form = (PlanetGroupForm)actionForm;
                 if (form.getHandle() != null)
                 {
-                    PlanetGroupData group = planet.getGroup(form.getHandle());
-                    planet.deleteGroup(group);
+                    PlanetData defaultPlanet = pmgr.getPlanet("default_planet");
+                    PlanetGroupData group = pmgr.getGroup(defaultPlanet, form.getHandle());
+                    pmgr.deleteGroup(group);
                     PlanetFactory.getPlanet().flush();
                     // TODO: why release here?
                     PlanetFactory.getPlanet().release();

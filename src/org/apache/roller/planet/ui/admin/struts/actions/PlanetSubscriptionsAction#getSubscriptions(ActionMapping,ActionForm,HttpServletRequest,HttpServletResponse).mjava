@@ -5,12 +5,12 @@
         ActionForward forward = mapping.findForward("planetSubscriptions.page");
         try {
             if (RollerSession.getRollerSession(request).isGlobalAdminUser()) {
-                PlanetManager planet = PlanetFactory.getPlanet().getPlanetManager();
+                PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
                 PlanetSubscriptionFormEx form = (PlanetSubscriptionFormEx)actionForm;
                 if (request.getParameter("feedUrl") != null) {
                     String feedUrl = request.getParameter("feedUrl");
                     PlanetSubscriptionData sub =
-                            planet.getSubscription(feedUrl);
+                            pmgr.getSubscription(feedUrl);
                     form.copyFrom(sub, request.getLocale());
                 } else {
                     form.doReset(mapping, request);
@@ -20,7 +20,8 @@
                 groupHandle = (groupHandle == null) ? form.getGroupHandle() : groupHandle;
                 groupHandle = (groupHandle == null) ? "external" : groupHandle;
                 
-                PlanetGroupData targetGroup = planet.getGroup(groupHandle);
+                PlanetData defaultPlanet = pmgr.getPlanet("default_planet");
+                PlanetGroupData targetGroup = pmgr.getGroup(defaultPlanet, groupHandle);
                 form.setGroupHandle(groupHandle);
                 request.setAttribute("model",
                         new SubscriptionsPageModel(

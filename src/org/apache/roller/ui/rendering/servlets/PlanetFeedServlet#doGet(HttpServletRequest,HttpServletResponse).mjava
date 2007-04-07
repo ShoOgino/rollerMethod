@@ -58,7 +58,8 @@
         try {
             // populate the rendering model
             if (request.getParameter("group") != null) {
-                model.put("group", planet.getGroup(request.getParameter("group")));
+                PlanetData planetObject = planet.getPlanet("default");
+                model.put("group", planet.getGroup(planetObject, request.getParameter("group")));
             }
             model.put("planet", planet);
             model.put("date", new Date());

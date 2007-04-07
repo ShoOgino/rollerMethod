@@ -6,20 +6,21 @@
         try {
             //RollerRequest rreq = RollerRequest.getRollerRequest(request);
             if (RollerSession.getRollerSession(request).isGlobalAdminUser()) {
-                PlanetManager planet = PlanetFactory.getPlanet().getPlanetManager();
+                PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
                 PlanetSubscriptionFormEx form = (PlanetSubscriptionFormEx)actionForm;
                 if (form.getId() != null) {
                     PlanetSubscriptionData sub =
-                            planet.getSubscriptionById(form.getId());
+                            pmgr.getSubscriptionById(form.getId());
                     
                     String groupHandle = request.getParameter("groupHandle");
                     groupHandle = (groupHandle == null) ? form.getGroupHandle() : groupHandle;
                     groupHandle = (groupHandle == null) ? "external" : groupHandle;
                     
-                    PlanetGroupData targetGroup = planet.getGroup(groupHandle);
+                    PlanetData defaultPlanet = pmgr.getPlanet("default_planet");
+                    PlanetGroupData targetGroup = pmgr.getGroup(defaultPlanet, groupHandle);
                     
                     targetGroup.getSubscriptions().remove(sub);
-                    planet.deleteSubscription(sub);
+                    pmgr.deleteSubscription(sub);
                     PlanetFactory.getPlanet().flush();
                     // TODO: why release here?
                     PlanetFactory.getPlanet().release();

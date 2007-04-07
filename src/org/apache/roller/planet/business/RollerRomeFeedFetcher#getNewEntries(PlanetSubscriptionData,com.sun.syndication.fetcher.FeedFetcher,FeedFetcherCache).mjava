@@ -1,15 +1,14 @@
+    // get new Entries for a specific Subscription
     protected Set getNewEntries(PlanetSubscriptionData sub,
-                                FeedFetcher feedFetcher,
+                                com.sun.syndication.fetcher.FeedFetcher feedFetcher,
                                 FeedFetcherCache feedInfoCache)
             throws RollerException {
         
         String localURL = RollerRuntimeConfig.getProperty("site.absoluteurl");
         
         // if this is not a local url then let parent deal with it
-        if (StringUtils.isEmpty(localURL) || !sub.getFeedURL().startsWith(localURL)) {
-            
-            log.debug("Feed is remote, letting parent handle it "+sub.getFeedURL());
-            
+        if (StringUtils.isEmpty(localURL) || !sub.getFeedURL().startsWith(localURL)) {            
+            log.debug("Feed is remote, letting parent handle it "+sub.getFeedURL());            
             return super.getNewEntries(sub, feedFetcher, feedInfoCache);
         }
         
@@ -30,6 +29,7 @@
                 
                 // figure website last update time
                 WeblogManager blogmgr = RollerFactory.getRoller().getWeblogManager();
+                PlanetManager planetManager = PlanetFactory.getPlanet().getPlanetManager();
                 
                 Date siteUpdated = website.getLastModified();
                 if (siteUpdated == null) { // Site never updated, skip it
@@ -59,7 +59,8 @@
                             entryCount);                 
                     
                     sub.setLastUpdated(siteUpdated);
-                    saveSubscription(sub);
+                    planetManager.saveSubscription(sub);
+                    PlanetFactory.getPlanet().flush();
                     
                 } else {
                     if (log.isDebugEnabled()) {
@@ -97,8 +98,10 @@
                         entry.setPermalink(rollerEntry.getPermalink());
                         entry.setCategoriesString(rollerEntry.getCategory().getPath());
         
-                        saveEntry(entry);
+                        planetManager.saveEntry(entry);
+                        PlanetFactory.getPlanet().flush();
                         newEntries.add(entry);
+                        
                     } catch (Exception e) {
                         log.error("ERROR processing subscription entry", e);
                     }

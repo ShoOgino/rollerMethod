@@ -9,12 +9,13 @@
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             if (RollerSession.getRollerSession(request).isGlobalAdminUser())
             {
-                PlanetManager planet = PlanetFactory.getPlanet().getPlanetManager();
+                PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
                 PlanetGroupForm form = (PlanetGroupForm)actionForm;
                 if (request.getParameter("groupHandle") != null)
                 {
-                    String feedUrl = request.getParameter("groupHandle");
-                    PlanetGroupData group = planet.getGroup(feedUrl);
+                    String handle = request.getParameter("groupHandle");
+                    PlanetData defaultPlanet = pmgr.getPlanet("default_planet");
+                    PlanetGroupData group = pmgr.getGroup(defaultPlanet, handle);
                     form.copyFrom(group, request.getLocale());
                 }
                 else 

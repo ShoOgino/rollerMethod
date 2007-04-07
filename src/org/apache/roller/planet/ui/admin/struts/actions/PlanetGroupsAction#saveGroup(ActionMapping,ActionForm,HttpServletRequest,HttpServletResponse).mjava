@@ -10,18 +10,20 @@
             if (RollerSession.getRollerSession(request).isGlobalAdminUser())
             {
                 PlanetGroupForm form = (PlanetGroupForm)actionForm;
-                PlanetManager planet = PlanetFactory.getPlanet().getPlanetManager();
-                ActionErrors errors = validate(planet, form);
+                PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
+                PlanetData defaultPlanet = pmgr.getPlanet("default_planet");
+                ActionErrors errors = validate(pmgr, form);
                 if (errors.isEmpty())
                 {
                     PlanetGroupData group = null;
                     if (form.getId() == null || form.getId().trim().length() == 0)
                     {
                         group = new PlanetGroupData();
+                        group.setPlanet(defaultPlanet);
                     }
                     else 
                     {
-                        group = planet.getGroupById(form.getId());
+                        group = pmgr.getGroupById(form.getId());
                     }                
                     form.copyTo(group, request.getLocale());
                     
@@ -32,7 +34,7 @@
                         group.setId(null);
                     }
                     
-                    planet.saveGroup(group);  
+                    pmgr.saveGroup(group);  
                     PlanetFactory.getPlanet().flush();
 
                     ActionMessages messages = new ActionMessages();

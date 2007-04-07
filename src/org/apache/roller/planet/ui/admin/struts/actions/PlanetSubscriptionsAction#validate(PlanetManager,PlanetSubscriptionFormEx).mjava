@@ -1,17 +1,18 @@
     /** Validate posted subscription, fill in blanks via Technorati */
     private ActionErrors validate(
-            PlanetManager planet, PlanetSubscriptionFormEx form) {
+            PlanetManager pmgr, PlanetSubscriptionFormEx form) {
         String technoratiTitle = null;
         String technoratiFeedUrl = null;
         int inboundlinks = -1;
         int inboundblogs = -1;
         if (form.getSiteURL()!=null && form.getSiteURL().trim().length() > 0) {
             try {
-                PlanetConfigData config = planet.getConfiguration();
+                PropertiesManager props = PlanetFactory.getPlanet().getPropertiesManager();
                 Technorati technorati = null;
-                if (config.getProxyHost()!=null && config.getProxyPort() > 0) {
-                    technorati = new Technorati(
-                            config.getProxyHost(), config.getProxyPort());
+                PropertyData proxyHostProp = props.getProperty("proxyHost");
+                PropertyData proxyPortProp = props.getProperty("proxyPort");
+                if (proxyHostProp != null && proxyPortProp != null) {
+                    technorati = new Technorati(proxyHostProp.getValue(), Integer.parseInt(proxyPortProp.getValue())); 
                 } else {
                     technorati = new Technorati();
                 }
