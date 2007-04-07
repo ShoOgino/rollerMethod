@@ -1,0 +1,18 @@
+    /** Deserialize a Atom workspace XML element into an object */
+    public static Workspace elementToWorkspace(Element element) {  
+        Element titleElem = element.getChild("title", AtomService.ATOM_FORMAT);        
+        String newTitle = titleElem.getText();
+        String newType = null;        
+        if (titleElem.getAttribute("type", AtomService.ATOM_FORMAT) != null) {
+            newType = titleElem.getAttribute("type", AtomService.ATOM_FORMAT).getValue();
+        }
+        Workspace space = new Workspace(newTitle, newType);
+        List collections = element.getChildren("collection", AtomService.ATOM_PROTOCOL);
+        Iterator iter = collections.iterator();
+        while (iter.hasNext()) {
+            Element e = (Element) iter.next();
+            space.addCollection(Collection.elementToCollection(e));
+        }
+        return space;
+    }
+

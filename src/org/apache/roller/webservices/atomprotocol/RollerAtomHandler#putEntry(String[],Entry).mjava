@@ -2,31 +2,33 @@
      * Update entry, URI like this /blog-name/entry/id
      */
     public Entry putEntry(String[] pathInfo, Entry entry) throws AtomException {
+        log.debug("Entering");
         try {
             if (pathInfo.length == 3) // URI is /blogname/entries/entryid
             {
                 WeblogEntryData rollerEntry =
-                    mRoller.getWeblogManager().getWeblogEntry(pathInfo[2]);
+                    roller.getWeblogManager().getWeblogEntry(pathInfo[2]);
                 if (rollerEntry == null) {
                     throw new AtomNotFoundException(
-                        "ERROR: cannot find specified entry/resource");  
+                        "Cannot find specified entry/resource");  
                 }
                 if (canEdit(rollerEntry)) {
-                    WeblogManager mgr = mRoller.getWeblogManager();
+                    WeblogManager mgr = roller.getWeblogManager();
                     copyToRollerEntry(entry, rollerEntry);
                     mgr.saveWeblogEntry(rollerEntry);
-                    mRoller.flush();
+                    roller.flush();
 
                     CacheManager.invalidate(rollerEntry.getWebsite());
                     reindexEntry(rollerEntry);
+                    log.debug("Exiting");
                     return createAtomEntry(rollerEntry);
                 }
                 throw new AtomNotAuthorizedException("ERROR not authorized to update entry");
             }
-            throw new AtomNotFoundException("ERROR: cannot find specified entry/resource");
+            throw new AtomNotFoundException("Cannot find specified entry/resource");
             
         } catch (RollerException re) {
-            throw new AtomException("ERROR: updating entry");
+            throw new AtomException("Updating entry");
         }
     }
 

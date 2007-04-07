@@ -2,37 +2,40 @@
      * Delete entry, URI like this /blog-name/entry/id
      */
     public void deleteEntry(String[] pathInfo) throws AtomException {
+        log.debug("Entering");
         try {
             if (pathInfo.length > 2) {
                 if (pathInfo[1].equals("entry")) // URI is /blogname/entry/entryid
                 {                    
-                    WeblogEntryData rollerEntry = mRoller.getWeblogManager().getWeblogEntry(pathInfo[2]);
+                    WeblogEntryData rollerEntry = roller.getWeblogManager().getWeblogEntry(pathInfo[2]);
                     if (rollerEntry == null) {
-                        throw new AtomNotFoundException("ERROR: cannot find specified entry/resource");
+                        throw new AtomNotFoundException("cannot find specified entry/resource");
                     }
                     if (canEdit(rollerEntry)) {
-                        WeblogManager mgr = mRoller.getWeblogManager();
+                        WeblogManager mgr = roller.getWeblogManager();
                         mgr.removeWeblogEntry(rollerEntry);
-                        mRoller.flush();
+                        log.debug("Deleted entry:" + rollerEntry.getAnchor());
+                        roller.flush();
                         CacheManager.invalidate(rollerEntry.getWebsite());                        
                         reindexEntry(rollerEntry);
                         return;
                     } 
                 } else if (pathInfo[1].equals("resource")) {
                     String handle = pathInfo[0];
-                    WebsiteData website = mRoller.getUserManager().getWebsiteByHandle(handle);
+                    WebsiteData website = roller.getUserManager().getWebsiteByHandle(handle);
                     if (website == null) {
-                        throw new AtomNotFoundException("ERROR: cannot find specified weblog");
+                        throw new AtomNotFoundException("cannot find specified weblog");
                     }
                     if (canEdit(website) && pathInfo.length > 1) {
                         try {                            
                             String path = filePathFromPathInfo(pathInfo);
                             String fileName = path.substring(0, path.length() - ".media-link".length());
-                            FileManager fmgr = mRoller.getFileManager();
+                            FileManager fmgr = roller.getFileManager();
                             fmgr.deleteFile(website, fileName);
+                            log.debug("Deleted resource: " + fileName);
                         } catch (Exception e) {
                             String msg = "ERROR in atom.deleteResource";
-                            mLogger.error(msg,e);
+                            log.error(msg,e);
                             throw new AtomException(msg);
                         }
                         return;
@@ -40,10 +43,10 @@
                 }
                 throw new AtomNotAuthorizedException("ERROR not authorized to delete entry");
             }
-            throw new AtomNotFoundException("ERROR: cannot find specified entry/resource");
+            throw new AtomNotFoundException("cannot find specified entry/resource");
             
         } catch (RollerException re) {
-            throw new AtomException("ERROR: deleting entry");
+            throw new AtomException("deleting entry");
         }
     }
 

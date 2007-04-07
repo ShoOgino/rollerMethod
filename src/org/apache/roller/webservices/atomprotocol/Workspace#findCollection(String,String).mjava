@@ -1,0 +1,12 @@
+    public Collection findCollection(String title, String contentType) {
+        for (Iterator it = collections.iterator(); it.hasNext();) {
+            Collection col = (Collection) it.next();
+            if (title != null && col.accepts(contentType)) {
+                return col;
+            } else if (col.accepts(contentType)) {
+                return col;
+            }
+        }
+        return null;
+    }
+

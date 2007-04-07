@@ -4,10 +4,12 @@
      */
     public Entry putMedia(String[] pathInfo,
             String contentType, InputStream is) throws AtomException {
+        log.debug("Entering");
         if (pathInfo.length > 2) {
             String name = pathInfo[pathInfo.length - 1];
+            log.debug("Exiting");
             return postMedia(pathInfo, name, name, contentType, is);
         }
-        throw new AtomException("ERROR: bad pathInfo");
+        throw new AtomException("Bad pathInfo");
     }
 

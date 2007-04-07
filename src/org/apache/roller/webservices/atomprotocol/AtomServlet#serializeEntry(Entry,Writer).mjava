@@ -17,23 +17,21 @@
         // Grab entry element from feed and get JDOM to serialize it
         Element entryElement= (Element)feedDoc.getRootElement().getChildren().get(0);
         
-        // Add our own namespaced element, so we can determine if we can 
-        // count on client to preserve foreign markup as it should.
         Element rollerElement = new Element("atom-draft", 
-            "http://rollerweblogger.org/namespaces/app");
-        rollerElement.setText("12");
+            "http://roller.apache.org/namespaces/app");
+        rollerElement.setText("14");
         entryElement.addContent(rollerElement);
         
         XMLOutputter outputter = new XMLOutputter();
         outputter.setFormat(Format.getPrettyFormat());
         
-        if (mLogger.isDebugEnabled()) {
+        if (log.isDebugEnabled()) {
             StringWriter sw = new StringWriter();
             outputter.output(entryElement, sw); 
-            mLogger.debug(sw.toString());
+            log.debug(sw.toString());
             writer.write(sw.toString()); 
         } else {
             outputter.output(entryElement, writer);
-        }        
+        } 
     }
 

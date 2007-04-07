@@ -1,0 +1,10 @@
+    public Workspace findWorkspace(String title) {
+        for (Iterator it = workspaces.iterator(); it.hasNext();) {
+            Workspace ws = (Workspace) it.next();
+            if (title.equals(ws.getTitle())) {
+                return ws;
+            }
+        }
+        return null;
+    }
+

@@ -4,17 +4,16 @@
      * then user's name, otherwise it will return null.
      */
     public RollerAtomHandler(HttpServletRequest request) {
-        mRequest = request;
-        mRoller = RollerFactory.getRoller();
+        roller = RollerFactory.getRoller();
         
         // TODO: decide what to do about authentication, is WSSE going to fly?
         //String userName = authenticateWSSE(request);
         String userName = authenticateBASIC(request);
         if (userName != null) {
             try {
-                this.user = mRoller.getUserManager().getUserByUserName(userName);
+                this.user = roller.getUserManager().getUserByUserName(userName);
             } catch (Exception neverHappen) {
-                mLogger.debug("ERROR: getting user", neverHappen);
+                log.debug("Getting user", neverHappen);
             } 
         }
     }

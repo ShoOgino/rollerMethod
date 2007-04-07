@@ -1,12 +1,14 @@
-    /** Serialize an AtomService object into an XML document */
+    /**
+     * Serialize an AtomService object into an XML document
+     */
     public static Document serviceToDocument(AtomService service) {
         Document doc = new Document();
-        Element root = new Element("service", ns);
+        Element root = new Element("service", ATOM_PROTOCOL);
         doc.setRootElement(root);
         Iterator iter = service.getWorkspaces().iterator();
         while (iter.hasNext()) {
-            AtomService.Workspace space = (AtomService.Workspace) iter.next();
-            root.addContent(AtomService.workspaceToElement(space));
+            Workspace space = (Workspace) iter.next();
+            root.addContent(Workspace.workspaceToElement(space));
         }
         return doc;
     }

@@ -2,19 +2,18 @@
      * Retrieve entry, URI like this /blog-name/entry/id
      */
     public Entry getEntry(String[] pathInfo) throws AtomException {
+        log.debug("Entering");
         try {
             if (pathInfo.length > 2) // URI is /blogname/entries/entryid
             {
                 if (pathInfo[1].equals("entry")) {
                     WeblogEntryData entry = 
-                        mRoller.getWeblogManager().getWeblogEntry(pathInfo[2]);
+                        roller.getWeblogManager().getWeblogEntry(pathInfo[2]);
                     if (entry == null) {
-                        throw new AtomNotFoundException(
-                            "ERROR: cannot find specified entry/resource");
+                        throw new AtomNotFoundException("Cannot find specified entry/resource");
                     }
                     if (!canView(entry)) {
-                        throw new AtomNotAuthorizedException(
-                            "ERROR: not authorized to view entry");
+                        throw new AtomNotAuthorizedException("Not authorized to view entry");
                     } else {
                         return createAtomEntry(entry);
                     }
@@ -23,16 +22,17 @@
                     String fileName = path.substring(0, path.length() - ".media-link".length());
                     String handle = pathInfo[0];
                     WebsiteData website = 
-                        mRoller.getUserManager().getWebsiteByHandle(handle);                    
+                        roller.getUserManager().getWebsiteByHandle(handle);                    
                     ThemeResource resource = 
-                        mRoller.getFileManager().getFile(website, fileName);
+                        roller.getFileManager().getFile(website, fileName);
+                    
+                    log.debug("Exiting");
                     if (resource != null) return createAtomResourceEntry(website, resource);
                 }
             }
-            throw new AtomNotFoundException(
-                "ERROR: cannot find specified entry/resource");
+            throw new AtomNotFoundException("Cannot find specified entry/resource");
         } catch (RollerException re) {
-            throw new AtomException("ERROR: getting entry");
+            throw new AtomException("Getting entry");
         }
     }
 

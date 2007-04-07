@@ -5,6 +5,7 @@
      */
     private AtomHandler createAtomRequestHandler(HttpServletRequest request) 
     throws ServletException {
+        log.debug("Creating Atom handler");
         boolean enabled = RollerConfig.getBooleanProperty(
             "webservices.atomprotocol.enabled");
         if (!enabled) {

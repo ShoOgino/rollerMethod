@@ -7,18 +7,21 @@
     public Entry postMedia(String[] pathInfo,
             String title, String slug, String contentType, InputStream is)
             throws AtomException {
+        log.debug("Entering");
         try {
             // authenticated client posted a weblog entry
             File tempFile = null;
-            RollerMessages msgs = new RollerMessages();
             String handle = pathInfo[0];
-            WebsiteData website =
-                mRoller.getUserManager().getWebsiteByHandle(handle);
-            if (canEdit(website) && pathInfo.length > 1) {
-                // save to temp file
+            FileManager fmgr = roller.getFileManager();
+            UserManager umgr = roller.getUserManager();
+            WebsiteData website = umgr.getWebsiteByHandle(handle);
+            if (!canEdit(website)) {
+                throw new AtomNotAuthorizedException("Not authorized to edit weblog: " + handle);
+            }
+            if (pathInfo.length > 1) {
+                // Save to temp file
                 String fileName = createFileName(website, (slug != null) ? slug : title, contentType);
                 try {
-                    FileManager fmgr = mRoller.getFileManager();
                     tempFile = File.createTempFile(fileName, "tmp");
                     FileOutputStream fos = new FileOutputStream(tempFile);
                     Utilities.copyInputToOutput(is, fos);
@@ -28,30 +31,34 @@
                     String path = filePathFromPathInfo(pathInfo);
                     
                     if (path.length() > 0) path = path + File.separator;
-                    FileInputStream fis = new FileInputStream(tempFile);                   
+                    FileInputStream fis = new FileInputStream(tempFile);  
                     fmgr.saveFile(website, path + fileName, contentType, tempFile.length(), fis);
                     fis.close();
                     
                     ThemeResource resource = fmgr.getFile(website, path + fileName);
                     
-                    // Throttle one entry per second
+                    // Throttle one entry per second because blog entry dates 
+                    // are represented by timpstamps in MySQL and therefore 
+                    // have only have 1 second resolution
                     try { Thread.sleep(1000); } catch (Exception ignored) {}
-
+                    
+                    log.debug("Exiting");
                     return createAtomResourceEntry(website, resource);
 
-                } catch (IOException e) {
-                    String msg = "ERROR reading posted file";
-                    mLogger.error(msg,e);
-                    throw new AtomException(msg, e);
+                } catch (FileIOException fie) {
+                    throw new AtomException(
+                        "File upload disabled, over-quota or other error", fie);
+                } catch (Exception e) {
+                    throw new AtomException(
+                        "Unexpected error during file upload", e);
                 } finally {
                     if (tempFile != null) tempFile.delete();
                 }
             }
-            // TODO: AtomUnsupportedMediaType and AtomRequestEntityTooLarge needed?
-            throw new AtomException("File upload denied because:" + msgs.toString());
+            throw new AtomException("Incorrect path information");
         
         } catch (RollerException re) {
-            throw new AtomException("ERROR: posting media");
+            throw new AtomException("Posting media");
         }
     }
 

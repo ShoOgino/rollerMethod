@@ -3,19 +3,19 @@
      * The workspace will contain collections for entries, categories and resources.
      */
     public AtomService getIntrospection() throws AtomException {
+        log.debug("Entering");
         AtomService service = new AtomService();
         List perms = null;
         try {
-            perms = mRoller.getUserManager().getAllPermissions(user);
-
+            perms = roller.getUserManager().getAllPermissions(user);
         } catch (RollerException re) {
-            throw new AtomException("ERROR: getting user's weblogs", re);
+            throw new AtomException("Getting user's weblogs", re);
         }
         String accept = null;
         try {
             accept = getAcceptedContentTypeRange();
         } catch (RollerException re) {
-            throw new AtomException("ERROR: getting site's accept range", re);
+            throw new AtomException("Getting site's accept range", re);
         }
         if (perms != null) {
             for (Iterator iter=perms.iterator(); iter.hasNext();) {
@@ -23,25 +23,24 @@
                 String handle = perm.getWebsite().getHandle();
                 
                 // Create workspace to represent weblog
-                AtomService.Workspace workspace = new AtomService.Workspace();
-                workspace.setTitle(Utilities.removeHTML(perm.getWebsite().getName()));
+                Workspace workspace = new Workspace(
+                    Utilities.removeHTML(perm.getWebsite().getName()), "text");
                 service.addWorkspace(workspace);
                 
                 // Create collection for entries within that workspace
-                AtomService.Collection entryCol = new AtomService.Collection();
-                entryCol.setTitle("Weblog Entries");
+                Collection entryCol = new Collection("Weblog Entries", "text", 
+                    URLUtilities.getAtomProtocolURL(true)+"/"+handle+"/entries");
                 entryCol.setAccept("entry");
-                entryCol.setHref(URLUtilities.getAtomProtocolURL(true)+"/"+handle+"/entries");
                 try {  
                     // Add fixed categories using scheme that points to 
                     // weblog because categories are weblog specific
-                    AtomService.Categories cats = new AtomService.Categories();
+                    Categories cats = new Categories();
                     cats.setFixed(true);
                     cats.setScheme(getWeblogCategoryScheme(perm.getWebsite()));
-                    List rollerCats = mRoller.getWeblogManager().getWeblogCategories(perm.getWebsite(), false);
+                    List rollerCats = roller.getWeblogManager().getWeblogCategories(perm.getWebsite(), false);
                     for (Iterator it = rollerCats.iterator(); it.hasNext();) {
                         WeblogCategoryData rollerCat = (WeblogCategoryData)it.next();
-                        AtomService.Category cat = new AtomService.Category();
+                        Category cat = new Category();
                         cat.setTerm(rollerCat.getPath().substring(1));
                         cat.setLabel(rollerCat.getName());
                         cats.addCategory(cat);
@@ -50,43 +49,41 @@
                     
                     // Add tags as free-form categories using scheme that points
                     // to site because tags can be considered site-wide
-                    AtomService.Categories tags = new AtomService.Categories();
+                    Categories tags = new Categories();
                     tags.setFixed(false);
                     entryCol.addCategories(tags);
                     
                 } catch (Exception e) {
-                    throw new AtomException("ERROR fetching weblog categories");
+                    throw new AtomException("Fetching weblog categories");
                 }                               
                 workspace.addCollection(entryCol);
 
                 // Add media collection for upload dir
-                AtomService.Collection uploadCol = new AtomService.Collection();
-                uploadCol.setTitle("Media Files");
-                uploadCol.setAccept(accept);
-                uploadCol.setHref(
+                Collection uploadCol = new Collection("Media Files", "text", 
                     URLUtilities.getAtomProtocolURL(true)+"/"+handle+"/resources/");
+                uploadCol.setAccept(accept);
                 workspace.addCollection(uploadCol);
 
                 // And add one media collection for each of weblog's upload sub-directories
                 ThemeResource[] dirs;
                 try {
-                    dirs = mRoller.getFileManager().getDirectories(perm.getWebsite());
+                    dirs = roller.getFileManager().getDirectories(perm.getWebsite());
                     for (int i=0; i<dirs.length; i++) {
-                        AtomService.Collection uploadSubCol = new AtomService.Collection();
-                        uploadSubCol.setTitle("Media Files: " + dirs[i].getPath());
-                        uploadSubCol.setAccept(accept);
-                        uploadSubCol.setHref(
+                        Collection uploadSubCol = new Collection(
+                            "Media Files: " + dirs[i].getPath(), "text",
                             URLUtilities.getAtomProtocolURL(true)+"/"+handle+"/resources/" + dirs[i].getPath());
+                        uploadSubCol.setAccept(accept);
                         workspace.addCollection(uploadSubCol);
                     }
                 } catch (FilePathException fpe) {
-                    throw new AtomException("ERROR getting uploads directories information", fpe);
+                    throw new AtomException("Getting uploads directories information", fpe);
                 } catch (FileNotFoundException fnfe) {
-                    throw new AtomException("ERROR getting uploads directories information", fnfe);
+                    throw new AtomException("Getting uploads directories information", fnfe);
                 }
 
             }
         }
+        log.debug("Exiting");
         return service;
     }
 

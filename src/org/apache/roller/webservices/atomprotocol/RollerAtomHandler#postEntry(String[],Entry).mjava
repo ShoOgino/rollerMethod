@@ -2,36 +2,38 @@
      * Create entry in the entry collection (a Roller blog has only one).
      */
     public Entry postEntry(String[] pathInfo, Entry entry) throws AtomException {
+        log.debug("Entering");
         try {
             // authenticated client posted a weblog entry
             String handle = pathInfo[0];
             WebsiteData website = 
-                mRoller.getUserManager().getWebsiteByHandle(handle);
+                roller.getUserManager().getWebsiteByHandle(handle);
             if (website == null) {
-                throw new AtomNotFoundException("ERROR: cannot find specified weblog");
+                throw new AtomNotFoundException("Cannot find weblog: " + handle);
             }
-            if (canEdit(website)) {
-                // Save it and commit it
-                WeblogManager mgr = mRoller.getWeblogManager();
-                WeblogEntryData rollerEntry = new WeblogEntryData();
-                rollerEntry.setWebsite(website);
-                rollerEntry.setCreator(this.user);
-                copyToRollerEntry(entry, rollerEntry);
-                mgr.saveWeblogEntry(rollerEntry);
-                mRoller.flush();
-
-                // Throttle one entry per second
-                try { Thread.sleep(1000); } catch (Exception ignored) {}
-
-                CacheManager.invalidate(website);
-                reindexEntry(rollerEntry);
-                return createAtomEntry(rollerEntry);
+            if (!canEdit(website)) {
+                throw new AtomNotAuthorizedException("Not authorized to access website: " + handle);
             }
-            throw new AtomNotAuthorizedException(
-                "ERROR: not authorized to access website");
+            // Save it and commit it
+            WeblogManager mgr = roller.getWeblogManager();
+            WeblogEntryData rollerEntry = new WeblogEntryData();
+            rollerEntry.setWebsite(website);
+            rollerEntry.setCreator(this.user);
+            copyToRollerEntry(entry, rollerEntry);
+            mgr.saveWeblogEntry(rollerEntry);
+            roller.flush();
+
+            // Throttle one entry per second
+            try { Thread.sleep(1000); } catch (Exception ignored) {}
+
+            CacheManager.invalidate(website);
+            reindexEntry(rollerEntry);
             
+            log.debug("Exiting");
+            return createAtomEntry(rollerEntry);
+
         } catch (RollerException re) {
-            throw new AtomException("ERROR: posting entry");
+            throw new AtomException("Posting entry", re);
         }
     }
 

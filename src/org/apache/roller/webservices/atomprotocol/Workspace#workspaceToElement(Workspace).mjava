@@ -1,0 +1,21 @@
+    /**
+     * Serialize an AtomService.DefaultWorkspace object into an XML element
+     */
+    public static Element workspaceToElement(Workspace space) {
+        Element element = new Element("workspace", AtomService.ATOM_PROTOCOL);
+        
+        Element title = new Element("title", AtomService.ATOM_FORMAT);
+        title.setText(space.getTitle());
+        element.addContent(title);
+        if (space.getTitleType() != null && !space.getTitleType().equals("TEXT")) {
+            element.setAttribute("type", space.getTitleType(), AtomService.ATOM_FORMAT);
+        }
+        
+        Iterator iter = space.getCollections().iterator();
+        while (iter.hasNext()) {
+            Collection col = (Collection) iter.next();
+            element.addContent(Collection.collectionToElement(col));
+        }
+        return element;
+    }
+

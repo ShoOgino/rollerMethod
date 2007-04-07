@@ -31,7 +31,7 @@
         }
         String digest = null;
         try {
-            UserData user = mRoller.getUserManager().getUserByUserName(userName);
+            UserData user = roller.getUserManager().getUserByUserName(userName);
             digest = WSSEUtilities.generateDigest(
                     WSSEUtilities.base64Decode(nonce),
                     created.getBytes("UTF-8"),
@@ -40,7 +40,7 @@
                 ret = userName;
             }
         } catch (Exception e) {
-            mLogger.error("ERROR in wsseAuthenticataion: " + e.getMessage(), e);
+            log.error("During wsseAuthenticataion: " + e.getMessage(), e);
         }
         return ret;
     }
