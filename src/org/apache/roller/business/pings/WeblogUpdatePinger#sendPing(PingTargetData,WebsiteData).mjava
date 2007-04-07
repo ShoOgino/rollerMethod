@@ -13,19 +13,22 @@
         Set variantOptions = PingConfig.getVariantOptions(pingTargetUrl);
 
         // Set up the ping parameters.
-        Vector params = new Vector();
+        List params = new ArrayList();
         if (!variantOptions.contains("noname")) {
             // ping variant for icerocket and anyone with similar bug, where we must omit the blog name.
-            params.addElement(website.getName());
+            params.add(website.getName());
         }
-        params.addElement(websiteUrl);
+        params.add(websiteUrl);
         if (logger.isDebugEnabled()) {
             logger.debug("Executing ping to '" + pingTargetUrl + "' for website '" + websiteUrl + "' (" + website.getName() + ")" + (variantOptions.isEmpty() ? "" : " with variant options " + variantOptions));
         }
 
-        // Send the ping.
-        XmlRpcClient client = new XmlRpcClient(pingTargetUrl);
-        PingResult pingResult = parseResult(client.execute("weblogUpdates.ping", params));
+        // Send the ping.        
+        XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
+        config.setServerURL(new URL(pingTargetUrl));
+        XmlRpcClient client = new XmlRpcClient();
+        client.setConfig(config);
+        PingResult pingResult = parseResult(client.execute("weblogUpdates.ping", params.toArray()));
 
         if (logger.isDebugEnabled()) logger.debug("Ping result is: " + pingResult);
         return pingResult;
