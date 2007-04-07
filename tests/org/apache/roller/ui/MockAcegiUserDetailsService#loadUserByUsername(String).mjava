@@ -1,0 +1,7 @@
+    public UserDetails loadUserByUsername(String string) throws UsernameNotFoundException, DataAccessException {
+        GrantedAuthority[] authorities =  new GrantedAuthority[] {
+            new GrantedAuthorityImpl("editor"), 
+            new GrantedAuthorityImpl("admin")};      
+        return new User("test", "test", true, true, true, true, authorities);
+    }
+
