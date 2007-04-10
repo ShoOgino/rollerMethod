@@ -13,7 +13,7 @@
                 PlanetGroupForm form = (PlanetGroupForm)actionForm;
                 if (form.getHandle() != null)
                 {
-                    PlanetData defaultPlanet = pmgr.getPlanet("default_planet");
+                    PlanetData defaultPlanet = pmgr.getPlanet("zzz_default_planet_zzz");
                     PlanetGroupData group = pmgr.getGroup(defaultPlanet, form.getHandle());
                     pmgr.deleteGroup(group);
                     PlanetFactory.getPlanet().flush();

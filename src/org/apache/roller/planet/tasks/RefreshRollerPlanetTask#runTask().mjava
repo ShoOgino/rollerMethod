@@ -1,0 +1,15 @@
+    public void runTask() {
+        try {            
+            // Update all feeds in planet
+            log.info("Refreshing Planet entries");
+            Planet planet = PlanetFactory.getPlanet();
+            planet.getFeedFetcher().refreshEntries(
+                PlanetConfig.getProperty("cache.dir"));                        
+            planet.flush();
+            planet.release();
+            
+        } catch (RollerException e) {
+            log.error("ERROR refreshing planet", e);
+        }
+    }
+

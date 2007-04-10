@@ -6,7 +6,7 @@
             super("planetGroups.pagetitle", request, response, mapping);
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
             PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();            
-            PlanetData defaultPlanet = pmgr.getPlanet("default_planet");
+            PlanetData defaultPlanet = pmgr.getPlanet("zzz_default_planet_zzz");
             PlanetGroupData externalGroup = pmgr.getGroup(defaultPlanet, "external");
             Iterator allgroups = defaultPlanet.getGroups().iterator();
             while (allgroups.hasNext()) 
