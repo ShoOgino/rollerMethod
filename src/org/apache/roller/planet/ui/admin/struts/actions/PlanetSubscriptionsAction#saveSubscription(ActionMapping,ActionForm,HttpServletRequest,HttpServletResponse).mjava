@@ -2,6 +2,7 @@
     public ActionForward saveSubscription(ActionMapping mapping,
             ActionForm actionForm, HttpServletRequest request,
             HttpServletResponse response) throws IOException, ServletException {
+        
         ActionForward forward = mapping.findForward("planetSubscriptions.page");
         try {
             PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
@@ -20,19 +21,19 @@
                 PlanetSubscriptionData sub = null;
                 ActionErrors errors = validate(pmgr, form);
                 if (errors.isEmpty()) {
-                    if (form.getId() == null || form.getId().trim().length() == 0) {                        
-                        // Adding new subscription to group                        
+                    if (form.getId() == null || form.getId().trim().length() == 0) {
+                        // Adding new subscription to group
                         // But, does subscription to that feed already exist?
                         if (form.getFeedURL() != null) {
-                            sub = pmgr.getSubscription(form.getFeedURL()); 
+                            sub = pmgr.getSubscription(form.getFeedURL());
                         }
                         if (sub != null) {
                             // Yes, we'll use it instead
                             messages.add(null, new ActionMessage(
-                                "planetSubscription.foundExisting", sub.getTitle()));
+                                    "planetSubscription.foundExisting", sub.getTitle()));
                         } else {
                             // No, add new subscription
-                            sub = new PlanetSubscriptionData(); 
+                            sub = new PlanetSubscriptionData();
                             form.copyTo(sub, request.getLocale());
                             
                             // the form copy is a little dumb and will set the id value
@@ -41,16 +42,16 @@
                             if(sub.getId() != null && sub.getId().trim().equals("")) {
                                 sub.setId(null);
                             }
-
+                            
                             pmgr.saveSubscription(sub);
-                        }                        
+                        }
                         targetGroup.getSubscriptions().add(sub);
                         
                     } else {
                         // User editing an existing subscription within a group
                         sub = pmgr.getSubscriptionById(form.getId());
-                        form.copyTo(sub, request.getLocale());                        
-                    }                    
+                        form.copyTo(sub, request.getLocale());
+                    }
                     form.setGroupHandle(groupHandle);
                     pmgr.saveGroup(targetGroup);
                     PlanetFactory.getPlanet().flush();
@@ -71,12 +72,12 @@
         } catch (RollerException re) {
             ActionErrors errors = new ActionErrors();
             errors.add(null, new ActionError(
-                "planetSubscriptions.error.duringSave", re.getRootCauseMessage()));
+                    "planetSubscriptions.error.duringSave", re.getRootCauseMessage()));
             saveErrors(request, errors);
         } catch (Exception e) {
             ActionErrors errors = new ActionErrors();
             errors.add(null, new ActionError(
-                "planetSubscriptions.error.duringSave", e.getMessage()));
+                    "planetSubscriptions.error.duringSave", e.getMessage()));
             saveErrors(request, errors);
             logger.error("Unexpected error saving subscription", e);
         }

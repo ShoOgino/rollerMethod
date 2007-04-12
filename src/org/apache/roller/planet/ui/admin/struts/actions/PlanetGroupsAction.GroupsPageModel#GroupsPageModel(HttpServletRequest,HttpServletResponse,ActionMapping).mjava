@@ -1,22 +1,19 @@
         public GroupsPageModel(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            ActionMapping mapping) throws RollerException
-        {
+                HttpServletRequest request,
+                HttpServletResponse response,
+                ActionMapping mapping) throws RollerException {
             super("planetGroups.pagetitle", request, response, mapping);
             RollerRequest rreq = RollerRequest.getRollerRequest(request);
-            PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();            
+            PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
             PlanetData defaultPlanet = pmgr.getPlanet("zzz_default_planet_zzz");
             PlanetGroupData externalGroup = pmgr.getGroup(defaultPlanet, "external");
             Iterator allgroups = defaultPlanet.getGroups().iterator();
-            while (allgroups.hasNext()) 
-            {
+            while (allgroups.hasNext()) {
                 PlanetGroupData agroup = (PlanetGroupData)allgroups.next();
                 if (    !agroup.getHandle().equals("external")
-                     && !agroup.getHandle().equals("all")) 
-                  {
-                      groups.add(agroup);
-                  }
+                && !agroup.getHandle().equals("all")) {
+                    groups.add(agroup);
+                }
             }
         }
 
