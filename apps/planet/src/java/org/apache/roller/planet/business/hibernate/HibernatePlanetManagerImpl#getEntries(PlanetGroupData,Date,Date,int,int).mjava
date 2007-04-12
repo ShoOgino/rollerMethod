@@ -2,6 +2,56 @@
     public List getEntries(PlanetGroupData group, Date startDate, Date endDate, 
                            int offset, int length) 
             throws RollerException {
-        return getEntries(Collections.singletonList(group), startDate, endDate, offset, length);
-    } 
+        
+        if (group == null) {
+            throw new RollerException("group cannot be null");
+        }
+        
+        List ret = null;
+        try {
+            long startTime = System.currentTimeMillis();
+            
+            Session session = ((HibernatePersistenceStrategy)strategy).getSession();
+            
+            StringBuffer sb = new StringBuffer();
+            sb.append("select e from PlanetEntryData e ");
+            sb.append("join e.subscription.groups g ");
+            sb.append("where g=:group ");
+            
+            if (startDate != null) {
+                sb.append("and e.pubTime > :startDate ");
+            }
+            if (endDate != null) {
+                sb.append("and e.pubTime < :endDate ");
+            }
+            sb.append("order by e.pubTime desc");
+            
+            Query query = session.createQuery(sb.toString());
+            query.setParameter("group", group);
+            if(offset > 0) {
+                query.setFirstResult(offset);
+            }
+            if (length != -1) {
+                query.setMaxResults(length);
+            }
+            if (startDate != null) {
+                query.setParameter("startDate", startDate);
+            }
+            if(endDate != null) {
+                query.setParameter("endDate", endDate);
+            }
+            
+            ret = query.list();
+            
+            long endTime = System.currentTimeMillis();
+            
+            log.debug("Generated aggregation in "
+                    +((endTime-startTime)/1000.0)+" seconds");
+            
+        } catch (Throwable e) {
+            throw new RollerException(e);
+        }
+        
+        return ret;
+    }
 
