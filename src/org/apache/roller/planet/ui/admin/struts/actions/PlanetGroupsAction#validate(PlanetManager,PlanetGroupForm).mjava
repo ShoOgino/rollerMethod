@@ -1,4 +1,6 @@
-    /** Validate posted group */
+    /** 
+     * Validate posted group 
+     */
     private ActionErrors validate(
             PlanetManager planet, PlanetGroupForm form) {
         ActionErrors errors = new ActionErrors();
@@ -9,7 +11,7 @@
             errors.add(null, new ActionError("planetGroups.error.handle"));
         }
         if (form.getHandle() != null &&
-                (form.getHandle().equals("all") || form.getHandle().equals("external"))) {
+                (form.getHandle().equals("all"))) {
             errors.add(null, new ActionError("planetGroups.error.nameReserved"));
         }
         return errors;

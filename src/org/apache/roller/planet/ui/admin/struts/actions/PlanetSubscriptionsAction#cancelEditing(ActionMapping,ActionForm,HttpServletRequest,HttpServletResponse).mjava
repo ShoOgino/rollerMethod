@@ -1,4 +1,6 @@
-    /** Cancel editing, reset form */
+    /** 
+     * Cancel editing, reset form 
+     */
     public ActionForward cancelEditing(ActionMapping mapping,
             ActionForm actionForm, HttpServletRequest request,
             HttpServletResponse response) throws IOException, ServletException {
@@ -7,13 +9,14 @@
         try {
             if (RollerSession.getRollerSession(request).isGlobalAdminUser()) {
                 PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
-                PlanetSubscriptionFormEx form = (PlanetSubscriptionFormEx)actionForm;
+                PlanetSubscriptionForm form = (PlanetSubscriptionForm)actionForm;
                 
                 form.doReset(mapping, request);
                 
-                String groupHandle = request.getParameter("groupHandle");
-                groupHandle = (groupHandle == null) ? form.getGroupHandle() : groupHandle;
-                groupHandle = (groupHandle == null) ? "external" : groupHandle;
+                String groupHandle = form.getGroupHandle();
+                if (groupHandle == null) {
+                    groupHandle = "all";
+                }
                 
                 PlanetData defaultPlanet = pmgr.getPlanet("zzz_default_planet_zzz");
                 PlanetGroupData targetGroup = pmgr.getGroup(defaultPlanet, groupHandle);

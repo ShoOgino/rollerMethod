@@ -1,0 +1,23 @@
+    /** 
+     * Validate posted subscription, fill in blanks via Technorati 
+     */
+    private ActionErrors validate(
+            PlanetManager pmgr, PlanetSubscriptionForm form) {
+        
+        ActionErrors errors = new ActionErrors();
+        
+        if (form.getTitle()==null || form.getTitle().trim().length()==0) {
+            errors.add(null, new ActionError("planetSubscription.error.title"));
+        }
+        
+        if (form.getFeedURL()==null || form.getFeedURL().trim().length()==0) {
+            errors.add(null, new ActionError("planetSubscription.error.feedUrl"));
+        }
+        
+        if (form.getSiteURL()==null || form.getSiteURL().trim().length()==0) {
+            errors.add(null, new ActionError("planetSubscription.error.siteUrl"));
+        }
+        
+        return errors;
+    }
+

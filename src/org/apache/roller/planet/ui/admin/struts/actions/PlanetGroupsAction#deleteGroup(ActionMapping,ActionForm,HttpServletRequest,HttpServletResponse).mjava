@@ -1,4 +1,6 @@
-    /** Delete subscription, reset form  */
+    /** 
+     * Delete group, reset form  
+     */
     public ActionForward deleteGroup(ActionMapping mapping,
             ActionForm actionForm, HttpServletRequest request,
             HttpServletResponse response) throws IOException, ServletException {
@@ -14,8 +16,6 @@
                     PlanetGroupData group = pmgr.getGroup(defaultPlanet, form.getHandle());
                     pmgr.deleteGroup(group);
                     PlanetFactory.getPlanet().flush();
-                    // TODO: why release here?
-                    PlanetFactory.getPlanet().release();
                     
                     form.doReset(mapping, request);
                     

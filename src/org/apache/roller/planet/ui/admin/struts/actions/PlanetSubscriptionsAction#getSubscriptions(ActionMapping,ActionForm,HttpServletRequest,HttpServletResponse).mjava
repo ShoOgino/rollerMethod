@@ -1,4 +1,6 @@
-    /** Populate page model and forward to subscription page */
+    /** 
+     * Populate page model and forward to subscription page 
+     */
     public ActionForward getSubscriptions(ActionMapping mapping,
             ActionForm actionForm, HttpServletRequest request,
             HttpServletResponse response) throws IOException, ServletException {
@@ -7,7 +9,7 @@
         try {
             if (RollerSession.getRollerSession(request).isGlobalAdminUser()) {
                 PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
-                PlanetSubscriptionFormEx form = (PlanetSubscriptionFormEx)actionForm;
+                PlanetSubscriptionForm form = (PlanetSubscriptionForm)actionForm;
                 if (request.getParameter("feedUrl") != null) {
                     String feedUrl = request.getParameter("feedUrl");
                     PlanetSubscriptionData sub =
@@ -17,9 +19,10 @@
                     form.doReset(mapping, request);
                 }
                 
-                String groupHandle = request.getParameter("groupHandle");
-                groupHandle = (groupHandle == null) ? form.getGroupHandle() : groupHandle;
-                groupHandle = (groupHandle == null) ? "external" : groupHandle;
+                String groupHandle = form.getGroupHandle();
+                if (groupHandle == null) {
+                    groupHandle = "all";
+                }
                 
                 PlanetData defaultPlanet = pmgr.getPlanet("zzz_default_planet_zzz");
                 PlanetGroupData targetGroup = pmgr.getGroup(defaultPlanet, groupHandle);

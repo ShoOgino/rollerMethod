@@ -1,4 +1,6 @@
-    /** Delete subscription, reset form  */
+    /** 
+     * Delete subscription, reset form  
+     */
     public ActionForward deleteSubscription(ActionMapping mapping,
             ActionForm actionForm, HttpServletRequest request,
             HttpServletResponse response) throws IOException, ServletException {
@@ -8,14 +10,15 @@
             //RollerRequest rreq = RollerRequest.getRollerRequest(request);
             if (RollerSession.getRollerSession(request).isGlobalAdminUser()) {
                 PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
-                PlanetSubscriptionFormEx form = (PlanetSubscriptionFormEx)actionForm;
+                PlanetSubscriptionForm form = (PlanetSubscriptionForm)actionForm;
                 if (form.getId() != null) {
                     PlanetSubscriptionData sub =
                             pmgr.getSubscriptionById(form.getId());
                     
-                    String groupHandle = request.getParameter("groupHandle");
-                    groupHandle = (groupHandle == null) ? form.getGroupHandle() : groupHandle;
-                    groupHandle = (groupHandle == null) ? "external" : groupHandle;
+                    String groupHandle = form.getGroupHandle();
+                    if (groupHandle == null) {
+                        groupHandle = "all";
+                    }
                     
                     PlanetData defaultPlanet = pmgr.getPlanet("zzz_default_planet_zzz");
                     PlanetGroupData targetGroup = pmgr.getGroup(defaultPlanet, groupHandle);
@@ -23,8 +26,6 @@
                     targetGroup.getSubscriptions().remove(sub);
                     pmgr.deleteSubscription(sub);
                     PlanetFactory.getPlanet().flush();
-                    // TODO: why release here?
-                    PlanetFactory.getPlanet().release();
                     
                     form.doReset(mapping, request);
                     

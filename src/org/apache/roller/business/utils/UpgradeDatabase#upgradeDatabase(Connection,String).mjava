@@ -92,6 +92,10 @@
             UpgradeDatabase.upgradeTo320(con);
             dbversion = 320;
         }
+        if(dbversion < 400) {
+            UpgradeDatabase.upgradeTo400(con);
+            dbversion = 400;
+        }
         
         // make sure the database version is the exact version
         // we are upgrading too.
