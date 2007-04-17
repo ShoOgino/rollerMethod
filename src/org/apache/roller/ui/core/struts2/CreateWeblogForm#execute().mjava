@@ -1,0 +1,28 @@
+    public String execute() {
+        
+        UserData user = getAuthenticatedUser();
+        
+        try {
+            if (!RollerConfig.getBooleanProperty("groupblogging.enabled")) {
+                UserManager mgr = RollerFactory.getRoller().getUserManager();
+                List permissions = mgr.getAllPermissions(user);
+                if (permissions.size() > 0) {
+                    // sneaky user trying to get around 1 blog limit that applies
+                    // only when group blogging is disabled
+                    // TODO: i18n
+                    addError("Sorry, you are only allowed to have 1 weblog.");
+                    return "menu";
+                }
+            }
+        } catch (RollerException ex) {
+            log.error("error checking for existing weblogs count", ex);
+        }
+        
+        // pre-populate with some logical defaults
+        getBean().setLocale(user.getLocale());
+        getBean().setTimeZone(user.getTimeZone());
+        getBean().setEmailAddress(user.getEmailAddress());
+        
+        return INPUT;
+    }
+

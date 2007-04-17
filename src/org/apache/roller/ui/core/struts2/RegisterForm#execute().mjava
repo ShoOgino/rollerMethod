@@ -1,0 +1,27 @@
+    public String execute() {
+        
+        try {
+            getBean().setPasswordText(null);
+            getBean().setPasswordConfirm(null);
+            getBean().setLocale(Locale.getDefault().toString());
+            getBean().setTimeZone(TimeZone.getDefault().getID());
+            
+            // Let's see if there's any user-authentication available from Acegi
+            // and retrieve custom user data to pre-populate form.
+            boolean usingSSO = RollerConfig.getBooleanProperty("users.sso.enabled");
+            if(usingSSO) {
+                UserData fromSSO = CustomUserRegistry.getUserDetailsFromAuthentication();
+                if(fromSSO != null) {
+                    getBean().copyFrom(fromSSO, getLocale());
+                    setFromSS0(true);
+                }
+            }
+            
+        } catch (Exception e) {
+            addError("error.editing.user", e.toString());
+            log.error("ERROR in newUser", e);
+        }
+        
+        return INPUT;
+    }
+

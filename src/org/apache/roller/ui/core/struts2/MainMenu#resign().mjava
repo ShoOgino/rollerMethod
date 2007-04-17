@@ -1,0 +1,28 @@
+    public String resign() {
+        
+        UserData user = getAuthenticatedUser();
+        
+        try {
+            UserManager mgr = RollerFactory.getRoller().getUserManager();
+            WebsiteData website = mgr.getWebsite(getWebsiteId());
+            
+            UserManager userMgr = RollerFactory.getRoller().getUserManager();
+            PermissionsData perms = userMgr.getPermissions(website, user);
+            
+            if (perms != null) {
+                // TODO ROLLER_2.0: notify website members that user has resigned
+                // TODO EXCEPTIONS: better exception handling
+                userMgr.removePermissions(perms);
+                RollerFactory.getRoller().flush();
+            }
+            
+            addMessage("yourWebsites.resigned", perms.getWebsite().getHandle());
+        } catch (RollerException ex) {
+            log.error("Error doing weblog resign - "+getWebsiteId(), ex);
+            // TODO: i18n
+            addError("resignation failed.");
+        }
+        
+        return SUCCESS;
+    }
+

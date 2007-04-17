@@ -1,0 +1,24 @@
+    public String decline() {
+        
+        try {
+            UserManager userMgr = RollerFactory.getRoller().getUserManager();
+            PermissionsData perms = userMgr.getPermissions(getInviteId());
+            if (perms != null) {
+                // TODO ROLLER_2.0: notify inviter that invitee has declined invitation
+                // TODO EXCEPTIONS: better exception handling here
+                userMgr.removePermissions(perms);
+                RollerFactory.getRoller().flush();
+
+                addMessage("yourWebsites.declined", perms.getWebsite().getHandle());
+            } else {
+                addError("yourWebsites.permNotFound");
+            }
+        } catch (RollerException ex) {
+            log.error("Error handling invitation decline - "+getInviteId(), ex);
+            // TODO: i18n
+            addError("invite decline failed.");
+        }
+        
+        return SUCCESS;
+    }
+

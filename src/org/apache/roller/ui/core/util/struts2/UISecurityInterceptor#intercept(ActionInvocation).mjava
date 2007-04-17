@@ -1,0 +1,59 @@
+    public String intercept(ActionInvocation invocation) throws Exception {
+        
+        log.debug("Entering UISecurityInterceptor");
+        
+        final Object action = invocation.getAction();
+        
+        // is this one of our own UIAction classes?
+        if (action instanceof UISecurityEnforced &&
+                action instanceof UIAction) {
+            
+            log.debug("action is UISecurityEnforced ... enforcing security rules");
+            
+            final UISecurityEnforced theAction = (UISecurityEnforced) action;
+            
+            // are we requiring an authenticated user?
+            if(theAction.isUserRequired()) {
+                
+                UserData authenticatedUser = ((UIAction)theAction).getAuthenticatedUser();
+                if(authenticatedUser == null) {
+                    log.debug("DENIED: required user not found");
+                    return "access-denied";
+                }
+                
+                // are we also enforcing a specific role?
+                if(theAction.requiredUserRole() != null) {
+                    log.debug("DENIED: user does not have role = "+theAction.requiredUserRole());
+                    if(!authenticatedUser.hasRole(theAction.requiredUserRole())) {
+                        return "access-denied";
+                    }
+                }
+                
+                // are we requiring a valid action weblog?
+                if(theAction.isWeblogRequired()) {
+                    
+                    WebsiteData actionWeblog = ((UIAction)theAction).getActionWeblog();
+                    if(actionWeblog == null) {
+                        log.debug("DENIED: required action weblog not found");
+                        return "access-denied";
+                    }
+                    
+                    // are we also enforcing a specific weblog permission?
+                    if(theAction.requiredWeblogPermissions() > -1) {
+                        
+                        if(!actionWeblog.hasUserPermissions(authenticatedUser,
+                                theAction.requiredWeblogPermissions())) {
+                            log.debug("DENIED: user does not have required weblog permissions = "+
+                                    theAction.requiredWeblogPermissions());
+                            return "access-denied";
+                        }
+                    }
+                }
+                
+            }
+            
+        }
+        
+        return invocation.invoke();
+    }
+

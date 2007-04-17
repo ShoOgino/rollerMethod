@@ -1,0 +1,39 @@
+    public String activate() {
+        
+        try {
+            UserManager mgr = RollerFactory.getRoller().getUserManager();
+            
+            if (getActivationCode() == null) {
+                addError("error.activate.user.missingActivationCode");
+            } else {
+                UserData user = mgr.getUserByActivationCode(getActivationCode());
+                
+                if (user != null) {
+                    // enable user account
+                    user.setEnabled(Boolean.TRUE);
+                    user.setActivationCode(null);
+                    mgr.saveUser(user);
+                    RollerFactory.getRoller().flush();
+                    
+                    setActivationStatus("active");
+                    
+                } else {
+                    addError("error.activate.user.invalidActivationCode");
+                }
+            }
+            
+        } catch (RollerException e) {
+            addError(e.getMessage());
+            log.error("ERROR in activateUser", e);
+        }
+        
+        if (hasActionErrors()) {
+            setActivationStatus("error");
+        }
+        
+        // set a special page title
+        setPageTitle("welcome.title");
+            
+        return SUCCESS;
+    }
+

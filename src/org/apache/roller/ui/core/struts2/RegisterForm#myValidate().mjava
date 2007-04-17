@@ -1,0 +1,43 @@
+    // TODO: replace with struts2 validation
+    private void myValidate() {
+        
+        // if usingSSO, we don't want to error on empty password/username from HTML form.
+        setFromSS0(false);
+        boolean usingSSO = RollerConfig.getBooleanProperty("users.sso.enabled");
+        if(usingSSO) {
+            boolean storePassword = RollerConfig.getBooleanProperty("users.sso.passwords.saveInRollerDb");
+            UserData fromSSO = CustomUserRegistry.getUserDetailsFromAuthentication();
+            if(fromSSO != null) {
+                String password = RollerConfig.getProperty("users.sso.passwords.defaultValue", "<unknown>");
+                if(storePassword) {
+                    password = fromSSO.getPassword();
+                }
+                getBean().setPasswordText(password);
+                getBean().setPasswordConfirm(password);
+                getBean().setUserName(fromSSO.getUserName());
+                setFromSS0(true);
+            }
+        }
+        
+        String allowed = RollerConfig.getProperty("username.allowedChars");
+        if(allowed == null || allowed.trim().length() == 0) {
+            allowed = DEFAULT_ALLOWED_CHARS;
+        }
+        String safe = CharSetUtils.keep(getBean().getUserName(), allowed);
+        
+        if (StringUtils.isEmpty(getBean().getUserName())) {
+            addError("error.add.user.missingUserName");
+        } else if (!safe.equals(getBean().getUserName()) ) {
+            addError("error.add.user.badUserName");
+        }
+        
+        if (StringUtils.isEmpty(getBean().getEmailAddress())) {
+            addError("error.add.user.missingEmailAddress");
+        }
+        
+        if (StringUtils.isEmpty(getBean().getPasswordText()) && 
+                StringUtils.isEmpty(getBean().getPasswordConfirm())) {
+            addError("error.add.user.missingPassword");
+        }
+    }
+

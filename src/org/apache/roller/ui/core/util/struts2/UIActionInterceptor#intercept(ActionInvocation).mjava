@@ -1,0 +1,37 @@
+    public String intercept(ActionInvocation invocation) throws Exception {
+        
+        log.debug("Entering UIActionInterceptor");
+        
+        final Object action = invocation.getAction();
+        final ActionContext context = invocation.getInvocationContext();
+        
+        HttpServletRequest request = (HttpServletRequest) context.get(HTTP_REQUEST);
+        
+        // is this one of our own UIAction classes?
+        if (action instanceof UIAction) {
+            
+            log.debug("action is a UIAction, setting relevant attributes");
+            
+            UIAction theAction = (UIAction) action;
+            
+            // extract the authenticated user and set it
+            RollerSession rses = RollerSession.getRollerSession(request);
+            theAction.setAuthenticatedUser(rses.getAuthenticatedUser());
+            
+            // extract the work weblog and set it
+            String weblogHandle = request.getParameter(RequestConstants.WEBLOG_ID);
+            if(!StringUtils.isEmpty(weblogHandle)) {
+                WebsiteData weblog = null;
+                try {
+                    UserManager mgr = RollerFactory.getRoller().getUserManager();
+                    weblog = mgr.getWebsiteByHandle(weblogHandle);
+                } catch(Exception e) {
+                    
+                }
+                theAction.setActionWeblog(weblog);
+            }
+        }
+        
+        return invocation.invoke();
+    }
+

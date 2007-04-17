@@ -1,0 +1,14 @@
+    public String execute() {
+        
+        UserData ud = getAuthenticatedUser();
+        
+        // load up the form from the users existing profile data
+        getBean().copyFrom(ud, getLocale());
+        getBean().setPasswordText(null);
+        getBean().setPasswordConfirm(null);
+        getBean().setLocale(ud.getLocale());
+        getBean().setTimeZone(ud.getTimeZone());
+
+        return INPUT;
+    }
+

@@ -1,0 +1,49 @@
+    /**
+     * Send activation mail
+     */
+    private void sendActivationMail(UserData user) {
+        
+        try {
+            javax.naming.Context ctx = (javax.naming.Context)
+            new InitialContext().lookup("java:comp/env");
+            Session mailSession = (Session) ctx.lookup("mail/Session");
+            if (mailSession != null) {
+                ResourceBundle resources = ResourceBundle.getBundle(
+                        "ApplicationResources", getLocaleInstance(user.getLocale()));
+                
+                String from = RollerRuntimeConfig.getProperty(
+                        "user.account.activation.mail.from");
+                
+                String cc[] = new String[0];
+                String bcc[] = new String[0];
+                String to[] = new String[] { user.getEmailAddress() };
+                String subject = resources.getString(
+                        "user.account.activation.mail.subject");
+                String content;
+                
+                String rootURL = RollerRuntimeConfig.getAbsoluteContextURL();
+                
+                StringBuffer sb = new StringBuffer();
+                
+                // activationURL=
+                String activationURL = rootURL
+                        + "/roller-ui/register!activate.rol?activationCode="
+                        + user.getActivationCode();
+                sb.append(MessageFormat.format(
+                        resources.getString("user.account.activation.mail.content"),
+                        new Object[] { user.getFullName(), user.getUserName(),
+                        activationURL }));
+                content = sb.toString();
+                
+                MailUtil.sendHTMLMessage(mailSession, from, to, cc, bcc, subject, content);
+            }
+            
+        } catch (MessagingException me) {
+            addError("error.add.user.mailSendException");
+            log.debug("ERROR sending email", me);
+        } catch (NamingException ne) {
+            addError("error.add.user.mailSetupException");
+            log.error("ERROR in mail setup?", ne);
+        }
+    }
+

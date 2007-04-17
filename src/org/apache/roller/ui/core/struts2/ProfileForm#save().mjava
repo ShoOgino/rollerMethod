@@ -1,0 +1,49 @@
+    public String save() {
+        
+        // custom validation
+        myValidate();
+        
+        if (!hasActionErrors()) {
+            // We ONLY modify the user currently logged in
+            UserData existingUser = getAuthenticatedUser();
+            
+            // We want to be VERY selective about what data gets updated
+            existingUser.setFullName(getBean().getFullName());
+            existingUser.setEmailAddress(getBean().getEmailAddress());
+            existingUser.setLocale(getBean().getLocale());
+            existingUser.setTimeZone(getBean().getTimeZone());
+            
+            // If user set both password and passwordConfirm then reset password
+            if (!StringUtils.isEmpty(getBean().getPasswordText()) && 
+                    !StringUtils.isEmpty(getBean().getPasswordConfirm())) {
+                try {
+                    existingUser.resetPassword(RollerFactory.getRoller(),
+                            getBean().getPasswordText(),
+                            getBean().getPasswordConfirm());
+                } catch (RollerException e) {
+                    addMessage("yourProfile.passwordResetError");
+                }
+            }
+            
+            try {
+                // save the updated profile
+                UserManager mgr = RollerFactory.getRoller().getUserManager();
+                mgr.saveUser(existingUser);
+                RollerFactory.getRoller().flush();
+                
+                // TODO: i18n
+                addMessage("profile updated.");
+                
+                return SUCCESS;
+                
+            } catch (RollerException ex) {
+                log.error("ERROR in action", ex);
+                // TODO: i18n
+                addError("unexpected error doing profile save");
+            }
+            
+        }
+        
+        return INPUT;
+    }
+

@@ -1,0 +1,9 @@
+    public List getExistingPermissions() {
+        try {
+            UserManager mgr = RollerFactory.getRoller().getUserManager();
+            return mgr.getAllPermissions(getAuthenticatedUser());
+        } catch(Exception e) {
+            return Collections.EMPTY_LIST;
+        }
+    }
+

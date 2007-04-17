@@ -1,0 +1,25 @@
+    public String accept() {
+        
+        try {
+            UserManager userMgr = RollerFactory.getRoller().getUserManager();
+            PermissionsData perms = userMgr.getPermissions(getInviteId());
+            if (perms != null) {        
+                // TODO ROLLER_2.0: notify inviter that invitee has accepted invitation
+                // TODO EXCEPTIONS: better exception handling
+                perms.setPending(false);
+                userMgr.savePermissions(perms);
+                RollerFactory.getRoller().flush();
+
+                addMessage("yourWebsites.accepted", perms.getWebsite().getHandle());
+            } else {
+                addError("yourWebsites.permNotFound");
+            }
+        } catch (RollerException ex) {
+            log.error("Error handling invitation accept - "+getInviteId(), ex);
+            // TODO: i18n
+            addError("invite accept failed.");
+        }
+        
+        return SUCCESS;
+    }
+

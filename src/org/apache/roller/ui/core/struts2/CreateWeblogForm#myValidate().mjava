@@ -1,0 +1,37 @@
+    // TODO: replace with struts2 validation
+    private void myValidate()  {
+        
+        String allowed = RollerConfig.getProperty("username.allowedChars");
+        if(allowed == null || allowed.trim().length() == 0) {
+            allowed = RegisterForm.DEFAULT_ALLOWED_CHARS;
+        }
+        String safe = CharSetUtils.keep(getBean().getHandle(), allowed);
+        
+        if (StringUtils.isEmpty(getBean().getName())) {
+            addError("createWeblog.error.missingName");
+        }
+        
+        if (StringUtils.isEmpty(getBean().getHandle())) {
+            addError("createWeblog.error.missingHandle");
+        } else if (!safe.equals(getBean().getHandle()) ) {
+            addError("createWeblog.error.invalidHandle");
+        }
+        
+        if (StringUtils.isEmpty(getBean().getEmailAddress())) {
+            addError("createWeblog.error.missingEmailAddress");
+        }
+        
+        try {
+            UserManager mgr = RollerFactory.getRoller().getUserManager();
+            if (mgr.getWebsiteByHandle(getBean().getHandle()) != null) {
+                addError("createWeblog.error.handleExists");
+                // reset handle
+                getBean().setHandle(null);
+            }
+        } catch (RollerException ex) {
+            log.error("error checking for weblog", ex);
+            // TODO: i18n
+            addError("unexpected error");
+        }
+    }
+

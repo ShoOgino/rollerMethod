@@ -1,0 +1,17 @@
+    /**
+     * Copy values from this form bean to the specified data object.
+     * Only copies primitive types (Boolean, boolean, String, Integer, int, Timestamp, Date)
+     */
+    public void copyTo(UserData dataHolder, Locale locale) {
+        
+        dataHolder.setEnabled(this.enabled);
+        dataHolder.setId(this.id);
+        dataHolder.setUserName(this.userName);
+        dataHolder.setFullName(this.fullName);
+        dataHolder.setEmailAddress(this.emailAddress);
+        dataHolder.setLocale(this.locale);
+        dataHolder.setTimeZone(this.timeZone);
+        
+        dataHolder.setActivationCode(this.activationCode);
+    }
+
