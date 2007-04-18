@@ -1,7 +1,7 @@
     /**
      * Load all the elements of this theme from disk and cache them.
      */
-    private void loadThemeFromDisk() {
+    private void loadThemeFromDisk() throws ThemeInitializationException {
         
         log.debug("Parsing theme descriptor for "+this.themeDir);
         
@@ -12,8 +12,7 @@
             InputStream is = new FileInputStream(this.themeDir + File.separator + "theme.xml");
             themeMetadata = parser.unmarshall(is);
         } catch (Exception ex) {
-            log.warn("Unable to parse theme descriptor for theme "+this.themeDir, ex);
-            return;
+            throw new ThemeInitializationException("Unable to parse theme descriptor for theme "+this.themeDir, ex);
         }
         
         log.debug("Loading Theme "+themeMetadata.getName());
