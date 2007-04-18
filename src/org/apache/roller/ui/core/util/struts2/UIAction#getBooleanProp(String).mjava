@@ -1,0 +1,10 @@
+    public boolean getBooleanProp(String key) {
+        // first try static config
+        String value = RollerConfig.getProperty(key);
+        if(value == null) {
+            value = RollerRuntimeConfig.getProperty(key);
+        }
+        
+        return (value == null) ? false : (new Boolean(value)).booleanValue();
+    }
+
