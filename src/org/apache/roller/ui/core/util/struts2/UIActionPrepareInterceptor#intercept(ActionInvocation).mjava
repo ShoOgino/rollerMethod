@@ -1,0 +1,19 @@
+    public String intercept(ActionInvocation invocation) throws Exception {
+        
+        log.debug("Entering UIActionPrepareInterceptor");
+        
+        final Object action = invocation.getAction();
+        final ActionContext context = invocation.getInvocationContext();
+        
+        // is this one of our own UIAction classes?
+        if (action instanceof UIActionPreparable) {
+            
+            log.debug("action is UIActionPreparable, calling myPrepare() method");
+            
+            UIActionPreparable theAction = (UIActionPreparable) action;
+            theAction.myPrepare();
+        }
+        
+        return invocation.invoke();
+    }
+
