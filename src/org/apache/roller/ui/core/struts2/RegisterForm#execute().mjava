@@ -1,8 +1,10 @@
     public String execute() {
         
+        if(!RollerRuntimeConfig.getBooleanProperty("users.registration.enabled")) {
+            return "disabled";
+        }
+        
         try {
-            getBean().setPasswordText(null);
-            getBean().setPasswordConfirm(null);
             getBean().setLocale(Locale.getDefault().toString());
             getBean().setTimeZone(TimeZone.getDefault().getID());
             

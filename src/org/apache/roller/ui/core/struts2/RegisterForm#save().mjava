@@ -1,9 +1,6 @@
     public String save() {
         
-        boolean reg_allowed =
-                RollerRuntimeConfig.getBooleanProperty("users.registration.enabled");
-        
-        if ( !reg_allowed ) {
+        if(!RollerRuntimeConfig.getBooleanProperty("users.registration.enabled")) {
             return "disabled";
         }
         
