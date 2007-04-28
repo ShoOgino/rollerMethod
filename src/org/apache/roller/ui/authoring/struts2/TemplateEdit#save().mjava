@@ -1,0 +1,42 @@
+    public String save() {
+        
+        // validation
+        myValidate();
+        
+        if(!hasActionErrors()) try {
+            
+            UserManager mgr = RollerFactory.getRoller().getUserManager();
+            WeblogTemplate page = mgr.getPage(getBean().getId());
+            if(page == null) {
+                throw new RollerException("page not found");
+            }
+            
+            getBean().copyTo(page);
+            page.setLastModified( new Date() );
+            
+            if (getBean().getAutoContentType() == null ||
+                    !getBean().getAutoContentType().booleanValue()) {
+                page.setOutputContentType(getBean().getManualContentType());
+            } else {
+                // empty content-type indicates that page uses auto content-type detection
+                page.setOutputContentType(null);
+            }
+            
+            // save template and flush
+            mgr.savePage( page );
+            RollerFactory.getRoller().flush();
+            
+            CacheManager.invalidate(page);
+            
+            // success message
+            addMessage("pageForm.save.success", page.getName());
+            
+        } catch (RollerException ex) {
+            log.error("Error updating page - "+getBean().getId(), ex);
+            // TODO: i18n
+            addError("Error saving template");
+        }
+        
+        return SUCCESS;
+    }
+

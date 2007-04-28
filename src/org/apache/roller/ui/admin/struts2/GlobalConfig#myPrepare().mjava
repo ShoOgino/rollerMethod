@@ -1,0 +1,24 @@
+    /**
+     * Prepare action by loading runtime properties map.
+     */
+    public void myPrepare() {
+        try {
+            // just grab our properties map and make it available to the action
+            PropertiesManager mgr = RollerFactory.getRoller().getPropertiesManager();
+            setProperties(mgr.getProperties());
+        } catch (RollerException ex) {
+            log.error("Error getting runtime properties map", ex);
+            // TODO: i18n
+            addError("Unexpected error accessing Roller properties");
+        }
+        
+        // set config def used to draw the view
+        RuntimeConfigDefs defs = RollerRuntimeConfig.getRuntimeConfigDefs();
+        List<ConfigDef> configDefs = defs.getConfigDefs();
+        for(ConfigDef configDef : configDefs) {
+            if("global-properties".equals(configDef.getName())) {
+                setGlobalConfigDef(configDef);
+            }
+        }
+    }
+

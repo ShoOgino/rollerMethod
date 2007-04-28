@@ -1,0 +1,21 @@
+    // prepare for action by loading user object we are modifying
+    public void myPrepare() {
+        
+        // load the user object we are modifying
+        if(getUserName() != null) {
+            try {
+                UserManager mgr = RollerFactory.getRoller().getUserManager();
+                setUser(mgr.getUserByUserName(getUserName()));
+            } catch(Exception e) {
+                log.error("Error looking up user - "+getUserName(), e);
+            }
+        } else if(getBean().getId() != null) {
+            try {
+                UserManager mgr = RollerFactory.getRoller().getUserManager();
+                setUser(mgr.getUser(getBean().getId()));
+            } catch(Exception e) {
+                log.error("Error looking up user - "+getBean().getId(), e);
+            }
+        }
+    }
+

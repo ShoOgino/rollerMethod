@@ -1,0 +1,54 @@
+    /**
+     * Save a new template.
+     */
+    public String save() {
+        
+        WebsiteData weblog = getActionWeblog();
+        
+        // validation
+        myValidate();
+        
+        WeblogTemplate page = new WeblogTemplate();
+        page.setWebsite(weblog);
+        page.setAction(getNewTmplAction());
+        page.setName(getNewTmplName());
+        page.setDescription(page.getName());
+        page.setContents(getText("pageForm.newTemplateContent"));
+        page.setHidden(false);
+        page.setNavbar(false);
+        page.setLastModified( new Date() );
+        
+        // all templates start out as velocity templates
+        page.setTemplateLanguage("velocity");
+        
+        // for now, all templates just use _decorator
+        if(!"_decorator".equals(page.getName())) {
+            page.setDecoratorName("_decorator");
+        }
+        
+        try {
+            // save the page
+            UserManager mgr = RollerFactory.getRoller().getUserManager();
+            mgr.savePage( page );
+            
+            // if this person happened to create a Weblog template from
+            // scratch then make sure and set the defaultPageId
+            if(WeblogTemplate.DEFAULT_PAGE.equals(page.getName())) {
+                weblog.setDefaultPageId(page.getId());
+                mgr.saveWebsite(weblog);
+            }
+            
+            // flush results to db
+            RollerFactory.getRoller().flush();
+            
+            return "addSuccess-ajax";
+            
+        } catch (RollerException ex) {
+            log.error("Error adding new page for weblog - "+weblog.getHandle(), ex);
+            // TODO: i18n
+            addError("Error adding new page");
+        }
+        
+        return "addForm-ajax";
+    }
+

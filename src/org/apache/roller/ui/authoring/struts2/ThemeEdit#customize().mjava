@@ -1,0 +1,42 @@
+    /**
+     * Customize a theme by copying it's templates.
+     */
+    public String customize() {
+        
+        ThemeManager themeMgr = RollerFactory.getRoller().getThemeManager();
+        
+        // only if custom themes are allowed
+        if(RollerRuntimeConfig.getBooleanProperty("themes.customtheme.allowed")) {
+            try {
+                SharedTheme usersTheme = themeMgr.getTheme(getActionWeblog().getEditorTheme());
+                themeMgr.importTheme(getActionWeblog(), usersTheme);
+                RollerFactory.getRoller().flush();
+                
+                // make sure to flush the page cache so ppl can see the change
+                //PageCacheFilter.removeFromCache(request, weblog);
+                CacheManager.invalidate(getActionWeblog());
+                
+            } catch(ThemeNotFoundException tnfe) {
+                // this catches the potential case where someone customizes
+                // a theme and has their theme as "custom" but then hits the
+                // browser back button and presses the button again, so
+                // they are basically trying to customize a "custom" theme
+                
+                // log this as a warning just in case
+                log.warn(tnfe);
+                
+                // TODO: i18n
+                addError("Oops!  You already have a custom theme.");
+            } catch(RollerException re) {
+                log.error("Error customizing theme for weblog - "+getActionWeblog().getHandle(), re);
+                // TODO: i18n
+                addError("Error customizing theme");
+            }
+        } else {
+            // TODO: i18n
+            addError("Sorry, custom themes are not allowed");
+        }
+            
+        return SUCCESS;
+    }
+

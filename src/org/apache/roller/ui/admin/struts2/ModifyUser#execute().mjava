@@ -1,0 +1,16 @@
+    /**
+     * Show admin user edit page.
+     */
+    public String execute() {
+        
+        if(getUser().getId() != null) {
+            // populate form data from user profile data
+            getBean().copyFrom(getUser(), getLocale());
+        } else {
+            // TODO: i18n
+            addError("No user specified");
+        }
+
+        return INPUT;
+    }
+

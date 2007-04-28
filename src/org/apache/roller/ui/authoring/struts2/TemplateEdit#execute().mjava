@@ -1,0 +1,29 @@
+    public String execute() {
+        
+        try {
+            UserManager mgr = RollerFactory.getRoller().getUserManager();
+            WeblogTemplate page = mgr.getPage(getBean().getId());
+            if(page == null) {
+                throw new RollerException("page not found");
+            }
+            
+            getBean().copyFrom(page);
+            
+            // empty content-type indicates that page uses auto content-type detection
+            if (StringUtils.isEmpty(page.getOutputContentType())) {
+                getBean().setAutoContentType(Boolean.TRUE);
+            } else {
+                getBean().setAutoContentType(Boolean.FALSE);
+                getBean().setManualContentType(page.getOutputContentType());
+            }
+            
+        } catch (RollerException ex) {
+            log.error("Error loading page to edit - "+getBean().getId(), ex);
+            // TODO: i18n
+            addError("Couldn't find specified page to edit");
+            return "list";
+        }
+        
+        return SUCCESS;
+    }
+

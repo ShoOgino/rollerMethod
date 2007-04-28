@@ -1,0 +1,45 @@
+    /**
+     * Create a new user.
+     */
+    public String save() {
+        
+        // run some validation
+        myValidate();
+        
+        if (!hasActionErrors()) try {
+            
+            UserManager mgr = RollerFactory.getRoller().getUserManager();
+            
+            // copy form data into new user pojo
+            UserData newUser = new UserData();
+            getBean().copyTo(newUser, getLocale()); // doesn't copy password
+            newUser.setDateCreated(new java.util.Date());
+            
+            // set username and password
+            newUser.setUserName(getBean().getUserName());
+            newUser.resetPassword(RollerFactory.getRoller(),
+                    getBean().getPassword(), getBean().getPassword());
+            
+            // are we granting the user admin rights?
+            if(((CreateUserBean)getBean()).isAdministrator()) {
+                newUser.grantRole("admin");
+            }
+            
+            // save new user
+            mgr.addUser(newUser);
+            RollerFactory.getRoller().flush();
+            
+            // TODO: i18n
+            addMessage("New user created");
+            
+            return INPUT;
+            
+        } catch (RollerException e) {
+            log.error("Error adding new user", e);
+            // TODO: i18n
+            addError("Error creating user");
+        }
+        
+        return INPUT;
+    }
+

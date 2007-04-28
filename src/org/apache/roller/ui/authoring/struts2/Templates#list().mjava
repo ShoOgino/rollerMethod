@@ -1,0 +1,20 @@
+    /**
+     * This action method is called by an ajax enabled 'div' tag on the page
+     * and is used to list the templates available for the given weblog.
+     */
+    public String list() {
+        
+        // query for templates list
+        try {
+            UserManager mgr = RollerFactory.getRoller().getUserManager();
+            setTemplates(mgr.getPages(getActionWeblog()));
+            
+        } catch (RollerException ex) {
+            log.error("Error getting pages for weblog - "+getActionWeblog().getHandle(), ex);
+            // TODO: i18n
+            addError("Error getting template list");
+        }
+        
+        return "list-ajax";
+    }
+

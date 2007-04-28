@@ -1,0 +1,33 @@
+    /**
+     * Update chosen theme.
+     */
+    public String save() {
+        
+        // validation
+        myValidate();
+        
+        // update theme for weblog and save
+        if(!hasActionErrors()) {
+            try {
+                WebsiteData weblog = getActionWeblog();
+                
+                weblog.setEditorTheme(getThemeId());
+                
+                UserManager userMgr = RollerFactory.getRoller().getUserManager();
+                userMgr.saveWebsite(weblog);
+                RollerFactory.getRoller().flush();
+                
+                log.debug("Saved theme "+getThemeId()+" for weblog "+weblog.getHandle());
+                
+                // make sure to flush the page cache so ppl can see the change
+                CacheManager.invalidate(weblog);
+                
+            } catch(RollerException re) {
+                log.error("Error saving weblog - "+getActionWeblog().getHandle(), re);
+                addError("Error setting theme");
+            }
+        }
+        
+        return SUCCESS;
+    }
+

@@ -1,0 +1,21 @@
+    /**
+     * Copy values from this form bean to the specified data object.
+     */
+    public void copyTo(WeblogTemplate dataHolder) {
+        
+        // only custom templates get to modify name, description, and link
+        if(WeblogTemplate.ACTION_CUSTOM.equals(dataHolder.getAction())) {
+            dataHolder.setName(this.name);
+            dataHolder.setDescription(this.description);
+            dataHolder.setLink(this.link);
+        }
+        
+        dataHolder.setContents(this.contents);
+        dataHolder.setLastModified(this.lastModified);
+        dataHolder.setTemplateLanguage(this.templateLanguage);
+        dataHolder.setNavbar(this.navbar);
+        dataHolder.setHidden(this.hidden);
+        dataHolder.setDecoratorName(this.decoratorName);
+        dataHolder.setOutputContentType(this.outputContentType);
+    }
+
