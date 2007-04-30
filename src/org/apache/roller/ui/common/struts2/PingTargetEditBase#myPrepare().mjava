@@ -1,0 +1,25 @@
+    /**
+     * Prepare action by loading ping target to work on.
+     */
+    public void myPrepare() {
+        
+        PingTargetManager pingTargetMgr = RollerFactory.getRoller().getPingTargetManager();
+        if(!StringUtils.isEmpty(getBean().getId())) {
+            
+            try {
+                setPingTarget(pingTargetMgr.getPingTarget(getBean().getId()));
+            } catch (RollerException ex) {
+                getLogger().error("Error looking up ping target - "+getBean().getId());
+            }
+            
+            if(getPingTarget() == null) {
+                // TODO: i18n
+                addError("No such ping target id: " + getBean().getId());
+            }
+            
+        } else {
+            // TODO: i18n
+            addError("Missing ping target id: " + getBean().getId());
+        }
+    }
+

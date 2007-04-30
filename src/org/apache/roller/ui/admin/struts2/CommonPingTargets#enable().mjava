@@ -1,0 +1,25 @@
+    /**
+     * Set a ping target auto enabled to true.
+     */
+    public String enable() {
+        
+        if(getPingTarget() != null) {
+            try {
+                getPingTarget().setAutoEnabled(true);
+                
+                PingTargetManager pingTargetMgr = RollerFactory.getRoller().getPingTargetManager();
+                pingTargetMgr.savePingTarget(getPingTarget());
+                RollerFactory.getRoller().flush();
+            } catch (Exception ex) {
+                getLogger().error("Error saving ping target", ex);
+                // TODO: i18n
+                addError("Error saving ping target.");
+            }
+        } else {
+            // TODO: i18n
+            addError("Cannot enable ping target - "+getPingTargetId());
+        }
+        
+        return LIST;
+    }
+

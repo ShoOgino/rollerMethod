@@ -1,0 +1,12 @@
+    public void loadPingTargets() {
+        
+        if(!PingConfig.getDisallowCustomTargets()) try {
+            PingTargetManager pingTargetMgr = RollerFactory.getRoller().getPingTargetManager();
+            setPingTargets(pingTargetMgr.getCustomPingTargets(getActionWeblog()));
+        } catch (RollerException ex) {
+            log.error("Error loading common ping targets", ex);
+            // TODO: i18n
+            addError("Error loading common ping targets");
+        }
+    }
+

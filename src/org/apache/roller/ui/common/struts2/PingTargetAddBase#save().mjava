@@ -1,0 +1,30 @@
+    /**
+     * Save a new ping target.
+     */
+    public String save() {
+        
+        PingTargetData pingTarget = createPingTarget();
+        
+        // Call private helper to validate ping target
+        // If there are errors, go back to the target edit page.
+        myValidate(pingTarget);
+        
+        if(!hasActionErrors()) try {
+            // Appears to be ok.  Save it and flush.
+            PingTargetManager pingTargetMgr = RollerFactory.getRoller().getPingTargetManager();
+            pingTargetMgr.savePingTarget(pingTarget);
+            RollerFactory.getRoller().flush();
+            
+            addMessage("pingTarget.saved");
+            
+            return SUCCESS;
+            
+        } catch (RollerException ex) {
+            getLogger().error("Error adding ping target", ex);
+            // TODO: i18n
+            addError("Error adding ping target.");
+        }
+        
+        return INPUT;
+    }
+

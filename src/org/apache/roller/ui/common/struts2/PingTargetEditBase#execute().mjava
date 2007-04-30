@@ -1,0 +1,14 @@
+    public String execute() {
+        
+        if(!hasActionErrors()) {
+            // load bean with data from ping target
+            getBean().copyFrom(getPingTarget());
+        } else {
+            // if we already have an error then that means we couldn't load
+            // an existing ping target to work on, so return ERROR result
+            return ERROR;
+        }
+        
+        return INPUT;
+    }
+
