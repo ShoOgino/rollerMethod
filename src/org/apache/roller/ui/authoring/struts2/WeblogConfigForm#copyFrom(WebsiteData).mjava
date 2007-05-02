@@ -1,0 +1,38 @@
+    public void copyFrom(WebsiteData dataHolder) {
+        
+        this.id = dataHolder.getId();
+        this.handle = dataHolder.getHandle();
+        this.name = dataHolder.getName();
+        this.description = dataHolder.getDescription();
+        this.enableBloggerApi = dataHolder.getEnableBloggerApi();
+        this.editorPage = dataHolder.getEditorPage();
+        this.blacklist = dataHolder.getBlacklist();
+        this.allowComments = dataHolder.getAllowComments();
+        this.defaultAllowComments = dataHolder.getDefaultAllowComments();
+        this.defaultCommentDays = ""+dataHolder.getDefaultCommentDays();
+        this.moderateComments = dataHolder.getModerateComments();
+        this.emailComments = dataHolder.getEmailComments();
+        this.emailFromAddress = dataHolder.getEmailFromAddress();
+        this.emailAddress = dataHolder.getEmailAddress();
+        this.locale = dataHolder.getLocale();
+        this.timeZone = dataHolder.getTimeZone();
+        this.defaultPlugins = dataHolder.getDefaultPlugins();
+        this.entryDisplayCount = dataHolder.getEntryDisplayCount();
+        this.setActive(dataHolder.getActive());
+        this.commentModerationRequired = dataHolder.getCommentModerationRequired();
+        this.enableMultiLang = dataHolder.isEnableMultiLang();
+        this.showAllLangs = dataHolder.isShowAllLangs();
+        this.pageModels = dataHolder.getPageModels();
+        this.customStylesheetPath = dataHolder.getCustomStylesheetPath();
+        
+        if (dataHolder.getDefaultCategory() != null) {
+            defaultCategoryId = dataHolder.getDefaultCategory().getId();
+        }
+        if (dataHolder.getBloggerCategory() != null) {
+            bloggerCategoryId = dataHolder.getBloggerCategory().getId();
+        }
+        if (dataHolder.getDefaultPlugins() != null) {
+            defaultPluginsArray = StringUtils.split(dataHolder.getDefaultPlugins(), ",");
+        }
+    }
+

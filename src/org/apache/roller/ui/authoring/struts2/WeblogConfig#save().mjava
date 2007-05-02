@@ -1,0 +1,56 @@
+    /**
+     * Save weblog configuration.
+     */
+    public String save() {
+        
+        // run validation
+        myValidate();
+        
+        if(!hasActionErrors()) try {
+            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+            UserManager umgr = RollerFactory.getRoller().getUserManager();
+            
+            WebsiteData weblog = getActionWeblog();
+            
+            getBean().copyTo(weblog);
+            
+            // if blogger category changed then lookup new cat and set it
+            if(getBean().getBloggerCategoryId() != null && 
+                    !weblog.getBloggerCategory().getId().equals(getBean().getBloggerCategoryId())) {
+                weblog.setBloggerCategory(wmgr.getWeblogCategory(getBean().getBloggerCategoryId()));
+            }
+            
+            // ROL-485: comments not allowed on inactive weblogs
+            if(!weblog.getActive()) {
+                weblog.setAllowComments(Boolean.FALSE);
+                addMessage("websiteSettings.commentsOffForInactiveWeblog");
+            }
+            
+            // save config
+            umgr.saveWebsite(weblog);
+            
+            // ROL-1050: apply comment defaults to existing entries
+            if(getBean().getApplyCommentDefaults()) {
+                wmgr.applyCommentDefaultsToEntries(weblog);
+            }
+            
+            // apply referer filters
+            RollerFactory.getRoller().getRefererManager().applyRefererFilters(weblog);
+            
+            // flush
+            RollerFactory.getRoller().flush();
+            
+            addMessage("websiteSettings.savedChanges");
+            
+            // Clear cache entries associated with website
+            CacheManager.invalidate(weblog);
+            
+        } catch (Exception ex) {
+            log.error("Error updating weblog config", ex);
+            // TODO: i18n
+            addError("Error updating configuration");
+        }
+        
+        return  INPUT;
+    }
+

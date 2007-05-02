@@ -1,0 +1,29 @@
+    /**
+     * Flush page cache for weblog.
+     */
+    public String flushCache() {
+        
+        try {
+            WebsiteData weblog = getActionWeblog();
+            
+            // some caches are based on weblog last-modified, so update it
+            weblog.setLastModified(new Date());
+            
+            UserManager umgr = RollerFactory.getRoller().getUserManager();
+            umgr.saveWebsite(weblog);
+            RollerFactory.getRoller().flush();
+            
+            // also notify cache manager
+            CacheManager.invalidate(weblog);
+
+            addMessage("maintenance.message.flushed");
+            
+        } catch (Exception ex) {
+            log.error("Error saving weblog - "+getActionWeblog().getHandle(), ex);
+            // TODO: i18n
+            addError("Error flushing page cache");
+        }
+
+        return SUCCESS;
+    }
+
