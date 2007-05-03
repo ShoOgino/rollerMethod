@@ -23,8 +23,8 @@
                 
                 // are we also enforcing a specific role?
                 if(theAction.requiredUserRole() != null) {
-                    log.debug("DENIED: user does not have role = "+theAction.requiredUserRole());
                     if(!authenticatedUser.hasRole(theAction.requiredUserRole())) {
+                        log.debug("DENIED: user does not have role = "+theAction.requiredUserRole());
                         return "access-denied";
                     }
                 }
