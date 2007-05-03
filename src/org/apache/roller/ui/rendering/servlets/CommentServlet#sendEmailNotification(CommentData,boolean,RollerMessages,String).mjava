@@ -129,7 +129,7 @@
             for (Iterator it = messages.getMessages(); it.hasNext();) {
                 RollerMessage rollerMessage = (RollerMessage)it.next();
                 ownermsg.append((escapeHtml) ? "" : "<li>");
-                ownermsg.append(MessageFormat.format(resources.getString(rollerMessage.getKey()), rollerMessage.getArgs()) );
+                ownermsg.append(MessageFormat.format(resources.getString(rollerMessage.getKey()), (Object[])rollerMessage.getArgs()) );
                 ownermsg.append((escapeHtml) ? "\n\n" : "</li>");
             }
             if (messages.getMessageCount() > 0) {
@@ -146,7 +146,7 @@
             for (Iterator it = messages.getErrors(); it.hasNext();) {
                 RollerMessage rollerMessage = (RollerMessage)it.next();
                 ownermsg.append((escapeHtml) ? "" : "<li>");
-                ownermsg.append(MessageFormat.format(resources.getString(rollerMessage.getKey()), rollerMessage.getArgs()) );
+                ownermsg.append(MessageFormat.format(resources.getString(rollerMessage.getKey()), (Object[])rollerMessage.getArgs()) );
                 ownermsg.append((escapeHtml) ? "\n\n" : "</li>");
             }
             if (messages.getErrorCount() > 0) {
