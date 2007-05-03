@@ -1,8 +1,8 @@
     /**
-	 * This method overrides the sendTextMessage to specify
-	 * only one receiver and cc recipients, rather than 
-	 * an array of recipients.
-     * 
+     * This method overrides the sendTextMessage to specify
+     * only one receiver and cc recipients, rather than
+     * an array of recipients.
+     *
      * @param from e-mail address of sender
      * @param to e-mail address of recipient
      * @param cc e-mail address of cc recipient
@@ -11,25 +11,24 @@
      * @throws MessagingException the exception to indicate failure
      */
     public static void sendTextMessage
-    (
-    	Session session,
-        String from,
-        String to,
-        String cc,
-        String bcc,
-        String subject,
-        String content
-    ) 
-    throws MessagingException
-    {
+            (
+            Session session,
+            String from,
+            String to,
+            String cc,
+            String bcc,
+            String subject,
+            String content
+            )
+            throws MessagingException {
         String[] recipient = null;
         String[] copy = null;
         String[] bcopy = null;
-
-		if (to!=null) recipient = new String[] {to};
-		if (cc!=null) copy = new String[] {cc};
-		if (bcc!=null) bcopy = new String[] {bcc};
-
+        
+        if (to!=null) recipient = new String[] {to};
+        if (cc!=null) copy = new String[] {cc};
+        if (bcc!=null) bcopy = new String[] {bcc};
+        
         sendMessage(session, from, recipient, copy, bcopy, subject, content, "text/plain; charset=utf-8");
     }
 
