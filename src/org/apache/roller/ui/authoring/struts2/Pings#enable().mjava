@@ -1,0 +1,19 @@
+    /**
+     * Enable a ping target.
+     */
+    public String enable() {
+        
+        if(getPingTarget() != null) try {
+            AutoPingManager autoPingMgr = RollerFactory.getRoller().getAutopingManager();
+            AutoPingData autoPing = new AutoPingData(null, getPingTarget(), getActionWeblog());
+            autoPingMgr.saveAutoPing(autoPing);
+            RollerFactory.getRoller().flush();
+        } catch(Exception ex) {
+            log.error("Error saving auto ping for target - "+getPingTargetId(), ex);
+            // TODO: i18n
+            addError("Error enabling auto ping");
+        }
+        
+        return execute();
+    }
+

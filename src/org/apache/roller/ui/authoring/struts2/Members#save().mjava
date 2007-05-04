@@ -1,0 +1,54 @@
+    public String save() {
+        
+        log.debug("Attempting to processing weblog permissions updates");
+        
+        UserManager userMgr = RollerFactory.getRoller().getUserManager();
+        
+        List<PermissionsData> permissions = getActionWeblog().getPermissions();
+        
+        int removed = 0;
+        int changed = 0;
+        try {
+            for( PermissionsData perms : permissions ) {
+                
+                String sval = getParameter("perm-" + perms.getId());
+                if (sval != null) {
+                    short val = Short.parseShort(sval);
+                    UserData user = getAuthenticatedUser();
+                    if (perms.getUser().getId().equals(user.getId()) && 
+                            val < perms.getPermissionMask()) {
+                        addError("memberPermissions.noSelfDemotions");
+                    } else if (val != perms.getPermissionMask()) {
+                        if (val == -1) {
+                            userMgr.removePermissions(perms);
+                            removed++;
+                        } else {
+                            perms.setPermissionMask(val);
+                            userMgr.savePermissions(perms);
+                            changed++;
+                        }
+                    }
+                }
+            }
+            
+            if (removed > 0 || changed > 0) {
+                log.debug("Weblog permissions updated, flushing changes");
+                
+                RollerFactory.getRoller().flush();
+            }
+        } catch (Exception ex) {
+            log.error("Error saving permissions on weblog - "+getActionWeblog().getHandle(), ex);
+            // TODO: i18n
+            addError("Error saving permissions");
+        }
+        
+        if (removed > 0) {
+            addMessage("memberPermissions.membersRemoved", ""+removed);
+        }
+        if (changed > 0) {
+            addMessage("memberPermissions.membersChanged", ""+changed);
+        }
+        
+        return LIST;
+    }
+

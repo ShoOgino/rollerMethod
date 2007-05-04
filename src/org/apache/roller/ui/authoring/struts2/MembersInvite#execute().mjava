@@ -1,0 +1,12 @@
+    public String execute() {
+        
+        // if group blogging is disabled then you can't change permissions
+        if (!RollerConfig.getBooleanProperty("groupblogging.enabled")) {
+            return "disabled";
+        }
+        
+        log.debug("Showing weblog inivitation form");
+        
+        return INPUT;
+    }
+

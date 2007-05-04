@@ -1,0 +1,77 @@
+    /**
+     * Save the new invitation and notify the user.
+     */
+    public String save() {
+        
+        // if group blogging is disabled then you can't change permissions
+        if (!RollerConfig.getBooleanProperty("groupblogging.enabled")) {
+            return "disabled";
+        }
+        
+        log.debug("Attempting to process weblog invitation");
+        
+        UserManager umgr = RollerFactory.getRoller().getUserManager();
+        
+        // user being invited
+        UserData user = null;
+        try {
+            user = umgr.getUserByUserName(getUserName());
+            if (user == null) {
+                addError("inviteMember.error.userNotFound");
+            }
+        } catch(RollerException ex) {
+            log.error("Error looking up user by id - "+getUserName(), ex);
+            // TODO: i18n
+            addError("Error looking up invitee");
+        }
+        
+        // if we already have an error then bail now
+        if(hasActionErrors()) {
+            return INPUT;
+        }
+        
+        // check for existing permissions or invitation
+        try {
+            PermissionsData perms = umgr.getPermissions(getActionWeblog(), user);
+            
+            if (perms != null && perms.isPending()) {
+                addError("inviteMember.error.userAlreadyInvited");
+            } else if (perms != null) {
+                addError("inviteMember.error.userAlreadyMember");
+            }
+            
+        } catch (RollerException ex) {
+            log.error("Error looking up permissions for weblog - "+getActionWeblog().getHandle(), ex);
+            // TODO: i18n
+            addError("Error checking existing permissions");
+        }
+        
+        // if no errors then send the invitation
+        if(!hasActionErrors()) try {
+            
+            umgr.inviteUser(getActionWeblog(), user, Short.parseShort(getPermissionsMask()));
+            RollerFactory.getRoller().flush();
+            
+            addMessage("inviteMember.userInvited");
+            
+            try {
+                MailUtil.sendWeblogInvitation(getActionWeblog(), user);
+            } catch (RollerException e) {
+                addError("error.untranslated", e.getMessage());
+            }
+            
+            log.debug("Invitation successfully recorded");
+            
+            return SUCCESS;
+            
+        } catch (Exception ex) {
+            log.error("Error creating user invitation", ex);
+            // TODO: i18n
+            addError("Error creating user invitation");
+        }
+        
+        log.debug("Invitation had errors, giving user another chance");
+        
+        return INPUT;
+    }
+
