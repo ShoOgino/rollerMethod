@@ -1,5 +1,6 @@
     // updates the paths of all descendents of the given category
-    private void updatePathTree(WeblogCategoryData cat) throws RollerException {
+    public static void updatePathTree(WeblogCategoryData cat) 
+            throws RollerException {
         
         log.debug("Updating path tree for category "+cat.getPath());
         
@@ -16,7 +17,7 @@
             } else {
                 childCat.setPath(cat.getPath() + "/" + childCat.getName());
             }
-            saveWeblogCategory(childCat);
+            RollerFactory.getRoller().getWeblogManager().saveWeblogCategory(childCat);
             
             log.debug("NEW child category path is "+ childCat.getPath());
             
