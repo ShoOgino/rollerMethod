@@ -1,5 +1,6 @@
-    // updates the paths of all descendents of the given folder
-    private void updatePathTree(FolderData folder) throws RollerException {
+    // update the path tree for a given folder
+    public static void updatePathTree(FolderData folder) 
+            throws RollerException {
         
         log.debug("Updating path tree for folder "+folder.getPath());
         
@@ -16,7 +17,7 @@
             } else {
                 childFolder.setPath(folder.getPath() + "/" + childFolder.getName());
             }
-            saveFolder(childFolder);
+            RollerFactory.getRoller().getBookmarkManager().saveFolder(childFolder);
             
             log.debug("NEW child folder path is "+ childFolder.getPath());
             
