@@ -16,7 +16,16 @@
             nameElement.addContent(nameText);
             userElement.addContent(nameElement);
         }
-        
+
+        // screen name
+        String screenName = getScreenName();
+        if (screenName != null) {
+            Element screenNameElement = new Element(Tags.SCREEN_NAME, NAMESPACE);
+            Text screenNameText = new Text(screenName);
+            screenNameElement.addContent(screenNameText);
+            userElement.addContent(screenNameElement);
+        }
+
         // full name
         String fullName = getFullName();
         if (fullName != null) {

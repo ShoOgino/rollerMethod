@@ -10,7 +10,10 @@
         //
         UserData ud = new UserData();
         ud.setUserName(ue.getName());
-        
+
+        if (ue.getScreenName() != null) {
+            ud.setScreenName(ue.getScreenName());
+        }
         if (ue.getFullName() != null) {
             ud.setFullName(ue.getFullName());
         }

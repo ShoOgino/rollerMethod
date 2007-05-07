@@ -1,6 +1,9 @@
     private void updateUserData(UserData ud, UserEntry entry) throws HandlerException {
         // user name cannot be updated
-        
+
+        if (entry.getScreenName() != null) {
+            ud.setScreenName(entry.getScreenName());
+        }
         if (entry.getFullName() != null) {
             ud.setFullName(entry.getFullName());
         }
