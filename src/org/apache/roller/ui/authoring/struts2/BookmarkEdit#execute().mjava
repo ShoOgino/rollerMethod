@@ -1,0 +1,14 @@
+    public String execute() {
+        
+        if(getBookmark() == null) {
+            // TODO: i18n
+            addError("Cannot edit null bookmark");
+            return ERROR;
+        }
+        
+        // make sure bean is properly loaded with pojo data
+        getBean().copyFrom(getBookmark());
+        
+        return INPUT;
+    }
+

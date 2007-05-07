@@ -1,0 +1,37 @@
+    public String save() {
+        
+        if(getFolder() == null) {
+            // TODO: i18n
+            addError("Cannot add bookmark to null folder");
+            return ERROR;
+        }
+        
+        // validation
+        myValidate();
+        
+        if(!hasActionErrors()) try {
+            
+            BookmarkData newBookmark = new BookmarkData();
+            newBookmark.setFolder(getFolder());
+            getBean().copyTo(newBookmark);
+            
+            BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
+            bmgr.saveBookmark(newBookmark);
+            RollerFactory.getRoller().flush();
+            
+            CacheManager.invalidate(newBookmark);
+            
+            // TODO: i18n
+            addMessage("bookmark added");
+            
+            return SUCCESS;
+            
+        } catch(Exception ex) {
+            log.error("Error saving new bookmark", ex);
+            // TODO: i18n
+            addError("Error saving new bookmark");
+        }
+        
+        return INPUT;
+    }
+

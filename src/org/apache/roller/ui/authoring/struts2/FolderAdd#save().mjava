@@ -1,0 +1,44 @@
+    public String save() {
+        
+        if(getFolder() == null) {
+            // TODO: i18n
+            addError("Cannot add folder to null parent folder");
+            return ERROR;
+        }
+        
+        // validation
+        myValidate();
+        
+        if(!hasActionErrors()) try {
+            
+            FolderData newFolder = new FolderData(
+                    getFolder(),
+                    getBean().getName(),
+                    getBean().getDescription(),
+                    getActionWeblog());
+            
+            // add new folder to parent
+            getFolder().addFolder(newFolder);
+            
+            // save changes
+            BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
+            bmgr.saveFolder(newFolder);
+            RollerFactory.getRoller().flush();
+            
+            // notify caches
+            CacheManager.invalidate(newFolder);
+            
+            // TODO: i18n
+            addMessage("folder added");
+            
+            return SUCCESS;
+            
+        } catch(Exception ex) {
+            log.error("Error saving new folder", ex);
+            // TODO: i18n
+            addError("Error saving new folder");
+        }
+        
+        return INPUT;
+    }
+

@@ -1,0 +1,29 @@
+    /**
+     * Remove a new template.
+     */
+    public String remove() {
+        
+        if(getTemplate() != null) try {
+            if(!getTemplate().isRequired()) {
+                UserManager umgr = RollerFactory.getRoller().getUserManager();
+                umgr.removePage(getTemplate());
+                RollerFactory.getRoller().flush();
+                
+                // notify cache
+                CacheManager.invalidate(getTemplate());
+                
+                return SUCCESS;
+            } else {
+                // TODO: i18n
+                addError("Cannot remove required template");
+            }
+            
+        } catch(Exception ex) {
+            log.error("Error removing page - "+getRemoveId(), ex);
+            // TODO: i18n
+            addError("Error removing page");
+        }
+        
+        return "confirm";
+    }
+

@@ -1,0 +1,11 @@
+    public void myPrepare() {
+        try {
+            BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
+            if(!StringUtils.isEmpty(getFolderId())) {
+                setFolder(bmgr.getFolder(getFolderId()));
+            }
+        } catch (RollerException ex) {
+            log.error("Error looking up folder - "+getFolderId(), ex);
+        }
+    }
+

@@ -1,0 +1,41 @@
+    /**
+     * Delete selected file(s).
+     */
+    public String remove() {
+        
+        int numDeleted = 0;
+        String[] deleteFiles = getDeleteIds();
+        if(deleteFiles != null) {
+            log.debug("Attempting to delete "+deleteFiles.length+" files");
+            
+            FileManager fmgr = RollerFactory.getRoller().getFileManager();
+            for (int i=0; i < deleteFiles.length; i++) {
+                if (deleteFiles[i].trim().startsWith("/") ||
+                        deleteFiles[i].trim().startsWith("\\") ||
+                        deleteFiles[i].indexOf("..") != -1) {
+                    // ignore absolute paths, or paths that contiain '..'
+                    log.debug("Ignoring delete path - "+deleteFiles[i]);
+                } else {
+                    try {
+                        log.debug("Deleting file at path - "+deleteFiles[i]);
+                        fmgr.deleteFile(getActionWeblog(), deleteFiles[i]);
+                        numDeleted++;
+                    } catch (FileNotFoundException ex) {
+                        addError("uploadFiles.error.badPath");
+                    } catch (FilePathException ex) {
+                        addError("uploadFiles.error.badPath");
+                    } catch (FileIOException ex) {
+                        addError("uploadFiles.error.delete", deleteFiles[i]);
+                    }
+                    
+                }
+            }
+            
+            if(numDeleted > 0) {
+                addMessage("uploadFiles.deletedFiles", ""+numDeleted);
+            }
+        }
+        
+        return execute();
+    }
+

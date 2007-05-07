@@ -1,4 +1,37 @@
     public String execute() {
-        return SUCCESS;
+        
+        // query for templates list
+        try {
+            UserManager mgr = RollerFactory.getRoller().getUserManager();
+            setTemplates(mgr.getPages(getActionWeblog()));
+            
+            // build list of action types that may be added
+            List availableActions = new ArrayList();
+            availableActions.add(WeblogTemplate.ACTION_CUSTOM);
+            
+            if(WeblogTheme.CUSTOM.equals(getActionWeblog().getEditorTheme())) {
+                // if the weblog is using a custom theme then determine which
+                // action templates are still available to be created
+                availableActions.add(WeblogTemplate.ACTION_PERMALINK);
+                availableActions.add(WeblogTemplate.ACTION_SEARCH);
+                availableActions.add(WeblogTemplate.ACTION_WEBLOG);
+                availableActions.add(WeblogTemplate.ACTION_TAGSINDEX);
+                
+                List<WeblogTemplate> pages = getTemplates();
+                for(WeblogTemplate tmpPage : pages) {
+                    if(!WeblogTemplate.ACTION_CUSTOM.equals(tmpPage.getAction())) {
+                        availableActions.remove(tmpPage.getAction());
+                    }
+                }
+            }
+            setAvailableActions(availableActions);
+
+        } catch (RollerException ex) {
+            log.error("Error getting templates for weblog - "+getActionWeblog().getHandle(), ex);
+            // TODO: i18n
+            addError("Error getting template list");
+        }
+        
+        return LIST;
     }
 
