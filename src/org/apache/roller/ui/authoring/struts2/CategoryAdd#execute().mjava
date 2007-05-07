@@ -1,0 +1,14 @@
+    /**
+     * Show category form.
+     */
+    public String execute() {
+        
+        if(getCategory() == null) {
+            // TODO: i18n
+            addError("Cannot add category to null parent category");
+            return ERROR;
+        }
+        
+        return INPUT;
+    }
+

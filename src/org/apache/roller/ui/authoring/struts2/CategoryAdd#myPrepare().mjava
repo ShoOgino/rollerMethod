@@ -1,0 +1,11 @@
+    public void myPrepare() {
+        try {
+            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+            if(!StringUtils.isEmpty(getCategoryId())) {
+                setCategory(wmgr.getWeblogCategory(getCategoryId()));
+            }
+        } catch (RollerException ex) {
+            log.error("Error looking up category", ex);
+        }
+    }
+

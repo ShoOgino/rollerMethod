@@ -1,0 +1,48 @@
+    /**
+     * Save new category.
+     */
+    public String save() {
+        
+        if(getCategory() == null) {
+            // TODO: i18n
+            addError("Cannot add category to null parent category");
+            return ERROR;
+        }
+        
+        // validation
+        myValidate();
+        
+        if(!hasActionErrors()) try {
+            
+            WeblogCategoryData newCategory = new WeblogCategoryData(
+                    getActionWeblog(),
+                    getCategory(),
+                    getBean().getName(),
+                    getBean().getDescription(),
+                    getBean().getImage());
+            
+            // add new folder to parent
+            getCategory().addCategory(newCategory);
+            
+            // save changes
+            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+            wmgr.saveWeblogCategory(newCategory);
+            RollerFactory.getRoller().flush();
+            
+            // notify caches
+            CacheManager.invalidate(newCategory);
+            
+            // TODO: i18n
+            addMessage("category added");
+            
+            return SUCCESS;
+            
+        } catch(Exception ex) {
+            log.error("Error saving new category", ex);
+            // TODO: i18n
+            addError("Error saving new category");
+        }
+        
+        return INPUT;
+    }
+

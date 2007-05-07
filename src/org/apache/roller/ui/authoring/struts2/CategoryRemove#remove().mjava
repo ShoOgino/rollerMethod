@@ -1,0 +1,34 @@
+    /**
+     * Remove a new template.
+     */
+    public String remove() {
+        
+        if(getCategory() != null) try {
+            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+            
+            if(getTargetCategoryId() != null) {
+                WeblogCategoryData target = wmgr.getWeblogCategory(getTargetCategoryId());
+                wmgr.moveWeblogCategoryContents(getCategory(), target);
+                RollerFactory.getRoller().flush();
+            }
+            
+            wmgr.removeWeblogCategory(getCategory());
+            RollerFactory.getRoller().flush();
+            
+            // notify cache
+            CacheManager.invalidate(getCategory());
+            
+            // set category id to parent for next page
+            setRemoveId(getCategory().getParent().getId());
+            
+            return SUCCESS;
+            
+        } catch(Exception ex) {
+            log.error("Error removing category - "+getRemoveId(), ex);
+            // TODO: i18n
+            addError("Error removing category");
+        }
+        
+        return execute();
+    }
+

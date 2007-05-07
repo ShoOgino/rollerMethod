@@ -1,0 +1,36 @@
+    public String move() {
+        
+        try {
+            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+            
+            log.debug("Moving categories to category - "+getTargetCategoryId());
+            
+            // Move subCategories to new category.
+            String[] cats = getSelectedCategories();
+            WeblogCategoryData parent = wmgr.getWeblogCategory(getTargetCategoryId());
+            if(cats != null) {
+                for (int i = 0; i < cats.length; i++) {
+                    WeblogCategoryData cd =
+                            wmgr.getWeblogCategory(cats[i]);
+                    
+                    // Don't move category into itself.
+                    if (!cd.getId().equals(parent.getId()) && 
+                            !parent.descendentOf(cd)) {
+                        wmgr.moveWeblogCategory(cd, parent);
+                    } else {
+                        addMessage("categoriesForm.warn.notMoving", cd.getName());
+                    }
+                }
+                
+                // flush changes
+                RollerFactory.getRoller().flush();
+            }
+            
+        } catch (RollerException ex) {
+            log.error("Error moving categories", ex);
+            addError("categoriesForm.error.move");
+        }
+        
+        return execute();
+    }
+

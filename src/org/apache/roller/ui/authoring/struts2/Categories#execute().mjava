@@ -1,0 +1,39 @@
+    public String execute() {
+        
+        // build list of categories for display
+        TreeSet allCategories = new TreeSet(new WeblogCategoryPathComparator());
+        
+        try {
+            // Build list of all categories, except for current one, sorted by path.
+            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+            List<WeblogCategoryData> cats = wmgr.getWeblogCategories(getActionWeblog(), true);
+            for(WeblogCategoryData cat : cats) {
+                if (!cat.getId().equals(getCategoryId())) {
+                    allCategories.add(cat);
+                }
+            }
+            
+            // build category path
+            WeblogCategoryData parent = getCategory().getParent();
+            if(parent != null) {
+                List categoryPath = new LinkedList();
+                categoryPath.add(0, getCategory());
+                while (parent != null) {
+                    categoryPath.add(0, parent);
+                    parent = parent.getParent();
+                }
+                setCategoryPath(categoryPath);
+            }
+        } catch (RollerException ex) {
+            log.error("Error building categories list", ex);
+            // TODO: i18n
+            addError("Error building categories list");
+        }
+        
+        if (allCategories.size() > 0) {
+            setAllCategories(allCategories);
+        }
+        
+        return LIST;
+    }
+
