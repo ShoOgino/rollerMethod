@@ -1,9 +1,0 @@
-    protected boolean releaseLeaseInDatabase(RollerTask task)
-            throws RollerException {
-        int rowsUpdted = ((JPAPersistenceStrategy) strategy).newUpdateQuery(
-            "TaskLockData.updateTimeLeasedByName&Client")
-            .updateAll(new Object[] {Integer.valueOf(task.getInterval()),
-                                     task.getName(), task.getClientId()} );
-        return rowsUpdted == 1;
-    }
-

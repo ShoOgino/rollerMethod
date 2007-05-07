@@ -1,9 +1,0 @@
-    public List getAllFolders(WebsiteData website)
-            throws RollerException {
-        if (website == null)
-            throw new RollerException("Website is null");
-        
-        return (List) strategy.newQuery(FolderData.class, 
-            "FolderData.getByWebsite").execute(website);
-    }
-
