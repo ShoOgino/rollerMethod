@@ -1,0 +1,22 @@
+    public void loadCheckboxes(List comments) {
+        
+        List<String> allComments = new ArrayList();
+        List<String> spamList = new ArrayList();
+        
+        Iterator it = comments.iterator();
+        while (it.hasNext()) {
+            CommentData comment = (CommentData)it.next();
+            allComments.add(comment.getId());
+            
+            if (CommentData.SPAM.equals(comment.getStatus())) {
+                spamList.add(comment.getId());
+            }
+        }
+        
+        String[] idArray = (String[]) allComments.toArray(new String[allComments.size()]);
+        this.setIds(Utilities.stringArrayToString(idArray,","));
+        
+        spamComments = (String[])spamList.toArray(
+            new String[spamList.size()]);
+    }
+

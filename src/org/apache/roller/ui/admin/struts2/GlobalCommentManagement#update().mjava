@@ -1,0 +1,78 @@
+    /**
+     * Update a list of comments.
+     */
+    public String update() {
+        
+        try {
+            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+            
+            List flushList = new ArrayList();
+            
+            // delete all comments with delete box checked
+            List<String> deletes = Arrays.asList(getBean().getDeleteComments());
+            if(deletes != null && deletes.size() > 0) {
+                log.debug("Processing deletes - "+deletes.size());
+                
+                CommentData deleteComment = null;
+                for(String deleteId : deletes) {
+                    deleteComment = wmgr.getComment(deleteId);
+                    wmgr.removeComment(deleteComment);
+                    flushList.add(deleteComment);
+                }
+            }
+            
+            // loop through IDs of all comments displayed on page
+            List spamIds = Arrays.asList(getBean().getSpamComments());
+            log.debug(spamIds.size()+" comments marked as spam");
+            
+            String[] ids = Utilities.stringToStringArray(getBean().getIds(),",");
+            for (int i=0; i < ids.length; i++) {
+                log.debug("processing id - "+ ids[i]);
+                
+                // if we already deleted it then skip forward
+                if(deletes.contains(ids[i])) {
+                    log.debug("Already deleted, skipping - "+ids[i]);
+                    continue;
+                }
+                
+                CommentData comment = wmgr.getComment(ids[i]);
+                
+                // mark/unmark spam
+                if (spamIds.contains(ids[i]) && 
+                        !CommentData.SPAM.equals(comment.getStatus())) {
+                    log.debug("Marking as spam - "+comment.getId());
+                    comment.setStatus(CommentData.SPAM);
+                    wmgr.saveComment(comment);
+                    
+                    flushList.add(comment);
+                } else if(CommentData.SPAM.equals(comment.getStatus())) {
+                    log.debug("Marking as approved - "+comment.getId());
+                    comment.setStatus(CommentData.APPROVED);
+                    wmgr.saveComment(comment);
+                    
+                    flushList.add(comment);
+                }
+            }
+            
+            RollerFactory.getRoller().flush();
+            
+            // notify caches of changes
+            for (Iterator comments=flushList.iterator(); comments.hasNext();) {
+                CacheManager.invalidate((CommentData)comments.next());
+            }
+            
+            addMessage("commentManagement.updateSuccess");
+            
+            // reset form and load fresh comments list
+            setBean(new GlobalCommentManagementBean());
+            
+            return execute();
+            
+        } catch (Exception ex) {
+            log.error("ERROR updating comments", ex);
+            addError("commentManagement.updateError", ex.toString());
+        }
+        
+        return LIST;
+    }
+

@@ -1,0 +1,33 @@
+    public void loadComments() {
+        
+        try {
+            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+            List comments = wmgr.getComments(
+                    null,
+                    null,
+                    getBean().getSearchString(),
+                    getBean().getStartDate(),
+                    getBean().getEndDate(),
+                    getBean().getStatus(),
+                    true, // reverse  chrono order
+                    getBean().getOffset(),
+                    getBean().getCount() + 1);
+            
+            if(comments != null) {
+                if(comments.size() > getBean().getCount()) {
+                    comments.remove(comments.size()-1);
+                    setMoreResults(true);
+                }
+                
+                setComments(comments);
+                setFirstComment((CommentData)comments.get(0));
+                setLastComment((CommentData)comments.get(comments.size()-1));
+                loadNextPrevLinks(isMoreResults());
+            }
+        } catch (RollerException ex) {
+            log.error("Error looking up comments", ex);
+            // TODO: i18n
+            addError("Error looking up comments");
+        }
+    }
+
