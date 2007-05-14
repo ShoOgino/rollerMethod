@@ -32,7 +32,7 @@
                     (String)row[2],                     // website handle
                     (String)row[3],                     // website name
                     "statCount.weblogCommentCountType", // stat type 
-                    new Long(((Integer)row[0]).intValue()).longValue()); // # comments
+                    new Long(((Number)row[0]).longValue())); // # comments
                 statCount.setWeblogHandle((String)row[2]);
                 results.add(statCount);
             }

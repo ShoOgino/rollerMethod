@@ -7,7 +7,7 @@
             Session session = ((HibernatePersistenceStrategy)strategy).getSession();
             String query = "select count(distinct w) from WebsiteData w";
             List result = session.createQuery(query).list();
-            ret = ((Integer)result.get(0)).intValue();
+            ret = ((Number)result.get(0)).intValue();
         } catch (Exception e) {
             throw new RollerException(e);
         }
