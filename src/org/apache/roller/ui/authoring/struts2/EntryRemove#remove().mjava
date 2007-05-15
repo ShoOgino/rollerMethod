@@ -1,0 +1,41 @@
+    public String remove() {
+        
+        if(getRemoveEntry() != null) try {
+            
+            WeblogEntryData entry = getRemoveEntry();
+            
+            try {
+                // remove the entry from the search index
+                // TODO: can we do this in a better way?
+                entry.setStatus(WeblogEntryData.DRAFT);
+                IndexManager manager = RollerFactory.getRoller().getIndexManager();
+                manager.addEntryReIndexOperation(entry);
+            } catch (RollerException ex) {
+                log.warn("Trouble triggering entry indexing", ex);
+            }
+            
+            // remove entry itself
+            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+            wmgr.removeWeblogEntry(entry);
+            RollerFactory.getRoller().flush();
+            
+            // flush caches
+            CacheManager.invalidate(entry);
+            
+            // note to user
+            addMessage("weblogEdit.entryRemoved");
+            
+            return SUCCESS;
+            
+        } catch(Exception e) {
+            log.error("Error removing entry "+getRemoveId(), e);
+            // TODO: i18n
+            addError("Error removing entry");
+        } else {
+            addError("weblogEntry.notFound");
+            return ERROR;
+        }
+        
+        return INPUT;
+    }
+

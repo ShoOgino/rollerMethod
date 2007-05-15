@@ -1,0 +1,28 @@
+    /**
+     * Get recent weblog entries using request parameters to determine
+     * username, date, and category name parameters.
+     * @return List of WeblogEntryData objects.
+     * @throws RollerException
+     */
+    public List<WeblogEntryData> getRecentPublishedEntries() {
+        List<WeblogEntryData> entries = Collections.EMPTY_LIST;
+        try {
+            entries = RollerFactory.getRoller().getWeblogManager().getWeblogEntries(
+                    getActionWeblog(), // userName
+                    null,
+                    null,              // startDate
+                    null,              // endDate
+                    null,              // catName
+                    null,              // tags
+                    WeblogEntryData.PUBLISHED, // status
+                    null,              // text
+                    null,              // sortby (null for pubTime)
+                    null,
+                    null,
+                    0, 20);
+        } catch (RollerException ex) {
+            log.error("Error getting entries list", ex);
+        }
+        return entries;
+    }
+

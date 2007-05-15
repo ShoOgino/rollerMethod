@@ -1,0 +1,40 @@
+    /**
+     * Send trackback to a specific url.
+     */
+    @SkipValidation
+    public String trackback() {
+        
+        // make sure we have an entry to edit and it belongs to the action weblog
+        if(getEntry() == null) {
+            return ERROR;
+        } else if(!getEntry().getWebsite().equals(getActionWeblog())) {
+            return DENIED;
+        }
+        
+        if(!StringUtils.isEmpty(getTrackbackUrl())) try {
+            
+            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+            RollerMessages messages = wmgr.sendTrackback(getEntry(), getTrackbackUrl());
+            
+            for (Iterator mit = messages.getMessages(); mit.hasNext();) {
+                RollerMessage msg = (RollerMessage) mit.next();
+                addMessage(msg.getKey(), Arrays.asList(msg.getArgs()));
+            }
+            
+            for (Iterator eit = messages.getErrors(); eit.hasNext();) {
+                RollerMessage err = (RollerMessage) eit.next();
+                addError(err.getKey(), Arrays.asList(err.getArgs()));
+            }
+            
+            // reset trackback url
+            setTrackbackUrl(null);
+            
+        } catch(Exception ex) {
+            log.error("Error sending trackback", ex);
+            // TODO: error handling
+            addError("error.general", ex.getMessage());
+        }
+        
+        return INPUT;
+    }
+

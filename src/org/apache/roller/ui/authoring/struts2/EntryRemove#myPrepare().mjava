@@ -1,0 +1,11 @@
+    public void myPrepare() {
+        if(getRemoveId() != null) {
+            try {
+                WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+                setRemoveEntry(wmgr.getWeblogEntry(getRemoveId()));
+            } catch (RollerException ex) {
+                log.error("Error looking up entry by id - "+getRemoveId(), ex);
+            }
+        }
+    }
+

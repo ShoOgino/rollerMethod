@@ -1,0 +1,95 @@
+    /**
+     * Save weblog entry.
+     * 
+     * @return String The result of the action.
+     */
+    public String save() {
+        
+        // make sure we have an entry to edit and it belongs to the action weblog
+        if(getEntry() == null) {
+            return ERROR;
+        } else if(!getEntry().getWebsite().equals(getActionWeblog())) {
+            return DENIED;
+        }
+        
+        if(!hasActionErrors()) try {
+            WeblogManager weblogMgr = RollerFactory.getRoller().getWeblogManager();
+            
+            WeblogEntryData entry = getEntry();
+            
+            // set updatetime & pubtime
+            entry.setUpdateTime(new Timestamp(new Date().getTime()));
+            entry.setPubTime(getBean().getPubTime(getLocale(), getActionWeblog().getTimeZoneInstance()));
+            
+            // copy data to pojo
+            getBean().copyTo(entry);
+            
+            // handle pubtime auto set
+            if(entry.isPublished()) {
+                if(entry.getPubTime() == null) {
+                    // no time specified, use current time
+                    entry.setPubTime(entry.getUpdateTime());
+                }
+                
+                // if user does not have author perms then force PENDING status
+                if(!getActionWeblog().hasUserPermissions(getAuthenticatedUser(), PermissionsData.AUTHOR)) {
+                    entry.setStatus(WeblogEntryData.PENDING);
+                }
+            }
+            
+            // if user is an admin then apply pinned to main value as well
+            if(getAuthenticatedUser().hasRole("admin")) {
+                entry.setPinnedToMain(getBean().getPinnedToMain());
+            }
+            
+//            // Fetch MediaCast content type and length
+//            log.debug("Checking MediaCast attributes");
+//            if (!checkMediaCast(entry)) {
+//                log.debug("Invalid MediaCast attributes");
+//            } else {
+//                log.debug("Validated MediaCast attributes");
+//            }
+            
+            if(log.isDebugEnabled()) {
+                log.debug("entry bean is ...\n"+getBean().toString());
+                log.debug("final status = "+entry.getStatus());
+                log.debug("updtime = "+entry.getUpdateTime());
+                log.debug("pubtime = "+entry.getPubTime());
+            }
+            
+            log.debug("Saving entry");
+            weblogMgr.saveWeblogEntry(entry);
+            RollerFactory.getRoller().flush();
+            
+            // notify search of the new entry
+            reindexEntry(entry);
+            
+            // notify caches
+            CacheManager.invalidate(entry);
+            
+            // Queue applicable pings for this update.
+            if(entry.isPublished()) {
+                RollerFactory.getRoller().getAutopingManager().queueApplicableAutoPings(entry);
+            }
+            
+            if(entry.isPending()) {
+                // implies that entry just changed to pending
+                MailUtil.sendPendingEntryNotice(entry);
+                addMessage("weblogEdit.submittedForReview");
+            } else {
+                addMessage("weblogEdit.changesSaved");
+            }
+            
+            return INPUT;
+            
+        } catch (RollerPermissionsException e) {
+            addError("error.permissions.deniedSave");
+        } catch (Exception e) {
+            log.error("Error saving new entry", e);
+            // TODO: i18n
+            addError("Error saving new entry");
+        }
+        
+        return INPUT;
+    }
+

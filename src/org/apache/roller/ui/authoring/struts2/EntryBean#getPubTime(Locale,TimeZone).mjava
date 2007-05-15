@@ -1,0 +1,30 @@
+    // a convenient way to get the final pubtime of the entry
+    public Timestamp getPubTime(Locale locale, TimeZone timezone) {
+        
+        Timestamp pubtime = null;
+        
+        if(!StringUtils.isEmpty(getDateString())) try {
+            log.debug("pubtime vals are "+getDateString()+", "+getHours()+", "+getMinutes()+", "+getSeconds());
+            
+            // first convert the specified date string into an actual Date obj
+            DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, locale);
+            df.setTimeZone(timezone);
+            Date newDate = df.parse(getDateString());
+            
+            // Now handle the time from the hour, minute and second combos
+            Calendar cal = Calendar.getInstance(locale);
+            cal.setTime(newDate);
+            cal.setTimeZone(timezone);
+            cal.set(Calendar.HOUR_OF_DAY, getHours());
+            cal.set(Calendar.MINUTE, getMinutes());
+            cal.set(Calendar.SECOND, getSeconds());
+            pubtime = new Timestamp(cal.getTimeInMillis());
+            
+            log.debug("pubtime is "+pubtime);
+        } catch(Exception e) {
+            log.error("Error calculating pubtime", e);
+        }
+        
+        return pubtime;
+    }
+

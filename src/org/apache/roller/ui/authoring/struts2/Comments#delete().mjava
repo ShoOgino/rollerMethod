@@ -1,0 +1,32 @@
+    /**
+     * Bulk delete all comments matching query criteria.
+     */
+    public String delete() {
+        
+        try {
+            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+            int deleted = wmgr.removeMatchingComments(
+                    getActionWeblog(),
+                    null,
+                    getBean().getSearchString(),
+                    getBean().getStartDate(),
+                    getBean().getEndDate(),
+                    getBean().getStatus());
+            
+            // TODO: i18n
+            addMessage("Successfully deleted "+deleted+" comments");
+            
+            // reset form and load fresh comments list
+            setBean(new CommentsBean());
+            
+            return execute();
+            
+        } catch (RollerException ex) {
+            log.error("Error doing bulk delete", ex);
+            // TODO: i18n
+            addError("Bulk delete failed due to unexpected error");
+        }
+        
+        return LIST;
+    }
+

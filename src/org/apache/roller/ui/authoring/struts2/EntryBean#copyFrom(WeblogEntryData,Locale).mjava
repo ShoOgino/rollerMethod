@@ -1,0 +1,55 @@
+    /**
+     * Copy values from WeblogEntryData to this Form.
+     */
+    public void copyFrom(WeblogEntryData entry, Locale locale) {
+        
+        setId(entry.getId());
+        setTitle(entry.getTitle());
+        setLocale(entry.getLocale());
+        setStatus(entry.getStatus());
+        setSummary(entry.getSummary());
+        setText(entry.getText());
+        setCategoryId(entry.getCategory().getId());
+        setTagsAsString(entry.getTagsAsString());
+        
+        // init plugins values
+        if(entry.getPlugins() != null) {
+            setPlugins(StringUtils.split(entry.getPlugins(), ","));
+        }
+        
+        // init pubtime values
+        if(entry.getPubTime() != null) {
+            log.debug("entry pubtime is "+entry.getPubTime());
+            
+            //Calendar cal = Calendar.getInstance(locale);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(entry.getPubTime());
+            cal.setTimeZone(entry.getWebsite().getTimeZoneInstance());
+            
+            setHours(cal.get(Calendar.HOUR_OF_DAY));
+            setMinutes(cal.get(Calendar.MINUTE));
+            setSeconds(cal.get(Calendar.SECOND));
+            
+            DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, locale);
+            df.setTimeZone(entry.getWebsite().getTimeZoneInstance());
+            setDateString(df.format(entry.getPubTime()));
+            
+            log.debug("pubtime vals are "+getDateString()+", "+getHours()+", "+getMinutes()+", "+getSeconds());
+        }
+        
+        setAllowComments(entry.getAllowComments());
+        setCommentDays(entry.getCommentDays());
+        setRightToLeft(entry.getRightToLeft());
+        setPinnedToMain(entry.getPinnedToMain());
+        
+        // enclosure url, if it exists
+        Set<EntryAttributeData> attrs = entry.getEntryAttributes();
+        if(attrs != null && attrs.size() > 0) {
+            for(EntryAttributeData attr : attrs) {
+                if("att_mediacast_url".equals(attr.getName())) {
+                    setEnclosureURL(attr.getValue());
+                }
+            }
+        }
+    }
+

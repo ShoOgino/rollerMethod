@@ -1,0 +1,30 @@
+    /**
+     * Show form for adding a new weblog entry.
+     * 
+     * @return String The result of the action.
+     */
+    @SkipValidation
+    public String execute() {
+        
+        // if user is an author then post status defaults to PUBLISHED, otherwise PENDING
+        if(getActionWeblog().hasUserPermissions(getAuthenticatedUser(), PermissionsData.AUTHOR)) {
+            getBean().setStatus(WeblogEntryData.PUBLISHED);
+        } else {
+            getBean().setStatus(WeblogEntryData.PENDING);
+        }
+        
+        // set entry locale based on weblog locale
+        getBean().setLocale(getActionWeblog().getLocale());
+        
+        // set comment defaults
+        getBean().setAllowComments(getActionWeblog().getDefaultAllowComments());
+        getBean().setCommentDays(new Integer(getActionWeblog().getDefaultCommentDays()));
+        
+        // apply weblog default plugins
+        if(getActionWeblog().getDefaultPlugins() != null) {
+            getBean().setPlugins(StringUtils.split(getActionWeblog().getDefaultPlugins(), ","));
+        }
+        
+        return INPUT;
+    }
+
