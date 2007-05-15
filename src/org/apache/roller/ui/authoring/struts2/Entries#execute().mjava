@@ -1,0 +1,46 @@
+    public String execute() {
+        
+        if(log.isDebugEnabled()) {
+            log.debug("entries bean is ...\n"+getBean().toString());
+        }
+        
+        try {
+            String status = getBean().getStatus();
+            
+            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+            List<WeblogEntryData> entries = wmgr.getWeblogEntries(
+                    getActionWeblog(),
+                    null,
+                    getBean().getStartDate(),
+                    getBean().getEndDate(),
+                    getBean().getCategoryPath(),
+                    getBean().getTags(),
+                    ("ALL".equals(status)) ? null : status,
+                    getBean().getText(),
+                    getBean().getSortBy(),
+                    null,
+                    null,
+                    getBean().getOffset(),
+                    getBean().getCount() + 1);
+            
+            if(entries != null && entries.size() > 0) {
+                log.debug("query found "+entries.size()+" results");
+                
+                if(entries.size() > getBean().getCount()) {
+                    entries.remove(entries.size()-1);
+                    setMoreResults(true);
+                }
+                
+                setEntries(entries);
+                setFirstEntry((WeblogEntryData)entries.get(0));
+                setLastEntry((WeblogEntryData)entries.get(entries.size()-1));
+            }
+        } catch (RollerException ex) {
+            log.error("Error looking up entries", ex);
+            // TODO: i18n
+            addError("Error looking up entries");
+        }
+        
+        return LIST;
+    }
+
