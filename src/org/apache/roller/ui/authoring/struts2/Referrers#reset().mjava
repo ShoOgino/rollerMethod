@@ -1,0 +1,20 @@
+    /**
+     * Reset all referrer counts.
+     */
+    public String reset() {
+        
+        try {
+            RefererManager refmgr = RollerFactory.getRoller().getRefererManager();
+            refmgr.clearReferrers(getActionWeblog());
+            RollerFactory.getRoller().flush();
+            
+            CacheManager.invalidate(getActionWeblog());
+        } catch (Exception ex) {
+            log.error("Error resetting referrers", ex);
+            // TODO: i18n
+            addError("Error resetting referrers");
+        }
+        
+        return execute();
+    }
+
