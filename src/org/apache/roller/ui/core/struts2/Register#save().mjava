@@ -13,7 +13,7 @@
             
             // copy form data into new user pojo
             UserData ud = new UserData();
-            getBean().copyTo(ud, getLocale()); // doesn't copy password
+            getBean().copyTo(ud); // doesn't copy password
             ud.setId(null);
             ud.setDateCreated(new java.util.Date());
             ud.setEnabled(Boolean.TRUE);
@@ -62,8 +62,12 @@
             
             // now send activation email if necessary
             if (activationEnabled && ud.getActivationCode() != null) {
-                // send activation mail to the user
-                sendActivationMail(ud);
+                try {
+                    // send activation mail to the user
+                    MailUtil.sendUserActivationEmail(ud);
+                } catch (RollerException ex) {
+                    log.error("Error sending activation email to - "+ud.getEmailAddress(), ex);
+                }
                 
                 setActivationStatus("pending");
             }
@@ -78,9 +82,10 @@
             
             return SUCCESS;
             
-        } catch (RollerException e) {
-            addError(e.getMessage());
-            log.error("ERROR in addUser", e);
+        } catch (RollerException ex) {
+            log.error("Error adding new user", ex);
+            // TODO: i18n
+            addError("Error adding new user");
         }
         
         return INPUT;

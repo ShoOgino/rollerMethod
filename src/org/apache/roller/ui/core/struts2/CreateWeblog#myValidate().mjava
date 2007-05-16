@@ -3,7 +3,7 @@
         
         String allowed = RollerConfig.getProperty("username.allowedChars");
         if(allowed == null || allowed.trim().length() == 0) {
-            allowed = RegisterForm.DEFAULT_ALLOWED_CHARS;
+            allowed = Register.DEFAULT_ALLOWED_CHARS;
         }
         String safe = CharSetUtils.keep(getBean().getHandle(), allowed);
         
@@ -21,7 +21,7 @@
             addError("createWeblog.error.missingEmailAddress");
         }
         
-        try {
+        if(!StringUtils.isEmpty(getBean().getHandle())) try {
             UserManager mgr = RollerFactory.getRoller().getUserManager();
             if (mgr.getWebsiteByHandle(getBean().getHandle()) != null) {
                 addError("createWeblog.error.handleExists");

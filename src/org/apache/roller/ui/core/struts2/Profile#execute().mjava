@@ -3,7 +3,7 @@
         UserData ud = getAuthenticatedUser();
         
         // load up the form from the users existing profile data
-        getBean().copyFrom(ud, getLocale());
+        getBean().copyFrom(ud);
         getBean().setPasswordText(null);
         getBean().setPasswordConfirm(null);
         getBean().setLocale(ud.getLocale());

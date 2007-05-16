@@ -3,7 +3,7 @@
         
         String allowed = RollerConfig.getProperty("username.allowedChars");
         if(allowed == null || allowed.trim().length() == 0) {
-            allowed = RegisterForm.DEFAULT_ALLOWED_CHARS;
+            allowed = Register.DEFAULT_ALLOWED_CHARS;
         }
         String safe = CharSetUtils.keep(getBean().getUserName(), allowed);
         
