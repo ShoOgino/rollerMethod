@@ -1,0 +1,20 @@
+    private static ParsedTab elementToParsedTab(Element element) {
+        
+        ParsedTab tab = new ParsedTab();
+        
+        tab.setName(element.getAttributeValue("name"));
+        tab.setPerm(element.getAttributeValue("perms"));
+        tab.setRole(element.getAttributeValue("roles"));
+        tab.setEnabledProperty(element.getAttributeValue("enabledProperty"));
+        tab.setDisabledProperty(element.getAttributeValue("disabledProperty"));
+        
+        List menuItems = element.getChildren("menu-item");
+        Iterator iter = menuItems.iterator();
+        while (iter.hasNext()) {
+            Element e = (Element) iter.next();
+            tab.addItem(elementToParsedTabItem(e));
+        }
+        
+        return tab;
+    }
+

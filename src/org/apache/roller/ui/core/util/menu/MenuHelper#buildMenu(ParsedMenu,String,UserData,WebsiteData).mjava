@@ -17,6 +17,8 @@
             boolean includeTab = true;
             if(configTab.getEnabledProperty() != null) {
                 includeTab = RollerConfig.getBooleanProperty(configTab.getEnabledProperty());
+            } else if(configTab.getDisabledProperty() != null) {
+                includeTab = ! RollerConfig.getBooleanProperty(configTab.getDisabledProperty());
             }
             
             if(includeTab) {
@@ -52,6 +54,8 @@
                     boolean includeItem = true;
                     if(configTabItem.getEnabledProperty() != null) {
                         includeItem = RollerConfig.getBooleanProperty(configTabItem.getEnabledProperty());
+                    } else if(configTabItem.getDisabledProperty() != null) {
+                        includeItem = ! RollerConfig.getBooleanProperty(configTabItem.getDisabledProperty());
                     }
                     
                     if(includeItem) {
