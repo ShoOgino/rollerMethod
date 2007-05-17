@@ -1,12 +1,5 @@
     /** URL for logging out */
     public String getLogout() {
-        String returnURL = null;
-        try {
-            returnURL = RequestUtils.computeURL(pageContext,
-                "logout-redirect", null, null, null, null, null, false);
-        } catch (MalformedURLException mue) {
-            log.error("ERROR forming Struts URL: ", mue);
-        }
-        return returnURL;
+        return URLUtilities.getLogoutURL(false);
     }
 

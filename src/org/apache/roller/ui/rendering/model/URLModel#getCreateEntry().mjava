@@ -1,14 +1,5 @@
     /** URL for creating a new weblog entry */
     public String getCreateEntry() {
-        String returnURL = null;
-        Map params = new HashMap();
-        params.put(RequestConstants.WEBLOG, weblog.getHandle());
-        try {
-            returnURL = RequestUtils.computeURL(pageContext,
-                "weblogCreate", null, null, null, params, null, false);
-        } catch (MalformedURLException mue) {
-            log.error("ERROR forming Struts URL: ", mue);
-        }
-        return returnURL;
+        return URLUtilities.getEntryAddURL(weblog.getHandle(), false);
     }
 

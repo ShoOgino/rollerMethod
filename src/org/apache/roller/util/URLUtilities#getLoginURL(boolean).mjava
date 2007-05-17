@@ -1,0 +1,18 @@
+    /**
+     * Url to login page.
+     */
+    public static final String getLoginURL(boolean absolute) {
+        
+        StringBuffer url = new StringBuffer();
+        
+        if(absolute) {
+            url.append(RollerRuntimeConfig.getAbsoluteContextURL());
+        } else {
+            url.append(RollerRuntimeConfig.getRelativeContextURL());
+        }
+        
+        url.append("/roller-ui/login-redirect.rol");
+        
+        return url.toString();
+    }
+

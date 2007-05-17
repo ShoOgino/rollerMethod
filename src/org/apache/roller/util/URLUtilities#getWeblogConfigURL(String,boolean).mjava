@@ -1,0 +1,22 @@
+    /**
+     * Get a url to weblog config page.
+     */
+    public static final String getWeblogConfigURL(String weblogHandle,
+                                                  boolean absolute) {
+        
+        StringBuffer url = new StringBuffer();
+        
+        if(absolute) {
+            url.append(RollerRuntimeConfig.getAbsoluteContextURL());
+        } else {
+            url.append(RollerRuntimeConfig.getRelativeContextURL());
+        }
+        
+        url.append("/roller-ui/admin/weblogConfig.rol");
+        
+        Map params = new HashMap();
+        params.put("weblog", weblogHandle);
+        
+        return url.toString() + getQueryString(params);
+    }
+

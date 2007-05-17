@@ -1,15 +1,15 @@
     /** URL for editing a weblog entry */
     public String editEntry(String anchor) {
-        String ret = null;
-        Map params = new HashMap();
-        params.put(RequestConstants.ANCHOR, anchor);
-        params.put(RequestConstants.WEBLOG, weblog.getHandle());
         try {
-            ret = RequestUtils.computeURL(pageContext,
-                "weblogEdit", null, null, null, params, null, false);
-        } catch (MalformedURLException mue) {
-            log.error("ERROR forming Struts URL: ", mue);
+            // need to determine entryId from anchor
+            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+            WeblogEntryData entry = wmgr.getWeblogEntryByAnchor(weblog, anchor);
+            if(entry != null) {
+                return URLUtilities.getEntryEditURL(weblog.getHandle(), entry.getId(), false);
+            }
+        } catch (RollerException ex) {
+            log.error("Error looking up entry by anchor - "+anchor, ex);
         }
-        return ret;
+        return null;
     } 
 

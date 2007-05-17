@@ -1,12 +1,5 @@
     /** URL for logging in */  
     public String getLogin() {
-        String returnURL = null;
-        try {
-            returnURL = RequestUtils.computeURL(pageContext,
-                "login-redirect", null, null, null, null, null, false);
-        } catch (MalformedURLException mue) {
-            log.error("ERROR forming Struts URL: ", mue);
-        }
-        return returnURL;
+        return URLUtilities.getLoginURL(false);
     }
 

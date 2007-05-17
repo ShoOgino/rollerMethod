@@ -1,0 +1,18 @@
+    /**
+     * Url to logout page.
+     */
+    public static final String getLogoutURL(boolean absolute) {
+        
+        StringBuffer url = new StringBuffer();
+        
+        if(absolute) {
+            url.append(RollerRuntimeConfig.getAbsoluteContextURL());
+        } else {
+            url.append(RollerRuntimeConfig.getRelativeContextURL());
+        }
+        
+        url.append("/roller-ui/logout-redirect.rol");
+        
+        return url.toString();
+    }
+
