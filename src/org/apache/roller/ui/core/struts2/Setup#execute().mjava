@@ -1,0 +1,13 @@
+    public String execute() {
+        
+        try {
+            UserManager umgr = RollerFactory.getRoller().getUserManager();
+            setUserCount(umgr.getUserCount());
+            setBlogCount(umgr.getWeblogCount());
+        } catch (RollerException ex) {
+            log.error("Error getting user/weblog counts", ex);
+        }
+        
+        return SUCCESS;
+    }
+
