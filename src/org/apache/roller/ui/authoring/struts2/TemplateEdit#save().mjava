@@ -1,18 +1,22 @@
+    /**
+     * Save an existing template.
+     */
     public String save() {
+        
+        if(getTemplate() == null) {
+            // TODO: i18n
+            addError("Unable to locate specified template");
+            return LIST;
+        }
         
         // validation
         myValidate();
         
         if(!hasActionErrors()) try {
             
-            UserManager mgr = RollerFactory.getRoller().getUserManager();
-            WeblogTemplate page = mgr.getPage(getBean().getId());
-            if(page == null) {
-                throw new RollerException("page not found");
-            }
-            
+            WeblogTemplate page = getTemplate();
             getBean().copyTo(page);
-            page.setLastModified( new Date() );
+            page.setLastModified(new Date());
             
             if (getBean().getAutoContentType() == null ||
                     !getBean().getAutoContentType().booleanValue()) {
@@ -23,9 +27,11 @@
             }
             
             // save template and flush
-            mgr.savePage( page );
+            UserManager mgr = RollerFactory.getRoller().getUserManager();
+            mgr.savePage(page);
             RollerFactory.getRoller().flush();
             
+            // notify caches
             CacheManager.invalidate(page);
             
             // success message

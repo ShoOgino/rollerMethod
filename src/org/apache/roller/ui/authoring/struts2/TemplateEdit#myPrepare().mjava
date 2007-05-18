@@ -1,0 +1,9 @@
+    public void myPrepare() {
+        try {
+            UserManager mgr = RollerFactory.getRoller().getUserManager();
+            setTemplate(mgr.getPage(getBean().getId()));
+        } catch (RollerException ex) {
+            log.error("Error looking up template - "+getBean().getId(), ex);
+        }
+    }
+
