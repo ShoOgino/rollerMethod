@@ -6,9 +6,8 @@
      * @throws IOException
      */
     public static String decodeString(String str) throws IOException {
-        BASE64Decoder dec = new BASE64Decoder();
-        String value = new String(dec.decodeBuffer(str));
-        
+        Base64 base64 = new Base64();
+        String value = new String(base64.decodeBase64(str.getBytes()));        
         return (value);
     }
 
