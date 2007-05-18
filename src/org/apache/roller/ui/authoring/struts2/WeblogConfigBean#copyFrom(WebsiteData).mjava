@@ -18,12 +18,14 @@
         this.timeZone = dataHolder.getTimeZone();
         this.defaultPlugins = dataHolder.getDefaultPlugins();
         this.entryDisplayCount = dataHolder.getEntryDisplayCount();
-        this.setActive(dataHolder.getActive());
+        setActive(dataHolder.getActive());
         this.commentModerationRequired = dataHolder.getCommentModerationRequired();
         this.enableMultiLang = dataHolder.isEnableMultiLang();
         this.showAllLangs = dataHolder.isShowAllLangs();
         this.pageModels = dataHolder.getPageModels();
         this.customStylesheetPath = dataHolder.getCustomStylesheetPath();
+        setIcon(dataHolder.getIconPath());
+        setAbout(dataHolder.getAbout());
         
         if (dataHolder.getDefaultCategory() != null) {
             defaultCategoryId = dataHolder.getDefaultCategory().getId();
