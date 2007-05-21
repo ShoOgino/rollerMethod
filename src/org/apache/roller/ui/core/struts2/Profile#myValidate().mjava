@@ -1,8 +1,10 @@
-    // TODO: replace with struts2 validation
-    private void myValidate() {
+    public void myValidate() {
         
-        if (StringUtils.isEmpty(getBean().getEmailAddress())) {
-            addError("error.add.user.missingEmailAddress");
+        // check that passwords match if they were specified
+        if(!StringUtils.isEmpty(getBean().getPasswordText())) {
+            if(!getBean().getPasswordText().equals(getBean().getPasswordConfirm())) {
+                addError("Register.error.passowordMismatch");
+            }
         }
     }
 

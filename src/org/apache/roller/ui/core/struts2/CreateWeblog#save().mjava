@@ -1,7 +1,6 @@
     public String save() {
         
         UserData user = getAuthenticatedUser();
-        
         try {
             if (!RollerConfig.getBooleanProperty("groupblogging.enabled")) {
                 UserManager mgr = RollerFactory.getRoller().getUserManager();
@@ -18,7 +17,6 @@
             log.error("error checking for existing weblogs count", ex);
         }
         
-        // custom validation
         myValidate();
         
         if(!hasActionErrors()) {
