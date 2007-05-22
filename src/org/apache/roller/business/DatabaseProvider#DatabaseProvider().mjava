@@ -1,0 +1,49 @@
+    /**
+     * Reads configuraiton, loads driver or locates data-source and attempts
+     * to get test connecton so that we can fail early.
+     */ 
+    private DatabaseProvider() throws RollerException {
+        String connectionTypeString = 
+                RollerConfig.getProperty("database.configurationType"); 
+        if ("jdbc".equals(connectionTypeString)) {
+            type = ConfigurationType.JDBC_PROPERTIES;
+        }
+        jndiName =          RollerConfig.getProperty("database.jndi.name");
+        jdbcDriverClass =   RollerConfig.getProperty("database.jdbc.driverClass");
+        jdbcConnectionURL = RollerConfig.getProperty("database.jdbc.connectionURL");
+        jdbcUsername =      RollerConfig.getProperty("database.jdbc.username");
+        jdbcPassword =      RollerConfig.getProperty("database.jdbc.password");
+        
+        // init now so we fail early
+        if (type == ConfigurationType.JDBC_PROPERTIES) {
+            log.info("Using 'jdbc' properties based configuration");
+            try {
+                Class.forName(jdbcDriverClass);
+            } catch (ClassNotFoundException ex) {
+                throw new RollerException(
+                   "Cannot load specified JDBC driver class [" +jdbcDriverClass+ "]", ex);
+            }
+            if (jdbcUsername != null || jdbcPassword != null) {
+                props = new Properties();
+                if (jdbcUsername != null) props.put("user", jdbcUsername);
+                if (jdbcPassword != null) props.put("password", jdbcPassword);
+            }
+        } else {
+            log.info("Using 'jndi' based configuration");
+            String name = "java:comp/env/" + jndiName;
+            try {
+                InitialContext ic = new InitialContext();
+                dataSource = (DataSource)ic.lookup(name);
+            } catch (NamingException ex) {
+                throw new RollerException(
+                    "ERROR looking up data-source with JNDI name: " + name, ex);
+            }            
+        }
+        try { 
+            Connection testcon = getConnection();
+            testcon.close();
+        } catch (Throwable t) {
+            throw new RollerException("ERROR unable to obtain connection", t);
+        }
+    }
+

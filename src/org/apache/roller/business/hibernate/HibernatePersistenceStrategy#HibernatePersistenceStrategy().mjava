@@ -1,3 +1,23 @@
+    /**
+     * Persistence strategy configures itself by using Roller properties:
+     * 'hibernate.configResource' - the resource name of Roller's Hibernate XML configuration file, 
+     * 'hibernate.dialect' - the classname of the Hibernate dialect to be used,
+     * 'hibernate.connectionProvider - the classname of Roller's connnection provider impl.
+     */
     public HibernatePersistenceStrategy() {
-    }   
+        
+        // Read Hibernate config file specified by Roller config
+        Configuration config = new Configuration();
+        config.configure(RollerConfig.getProperty("hibernate.configResource"));
+
+        // Add dialect specified by Roller config and our connection provider
+        Properties props = new Properties();
+        props.put(Environment.DIALECT, 
+                RollerConfig.getProperty("hibernate.dialect"));
+        props.put(Environment.CONNECTION_PROVIDER, 
+                RollerConfig.getProperty("hibernate.connectionProvider"));
+        config.mergeProperties(props);
+        
+        this.sessionFactory = config.buildSessionFactory(); 
+    }
 
