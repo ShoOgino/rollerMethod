@@ -46,7 +46,7 @@
                     (HttpServletRequest)pageContext.getRequest();
             
             // get Resource Bundle
-            MessageResources resources = getResources(request);
+            ResourceBundle bundle = ResourceBundle.getBundle("ApplicationResources", mLocale);
             
             // go back to first day in month
             cal = model.getCalendar();
@@ -68,7 +68,7 @@
             // -------------------------
             pw.print("<table cellspacing=\"0\" border=\"0\" ");
             pw.print(" summary=\""
-                    +resources.getMessage(mLocale, "calendar.summary")
+                    +bundle.getString("calendar.summary")
                     +"\" class=\"hCalendarTable"
                     +mClassSuffix+"\">");
             pw.print("<tr>");
@@ -76,13 +76,13 @@
                     "class=\"hCalendarMonthYearRow"+mClassSuffix+"\">");
             if (model.getPrevMonth() != null) {
                 pw.print("<a href=\"" + model.computePrevMonthUrl()
-                        + "\" title=\"" + resources.getMessage(mLocale, "calendar.prev")
+                        + "\" title=\"" + bundle.getString("calendar.prev")
                         + "\" class=\"hCalendarNavBar\">&laquo;</a> ");
             }
             pw.print( formatTitle.format(day) );
             if (model.getNextMonth() != null) {
                 pw.print(" <a href=\"" + model.computeNextMonthUrl()
-                + "\" title=\"" + resources.getMessage(mLocale, "calendar.next")
+                + "\" title=\"" + bundle.getString("calendar.next")
                 + "\" class=\"hCalendarNavBar\">&raquo;</a>");
             }
             pw.print("</td></tr>");
@@ -136,7 +136,7 @@
             
             pw.print("<a href=\""+model.computeTodayMonthUrl()
             +"\" class=\"hCalendarNavBar\">"
-                    +resources.getMessage(mLocale, "calendar.today")
+                    +bundle.getString("calendar.today")
                     +"</a>");
             
             pw.print("</td>");
