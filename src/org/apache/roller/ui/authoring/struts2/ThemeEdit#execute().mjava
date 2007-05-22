@@ -1,10 +1,6 @@
     public String execute() {
-        try {
-            // set theme to current value
-            setThemeId(getActionWeblog().getTheme().getId());
-        } catch (Exception ex) {
-            log.error("Error getting theme for weblog - "+getActionWeblog().getHandle(), ex);
-        }
+        // set theme to current value
+        setThemeId(getActionWeblog().getTheme().getId());
         
         return SUCCESS;
     }

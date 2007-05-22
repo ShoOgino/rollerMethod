@@ -11,13 +11,19 @@
             try {
                 WebsiteData weblog = getActionWeblog();
                 
-                weblog.setEditorTheme(getThemeId());
+                if(WeblogTheme.CUSTOM.equals(getThemeType())) {
+                    weblog.setEditorTheme(WeblogTheme.CUSTOM);
+                    
+                    log.debug("Saving custom theme for weblog "+weblog.getHandle());
+                } else if("shared".equals(getThemeType())) {
+                    weblog.setEditorTheme(getThemeId());
+                    
+                    log.debug("Saving theme "+getThemeId()+" for weblog "+weblog.getHandle());
+                }
                 
                 UserManager userMgr = RollerFactory.getRoller().getUserManager();
                 userMgr.saveWebsite(weblog);
                 RollerFactory.getRoller().flush();
-                
-                log.debug("Saved theme "+getThemeId()+" for weblog "+weblog.getHandle());
                 
                 // make sure to flush the page cache so ppl can see the change
                 CacheManager.invalidate(weblog);
