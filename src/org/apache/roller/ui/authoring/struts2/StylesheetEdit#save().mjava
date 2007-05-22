@@ -1,0 +1,38 @@
+    /**
+     * Save an existing template.
+     */
+    public String save() {
+        
+        if(getTemplate() == null) {
+            // TODO: i18n
+            addError("Unable to locate stylesheet template");
+            return ERROR;
+        }
+        
+        if(!hasActionErrors()) try {
+            
+            WeblogTemplate stylesheet = getTemplate();
+            
+            stylesheet.setLastModified(new Date());
+            stylesheet.setContents(getContents());
+            
+            // save template and flush
+            UserManager mgr = RollerFactory.getRoller().getUserManager();
+            mgr.savePage(stylesheet);
+            RollerFactory.getRoller().flush();
+            
+            // notify caches
+            CacheManager.invalidate(stylesheet);
+            
+            // success message
+            addMessage("pageForm.save.success", stylesheet.getName());
+            
+        } catch (RollerException ex) {
+            log.error("Error updating stylesheet template for weblog - "+getActionWeblog().getHandle(), ex);
+            // TODO: i18n
+            addError("Error saving template");
+        }
+        
+        return SUCCESS;
+    }
+

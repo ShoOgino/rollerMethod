@@ -1,0 +1,35 @@
+    public void myPrepare() {
+        String stylesheetPath = getActionWeblog().getTheme().getCustomStylesheet();
+        log.debug("custom stylesheet path is - "+stylesheetPath);
+        
+        if(stylesheetPath != null) {
+            try {
+                UserManager mgr = RollerFactory.getRoller().getUserManager();
+                setTemplate(mgr.getPageByLink(getActionWeblog(), stylesheetPath));
+                
+                if(getTemplate() == null) {
+                    log.debug("custom stylesheet not found, creating it");
+                    // template doesn't exist yet, so create it
+                    WeblogTemplate stylesheet = new WeblogTemplate();
+                    stylesheet.setWebsite(getActionWeblog());
+                    stylesheet.setAction(stylesheet.ACTION_CUSTOM);
+                    stylesheet.setName(stylesheetPath);
+                    stylesheet.setDescription(stylesheetPath);
+                    stylesheet.setLink(stylesheetPath);
+                    stylesheet.setContents("");
+                    stylesheet.setHidden(false);
+                    stylesheet.setNavbar(false);
+                    stylesheet.setLastModified(new Date());
+                    
+                    // all templates start out as velocity templates
+                    stylesheet.setTemplateLanguage("velocity");
+                    
+                    mgr.savePage(stylesheet);
+                    RollerFactory.getRoller().flush();
+                }
+            } catch (RollerException ex) {
+                log.error("Error finding/adding stylesheet tempalate from weblog - "+getActionWeblog().getHandle(), ex);
+            }
+        }
+    }
+

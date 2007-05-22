@@ -1,0 +1,14 @@
+    /**
+     * Show stylesheet edit page.
+     */
+    public String execute() {
+        
+        if(getTemplate() == null) {
+            return ERROR;
+        }
+        
+        setContents(getTemplate().getContents());
+        
+        return SUCCESS;
+    }
+
