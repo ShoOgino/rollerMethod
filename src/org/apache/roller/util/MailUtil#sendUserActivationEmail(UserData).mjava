@@ -12,7 +12,7 @@
         
         try {
             ResourceBundle resources = ResourceBundle.getBundle(
-                    "ApplicationResources", getLocaleInstance(user.getLocale()));
+                    "ApplicationResources", I18nUtils.toLocale(user.getLocale()));
             
             String from = RollerRuntimeConfig.getProperty(
                     "user.account.activation.mail.from");

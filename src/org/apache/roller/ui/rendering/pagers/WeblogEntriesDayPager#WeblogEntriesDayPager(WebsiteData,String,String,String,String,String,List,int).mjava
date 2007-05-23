@@ -10,6 +10,9 @@
         
         super(weblog, locale, pageLink, entryAnchor, dateString, catPath, tags, page);
         
+        dayFormat = new SimpleDateFormat(
+            messageUtils.getString("weblogEntriesPager.day.dateFormat"));
+        
         getEntries();
         
         day = parseDate(dateString);

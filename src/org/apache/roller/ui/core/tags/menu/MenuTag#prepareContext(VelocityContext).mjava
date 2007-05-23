@@ -10,7 +10,8 @@
         ctx.put("req", req );
         ctx.put("res", res );
         
-        MessageModel messageModel = new MessageModel();
+        // TODO: this doesn't support proper i18n
+        I18nMessages messageModel = I18nMessages.getMessages(Locale.getDefault());
         ctx.put("text", messageModel);
                 
         Map mapCtx = new HashMap();

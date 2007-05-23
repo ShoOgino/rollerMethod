@@ -11,10 +11,7 @@
      */
     public static void sendEmailNotification(
             CommentData commentObject, boolean notifySubscribers,
-            RollerMessages messages, String rootURL) {
-        
-        // Send commment notifications in locale of server
-        ResourceBundle resources = ResourceBundle.getBundle("ApplicationResources");
+            RollerMessages messages, String rootURL, I18nMessages resources) {
         
         WeblogEntryData entry = commentObject.getWeblogEntry();
         WebsiteData site = entry.getWebsite();

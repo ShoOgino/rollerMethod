@@ -10,6 +10,9 @@
         
         super(weblog, locale, pageLink, entryAnchor, dateString, catPath, tags, page);
         
+        monthFormat = new SimpleDateFormat(
+            messageUtils.getString("weblogEntriesPager.month.dateFormat"));
+        
         getEntries();
         
         month = parseDate(dateString);

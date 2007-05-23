@@ -30,7 +30,9 @@
                     // add read more
                     List args = new ArrayList();
                     args.add(readMoreLink);
-                    String readMore = MessageUtilities.getString("macro.weblog.readMoreLink", args);
+                    
+                    // TODO: we need a more appropriate way to get the view locale here
+                    String readMore = I18nMessages.getMessages(getWebsite().getLocaleInstance()).getString("macro.weblog.readMoreLink", args);
                     
                     displayContent += readMore;
                 }

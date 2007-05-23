@@ -3,10 +3,7 @@
      *
      * TODO: Make the addressing options configurable on a per-website basis.
      */
-    public static void sendEmailApprovalNotification(CommentData cd, String rootURL) {
-        
-        // Send commment notifications in locale of server
-        ResourceBundle resources = ResourceBundle.getBundle("ApplicationResources");
+    public static void sendEmailApprovalNotification(CommentData cd, String rootURL, I18nMessages resources) {
         
         WeblogEntryData entry = cd.getWeblogEntry();
         WebsiteData site = entry.getWebsite();
