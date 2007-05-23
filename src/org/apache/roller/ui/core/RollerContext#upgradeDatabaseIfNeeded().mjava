@@ -1,18 +1,9 @@
     /**
      * Trigger any database upgrade work that needs to be done.
      */
-    private void upgradeDatabaseIfNeeded() throws Exception {
-        
-        try {
-            InitialContext ic = new InitialContext();
-            DataSource ds = (DataSource)ic.lookup("java:comp/env/jdbc/rollerdb");
-            Connection con = ds.getConnection();
-            UpgradeDatabase.upgradeDatabase(con, RollerFactory.getRoller().getVersion());
-            con.close();
-        } catch (NamingException e) {
-            log.warn("Unable to access DataSource", e);
-        } catch (SQLException e) {
-            log.warn(e);
-        }
+    private void upgradeDatabaseIfNeeded() throws Exception {        
+        Connection con = DatabaseProvider.getDatabaseProvider().getConnection();
+        UpgradeDatabase.upgradeDatabase(con, RollerFactory.getRoller().getVersion());
+        con.close();
     }
 
