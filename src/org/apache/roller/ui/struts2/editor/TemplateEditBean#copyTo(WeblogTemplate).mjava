@@ -1,16 +1,16 @@
     public void copyTo(WeblogTemplate dataHolder) {
         
-        // only custom templates get to modify name, description, and link
-        if(WeblogTemplate.ACTION_CUSTOM.equals(dataHolder.getAction())) {
-            dataHolder.setName(this.name);
-            dataHolder.setDescription(this.description);
-            dataHolder.setLink(this.link);
-        }
+        dataHolder.setContents(getContents());
         
-        dataHolder.setContents(this.contents);
-        dataHolder.setTemplateLanguage(this.templateLanguage);
-        dataHolder.setNavbar(this.navbar);
-        dataHolder.setHidden(this.hidden);
-        dataHolder.setOutputContentType(this.outputContentType);
+        // the rest of the template properties can only be modified when
+        // dealing with a CUSTOM weblog template
+        if(dataHolder.isCustom()) {
+            dataHolder.setName(getName());
+            dataHolder.setDescription(getDescription());
+            dataHolder.setLink(getLink());
+            dataHolder.setNavbar(isNavbar());
+            dataHolder.setHidden(isHidden());
+            dataHolder.setTemplateLanguage(getTemplateLanguage());
+        }
     }
 

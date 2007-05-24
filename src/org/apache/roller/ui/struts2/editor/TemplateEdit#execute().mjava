@@ -1,6 +1,7 @@
     /**
      * Show template edit page.
      */
+    @SkipValidation
     public String execute() {
         
         if(getTemplate() == null) {
@@ -20,6 +21,6 @@
             getBean().setManualContentType(page.getOutputContentType());
         }
         
-        return SUCCESS;
+        return INPUT;
     }
 

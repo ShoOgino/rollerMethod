@@ -1,15 +1,28 @@
     private void myValidate() {
         
-        // make sure that we have an appropriate name value
+        // if name changed make sure there isn't a conflict
+        if(!getTemplate().getName().equals(getBean().getName())) {
+            try {
+                UserManager umgr = RollerFactory.getRoller().getUserManager();
+                if(umgr.getPageByName(getActionWeblog(), getBean().getName()) != null) {
+                    addError("pagesForm.error.alreadyExists", getBean().getName());
+                }
+            } catch (RollerException ex) {
+                log.error("Error checking page name uniqueness", ex);
+            }
+        }
         
-        // make sure that we have an appropriate action value
-        
-        // first off, check if template already exists
-//        WeblogTemplate existingPage = mgr.getPageByName(website, getNewTmplName());
-//        if(existingPage != null) {
-//            addError("pagesForm.error.alreadyExists", getNewTmplName());
-//            return INPUT;
-//        }
-        
+        // if link changed make sure there isn't a conflict
+        if(!StringUtils.isEmpty(getBean().getLink()) &&
+                !getBean().getLink().equals(getTemplate().getLink())) {
+            try {
+                UserManager umgr = RollerFactory.getRoller().getUserManager();
+                if(umgr.getPageByLink(getActionWeblog(), getBean().getLink()) != null) {
+                    addError("pagesForm.error.alreadyExists", getBean().getLink());
+                }
+            } catch (RollerException ex) {
+                log.error("Error checking page link uniqueness", ex);
+            }
+        }
     }
 

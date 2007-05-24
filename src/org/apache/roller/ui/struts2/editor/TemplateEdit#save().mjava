@@ -14,28 +14,28 @@
         
         if(!hasActionErrors()) try {
             
-            WeblogTemplate page = getTemplate();
-            getBean().copyTo(page);
-            page.setLastModified(new Date());
+            WeblogTemplate template = getTemplate();
+            getBean().copyTo(template);
+            template.setLastModified(new Date());
             
             if (getBean().getAutoContentType() == null ||
                     !getBean().getAutoContentType().booleanValue()) {
-                page.setOutputContentType(getBean().getManualContentType());
+                template.setOutputContentType(getBean().getManualContentType());
             } else {
-                // empty content-type indicates that page uses auto content-type detection
-                page.setOutputContentType(null);
+                // empty content-type indicates that template uses auto content-type detection
+                template.setOutputContentType(null);
             }
             
             // save template and flush
             UserManager mgr = RollerFactory.getRoller().getUserManager();
-            mgr.savePage(page);
+            mgr.savePage(template);
             RollerFactory.getRoller().flush();
             
             // notify caches
-            CacheManager.invalidate(page);
+            CacheManager.invalidate(template);
             
             // success message
-            addMessage("pageForm.save.success", page.getName());
+            addMessage("pageForm.save.success", template.getName());
             
         } catch (RollerException ex) {
             log.error("Error updating page - "+getBean().getId(), ex);
@@ -43,6 +43,6 @@
             addError("Error saving template");
         }
         
-        return SUCCESS;
+        return INPUT;
     }
 
