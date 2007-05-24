@@ -19,6 +19,8 @@
         TestUtils.endSession(true);
 
         // accept invitation
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
+        user = TestUtils.getManagedUser(user);
         perm = mgr.getPermissions(testWeblog, user);
         perm.setPending(false);
         mgr.savePermissions(perm);
@@ -29,6 +31,8 @@
         testWeblog = mgr.getWebsiteByHandle(testWeblog.getHandle());
 
         // assert that invitation list is empty
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
+        user = TestUtils.getManagedUser(user);
         assertTrue(mgr.getPendingPermissions(user).isEmpty());
         assertTrue(mgr.getPendingPermissions(testWeblog).isEmpty());
 

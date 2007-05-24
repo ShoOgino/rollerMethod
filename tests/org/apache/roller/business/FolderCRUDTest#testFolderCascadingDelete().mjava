@@ -7,18 +7,20 @@
         
         BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
         
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
         FolderData root = bmgr.getRootFolder(testWeblog);
         
         // add a small tree /fold1/fold2
-        FolderData fold1 = new FolderData(root, "fold1", null, TestUtils.getManagedWebsite(testWeblog));
+        FolderData fold1 = new FolderData(root, "fold1", null, testWeblog);
         root.addFolder(fold1);
         bmgr.saveFolder(fold1);
-        FolderData fold2 = new FolderData(fold1, "fold2", null, TestUtils.getManagedWebsite(testWeblog));
+        FolderData fold2 = new FolderData(fold1, "fold2", null, testWeblog);
         fold1.addFolder(fold2);
         bmgr.saveFolder(fold2);
         TestUtils.endSession(true);
         
         // check that tree can be navigated
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
         root = bmgr.getRootFolder(testWeblog);
         assertEquals(1, root.getFolders().size());
         fold1 = (FolderData) root.getFolders().iterator().next();
@@ -32,9 +34,10 @@
         TestUtils.endSession(true);
         
         // verify cascading delete succeeded
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
         root = bmgr.getRootFolder(testWeblog);
         assertEquals(0, root.getFolders().size());
-        assertNull(bmgr.getFolder(TestUtils.getManagedWebsite(testWeblog), "/fold1/fold2"));
+        assertNull(bmgr.getFolder(testWeblog, "/fold1/fold2"));
         
         log.info("END");
     }

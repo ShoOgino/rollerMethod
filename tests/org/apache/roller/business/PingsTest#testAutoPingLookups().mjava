@@ -4,6 +4,7 @@
     public void testAutoPingLookups() throws Exception {
         
         AutoPingManager mgr = RollerFactory.getRoller().getAutopingManager();
+        PingTargetManager ptmgr = RollerFactory.getRoller().getPingTargetManager();
         AutoPingData autoPing = null;
         
         // create autoPing target to use for tests
@@ -11,6 +12,8 @@
         TestUtils.endSession(true);
         
         // create autoPing
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
+        pingTarget = ptmgr.getPingTarget(pingTarget.getId());
         autoPing = new AutoPingData(null, pingTarget, testWeblog);
         mgr.saveAutoPing(autoPing);
         String id = autoPing.getId();
@@ -23,17 +26,20 @@
         assertEquals(pingTarget, autoPing.getPingTarget());
         
         // lookup by ping target
+        pingTarget = ptmgr.getPingTarget(pingTarget.getId());
         List autoPings = mgr.getAutoPingsByTarget(pingTarget);
         assertNotNull(autoPings);
         assertEquals(1, autoPings.size());
         
         // lookup by weblog
         autoPings = null;
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
         autoPings = mgr.getAutoPingsByWebsite(testWeblog);
         assertNotNull(autoPing);
         assertEquals(1, autoPings.size());
         
         // delete autoPing
+        autoPing = mgr.getAutoPing(autoPing.getId());
         mgr.removeAutoPing(autoPing);
         TestUtils.endSession(true);
         

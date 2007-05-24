@@ -3,6 +3,8 @@
         WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
 
         // setup some test entries to use
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
+        testUser = TestUtils.getManagedUser(testUser);
         WeblogEntryData entry = TestUtils.setupWeblogEntry("entry1", testWeblog
                 .getDefaultCategory(), testWeblog, testUser);
         entry.addTag("testTag");
@@ -10,9 +12,9 @@
         mgr.saveWeblogEntry(entry);
         TestUtils.endSession(true);
 
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
         List results = mgr.getWeblogEntries(testWeblog, null, null, null, null,
-                Arrays.asList(new String[] { "testtag" }), null, null, null, null, null, 0,
-                -1);
+        Arrays.asList(new String[] { "testtag" }), null, null, null, null, null, 0, -1);
         assertEquals(1, results.size());
         WeblogEntryData testEntry = (WeblogEntryData) results.iterator().next();
         assertEquals(entry, testEntry);
@@ -21,12 +23,12 @@
         TestUtils.teardownWeblogEntry(id);
         TestUtils.endSession(true);
 
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
         results = mgr.getWeblogEntries(testWeblog, null, null, null, null,
-                Arrays.asList(new String[] { "testtag" }), null, null, null, null, null, 0,
-                -1);
+        Arrays.asList(new String[] { "testtag" }), null, null, null, null, null, 0, -1);
         assertEquals(0, results.size());
 
         // terminate
         TestUtils.endSession(true);
-    }
+    } 
 

@@ -2,6 +2,7 @@
         
         RefererManager rmgr = RollerFactory.getRoller().getRefererManager();
         
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
         List referers = rmgr.getReferersToDate(testWeblog, testDay);
         assertEquals("Should be one Referer.", referers.size(), 1);
     }

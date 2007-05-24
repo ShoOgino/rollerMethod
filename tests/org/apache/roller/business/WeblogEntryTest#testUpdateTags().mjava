@@ -3,6 +3,8 @@
         WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
 
         // setup some test entries to use
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
+        testUser = TestUtils.getManagedUser(testUser);
         WeblogEntryData entry = TestUtils.setupWeblogEntry("entry1", testWeblog
                 .getDefaultCategory(), testWeblog, testUser);
         entry.addTag("testWillStayTag");

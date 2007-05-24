@@ -2,6 +2,7 @@
         
         WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
         
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
         HitCountData testCount = new HitCountData();
         testCount.setWeblog(testWeblog);
         testCount.setDailyHits(10);
@@ -20,6 +21,7 @@
         
         // test lookup by weblog
         hitCount = null;
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
         hitCount = mgr.getHitCountByWeblog(testWeblog);
         assertNotNull(hitCount);
         assertEquals(testCount, hitCount);

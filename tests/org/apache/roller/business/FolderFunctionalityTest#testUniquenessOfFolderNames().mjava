@@ -4,23 +4,32 @@
     public void testUniquenessOfFolderNames() throws Exception {
         
         log.info("BEGIN");
-        
-        BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
-        
-        FolderData root = bmgr.getRootFolder(testWeblog);
-        
-        boolean exception = false;
         try {
-            // child folder with same name as first
-            FolderData dupeFolder = new FolderData(root, testFolder.getName(), null, TestUtils.getManagedWebsite(testWeblog));
-            bmgr.saveFolder(dupeFolder);
-            TestUtils.endSession(true);
-        } catch (RollerException e) {
-            exception = true;
-        }
-        
-        assertTrue(exception);
-        
+            BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
+
+            testWeblog = TestUtils.getManagedWebsite(testWeblog);
+            FolderData root = bmgr.getRootFolder(testWeblog);
+
+            boolean exception = false;
+            try {
+                // child folder with same name as first
+                FolderData dupeFolder = new FolderData(root, testFolder.getName(), null, testWeblog);
+                bmgr.saveFolder(dupeFolder);
+                TestUtils.endSession(true);
+            } catch (Throwable e) {
+                exception = true;
+            }
+
+            assertTrue(exception);
+            
+        } catch (Throwable t) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw); 
+            t.printStackTrace(pw);
+            log.info(sw.toString());
+        }        
+        TestUtils.endSession(true);
+
         log.info("END");
     }
 

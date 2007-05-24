@@ -12,6 +12,7 @@
         TestUtils.endSession(true);
         
         // create custom ping
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
         testCustomPing.setWebsite(testWeblog);
         mgr.savePingTarget(testCustomPing);
         String customId = testCustomPing.getId();
@@ -29,6 +30,7 @@
         assertEquals(1, commonPings.size());
         
         // lookup all custom pings for weblog
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
         List customPings = mgr.getCustomPingTargets(testWeblog);
         assertNotNull(customPings);
         assertEquals(1, customPings.size());

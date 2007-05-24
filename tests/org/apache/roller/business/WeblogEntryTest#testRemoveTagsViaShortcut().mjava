@@ -1,32 +1,41 @@
     public void testRemoveTagsViaShortcut() throws Exception {
+        try {
+            WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
 
-        WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+            // setup some test entries to use
+            testWeblog = TestUtils.getManagedWebsite(testWeblog);
+            testUser = TestUtils.getManagedUser(testUser);
+            WeblogEntryData entry = TestUtils.setupWeblogEntry("entry1", testWeblog
+                    .getDefaultCategory(), testWeblog, testUser);
+            entry.addTag("testTag");
+            entry.addTag("testTag2");
+            String id = entry.getId();
+            mgr.saveWeblogEntry(entry);
+            TestUtils.endSession(true);
 
-        // setup some test entries to use
-        WeblogEntryData entry = TestUtils.setupWeblogEntry("entry1", testWeblog
-                .getDefaultCategory(), testWeblog, testUser);
-        entry.addTag("testTag");
-        entry.addTag("testTag2");
-        String id = entry.getId();
-        mgr.saveWeblogEntry(entry);
-        TestUtils.endSession(true);
+            entry = mgr.getWeblogEntry(id);
+            assertEquals(2, entry.getTags().size());
+            TestUtils.endSession(true);
 
-        entry = mgr.getWeblogEntry(id);
-        assertEquals(2, entry.getTags().size());
-        TestUtils.endSession(true);
+            entry = mgr.getWeblogEntry(id);
+            mgr.removeWeblogEntryTag("testtag", entry);
+            mgr.removeWeblogEntryTag("testtag2", entry);
+            mgr.saveWeblogEntry(entry);
+            TestUtils.endSession(true);
 
-        entry = mgr.getWeblogEntry(id);
-        mgr.removeWeblogEntryTag("testtag", entry);
-        mgr.removeWeblogEntryTag("testtag2", entry);
-        mgr.saveWeblogEntry(entry);
-        TestUtils.endSession(true);
+            entry = mgr.getWeblogEntry(id);
+            assertEquals(0, entry.getTags().size());
+            TestUtils.endSession(true);
 
-        entry = mgr.getWeblogEntry(id);
-        assertEquals(0, entry.getTags().size());
-        TestUtils.endSession(true);
-
-        // teardown our test entry
-        TestUtils.teardownWeblogEntry(id);
-        TestUtils.endSession(true);
+            // teardown our test entry
+            TestUtils.teardownWeblogEntry(id);
+            TestUtils.endSession(true);
+            
+        } catch (Throwable t) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw); 
+            t.printStackTrace(pw);
+            log.info(sw.toString());
+        }
     }
 

@@ -7,6 +7,7 @@
         
         FolderData fd = null;
         
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
         fd = getRoller().getBookmarkManager().getFolder(testWeblog, "ZZZ_imports_ZZZ");
         assertTrue(fd.retrieveBookmarks(true).size() > 0 );
         getRoller().getBookmarkManager().removeFolder(fd);

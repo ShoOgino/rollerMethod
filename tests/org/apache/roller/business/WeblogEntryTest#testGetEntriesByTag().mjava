@@ -1,24 +1,34 @@
     public void testGetEntriesByTag() throws Exception {
+        try {
+            WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
 
-        WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+            // setup some test entries to use
+            testWeblog = TestUtils.getManagedWebsite(testWeblog);
+            testUser = TestUtils.getManagedUser(testUser);
+            WeblogEntryData entry = TestUtils.setupWeblogEntry("entry1", 
+                    testWeblog.getDefaultCategory(), testWeblog, testUser);
+            String id = entry.getId();
+            entry.addTag("testTag");
+            mgr.saveWeblogEntry(entry);
+            TestUtils.endSession(true);
 
-        // setup some test entries to use
-        WeblogEntryData entry = TestUtils.setupWeblogEntry("entry1", testWeblog
-                .getDefaultCategory(), testWeblog, testUser);
-        entry.addTag("testTag");
-        String id = entry.getId();
-        mgr.saveWeblogEntry(entry);
-        TestUtils.endSession(true);
+            testWeblog = TestUtils.getManagedWebsite(testWeblog);
 
-        List results = mgr.getWeblogEntries(testWeblog, null, null, null, null,
-                Arrays.asList(new String[] { "testtag" }), null, null, null, null, null, 0,
-                -1);
-        assertEquals(1, results.size());
-        WeblogEntryData testEntry = (WeblogEntryData) results.iterator().next();
-        assertEquals(entry, testEntry);
-
-        // teardown our test entry
-        TestUtils.teardownWeblogEntry(id);
-        TestUtils.endSession(true);
-    }  
+            List results = mgr.getWeblogEntries(testWeblog, null, null, null, null,
+                Arrays.asList(new String[] { "testtag" }), null, null, null, null, null, 0, -1);
+            assertEquals(1, results.size());
+            WeblogEntryData testEntry = (WeblogEntryData) results.iterator().next();
+            assertEquals(entry, testEntry);
+        
+            // teardown our test entry
+            TestUtils.teardownWeblogEntry(id);
+            TestUtils.endSession(true);
+            
+        } catch (Throwable t) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw); 
+            t.printStackTrace(pw);
+            log.info(sw.toString());
+        }
+    }
 

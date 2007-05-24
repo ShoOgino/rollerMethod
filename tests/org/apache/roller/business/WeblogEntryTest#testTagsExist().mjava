@@ -2,19 +2,21 @@
         
         WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
 
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
+        testUser = TestUtils.getManagedUser(testUser);
         WebsiteData weblog = TestUtils.setupWeblog("tagsExistWeblog1", testUser);
         String wid = weblog.getId();
         
         // setup some test entries to use
-        WeblogEntryData entry = TestUtils.setupWeblogEntry("tagsExistEntry1", testWeblog
-                .getDefaultCategory(), testWeblog, testUser);
+        WeblogEntryData entry = TestUtils.setupWeblogEntry("tagsExistEntry1", 
+                testWeblog.getDefaultCategory(), testWeblog, testUser);
         String id1 = entry.getId();
         entry.addTag("blahTag");
         entry.addTag("fooTag");
         mgr.saveWeblogEntry(entry);
 
-        WeblogEntryData entry2 = TestUtils.setupWeblogEntry("tagsExistEntry2", weblog
-                .getDefaultCategory(), weblog, testUser);
+        WeblogEntryData entry2 = TestUtils.setupWeblogEntry("tagsExistEntry2", 
+                weblog.getDefaultCategory(), weblog, testUser);
         String id2 = entry2.getId();
         entry2.addTag("aaaTag");
         entry2.addTag("bbbTag");
@@ -33,6 +35,8 @@
         this.assertFalse(mgr.getTagComboExists(tags1, null));
         
         // test weblog specific
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
+        weblog = TestUtils.getManagedWebsite(weblog);
         this.assertTrue(mgr.getTagComboExists(tags2, testWeblog));
         this.assertFalse(mgr.getTagComboExists(tags1, testWeblog));
         this.assertFalse(mgr.getTagComboExists(tags2, weblog));

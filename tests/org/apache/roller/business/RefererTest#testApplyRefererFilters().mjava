@@ -4,6 +4,7 @@
         
         RefererManager rmgr = RollerFactory.getRoller().getRefererManager();
         
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
         List refs = rmgr.getReferers(testWeblog);
         assertEquals(count, refs.size());
         
@@ -17,6 +18,7 @@
         rmgr.applyRefererFilters();
         TestUtils.endSession(true);
         
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
         refs = rmgr.getReferers(testWeblog);
         assertEquals(0, refs.size());
         

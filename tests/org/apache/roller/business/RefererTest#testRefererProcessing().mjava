@@ -2,6 +2,7 @@
         
         RefererManager rmgr = RollerFactory.getRoller().getRefererManager();
         
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
         List refs = rmgr.getReferers(testWeblog);
         assertEquals("number of referers should equal count", count, refs.size());
         

@@ -5,6 +5,7 @@
         BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
         
         // get all folders, including root
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
         List allFolders = bmgr.getAllFolders(testWeblog);
         assertNotNull(allFolders);
         assertEquals(5, allFolders.size());

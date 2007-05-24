@@ -9,6 +9,8 @@
         Map entryMap = null;
         
         // setup some test entries to use
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
+        testUser = TestUtils.getManagedUser(testUser);
         WeblogEntryData entry1 = TestUtils.setupWeblogEntry("entry1", testWeblog.getDefaultCategory(), testWeblog, testUser);
         WeblogEntryData entry2 = TestUtils.setupWeblogEntry("entry2", testWeblog.getDefaultCategory(), testWeblog, testUser);
         WeblogEntryData entry3 = TestUtils.setupWeblogEntry("entry3", testWeblog.getDefaultCategory(), testWeblog, testUser);
@@ -37,9 +39,18 @@
         
         TestUtils.endSession(true);
         
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
+        testUser = TestUtils.getManagedUser(testUser);
+
         log.debug("entry1 = "+entry1.getUpdateTime());
         log.debug("entry2 = "+entry2.getUpdateTime());
         log.debug("entry3 = "+entry3.getUpdateTime());
+        
+        entry1 = TestUtils.getManagedWeblogEntry(entry1);
+        entry2 = TestUtils.getManagedWeblogEntry(entry2);
+        entry3 = TestUtils.getManagedWeblogEntry(entry3);
+        entry4 = TestUtils.getManagedWeblogEntry(entry4);
+        entry5 = TestUtils.getManagedWeblogEntry(entry5);
         
         // get entry by id
         entry = null;

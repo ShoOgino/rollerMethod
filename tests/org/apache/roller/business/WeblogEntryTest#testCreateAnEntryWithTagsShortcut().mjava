@@ -1,40 +1,50 @@
     public void testCreateAnEntryWithTagsShortcut() throws Exception {
+        try {
+            WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+            WeblogEntryData entry = null;
+            testWeblog = TestUtils.getManagedWebsite(testWeblog);
+            testUser = TestUtils.getManagedUser(testUser);
 
-        WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
-        WeblogEntryData entry = null;
+            WeblogEntryData testEntry = new WeblogEntryData();
+            testEntry.setTitle("entryTestEntry");
+            testEntry.setLink("testEntryLink");
+            testEntry.setText("blah blah entry");
+            testEntry.setAnchor("testEntryAnchor");
+            testEntry.setPubTime(
+                    new java.sql.Timestamp(new java.util.Date().getTime()));
+            testEntry.setUpdateTime(
+                    new java.sql.Timestamp(new java.util.Date().getTime()));
+            testEntry.setWebsite(testWeblog);
+            testEntry.setCreator(testUser);
+            testEntry.setCategory(testWeblog.getDefaultCategory());
 
-        WeblogEntryData testEntry = new WeblogEntryData();
-        testEntry.setTitle("entryTestEntry");
-        testEntry.setLink("testEntryLink");
-        testEntry.setText("blah blah entry");
-        testEntry.setAnchor("testEntryAnchor");
-        testEntry.setPubTime(new java.sql.Timestamp(new java.util.Date()
-                .getTime()));
-        testEntry.setUpdateTime(new java.sql.Timestamp(new java.util.Date()
-                .getTime()));
-        testEntry.setWebsite(testWeblog);
-        testEntry.setCreator(testUser);
-        testEntry.setCategory(testWeblog.getDefaultCategory());
+            // shortcut
+            testEntry.addTag("testTag");
 
-        // shortcut
-        testEntry.addTag("testTag");
+            // create a weblog entry
+            mgr.saveWeblogEntry(testEntry);
+            String id = testEntry.getId();
+            TestUtils.endSession(true);
 
-        // create a weblog entry
-        mgr.saveWeblogEntry(testEntry);
-        String id = testEntry.getId();
-        TestUtils.endSession(true);
+            // make sure entry was created
+            entry = mgr.getWeblogEntry(id);
+            assertNotNull(entry);
+            assertEquals(testEntry, entry);
+            assertNotNull(entry.getTags());
+            assertEquals(1, entry.getTags().size());
+            assertEquals("testtag", ((WeblogEntryTagData) entry.getTags()
+                    .iterator().next()).getName());
+            TestUtils.endSession(true);
 
-        // make sure entry was created
-        entry = mgr.getWeblogEntry(id);
-        assertNotNull(entry);
-        assertEquals(testEntry, entry);
-        assertNotNull(entry.getTags());
-        assertEquals(1, entry.getTags().size());
-        assertEquals("testtag", ((WeblogEntryTagData) entry.getTags()
-                .iterator().next()).getName());
-
-        // teardown our test entry
-        TestUtils.teardownWeblogEntry(id);
-        TestUtils.endSession(true);
+            // teardown our test entry
+            TestUtils.teardownWeblogEntry(id);
+            TestUtils.endSession(true);
+        
+        } catch (Throwable t) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw); 
+            t.printStackTrace(pw);
+            log.info(sw.toString());
+        }
     }
 

@@ -8,6 +8,7 @@
         WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
         
         // root category is always available
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
         WeblogCategoryData root = mgr.getRootWeblogCategory(testWeblog);
         
         // add a small category tree /subcat/subcat2
@@ -20,6 +21,7 @@
         TestUtils.endSession(true);
         
         // check that subcat tree can be navigated
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
         root = mgr.getRootWeblogCategory(testWeblog);
         assertEquals(1, root.getWeblogCategories().size());
         subcat = (WeblogCategoryData) root.getWeblogCategories().iterator().next();
@@ -33,6 +35,7 @@
         TestUtils.endSession(true);
         
         // verify cascading delete succeeded
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
         root = mgr.getRootWeblogCategory(testWeblog);
         assertEquals(0, root.getWeblogCategories().size());
         assertNull(mgr.getWeblogCategoryByPath(TestUtils.getManagedWebsite(testWeblog), "/subcatTest1/subcatTest2"));

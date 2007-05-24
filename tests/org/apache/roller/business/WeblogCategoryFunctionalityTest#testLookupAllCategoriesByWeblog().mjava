@@ -8,6 +8,7 @@
         WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
         
         // including root
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
         List cats = mgr.getWeblogCategories(testWeblog, true);
         assertNotNull(cats);
         assertEquals(5, cats.size());

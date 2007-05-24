@@ -7,6 +7,7 @@
         
         BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
         
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
         FolderData root = bmgr.getRootFolder(testWeblog);
         
         // start out with no folders and no bookmarks
@@ -19,6 +20,7 @@
         TestUtils.endSession(true);
         
         // check that folder was saved
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
         root = bmgr.getRootFolder(testWeblog);
         assertEquals(1, root.getFolders().size());
         FolderData folder = (FolderData) root.getFolders().iterator().next();
@@ -30,6 +32,7 @@
         TestUtils.endSession(true);
         
         // check that folder was saved
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
         root = bmgr.getRootFolder(testWeblog);
         folder = (FolderData) root.getFolders().iterator().next();
         assertEquals("folderTest1", folder.getName());
@@ -39,6 +42,7 @@
         TestUtils.endSession(true);
         
         // make sure folder was removed
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
         root = bmgr.getRootFolder(testWeblog);
         assertEquals(0, root.getFolders().size());
         folder = bmgr.getFolder(newFolder.getId());

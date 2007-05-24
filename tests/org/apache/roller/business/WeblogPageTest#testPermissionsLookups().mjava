@@ -18,6 +18,7 @@
         
         // lookup by action
         page = null;
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
         page = mgr.getPageByAction(testWeblog, testPage.getAction());
         assertNotNull(page);
         assertEquals(testPage.getContents(), page.getContents());

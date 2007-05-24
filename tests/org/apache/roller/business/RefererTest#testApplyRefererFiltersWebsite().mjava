@@ -4,20 +4,23 @@
         
         RefererManager rmgr = RollerFactory.getRoller().getRefererManager();
         
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
         List refs = rmgr.getReferers(testWeblog);
         assertEquals(count, refs.size());
         String origWords = null;
         
         UserManager umgr = RollerFactory.getRoller().getUserManager();
-        testWeblog = umgr.getWebsite(testWeblog.getId());
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
         origWords = testWeblog.getBlacklist();
         testWeblog.setBlacklist("test");
         umgr.saveWebsite(testWeblog);
         TestUtils.endSession(true);
         
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
         rmgr.applyRefererFilters(testWeblog);
         TestUtils.endSession(true);
         
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
         refs = rmgr.getReferers(testWeblog);
         assertEquals(0, refs.size());
     }
