@@ -1,0 +1,29 @@
+    protected JPAPersistenceStrategy getStrategy() throws RollerException {
+        
+        // Add OpenJPA, Toplink and Hibernate properties to Roller config.
+        Properties props = new Properties();
+        Enumeration keys = PlanetConfig.keys();
+        while (keys.hasMoreElements()) {
+            String key = (String)keys.nextElement();
+            if (key.startsWith("openjpa.") || key.startsWith("toplink.")) {
+                String value = PlanetConfig.getProperty(key);
+                log.info(key + ": " + value);
+                props.setProperty(key, value);
+            }
+        }
+        
+        DatabaseProvider dbProvider = DatabaseProvider.getDatabaseProvider();
+        if (dbProvider.getType() == DatabaseProvider.ConfigurationType.JNDI_NAME) {
+            return new JPAPersistenceStrategy(
+                "PlanetPU", "java:comp/env/" + dbProvider.getJndiName(), props); 
+        } else {
+            return new JPAPersistenceStrategy(
+                "PlanetPU",  
+                dbProvider.getJdbcDriverClass(),
+                dbProvider.getJdbcConnectionURL(),
+                dbProvider.getJdbcUsername(),
+                dbProvider.getJdbcPassword(), 
+                props);
+        }
+    }
+

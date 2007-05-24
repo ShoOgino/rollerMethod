@@ -1,0 +1,13 @@
+    protected boolean acquireLeaseInDatabase(RollerTask task, TaskLockData taskLock,
+            long leaseExpireTime) throws RollerException {
+        Query q = strategy.getNamedUpdate(
+            "TaskLockData.updateClient&Timeacquired&TimeleasedByName&Timeacquired");
+        q.setParameter(1, task.getClientId());
+        q.setParameter(2, Integer.valueOf(task.getLeaseTime()));
+        q.setParameter(3, task.getName());
+        q.setParameter(4, taskLock.getTimeAquired());
+        q.setParameter(5, new Timestamp(leaseExpireTime));
+        int rowsUpdated = q.executeUpdate();
+        return rowsUpdated == 1;
+    }
+

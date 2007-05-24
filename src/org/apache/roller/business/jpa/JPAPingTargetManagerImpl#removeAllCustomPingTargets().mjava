@@ -1,0 +1,7 @@
+    public void removeAllCustomPingTargets()
+            throws RollerException {
+        Query q = strategy.getNamedUpdate(
+            "PingTargetData.removeByWebsiteNotNull");
+        q.executeUpdate();
+    }
+

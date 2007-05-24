@@ -1,0 +1,31 @@
+    public void importBookmarks(
+            WebsiteData website, String folderName, String opml)
+            throws RollerException {
+        String msg = "importBookmarks";
+        try {
+            // Build JDOC document OPML string
+            SAXBuilder builder = new SAXBuilder();
+            StringReader reader = new StringReader( opml );
+            Document doc = builder.build( reader );
+
+            FolderData newFolder = getFolder(website, folderName);
+            if (newFolder == null) {
+                newFolder = new FolderData(
+                        getRootFolder(website), 
+                        folderName, folderName, website);
+                this.strategy.store(newFolder);
+            }
+
+            // Iterate through children of OPML body, importing each
+            Element body = doc.getRootElement().getChild("body");
+            Iterator iter = body.getChildren().iterator();
+            while (iter.hasNext()) {
+                Element elem = (Element)iter.next();
+                importOpmlElement( website, elem, newFolder );
+            }
+
+        } catch (Exception ex) {
+            throw new RollerException(ex);
+        }
+    }
+

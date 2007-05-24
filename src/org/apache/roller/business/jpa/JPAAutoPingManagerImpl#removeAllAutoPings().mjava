@@ -1,0 +1,6 @@
+    public void removeAllAutoPings() 
+            throws RollerException {
+        Query q = strategy.getNamedUpdate("AutoPingData.getAll");
+        removeAutoPings(q.getResultList());
+    }
+

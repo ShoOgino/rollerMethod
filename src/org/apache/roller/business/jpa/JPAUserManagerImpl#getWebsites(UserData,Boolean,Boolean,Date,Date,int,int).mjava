@@ -1,0 +1,71 @@
+    /**
+     * Get websites of a user
+     */
+    public List getWebsites(
+            UserData user, Boolean enabled, Boolean active,
+            Date startDate, Date endDate, int offset, int length) throws RollerException {
+        
+        //if (endDate == null) endDate = new Date();
+                      
+        List params = new ArrayList();
+        int size = 0;
+        StringBuffer queryString = new StringBuffer();
+        StringBuffer whereClause = new StringBuffer();
+        
+        //queryString.append("SELECT w FROM WebsiteData w WHERE ");
+        if (user == null) { // OpenJPA likes JOINs
+            queryString.append("SELECT w FROM WebsiteData w WHERE ");
+        } else {
+            queryString.append("SELECT w FROM WebsiteData w JOIN w.permissions p WHERE ");
+            params.add(size++, user);
+            whereClause.append(" p.user = ?" + size);
+            params.add(size++, Boolean.FALSE);
+            whereClause.append(" AND p.pending = ?" + size);
+        }
+        if (startDate != null) {
+            Timestamp start = new Timestamp(startDate.getTime());
+            if (whereClause.length() > 0) whereClause.append(" AND ");
+            params.add(size++, start);
+            whereClause.append(" w.dateCreated > ?" + size);
+        }
+        if (endDate != null) {
+            Timestamp end = new Timestamp(endDate.getTime());
+            if (whereClause.length() > 0) whereClause.append(" AND ");
+            params.add(size++, end);
+            whereClause.append(" w.dateCreated < ?" + size);
+        }
+        if (enabled != null) {
+            if (whereClause.length() > 0) whereClause.append(" AND ");
+            params.add(size++, enabled);
+            whereClause.append(" w.enabled = ?" + size);
+        }
+        if (active != null) {
+            if (whereClause.length() > 0) whereClause.append(" AND ");
+            params.add(size++, active);
+            whereClause.append(" w.active = ?" + size);
+        }      
+        /*if (user != null) { // Toplink likes sub-selects    
+            if (whereClause.length() > 0) whereClause.append(" AND ");
+            whereClause.append(" EXISTS (SELECT p from PermissionsData p WHERE p.website = w ");
+            params.add(size++, user);         
+            whereClause.append("    AND p.user = ?" + size);
+            params.add(size++, Boolean.FALSE);
+            whereClause.append("    AND p.pending = ?" + size + ")");   
+        }*/
+                
+        whereClause.append(" ORDER BY w.dateCreated DESC");
+        
+        Query query = strategy.getDynamicQuery(queryString.toString() + whereClause.toString());
+        if (offset != 0) {
+            query.setFirstResult(offset);
+        }
+        if (length != -1) {
+            query.setMaxResults(length);
+        }
+        for (int i=0; i<params.size(); i++) {
+           query.setParameter(i+1, params.get(i));
+        }
+        
+        return query.getResultList();
+    }
+

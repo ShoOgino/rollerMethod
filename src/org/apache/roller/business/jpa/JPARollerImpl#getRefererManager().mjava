@@ -1,0 +1,10 @@
+    /**
+     * @see org.apache.roller.business.Roller#getRefererManager()
+     */
+    public RefererManager getRefererManager() {
+        if ( referrerManager == null ) {
+            referrerManager = createJPARefererManagerImpl(strategy);
+        }
+        return referrerManager;
+    }
+

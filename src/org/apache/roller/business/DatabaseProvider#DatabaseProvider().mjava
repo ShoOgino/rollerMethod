@@ -15,22 +15,22 @@
         jdbcPassword =      RollerConfig.getProperty("database.jdbc.password");
         
         // init now so we fail early
-        if (type == ConfigurationType.JDBC_PROPERTIES) {
+        if (getType() == ConfigurationType.JDBC_PROPERTIES) {
             log.info("Using 'jdbc' properties based configuration");
             try {
-                Class.forName(jdbcDriverClass);
+                Class.forName(getJdbcDriverClass());
             } catch (ClassNotFoundException ex) {
                 throw new RollerException(
-                   "Cannot load specified JDBC driver class [" +jdbcDriverClass+ "]", ex);
+                   "Cannot load specified JDBC driver class [" +getJdbcDriverClass()+ "]", ex);
             }
-            if (jdbcUsername != null || jdbcPassword != null) {
+            if (getJdbcUsername() != null || getJdbcPassword() != null) {
                 props = new Properties();
-                if (jdbcUsername != null) props.put("user", jdbcUsername);
-                if (jdbcPassword != null) props.put("password", jdbcPassword);
+                if (getJdbcUsername() != null) props.put("user", getJdbcUsername());
+                if (getJdbcPassword() != null) props.put("password", getJdbcPassword());
             }
         } else {
             log.info("Using 'jndi' based configuration");
-            String name = "java:comp/env/" + jndiName;
+            String name = "java:comp/env/" + getJndiName();
             try {
                 InitialContext ic = new InitialContext();
                 dataSource = (DataSource)ic.lookup(name);

@@ -1,0 +1,16 @@
+    /**
+     * Return permissions for specified user in website
+     */
+    public PermissionsData getPermissions(
+            WebsiteData website, UserData user) throws RollerException {
+        Query q = strategy.getNamedQuery(
+                "PermissionsData.getByWebsiteAndUser");
+        q.setParameter(1, website);
+        q.setParameter(2, user);
+        try {
+            return (PermissionsData)q.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+

@@ -3,6 +3,8 @@
      * @hibernate.property column="updatetime" non-null="true" unique="false"
      */
     public java.util.Date getLastModified() {
-        return (Date)this.lastModified.clone();
+        // don't modify fields directly
+        //return (Date)this.lastModified.clone();
+        return lastModified;
     }
 

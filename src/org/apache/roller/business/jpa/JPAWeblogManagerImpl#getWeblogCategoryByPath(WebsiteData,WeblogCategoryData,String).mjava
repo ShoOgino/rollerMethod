@@ -1,0 +1,30 @@
+    /**
+     * @inheritDoc
+     */
+    // TODO: ditch this method in favor of getWeblogCategoryByPath(weblog, path)
+    public WeblogCategoryData getWeblogCategoryByPath(WebsiteData website,
+            WeblogCategoryData category, String path) throws RollerException {
+        
+        if (path == null || path.trim().equals("/")) {
+            return getRootWeblogCategory(website);
+        } else {
+            String catPath = path;
+            
+            // all cat paths must begin with a '/'
+            if(!catPath.startsWith("/")) {
+                catPath = "/"+catPath;
+            }
+            
+            // now just do simple lookup by path
+            Query q = strategy.getNamedQuery(
+                    "WeblogCategoryData.getByPath&Website");
+            q.setParameter(1, catPath);
+            q.setParameter(2, website);
+            try {
+                return (WeblogCategoryData)q.getSingleResult();
+            } catch (NoResultException e) {
+                return null;
+            }
+        }
+    }
+

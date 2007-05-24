@@ -1,0 +1,11 @@
+    private TaskLockData getTaskLockByName(String name) throws RollerException {
+        // do lookup
+        Query q = strategy.getNamedQuery("TaskLockData.getByName");
+        q.setParameter(1, name);
+        try {
+            return (TaskLockData)q.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+

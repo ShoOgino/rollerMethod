@@ -1,0 +1,18 @@
+    public void queueApplicableAutoPings(WeblogEntryData changedWeblogEntry)
+            throws RollerException {
+        if (PingConfig.getSuspendPingProcessing()) {
+            if (logger.isDebugEnabled())
+                logger.debug("Ping processing is suspended." +
+                    " No auto pings will be queued.");
+            return;
+        }
+
+        PingQueueManager pingQueueMgr = RollerFactory.getRoller().
+            getPingQueueManager();
+        List applicableAutopings = getApplicableAutoPings(changedWeblogEntry);
+        for (Iterator i = applicableAutopings.iterator(); i.hasNext(); ) {
+            AutoPingData autoPing = (AutoPingData) i.next();
+            pingQueueMgr.addQueueEntry(autoPing);
+        }
+    }
+

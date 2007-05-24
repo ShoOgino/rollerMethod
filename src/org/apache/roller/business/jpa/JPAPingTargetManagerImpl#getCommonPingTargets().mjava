@@ -1,0 +1,7 @@
+    public List getCommonPingTargets()
+            throws RollerException {
+        Query q = strategy.getNamedQuery(
+                "PingTargetData.getByWebsiteNullOrderByName");
+        return q.getResultList();
+    }
+

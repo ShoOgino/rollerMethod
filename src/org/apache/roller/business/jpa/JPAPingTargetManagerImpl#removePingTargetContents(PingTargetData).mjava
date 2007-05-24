@@ -1,0 +1,17 @@
+    /**
+     * Convenience method which removes any queued pings or auto pings that
+     * reference the given ping target.
+     */
+    private void removePingTargetContents(PingTargetData ping) 
+            throws RollerException {
+        // Remove the website's ping queue entries
+        Query q = strategy.getNamedUpdate("PingQueueEntryData.removeByPingTarget");
+        q.setParameter(1, ping);
+        q.executeUpdate();
+        
+        // Remove the website's auto ping configurations
+        q = strategy.getNamedUpdate("AutoPingData.removeByPingTarget");
+        q.setParameter(1, ping);
+        q.executeUpdate();
+    }
+

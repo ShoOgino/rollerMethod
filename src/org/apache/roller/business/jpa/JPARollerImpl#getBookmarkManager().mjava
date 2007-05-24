@@ -1,0 +1,10 @@
+    /**
+     * @see org.apache.roller.business.Roller#getBookmarkManager()
+     */
+    public BookmarkManager getBookmarkManager() {
+        if ( bookmarkManager == null ) {
+            bookmarkManager = createJPABookmarkManager(strategy);
+        }
+        return bookmarkManager;
+    }
+

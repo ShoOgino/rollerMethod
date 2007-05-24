@@ -1,0 +1,29 @@
+    /**
+     * @inheritDoc
+     */
+    public String createAnchor(WeblogEntryData entry) throws RollerException {
+        // Check for uniqueness of anchor
+        String base = entry.createAnchorBase();
+        String name = base;
+        int count = 0;
+        
+        while (true) {
+            if (count > 0) {
+                name = base + count;
+            }
+            
+            Query q = strategy.getNamedQuery(
+                    "WeblogEntryData.getByWebsite&Anchor");
+            q.setParameter(1, entry.getWebsite());
+            q.setParameter(2, name);
+            List results = q.getResultList();
+            
+            if (results.size() < 1) {
+                break;
+            } else {
+                count++;
+            }
+        }
+        return name;
+    }
+

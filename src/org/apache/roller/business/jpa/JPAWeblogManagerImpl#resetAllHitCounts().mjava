@@ -1,0 +1,8 @@
+    /**
+     * @inheritDoc
+     */
+    public void resetAllHitCounts() throws RollerException {       
+        Query q = strategy.getNamedUpdate("HitCountData.updateDailyHitCountZero");
+        q.executeUpdate();
+    }
+

@@ -1,0 +1,12 @@
+    /**
+     * @inheritDoc
+     */
+    public long getEntryCount(WebsiteData website) throws RollerException {
+        Query q = strategy.getNamedQuery(
+                "WeblogEntryData.getCountDistinctByStatus&Website");
+        q.setParameter(1, "PUBLISHED");
+        q.setParameter(2, website);
+        List results = q.getResultList();
+        return ((Long)results.get(0)).longValue();
+    }
+

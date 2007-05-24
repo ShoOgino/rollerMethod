@@ -1,0 +1,26 @@
+    /**
+     * @inheritDoc
+     */
+    // TODO: this method should be removed and it's functionality moved to getWeblogEntries()
+    public List getWeblogEntries(WeblogCategoryData cat, boolean subcats)
+    throws RollerException {
+        List results = null;
+        
+        if (!subcats) {
+            Query q = strategy.getNamedQuery(
+                    "WeblogEntryData.getByStatus&Category");
+            q.setParameter(1, WeblogEntryData.PUBLISHED);
+            q.setParameter(2, cat);
+            results = q.getResultList();
+        } else {
+            Query q = strategy.getNamedQuery(
+                    "WeblogEntryData.getByStatus&Category.pathLike&Website");
+            q.setParameter(1, WeblogEntryData.PUBLISHED);
+            q.setParameter(2, cat.getPath() + '%');
+            q.setParameter(3, cat.getWebsite());
+            results = q.getResultList();
+        }
+        
+        return results;
+    }
+

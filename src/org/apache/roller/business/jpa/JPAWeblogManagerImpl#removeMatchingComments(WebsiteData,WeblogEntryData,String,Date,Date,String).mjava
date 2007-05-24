@@ -1,0 +1,27 @@
+    /**
+     * @inheritDoc
+     */
+    public int removeMatchingComments(
+            WebsiteData     website,
+            WeblogEntryData entry,
+            String  searchString,
+            Date    startDate,
+            Date    endDate,
+            String status) throws RollerException {
+        
+        // TODO dynamic bulk delete query: I'd MUCH rather use a bulk delete,
+        // but MySQL says "General error, message from server: "You can't
+        // specify target table 'roller_comment' for update in FROM clause"
+        
+        List comments = getComments(
+                website, entry, searchString, startDate, endDate,
+                status, true, 0, -1);
+        int count = 0;
+        for (Iterator it = comments.iterator(); it.hasNext();) {
+            CommentData comment = (CommentData) it.next();
+            removeComment(comment);
+            count++;
+        }
+        return count;
+    }
+

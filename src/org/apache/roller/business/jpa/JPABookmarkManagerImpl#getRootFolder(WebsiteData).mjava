@@ -1,0 +1,14 @@
+    public FolderData getRootFolder(WebsiteData website)
+            throws RollerException {
+        if (website == null)
+            throw new RollerException("website is null");
+        
+        Query q = strategy.getNamedQuery("FolderData.getByWebsite&ParentNull");
+        q.setParameter(1, website);
+        try {
+            return (FolderData)q.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+

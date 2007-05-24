@@ -1,0 +1,10 @@
+    public PlanetData getPlanet(String handle) throws RollerException {
+        Query q = strategy.getNamedQuery("PlanetData.getByHandle");
+        q.setParameter(1, handle);
+        try {
+            return (PlanetData)q.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+

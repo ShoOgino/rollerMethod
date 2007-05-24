@@ -1,0 +1,25 @@
+    public FolderData getFolder(WebsiteData website, String path)
+            throws RollerException {
+
+        if (path == null || path.trim().equals("/")) {
+            return getRootFolder(website);
+        } else {
+            String folderPath = path;
+
+            // all folder paths must begin with a '/'
+            if(!folderPath.startsWith("/")) {
+                folderPath = "/"+folderPath;
+            }
+
+            // now just do simple lookup by path
+            Query query = strategy.getNamedQuery("FolderData.getByWebsite&Path");
+            query.setParameter(1, website);
+            query.setParameter(2, folderPath);
+            try {
+                return (FolderData)query.getSingleResult();
+            } catch (NoResultException e) {
+                return null;
+            }
+        }
+    }
+

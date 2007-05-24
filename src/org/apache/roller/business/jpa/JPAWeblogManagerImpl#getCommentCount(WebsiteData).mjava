@@ -1,0 +1,12 @@
+    /**
+     * @inheritDoc
+     */
+    public long getCommentCount(WebsiteData website) throws RollerException {
+        Query q = strategy.getNamedQuery(
+                "CommentData.getCountDistinctByWebsite&Status");
+        q.setParameter(1, website);
+        q.setParameter(2, CommentData.APPROVED);
+        List results = q.getResultList();
+        return ((Long)results.get(0)).longValue();
+    }
+

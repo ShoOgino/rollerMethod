@@ -1,0 +1,69 @@
+    /**
+     * @inheritDoc
+     */
+    public List getPopularTags(WebsiteData website, Date startDate, int limit)
+    throws RollerException {
+        Query query = null;
+        List queryResults = null;
+        
+        if (website != null) {
+            if (startDate != null) {
+                Timestamp start = new Timestamp(startDate.getTime());
+                query = strategy.getNamedQuery(
+                        "WeblogEntryTagAggregateData.getPopularTagsByWebsite&StartDate");
+                query.setParameter(1, website);
+                query.setParameter(2, start);
+            } else {
+                Timestamp start = new Timestamp(startDate.getTime());
+                query = strategy.getNamedQuery(
+                        "WeblogEntryTagAggregateData.getPopularTagsByWebsite");
+                query.setParameter(1, start);
+            }
+        } else {
+            if (startDate != null) {
+                Timestamp start = new Timestamp(startDate.getTime());
+                query = strategy.getNamedQuery(
+                        "WeblogEntryTagAggregateData.getPopularTagsByWebsiteNull&StartDate");
+                query.setParameter(1, start);
+            } else {
+                query = strategy.getNamedQuery(
+                        "WeblogEntryTagAggregateData.getPopularTagsByWebsiteNull");
+            }
+        }
+        if (limit != -1) {
+            query.setMaxResults(limit);
+        }
+        queryResults = query.getResultList();
+        
+        double min = Integer.MAX_VALUE;
+        double max = Integer.MIN_VALUE;
+        
+        List results = new ArrayList(limit);
+        
+        for (Iterator iter = queryResults.iterator(); iter.hasNext();) {
+            Object[] row = (Object[]) iter.next();
+            TagStat t = new TagStat();
+            t.setName((String) row[0]);
+            t.setCount(((Integer) row[1]).intValue());
+            
+            min = Math.min(min, t.getCount());
+            max = Math.max(max, t.getCount());
+            results.add(t);
+        }
+        
+        min = Math.log(1+min);
+        max = Math.log(1+max);
+        
+        double range = Math.max(.01, max - min) * 1.0001;
+        
+        for (Iterator iter = results.iterator(); iter.hasNext(); ) {
+            TagStat t = (TagStat) iter.next();
+            t.setIntensity((int) (1 + Math.floor(5 * (Math.log(1+t.getCount()) - min) / range)));
+        }
+        
+        // sort results by name, because query had to sort by total
+        Collections.sort(results, tagStatNameComparator);
+        
+        return results;
+    }
+

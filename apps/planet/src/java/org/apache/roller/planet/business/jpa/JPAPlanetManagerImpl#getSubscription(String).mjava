@@ -1,0 +1,11 @@
+    public PlanetSubscriptionData getSubscription(String feedUrl)
+    throws RollerException {
+        Query q = strategy.getNamedQuery("PlanetSubscriptionData.getByFeedURL");
+        q.setParameter(1, feedUrl);
+        try {
+            return (PlanetSubscriptionData)q.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+

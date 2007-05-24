@@ -1,0 +1,10 @@
+    /**
+     * @see org.apache.roller.business.Roller#getUserManager()
+     */
+    public UserManager getUserManager() {
+        if ( userManager == null ) {
+            userManager = createJPAUserManager(strategy);
+        }
+        return userManager;
+    }
+

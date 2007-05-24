@@ -1,0 +1,7 @@
+    protected List getBlackListedReferer(String[] blacklist) throws
+            RollerException {
+        StringBuffer queryString = getQueryStringForBlackList(blacklist);
+        Query query = strategy.getDynamicQuery(queryString.toString());
+        return (List) query.getResultList();
+    }
+

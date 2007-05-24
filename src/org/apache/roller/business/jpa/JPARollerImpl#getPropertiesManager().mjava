@@ -1,0 +1,10 @@
+    /**
+     * @see org.apache.roller.business.Roller#getPropertiesManager()
+     */
+    public PropertiesManager getPropertiesManager() {
+        if (propertiesManager == null) {
+            propertiesManager = createJPAPropertiesManager(strategy);
+        }
+        return propertiesManager;
+    }
+

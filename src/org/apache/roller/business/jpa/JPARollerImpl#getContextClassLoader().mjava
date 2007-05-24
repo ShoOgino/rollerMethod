@@ -1,0 +1,14 @@
+    /**
+     * Get the context class loader associated with the current thread. This is
+     * done in a doPrivileged block because it is a secure method.
+     * @return the current thread's context class loader.
+     */
+    private static ClassLoader getContextClassLoader() {
+        return (ClassLoader) AccessController.doPrivileged(
+                new PrivilegedAction() {
+            public Object run() {
+                return Thread.currentThread().getContextClassLoader();
+            }
+        });
+    }
+

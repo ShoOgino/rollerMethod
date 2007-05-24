@@ -1,0 +1,11 @@
+    /**
+     * @see org.apache.roller.model.UserManager#storePage(org.apache.roller.pojos.WeblogTemplate)
+     */
+    public void savePage(WeblogTemplate page) throws RollerException {
+        this.strategy.store(page);
+        
+        // update weblog last modified date.  date updated by saveWebsite()
+        RollerFactory.getRoller().getUserManager()
+        .saveWebsite(page.getWebsite());
+    }
+

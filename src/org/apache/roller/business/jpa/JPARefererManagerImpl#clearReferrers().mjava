@@ -1,0 +1,9 @@
+    /**
+     * Clear referrer dayhits and remove referrers without excerpts.
+     */
+    public void clearReferrers() throws RollerException {
+        clearDayHits();
+        Query q = strategy.getNamedUpdate("RefererData.removeByNullOrEmptyExcerpt");
+        q.executeUpdate();
+    }
+

@@ -1,0 +1,84 @@
+    /**
+     * @inheritDoc
+     */
+    public List getComments(
+            WebsiteData     website,
+            WeblogEntryData entry,
+            String          searchString,
+            Date            startDate,
+            Date            endDate,
+            String          status,
+            boolean         reverseChrono,
+            int             offset,
+            int             length) throws RollerException {
+        
+        List params = new ArrayList();
+        int size = 0;
+        StringBuffer queryString = new StringBuffer();
+        queryString.append("SELECT c FROM CommentData c ");
+        
+        StringBuffer whereClause = new StringBuffer();
+        if (entry != null) {
+            params.add(size++, entry);
+            whereClause.append("c.weblogEntry = ?").append(size);
+        } else if (website != null) {
+            params.add(size++, website);
+            whereClause.append("c.weblogEntry.website = ?").append(size);
+        }
+        
+        if (searchString != null) {
+            params.add(size++, "%" + searchString + "%");
+            appendConjuctionToWhereclause(whereClause, "(c.url LIKE ?")
+            .append(size).append(" OR c.content LIKE ?").append(size).append(")");
+        }
+        
+        if (startDate != null) {
+            Timestamp start = new Timestamp(startDate.getTime());
+            params.add(size++, start);
+            appendConjuctionToWhereclause(whereClause, "c.postTime >= ?");
+        }
+        
+        if (endDate != null) {
+            Timestamp end = new Timestamp(endDate.getTime());
+            params.add(size++, end);
+            appendConjuctionToWhereclause(whereClause, "c.postTime <= ?");
+        }
+        
+        if (status != null) {
+            String comparisionOperator;
+            if("ALL_IGNORE_SPAM".equals(status)) {
+                // we want all comments, except spam
+                // so that means where status != SPAM
+                status = CommentData.SPAM;
+                comparisionOperator = " <> ";
+            } else {
+                comparisionOperator = " = ";
+            }
+            params.add(size++, status);
+            appendConjuctionToWhereclause(whereClause, "c.status ")
+            .append(comparisionOperator).append('?').append(size);
+        }
+        
+        if(whereClause.length() != 0) {
+            queryString.append(" WHERE ").append(whereClause);
+        }
+        if (reverseChrono) {
+            queryString.append(" ORDER BY c.postTime DESC");
+        } else {
+            queryString.append(" ORDER BY c.postTime ASC");
+        }
+        
+        Query query = strategy.getDynamicQuery(queryString.toString());
+        if (offset != 0) {
+            query.setFirstResult(offset);
+        }
+        if (length != -1) {
+            query.setMaxResults(length);
+        }
+        for (int i=0; i<params.size(); i++) {
+            query.setParameter(i+1, params.get(i));
+        }
+        return query.getResultList();
+        
+    }
+
