@@ -1,0 +1,10 @@
+    /**
+     * Get global database provider singlton, instantiating if necessary.
+     */
+    public static DatabaseProvider getDatabaseProvider() throws RollerException {
+        if (singletonInstance == null) {
+            singletonInstance = new DatabaseProvider();
+        }
+        return singletonInstance;
+    }
+
