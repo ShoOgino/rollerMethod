@@ -5,6 +5,11 @@
         if (me == null) {
             mLogger.debug("Instantiating HibernateRollerImpl");
             me = new HibernateRollerImpl();
+                                
+            // Now that Roller has been instantiated, initialize individual managers
+            me.getPropertiesManager();
+            me.getIndexManager();
+            me.getThemeManager();          
         }
         
         return me;
