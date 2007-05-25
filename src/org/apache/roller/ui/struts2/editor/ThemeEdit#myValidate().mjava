@@ -8,16 +8,9 @@
             // TODO: i18n
             addError("No theme specified");
             
-        } else if(WeblogTheme.CUSTOM.equals(newTheme)) {
-            if(!RollerRuntimeConfig.getBooleanProperty("themes.customtheme.allowed")) {
-                // TODO: i18n
-                addError("Sorry, custom themes are not allowed");
-            }
-            
         } else {
             try {
-                Roller roller = RollerFactory.getRoller();
-                ThemeManager themeMgr = roller.getThemeManager();
+                ThemeManager themeMgr = RollerFactory.getRoller().getThemeManager();
                 Theme newThemeObj = themeMgr.getTheme(getThemeId());
                 
                 if(!newThemeObj.isEnabled()) {

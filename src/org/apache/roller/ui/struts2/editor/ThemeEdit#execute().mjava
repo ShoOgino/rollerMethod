@@ -1,7 +1,15 @@
     public String execute() {
         // set theme to current value
-        setThemeId(getActionWeblog().getTheme().getId());
+        if(WeblogTheme.CUSTOM.equals(getActionWeblog().getEditorTheme())) {
+            setThemeId(null);
+        } else {
+            setThemeId(getActionWeblog().getTheme().getId());
+        }
         
-        return SUCCESS;
+        if(!RollerRuntimeConfig.getBooleanProperty("themes.customtheme.allowed")) {
+            return "input-sharedonly";
+        } else {
+            return INPUT;
+        }
     }
 

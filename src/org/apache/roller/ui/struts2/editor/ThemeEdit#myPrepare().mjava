@@ -1,24 +1,5 @@
-    // prepare list of themes based on action weblog
     public void myPrepare() {
-        
         ThemeManager themeMgr = RollerFactory.getRoller().getThemeManager();
-        List themes = themeMgr.getEnabledThemesList();
-        
-        // should we also include the CUSTOM theme?
-        boolean allowCustomTheme = false;
-        if(getActionWeblog().getDefaultPageId() != null
-                && !getActionWeblog().getDefaultPageId().equals("dummy")
-                && !getActionWeblog().getDefaultPageId().trim().equals("")) {
-            allowCustomTheme = true;
-        }
-        
-        // if we allow custom themes then add it to the end of the list
-        if(allowCustomTheme &&
-                RollerRuntimeConfig.getBooleanProperty("themes.customtheme.allowed")) {
-            
-            themes.add(customThemeOption);
-        }
-        
-        setThemes(themes);
+        setThemes(themeMgr.getEnabledThemesList());
     }
 
