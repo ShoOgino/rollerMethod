@@ -5,7 +5,12 @@
                     ") shorter than minimum allowed (" + MIN_RATE_INTERVAL_MINS + ")");
         }
         
-        //scheduler.scheduleAtFixedRate(task, startTime, intervalMins * 60 * 1000);
-        scheduler.scheduleAtFixedRate(new TaskExecutor(task), startTime, intervalMins * 60 * 1000);
+        ScheduledFuture scheduledTask = serviceScheduler.scheduleAtFixedRate(
+                task, 
+                startTime.getTime() - System.currentTimeMillis(), 
+                intervalMins * 60 * 1000, 
+                TimeUnit.MILLISECONDS);
+        
+        log.debug("Scheduled "+task.getClass().getName()+" at "+new Date(System.currentTimeMillis()+scheduledTask.getDelay(TimeUnit.MILLISECONDS)));
     }
 
