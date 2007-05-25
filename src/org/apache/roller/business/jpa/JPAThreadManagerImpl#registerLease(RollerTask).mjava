@@ -33,8 +33,18 @@
             long leaseExpireTime = taskLock.getTimeAquired().getTime()+
                     (60000*taskLock.getTimeLeased())-1000;
 
-            if (acquireLeaseInDatabase(task, taskLock, leaseExpireTime))
+            Query q = strategy.getNamedUpdate(
+                    "TaskLockData.updateClient&Timeacquired&TimeleasedByName&Timeacquired");
+            q.setParameter(1, task.getClientId());
+            q.setParameter(2, Integer.valueOf(task.getLeaseTime()));
+            q.setParameter(3, task.getName());
+            q.setParameter(4, taskLock.getTimeAquired());
+            q.setParameter(5, new Timestamp(leaseExpireTime));
+            int result = q.executeUpdate();
+            
+            if(result == 1) {
                 return true;
+            }
 
         } catch (Exception e) {
             log.warn("Error obtaining lease, assuming race condition.", e);

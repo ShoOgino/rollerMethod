@@ -19,8 +19,16 @@
 
         // try to release lease, just set lease time to 0
         try {
-            if (releaseLeaseInDatabase(task))
+            Query q = strategy.getNamedUpdate(
+                    "TaskLockData.updateTimeLeasedByName&Client");
+            q.setParameter(1, Integer.valueOf(task.getInterval()));
+            q.setParameter(2, task.getName());
+            q.setParameter(3, task.getClientId());
+            int result = q.executeUpdate();
+            
+            if(result == 1) {
                 return true;
+            }
 
         } catch (Exception e) {
             log.warn("Error releasing lease.", e);
