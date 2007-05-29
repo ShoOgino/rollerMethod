@@ -1,5 +1,5 @@
     /**
-     * Test FolderData.equals() method.
+     * Test WeblogBookmarkFolder.equals() method.
      */
     public void testFolderEquality() throws Exception {
         
@@ -8,12 +8,12 @@
         BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
         
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
-        FolderData root = bmgr.getRootFolder(testWeblog);
+        WeblogBookmarkFolder root = bmgr.getRootFolder(testWeblog);
         
-        FolderData testFolder = new FolderData(null, "root", "root", TestUtils.getManagedWebsite(testWeblog));
+        WeblogBookmarkFolder testFolder = new WeblogBookmarkFolder(null, "root", "root", TestUtils.getManagedWebsite(testWeblog));
         assertTrue(root.equals(testFolder));
         
-        testFolder = new FolderData(root, "root", "root", TestUtils.getManagedWebsite(testWeblog));
+        testFolder = new WeblogBookmarkFolder(root, "root", "root", TestUtils.getManagedWebsite(testWeblog));
         assertFalse(root.equals(testFolder));
         
         log.info("END");

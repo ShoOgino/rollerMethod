@@ -2,7 +2,7 @@
     static Hashtable createParams(HttpServletRequest req) {
         Hashtable params = new Hashtable();
         try {
-            WebsiteData website = getRequestedWeblog(req);
+            Weblog website = getRequestedWeblog(req);
             BasePageModel pageModel = (BasePageModel)req.getAttribute("model");
             if (website == null && pageModel != null) {
                 website = pageModel.getWebsite();

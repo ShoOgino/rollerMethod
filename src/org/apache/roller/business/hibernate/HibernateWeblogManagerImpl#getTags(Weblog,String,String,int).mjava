@@ -1,0 +1,51 @@
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.roller.model.WeblogManager#getTags(org.apache.roller.pojos.WebsiteData,
+     *      java.lang.String, java.lang.String, int)
+     */
+    public List getTags(Weblog website, String sortBy, String startsWith, int limit) throws RollerException {    
+        try {
+            List results = new ArrayList();
+
+            Session session = ((HibernatePersistenceStrategy) strategy)
+                    .getSession();
+
+            if (sortBy != null && sortBy.equals("count")) {
+                sortBy = "total desc";
+            } else {
+                sortBy = "name";
+            }
+
+            StringBuffer queryString = new StringBuffer();
+            queryString.append("select name, sum(total) ");
+            queryString.append("from WeblogEntryTagAggregateData where ");
+            if (website != null)
+                queryString.append("weblog.id = '" + website.getId() + "' ");
+            else
+                queryString.append("weblog = NULL ");
+            if (startsWith != null && startsWith.length() > 0)
+                queryString.append("and name like '" + startsWith + "%' ");
+
+            queryString.append("group by name, total order by " + sortBy);
+
+            Query query = session.createQuery(queryString.toString());
+            if (limit > 0)
+                query.setMaxResults(limit);
+
+            for (Iterator iter = query.list().iterator(); iter.hasNext();) {
+                Object[] row = (Object[]) iter.next();
+                TagStat ce = new TagStat();
+                ce.setName((String) row[0]);
+                ce.setCount(((Number) row[1]).intValue());
+                results.add(ce);
+            }
+
+            return results;
+
+        } catch (HibernateException e) {
+            throw new RollerException(e);
+        }
+
+    }
+

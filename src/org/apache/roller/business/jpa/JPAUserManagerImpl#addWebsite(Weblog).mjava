@@ -1,0 +1,7 @@
+    public void addWebsite(Weblog newWeblog) throws RollerException {
+        
+        this.strategy.store(newWeblog);
+        this.strategy.flush();
+        this.addWeblogContents(newWeblog);
+    }
+

@@ -1,0 +1,10 @@
+    /**
+     * @roller.wrapPojoMethod type="pojo-collection" class="org.apache.roller.pojos.WeblogBookmark"
+     *
+     * @param subfolders
+     */
+    public List retrieveBookmarks(boolean subfolders) throws RollerException {
+        BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
+        return bmgr.getBookmarks(this, subfolders);
+    }
+

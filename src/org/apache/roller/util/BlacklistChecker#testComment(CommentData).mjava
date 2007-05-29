@@ -6,7 +6,7 @@
         boolean ret = false;
         List stringRules = new ArrayList();
         List regexRules = new ArrayList();
-        WebsiteData website = c.getWeblogEntry().getWebsite();
+        Weblog website = c.getWeblogEntry().getWebsite();
         Blacklist.populateSpamRules(
             website.getBlacklist(), stringRules, regexRules, 
             RollerRuntimeConfig.getProperty("spam.blacklist"));

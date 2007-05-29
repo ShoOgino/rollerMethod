@@ -1,0 +1,24 @@
+    public WeblogBookmarkFolder getFolder(Weblog website, String path)
+            throws RollerException {
+        
+        if (path == null || path.trim().equals("/")) {
+            return getRootFolder(website);
+        } else {
+            String folderPath = path;
+            
+            // all folder paths must begin with a '/'
+            if(!folderPath.startsWith("/")) {
+                folderPath = "/"+folderPath;
+            }
+            
+            // now just do simple lookup by path
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
+            
+            Criteria criteria = session.createCriteria(WeblogBookmarkFolder.class);
+            criteria.add(Expression.eq("website", website));
+            criteria.add(Expression.eq("path", folderPath));
+            
+            return (WeblogBookmarkFolder) criteria.uniqueResult();
+        }
+    }
+

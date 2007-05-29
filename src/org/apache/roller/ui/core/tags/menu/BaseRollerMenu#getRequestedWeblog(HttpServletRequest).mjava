@@ -9,8 +9,8 @@
      *       the authoring/admin UI and one for rendering.  it doesn't make
      *       sense for this strange intermixing to be happening.
      */
-    protected static WebsiteData getRequestedWeblog(HttpServletRequest request) throws RollerException {
-        WebsiteData weblog = null;
+    protected static Weblog getRequestedWeblog(HttpServletRequest request) throws RollerException {
+        Weblog weblog = null;
         Roller roller = RollerFactory.getRoller();
         // first check authoring form of URL
         if (request.getParameter(RequestConstants.WEBLOG) != null) {
@@ -33,14 +33,14 @@
             }
         } else if (request.getParameter(RequestConstants.FOLDER_ID) != null) {
             String folderId = request.getParameter(RequestConstants.FOLDER_ID);
-            FolderData folder = roller.getBookmarkManager().getFolder(folderId);
+            WeblogBookmarkFolder folder = roller.getBookmarkManager().getFolder(folderId);
             if(folder != null) {
                 weblog = folder.getWebsite();
             }
         } else if (request.getParameter(RequestConstants.BOOKMARK_ID) != null) {
             String bookmarkId = request.getParameter(RequestConstants.BOOKMARK_ID);
-            BookmarkData bookmark = roller.getBookmarkManager().getBookmark(bookmarkId);
-            FolderData folder = bookmark.getFolder();
+            WeblogBookmark bookmark = roller.getBookmarkManager().getBookmark(bookmarkId);
+            WeblogBookmarkFolder folder = bookmark.getFolder();
             if(folder != null) {
                 weblog = folder.getWebsite();
             }

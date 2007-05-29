@@ -30,7 +30,8 @@
             while (websiteUserIter.hasNext()) {
                 UserData websiteUser = (UserData)websiteUserIter.next();
                 if (entry.getWebsite().hasUserPermissions(
-                        websiteUser, PermissionsData.AUTHOR)
+                        
+                        websiteUser,WeblogPermission.AUTHOR)
                         && websiteUser.getEmailAddress() != null) {
                     reviewers.add(websiteUser.getEmailAddress());
                 }

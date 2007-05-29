@@ -1,0 +1,25 @@
+    /**
+     * Remove user permissions from a website.
+     *
+     * TODO: replace this with a domain model method like weblog.retireUser(user)
+     */
+    public void retireUser(Weblog website, UserData user) throws RollerException {
+        
+        if (website == null) throw new RollerException("Website cannot be null");
+        if (user == null) throw new RollerException("User cannot be null");
+        
+        Iterator perms = website.getPermissions().iterator();
+        WeblogPermission target = null;
+        while (perms.hasNext()) {
+            WeblogPermission pd = (WeblogPermission)perms.next();
+            if (pd.getUser().getId().equals(user.getId())) {
+                target = pd;
+                break;
+            }
+        }
+        if (target == null) throw new RollerException("User not member of website");
+        
+        website.removePermission(target);
+        this.strategy.remove(target);
+    }
+

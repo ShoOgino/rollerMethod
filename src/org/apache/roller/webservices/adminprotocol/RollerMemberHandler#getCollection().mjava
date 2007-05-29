@@ -7,11 +7,11 @@
                 UserData user = (UserData)i.next();
                 List permissions = getRoller().getUserManager().getAllPermissions(user);
                 for (Iterator j = permissions.iterator(); j.hasNext(); ) {
-                    PermissionsData pd = (PermissionsData)j.next();
+                    WeblogPermission pd = (WeblogPermission)j.next();
                     perms.add(pd);
                 }
             }
-            EntrySet es = toMemberEntrySet((PermissionsData[])perms.toArray(new PermissionsData[0]));
+            EntrySet es = toMemberEntrySet((WeblogPermission[])perms.toArray(new WeblogPermission[0]));
             return es;
         } catch (RollerException re) {
             throw new InternalException("ERROR: Could not get member collection", re);

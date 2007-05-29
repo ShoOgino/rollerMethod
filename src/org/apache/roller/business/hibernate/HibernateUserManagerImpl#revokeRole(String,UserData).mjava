@@ -1,9 +1,9 @@
     public void revokeRole(String roleName, UserData user) throws RollerException {
-        RoleData removeme = null;
+        UserRole removeme = null;
         Collection roles = user.getRoles();
         Iterator iter = roles.iterator();
         while (iter.hasNext()) {
-            RoleData role = (RoleData) iter.next();
+            UserRole role = (UserRole) iter.next();
             if (role.getRole().equals(roleName)) {
                 iter.remove();
                 this.strategy.remove(role);

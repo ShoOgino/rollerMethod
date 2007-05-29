@@ -1,0 +1,11 @@
+    protected List getMatchingReferers(Weblog website, String requestUrl,
+            String refererUrl) throws RollerException {
+
+        Query q = strategy.getNamedQuery( 
+            "RefererData.getByWebsite&RequestUrl&RefererUrl");
+        q.setParameter(1, website);
+        q.setParameter(2, requestUrl);
+        q.setParameter(3, refererUrl);
+        return q.getResultList();
+    }
+

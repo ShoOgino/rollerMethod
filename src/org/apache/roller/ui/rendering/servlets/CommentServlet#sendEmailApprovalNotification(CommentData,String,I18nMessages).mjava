@@ -6,7 +6,7 @@
     public static void sendEmailApprovalNotification(CommentData cd, String rootURL, I18nMessages resources) {
         
         WeblogEntryData entry = cd.getWeblogEntry();
-        WebsiteData site = entry.getWebsite();
+        Weblog site = entry.getWebsite();
         UserData user = entry.getCreator();
         
         // Only send email if email notificaiton is enabled

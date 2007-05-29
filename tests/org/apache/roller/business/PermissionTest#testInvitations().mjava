@@ -10,11 +10,11 @@
         TestUtils.endSession(true);
 
         UserManager mgr = RollerFactory.getRoller().getUserManager();
-        PermissionsData perm = null;
+        WeblogPermission perm = null;
         List perms = null;
 
         // invite user to weblog
-        perm = mgr.inviteUser(TestUtils.getManagedWebsite(testWeblog), user, PermissionsData.LIMITED);
+        perm = mgr.inviteUser(TestUtils.getManagedWebsite(testWeblog), user, WeblogPermission.LIMITED);
         String id = perm.getId();
         TestUtils.endSession(true);
 
@@ -40,7 +40,7 @@
         assertFalse(mgr.getPermissions(testWeblog, user).isPending());
         List weblogs = mgr.getWebsites(TestUtils.getManagedUser(user), null, null, null, null, 0, -1);
         assertEquals(1, weblogs.size());
-        assertEquals(testWeblog.getId(), ((WebsiteData)weblogs.get(0)).getId());
+        assertEquals(testWeblog.getId(), ((Weblog)weblogs.get(0)).getId());
 
         // assert that website has user
         List users = mgr.getUsers(testWeblog, null, null, null, 0, -1);

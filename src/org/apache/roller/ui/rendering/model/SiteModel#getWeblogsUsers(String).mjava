@@ -6,10 +6,10 @@
         try {            
             Roller roller = RollerFactory.getRoller();
             UserManager umgr = roller.getUserManager();
-            WebsiteData website = umgr.getWebsiteByHandle(handle);
+            Weblog website = umgr.getWebsiteByHandle(handle);
             List perms = umgr.getAllPermissions(website);
             for (Iterator it = perms.iterator(); it.hasNext();) {
-                PermissionsData perm = (PermissionsData) it.next();
+                WeblogPermission perm = (WeblogPermission) it.next();
                 results.add(UserDataWrapper.wrap(perm.getUser()));
             }
         } catch (Exception e) {

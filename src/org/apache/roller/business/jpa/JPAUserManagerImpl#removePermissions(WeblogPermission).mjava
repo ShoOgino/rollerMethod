@@ -1,0 +1,12 @@
+    public void removePermissions(WeblogPermission perms)
+    throws RollerException {
+        this.strategy.remove(perms);
+        // make sure that relationship is set on managed
+        // copy of other side
+        Weblog website = perms.getWebsite(); //Weblog) getManagedObject(perms.getWebsite());
+        website.getPermissions().remove(perms);
+        
+        UserData user = perms.getUser(); //(UserData) getManagedObject(perms.getUser());
+        user.getPermissions().remove(perms);
+    }
+

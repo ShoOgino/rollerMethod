@@ -1,0 +1,12 @@
+    public void removeFolder(WeblogBookmarkFolder folder) throws RollerException {
+        this.strategy.remove(folder);
+        WeblogBookmarkFolder parent = folder.getParent();
+        if (parent != null) {
+            parent.getFolders().remove(folder);
+        }
+
+        // update weblog last modified date.  date updated by saveWebsite()
+        RollerFactory.getRoller().getUserManager().
+            saveWebsite(folder.getWebsite());
+    }
+

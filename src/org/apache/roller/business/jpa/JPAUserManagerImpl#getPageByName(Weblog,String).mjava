@@ -1,0 +1,22 @@
+    /**
+     * @see org.apache.roller.model.UserManager#getPageByName(Weblog, java.lang.String)
+     */
+    public WeblogTemplate getPageByName(Weblog website, String pagename)
+    throws RollerException {
+        
+        if (website == null)
+            throw new RollerException("website is null");
+        
+        if (pagename == null)
+            throw new RollerException("Page name is null");
+        
+        Query query = strategy.getNamedQuery("WeblogTemplate.getByWebsite&Name");
+        query.setParameter(1, website);
+        query.setParameter(2, pagename);
+        try {
+            return (WeblogTemplate)query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+

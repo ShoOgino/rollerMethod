@@ -1,0 +1,125 @@
+    /**
+     * convenience method for removing contents of a weblog.
+     * TODO BACKEND: use manager methods instead of queries here
+     */
+    private void removeWebsiteContents(Weblog website)
+    throws  RollerException {
+        
+        BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
+        WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+        
+        // remove tags
+        Query tagQuery = strategy.getNamedQuery("WeblogEntryTagData.getByWeblog");
+        tagQuery.setParameter(1, website);
+        List results = tagQuery.getResultList();
+        
+        for(Iterator iter = results.iterator(); iter.hasNext();) {
+            WeblogEntryTagData tagData = (WeblogEntryTagData) iter.next();
+            this.strategy.remove(tagData);
+        }
+        
+        // remove site tag aggregates
+        List tags = wmgr.getTags(website, null, null, -1);
+        updateTagAggregates(tags);
+        
+        // delete all weblog tag aggregates
+        Query removeAggs= strategy.getNamedUpdate(
+                "WeblogEntryTagAggregateData.removeByWeblog");
+        removeAggs.setParameter(1, website);
+        removeAggs.executeUpdate();
+        
+        // delete all bad counts
+        Query removeCounts = strategy.getNamedUpdate(
+                "WeblogEntryTagAggregateData.removeByTotalLessEqual");
+        removeCounts.setParameter(1, new Integer(0));
+        removeCounts.executeUpdate();
+        
+        
+        // Remove the website's ping queue entries
+        Query q = strategy.getNamedQuery("PingQueueEntryData.getByWebsite");
+        q.setParameter(1, website);
+        List queueEntries = q.getResultList();
+        Iterator it = queueEntries.iterator();
+        while(it.hasNext()) {
+            this.strategy.remove((PingQueueEntryData) it.next());
+        }
+        
+        // Remove the website's auto ping configurations
+        AutoPingManager autoPingMgr = RollerFactory.getRoller()
+        .getAutopingManager();
+        List autopings = autoPingMgr.getAutoPingsByWebsite(website);
+        it = autopings.iterator();
+        while(it.hasNext()) {
+            this.strategy.remove((AutoPingData) it.next());
+        }
+        
+        // Remove the website's custom ping targets
+        PingTargetManager pingTargetMgr = RollerFactory.getRoller().getPingTargetManager();
+        List pingtargets = pingTargetMgr.getCustomPingTargets(website);
+        it = pingtargets.iterator();
+        while(it.hasNext()) {
+            this.strategy.remove((PingTargetData) it.next());
+        }
+        
+        // remove associated referers
+        Query refQuery2 = strategy.getNamedQuery("RefererData.getByWebsite");
+        refQuery2.setParameter(1, website);
+        List referers = refQuery2.getResultList();
+        for (Iterator iter = referers.iterator(); iter.hasNext();) {
+            RefererData referer = (RefererData) iter.next();
+            this.strategy.remove(referer);
+        }
+        
+        // remove associated pages
+        Query pageQuery = strategy.getNamedQuery("WeblogTemplate.getByWebsite");
+        pageQuery.setParameter(1, website);
+        List pages = pageQuery.getResultList();
+        for (Iterator iter = pages.iterator(); iter.hasNext();) {
+            WeblogTemplate page = (WeblogTemplate) iter.next();
+            this.strategy.remove(page);
+        }
+        
+        // remove folders (including bookmarks)
+        WeblogBookmarkFolder rootFolder = bmgr.getRootFolder(website);
+        if (null != rootFolder) {
+            this.strategy.remove(rootFolder);
+        }
+        
+        this.strategy.flush();
+
+        // remove entries
+        Query refQuery = strategy.getNamedQuery("WeblogEntryData.getByWebsite");
+        refQuery.setParameter(1, website);
+        List entries = refQuery.getResultList();
+        for (Iterator iter = entries.iterator(); iter.hasNext();) {
+            WeblogEntryData entry = (WeblogEntryData) iter.next();
+            wmgr.removeWeblogEntry(entry);
+        }
+        
+        // remove categories
+        WeblogCategoryData rootCat = wmgr.getRootWeblogCategory(website);
+        if (null != rootCat) {
+            this.strategy.remove(rootCat);
+        }
+        
+        // remove permissions
+        // make sure that both sides of the relationship are maintained
+        for (Iterator iterator = website.getPermissions().iterator(); iterator.hasNext();) {
+            WeblogPermission perms = (WeblogPermission) iterator.next();
+            
+            //Remove it from website
+            iterator.remove();
+            
+            //Remove it from corresponding user
+            UserData user = perms.getUser();
+            user.getPermissions().remove(perms);
+
+            //Remove it from database
+            this.strategy.remove(perms);
+        }
+        
+        // flush the changes before returning. This is required as there is a
+        // circular dependency between WeblogCategoryData and Weblog
+        this.strategy.flush();
+    }
+

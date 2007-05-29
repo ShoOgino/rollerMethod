@@ -8,14 +8,14 @@
         BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
         
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
-        FolderData root = bmgr.getRootFolder(testWeblog);
+        WeblogBookmarkFolder root = bmgr.getRootFolder(testWeblog);
         
         // start out with no folders and no bookmarks
         assertEquals(0, root.getFolders().size());
         assertEquals(0, root.getBookmarks().size());
         
         // add a folder
-        FolderData newFolder = new FolderData(root, "folderBasicCRUD", null, TestUtils.getManagedWebsite(testWeblog));
+        WeblogBookmarkFolder newFolder = new WeblogBookmarkFolder(root, "folderBasicCRUD", null, TestUtils.getManagedWebsite(testWeblog));
         bmgr.saveFolder(newFolder);
         TestUtils.endSession(true);
         
@@ -23,7 +23,7 @@
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         root = bmgr.getRootFolder(testWeblog);
         assertEquals(1, root.getFolders().size());
-        FolderData folder = (FolderData) root.getFolders().iterator().next();
+        WeblogBookmarkFolder folder = (WeblogBookmarkFolder) root.getFolders().iterator().next();
         assertEquals(newFolder, folder);
         
         // modify folder
@@ -34,7 +34,7 @@
         // check that folder was saved
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         root = bmgr.getRootFolder(testWeblog);
-        folder = (FolderData) root.getFolders().iterator().next();
+        folder = (WeblogBookmarkFolder) root.getFolders().iterator().next();
         assertEquals("folderTest1", folder.getName());
         
         // test remove folder

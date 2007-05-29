@@ -1,0 +1,43 @@
+    public List getUsers(Weblog weblog, Boolean enabled, Date startDate, 
+                         Date endDate, int offset, int length) 
+            throws RollerException {
+        
+        try {
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
+            Criteria criteria = session.createCriteria(UserData.class);
+            
+            if (weblog != null) {
+                criteria.createAlias("permissions", "permissions");
+                criteria.add(Expression.eq("permissions.website", weblog));
+            }
+            
+            if (enabled != null) {
+                criteria.add(Expression.eq("enabled", enabled));
+            }
+            
+            if (startDate != null) {
+                // if we are doing date range then we must have an end date
+                if(endDate == null) {
+                    endDate = new Date();
+                }
+                
+                criteria.add(Expression.lt("dateCreated", endDate));
+                criteria.add(Expression.gt("dateCreated", startDate));
+            }
+            
+            if (offset != 0) {
+                criteria.setFirstResult(offset);
+            }
+            if (length != -1) {
+                criteria.setMaxResults(length);
+            }
+            
+            criteria.addOrder(Order.desc("dateCreated"));
+            
+            return criteria.list();
+            
+        } catch (HibernateException e) {
+            throw new RollerException(e);
+        }
+    }
+

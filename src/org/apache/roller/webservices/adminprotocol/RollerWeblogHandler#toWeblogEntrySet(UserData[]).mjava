@@ -9,8 +9,8 @@
             UserData ud = uds[i];
             List permissions = ud.getPermissions();
             for (Iterator j = permissions.iterator(); j.hasNext(); ) {
-                PermissionsData pd = (PermissionsData)j.next();
-                WebsiteData wd = pd.getWebsite();
+                WeblogPermission pd = (WeblogPermission)j.next();
+                Weblog wd = pd.getWebsite();
                 WeblogEntry we = toWeblogEntry(wd);
                 entries.add(we);
             }

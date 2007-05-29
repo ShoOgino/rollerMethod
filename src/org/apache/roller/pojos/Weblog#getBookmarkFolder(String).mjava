@@ -1,0 +1,23 @@
+    /**
+     * Get bookmark folder by name.
+     * @param folderName Name or path of bookmark folder to be returned (null for root)
+     * @return Folder object requested.
+     *
+     * @roller.wrapPojoMethod type="pojo" class="org.apache.roller.pojos.WeblogBookmarkFolder"
+     */
+    public WeblogBookmarkFolder getBookmarkFolder(String folderName) {
+        WeblogBookmarkFolder ret = null;
+        try {
+            Roller roller = RollerFactory.getRoller();
+            BookmarkManager bmgr = roller.getBookmarkManager();
+            if (folderName == null || folderName.equals("nil") || folderName.trim().equals("/")) {
+                return bmgr.getRootFolder(this);
+            } else {
+                return bmgr.getFolder(this, folderName);
+            }
+        } catch (RollerException re) {
+            log.error("ERROR: fetching folder for weblog", re);
+        }
+        return ret;
+    }
+

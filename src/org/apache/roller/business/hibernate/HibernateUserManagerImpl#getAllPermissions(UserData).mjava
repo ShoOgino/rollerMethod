@@ -5,7 +5,7 @@
         
         try {
             Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
-            Criteria criteria = session.createCriteria(PermissionsData.class);
+            Criteria criteria = session.createCriteria(WeblogPermission.class);
             criteria.add(Expression.eq("user", user));
             criteria.add(Expression.eq("pending", Boolean.FALSE));
             

@@ -5,14 +5,14 @@
      * @param username Username sent in request
      * @param password Password sent in requeset
      */
-    protected WebsiteData validate(String blogid, String username, String password)
+    protected Weblog validate(String blogid, String username, String password)
     throws Exception {
         boolean authenticated = false;
         boolean userEnabled = false;
         boolean weblogEnabled = false;
         boolean apiEnabled = false;
         boolean weblogFound = false;
-        WebsiteData website = null;
+        Weblog website = null;
         UserData user = null;
         try {
             UserManager userMgr = RollerFactory.getRoller().getUserManager();

@@ -1,7 +1,7 @@
     /**
      * Return website specified by handle.
      */
-    public WebsiteData getWebsiteByHandle(String handle, Boolean enabled)
+    public Weblog getWebsiteByHandle(String handle, Boolean enabled)
     throws RollerException {
         
         if (handle==null )
@@ -11,7 +11,7 @@
         // NOTE: if we ever allow changing handles then this needs updating
         if(this.weblogHandleToIdMap.containsKey(handle)) {
             
-            WebsiteData weblog = this.getWebsite(
+            Weblog weblog = this.getWebsite(
                     (String) this.weblogHandleToIdMap.get(handle));
             if(weblog != null) {
                 // only return weblog if enabled status matches
@@ -25,11 +25,11 @@
             }
         }
         
-        Query query = strategy.getNamedQuery("WebsiteData.getByHandle");
+        Query query = strategy.getNamedQuery("Weblog.getByHandle");
         query.setParameter(1, handle);
-        WebsiteData website = null;
+        Weblog website = null;
         try {
-            website = (WebsiteData)query.getSingleResult();
+            website = (Weblog)query.getSingleResult();
         } catch (NoResultException e) {
             website = null;
         }

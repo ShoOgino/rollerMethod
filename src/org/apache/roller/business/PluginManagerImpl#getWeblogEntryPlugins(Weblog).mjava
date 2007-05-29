@@ -1,0 +1,19 @@
+    /**
+     * Create and init plugins for processing entries in a specified website.
+     */
+    public Map getWeblogEntryPlugins(Weblog website) {
+        Map ret = new LinkedHashMap();
+        Iterator it = this.mPagePlugins.values().iterator();
+        while (it.hasNext()) {
+            try {
+                Class pluginClass = (Class)it.next();
+                WeblogEntryPlugin plugin = (WeblogEntryPlugin)pluginClass.newInstance();
+                plugin.init(website);
+                ret.put(plugin.getName(), plugin);
+            } catch (Exception e) {
+                log.error("Unable to init() PagePlugin: ", e);
+            }
+        }
+        return ret;
+    }
+

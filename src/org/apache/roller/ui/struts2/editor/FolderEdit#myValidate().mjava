@@ -5,7 +5,7 @@
         
         // make sure new name is not a duplicate of an existing folder
         if(!getFolder().getName().equals(getBean().getName())) {
-            FolderData parent = getFolder().getParent();
+            WeblogBookmarkFolder parent = getFolder().getParent();
             if(parent != null && parent.hasFolder(getBean().getName())) {
                 addError("folderForm.error.duplicateName", getBean().getName());
             }

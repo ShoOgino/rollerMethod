@@ -1,0 +1,17 @@
+    private MemberEntrySet toMemberEntrySet(WeblogPermission[] pds) {
+        if (pds == null) {
+            throw new NullPointerException("ERROR: Null permission data not allowed");
+        }
+        
+        List entries = new ArrayList();
+        for (int i = 0; i < pds.length; i++) {
+            WeblogPermission pd = pds[i];
+            Entry entry = toMemberEntry(pd);
+            entries.add(entry);
+        }
+        MemberEntrySet mes = new MemberEntrySet(getUrlPrefix());
+        mes.setEntries((Entry[])entries.toArray(new Entry[0]));
+        
+        return mes;
+    }
+

@@ -3,7 +3,7 @@
      */
     public void grantRole(String roleName) throws RollerException {
         if (!hasRole(roleName)) {
-            RoleData role = new RoleData(null, this, roleName);
+            UserRole role = new UserRole(null, this, roleName);
             getRoles().add(role);
             role.setUser(this);
         }

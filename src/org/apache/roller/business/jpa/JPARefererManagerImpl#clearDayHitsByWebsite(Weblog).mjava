@@ -1,0 +1,6 @@
+    protected void clearDayHitsByWebsite(Weblog website) throws RollerException {
+        Query query = strategy.getNamedUpdate("RefererData.clearDayHitsByWebsite");
+        query.setParameter(1, website);
+        query.executeUpdate();
+    }
+

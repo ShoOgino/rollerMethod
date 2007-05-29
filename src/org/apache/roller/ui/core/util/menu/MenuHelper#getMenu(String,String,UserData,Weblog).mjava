@@ -1,0 +1,18 @@
+    public static Menu getMenu(String menuId, String currentAction,
+                               UserData user, Weblog weblog) {
+        
+        if(menuId == null) {
+            return null;
+        }
+        
+        Menu menu = null;
+        
+        // do we know the specified menu config?
+        ParsedMenu menuConfig = (ParsedMenu) menus.get(menuId);
+        if(menuConfig != null) {
+            menu = buildMenu(menuConfig, currentAction, user, weblog);
+        }
+        
+        return menu;
+    }
+

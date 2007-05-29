@@ -1,0 +1,11 @@
+    /**
+     * Get all permissions of a website (pendings not including)
+     */
+    public List getAllPermissions(Weblog website) throws RollerException {
+        Query q = strategy.getNamedQuery(
+                "WeblogPermission.getByWebsiteAndPending");
+        q.setParameter(1, website);
+        q.setParameter(2, Boolean.FALSE);
+        return q.getResultList();
+    }
+

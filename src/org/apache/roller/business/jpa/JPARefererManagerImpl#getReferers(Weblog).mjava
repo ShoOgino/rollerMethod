@@ -1,0 +1,12 @@
+    /**
+     * Get all referers for specified weblog.
+     * @param weblog
+     * @return List of type RefererData
+     */
+    public List getReferers(Weblog weblog) throws RollerException {
+        Query q = strategy.getNamedQuery(
+            "RefererData.getByWebsiteOrderByTotalHitsDesc");
+        q.setParameter(1, weblog);
+        return q.getResultList();
+    }
+

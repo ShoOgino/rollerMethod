@@ -1,0 +1,68 @@
+    /**
+     * Creates a file name for a file based on a weblog, title string and a 
+     * content-type. 
+     * 
+     * @param weblog      Weblog for which file name is being created
+     * @param title       Title to be used as basis for file name (or null)
+     * @param contentType Content type of file (must not be null)
+     * 
+     * If a title is specified, the method will apply the same create-anchor 
+     * logic we use for weblog entries to create a file name based on the title.
+     *
+     * If title is null, the base file name will be the weblog handle plus a 
+     * YYYYMMDDHHSS timestamp. 
+     *
+     * The extension will be formed by using the part of content type that
+     * comes after he slash. 
+     *
+     * For example:
+     *    weblog.handle = "daveblog"
+     *    title         = "Port Antonio"
+     *    content-type  = "image/jpg"
+     * Would result in port_antonio.jpg
+     *
+     * Another example:
+     *    weblog.handle = "daveblog"
+     *    title         = null
+     *    content-type  = "image/jpg"
+     * Might result in daveblog-200608201034.jpg
+     */
+    private String createFileName(Weblog weblog, String title, String contentType) {
+        
+        if (weblog == null) throw new IllegalArgumentException("weblog cannot be null");
+        if (contentType == null) throw new IllegalArgumentException("contentType cannot be null");
+        
+        String fileName = null;
+        
+        // Determine the extension based on the contentType. This is a hack.
+        // The info we need to map from contentType to file extension is in 
+        // JRE/lib/content-type.properties, but Java Activation doesn't provide 
+        // a way to do a reverse mapping or to get at the data.
+        String[] typeTokens = contentType.split("/");
+        String ext = typeTokens[1];
+        
+        if (title != null && !title.trim().equals("")) {              
+            // We've got a title, so use it to build file name
+            String base = Utilities.replaceNonAlphanumeric(title, ' ');
+            StringTokenizer toker = new StringTokenizer(base);
+            String tmp = null;
+            int count = 0;
+            while (toker.hasMoreTokens() && count < 5) {
+                String s = toker.nextToken();
+                s = s.toLowerCase();
+                tmp = (tmp == null) ? s : tmp + "_" + s;
+                count++;
+            }
+            fileName = tmp + "." + ext;
+            
+        } else {            
+            // No title or text, so instead we'll use the item's date
+            // in YYYYMMDD format to form the file name
+            SimpleDateFormat sdf = new SimpleDateFormat();
+            sdf.applyPattern("yyyyMMddHHSS");
+            fileName = weblog.getHandle()+"-"+sdf.format(new Date())+"."+ext;
+        }
+        
+        return fileName;
+    }
+

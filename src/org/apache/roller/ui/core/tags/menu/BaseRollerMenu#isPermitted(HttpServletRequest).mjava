@@ -36,13 +36,13 @@
             UserData user = null;
             if (rses != null) user = rses.getAuthenticatedUser();
             
-            WebsiteData website = getRequestedWeblog(req);
+            Weblog website = getRequestedWeblog(req);
             BasePageModel pageModel = (BasePageModel)req.getAttribute("model");
             if (pageModel != null) {
                 website = pageModel.getWebsite();
             }
             
-            PermissionsData permsData = null;
+            WeblogPermission permsData = null;
             if (user != null && website != null) {
                 permsData = RollerFactory.getRoller()
                 .getUserManager().getPermissions(website, user);
@@ -56,9 +56,9 @@
                     break;
                 }
                 if (permsData != null &&
-                        ((perm.equals("admin")  && permsData.has(PermissionsData.ADMIN))
-                        || (perm.equals("author")  && permsData.has(PermissionsData.AUTHOR))
-                        || (perm.equals("limited") && permsData.has(PermissionsData.LIMITED)))) {
+                        ((perm.equals("admin")  && permsData.has(WeblogPermission.ADMIN))
+                        || (perm.equals("author")  && permsData.has(WeblogPermission.AUTHOR))
+                        || (perm.equals("limited") && permsData.has(WeblogPermission.LIMITED)))) {
                     ret = true; // user has one of the required permissions
                     break;
                 }

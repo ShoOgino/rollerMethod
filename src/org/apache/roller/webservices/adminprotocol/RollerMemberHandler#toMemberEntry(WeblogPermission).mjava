@@ -1,0 +1,10 @@
+    private MemberEntry toMemberEntry(WeblogPermission pd) {
+        if (pd == null) {
+            throw new NullPointerException("ERROR: Null permission data not allowed");
+        }
+        MemberEntry me = new MemberEntry(pd.getWebsite().getHandle(), pd.getUser().getUserName(), getUrlPrefix());
+        me.setPermission(maskToString(pd.getPermissionMask()));
+        
+        return me;
+    }
+

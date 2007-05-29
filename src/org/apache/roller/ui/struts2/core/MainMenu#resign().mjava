@@ -4,10 +4,10 @@
         
         try {
             UserManager mgr = RollerFactory.getRoller().getUserManager();
-            WebsiteData website = mgr.getWebsite(getWebsiteId());
+            Weblog website = mgr.getWebsite(getWebsiteId());
             
             UserManager userMgr = RollerFactory.getRoller().getUserManager();
-            PermissionsData perms = userMgr.getPermissions(website, user);
+            WeblogPermission perms = userMgr.getPermissions(website, user);
             
             if (perms != null) {
                 // TODO ROLLER_2.0: notify website members that user has resigned

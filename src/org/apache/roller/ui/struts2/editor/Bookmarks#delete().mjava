@@ -13,12 +13,12 @@
                 log.debug("Processing delete of "+folders.length+" folders.");
                 for (int i = 0; i < folders.length; i++) {
                     log.debug("Deleting folder - "+folders[i]);
-                    FolderData fd = bmgr.getFolder(folders[i]);
+                    WeblogBookmarkFolder fd = bmgr.getFolder(folders[i]);
                     bmgr.removeFolder(fd); // removes child folders and bookmarks too
                 }
             }
             
-            BookmarkData bookmark = null;
+            WeblogBookmark bookmark = null;
             String bookmarks[] = getSelectedBookmarks();
             if (null != bookmarks) {
                 log.debug("Processing delete of "+bookmarks.length+" bookmarks.");

@@ -1,0 +1,13 @@
+    public void saveFolder(WeblogBookmarkFolder folder) throws RollerException {
+        
+        WeblogBookmarkFolder existingFolder = getFolder(folder.getId());        
+        if(existingFolder == null && isDuplicateFolderName(folder)) {
+            throw new RollerException("Duplicate folder name");
+        }
+        
+        this.strategy.store(folder);
+        
+        // update weblog last modified date.  date updated by saveWebsite()
+        RollerFactory.getRoller().getUserManager().saveWebsite(folder.getWebsite());
+    }
+

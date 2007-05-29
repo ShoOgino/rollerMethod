@@ -6,28 +6,28 @@
         BookmarkManager bmgr = getRoller().getBookmarkManager();
         
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
-        FolderData root = bmgr.getRootFolder(testWeblog);
+        WeblogBookmarkFolder root = bmgr.getRootFolder(testWeblog);
         
         // add some folders
-        FolderData f1 = new FolderData(root, "f1", null, TestUtils.getManagedWebsite(testWeblog));
+        WeblogBookmarkFolder f1 = new WeblogBookmarkFolder(root, "f1", null, TestUtils.getManagedWebsite(testWeblog));
         bmgr.saveFolder(f1);
-        FolderData f2 = new FolderData(f1, "f2", null, TestUtils.getManagedWebsite(testWeblog));
+        WeblogBookmarkFolder f2 = new WeblogBookmarkFolder(f1, "f2", null, TestUtils.getManagedWebsite(testWeblog));
         bmgr.saveFolder(f2);
-        FolderData f3 = new FolderData(root, "f3", null, TestUtils.getManagedWebsite(testWeblog));
+        WeblogBookmarkFolder f3 = new WeblogBookmarkFolder(root, "f3", null, TestUtils.getManagedWebsite(testWeblog));
         bmgr.saveFolder(f3);
         
         // add some bookmarks
-        BookmarkData b1 = new BookmarkData(
+        WeblogBookmark b1 = new WeblogBookmark(
                 f1, "b1", "testbookmark",
                 "http://example.com", "http://example.com/rss",
                 new Integer(1), new Integer(1), "image.gif");
         bmgr.saveBookmark(b1);
-        BookmarkData b2 = new BookmarkData(
+        WeblogBookmark b2 = new WeblogBookmark(
                 f1, "b2", "testbookmark",
                 "http://example.com", "http://example.com/rss",
                 new Integer(1), new Integer(1), "image.gif");
         bmgr.saveBookmark(b2);
-        BookmarkData b3 = new BookmarkData(
+        WeblogBookmark b3 = new WeblogBookmark(
                 f2, "b3", "testbookmark",
                 "http://example.com", "http://example.com/rss",
                 new Integer(1), new Integer(1), "image.gif");
@@ -36,12 +36,12 @@
         TestUtils.endSession(true);
         
         // test lookup by id
-        BookmarkData testBookmark = bmgr.getBookmark(b1.getId());
+        WeblogBookmark testBookmark = bmgr.getBookmark(b1.getId());
         assertNotNull(testBookmark);
         assertEquals("b1", testBookmark.getName());
         
         // test lookup of all bookmarks in single folder
-        FolderData testFolder = bmgr.getFolder(f1.getId());
+        WeblogBookmarkFolder testFolder = bmgr.getFolder(f1.getId());
         List allBookmarks = bmgr.getBookmarks(testFolder, false);
         assertNotNull(allBookmarks);
         assertEquals(2, allBookmarks.size());

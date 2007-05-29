@@ -11,7 +11,7 @@
         
         if(!hasActionErrors()) try {
             
-            BookmarkData newBookmark = new BookmarkData();
+            WeblogBookmark newBookmark = new WeblogBookmark();
             newBookmark.setFolder(getFolder());
             getBean().copyTo(newBookmark);
             
@@ -31,6 +31,7 @@
             // TODO: i18n
             addError("Error saving new bookmark");
         }
+
         
         return INPUT;
     }

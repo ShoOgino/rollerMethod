@@ -3,7 +3,7 @@
      */
     public List getAllPermissions(UserData user) throws RollerException {
         Query q = strategy.getNamedQuery(
-                "PermissionsData.getByUserAndPending");
+                "WeblogPermission.getByUserAndPending");
         q.setParameter(1, user);
         q.setParameter(2, Boolean.FALSE);
         return q.getResultList();        

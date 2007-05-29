@@ -1,0 +1,65 @@
+    /**
+     * @inheritDoc
+     */
+    public List getMostCommentedWeblogEntries(Weblog website,
+            Date startDate, Date endDate, int offset,
+            int length) throws RollerException {
+        Query query = null;
+        List queryResults = null;        
+        if (endDate == null) endDate = new Date();
+        
+        if (website != null) {
+            if (startDate != null) {
+                Timestamp start = new Timestamp(startDate.getTime());
+                Timestamp end = new Timestamp(endDate.getTime());
+                query = strategy.getNamedQuery(
+                        "CommentData.getMostCommentedWeblogEntryByWebsite&EndDate&StartDate");
+                query.setParameter(1, website);
+                query.setParameter(2, end);
+                query.setParameter(3, start);
+            } else {
+                Timestamp end = new Timestamp(endDate.getTime());
+                query = strategy.getNamedQuery(
+                        "CommentData.getMostCommentedWeblogEntryByWebsite&EndDate");
+                query.setParameter(1, website);
+                query.setParameter(2, end);
+            }
+        } else {
+            if (startDate != null) {
+                Timestamp start = new Timestamp(startDate.getTime());
+                Timestamp end = new Timestamp(endDate.getTime());
+                query = strategy.getNamedQuery(
+                        "CommentData.getMostCommentedWeblogEntryByEndDate&StartDate");
+                query.setParameter(1, end);
+                query.setParameter(2, start);
+            } else {
+                Timestamp end = new Timestamp(endDate.getTime());
+                query = strategy.getNamedQuery(
+                        "CommentData.getMostCommentedWeblogEntryByEndDate");
+                query.setParameter(1, end);
+            }
+        }
+        if (offset != 0) {
+            query.setFirstResult(offset);
+        }
+        if (length != -1) {
+            query.setMaxResults(length);
+        }
+        queryResults = query.getResultList();
+        List results = new ArrayList();
+        for (Iterator iter = queryResults.iterator(); iter.hasNext();) {
+            Object[] row = (Object[]) iter.next();
+            results.add(new StatCount(
+                    (String)row[1],                             // entry id
+                    (String)row[2],                             // entry anchor
+                    (String)row[3],                             // entry title
+                    "statCount.weblogEntryCommentCountType",    // stat desc
+                    ((Long)row[0]).longValue())); // count
+        }
+        // Original query ordered by desc count.
+        // JPA QL doesn't allow queries to be ordered by agregates; do it in memory
+        Collections.sort(results, statCountCountReverseComparator);
+        
+        return results;
+    }
+

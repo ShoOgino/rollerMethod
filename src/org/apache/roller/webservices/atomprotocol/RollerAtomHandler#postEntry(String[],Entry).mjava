@@ -6,7 +6,7 @@
         try {
             // authenticated client posted a weblog entry
             String handle = pathInfo[0];
-            WebsiteData website = 
+            Weblog website = 
                 roller.getUserManager().getWebsiteByHandle(handle);
             if (website == null) {
                 throw new AtomNotFoundException("Cannot find weblog: " + handle);

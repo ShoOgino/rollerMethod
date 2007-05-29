@@ -1,5 +1,5 @@
     /**
-     * Test the hasFolder() method on FolderData.
+     * Test the hasFolder() method on WeblogBookmarkFolder.
      */
     public void testHasFolder() throws Exception {
         
@@ -8,7 +8,7 @@
         BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
         
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
-        FolderData root = bmgr.getRootFolder(testWeblog);
+        WeblogBookmarkFolder root = bmgr.getRootFolder(testWeblog);
         
         // check that root has folder
         assertTrue(root.hasFolder(testFolder.getName()));

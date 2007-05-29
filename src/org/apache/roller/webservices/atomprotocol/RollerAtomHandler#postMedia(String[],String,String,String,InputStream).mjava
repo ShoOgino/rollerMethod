@@ -14,7 +14,7 @@
             String handle = pathInfo[0];
             FileManager fmgr = roller.getFileManager();
             UserManager umgr = roller.getUserManager();
-            WebsiteData website = umgr.getWebsiteByHandle(handle);
+            Weblog website = umgr.getWebsiteByHandle(handle);
             if (!canEdit(website)) {
                 throw new AtomNotAuthorizedException("Not authorized to edit weblog: " + handle);
             }

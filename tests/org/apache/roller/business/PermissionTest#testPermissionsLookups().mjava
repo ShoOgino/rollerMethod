@@ -11,7 +11,7 @@
             TestUtils.endSession(true);
             
             UserManager mgr = RollerFactory.getRoller().getUserManager();
-            PermissionsData perm = null;
+            WeblogPermission perm = null;
             List perms = null;
             
             // get all permissions for a user
@@ -24,11 +24,11 @@
             perms = mgr.getAllPermissions(TestUtils.getManagedWebsite(testWeblog));
             assertEquals(1, perms.size());
             
-            perm = new PermissionsData();
+            perm = new WeblogPermission();
             perm.setUser(TestUtils.getManagedUser(user));
             perm.setWebsite(TestUtils.getManagedWebsite(testWeblog));
             perm.setPending(true);
-            perm.setPermissionMask(PermissionsData.AUTHOR);
+            perm.setPermissionMask(WeblogPermission.AUTHOR);
             mgr.savePermissions(perm);
             TestUtils.endSession(true);
             
@@ -53,11 +53,11 @@
             perm = null;
             perm = mgr.getPermissions(TestUtils.getManagedWebsite(testWeblog), TestUtils.getManagedUser(testUser));
             assertNotNull(perm);
-            assertEquals(PermissionsData.ADMIN, perm.getPermissionMask());
+            assertEquals(WeblogPermission.ADMIN, perm.getPermissionMask());
             perm = null;
             perm = mgr.getPermissions(TestUtils.getManagedWebsite(testWeblog), TestUtils.getManagedUser(user));
             assertNotNull(perm);
-            assertEquals(PermissionsData.AUTHOR, perm.getPermissionMask());
+            assertEquals(WeblogPermission.AUTHOR, perm.getPermissionMask());
             assertEquals(true, perm.isPending());
             
             // cleanup

@@ -3,7 +3,7 @@
         // TODO: ATLAS getWeblogsByLetter DONE
         try {
             Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
-            Criteria criteria = session.createCriteria(WebsiteData.class);
+            Criteria criteria = session.createCriteria(Weblog.class);
             criteria.add(Expression.ilike("handle", new String(new char[]{letter}) + "%", MatchMode.START));
             criteria.addOrder(Order.asc("handle"));
             if (offset != 0) {

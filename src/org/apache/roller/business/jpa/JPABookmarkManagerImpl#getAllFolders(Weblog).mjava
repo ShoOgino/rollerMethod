@@ -1,0 +1,10 @@
+    public List getAllFolders(Weblog website)
+            throws RollerException {
+        if (website == null)
+            throw new RollerException("Website is null");
+        
+        Query q = strategy.getNamedQuery("WeblogBookmarkFolder.getByWebsite");
+        q.setParameter(1, website);
+        return q.getResultList();
+    }
+

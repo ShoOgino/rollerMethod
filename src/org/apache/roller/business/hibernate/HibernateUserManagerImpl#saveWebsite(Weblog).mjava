@@ -1,0 +1,9 @@
+    /**
+     * Update existing website.
+     */
+    public void saveWebsite(Weblog website) throws RollerException {
+        
+        website.setLastModified(new java.util.Date());
+        strategy.store(website);
+    }
+

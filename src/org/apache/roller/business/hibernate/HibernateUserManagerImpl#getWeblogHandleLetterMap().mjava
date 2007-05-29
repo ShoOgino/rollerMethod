@@ -8,7 +8,7 @@
                 ((HibernatePersistenceStrategy)strategy).getSession();
             for (int i=0; i<26; i++) {
                 Query query = session.createQuery(
-                    "select count(website) from WebsiteData website where upper(website.handle) like '"+lc.charAt(i)+"%'");
+                    "select count(website) from Weblog website where upper(website.handle) like '"+lc.charAt(i)+"%'");
                 List row = query.list();
                 Number count = (Number)row.get(0);
                 results.put(new String(new char[]{lc.charAt(i)}), count);

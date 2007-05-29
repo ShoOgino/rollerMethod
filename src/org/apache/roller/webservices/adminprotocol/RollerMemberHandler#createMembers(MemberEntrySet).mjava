@@ -5,14 +5,14 @@
             List permissionsDatas= new ArrayList();
             for (int i = 0; i < c.getEntries().length; i++) {
                 MemberEntry entry = (MemberEntry)c.getEntries()[i];
-                PermissionsData pd = toPermissionsData(entry);
+                WeblogPermission pd = toPermissionsData(entry);
                 mgr.savePermissions(pd);
                 getRoller().flush();
                 CacheManager.invalidate(pd.getUser());
                 CacheManager.invalidate(pd.getWebsite());
                 permissionsDatas.add(pd);
             }
-            return toMemberEntrySet((PermissionsData[])permissionsDatas.toArray(new PermissionsData[0]));
+            return toMemberEntrySet((WeblogPermission[])permissionsDatas.toArray(new WeblogPermission[0]));
         } catch (RollerException re) {
             throw new InternalException("ERROR: Could not create members", re);
         }

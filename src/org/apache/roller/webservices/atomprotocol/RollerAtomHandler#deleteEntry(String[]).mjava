@@ -22,7 +22,7 @@
                     } 
                 } else if (pathInfo[1].equals("resource")) {
                     String handle = pathInfo[0];
-                    WebsiteData website = roller.getUserManager().getWebsiteByHandle(handle);
+                    Weblog website = roller.getUserManager().getWebsiteByHandle(handle);
                     if (website == null) {
                         throw new AtomNotFoundException("cannot find specified weblog");
                     }

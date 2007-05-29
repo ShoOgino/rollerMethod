@@ -11,7 +11,7 @@
         
         if(!hasActionErrors()) try {
             
-            FolderData newFolder = new FolderData(
+            WeblogBookmarkFolder newFolder = new WeblogBookmarkFolder(
                     getFolder(),
                     getBean().getName(),
                     getBean().getDescription(),
@@ -38,6 +38,7 @@
             // TODO: i18n
             addError("Error saving new folder");
         }
+
         
         return INPUT;
     }

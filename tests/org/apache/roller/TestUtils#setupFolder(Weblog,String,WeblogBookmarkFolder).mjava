@@ -1,0 +1,30 @@
+    /**
+     * Convenience method for creating a weblog folder.
+     */
+    public static WeblogBookmarkFolder setupFolder(Weblog weblog,
+                                         String name,
+                                         WeblogBookmarkFolder parent)
+            throws Exception {
+        
+        BookmarkManager mgr = RollerFactory.getRoller().getBookmarkManager();
+        WeblogBookmarkFolder root = mgr.getRootFolder(weblog);
+        
+        WeblogBookmarkFolder folderParent = root;
+        if(parent != null) {
+            folderParent = parent;
+        }
+        WeblogBookmarkFolder testFolder = new WeblogBookmarkFolder(folderParent, name, null, weblog);
+        mgr.saveFolder(testFolder);
+        
+        // flush to db
+        RollerFactory.getRoller().flush();
+        
+        // query for object
+        WeblogBookmarkFolder cat = mgr.getFolder(testFolder.getId());
+        
+        if(testFolder == null)
+            throw new RollerException("error setting up weblog folder");
+        
+        return testFolder;
+    }
+

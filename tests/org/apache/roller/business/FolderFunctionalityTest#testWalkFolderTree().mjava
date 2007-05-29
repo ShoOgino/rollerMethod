@@ -8,7 +8,7 @@
         BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
         
         // start at root
-        FolderData root = bmgr.getRootFolder(TestUtils.getManagedWebsite(testWeblog));
+        WeblogBookmarkFolder root = bmgr.getRootFolder(TestUtils.getManagedWebsite(testWeblog));
         
         // walk first level
         Set folders = root.getFolders();
@@ -16,9 +16,9 @@
         assertTrue(folders.contains(testFolder));
         
         // find cat1
-        FolderData folder = null;
+        WeblogBookmarkFolder folder = null;
         for(Iterator it = folders.iterator(); it.hasNext(); ) {
-            folder = (FolderData) it.next();
+            folder = (WeblogBookmarkFolder) it.next();
             if(folder.getName().equals(f1.getName())) {
                 break;
             }
@@ -30,7 +30,7 @@
         assertTrue(folders.contains(f2));
         
         // find cat2
-        folder = (FolderData) folders.iterator().next();
+        folder = (WeblogBookmarkFolder) folders.iterator().next();
         
         // walk third level
         folders = folder.getFolders();
@@ -38,7 +38,7 @@
         assertTrue(folders.contains(f3));
         
         // find cat3
-        folder = (FolderData) folders.iterator().next();
+        folder = (WeblogBookmarkFolder) folders.iterator().next();
         
         // make sure this is the end of the tree
         folders = folder.getFolders();

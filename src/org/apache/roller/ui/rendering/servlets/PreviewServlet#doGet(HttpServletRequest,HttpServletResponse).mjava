@@ -6,7 +6,7 @@
         
         log.debug("Entering");
         
-        WebsiteData weblog = null;
+        Weblog weblog = null;
         
         WeblogPreviewRequest previewRequest = null;
         try {
@@ -31,7 +31,7 @@
         
         // construct a temporary Website object for this request
         // and set the EditorTheme to our previewTheme
-        WebsiteData tmpWebsite = new WebsiteData();
+        Weblog tmpWebsite = new Weblog();
         tmpWebsite.setData(weblog);
         if(previewTheme != null && previewTheme.isEnabled()) {
             tmpWebsite.setEditorTheme(previewTheme.getId());

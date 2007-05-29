@@ -8,13 +8,13 @@
         BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
         
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
-        FolderData root = bmgr.getRootFolder(testWeblog);
+        WeblogBookmarkFolder root = bmgr.getRootFolder(testWeblog);
         
         // add a small tree /fold1/fold2
-        FolderData fold1 = new FolderData(root, "fold1", null, testWeblog);
+        WeblogBookmarkFolder fold1 = new WeblogBookmarkFolder(root, "fold1", null, testWeblog);
         root.addFolder(fold1);
         bmgr.saveFolder(fold1);
-        FolderData fold2 = new FolderData(fold1, "fold2", null, testWeblog);
+        WeblogBookmarkFolder fold2 = new WeblogBookmarkFolder(fold1, "fold2", null, testWeblog);
         fold1.addFolder(fold2);
         bmgr.saveFolder(fold2);
         TestUtils.endSession(true);
@@ -23,10 +23,10 @@
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         root = bmgr.getRootFolder(testWeblog);
         assertEquals(1, root.getFolders().size());
-        fold1 = (FolderData) root.getFolders().iterator().next();
+        fold1 = (WeblogBookmarkFolder) root.getFolders().iterator().next();
         assertEquals("fold1", fold1.getName());
         assertEquals(1, fold1.getFolders().size());
-        fold2 = (FolderData) fold1.getFolders().iterator().next();
+        fold2 = (WeblogBookmarkFolder) fold1.getFolders().iterator().next();
         assertEquals("fold2", fold2.getName());
         
         // now delete folder and subfolders should be deleted by cascade

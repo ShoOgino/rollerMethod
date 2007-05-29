@@ -1,6 +1,6 @@
-    protected WebsiteData getWebsiteData(String handle) throws NotFoundException, InternalException {
+    protected Weblog getWebsiteData(String handle) throws NotFoundException, InternalException {
         try {
-            WebsiteData wd = getRoller().getUserManager().getWebsiteByHandle(handle, Boolean.TRUE);
+            Weblog wd = getRoller().getUserManager().getWebsiteByHandle(handle, Boolean.TRUE);
             if (wd == null) {
                 wd = getRoller().getUserManager().getWebsiteByHandle(handle, Boolean.FALSE);
             }

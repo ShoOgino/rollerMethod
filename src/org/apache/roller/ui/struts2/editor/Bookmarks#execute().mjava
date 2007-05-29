@@ -10,15 +10,15 @@
         try {
             // Build list of all folders, except for current one, sorted by path.
             BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
-            List<FolderData> folders = bmgr.getAllFolders(getActionWeblog());
-            for(FolderData fd : folders) {
+            List<WeblogBookmarkFolder> folders = bmgr.getAllFolders(getActionWeblog());
+            for(WeblogBookmarkFolder fd : folders) {
                 if (!fd.getId().equals(getFolderId())) {
                     allFolders.add(fd);
                 }
             }
             
             // build folder path
-            FolderData parent = getFolder().getParent();
+            WeblogBookmarkFolder parent = getFolder().getParent();
             if(parent != null) {
                 List folderPath = new LinkedList();
                 folderPath.add(0, getFolder());

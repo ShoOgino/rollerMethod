@@ -1,0 +1,21 @@
+    /**
+     * @see org.apache.roller.model.FileManager#getFiles(weblog, java.lang.String)
+     */
+    public ThemeResource[] getFiles(Weblog weblog, String path) 
+            throws FileNotFoundException, FilePathException {
+        
+        // get a reference to the dir, checks that dir exists & is readable
+        File dirFile = this.getRealFile(weblog, path);
+        
+        // make sure path is a directory
+        if(!dirFile.isDirectory()) {
+            throw new FilePathException("Invalid path ["+path+"], "+
+                    "path is not a directory.");
+        }
+        
+        // everything looks good, list contents
+        ThemeResource dir = new WeblogResourceFile(weblog, path, dirFile);
+        
+        return dir.getChildren();
+    }
+

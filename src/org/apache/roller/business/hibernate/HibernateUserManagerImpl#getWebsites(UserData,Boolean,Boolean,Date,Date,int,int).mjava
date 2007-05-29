@@ -7,7 +7,7 @@
         
         try {
             Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
-            Criteria criteria = session.createCriteria(WebsiteData.class);
+            Criteria criteria = session.createCriteria(Weblog.class);
             
             if (user != null) {
                 criteria.createAlias("permissions","permissions");

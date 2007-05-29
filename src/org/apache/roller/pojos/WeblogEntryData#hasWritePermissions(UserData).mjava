@@ -9,9 +9,11 @@
         }
         
         boolean author = getWebsite().hasUserPermissions(
-                user, (short)(PermissionsData.AUTHOR));
+                
+                user,(short)(WeblogPermission.AUTHOR));
         boolean limited = getWebsite().hasUserPermissions(
-                user, (short)(PermissionsData.LIMITED));
+                
+                user,(short)(WeblogPermission.LIMITED));
         
         if (author || (limited && isDraft()) || (limited && isPending())) {
             return true;

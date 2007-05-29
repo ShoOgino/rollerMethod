@@ -9,7 +9,7 @@
         if (logger.isDebugEnabled()) logger.debug("Processing ping queue entry: " + pingQueueEntry);
         
         PingTargetData pingTarget = pingQueueEntry.getPingTarget();
-        WebsiteData website = pingQueueEntry.getWebsite();
+        Weblog website = pingQueueEntry.getWebsite();
         boolean pingSucceeded = false;
         if (PingConfig.getLogPingsOnly()) {
             // Just log the ping and pretend it succeeded.

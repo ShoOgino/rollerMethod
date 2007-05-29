@@ -7,7 +7,7 @@
     public String execute() {
         
         // if user is an author then post status defaults to PUBLISHED, otherwise PENDING
-        if(getActionWeblog().hasUserPermissions(getAuthenticatedUser(), PermissionsData.AUTHOR)) {
+        if(getActionWeblog().hasUserPermissions(getAuthenticatedUser(),WeblogPermission.AUTHOR)) {
             getBean().setStatus(WeblogEntryData.PUBLISHED);
         } else {
             getBean().setStatus(WeblogEntryData.PENDING);

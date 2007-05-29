@@ -4,12 +4,12 @@
         
         UserManager userMgr = RollerFactory.getRoller().getUserManager();
         
-        List<PermissionsData> permissions = getActionWeblog().getPermissions();
+        List<WeblogPermission> permissions = getActionWeblog().getPermissions();
         
         int removed = 0;
         int changed = 0;
         try {
-            for( PermissionsData perms : permissions ) {
+            for( WeblogPermission perms : permissions ) {
                 
                 String sval = getParameter("perm-" + perms.getId());
                 if (sval != null) {

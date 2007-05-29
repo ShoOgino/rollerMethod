@@ -1,0 +1,24 @@
+    /**
+     * Use Hibernate directly because Roller's Query API does too much allocation.
+     */
+    public WeblogTemplate getPageByLink(Weblog website, String pagelink)
+            throws RollerException {
+        
+        if (website == null)
+            throw new RollerException("userName is null");
+        
+        if (pagelink == null)
+            throw new RollerException("Pagelink is null");
+        
+        try {
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
+            Criteria criteria = session.createCriteria(WeblogTemplate.class);
+            criteria.add(Expression.eq("website",website));
+            criteria.add(Expression.eq("link",pagelink));
+            
+            return (WeblogTemplate) criteria.uniqueResult();
+        } catch (HibernateException e) {
+            throw new RollerException(e);
+        }
+    }
+

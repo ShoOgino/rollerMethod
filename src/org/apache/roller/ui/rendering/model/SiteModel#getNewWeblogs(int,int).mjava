@@ -16,7 +16,7 @@
             List weblogs = umgr.getWebsites(
                 null, Boolean.TRUE, Boolean.TRUE, startDate, null, 0, length);
             for (Iterator it = weblogs.iterator(); it.hasNext();) {
-                WebsiteData website = (WebsiteData) it.next();
+                Weblog website = (Weblog) it.next();
                 results.add(WebsiteDataWrapper.wrap(website));
             }
         } catch (Exception e) {

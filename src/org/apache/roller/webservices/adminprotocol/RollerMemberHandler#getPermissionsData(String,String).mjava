@@ -1,8 +1,8 @@
-    private PermissionsData getPermissionsData(String handle, String username) throws HandlerException {
+    private WeblogPermission getPermissionsData(String handle, String username) throws HandlerException {
         try {
             UserData ud = getUserData(username);
-            WebsiteData wd = getWebsiteData(handle);
-            PermissionsData pd = getRoller().getUserManager().getPermissions(wd, ud);
+            Weblog wd = getWebsiteData(handle);
+            WeblogPermission pd = getRoller().getUserManager().getPermissions(wd, ud);
             
             return pd;
         } catch (RollerException re) {

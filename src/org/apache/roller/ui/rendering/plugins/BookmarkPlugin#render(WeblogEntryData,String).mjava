@@ -2,7 +2,7 @@
         String text = str;
         try {
             BookmarkManager bMgr = RollerFactory.getRoller().getBookmarkManager();
-            FolderData rootFolder = bMgr.getRootFolder(entry.getWebsite());
+            WeblogBookmarkFolder rootFolder = bMgr.getRootFolder(entry.getWebsite());
             text = matchBookmarks(text, rootFolder);
             text = lookInFolders(text, rootFolder.getFolders());
         } catch (RollerException e) {

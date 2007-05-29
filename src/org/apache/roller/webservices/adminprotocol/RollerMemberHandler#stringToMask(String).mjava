@@ -3,13 +3,13 @@
             throw new NullPointerException("ERROR: Null string not allowed");
         }
         if (s.equalsIgnoreCase(MemberEntry.Permissions.ADMIN)) {
-            return PermissionsData.ADMIN;
+            return WeblogPermission.ADMIN;
         }
         if (s.equalsIgnoreCase(MemberEntry.Permissions.AUTHOR)) {
-            return PermissionsData.AUTHOR;
+            return WeblogPermission.AUTHOR;
         }
         if (s.equalsIgnoreCase(MemberEntry.Permissions.LIMITED)) {
-            return PermissionsData.LIMITED;
+            return WeblogPermission.LIMITED;
         }
         return 0;
     }

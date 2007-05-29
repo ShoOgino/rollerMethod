@@ -2,7 +2,7 @@
         
         try {
             UserManager userMgr = RollerFactory.getRoller().getUserManager();
-            PermissionsData perms = userMgr.getPermissions(getInviteId());
+            WeblogPermission perms = userMgr.getPermissions(getInviteId());
             if (perms != null) {        
                 // TODO ROLLER_2.0: notify inviter that invitee has accepted invitation
                 // TODO EXCEPTIONS: better exception handling

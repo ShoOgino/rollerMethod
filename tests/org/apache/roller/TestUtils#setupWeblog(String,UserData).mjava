@@ -1,9 +1,9 @@
     /**
      * Convenience method that creates a weblog and stores it.
      */
-    public static WebsiteData setupWeblog(String handle, UserData creator) throws Exception {
+    public static Weblog setupWeblog(String handle, UserData creator) throws Exception {
         
-        WebsiteData testWeblog = new WebsiteData();
+        Weblog testWeblog = new Weblog();
         testWeblog.setName("Test Weblog");
         testWeblog.setDescription("Test Weblog");
         testWeblog.setHandle(handle);
@@ -25,7 +25,7 @@
         RollerFactory.getRoller().flush();
         
         // query for the new weblog and return it
-        WebsiteData weblog = mgr.getWebsiteByHandle(handle);
+        Weblog weblog = mgr.getWebsiteByHandle(handle);
         
         if(weblog == null)
             throw new RollerException("error setting up weblog");

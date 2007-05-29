@@ -1,0 +1,17 @@
+    public HitCountData getHitCountByWeblog(Weblog weblog) 
+        throws RollerException {
+        
+        // do lookup
+        try {
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
+            Criteria criteria = session.createCriteria(HitCountData.class);
+            
+            criteria.add(Expression.eq("weblog", weblog));
+            HitCountData hitCount = (HitCountData) criteria.uniqueResult();
+            
+            return hitCount;
+        } catch (HibernateException e) {
+            throw new RollerException(e);
+        }
+    }
+

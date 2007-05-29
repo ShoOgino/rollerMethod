@@ -3,9 +3,9 @@
         BookmarkManager bmgr = getRoller().getBookmarkManager();
         
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
-        FolderData root = bmgr.getRootFolder(testWeblog);
+        WeblogBookmarkFolder root = bmgr.getRootFolder(testWeblog);
         
-        FolderData folder = new FolderData(root, "TestFolder2", null, TestUtils.getManagedWebsite(testWeblog));
+        WeblogBookmarkFolder folder = new WeblogBookmarkFolder(root, "TestFolder2", null, TestUtils.getManagedWebsite(testWeblog));
         bmgr.saveFolder(folder);
         TestUtils.endSession(true);
         
@@ -13,7 +13,7 @@
         folder = bmgr.getFolder(folder.getId());
         
         // Add bookmark by adding to folder
-        BookmarkData bookmark1 = new BookmarkData(
+        WeblogBookmark bookmark1 = new WeblogBookmark(
                 folder,
                 "TestBookmark1",
                 "created by testBookmarkCRUD()",
@@ -25,7 +25,7 @@
         folder.addBookmark(bookmark1);
         
         // Add another bookmark
-        BookmarkData bookmark2 = new BookmarkData(
+        WeblogBookmark bookmark2 = new WeblogBookmark(
                 folder,
                 "TestBookmark2",
                 "created by testBookmarkCRUD()",
@@ -39,14 +39,14 @@
         TestUtils.endSession(true);
         
         
-        FolderData testFolder = null;
-        BookmarkData bookmarkb = null, bookmarka = null;
+        WeblogBookmarkFolder testFolder = null;
+        WeblogBookmark bookmarkb = null, bookmarka = null;
         
         // See that two bookmarks were stored
         testFolder = bmgr.getFolder(folder.getId());
         assertEquals(2, testFolder.getBookmarks().size());
-        bookmarka = (BookmarkData)testFolder.getBookmarks().iterator().next();
-        bookmarkb = (BookmarkData)testFolder.getBookmarks().iterator().next();
+        bookmarka = (WeblogBookmark)testFolder.getBookmarks().iterator().next();
+        bookmarkb = (WeblogBookmark)testFolder.getBookmarks().iterator().next();
         
         // Remove one bookmark
         bmgr.removeBookmark(bookmarka);

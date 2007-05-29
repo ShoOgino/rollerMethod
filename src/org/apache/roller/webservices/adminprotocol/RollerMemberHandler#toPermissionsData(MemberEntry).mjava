@@ -1,7 +1,7 @@
-    private PermissionsData toPermissionsData(MemberEntry entry) throws HandlerException {
+    private WeblogPermission toPermissionsData(MemberEntry entry) throws HandlerException {
         UserData ud = getUserData(entry.getName());
-        WebsiteData wd = getWebsiteData(entry.getHandle());
-        PermissionsData pd = new PermissionsData();
+        Weblog wd = getWebsiteData(entry.getHandle());
+        WeblogPermission pd = new WeblogPermission();
         pd.setUser(ud);
         pd.setWebsite(wd);
         pd.setPermissionMask(stringToMask(entry.getPermission()));

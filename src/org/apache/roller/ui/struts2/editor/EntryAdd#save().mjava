@@ -27,7 +27,7 @@
                 }
                 
                 // if user does not have author perms then force PENDING status
-                if(!getActionWeblog().hasUserPermissions(getAuthenticatedUser(), PermissionsData.AUTHOR)) {
+                if(!getActionWeblog().hasUserPermissions(getAuthenticatedUser(),WeblogPermission.AUTHOR)) {
                     entry.setStatus(WeblogEntryData.PENDING);
                 }
             }
@@ -94,6 +94,7 @@
             // TODO: i18n
             addError("Error saving new entry");
         }
+
         
         return INPUT;
     }

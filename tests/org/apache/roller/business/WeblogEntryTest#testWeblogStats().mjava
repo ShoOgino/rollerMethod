@@ -4,10 +4,10 @@
         UserManager umgr = RollerFactory.getRoller().getUserManager();
         
         UserData user1 = TestUtils.setupUser("statuser1");
-        WebsiteData blog1 = TestUtils.setupWeblog("statblog1", user1);
-        WebsiteData blog2 = TestUtils.setupWeblog("statblog2", user1);
+        Weblog blog1 = TestUtils.setupWeblog("statblog1", user1);
+        Weblog blog2 = TestUtils.setupWeblog("statblog2", user1);
 
-        WebsiteData blog3 = TestUtils.setupWeblog("statblog3", user1);
+        Weblog blog3 = TestUtils.setupWeblog("statblog3", user1);
         blog3.setEnabled(Boolean. FALSE);
         umgr.saveWebsite(blog3);
 

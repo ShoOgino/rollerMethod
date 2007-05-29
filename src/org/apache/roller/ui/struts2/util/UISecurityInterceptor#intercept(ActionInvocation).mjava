@@ -32,7 +32,7 @@
                 // are we requiring a valid action weblog?
                 if(theAction.isWeblogRequired()) {
                     
-                    WebsiteData actionWeblog = ((UIAction)theAction).getActionWeblog();
+                    Weblog actionWeblog = ((UIAction)theAction).getActionWeblog();
                     if(actionWeblog == null) {
                         log.debug("DENIED: required action weblog not found");
                         return "access-denied";
