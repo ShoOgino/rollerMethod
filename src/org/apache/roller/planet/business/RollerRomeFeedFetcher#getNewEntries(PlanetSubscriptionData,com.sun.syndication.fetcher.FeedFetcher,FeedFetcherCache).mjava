@@ -44,13 +44,13 @@
                     int entryCount = RollerRuntimeConfig.getIntProperty(
                             "site.newsfeeds.defaultEntries");
                     entries = blogmgr.getWeblogEntries(
+                            
                             website,
                             null,
                             null,                        // startDate
                             null,                        // endDate
                             null,                        // catName
-                            null,                        // tags
-                            WeblogEntryData.PUBLISHED,   // status
+                            null,WeblogEntry.PUBLISHED,   // status
                             null,                        // text
                             null,                        // sortby (null means pubTime)
                             null,
@@ -77,8 +77,8 @@
                 Iterator entryIter = entries.iterator();
                 while (entryIter.hasNext()) {
                     try {
-                        WeblogEntryData rollerEntry =
-                                (WeblogEntryData)entryIter.next();
+                        WeblogEntry rollerEntry =
+                                (WeblogEntry)entryIter.next();
                         
                         PlanetEntryData entry = new PlanetEntryData();                        
                         String content = "";

@@ -8,9 +8,9 @@
         
         // if user is an author then post status defaults to PUBLISHED, otherwise PENDING
         if(getActionWeblog().hasUserPermissions(getAuthenticatedUser(),WeblogPermission.AUTHOR)) {
-            getBean().setStatus(WeblogEntryData.PUBLISHED);
+            getBean().setStatus(WeblogEntry.PUBLISHED);
         } else {
-            getBean().setStatus(WeblogEntryData.PENDING);
+            getBean().setStatus(WeblogEntry.PENDING);
         }
         
         // set entry locale based on weblog locale

@@ -11,10 +11,10 @@
         WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
         
         // remove tags
-        Criteria tagQuery = session.createCriteria(WeblogEntryTagData.class)
+        Criteria tagQuery = session.createCriteria(WeblogEntryTag.class)
             .add(Expression.eq("weblog.id", website.getId()));
         for(Iterator iter = tagQuery.list().iterator(); iter.hasNext();) {
-            WeblogEntryTagData tagData = (WeblogEntryTagData) iter.next();
+            WeblogEntryTag tagData = (WeblogEntryTag) iter.next();
             this.strategy.remove(tagData);
         }
         
@@ -22,18 +22,18 @@
         List tags = wmgr.getTags(website, null, null, -1);
         for(Iterator iter = tags.iterator(); iter.hasNext();) {
             TagStat stat = (TagStat) iter.next();
-            Query query = session.createQuery("update WeblogEntryTagAggregateData set total = total - ? where name = ? and weblog is null");
+            Query query = session.createQuery("update WeblogEntryTagAggregate set total = total - ? where name = ? and weblog is null");
             query.setParameter(0, new Integer(stat.getCount()));
             query.setParameter(1, stat.getName());
             query.executeUpdate();
         }
         
         // delete all weblog tag aggregates
-        session.createQuery("delete from WeblogEntryTagAggregateData where weblog = ?")
+        session.createQuery("delete from WeblogEntryTagAggregate where weblog = ?")
             .setParameter(0, website).executeUpdate();
         
         // delete all bad counts
-        session.createQuery("delete from WeblogEntryTagAggregateData where total <= 0").executeUpdate();       
+        session.createQuery("delete from WeblogEntryTagAggregate where total <= 0").executeUpdate();       
                 
         // Remove the website's ping queue entries
         Criteria criteria = session.createCriteria(PingQueueEntryData.class);
@@ -57,11 +57,11 @@
         }
         
         // remove entries
-        Criteria entryQuery = session.createCriteria(WeblogEntryData.class);
+        Criteria entryQuery = session.createCriteria(WeblogEntry.class);
         entryQuery.add(Expression.eq("website", website));
         List entries = entryQuery.list();
         for (Iterator iter = entries.iterator(); iter.hasNext();) {
-            wmgr.removeWeblogEntry((WeblogEntryData) iter.next());
+            wmgr.removeWeblogEntry((WeblogEntry) iter.next());
         }
         
         // remove associated referers
@@ -89,7 +89,7 @@
         }
         
         // remove categories
-        WeblogCategoryData rootCat = website.getDefaultCategory();
+        WeblogCategory rootCat = website.getDefaultCategory();
         if (null != rootCat) {
             this.strategy.remove(rootCat);
         }

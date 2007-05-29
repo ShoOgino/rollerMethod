@@ -1,0 +1,76 @@
+    protected Document getDocument(WeblogEntry data) {
+
+        // Actual comment content is indexed only if search.index.comments
+        // is true or absent from the (static) configuration properties.
+        // If false in the configuration, comments are treated as if empty.
+        boolean indexComments = RollerConfig.getBooleanProperty("search.index.comments", true);
+
+        String commentContent = "";
+        String commentEmail = "";
+        String commentName = "";
+        if (indexComments) {
+            List comments = data.getComments();
+            if (comments != null) {
+                StringBuffer commentEmailBuf = new StringBuffer();
+                StringBuffer commentContentBuf = new StringBuffer();
+                StringBuffer commentNameBuf = new StringBuffer();
+                for (Iterator cItr = comments.iterator(); cItr.hasNext();) {
+                    WeblogEntryComment comment = (WeblogEntryComment) cItr.next();
+                    if (comment.getContent() != null) {
+                        commentContentBuf.append(comment.getContent());
+                        commentContentBuf.append(",");
+                    }
+                    if (comment.getEmail() != null) {
+                        commentEmailBuf.append(comment.getEmail());
+                        commentEmailBuf.append(",");
+                    }
+                    if (comment.getName() != null) {
+                        commentNameBuf.append(comment.getName());
+                        commentNameBuf.append(",");
+                    }
+                }
+                commentEmail = commentEmailBuf.toString();
+                commentContent = commentContentBuf.toString();
+                commentName = commentNameBuf.toString();
+            }
+        }
+
+        Document doc = new Document();
+
+        doc.add(Field.Keyword(FieldConstants.ID, data.getId()));
+
+        doc.add(Field.Keyword(FieldConstants.WEBSITE_HANDLE, data.getWebsite().getHandle()));
+
+        doc.add(Field.UnIndexed(FieldConstants.ANCHOR, data.getAnchor()));
+        doc.add(Field.Text(FieldConstants.USERNAME, data.getCreator().getUserName()));
+        doc.add(Field.Text(FieldConstants.TITLE, data.getTitle()));
+
+        // index the entry text, but don't store it - moved to end of block
+        doc.add(Field.UnStored(FieldConstants.CONTENT, data.getText()));
+
+        // store an abbreviated version of the entry text, but don't index
+        doc.add(Field.UnIndexed(FieldConstants.CONTENT_STORED, 
+            Utilities.truncateNicely(Utilities.removeHTML(data.getText()), 240, 260, "...")));
+
+        doc.add(Field.Keyword(FieldConstants.UPDATED, data.getUpdateTime()
+                .toString()));
+        doc.add(Field.Keyword(FieldConstants.PUBLISHED, data.getPubTime()
+                .toString()));
+
+        // index Comments
+        doc.add(Field.UnStored(FieldConstants.C_CONTENT, commentContent));
+        doc.add(Field.UnStored(FieldConstants.C_EMAIL, commentEmail));
+        doc.add(Field.UnStored(FieldConstants.C_NAME, commentName));
+
+        doc.add(Field.UnStored(FieldConstants.CONSTANT, FieldConstants.CONSTANT_V));
+
+        // index Category
+        WeblogCategory categorydata = data.getCategory();
+        Field category = (categorydata == null) 
+           ? Field.UnStored(FieldConstants.CATEGORY, "") 
+           : Field.Text(FieldConstants.CATEGORY, categorydata.getName());
+        doc.add(category);
+
+        return doc;
+    }
+

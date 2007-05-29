@@ -10,7 +10,7 @@
             WeblogManager wmgr = roller.getWeblogManager();
             List weblogs = wmgr.getWeblogEntriesPinnedToMain(new Integer(length));
             for (Iterator it = weblogs.iterator(); it.hasNext();) {
-                WeblogEntryData entry = (WeblogEntryData) it.next();
+                WeblogEntry entry = (WeblogEntry) it.next();
                 results.add(WeblogEntryDataWrapper.wrap(entry));
             }
         } catch (Exception e) {

@@ -9,7 +9,7 @@
         
         // TODO: Non-standard JPA bulk update, using parameter values in set clause
         Query q = strategy.getNamedUpdate(
-                "WeblogEntryData.updateAllowComments&CommentDaysByWebsite");
+                "WeblogEntry.updateAllowComments&CommentDaysByWebsite");
         q.setParameter(1, website.getDefaultAllowComments());
         q.setParameter(2, new Integer(website.getDefaultCommentDays()));
         q.setParameter(3, website);

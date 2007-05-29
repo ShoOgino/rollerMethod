@@ -6,15 +6,15 @@
         try {
             // Build list of all categories, except for current one, sorted by path.
             WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
-            List<WeblogCategoryData> cats = wmgr.getWeblogCategories(getActionWeblog(), true);
-            for(WeblogCategoryData cat : cats) {
+            List<WeblogCategory> cats = wmgr.getWeblogCategories(getActionWeblog(), true);
+            for(WeblogCategory cat : cats) {
                 if (!cat.getId().equals(getCategoryId())) {
                     allCategories.add(cat);
                 }
             }
             
             // build category path
-            WeblogCategoryData parent = getCategory().getParent();
+            WeblogCategory parent = getCategory().getParent();
             if(parent != null) {
                 List categoryPath = new LinkedList();
                 categoryPath.add(0, getCategory());

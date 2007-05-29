@@ -21,13 +21,13 @@
             weblog = roller.getUserManager().getWebsite(weblogId);
         } else if (request.getParameter(RequestConstants.WEBLOGENTRY_ID) != null) {
             String entryId = request.getParameter(RequestConstants.WEBLOGENTRY_ID);
-            WeblogEntryData entry = roller.getWeblogManager().getWeblogEntry(entryId);
+            WeblogEntry entry = roller.getWeblogManager().getWeblogEntry(entryId);
             if(entry != null) {
                 weblog = entry.getWebsite();
             }
         } else if (request.getParameter(RequestConstants.WEBLOGCATEGORY_ID) != null) {
             String catId = request.getParameter(RequestConstants.WEBLOGCATEGORY_ID);
-            WeblogCategoryData cat = roller.getWeblogManager().getWeblogCategory(catId);
+            WeblogCategory cat = roller.getWeblogManager().getWeblogCategory(catId);
             if(cat != null) {
                 weblog = cat.getWebsite();
             }

@@ -1,10 +1,10 @@
-	public UserData getUserByActivationCode(String activationCode) throws RollerException {
+	public User getUserByActivationCode(String activationCode) throws RollerException {
 		if (activationCode == null)
 			throw new RollerException("activationcode is null");
-        Query q = strategy.getNamedQuery("UserData.getUserByActivationCode");
+        Query q = strategy.getNamedQuery("User.getUserByActivationCode");
         q.setParameter(1, activationCode);
         try {
-            return (UserData)q.getSingleResult();
+            return (User)q.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }		

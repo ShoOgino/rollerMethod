@@ -12,7 +12,7 @@
         String dateString = null;
         List entries = (List)monthMap.get( day );
         if ( entries != null && day != null ) {
-            WeblogEntryData entry = (WeblogEntryData)entries.get(0);
+            WeblogEntry entry = (WeblogEntry)entries.get(0);
             dateString = mStarDateFormat.format(entry.getPubTime());
         }
         if (dateString == null && !alwaysURL) return null;

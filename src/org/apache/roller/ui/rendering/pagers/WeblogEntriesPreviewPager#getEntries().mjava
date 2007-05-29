@@ -6,7 +6,7 @@
             if (currEntry != null) {
                 
                 // clone the entry since we don't want to work with the real pojo
-                WeblogEntryData tmpEntry = new WeblogEntryData();
+                WeblogEntry tmpEntry = new WeblogEntry();
                 tmpEntry.setData(currEntry);
                 
                 // set the pubtime to the current time if it is unset
@@ -22,6 +22,7 @@
         } catch (Exception e) {
             log.error("ERROR: fetching entry", e);
         }
+
         
         return entries;
     }

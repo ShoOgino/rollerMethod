@@ -4,32 +4,32 @@
     public void testWeblogEntryLookups() throws Exception {
         
         WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
-        WeblogEntryData entry = null;
+        WeblogEntry entry = null;
         List entries = null;
         Map entryMap = null;
         
         // setup some test entries to use
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         testUser = TestUtils.getManagedUser(testUser);
-        WeblogEntryData entry1 = TestUtils.setupWeblogEntry("entry1", testWeblog.getDefaultCategory(), testWeblog, testUser);
-        WeblogEntryData entry2 = TestUtils.setupWeblogEntry("entry2", testWeblog.getDefaultCategory(), testWeblog, testUser);
-        WeblogEntryData entry3 = TestUtils.setupWeblogEntry("entry3", testWeblog.getDefaultCategory(), testWeblog, testUser);
-        WeblogEntryData entry4 = TestUtils.setupWeblogEntry("entry4", testWeblog.getDefaultCategory(), testWeblog, testUser);
-        WeblogEntryData entry5 = TestUtils.setupWeblogEntry("entry5", testWeblog.getDefaultCategory(), testWeblog, testUser);
+        WeblogEntry entry1 = TestUtils.setupWeblogEntry("entry1", testWeblog.getDefaultCategory(), testWeblog, testUser);
+        WeblogEntry entry2 = TestUtils.setupWeblogEntry("entry2", testWeblog.getDefaultCategory(), testWeblog, testUser);
+        WeblogEntry entry3 = TestUtils.setupWeblogEntry("entry3", testWeblog.getDefaultCategory(), testWeblog, testUser);
+        WeblogEntry entry4 = TestUtils.setupWeblogEntry("entry4", testWeblog.getDefaultCategory(), testWeblog, testUser);
+        WeblogEntry entry5 = TestUtils.setupWeblogEntry("entry5", testWeblog.getDefaultCategory(), testWeblog, testUser);
         
         // make a couple changes
         entry1.setLocale("en_US");
-        entry1.setStatus(WeblogEntryData.PUBLISHED);
+        entry1.setStatus(WeblogEntry.PUBLISHED);
         entry1.setPinnedToMain(Boolean.TRUE);
         mgr.saveWeblogEntry(entry1);
         
         entry2.setLocale("ja_JP");
-        entry2.setStatus(WeblogEntryData.PUBLISHED);
+        entry2.setStatus(WeblogEntry.PUBLISHED);
         entry2.setUpdateTime(new java.sql.Timestamp(entry2.getUpdateTime().getTime()+8822384));
         entry2.setPubTime(entry2.getUpdateTime());
         mgr.saveWeblogEntry(entry2);
         
-        entry3.setStatus(WeblogEntryData.DRAFT);
+        entry3.setStatus(WeblogEntry.DRAFT);
         entry3.setUpdateTime(new java.sql.Timestamp(entry3.getUpdateTime().getTime()+348829384));
         entry3.setPubTime(entry3.getUpdateTime());
         mgr.saveWeblogEntry(entry3);
@@ -79,7 +79,7 @@
         
         // get all (non-future) PUBLISHED entries only 
         entries = null;
-        entries = mgr.getWeblogEntries(testWeblog, null, null, null, null, null, WeblogEntryData.PUBLISHED, null, null, null, null, 0, -1);
+        entries = mgr.getWeblogEntries(testWeblog, null, null, null, null, null, WeblogEntry.PUBLISHED, null, null, null, null, 0, -1);
         assertNotNull(entries);
         assertEquals(3, entries.size());
         

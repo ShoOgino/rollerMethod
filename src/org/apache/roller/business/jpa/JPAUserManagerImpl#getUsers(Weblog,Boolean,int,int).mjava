@@ -12,19 +12,19 @@
         
         if (enabled != null) {
             if (website != null) {
-                query = strategy.getNamedQuery("UserData.getByEnabled&Permissions.website");
+                query = strategy.getNamedQuery("User.getByEnabled&Permissions.website");
                 query.setParameter(1, enabled);
                 query.setParameter(2, website);
             } else {
-                query = strategy.getNamedQuery("UserData.getByEnabled");
+                query = strategy.getNamedQuery("User.getByEnabled");
                 query.setParameter(1, enabled);
             }
         } else {
             if (website != null) {
-                query = strategy.getNamedQuery("UserData.getByPermissions.website");
+                query = strategy.getNamedQuery("User.getByPermissions.website");
                 query.setParameter(1, website);
             } else {
-                query = strategy.getNamedQuery("UserData.getAll");
+                query = strategy.getNamedQuery("User.getAll");
             }
         }
         if (offset != 0) {

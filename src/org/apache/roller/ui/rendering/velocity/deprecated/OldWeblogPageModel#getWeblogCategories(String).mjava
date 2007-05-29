@@ -12,7 +12,7 @@
         
         if (null == ret) {
             try {
-                WeblogCategoryData category = null;
+                WeblogCategory category = null;
                 if (categoryName != null) {
                     category = mWeblogMgr.getWeblogCategoryByPath(
                             mWebsite, categoryName);
@@ -27,7 +27,7 @@
                 Iterator it = mRet.iterator();
                 int i=0;
                 while(it.hasNext()) {
-                    ret.add(WeblogCategoryDataWrapper.wrap((WeblogCategoryData)it.next()));
+                    ret.add(WeblogCategoryDataWrapper.wrap((WeblogCategory)it.next()));
                     i++;
                 }
                 if (categoryName != null) {

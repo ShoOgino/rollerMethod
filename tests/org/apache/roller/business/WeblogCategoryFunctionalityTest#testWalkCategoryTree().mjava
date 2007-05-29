@@ -8,7 +8,7 @@
         WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
         
         // start at root
-        WeblogCategoryData root = mgr.getRootWeblogCategory(TestUtils.getManagedWebsite(testWeblog));
+        WeblogCategory root = mgr.getRootWeblogCategory(TestUtils.getManagedWebsite(testWeblog));
         
         // walk first level
         Set cats = root.getWeblogCategories();
@@ -16,9 +16,9 @@
         assertTrue(cats.contains(testCat));
         
         // find cat1
-        WeblogCategoryData cat = null;
+        WeblogCategory cat = null;
         for(Iterator it = cats.iterator(); it.hasNext(); ) {
-            cat = (WeblogCategoryData) it.next();
+            cat = (WeblogCategory) it.next();
             if(cat.getName().equals(cat1.getName())) {
                 break;
             }
@@ -30,7 +30,7 @@
         assertTrue(cats.contains(cat2));
         
         // find cat2
-        cat = (WeblogCategoryData) cats.iterator().next();
+        cat = (WeblogCategory) cats.iterator().next();
         
         // walk third level
         cats = cat.getWeblogCategories();
@@ -38,7 +38,7 @@
         assertTrue(cats.contains(cat3));
         
         // find cat3
-        cat = (WeblogCategoryData) cats.iterator().next();
+        cat = (WeblogCategory) cats.iterator().next();
         
         // make sure this is the end of the tree
         cats = cat.getWeblogCategories();

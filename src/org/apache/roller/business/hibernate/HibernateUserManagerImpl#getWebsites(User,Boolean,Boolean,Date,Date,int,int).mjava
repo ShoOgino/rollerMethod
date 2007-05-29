@@ -1,0 +1,43 @@
+    /**
+     * Get websites of a user
+     */
+    public List getWebsites(User user, Boolean enabled, Boolean active, 
+                            Date startDate, Date endDate, int offset, int length)  
+            throws RollerException {
+        
+        try {
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
+            Criteria criteria = session.createCriteria(Weblog.class);
+            
+            if (user != null) {
+                criteria.createAlias("permissions","permissions");
+                criteria.add(Expression.eq("permissions.user", user));
+                criteria.add(Expression.eq("permissions.pending", Boolean.FALSE));
+            }
+            if (startDate != null) {
+                criteria.add(Expression.gt("dateCreated", startDate));
+            }
+            if (endDate != null) {
+                criteria.add(Expression.lt("dateCreated", endDate));
+            }
+            if (enabled != null) {
+                criteria.add(Expression.eq("enabled", enabled));
+            }
+            if (active != null) {
+                criteria.add(Expression.eq("active", active));
+            }
+            if (offset != 0) {
+                criteria.setFirstResult(offset);
+            }
+            if (length != -1) {
+                criteria.setMaxResults(length);
+            }
+            criteria.addOrder(Order.desc("dateCreated"));
+            
+            return criteria.list();
+            
+        } catch (HibernateException e) {
+            throw new RollerException(e);
+        }
+    }
+

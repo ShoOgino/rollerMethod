@@ -3,7 +3,7 @@
         // TODO: ATLAS getUsersByLetter DONE
         try {
             Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
-            Criteria criteria = session.createCriteria(UserData.class);
+            Criteria criteria = session.createCriteria(User.class);
             criteria.add(Expression.ilike("userName", new String(new char[]{letter}) + "%", MatchMode.START));
             criteria.addOrder(Order.asc("userName"));
             if (offset != 0) {

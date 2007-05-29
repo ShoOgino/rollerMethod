@@ -1,0 +1,33 @@
+    /**
+     * Get WeblogEntries by offset/length as list in reverse chronological order.
+     * The range offset and list arguments enable paging through query results.
+     * @param website    Weblog or null to get for all weblogs.
+     * @param user       User or null to get for all users.
+     * @param startDate  Start date or null for no start date.
+     * @param endDate    End date or null for no end date.
+     * @param catName    Category path or null for all categories.
+     * @param status     Status of DRAFT, PENDING, PUBLISHED or null for all
+     * @param text       Text appearing in the text or summary, or null for all
+     * @param sortBy     Sort by either 'pubTime' or 'updateTime' (null for pubTime)
+     * @param sortOrder  Sort order of ASCENDING or DESCENDING (null for DESCENDING)
+     * @param offset     Offset into results for paging
+     * @param length     Max comments to return (or -1 for no limit)
+     * @return List of WeblogEntryData objects in reverse chrono order.
+     * @throws RollerException
+     */
+    public List getWeblogEntries(
+            Weblog website,
+            User    user,
+            Date        startDate,
+            Date        endDate,
+            String      catName,
+            List        tags,
+            String      status,
+            String      text,
+            String      sortBy, 
+            String      sortOrder,
+            String      locale,             
+            int         offset,
+            int         range)
+            throws RollerException;
+

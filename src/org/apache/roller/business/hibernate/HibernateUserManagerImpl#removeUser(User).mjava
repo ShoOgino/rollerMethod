@@ -1,0 +1,7 @@
+    public void removeUser(User user) throws RollerException {
+        this.strategy.remove(user);
+        
+        // remove entry from cache mapping
+        this.userNameToIdMap.remove(user.getUserName());
+    }
+

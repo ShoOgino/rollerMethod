@@ -3,7 +3,7 @@
      * implementation of authenticate().
      */
     protected void verifyUser(String userName, String password) throws HandlerException {
-        UserData ud = getUserData(userName);
+        User ud = getUserData(userName);
         String realpassword = ud.getPassword();
 
         if (!userName.trim().equals(ud.getUserName())) {

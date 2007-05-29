@@ -1,0 +1,28 @@
+    // TODO: this method should be removed and it's functionality moved to getWeblogEntries()
+    public List getWeblogEntries(WeblogCategory cat, boolean subcats)
+        throws RollerException {
+        
+        try {
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
+            Criteria criteria = session.createCriteria(WeblogEntry.class);
+            criteria.add(Expression.eq("status",WeblogEntry.PUBLISHED));
+            
+            if(!subcats) {
+                // if no subcats then this is an equals query
+                criteria.add(Expression.eq("category", cat));
+            } else {
+                // if we are doing subcats then do a case sensitive
+                // query using category path
+                criteria.createAlias("category", "cat");
+                criteria.add(Expression.like("cat.path", cat.getPath()+"%"));
+                criteria.add(Expression.eq("website", cat.getWebsite()));
+            }
+            
+            return criteria.list();
+            
+        } catch (HibernateException e) {
+            throw new RollerException(e);
+        }
+        
+    }
+

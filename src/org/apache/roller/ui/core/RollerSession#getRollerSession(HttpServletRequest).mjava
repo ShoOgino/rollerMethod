@@ -16,7 +16,7 @@
             if (rollerSession.getAuthenticatedUser() == null && principal != null) {
                 try {
                     UserManager umgr = RollerFactory.getRoller().getUserManager();
-                    UserData user = umgr.getUserByUserName(principal.getName());
+                    User user = umgr.getUserByUserName(principal.getName());
                     
                     // try one time to auto-provision, only happens if user==null
                     // which means installation has SSO-enabled in security.xml

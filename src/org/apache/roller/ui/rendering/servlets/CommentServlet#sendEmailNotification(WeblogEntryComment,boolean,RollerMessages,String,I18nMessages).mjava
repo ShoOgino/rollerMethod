@@ -13,9 +13,9 @@
             WeblogEntryComment commentObject, boolean notifySubscribers,
             RollerMessages messages, String rootURL, I18nMessages resources) {
         
-        WeblogEntryData entry = commentObject.getWeblogEntry();
+        WeblogEntry entry = commentObject.getWeblogEntry();
         Weblog site = entry.getWebsite();
-        UserData user = entry.getCreator();
+        User user = entry.getCreator();
         
         // Send e-mail to owner and subscribed users (if enabled)
         boolean notify = RollerRuntimeConfig.getBooleanProperty("users.comments.emailnotify");

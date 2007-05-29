@@ -1,0 +1,13 @@
+    // TODO: provide unit test case
+    public boolean isDuplicateWeblogCategoryName(WeblogCategory cat)
+            throws RollerException {
+        
+        // ensure that no sibling categories share the same name
+        WeblogCategory parent = cat.getParent();
+        if (null != parent) {
+            return (getWeblogCategoryByPath(cat.getWebsite(), cat.getPath()) != null);
+        }
+        
+        return false;
+    }
+

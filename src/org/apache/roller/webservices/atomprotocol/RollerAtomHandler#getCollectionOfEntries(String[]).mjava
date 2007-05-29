@@ -51,7 +51,7 @@
             List atomEntries = new ArrayList();
             int count = 0;
             for (Iterator iter = entries.iterator(); iter.hasNext() && count < maxEntries; count++) {
-                WeblogEntryData rollerEntry = (WeblogEntryData)iter.next();
+                WeblogEntry rollerEntry = (WeblogEntry)iter.next();
                 Entry entry = createAtomEntry(rollerEntry);
                 atomEntries.add(entry);
                 if (count == 0) {

@@ -9,8 +9,8 @@
         try {
             // Build list of all categories, except for current one, sorted by path.
             WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
-            List<WeblogCategoryData> cats = wmgr.getWeblogCategories(getActionWeblog(), true);
-            for(WeblogCategoryData cat : cats) {
+            List<WeblogCategory> cats = wmgr.getWeblogCategories(getActionWeblog(), true);
+            for(WeblogCategory cat : cats) {
                 if (!cat.getId().equals(getRemoveId())) {
                     allCategories.add(cat);
                 }

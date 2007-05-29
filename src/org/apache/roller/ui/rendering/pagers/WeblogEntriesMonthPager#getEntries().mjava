@@ -11,12 +11,12 @@
             entries = new TreeMap(new ReverseComparator());
             try {
                 Map mmap = RollerFactory.getRoller().getWeblogManager().getWeblogEntryObjectMap(
+                        
                         weblog,
                         startDate,
                         endDate,
                         catPath,
-                        tags,
-                        WeblogEntryData.PUBLISHED, 
+                        tags,WeblogEntry.PUBLISHED, 
                         locale,
                         offset,  
                         length + 1);
@@ -33,8 +33,7 @@
                     List unwrapped= (List) mmap.get(key);
                     for(int i=0; i < unwrapped.size(); i++) {
                         if (count++ < length) {
-                            wrapped.add(i, 
-                            WeblogEntryDataWrapper.wrap((WeblogEntryData)unwrapped.get(i)));
+                            wrapped.add(i,WeblogEntryDataWrapper.wrap((WeblogEntry)unwrapped.get(i)));
                         } else {
                             more = true;
                         }

@@ -2,10 +2,10 @@
         for(Iterator iter = tags.iterator(); iter.hasNext();) {
             TagStat stat = (TagStat) iter.next();            
             Query query = strategy.getNamedUpdate(
-                "WeblogEntryTagAggregateData.getByName&WebsiteNullOrderByLastUsedDesc");
+                "WeblogEntryTagAggregate.getByName&WebsiteNullOrderByLastUsedDesc");
             query.setParameter(1, stat.getName());
             try {
-                WeblogEntryTagAggregateData agg = (WeblogEntryTagAggregateData)query.getSingleResult();
+                WeblogEntryTagAggregate agg = (WeblogEntryTagAggregate)query.getSingleResult();
                 agg.setTotal(agg.getTotal() - stat.getCount());
             } catch (NoResultException ignored) {} // no agg to be updated
         }

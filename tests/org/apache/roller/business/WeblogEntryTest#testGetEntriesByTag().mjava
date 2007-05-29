@@ -5,7 +5,7 @@
             // setup some test entries to use
             testWeblog = TestUtils.getManagedWebsite(testWeblog);
             testUser = TestUtils.getManagedUser(testUser);
-            WeblogEntryData entry = TestUtils.setupWeblogEntry("entry1", 
+            WeblogEntry entry = TestUtils.setupWeblogEntry("entry1", 
                     testWeblog.getDefaultCategory(), testWeblog, testUser);
             String id = entry.getId();
             entry.addTag("testTag");
@@ -17,7 +17,7 @@
             List results = mgr.getWeblogEntries(testWeblog, null, null, null, null,
                 Arrays.asList(new String[] { "testtag" }), null, null, null, null, null, 0, -1);
             assertEquals(1, results.size());
-            WeblogEntryData testEntry = (WeblogEntryData) results.iterator().next();
+            WeblogEntry testEntry = (WeblogEntry) results.iterator().next();
             assertEquals(entry, testEntry);
         
             // teardown our test entry

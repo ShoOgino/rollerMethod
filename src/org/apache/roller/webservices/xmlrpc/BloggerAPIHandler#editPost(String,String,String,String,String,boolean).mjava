@@ -27,13 +27,13 @@
                 
                 Roller roller = RollerFactory.getRoller();
                 WeblogManager weblogMgr = roller.getWeblogManager();
-                WeblogEntryData entry = weblogMgr.getWeblogEntry(postid);
+                WeblogEntry entry = weblogMgr.getWeblogEntry(postid);
                 entry.setText(content);
                 entry.setUpdateTime(current);
                 if (Boolean.valueOf(publish).booleanValue()) {
-                    entry.setStatus(WeblogEntryData.PUBLISHED);
+                    entry.setStatus(WeblogEntry.PUBLISHED);
                 } else {
-                    entry.setStatus(WeblogEntryData.DRAFT);
+                    entry.setStatus(WeblogEntry.DRAFT);
                 }
                 
                 // save the entry

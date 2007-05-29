@@ -1,0 +1,12 @@
+    /**
+     * Get child categories of this category.
+     * 
+     * @hibernate.collection-key column="parentid"
+     * @hibernate.collection-one-to-many class="org.apache.roller.pojos.WeblogCategory"
+     * @hibernate.set lazy="true" inverse="true" cascade="delete"
+     * @roller.wrapPojoMethod type="pojo-collection" class="org.apache.roller.pojos.WeblogCategory"
+     */
+    public Set getWeblogCategories() {
+        return this.childCategories;
+    }
+

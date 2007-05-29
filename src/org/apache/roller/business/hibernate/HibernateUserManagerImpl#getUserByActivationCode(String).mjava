@@ -1,4 +1,4 @@
-	public UserData getUserByActivationCode(String activationCode) throws RollerException {
+	public User getUserByActivationCode(String activationCode) throws RollerException {
 
 		if (activationCode == null)
 			throw new RollerException("activationcode is null");
@@ -6,11 +6,11 @@
 		try {
 			Session session = ((HibernatePersistenceStrategy) this.strategy)
 					.getSession();
-			Criteria criteria = session.createCriteria(UserData.class);
+			Criteria criteria = session.createCriteria(User.class);
 
 			criteria.add(Expression.eq("activationCode", activationCode));
 
-			UserData user = (UserData) criteria.uniqueResult();
+			User user = (User) criteria.uniqueResult();
 
 			return user;
 		} catch (HibernateException e) {

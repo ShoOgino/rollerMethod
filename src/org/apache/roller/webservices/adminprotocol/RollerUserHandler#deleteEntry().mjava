@@ -1,12 +1,12 @@
     private EntrySet deleteEntry() throws HandlerException {
-        UserData ud = getUserData(getUri().getEntryId());
+        User ud = getUserData(getUri().getEntryId());
         
         // don't allow deletion of the currently authenticated user
         if (ud.getUserName().equals(getUserName())) {
             throw new NotAllowedException("ERROR: Can't delete authenticated user: " + getUserName());
         }
         
-        UserData[] uds = new UserData[] { ud };
+        User[] uds = new User[] { ud };
         
         try {
             getRoller().getUserManager().removeUser(ud);

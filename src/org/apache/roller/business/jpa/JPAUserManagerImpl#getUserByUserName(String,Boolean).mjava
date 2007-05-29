@@ -1,4 +1,4 @@
-    public UserData getUserByUserName(String userName, Boolean enabled)
+    public User getUserByUserName(String userName, Boolean enabled)
     throws RollerException {
         
         if (userName==null )
@@ -8,7 +8,7 @@
         // NOTE: if we ever allow changing usernames then this needs updating
         if(this.userNameToIdMap.containsKey(userName)) {
             
-            UserData user = this.getUser(
+            User user = this.getUser(
                     (String) this.userNameToIdMap.get(userName));
             if(user != null) {
                 // only return the user if the enabled status matches
@@ -27,19 +27,19 @@
         Object[] params;
         if (enabled != null) {
             query = strategy.getNamedQuery(
-                    "UserData.getByUserName&Enabled");
+                    "User.getByUserName&Enabled");
             params = new Object[] {userName, enabled};
         } else {
             query = strategy.getNamedQuery(
-                    "UserData.getByUserName");
+                    "User.getByUserName");
             params = new Object[] {userName};
         }
         for (int i=0; i<params.length; i++) {
             query.setParameter(i+1, params[i]);
         }
-        UserData user = null;
+        User user = null;
         try {
-            user = (UserData)query.getSingleResult();
+            user = (User)query.getSingleResult();
         } catch (NoResultException e) {
             user = null;
         }

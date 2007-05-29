@@ -15,7 +15,7 @@
         if(!hasActionErrors()) try {
             WeblogManager weblogMgr = RollerFactory.getRoller().getWeblogManager();
             
-            WeblogEntryData entry = getEntry();
+            WeblogEntry entry = getEntry();
             
             // set updatetime & pubtime
             entry.setUpdateTime(new Timestamp(new Date().getTime()));
@@ -33,7 +33,7 @@
                 
                 // if user does not have author perms then force PENDING status
                 if(!getActionWeblog().hasUserPermissions(getAuthenticatedUser(),WeblogPermission.AUTHOR)) {
-                    entry.setStatus(WeblogEntryData.PENDING);
+                    entry.setStatus(WeblogEntry.PENDING);
                 }
             }
             
@@ -89,6 +89,7 @@
             // TODO: i18n
             addError("Error saving new entry");
         }
+
 
         
         return INPUT;

@@ -4,17 +4,17 @@
      * @return List of WeblogEntryData objects.
      * @throws RollerException
      */
-    public List<WeblogEntryData> getRecentPendingEntries() {
-        List<WeblogEntryData> entries = Collections.EMPTY_LIST;
+    public List<WeblogEntry> getRecentPendingEntries() {
+        List<WeblogEntry> entries = Collections.EMPTY_LIST;
         try {
             entries = RollerFactory.getRoller().getWeblogManager().getWeblogEntries(
+                    
                     getActionWeblog(),
                     null,
                     null,              // startDate
                     null,              // endDate
                     null,              // catName
-                    null,              // tags
-                    WeblogEntryData.PENDING, // status
+                    null,WeblogEntry.PENDING, // status
                     null,              // text
                     "updateTime",      // sortby
                     null,

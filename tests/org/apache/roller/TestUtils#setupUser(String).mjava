@@ -1,9 +1,9 @@
     /**
      * Convenience method that creates a user and stores it.
      */
-    public static UserData setupUser(String username) throws Exception {
+    public static User setupUser(String username) throws Exception {
         
-        UserData testUser = new UserData();
+        User testUser = new User();
         testUser.setUserName(username);
         testUser.setPassword("password");
         testUser.setScreenName("Test User Screen Name");
@@ -22,7 +22,7 @@
         RollerFactory.getRoller().flush();
         
         // query for the user to make sure we return the persisted object
-        UserData user = mgr.getUserByUserName(username);
+        User user = mgr.getUserByUserName(username);
         
         if(user == null)
             throw new RollerException("error inserting new user");

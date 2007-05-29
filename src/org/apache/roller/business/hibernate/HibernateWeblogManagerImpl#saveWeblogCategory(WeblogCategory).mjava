@@ -1,0 +1,12 @@
+    public void saveWeblogCategory(WeblogCategory cat) throws RollerException {
+        
+        if(cat == null) {
+            throw new IllegalArgumentException("Category is null");
+        }
+        
+        // update weblog last modified date.  date updated by saveWebsite()
+        RollerFactory.getRoller().getUserManager().saveWebsite(cat.getWebsite());
+        
+        this.strategy.store(cat);
+    }
+

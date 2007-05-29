@@ -4,10 +4,10 @@
         Weblog website = new Weblog();
         website.setHandle("trekker");
 
-        UserData user = new UserData();
+        User user = new User();
         user.setUserName("nimoy");
 
-        WeblogEntryData wd1 = new WeblogEntryData();            
+        WeblogEntry wd1 = new WeblogEntry();            
         wd1.setId("dummy1");
         wd1.setAnchor("dummy1");
         wd1.setCreator(user);
@@ -22,7 +22,7 @@
         imgr.executeIndexOperationNow(
             new AddEntryOperation((IndexManagerImpl) imgr, wd1));
 
-        WeblogEntryData wd2 = new WeblogEntryData();
+        WeblogEntry wd2 = new WeblogEntry();
         wd2.setId("dummy2");
         wd2.setAnchor("dummy2");
         wd2.setCreator(user);

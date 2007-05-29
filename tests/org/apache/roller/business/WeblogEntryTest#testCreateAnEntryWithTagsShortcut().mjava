@@ -1,11 +1,11 @@
     public void testCreateAnEntryWithTagsShortcut() throws Exception {
         try {
             WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
-            WeblogEntryData entry = null;
+            WeblogEntry entry = null;
             testWeblog = TestUtils.getManagedWebsite(testWeblog);
             testUser = TestUtils.getManagedUser(testUser);
 
-            WeblogEntryData testEntry = new WeblogEntryData();
+            WeblogEntry testEntry = new WeblogEntry();
             testEntry.setTitle("entryTestEntry");
             testEntry.setLink("testEntryLink");
             testEntry.setText("blah blah entry");
@@ -32,7 +32,7 @@
             assertEquals(testEntry, entry);
             assertNotNull(entry.getTags());
             assertEquals(1, entry.getTags().size());
-            assertEquals("testtag", ((WeblogEntryTagData) entry.getTags()
+            assertEquals("testtag", ((WeblogEntryTag) entry.getTags()
                     .iterator().next()).getName());
             TestUtils.endSession(true);
 

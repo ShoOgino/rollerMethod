@@ -1,7 +1,7 @@
     public List getUsersByLetter(char letter, int offset, int length)
     throws RollerException {
         Query query = strategy.getNamedQuery(
-                "UserData.getByUserNameOrderByUserName");
+                "User.getByUserNameOrderByUserName");
         query.setParameter(1, letter + "%");
         if (offset != 0) {
             query.setFirstResult(offset);

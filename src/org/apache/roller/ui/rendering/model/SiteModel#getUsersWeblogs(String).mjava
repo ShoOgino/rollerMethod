@@ -6,7 +6,7 @@
         try {            
             Roller roller = RollerFactory.getRoller();
             UserManager umgr = roller.getUserManager();
-            UserData user = umgr.getUserByUserName(userName);
+            User user = umgr.getUserByUserName(userName);
             List perms = umgr.getAllPermissions(user);
             for (Iterator it = perms.iterator(); it.hasNext();) {
                 WeblogPermission perm = (WeblogPermission) it.next();

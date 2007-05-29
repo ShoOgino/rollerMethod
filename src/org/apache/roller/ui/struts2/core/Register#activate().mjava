@@ -6,7 +6,7 @@
             if (getActivationCode() == null) {
                 addError("error.activate.user.missingActivationCode");
             } else {
-                UserData user = mgr.getUserByActivationCode(getActivationCode());
+                User user = mgr.getUserByActivationCode(getActivationCode());
                 
                 if (user != null) {
                     // enable user account

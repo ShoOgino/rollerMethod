@@ -19,13 +19,13 @@
                 WeblogManager wmgr = roller.getWeblogManager();
                 UserManager umgr = roller.getUserManager();
                 List rawEntries = wmgr.getWeblogEntries(
+                        
                         queryWeblog,
                         queryUser,
                         startDate,
                         null,
                         queryCat,
-                        queryTags,
-                        WeblogEntryData.PUBLISHED,
+                        queryTags,WeblogEntry.PUBLISHED,
                         null,
                         "pubTime",
                         null,
@@ -36,7 +36,7 @@
                 // wrap the results
                 int count = 0;
                 for (Iterator it = rawEntries.iterator(); it.hasNext();) {
-                    WeblogEntryData entry = (WeblogEntryData) it.next();
+                    WeblogEntry entry = (WeblogEntry) it.next();
                     if (count++ < length) {
                         results.add(WeblogEntryDataWrapper.wrap(entry));
                     }

@@ -1,16 +1,16 @@
     /**
      * @inheritDoc
      */
-    public WeblogCategoryData getRootWeblogCategory(Weblog website)
+    public WeblogCategory getRootWeblogCategory(Weblog website)
     throws RollerException {
         if (website == null)
             throw new RollerException("website is null");
         
         Query q = strategy.getNamedQuery(
-                "WeblogCategoryData.getByWebsite&ParentNull");
+                "WeblogCategory.getByWebsite&ParentNull");
         q.setParameter(1, website);
         try {
-            return (WeblogCategoryData)q.getSingleResult();
+            return (WeblogCategory)q.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }

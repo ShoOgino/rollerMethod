@@ -5,9 +5,9 @@
      */
     public static void sendEmailApprovalNotification(WeblogEntryComment cd, String rootURL, I18nMessages resources) {
         
-        WeblogEntryData entry = cd.getWeblogEntry();
+        WeblogEntry entry = cd.getWeblogEntry();
         Weblog site = entry.getWebsite();
-        UserData user = entry.getCreator();
+        User user = entry.getCreator();
         
         // Only send email if email notificaiton is enabled
         boolean notify = RollerRuntimeConfig.getBooleanProperty("users.comments.emailnotify");

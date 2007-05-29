@@ -1,5 +1,5 @@
     /**
-     * Test the hasCategory() method on WeblogCategoryData.
+     * Test the hasCategory() method on WeblogCategory.
      */
     public void testHasCategory() throws Exception {
         
@@ -7,7 +7,7 @@
         
         WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
         
-        WeblogCategoryData root = mgr.getRootWeblogCategory(TestUtils.getManagedWebsite(testWeblog));
+        WeblogCategory root = mgr.getRootWeblogCategory(TestUtils.getManagedWebsite(testWeblog));
         
         // check that root has category
         assertTrue(root.hasCategory(testCat.getName()));

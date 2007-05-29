@@ -5,7 +5,7 @@
         // setup some test entries to use
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         testUser = TestUtils.getManagedUser(testUser);
-        WeblogEntryData entry = TestUtils.setupWeblogEntry("entry1", testWeblog
+        WeblogEntry entry = TestUtils.setupWeblogEntry("entry1", testWeblog
                 .getDefaultCategory(), testWeblog, testUser);
         entry.addTag("testWillStayTag");
         entry.addTag("testTagWillBeRemoved");
@@ -27,7 +27,7 @@
         entry = mgr.getWeblogEntry(id);
         HashSet tagNames = new HashSet();
         for (Iterator it = entry.getTags().iterator(); it.hasNext();) {
-            WeblogEntryTagData tagData = (WeblogEntryTagData) it.next();
+            WeblogEntryTag tagData = (WeblogEntryTag) it.next();
             tagNames.add(tagData.getName());
         }
 

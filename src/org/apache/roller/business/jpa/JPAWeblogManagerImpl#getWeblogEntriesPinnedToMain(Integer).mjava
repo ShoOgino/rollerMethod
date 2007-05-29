@@ -4,9 +4,9 @@
     public List getWeblogEntriesPinnedToMain(Integer max)
     throws RollerException {
         Query query = strategy.getNamedQuery(
-                "WeblogEntryData.getByPinnedToMain&statusOrderByPubTimeDesc");
+                "WeblogEntry.getByPinnedToMain&statusOrderByPubTimeDesc");
         query.setParameter(1, Boolean.TRUE);
-        query.setParameter(2, WeblogEntryData.PUBLISHED);
+        query.setParameter(2, WeblogEntry.PUBLISHED);
         if (max != null) {
             query.setMaxResults(max.intValue());
         }

@@ -1,0 +1,44 @@
+    /**
+     * Load comments for one weblog entry and related objects.
+     */
+    private static void loadCommentValues(
+            
+            Map ctx,
+            HttpServletRequest request,WeblogEntry entry) throws RollerException {
+        
+        mLogger.debug("Loading comment values");
+        
+        String escapeHtml =
+                RollerRuntimeConfig.getProperty("users.comments.escapehtml");
+        String autoFormat =
+                RollerRuntimeConfig.getProperty("users.comments.autoformat");
+        ctx.put("isCommentPage",     Boolean.TRUE);
+        ctx.put("escapeHtml",        new Boolean(escapeHtml) );
+        ctx.put("autoformat",        new Boolean(autoFormat) );
+        
+        // Make sure comment form object is available in context
+        WeblogEntryCommentForm commentForm =
+                (WeblogEntryCommentForm) request.getAttribute("commentForm");
+        if ( commentForm == null ) {
+            commentForm = new WeblogEntryCommentForm();
+            
+            // Set fields to spaces to please Velocity
+            commentForm.setName("");
+            commentForm.setEmail("");
+            commentForm.setUrl("");
+            commentForm.setContent("");
+        }
+        ctx.put("commentForm",commentForm);
+        
+        // Either put a preview comment in to context
+        if(commentForm.isPreview()) {
+            ArrayList list = new ArrayList();
+            list.add(commentForm.getPreviewComment());
+            ctx.put("previewComments", list);
+        }
+        
+        if (entry.getStatus().equals(WeblogEntry.PUBLISHED)) {
+            ctx.put("entry", WeblogEntryDataWrapper.wrap(entry));
+        }
+    }
+

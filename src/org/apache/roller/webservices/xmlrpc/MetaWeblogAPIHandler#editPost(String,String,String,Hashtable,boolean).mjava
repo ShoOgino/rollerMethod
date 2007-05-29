@@ -8,7 +8,7 @@
         
         Roller roller = RollerFactory.getRoller();
         WeblogManager weblogMgr = roller.getWeblogManager();
-        WeblogEntryData entry = weblogMgr.getWeblogEntry(postid);
+        WeblogEntry entry = weblogMgr.getWeblogEntry(postid);
         
         validate(entry.getWebsite().getHandle(), userid,password);
         
@@ -37,9 +37,9 @@
             entry.setText(description);
             entry.setUpdateTime(current);
             if (Boolean.valueOf(publish).booleanValue()) {
-                entry.setStatus(WeblogEntryData.PUBLISHED);
+                entry.setStatus(WeblogEntry.PUBLISHED);
             } else {
-                entry.setStatus(WeblogEntryData.DRAFT);
+                entry.setStatus(WeblogEntry.DRAFT);
             }
             if (dateCreated != null) {
                 entry.setPubTime(new Timestamp(dateCreated.getTime()));
@@ -47,7 +47,7 @@
             
             if ( cat != null ) {
                 // Use first category specified by request
-                WeblogCategoryData cd =
+                WeblogCategory cd =
                         weblogMgr.getWeblogCategoryByPath(entry.getWebsite(), cat);
                 entry.setCategory(cd);
             }

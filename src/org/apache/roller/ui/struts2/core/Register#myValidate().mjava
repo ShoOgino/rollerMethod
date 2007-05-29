@@ -5,7 +5,7 @@
         boolean usingSSO = RollerConfig.getBooleanProperty("users.sso.enabled");
         if(usingSSO) {
             boolean storePassword = RollerConfig.getBooleanProperty("users.sso.passwords.saveInRollerDb");
-            UserData fromSSO = CustomUserRegistry.getUserDetailsFromAuthentication();
+            User fromSSO = CustomUserRegistry.getUserDetailsFromAuthentication();
             if(fromSSO != null) {
                 String password = RollerConfig.getProperty("users.sso.passwords.defaultValue", "<unknown>");
                 if(storePassword) {

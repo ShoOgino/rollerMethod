@@ -15,7 +15,7 @@
             // are we requiring an authenticated user?
             if(theAction.isUserRequired()) {
                 
-                UserData authenticatedUser = ((UIAction)theAction).getAuthenticatedUser();
+                User authenticatedUser = ((UIAction)theAction).getAuthenticatedUser();
                 if(authenticatedUser == null) {
                     log.debug("DENIED: required user not found");
                     return "access-denied";

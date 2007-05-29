@@ -2,7 +2,7 @@
         String lc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         Map results = new TreeMap();
         Query query = strategy.getNamedQuery(
-                "UserData.getCountByUserNameLike");
+                "User.getCountByUserNameLike");
         for (int i=0; i<26; i++) {
             char currentChar = lc.charAt(i);
             query.setParameter(1, currentChar + "%");

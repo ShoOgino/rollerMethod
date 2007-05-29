@@ -1,0 +1,20 @@
+    private static boolean isPermitted(String perm, User user, Weblog weblog) {
+        
+        // convert permissions string to short
+        short permMask = -1;
+        if(perm == null) {
+            return true;
+        } else if("limited".equals(perm)) {
+            permMask = WeblogPermission.LIMITED;
+        } else if("author".equals(perm)) {
+            permMask = WeblogPermission.AUTHOR;
+        } else if("admin".equals(perm)) {
+            permMask = WeblogPermission.ADMIN;
+        } else {
+            // unknown perm
+            return false;
+        }
+        
+        return weblog.hasUserPermissions(user, permMask);
+    }
+

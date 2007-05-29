@@ -7,7 +7,7 @@
             throw new RollerException("website is null");
         
         Query q = strategy.getNamedQuery(
-                "WeblogCategoryData.getByWebsite");
+                "WeblogCategory.getByWebsite");
         q.setParameter(1, website);
         return q.getResultList();
     }

@@ -27,11 +27,11 @@
         try {
             Roller roller = RollerFactory.getRoller();
             WeblogManager weblogMgr = roller.getWeblogManager();
-            UserData user = roller.getUserManager().getUserByUserName(userid);
+            User user = roller.getUserManager().getUserByUserName(userid);
             Timestamp current =
                     new Timestamp(System.currentTimeMillis());
             
-            WeblogEntryData entry = new WeblogEntryData();
+            WeblogEntry entry = new WeblogEntry();
             entry.setTitle(title);
             entry.setText(description);
             entry.setPubTime(new Timestamp(dateCreated.getTime()));
@@ -40,14 +40,14 @@
             entry.setCreator(user);
             entry.setCommentDays(new Integer(website.getDefaultCommentDays()));
             if (Boolean.valueOf(publish).booleanValue()) {
-                entry.setStatus(WeblogEntryData.PUBLISHED);
+                entry.setStatus(WeblogEntry.PUBLISHED);
             } else {
-                entry.setStatus(WeblogEntryData.DRAFT);
+                entry.setStatus(WeblogEntry.DRAFT);
             }
             
             // MetaWeblog supports multiple cats, Roller supports one/entry
             // so here we take accept the first category that exists
-            WeblogCategoryData rollerCat = null;
+            WeblogCategory rollerCat = null;
             if ( postcontent.get("categories") != null ) {
                 Vector cats = (Vector)postcontent.get("categories");
                 if (cats != null && cats.size() > 0) {

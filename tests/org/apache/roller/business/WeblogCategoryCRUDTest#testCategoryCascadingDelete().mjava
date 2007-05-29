@@ -9,13 +9,13 @@
         
         // root category is always available
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
-        WeblogCategoryData root = mgr.getRootWeblogCategory(testWeblog);
+        WeblogCategory root = mgr.getRootWeblogCategory(testWeblog);
         
         // add a small category tree /subcat/subcat2
-        WeblogCategoryData subcat = new WeblogCategoryData(testWeblog, root, "subcatTest1", null, null);
+        WeblogCategory subcat = new WeblogCategory(testWeblog, root, "subcatTest1", null, null);
         root.addCategory(subcat);
         mgr.saveWeblogCategory(subcat);
-        WeblogCategoryData subcat2 = new WeblogCategoryData(testWeblog, subcat, "subcatTest2", null, null);
+        WeblogCategory subcat2 = new WeblogCategory(testWeblog, subcat, "subcatTest2", null, null);
         subcat.addCategory(subcat2);
         mgr.saveWeblogCategory(subcat2);
         TestUtils.endSession(true);
@@ -24,10 +24,10 @@
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         root = mgr.getRootWeblogCategory(testWeblog);
         assertEquals(1, root.getWeblogCategories().size());
-        subcat = (WeblogCategoryData) root.getWeblogCategories().iterator().next();
+        subcat = (WeblogCategory) root.getWeblogCategories().iterator().next();
         assertEquals("subcatTest1", subcat.getName());
         assertEquals(1, subcat.getWeblogCategories().size());
-        subcat2 = (WeblogCategoryData) subcat.getWeblogCategories().iterator().next();
+        subcat2 = (WeblogCategory) subcat.getWeblogCategories().iterator().next();
         assertEquals("subcatTest2", subcat2.getName());
         
         // now delete category and subcats should be deleted by cascade

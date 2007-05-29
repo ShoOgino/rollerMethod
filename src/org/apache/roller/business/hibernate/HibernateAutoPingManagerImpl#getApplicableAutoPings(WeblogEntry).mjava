@@ -1,0 +1,13 @@
+    public List getApplicableAutoPings(WeblogEntry changedWeblogEntry) throws RollerException {
+        try {
+            Session session = ((HibernatePersistenceStrategy) strategy).getSession();
+            Criteria criteria = session.createCriteria(AutoPingData.class);
+            // Currently category restrictions are not yet implemented, so we return all auto ping configs for the
+            // website.
+            criteria.add(Expression.eq("website", changedWeblogEntry.getWebsite()));
+            return criteria.list();
+        } catch (HibernateException e) {
+            throw new RollerException(e);
+        }
+    }
+

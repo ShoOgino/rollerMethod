@@ -15,11 +15,11 @@
         StringBuffer whereClause = new StringBuffer();
                             
         if (weblog != null) {
-            queryString.append("SELECT u FROM UserData u JOIN u.permissions p WHERE ");
+            queryString.append("SELECT u FROM User u JOIN u.permissions p WHERE ");
             params.add(size++, weblog);
             whereClause.append(" p.website = ?" + size);   
         } else {
-            queryString.append("SELECT u FROM UserData u WHERE ");
+            queryString.append("SELECT u FROM User u WHERE ");
         }         
 
         if (enabled != null) {

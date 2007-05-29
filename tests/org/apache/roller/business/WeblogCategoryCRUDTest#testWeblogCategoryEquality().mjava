@@ -1,5 +1,5 @@
     /**
-     * Test WeblogCategoryData.equals() method.
+     * Test WeblogCategory.equals() method.
      */
     public void testWeblogCategoryEquality() throws Exception {
         
@@ -8,12 +8,12 @@
         WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
         
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
-        WeblogCategoryData root = mgr.getRootWeblogCategory(testWeblog);
+        WeblogCategory root = mgr.getRootWeblogCategory(testWeblog);
         
-        WeblogCategoryData testCat = new WeblogCategoryData(testWeblog, null, "root", "root", null);
+        WeblogCategory testCat = new WeblogCategory(testWeblog, null, "root", "root", null);
         assertTrue(root.equals(testCat));
         
-        testCat = new WeblogCategoryData(testWeblog, root, "root", "root", null);
+        testCat = new WeblogCategory(testWeblog, root, "root", "root", null);
         assertFalse(root.equals(testCat));
         
         log.info("END");

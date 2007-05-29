@@ -7,7 +7,7 @@
             WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
             
             if(getTargetCategoryId() != null) {
-                WeblogCategoryData target = wmgr.getWeblogCategory(getTargetCategoryId());
+                WeblogCategory target = wmgr.getWeblogCategory(getTargetCategoryId());
                 wmgr.moveWeblogCategoryContents(getCategory(), target);
                 RollerFactory.getRoller().flush();
             }

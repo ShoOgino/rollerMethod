@@ -35,7 +35,7 @@
         
         SimpleDateFormat formatter = DateUtil.get8charDateFormat();
         for (Iterator wbItr = entries.iterator(); wbItr.hasNext();) {
-            WeblogEntryData entry = (WeblogEntryData) wbItr.next();
+            WeblogEntry entry = (WeblogEntry) wbItr.next();
             Date sDate = DateUtil.getNoonOfDay(entry.getPubTime(), cal);
             if (stringsOnly) {
                 if (map.get(sDate) == null)

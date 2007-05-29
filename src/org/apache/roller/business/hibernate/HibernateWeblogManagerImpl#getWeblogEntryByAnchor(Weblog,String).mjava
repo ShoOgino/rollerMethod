@@ -1,4 +1,4 @@
-    public WeblogEntryData getWeblogEntryByAnchor(Weblog website, String anchor) 
+    public WeblogEntry getWeblogEntryByAnchor(Weblog website, String anchor) 
             throws RollerException {
         
         if (website == null)
@@ -14,7 +14,7 @@
         // NOTE: if we ever allow changing anchors then this needs updating
         if(this.entryAnchorToIdMap.containsKey(mappingKey)) {
             
-            WeblogEntryData entry = this.getWeblogEntry((String) this.entryAnchorToIdMap.get(mappingKey));
+            WeblogEntry entry = this.getWeblogEntry((String) this.entryAnchorToIdMap.get(mappingKey));
             if(entry != null) {
                 log.debug("entryAnchorToIdMap CACHE HIT - "+mappingKey);
                 return entry;
@@ -27,7 +27,7 @@
         // cache failed, do lookup
         try {
             Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
-            Criteria criteria = session.createCriteria(WeblogEntryData.class);
+            Criteria criteria = session.createCriteria(WeblogEntry.class);
             criteria.add(Expression.conjunction()
             .add(Expression.eq("website",website))
             .add(Expression.eq("anchor",anchor)));
@@ -36,9 +36,9 @@
             
             List list = criteria.list();
             
-            WeblogEntryData entry = null;
+            WeblogEntry entry = null;
             if(list.size() != 0) {
-                entry = (WeblogEntryData) criteria.uniqueResult();
+                entry = (WeblogEntry) criteria.uniqueResult();
             }
             
             // add mapping to cache

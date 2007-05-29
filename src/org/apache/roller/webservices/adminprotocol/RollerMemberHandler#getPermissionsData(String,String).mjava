@@ -1,6 +1,6 @@
     private WeblogPermission getPermissionsData(String handle, String username) throws HandlerException {
         try {
-            UserData ud = getUserData(username);
+            User ud = getUserData(username);
             Weblog wd = getWebsiteData(handle);
             WeblogPermission pd = getRoller().getUserManager().getPermissions(wd, ud);
             

@@ -14,7 +14,7 @@
                 String sval = getParameter("perm-" + perms.getId());
                 if (sval != null) {
                     short val = Short.parseShort(sval);
-                    UserData user = getAuthenticatedUser();
+                    User user = getAuthenticatedUser();
                     if (perms.getUser().getId().equals(user.getId()) && 
                             val < perms.getPermissionMask()) {
                         addError("memberPermissions.noSelfDemotions");

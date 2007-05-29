@@ -1,7 +1,7 @@
     /**
      * @inheritDoc
      */
-    public WeblogEntryData getWeblogEntryByAnchor(Weblog website,
+    public WeblogEntry getWeblogEntryByAnchor(Weblog website,
             String anchor) throws RollerException {
         
         if (website == null)
@@ -17,7 +17,7 @@
         // NOTE: if we ever allow changing anchors then this needs updating
         if(this.entryAnchorToIdMap.containsKey(mappingKey)) {
             
-            WeblogEntryData entry = this.getWeblogEntry((String) this.entryAnchorToIdMap.get(mappingKey));
+            WeblogEntry entry = this.getWeblogEntry((String) this.entryAnchorToIdMap.get(mappingKey));
             if(entry != null) {
                 log.debug("entryAnchorToIdMap CACHE HIT - "+mappingKey);
                 return entry;
@@ -29,12 +29,12 @@
         
         // cache failed, do lookup
         Query q = strategy.getNamedQuery(
-                "WeblogEntryData.getByWebsite&AnchorOrderByPubTimeDesc");
+                "WeblogEntry.getByWebsite&AnchorOrderByPubTimeDesc");
         q.setParameter(1, website);
         q.setParameter(2, anchor);
-        WeblogEntryData entry = null;
+        WeblogEntry entry = null;
         try {
-            entry = (WeblogEntryData)q.getSingleResult();
+            entry = (WeblogEntry)q.getSingleResult();
         } catch (NoResultException e) {
             entry = null;
         }

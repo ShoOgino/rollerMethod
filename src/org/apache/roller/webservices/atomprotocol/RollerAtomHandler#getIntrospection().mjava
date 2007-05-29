@@ -39,7 +39,7 @@
                     cats.setScheme(getWeblogCategoryScheme(perm.getWebsite()));
                     List rollerCats = roller.getWeblogManager().getWeblogCategories(perm.getWebsite(), false);
                     for (Iterator it = rollerCats.iterator(); it.hasNext();) {
-                        WeblogCategoryData rollerCat = (WeblogCategoryData)it.next();
+                        WeblogCategory rollerCat = (WeblogCategory)it.next();
                         Category cat = new Category();
                         cat.setTerm(rollerCat.getPath().substring(1));
                         cat.setLabel(rollerCat.getName());

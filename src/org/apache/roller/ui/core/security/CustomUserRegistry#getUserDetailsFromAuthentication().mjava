@@ -1,4 +1,4 @@
-    public static UserData getUserDetailsFromAuthentication() {
+    public static User getUserDetailsFromAuthentication() {
         boolean usingSSO = RollerConfig.getBooleanProperty("users.sso.enabled");
         if(!usingSSO) {
             log.info("SSO is not enabled. Skipping CustomUserRegistry functionality.");
@@ -30,7 +30,7 @@
         String password = userDetails.getPassword();
         boolean enabled = userDetails.isEnabled();
         
-        UserData ud = new UserData();
+        User ud = new User();
         ud.setId(null);
         ud.setUserName(userName);
         

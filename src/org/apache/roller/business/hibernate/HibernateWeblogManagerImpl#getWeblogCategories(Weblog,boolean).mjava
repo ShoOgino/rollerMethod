@@ -7,7 +7,7 @@
         
         try {
             Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
-            Criteria criteria = session.createCriteria(WeblogCategoryData.class);
+            Criteria criteria = session.createCriteria(WeblogCategory.class);
             criteria.add(Expression.eq("website", website));
             
             if(!includeRoot) {

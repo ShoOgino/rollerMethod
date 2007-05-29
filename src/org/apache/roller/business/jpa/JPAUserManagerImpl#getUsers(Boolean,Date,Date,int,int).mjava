@@ -12,14 +12,14 @@
                 Timestamp start = new Timestamp(startDate.getTime());
                 Timestamp end = new Timestamp(endDate.getTime());
                 query = strategy.getNamedQuery(
-                        "UserData.getByEnabled&EndDate&StartDateOrderByStartDateDesc");
+                        "User.getByEnabled&EndDate&StartDateOrderByStartDateDesc");
                 query.setParameter(1, enabled);
                 query.setParameter(2, end);
                 query.setParameter(3, start);
             } else {
                 Timestamp end = new Timestamp(endDate.getTime());
                 query = strategy.getNamedQuery(
-                        "UserData.getByEnabled&EndDateOrderByStartDateDesc");
+                        "User.getByEnabled&EndDateOrderByStartDateDesc");
                 query.setParameter(1, enabled);
                 query.setParameter(2, end);
             }
@@ -28,13 +28,13 @@
                 Timestamp start = new Timestamp(startDate.getTime());
                 Timestamp end = new Timestamp(endDate.getTime());
                 query = strategy.getNamedQuery(
-                        "UserData.getByEndDate&StartDateOrderByStartDateDesc");
+                        "User.getByEndDate&StartDateOrderByStartDateDesc");
                 query.setParameter(1, end);
                 query.setParameter(2, start);
             } else {
                 Timestamp end = new Timestamp(endDate.getTime());
                 query = strategy.getNamedQuery(
-                        "UserData.getByEndDateOrderByStartDateDesc");
+                        "User.getByEndDateOrderByStartDateDesc");
                 query.setParameter(1, end);
             }
         }

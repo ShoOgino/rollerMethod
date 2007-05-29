@@ -1,0 +1,48 @@
+    /**
+     * Initialize PageModel and allow PageModel to initialized VelocityContext.
+     */
+    public void init(HttpServletRequest request,
+            Weblog website,WeblogEntry entry,
+            WeblogCategory category,
+            Date date,
+            boolean isDay,
+            boolean isMonth,
+            String locale) {
+        
+        mRequest = request;
+        
+        // data we'll need in the methods
+        mWebsite = website;
+        mEntry = entry;
+        mCategory = category;
+        mDate = date;
+        mIsDaySpecified = isDay;
+        mIsMonthSpecified = isMonth;
+        mLocale = locale;
+        
+        mBookmarkMgr = RollerFactory.getRoller().getBookmarkManager();
+        mRefererMgr  = RollerFactory.getRoller().getRefererManager();
+        mUserMgr     = RollerFactory.getRoller().getUserManager();
+        mWeblogMgr   = RollerFactory.getRoller().getWeblogManager();
+        
+        // Preload what we can for encapsulation.  What we cannot preload we
+        // will use the Managers later to fetch.
+        
+        // Get the pages, put into context & load map
+        if (mWebsite != null) {
+            
+            List pages = Collections.EMPTY_LIST;
+            try {
+                pages = mWebsite.getPages();
+            } catch (RollerException ex) {
+                mLogger.error("error getting weblog pages", ex);
+            }
+            
+            Iterator pageIter = pages.iterator();
+            while (pageIter.hasNext()) {
+                ThemeTemplate page = (ThemeTemplate) pageIter.next();
+                mPageMap.put(page.getName(), TemplateWrapper.wrap(page));
+            }
+        }
+    }
+

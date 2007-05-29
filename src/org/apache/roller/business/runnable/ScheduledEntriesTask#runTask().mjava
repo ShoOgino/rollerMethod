@@ -15,13 +15,13 @@
             
             // get all published entries older than current time
             List scheduledEntries = wMgr.getWeblogEntries(
+                    
                     null,   // website
                     null,   // user
                     null,   // startDate
                     now,    // endDate
                     null,   // catName
-                    null,   // tags
-                    WeblogEntryData.SCHEDULED, // status
+                    null,WeblogEntry.SCHEDULED, // status
                     null,   // text
                     null,   // sortBy
                     null,   // sortOrder
@@ -30,13 +30,13 @@
                     
             log.debug("promoting "+scheduledEntries.size()+" entries to PUBLISHED state");
             
-            WeblogEntryData entry = null;
+            WeblogEntry entry = null;
             Iterator it = scheduledEntries.iterator();
             while(it.hasNext()) {
-                entry = (WeblogEntryData) it.next();
+                entry = (WeblogEntry) it.next();
                 
                 // update status to PUBLISHED and save
-                entry.setStatus(WeblogEntryData.PUBLISHED);
+                entry.setStatus(WeblogEntry.PUBLISHED);
                 wMgr.saveWeblogEntry(entry);
             }
             
@@ -47,7 +47,7 @@
             // this is because we need the updated entries flushed first
             it = scheduledEntries.iterator();
             while(it.hasNext()) {
-                entry = (WeblogEntryData) it.next();
+                entry = (WeblogEntry) it.next();
                 
                 // trigger a cache invalidation
                 CacheManager.invalidate(entry);

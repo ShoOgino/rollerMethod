@@ -1,0 +1,15 @@
+    public void removeWeblogEntryTag(String name,WeblogEntry entry)
+            throws RollerException {
+        for (Iterator it = entry.getTags().iterator(); it.hasNext();) {
+            WeblogEntryTag tag = (WeblogEntryTag) it.next();
+            if (tag.getName().equals(name)) {
+                //Call back the entity to adjust its internal state
+                entry.onRemoveTag(name);
+                //Remove it from the collection
+                it.remove();
+                //Remove it from database
+                this.strategy.remove(tag);
+            }
+        }
+    }
+

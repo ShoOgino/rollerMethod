@@ -1,0 +1,35 @@
+    private void updateUserData(User ud, UserEntry entry) throws HandlerException {
+        // user name cannot be updated
+
+        if (entry.getScreenName() != null) {
+            ud.setScreenName(entry.getScreenName());
+        }
+        if (entry.getFullName() != null) {
+            ud.setFullName(entry.getFullName());
+        }
+        if (entry.getPassword() != null) {
+            ud.setPassword(entry.getPassword());
+        }
+        if (entry.getLocale() != null) {
+            ud.setLocale(entry.getLocale().toString());
+        }
+        if (entry.getTimezone() != null) {
+            ud.setTimeZone(entry.getTimezone().getID());
+        }
+        if (entry.getEmailAddress() != null) {
+            ud.setEmailAddress(entry.getEmailAddress());
+        }
+        if (entry.getEnabled() != null) {
+            ud.setEnabled(entry.getEnabled());
+        }
+        
+        try {
+            UserManager mgr = getRoller().getUserManager();
+            mgr.saveUser(ud);
+            getRoller().flush();
+            CacheManager.invalidate(ud);
+        } catch (RollerException re) {
+            throw new InternalException("ERROR: could not update user data", re);
+        }
+    }
+

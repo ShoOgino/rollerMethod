@@ -3,7 +3,7 @@
         WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
         UserManager umgr = RollerFactory.getRoller().getUserManager();
         
-        UserData user1 = TestUtils.setupUser("statuser1");
+        User user1 = TestUtils.setupUser("statuser1");
         Weblog blog1 = TestUtils.setupWeblog("statblog1", user1);
         Weblog blog2 = TestUtils.setupWeblog("statblog2", user1);
 
@@ -11,16 +11,16 @@
         blog3.setEnabled(Boolean. FALSE);
         umgr.saveWebsite(blog3);
 
-        WeblogEntryData entry1 = TestUtils.setupWeblogEntry("entry1", 
+        WeblogEntry entry1 = TestUtils.setupWeblogEntry("entry1", 
                 testWeblog.getDefaultCategory(), blog1, user1);
-        WeblogEntryData entry2 = TestUtils.setupWeblogEntry("entry2", 
+        WeblogEntry entry2 = TestUtils.setupWeblogEntry("entry2", 
                 testWeblog.getDefaultCategory(), blog1, user1);
         
-        WeblogEntryData entry3 = TestUtils.setupWeblogEntry("entry3", 
+        WeblogEntry entry3 = TestUtils.setupWeblogEntry("entry3", 
                 testWeblog.getDefaultCategory(), blog2, user1);
-        WeblogEntryData entry4 = TestUtils.setupWeblogEntry("entry4", 
+        WeblogEntry entry4 = TestUtils.setupWeblogEntry("entry4", 
                 testWeblog.getDefaultCategory(), blog2, user1);
-        WeblogEntryData entry5 = TestUtils.setupWeblogEntry("entry5", 
+        WeblogEntry entry5 = TestUtils.setupWeblogEntry("entry5", 
                 testWeblog.getDefaultCategory(), blog2, user1);
                
         WeblogEntryComment comment1 = TestUtils.setupComment("comment1", entry1);

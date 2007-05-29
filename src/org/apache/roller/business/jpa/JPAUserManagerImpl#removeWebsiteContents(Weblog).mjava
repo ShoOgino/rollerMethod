@@ -9,12 +9,12 @@
         WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
         
         // remove tags
-        Query tagQuery = strategy.getNamedQuery("WeblogEntryTagData.getByWeblog");
+        Query tagQuery = strategy.getNamedQuery("WeblogEntryTag.getByWeblog");
         tagQuery.setParameter(1, website);
         List results = tagQuery.getResultList();
         
         for(Iterator iter = results.iterator(); iter.hasNext();) {
-            WeblogEntryTagData tagData = (WeblogEntryTagData) iter.next();
+            WeblogEntryTag tagData = (WeblogEntryTag) iter.next();
             this.strategy.remove(tagData);
         }
         
@@ -24,13 +24,13 @@
         
         // delete all weblog tag aggregates
         Query removeAggs= strategy.getNamedUpdate(
-                "WeblogEntryTagAggregateData.removeByWeblog");
+                "WeblogEntryTagAggregate.removeByWeblog");
         removeAggs.setParameter(1, website);
         removeAggs.executeUpdate();
         
         // delete all bad counts
         Query removeCounts = strategy.getNamedUpdate(
-                "WeblogEntryTagAggregateData.removeByTotalLessEqual");
+                "WeblogEntryTagAggregate.removeByTotalLessEqual");
         removeCounts.setParameter(1, new Integer(0));
         removeCounts.executeUpdate();
         
@@ -88,16 +88,16 @@
         this.strategy.flush();
 
         // remove entries
-        Query refQuery = strategy.getNamedQuery("WeblogEntryData.getByWebsite");
+        Query refQuery = strategy.getNamedQuery("WeblogEntry.getByWebsite");
         refQuery.setParameter(1, website);
         List entries = refQuery.getResultList();
         for (Iterator iter = entries.iterator(); iter.hasNext();) {
-            WeblogEntryData entry = (WeblogEntryData) iter.next();
+            WeblogEntry entry = (WeblogEntry) iter.next();
             wmgr.removeWeblogEntry(entry);
         }
         
         // remove categories
-        WeblogCategoryData rootCat = wmgr.getRootWeblogCategory(website);
+        WeblogCategory rootCat = wmgr.getRootWeblogCategory(website);
         if (null != rootCat) {
             this.strategy.remove(rootCat);
         }
@@ -111,7 +111,7 @@
             iterator.remove();
             
             //Remove it from corresponding user
-            UserData user = perms.getUser();
+            User user = perms.getUser();
             user.getPermissions().remove(perms);
 
             //Remove it from database
@@ -119,7 +119,7 @@
         }
         
         // flush the changes before returning. This is required as there is a
-        // circular dependency between WeblogCategoryData and Weblog
+        // circular dependency between WeblogCategory and Weblog
         this.strategy.flush();
     }
 

@@ -10,24 +10,24 @@
             if (startDate != null) {
                 Timestamp start = new Timestamp(startDate.getTime());
                 query = strategy.getNamedQuery(
-                        "WeblogEntryTagAggregateData.getPopularTagsByWebsite&StartDate");
+                        "WeblogEntryTagAggregate.getPopularTagsByWebsite&StartDate");
                 query.setParameter(1, website);
                 query.setParameter(2, start);
             } else {
                 Timestamp start = new Timestamp(startDate.getTime());
                 query = strategy.getNamedQuery(
-                        "WeblogEntryTagAggregateData.getPopularTagsByWebsite");
+                        "WeblogEntryTagAggregate.getPopularTagsByWebsite");
                 query.setParameter(1, start);
             }
         } else {
             if (startDate != null) {
                 Timestamp start = new Timestamp(startDate.getTime());
                 query = strategy.getNamedQuery(
-                        "WeblogEntryTagAggregateData.getPopularTagsByWebsiteNull&StartDate");
+                        "WeblogEntryTagAggregate.getPopularTagsByWebsiteNull&StartDate");
                 query.setParameter(1, start);
             } else {
                 query = strategy.getNamedQuery(
-                        "WeblogEntryTagAggregateData.getPopularTagsByWebsiteNull");
+                        "WeblogEntryTagAggregate.getPopularTagsByWebsiteNull");
             }
         }
         if (limit != -1) {

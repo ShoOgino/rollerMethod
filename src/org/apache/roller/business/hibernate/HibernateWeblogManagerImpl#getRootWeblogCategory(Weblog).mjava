@@ -1,17 +1,17 @@
-    public WeblogCategoryData getRootWeblogCategory(Weblog website)
+    public WeblogCategory getRootWeblogCategory(Weblog website)
     throws RollerException {
         if (website == null)
             throw new RollerException("website is null");
         
         try {
             Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
-            Criteria criteria = session.createCriteria(WeblogCategoryData.class);
+            Criteria criteria = session.createCriteria(WeblogCategory.class);
             
             criteria.add(Expression.eq("website", website));
             criteria.add(Expression.isNull("parent"));
             criteria.setMaxResults(1);
             
-            return (WeblogCategoryData) criteria.uniqueResult();
+            return (WeblogCategory) criteria.uniqueResult();
             
         } catch (HibernateException e) {
             throw new RollerException(e);

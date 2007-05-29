@@ -62,12 +62,12 @@
                 endDate = DateUtil.getEndOfMonth(endDate, cal);
             }
             Map mRet = RollerFactory.getRoller().getWeblogManager().getWeblogEntryObjectMap(
+                    
                     mWebsite,
                     startDate,                    // startDate
                     endDate,                      // endDate
                     catParam,                     // catName
-                    null,                         // tags
-                    WeblogEntryData.PUBLISHED,    // status
+                    null,WeblogEntry.PUBLISHED,    // status
                     mLocale, 0, limit);  
             
             // need to wrap pojos
@@ -80,8 +80,7 @@
                 List wrappedEntries = new ArrayList();
                 List entries = (List) mRet.get(key);
                 for(int i=0; i < entries.size(); i++) {
-                    wrappedEntries.add(i,
-                         WeblogEntryDataWrapper.wrap((WeblogEntryData)entries.get(i)));
+                    wrappedEntries.add(i,WeblogEntryDataWrapper.wrap((WeblogEntry)entries.get(i)));
                 }
                 mRet.put(key, wrappedEntries);
             }

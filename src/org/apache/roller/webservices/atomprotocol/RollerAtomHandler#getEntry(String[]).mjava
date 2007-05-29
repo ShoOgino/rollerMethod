@@ -7,7 +7,7 @@
             if (pathInfo.length > 2) // URI is /blogname/entries/entryid
             {
                 if (pathInfo[1].equals("entry")) {
-                    WeblogEntryData entry = 
+                    WeblogEntry entry = 
                         roller.getWeblogManager().getWeblogEntry(pathInfo[2]);
                     if (entry == null) {
                         throw new AtomNotFoundException("Cannot find specified entry/resource");

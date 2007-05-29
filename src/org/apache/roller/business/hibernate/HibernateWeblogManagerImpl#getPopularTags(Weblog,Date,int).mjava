@@ -10,7 +10,7 @@
             ArrayList params = new ArrayList();
             StringBuffer queryString = new StringBuffer();
             queryString.append("select name, sum(total) ");
-            queryString.append("from WeblogEntryTagAggregateData where ");
+            queryString.append("from WeblogEntryTagAggregate where ");
             if (website != null) {
                 queryString.append("weblog.id = ? ");
                 params.add(website.getId());

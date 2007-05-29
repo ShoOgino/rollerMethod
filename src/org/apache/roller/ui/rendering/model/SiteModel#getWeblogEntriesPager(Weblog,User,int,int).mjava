@@ -1,0 +1,12 @@
+    /**
+     * Get pager ofWeblogEntry objects across all weblogs,
+     * in reverse chrono order by pubTime.
+     * @param queryWeblog Restrict to this weblog
+     * @param user        Restrict to this user
+     * @param sinceDays   Limit to past X days in past (or -1 for no limit)
+     * @param length      Max number of results to return
+     */   
+    public Pager getWeblogEntriesPager(Weblog queryWeblog, User user, int sinceDays, int length) {
+        return getWeblogEntriesPager(queryWeblog, user, null, sinceDays, length);
+    }
+

@@ -3,7 +3,7 @@
      */
     public boolean isGlobalAdminUser() throws RollerException {
         
-        UserData user = getAuthenticatedUser();
+        User user = getAuthenticatedUser();
         if (user != null && user.hasRole("admin")
         && user.getEnabled().booleanValue()) return true;
         return false;

@@ -9,13 +9,13 @@
                     // if no creation date supplied, add it
                     entry.setDateCreated(new Date());
                 }
-                UserData ud = toUserData(entry);
+                User ud = toUserData(entry);
                 mgr.addUser(ud);
                 getRoller().flush();
                 CacheManager.invalidate(ud);
                 userDatas.add(ud);
             }
-            return toUserEntrySet((UserData[])userDatas.toArray(new UserData[0]));
+            return toUserEntrySet((User[])userDatas.toArray(new User[0]));
         } catch (RollerException re) {
             throw new InternalException("ERROR: Could not create users: " + c, re);
         }

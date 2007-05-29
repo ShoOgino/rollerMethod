@@ -1,7 +1,7 @@
     public UserDetails loadUserByUsername(String userName) 
         throws UsernameNotFoundException, DataAccessException {
         
-        UserData userData = null;
+        User userData = null;
         try {
             Roller roller = RollerFactory.getRoller();
             UserManager umgr = roller.getUserManager();
@@ -22,7 +22,7 @@
             authorities[i++] = new GrantedAuthorityImpl(role.getRole());
         }
         
-        return new User(
+        return new org.acegisecurity.userdetails.User(
             userData.getUserName(), userData.getPassword(), true, authorities);
     }
 

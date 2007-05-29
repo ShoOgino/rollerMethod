@@ -4,17 +4,17 @@
      * @return List of WeblogEntryData objects.
      * @throws RollerException
      */
-    public List<WeblogEntryData> getRecentScheduledEntries() {
-        List<WeblogEntryData> entries = Collections.EMPTY_LIST;
+    public List<WeblogEntry> getRecentScheduledEntries() {
+        List<WeblogEntry> entries = Collections.EMPTY_LIST;
         try {
             entries = RollerFactory.getRoller().getWeblogManager().getWeblogEntries(
+                    
                     getActionWeblog(), // userName
                     null,
                     null,              // startDate
                     null,              // endDate
                     null,              // catName
-                    null,              // tags
-                    WeblogEntryData.SCHEDULED, // status
+                    null,WeblogEntry.SCHEDULED, // status
                     null,              // text
                     null,              // sortby (null for pubTime)
                     null,

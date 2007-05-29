@@ -6,7 +6,7 @@
         try {
             if (pathInfo.length == 3) // URI is /blogname/entries/entryid
             {
-                WeblogEntryData rollerEntry =
+                WeblogEntry rollerEntry =
                     roller.getWeblogManager().getWeblogEntry(pathInfo[2]);
                 if (rollerEntry == null) {
                     throw new AtomNotFoundException(

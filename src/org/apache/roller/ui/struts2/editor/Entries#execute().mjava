@@ -8,7 +8,7 @@
             String status = getBean().getStatus();
             
             WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
-            List<WeblogEntryData> entries = wmgr.getWeblogEntries(
+            List<WeblogEntry> entries = wmgr.getWeblogEntries(
                     getActionWeblog(),
                     null,
                     getBean().getStartDate(),
@@ -32,8 +32,8 @@
                 }
                 
                 setEntries(entries);
-                setFirstEntry((WeblogEntryData)entries.get(0));
-                setLastEntry((WeblogEntryData)entries.get(entries.size()-1));
+                setFirstEntry((WeblogEntry)entries.get(0));
+                setLastEntry((WeblogEntry)entries.get(entries.size()-1));
             }
         } catch (RollerException ex) {
             log.error("Error looking up entries", ex);

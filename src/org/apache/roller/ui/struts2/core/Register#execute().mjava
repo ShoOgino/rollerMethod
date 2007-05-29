@@ -14,7 +14,7 @@
             // and retrieve custom user data to pre-populate form.
             boolean usingSSO = RollerConfig.getBooleanProperty("users.sso.enabled");
             if(usingSSO) {
-                UserData fromSSO = CustomUserRegistry.getUserDetailsFromAuthentication();
+                User fromSSO = CustomUserRegistry.getUserDetailsFromAuthentication();
                 if(fromSSO != null) {
                     getBean().copyFrom(fromSSO);
                     setFromSS0(true);

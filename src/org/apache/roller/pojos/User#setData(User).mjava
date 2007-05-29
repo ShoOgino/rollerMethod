@@ -1,0 +1,17 @@
+    /**
+     * Set bean properties based on other bean.
+     */
+    public void setData( User otherData ) {
+        User other = (User)otherData;
+        this.id =       other.getId();
+        this.userName = other.getUserName();
+        this.password = other.getPassword();
+        this.screenName = other.getScreenName();
+        this.fullName = other.getFullName();
+        this.emailAddress = other.getEmailAddress();
+        this.locale = other.getLocale();
+        this.timeZone = other.getTimeZone();
+        this.dateCreated = other.getDateCreated()!=null ? (Date)other.getDateCreated().clone() : null;
+        this.activationCode = other.getActivationCode();
+    }
+

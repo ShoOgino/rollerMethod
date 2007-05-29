@@ -1,9 +1,9 @@
     public List getWeblogEntriesPinnedToMain(Integer max) throws RollerException {
         try {
             Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
-            Criteria criteria = session.createCriteria(WeblogEntryData.class);
+            Criteria criteria = session.createCriteria(WeblogEntry.class);
             criteria.add(Expression.eq("pinnedToMain", Boolean.TRUE));
-            criteria.add(Expression.eq("status", WeblogEntryData.PUBLISHED));
+            criteria.add(Expression.eq("status",WeblogEntry.PUBLISHED));
             criteria.addOrder(Order.desc("pubTime"));
             if (max != null) {
                 criteria.setMaxResults(max.intValue());

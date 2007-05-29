@@ -1,0 +1,12 @@
+    public void revokeRole(String roleName, User user) throws RollerException {
+        Collection roles = user.getRoles();
+        Iterator iter = roles.iterator();
+        while (iter.hasNext()) {
+            UserRole role = (UserRole) iter.next();
+            if (role.getRole().equals(roleName)) {
+                this.strategy.remove(role);
+                iter.remove();
+            }
+        }
+    }
+

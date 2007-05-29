@@ -4,7 +4,7 @@
         List results = new ArrayList();
         try {
             Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
-            Criteria criteria = session.createCriteria(UserData.class);
+            Criteria criteria = session.createCriteria(User.class);
             
             if (enabled != null) {
                 criteria.add(Expression.eq("enabled", enabled));

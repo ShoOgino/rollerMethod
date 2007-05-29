@@ -4,9 +4,9 @@
     public void testWeblogEntryCRUD() throws Exception {
         
         WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
-        WeblogEntryData entry = null;
+        WeblogEntry entry = null;
         
-        WeblogEntryData testEntry = new WeblogEntryData();
+        WeblogEntry testEntry = new WeblogEntry();
         testEntry.setTitle("entryTestEntry");
         testEntry.setLink("testEntryLink");
         testEntry.setText("blah blah entry");
@@ -16,7 +16,7 @@
         testEntry.setWebsite(testWeblog);
         testEntry.setCreator(testUser);
         
-        WeblogCategoryData cat = mgr.getWeblogCategory(testWeblog.getDefaultCategory().getId());
+        WeblogCategory cat = mgr.getWeblogCategory(testWeblog.getDefaultCategory().getId());
         testEntry.setCategory(cat);
         
         // create a weblog entry

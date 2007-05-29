@@ -20,7 +20,7 @@
             mgr.removePermissions(pd);
             getRoller().flush();
             
-            UserData ud = getUserData(username);
+            User ud = getUserData(username);
             CacheManager.invalidate(ud);
             Weblog wd = getWebsiteData(handle);
             CacheManager.invalidate(wd);

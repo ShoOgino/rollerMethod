@@ -1,0 +1,35 @@
+    /**
+     * Convenience method that creates a weblog and stores it.
+     */
+    public static Weblog setupWeblog(String handle, User creator) throws Exception {
+        
+        Weblog testWeblog = new Weblog();
+        testWeblog.setName("Test Weblog");
+        testWeblog.setDescription("Test Weblog");
+        testWeblog.setHandle(handle);
+        testWeblog.setEmailAddress("testweblog@dev.null");
+        testWeblog.setEditorPage("editor-text.jsp");
+        testWeblog.setBlacklist("");
+        testWeblog.setEmailFromAddress("");
+        testWeblog.setEditorTheme("basic");
+        testWeblog.setLocale("en_US");
+        testWeblog.setTimeZone("America/Los_Angeles");
+        testWeblog.setDateCreated(new java.util.Date());
+        testWeblog.setCreator(creator);
+        
+        // add weblog
+        UserManager mgr = RollerFactory.getRoller().getUserManager();
+        mgr.addWebsite(testWeblog);
+        
+        // flush to db
+        RollerFactory.getRoller().flush();
+        
+        // query for the new weblog and return it
+        Weblog weblog = mgr.getWebsiteByHandle(handle);
+        
+        if(weblog == null)
+            throw new RollerException("error setting up weblog");
+        
+        return weblog;
+    }
+

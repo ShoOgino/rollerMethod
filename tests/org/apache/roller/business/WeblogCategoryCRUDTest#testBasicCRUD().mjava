@@ -6,18 +6,18 @@
         log.info("BEGIN");
         
         WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
-        WeblogCategoryData cat = null;
+        WeblogCategory cat = null;
         List cats = null;
         
         // root category is always available
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
-        WeblogCategoryData root = mgr.getRootWeblogCategory(testWeblog);
+        WeblogCategory root = mgr.getRootWeblogCategory(testWeblog);
         
         // make sure we are starting with 0 categories (beneath root)
         assertEquals(0, root.getWeblogCategories().size());
         
         // add a new category
-        WeblogCategoryData newCat = new WeblogCategoryData(testWeblog, root, "catTestCategory", null, null);
+        WeblogCategory newCat = new WeblogCategory(testWeblog, root, "catTestCategory", null, null);
         mgr.saveWeblogCategory(newCat);
         TestUtils.endSession(true);
         

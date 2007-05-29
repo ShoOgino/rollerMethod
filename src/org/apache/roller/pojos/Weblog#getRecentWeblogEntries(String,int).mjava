@@ -14,13 +14,13 @@
         try {
             WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
             recentEntries = wmgr.getWeblogEntries(
+                    
                     this, 
                     null,       // user
                     null,       // startDate
                     null,       // endDate
                     cat,        // cat or null
-                    null, 
-                    WeblogEntryData.PUBLISHED, 
+                    null,WeblogEntry.PUBLISHED, 
                     null,       // text
                     "pubTime",  // sortby
                     null,

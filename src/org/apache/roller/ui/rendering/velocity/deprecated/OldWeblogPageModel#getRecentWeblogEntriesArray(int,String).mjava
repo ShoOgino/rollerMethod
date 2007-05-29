@@ -38,13 +38,13 @@
             //name, day, catParam, maxEntries, true );
             
             List mEntries = mgr.getWeblogEntries(
+                    
                     mWebsite,
                     null,
                     null,                        // startDate
                     day,                         // endDate
                     catParam,                    // catName
-                    null,                        // tags
-                    WeblogEntryData.PUBLISHED,   // status
+                    null,WeblogEntry.PUBLISHED,   // status
                     null,                        // text
                     null,                        // sortby (null for pubTime)
                     null,
@@ -55,7 +55,7 @@
             Iterator it = mEntries.iterator();
             int i=0;
             while(it.hasNext()) {
-                ret.add(i, WeblogEntryDataWrapper.wrap((WeblogEntryData) it.next()));
+                ret.add(i,WeblogEntryDataWrapper.wrap((WeblogEntry) it.next()));
                 i++;
             }
         } catch (Exception e) {
