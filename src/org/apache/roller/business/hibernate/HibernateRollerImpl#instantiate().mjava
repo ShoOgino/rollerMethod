@@ -2,16 +2,13 @@
      * Instantiates and returns an instance of HibernateRollerImpl.
      */
     public static Roller instantiate() throws RollerException {
-        if (me == null) {
-            mLogger.debug("Instantiating HibernateRollerImpl");
-            me = new HibernateRollerImpl();
-                                
-            // Now that Roller has been instantiated, initialize individual managers
-            me.getPropertiesManager();
-            me.getIndexManager();
-            me.getThemeManager();          
-        }
-        
-        return me;
+        mLogger.debug("Instantiating HibernateRollerImpl");
+        Roller roller = new HibernateRollerImpl();
+
+        // Now that Roller has been instantiated, initialize individual managers
+        roller.getPropertiesManager();
+        roller.getIndexManager();
+        roller.getThemeManager();          
+        return roller;
     }
 

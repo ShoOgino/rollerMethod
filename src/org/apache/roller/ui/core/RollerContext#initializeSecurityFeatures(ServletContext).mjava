@@ -1,11 +1,12 @@
     /**
      * Setup Acegi security features.
      */
-    protected void initializeSecurityFeatures(ServletContext context) { 
-        
+    protected void initializeSecurityFeatures(ServletContext context) throws RollerException { 
+
         ApplicationContext ctx =
                 WebApplicationContextUtils.getRequiredWebApplicationContext(context);
         
+
         String rememberMe = RollerConfig.getProperty("rememberme.enabled");
         boolean rememberMeEnabled = Boolean.valueOf(rememberMe).booleanValue();
         
@@ -18,6 +19,7 @@
             provider.getProviders().add(ctx.getBean("rememberMeAuthenticationProvider"));
         }
         
+
         String encryptPasswords = RollerConfig.getProperty("passwds.encryption.enabled");
         boolean doEncrypt = Boolean.valueOf(encryptPasswords).booleanValue();
         
@@ -40,11 +42,14 @@
             }
         }
         
+
         if (RollerConfig.getBooleanProperty("securelogin.enabled")) {
             AuthenticationProcessingFilterEntryPoint entryPoint =
-                    (AuthenticationProcessingFilterEntryPoint)ctx.getBean("authenticationProcessingFilterEntryPoint");
+                (AuthenticationProcessingFilterEntryPoint)
+                    ctx.getBean("authenticationProcessingFilterEntryPoint");
             entryPoint.setForceHttps(true);
         }
+                
         /*
         if (RollerConfig.getBooleanProperty("schemeenforcement.enabled")) {
             
