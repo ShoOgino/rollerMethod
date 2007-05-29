@@ -8,7 +8,7 @@
         
         try {
             Session session = ((HibernatePersistenceStrategy)strategy).getSession();
-            Criteria criteria = session.createCriteria(RefererData.class);
+            Criteria criteria = session.createCriteria(WeblogReferrer.class);
             
             String[] blacklist = StringUtils.split(
                     StringUtils.deleteWhitespace(website.getBlacklist()),",");
@@ -23,7 +23,7 @@
             
             Iterator referer = criteria.list().iterator();
             while (referer.hasNext()) {
-                this.strategy.remove((RefererData) referer.next());
+                this.strategy.remove((WeblogReferrer) referer.next());
             }
             
         } catch (HibernateException e) {

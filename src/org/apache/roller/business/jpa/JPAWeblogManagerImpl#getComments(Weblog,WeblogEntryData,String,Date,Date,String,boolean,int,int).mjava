@@ -15,7 +15,7 @@
         List params = new ArrayList();
         int size = 0;
         StringBuffer queryString = new StringBuffer();
-        queryString.append("SELECT c FROM CommentData c ");
+        queryString.append("SELECT c FROM WeblogEntryComment c ");
         
         StringBuffer whereClause = new StringBuffer();
         if (entry != null) {
@@ -49,7 +49,7 @@
             if("ALL_IGNORE_SPAM".equals(status)) {
                 // we want all comments, except spam
                 // so that means where status != SPAM
-                status = CommentData.SPAM;
+                status = WeblogEntryComment.SPAM;
                 comparisionOperator = " <> ";
             } else {
                 comparisionOperator = " = ";

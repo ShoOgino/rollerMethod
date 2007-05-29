@@ -8,12 +8,12 @@
             Query query = null;
             if(website == null) {
                 query = session.createQuery("select count(distinct c) "+
-                        "from CommentData c where c.status=?");
-                query.setParameter(0, CommentData.APPROVED);
+                        "from WeblogEntryComment c where c.status=?");
+                query.setParameter(0,WeblogEntryComment.APPROVED);
             } else {
                 query = session.createQuery("select count(distinct c) "+
-                        "from CommentData c where c.status=? and c.weblogEntry.website=?");
-                query.setParameter(0, CommentData.APPROVED);
+                        "from WeblogEntryComment c where c.status=? and c.weblogEntry.website=?");
+                query.setParameter(0,WeblogEntryComment.APPROVED);
                 query.setParameter(1, website);
             }
             List result = query.list();

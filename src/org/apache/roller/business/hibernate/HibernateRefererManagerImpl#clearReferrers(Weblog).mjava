@@ -11,14 +11,14 @@
         try {
             Session session = ((HibernatePersistenceStrategy)strategy).getSession();
             Dialect currentDialect = ((SessionFactoryImplementor)session.getSessionFactory()).getDialect();
-            String reset = "update RefererData set dayHits=0 where website=:site";
+            String reset = "update WeblogReferrer set dayHits=0 where website=:site";
             session.createQuery(reset)
             .setParameter("site",website).executeUpdate();
             String delete = null;
             if ( currentDialect instanceof SQLServerDialect || currentDialect instanceof OracleDialect ){
-                delete = "delete RefererData where website=:site and (excerpt is null or excerpt like '')";
+                delete = "delete WeblogReferrer where website=:site and (excerpt is null or excerpt like '')";
             } else {
-                delete = "delete RefererData where website=:site and (excerpt is null or excerpt='')";
+                delete = "delete WeblogReferrer where website=:site and (excerpt is null or excerpt='')";
             }
             session.createQuery(delete)
             .setParameter("site",website).executeUpdate();

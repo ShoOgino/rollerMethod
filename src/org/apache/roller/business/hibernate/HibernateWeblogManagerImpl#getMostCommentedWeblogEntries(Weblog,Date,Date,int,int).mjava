@@ -11,7 +11,7 @@
             if (website != null) {
                 StringBuffer sb = new StringBuffer();
                 sb.append("select count(distinct c), c.weblogEntry.website.handle, c.weblogEntry.anchor, c.weblogEntry.title ");
-                sb.append("from CommentData c ");
+                sb.append("from WeblogEntryComment c ");
                 sb.append("where c.weblogEntry.website=:website and c.weblogEntry.pubTime < :endDate ");
                 if (startDate != null) {
                     sb.append("and c.weblogEntry.pubTime > :startDate ");
@@ -27,7 +27,7 @@
             } else {
                 StringBuffer sb = new StringBuffer();
                 sb.append("select count(distinct c),   c.weblogEntry.website.handle, c.weblogEntry.anchor, c.weblogEntry.title ");
-                sb.append("from CommentData c ");
+                sb.append("from WeblogEntryComment c ");
                 sb.append("where c.weblogEntry.pubTime < :endDate ");
                 if (startDate != null) {
                     sb.append("and c.weblogEntry.pubTime > :startDate ");

@@ -2,7 +2,7 @@
         
         try {
             Session session = ((HibernatePersistenceStrategy)strategy).getSession();
-            String query = "update HitCountData set dailyHits = 0 where weblog = ?";
+            String query = "update WeblogHitCount set dailyHits = 0 where weblog = ?";
             session.createQuery(query).setParameter(0, weblog).executeUpdate();
         } catch (Exception e) {
             throw new RollerException(e);

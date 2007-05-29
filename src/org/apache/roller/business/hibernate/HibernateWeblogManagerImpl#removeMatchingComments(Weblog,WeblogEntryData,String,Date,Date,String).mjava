@@ -12,7 +12,7 @@
                 status, true, 0, -1);
             int count = 0;
             for (Iterator it = comments.iterator(); it.hasNext();) {
-                CommentData comment = (CommentData) it.next();
+                WeblogEntryComment comment = (WeblogEntryComment) it.next();
                 removeComment(comment);
                 count++;
             }
@@ -30,8 +30,8 @@
          
             // Can't use join in a bulk delete query, but can use a sub-query      
             queryString.append(
-                "delete CommentData cmt where cmt.id in "
-              + "(select c.id from CommentData as c where ");
+                "delete WeblogEntryComment cmt where cmt.id in "
+              + "(select c.id from WeblogEntryComment as c where ");
                 
             if (entry != null) {
                 queryString.append("c.weblogEntry.anchor = ? and c.weblogEntry.website.handle = ? ");

@@ -2,11 +2,11 @@
      * @inheritDoc
      */
     public void resetHitCount(Weblog weblog) throws RollerException {
-        Query q = strategy.getNamedQuery("HitCountData.getByWeblog");
+        Query q = strategy.getNamedQuery("WeblogHitCount.getByWeblog");
         q.setParameter(1, weblog);
-        HitCountData hitCount = null;
+        WeblogHitCount hitCount = null;
         try {
-            hitCount = (HitCountData)q.getSingleResult();
+            hitCount = (WeblogHitCount)q.getSingleResult();
             hitCount.setDailyHits(0);
             strategy.store(hitCount);
         } catch (NoResultException e) {

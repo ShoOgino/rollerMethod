@@ -1,12 +1,12 @@
     /**
      * @inheritDoc
      */
-    public HitCountData getHitCountByWeblog(Weblog weblog)
+    public WeblogHitCount getHitCountByWeblog(Weblog weblog)
     throws RollerException {
-        Query q = strategy.getNamedQuery("HitCountData.getByWeblog");
+        Query q = strategy.getNamedQuery("WeblogHitCount.getByWeblog");
         q.setParameter(1, weblog);
         try {
-            return (HitCountData)q.getSingleResult();
+            return (WeblogHitCount)q.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }

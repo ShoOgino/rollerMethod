@@ -13,7 +13,7 @@
             if(deletes != null && deletes.size() > 0) {
                 log.debug("Processing deletes - "+deletes.size());
                 
-                CommentData deleteComment = null;
+                WeblogEntryComment deleteComment = null;
                 for(String deleteId : deletes) {
                     deleteComment = wmgr.getComment(deleteId);
                     wmgr.removeComment(deleteComment);
@@ -35,19 +35,19 @@
                     continue;
                 }
                 
-                CommentData comment = wmgr.getComment(ids[i]);
+                WeblogEntryComment comment = wmgr.getComment(ids[i]);
                 
                 // mark/unmark spam
                 if (spamIds.contains(ids[i]) && 
-                        !CommentData.SPAM.equals(comment.getStatus())) {
+                        !WeblogEntryComment.SPAM.equals(comment.getStatus())) {
                     log.debug("Marking as spam - "+comment.getId());
-                    comment.setStatus(CommentData.SPAM);
+                    comment.setStatus(WeblogEntryComment.SPAM);
                     wmgr.saveComment(comment);
                     
                     flushList.add(comment);
-                } else if(CommentData.SPAM.equals(comment.getStatus())) {
+                } else if(WeblogEntryComment.SPAM.equals(comment.getStatus())) {
                     log.debug("Marking as approved - "+comment.getId());
-                    comment.setStatus(CommentData.APPROVED);
+                    comment.setStatus(WeblogEntryComment.APPROVED);
                     wmgr.saveComment(comment);
                     
                     flushList.add(comment);
@@ -58,7 +58,7 @@
             
             // notify caches of changes
             for (Iterator comments=flushList.iterator(); comments.hasNext();) {
-                CacheManager.invalidate((CommentData)comments.next());
+                CacheManager.invalidate((WeblogEntryComment)comments.next());
             }
             
             addMessage("commentManagement.updateSuccess");

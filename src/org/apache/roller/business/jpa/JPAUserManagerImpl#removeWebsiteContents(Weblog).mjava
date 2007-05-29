@@ -62,11 +62,11 @@
         }
         
         // remove associated referers
-        Query refQuery2 = strategy.getNamedQuery("RefererData.getByWebsite");
+        Query refQuery2 = strategy.getNamedQuery("WeblogReferrer.getByWebsite");
         refQuery2.setParameter(1, website);
         List referers = refQuery2.getResultList();
         for (Iterator iter = referers.iterator(); iter.hasNext();) {
-            RefererData referer = (RefererData) iter.next();
+            WeblogReferrer referer = (WeblogReferrer) iter.next();
             this.strategy.remove(referer);
         }
         

@@ -12,7 +12,7 @@
         
         try {
             Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
-            Criteria criteria = session.createCriteria(CommentData.class);
+            Criteria criteria = session.createCriteria(WeblogEntryComment.class);
             
             if (entry != null) {
                 criteria.add(Expression.eq("weblogEntry", entry));

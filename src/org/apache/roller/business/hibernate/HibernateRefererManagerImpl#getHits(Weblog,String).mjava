@@ -19,7 +19,7 @@
             
             Query q = session.createQuery(
                     "select sum(h.dayHits),sum(h.totalHits) from h in class " +
-                    "org.apache.roller.pojos.RefererData " +
+                    "org.apache.roller.pojos.WeblogReferrer " +
                     "where h.website.enabled=? and h.website.id=? ");
             q.setParameters(args, types);
             results = q.list();

@@ -5,7 +5,7 @@
         
         WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
         
-        CommentData comment = new CommentData();
+        WeblogEntryComment comment = new WeblogEntryComment();
         comment.setName("test");
         comment.setEmail("test");
         comment.setUrl("test");
@@ -13,7 +13,7 @@
         comment.setContent("this is a test comment");
         comment.setPostTime(new java.sql.Timestamp(new java.util.Date().getTime()));
         comment.setWeblogEntry(TestUtils.getManagedWeblogEntry(testEntry));
-        comment.setStatus(CommentData.APPROVED);
+        comment.setStatus(WeblogEntryComment.APPROVED);
         
         // create a comment
         mgr.saveComment(comment);

@@ -1,7 +1,7 @@
     public void putEntryAttribute(String name, String value) throws Exception {
-        EntryAttributeData att = (EntryAttributeData)attMap.get(name);
+        WeblogEntryAttribute att = (WeblogEntryAttribute)attMap.get(name);
         if (att == null) {
-            att = new EntryAttributeData();
+            att = new WeblogEntryAttribute();
             att.setEntry(this);
             att.setName(name);
             att.setValue(value);

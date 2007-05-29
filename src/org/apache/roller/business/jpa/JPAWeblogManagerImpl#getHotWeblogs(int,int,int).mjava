@@ -11,7 +11,7 @@
         Date startDate = cal.getTime();
         
         Query query = strategy.getNamedQuery(
-                "HitCountData.getByWeblogEnabledTrueAndActiveTrue&DailyHitsGreaterThenZero&WeblogLastModifiedGreaterOrderByDailyHitsDesc");
+                "WeblogHitCount.getByWeblogEnabledTrueAndActiveTrue&DailyHitsGreaterThenZero&WeblogLastModifiedGreaterOrderByDailyHitsDesc");
         query.setParameter(1, startDate);
         
         // Was commented out due to https://glassfish.dev.java.net/issues/show_bug.cgi?id=2084

@@ -1,6 +1,6 @@
     public void testExcessLinksCommentValidator() {
         RollerMessages msgs = new RollerMessages();
-        CommentData comment = createEmptyComment();
+        WeblogEntryComment comment = createEmptyComment();
         
         comment.setContent("<a href=\"http://example.com\">link1</a>"); 
         assertEquals(100, mgr.validateComment(comment, msgs));

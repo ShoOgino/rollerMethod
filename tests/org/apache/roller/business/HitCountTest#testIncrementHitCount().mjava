@@ -2,7 +2,7 @@
         
         WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
         
-        HitCountData testCount = new HitCountData();
+        WeblogHitCount testCount = new WeblogHitCount();
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         testCount.setWeblog(testWeblog);
         testCount.setDailyHits(10);
@@ -13,7 +13,7 @@
         TestUtils.endSession(true);
         
         // make sure it was created
-        HitCountData hitCount = null;
+        WeblogHitCount hitCount = null;
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         hitCount = mgr.getHitCountByWeblog(testWeblog);
         assertNotNull(hitCount);

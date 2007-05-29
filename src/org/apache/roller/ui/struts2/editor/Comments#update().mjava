@@ -6,14 +6,14 @@
         try {
             WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
             
-            List<CommentData> flushList = new ArrayList();
+            List<WeblogEntryComment> flushList = new ArrayList();
             
             // delete all comments with delete box checked
             List<String> deletes = Arrays.asList(getBean().getDeleteComments());
             if(deletes != null && deletes.size() > 0) {
                 log.debug("Processing deletes - "+deletes.size());
                 
-                CommentData deleteComment = null;
+                WeblogEntryComment deleteComment = null;
                 for(String deleteId : deletes) {
                     deleteComment = wmgr.getComment(deleteId);
                     
@@ -31,7 +31,7 @@
             log.debug(spamIds.size()+" comments marked as spam");
             
             // track comments approved via moderation
-            List<CommentData> approvedComments = new ArrayList();
+            List<WeblogEntryComment> approvedComments = new ArrayList();
             
             String[] ids = Utilities.stringToStringArray(getBean().getIds(),",");
             for (int i=0; i < ids.length; i++) {
@@ -43,7 +43,7 @@
                     continue;
                 }
                 
-                CommentData comment = wmgr.getComment(ids[i]);
+                WeblogEntryComment comment = wmgr.getComment(ids[i]);
                 
                 // make sure comment is tied to action weblog
                 if(getActionWeblog().equals(comment.getWeblogEntry().getWebsite())) {
@@ -51,25 +51,25 @@
                     if(approvedIds.contains(ids[i])) {
                         // if a comment was previously PENDING then this is
                         // it's first approval, so track it for notification
-                        if(CommentData.PENDING.equals(comment.getStatus())) {
+                        if(WeblogEntryComment.PENDING.equals(comment.getStatus())) {
                             approvedComments.add(comment);
                         }
                         
                         log.debug("Marking as approved - "+comment.getId());
-                        comment.setStatus(CommentData.APPROVED);
+                        comment.setStatus(WeblogEntryComment.APPROVED);
                         wmgr.saveComment(comment);
                         
                         flushList.add(comment);
                         
                     } else if(spamIds.contains(ids[i])) {
                         log.debug("Marking as spam - "+comment.getId());
-                        comment.setStatus(CommentData.SPAM);
+                        comment.setStatus(WeblogEntryComment.SPAM);
                         wmgr.saveComment(comment);
                         
                         flushList.add(comment);
-                    } else if(!CommentData.DISAPPROVED.equals(comment.getStatus())) {
+                    } else if(!WeblogEntryComment.DISAPPROVED.equals(comment.getStatus())) {
                         log.debug("Marking as disapproved - "+comment.getId());
-                        comment.setStatus(CommentData.DISAPPROVED);
+                        comment.setStatus(WeblogEntryComment.DISAPPROVED);
                         wmgr.saveComment(comment);
                         
                         flushList.add(comment);
@@ -80,7 +80,7 @@
             RollerFactory.getRoller().flush();
             
             // notify caches of changes
-            for(CommentData comm : flushList) {
+            for(WeblogEntryComment comm : flushList) {
                 CacheManager.invalidate(comm);
             }
             

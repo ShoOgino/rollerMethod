@@ -3,7 +3,7 @@
      */
     public void clearReferrers(Weblog website) throws RollerException {
         clearDayHitsByWebsite(website);
-        Query q = strategy.getNamedUpdate("RefererData.removeByNullOrEmptyExcerpt&Website");
+        Query q = strategy.getNamedUpdate("WeblogReferrer.removeByNullOrEmptyExcerpt&Website");
         q.setParameter(1, website);
         q.executeUpdate();
     }

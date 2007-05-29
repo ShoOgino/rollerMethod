@@ -65,11 +65,11 @@
         }
         
         // remove associated referers
-        Criteria refererQuery = session.createCriteria(RefererData.class);
+        Criteria refererQuery = session.createCriteria(WeblogReferrer.class);
         refererQuery.add(Expression.eq("website", website));
         List referers = refererQuery.list();
         for (Iterator iter = referers.iterator(); iter.hasNext();) {
-            RefererData referer = (RefererData) iter.next();
+            WeblogReferrer referer = (WeblogReferrer) iter.next();
             this.strategy.remove(referer);
         }
         

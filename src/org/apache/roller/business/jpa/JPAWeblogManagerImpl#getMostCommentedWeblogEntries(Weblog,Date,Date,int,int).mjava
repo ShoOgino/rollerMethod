@@ -13,14 +13,14 @@
                 Timestamp start = new Timestamp(startDate.getTime());
                 Timestamp end = new Timestamp(endDate.getTime());
                 query = strategy.getNamedQuery(
-                        "CommentData.getMostCommentedWeblogEntryByWebsite&EndDate&StartDate");
+                        "WeblogEntryComment.getMostCommentedWeblogEntryByWebsite&EndDate&StartDate");
                 query.setParameter(1, website);
                 query.setParameter(2, end);
                 query.setParameter(3, start);
             } else {
                 Timestamp end = new Timestamp(endDate.getTime());
                 query = strategy.getNamedQuery(
-                        "CommentData.getMostCommentedWeblogEntryByWebsite&EndDate");
+                        "WeblogEntryComment.getMostCommentedWeblogEntryByWebsite&EndDate");
                 query.setParameter(1, website);
                 query.setParameter(2, end);
             }
@@ -29,13 +29,13 @@
                 Timestamp start = new Timestamp(startDate.getTime());
                 Timestamp end = new Timestamp(endDate.getTime());
                 query = strategy.getNamedQuery(
-                        "CommentData.getMostCommentedWeblogEntryByEndDate&StartDate");
+                        "WeblogEntryComment.getMostCommentedWeblogEntryByEndDate&StartDate");
                 query.setParameter(1, end);
                 query.setParameter(2, start);
             } else {
                 Timestamp end = new Timestamp(endDate.getTime());
                 query = strategy.getNamedQuery(
-                        "CommentData.getMostCommentedWeblogEntryByEndDate");
+                        "WeblogEntryComment.getMostCommentedWeblogEntryByEndDate");
                 query.setParameter(1, end);
             }
         }

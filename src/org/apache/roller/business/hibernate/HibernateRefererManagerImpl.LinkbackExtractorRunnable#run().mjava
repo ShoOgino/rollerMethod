@@ -56,10 +56,10 @@
                                 mReferer.getRequestUrl(),
                                 lb.getTitle(),
                                 lb.getExcerpt());
-                        RefererData chosen = null;
+                        WeblogReferrer chosen = null;
                         int maxweight = 0;
                         for (Iterator rdItr = refs.iterator();rdItr.hasNext();) {
-                            RefererData referer = (RefererData) rdItr.next();
+                            WeblogReferrer referer = (WeblogReferrer) rdItr.next();
                             
                             int weight = referer.getRefererUrl().length();
                             if (referer.getRefererUrl().indexOf('#') != -1) {
@@ -82,7 +82,7 @@
                         // LOOP: to mark all of the lower weight ones
                         // as duplicates
                         for (Iterator rdItr = refs.iterator();rdItr.hasNext();) {
-                            RefererData referer = (RefererData) rdItr.next();
+                            WeblogReferrer referer = (WeblogReferrer) rdItr.next();
                             
                             if (referer != chosen) {
                                 referer.setDuplicate(Boolean.TRUE);

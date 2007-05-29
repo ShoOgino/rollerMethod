@@ -1,0 +1,65 @@
+    /**
+     * Send message to author of approved comment
+     *
+     * TODO: Make the addressing options configurable on a per-website basis.
+     */
+    public static void sendEmailApprovalNotification(WeblogEntryComment cd, String rootURL, I18nMessages resources) {
+        
+        WeblogEntryData entry = cd.getWeblogEntry();
+        Weblog site = entry.getWebsite();
+        UserData user = entry.getCreator();
+        
+        // Only send email if email notificaiton is enabled
+        boolean notify = RollerRuntimeConfig.getBooleanProperty("users.comments.emailnotify");
+        if (notify && site.getEmailComments().booleanValue()) {
+            log.debug("Comment notification enabled ... preparing email");
+            
+            
+            
+            //------------------------------------------
+            // --- Determine the "from" address
+            // --- Use either the site configured from address or the user's address
+            
+            String from =
+                    (StringUtils.isEmpty(site.getEmailFromAddress()))
+                    ? user.getEmailAddress()
+                    : site.getEmailFromAddress();
+            
+            //------------------------------------------
+            // --- Form the message to be sent -
+            
+            String subject = resources.getString("email.comment.commentApproved");
+            
+            StringBuffer msg = new StringBuffer();
+            msg.append(resources.getString("email.comment.commentApproved"));
+            msg.append("\n\n");
+            
+            // Build link back to comment
+            StringBuffer commentURL = new StringBuffer();
+            commentURL.append(entry.getPermalink());
+            commentURL.append("#comments");
+            msg.append(commentURL.toString());
+            
+            //------------------------------------------
+            // --- Send message to author of approved comment
+            try {
+                String[] cc = null;
+                String[] bcc = null;
+                sendMessage(from,
+                        new String[] {cd.getEmail()},
+                        null, // cc
+                        null, // bcc
+                        subject, msg.toString(), false);
+            } catch (Exception e) {
+                log.warn("Exception sending comment mail: " + e.getMessage());
+                // This will log the stack trace if debug is enabled
+                if (log.isDebugEnabled()) {
+                    log.debug(e);
+                }
+            }
+            
+            log.debug("Done sending email message");
+            
+        } // if email enabled
+    }
+

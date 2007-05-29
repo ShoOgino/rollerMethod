@@ -8,7 +8,7 @@
         //The method only comsumes one of them. We can optimize the logic to retrieve only the 
         //requied SUM
         Query query = strategy.getNamedQuery(
-            "RefererData.getHitsByWebsite.enabled&Website.id");
+            "WeblogReferrer.getHitsByWebsite.enabled&Website.id");
         query.setParameter(1, Boolean.TRUE);
         query.setParameter(2, website.getId());
         List results = query.getResultList();

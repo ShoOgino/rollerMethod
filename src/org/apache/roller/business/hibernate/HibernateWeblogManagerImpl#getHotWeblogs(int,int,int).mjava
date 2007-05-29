@@ -10,7 +10,7 @@
         try {      
             Session session = ((HibernatePersistenceStrategy)strategy).getSession();            
             Query query = session.createQuery(
-                    "from HitCountData hcd " +
+                    "from WeblogHitCount hcd " +
                     "where hcd.weblog.enabled=true " +
                     "and hcd.weblog.active=true " +
                     "and hcd.weblog.lastModified > :startDate " +

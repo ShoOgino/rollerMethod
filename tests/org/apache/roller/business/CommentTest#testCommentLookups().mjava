@@ -8,9 +8,9 @@
         
         // we need some comments to play with
         testEntry = TestUtils.getManagedWeblogEntry(testEntry);
-        CommentData comment1 = TestUtils.setupComment("comment1", testEntry);
-        CommentData comment2 = TestUtils.setupComment("comment2", testEntry);
-        CommentData comment3 = TestUtils.setupComment("comment3", testEntry);
+        WeblogEntryComment comment1 = TestUtils.setupComment("comment1", testEntry);
+        WeblogEntryComment comment2 = TestUtils.setupComment("comment2", testEntry);
+        WeblogEntryComment comment3 = TestUtils.setupComment("comment3", testEntry);
         TestUtils.endSession(true);
         
         // get all comments
@@ -28,19 +28,19 @@
         
         // make some changes
         comment3 = mgr.getComment(comment3.getId());
-        comment3.setStatus(CommentData.PENDING);
+        comment3.setStatus(WeblogEntryComment.PENDING);
         mgr.saveComment(comment3);
         TestUtils.endSession(true);
         
         // get pending comments
         comments = null;
-        comments = mgr.getComments(null, null, null, null, null, CommentData.PENDING, false, 0, -1);
+        comments = mgr.getComments(null, null, null, null, null, WeblogEntryComment.PENDING, false, 0, -1);
         assertNotNull(comments);
         assertEquals(1, comments.size());
         
         // get approved comments
         comments = null;
-        comments = mgr.getComments(null, null, null, null, null, CommentData.APPROVED, false, 0, -1);
+        comments = mgr.getComments(null, null, null, null, null, WeblogEntryComment.APPROVED, false, 0, -1);
         assertNotNull(comments);
         assertEquals(2, comments.size());
         

@@ -18,8 +18,8 @@
                 Roller roller = RollerFactory.getRoller();
                 WeblogManager wmgr = roller.getWeblogManager();
                 List entries = wmgr.getComments(
-                        null, null, null, startDate, null,
-                        CommentData.APPROVED, true, offset, length + 1);
+                        
+                        null, null, null, startDate, null,WeblogEntryComment.APPROVED, true, offset, length + 1);
                 
                 // check if there are more results for paging
                 if(entries.size() > length) {
@@ -29,7 +29,7 @@
                 
                 // wrap the results
                 for (Iterator it = entries.iterator(); it.hasNext();) {
-                    CommentData comment = (CommentData) it.next();
+                    WeblogEntryComment comment = (WeblogEntryComment) it.next();
                     results.add(CommentDataWrapper.wrap(comment));
                 }
                 

@@ -12,18 +12,18 @@
             throw new RollerException("Website cannot be NULL.");
         }
         
-        Query q = strategy.getNamedQuery("HitCountData.getByWeblog");
+        Query q = strategy.getNamedQuery("WeblogHitCount.getByWeblog");
         q.setParameter(1, weblog);
-        HitCountData hitCount = null;
+        WeblogHitCount hitCount = null;
         try {
-            hitCount = (HitCountData)q.getSingleResult();
+            hitCount = (WeblogHitCount)q.getSingleResult();
         } catch (NoResultException e) {
             hitCount = null;
         }
         
         // create it if it doesn't exist
         if(hitCount == null && amount > 0) {
-            hitCount = new HitCountData();
+            hitCount = new WeblogHitCount();
             hitCount.setWeblog(weblog);
             hitCount.setDailyHits(amount);
             strategy.store(hitCount);

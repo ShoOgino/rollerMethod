@@ -43,9 +43,9 @@
         setPinnedToMain(entry.getPinnedToMain());
         
         // enclosure url, if it exists
-        Set<EntryAttributeData> attrs = entry.getEntryAttributes();
+        Set<WeblogEntryAttribute> attrs = entry.getEntryAttributes();
         if(attrs != null && attrs.size() > 0) {
-            for(EntryAttributeData attr : attrs) {
+            for(WeblogEntryAttribute attr : attrs) {
                 if("att_mediacast_url".equals(attr.getName())) {
                     setEnclosureURL(attr.getValue());
                 }

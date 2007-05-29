@@ -3,11 +3,11 @@
      */
     public void removeWeblogEntry(WeblogEntryData entry)
     throws RollerException {
-        Query q = strategy.getNamedQuery("RefererData.getByWeblogEntry");
+        Query q = strategy.getNamedQuery("WeblogReferrer.getByWeblogEntry");
         q.setParameter(1, entry);
         List referers = q.getResultList();
         for (Iterator iter = referers.iterator(); iter.hasNext();) {
-            RefererData referer = (RefererData) iter.next();
+            WeblogReferrer referer = (WeblogReferrer) iter.next();
             this.strategy.remove(referer);
         }
         
@@ -24,7 +24,7 @@
                 -1);   // no limit
         Iterator commentsIT = comments.iterator();
         while (commentsIT.hasNext()) {
-            this.strategy.remove((CommentData) commentsIT.next());
+            this.strategy.remove((WeblogEntryComment) commentsIT.next());
         }
         
         // remove tags aggregates

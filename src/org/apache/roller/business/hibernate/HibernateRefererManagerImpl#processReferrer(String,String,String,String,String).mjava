@@ -34,7 +34,7 @@
         try {
             List matchRef = null;
             
-            // try to find existing RefererData for referrerUrl
+            // try to find existing WeblogReferrer for referrerUrl
             if (referrerUrl == null || referrerUrl.trim().length() < 8) {
                 referrerUrl = "direct";
                 
@@ -64,7 +64,7 @@
             
             if (matchRef.size() == 1) {
                 // Referer was found in database, so bump up hit count
-                RefererData ref = (RefererData)matchRef.get(0);
+                WeblogReferrer ref = (WeblogReferrer)matchRef.get(0);
                 
                 ref.setDayHits(new Integer(ref.getDayHits().intValue() + 1));
                 ref.setTotalHits(new Integer(ref.getTotalHits().intValue() + 1));
@@ -77,8 +77,8 @@
                 
                 // Referer was not found in database, so new Referer object
                 Integer one = new Integer(1);
-                RefererData ref =
-                        new RefererData(
+                WeblogReferrer ref =
+                        new WeblogReferrer(
                         null,
                         weblog,
                         entry,

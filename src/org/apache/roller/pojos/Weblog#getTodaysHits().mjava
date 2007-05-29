@@ -6,7 +6,7 @@
         try {
             Roller roller = RollerFactory.getRoller();
             WeblogManager mgr = roller.getWeblogManager();
-            HitCountData hitCount = mgr.getHitCountByWeblog(this);
+            WeblogHitCount hitCount = mgr.getHitCountByWeblog(this);
             
             return (hitCount != null) ? hitCount.getDailyHits() : 0;
             

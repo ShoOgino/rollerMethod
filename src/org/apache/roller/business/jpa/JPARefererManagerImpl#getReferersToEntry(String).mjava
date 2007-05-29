@@ -1,7 +1,7 @@
     /**
      * Get referers that refer to a specific weblog entry.
      * @param entryid Weblog entry ID
-     * @return List of RefererData objects.
+     * @return List of WeblogReferrer objects.
      * @throws org.apache.roller.RollerException
      */
     public List getReferersToEntry(String entryid) throws RollerException {
@@ -12,7 +12,7 @@
         // of extracting and passing id. Once that is done, change the code below to
         // skip the load (Please note that the load below will always find the enty in cache)
         Query q = strategy.getNamedQuery(
-            "RefererData.getByWeblogEntry&TitleNotNull&ExcerptNotNullOrderByTotalHitsDesc");
+            "WeblogReferrer.getByWeblogEntry&TitleNotNull&ExcerptNotNullOrderByTotalHitsDesc");
         q.setParameter(1, strategy.load(WeblogEntryData.class, entryid));
         return q.getResultList();
     }
