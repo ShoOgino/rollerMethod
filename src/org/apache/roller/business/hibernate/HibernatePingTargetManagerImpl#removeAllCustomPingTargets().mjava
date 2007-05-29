@@ -5,7 +5,7 @@
         
         try {
             Session session = strategy.getSession();
-            Criteria criteria = session.createCriteria(PingTargetData.class);
+            Criteria criteria = session.createCriteria(PingTarget.class);
             criteria.add(Expression.isNotNull("website"));
             List allCustomTargets = criteria.list();
             removeTargets(allCustomTargets);

@@ -1,10 +1,10 @@
     /**
      * Convenience method for creating a ping target.
      */
-    public static PingTargetData setupPingTarget(String name, String url) 
+    public static PingTarget setupPingTarget(String name, String url) 
             throws Exception {
         
-        PingTargetData testPing = new PingTargetData();
+        PingTarget testPing = new PingTarget();
         testPing.setName("testCommonPing");
         testPing.setPingUrl("http://localhost/testCommonPing");
         
@@ -16,7 +16,7 @@
         RollerFactory.getRoller().flush();
         
         // query for it
-        PingTargetData ping = pingMgr.getPingTarget(testPing.getId());
+        PingTarget ping = pingMgr.getPingTarget(testPing.getId());
         
         if(ping == null)
             throw new RollerException("error setting up ping target");

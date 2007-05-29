@@ -1,0 +1,23 @@
+    /**
+     * Private helper to validate a ping target.
+     */
+    protected void myValidate(PingTarget pingTarget) {
+        
+        try {
+            PingTargetManager pingTargetMgr = RollerFactory.getRoller().getPingTargetManager();
+            if (!pingTargetMgr.isNameUnique(pingTarget)) {
+                addError("pingTarget.nameNotUnique");
+            }
+            
+            if (!pingTargetMgr.isUrlWellFormed(pingTarget)) {
+                addError("pingTarget.malformedUrl");
+            } else if (!pingTargetMgr.isHostnameKnown(pingTarget)) {
+                addError("pingTarget.unknownHost");
+            }
+        } catch (RollerException ex) {
+            getLogger().error("Error validating ping target", ex);
+            // TODO: i18n
+            addError("Error doing ping target validation");
+        }
+    }
+

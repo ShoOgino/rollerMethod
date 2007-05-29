@@ -4,7 +4,7 @@
     public boolean unregisterLease(RollerTask task) {
         
         // query for existing lease record first
-        TaskLockData taskLock = null;
+        TaskLock taskLock = null;
         try {
             taskLock = this.getTaskLockByName(task.getName());
             
@@ -13,14 +13,14 @@
             }
             
         } catch (RollerException ex) {
-            log.warn("Error getting TaskLockData", ex);
+            log.warn("Error getting TaskLock", ex);
             return false;
         }
         
         // try to release lease, just set lease time to 0
         try {
             Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
-            String queryHQL = "update TaskLockData set timeLeased=:interval "+
+            String queryHQL = "update TaskLock set timeLeased=:interval "+
                     "where name=:name and client=:client";
             Query query = session.createQuery(queryHQL);
             query.setInteger("interval", task.getInterval());

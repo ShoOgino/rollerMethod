@@ -5,7 +5,7 @@
         
         if(getPingTarget() != null) try {
             AutoPingManager autoPingMgr = RollerFactory.getRoller().getAutopingManager();
-            AutoPingData autoPing = new AutoPingData(null, getPingTarget(), getActionWeblog());
+            AutoPing autoPing = new AutoPing(null, getPingTarget(), getActionWeblog());
             autoPingMgr.saveAutoPing(autoPing);
             RollerFactory.getRoller().flush();
         } catch(Exception ex) {

@@ -3,14 +3,14 @@
      */
     public boolean registerLease(RollerTask task) {
         // query for existing lease record first
-        TaskLockData taskLock = null;
+        TaskLock taskLock = null;
         try {
             taskLock = this.getTaskLockByName(task.getName());
 
             if(taskLock == null) {
                 // insert an empty record, then we will actually acquire the
                 // lease below using an update statement
-                taskLock = new TaskLockData();
+                taskLock = new TaskLock();
                 taskLock.setName(task.getName());
                 taskLock.setTimeAquired(new Date(0));
                 taskLock.setTimeLeased(0);
@@ -21,7 +21,7 @@
             }
 
         } catch (RollerException ex) {
-            log.warn("Error getting or inserting TaskLockData", ex);
+            log.warn("Error getting or inserting TaskLock", ex);
             return false;
         }
 
@@ -34,7 +34,7 @@
                     (60000*taskLock.getTimeLeased())-1000;
 
             Query q = strategy.getNamedUpdate(
-                    "TaskLockData.updateClient&Timeacquired&TimeleasedByName&Timeacquired");
+                    "TaskLock.updateClient&Timeacquired&TimeleasedByName&Timeacquired");
             q.setParameter(1, task.getClientId());
             q.setParameter(2, Integer.valueOf(task.getLeaseTime()));
             q.setParameter(3, task.getName());

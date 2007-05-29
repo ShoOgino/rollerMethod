@@ -1,12 +1,12 @@
-    private TaskLockData getTaskLockByName(String name) throws RollerException {
+    private TaskLock getTaskLockByName(String name) throws RollerException {
         
         // do lookup
         try {
             Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
-            Criteria criteria = session.createCriteria(TaskLockData.class);
+            Criteria criteria = session.createCriteria(TaskLock.class);
             
             criteria.add(Expression.eq("name", name));
-            TaskLockData taskLock = (TaskLockData) criteria.uniqueResult();
+            TaskLock taskLock = (TaskLock) criteria.uniqueResult();
             
             return taskLock;
         } catch (HibernateException e) {

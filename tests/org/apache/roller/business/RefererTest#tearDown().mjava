@@ -3,7 +3,7 @@
         try {
             // reset refererSpamWords to original value
             PropertiesManager pmgr = RollerFactory.getRoller().getPropertiesManager();
-            RollerPropertyData spamprop = pmgr.getProperty("spam.blacklist");
+            RuntimeConfigProperty spamprop = pmgr.getProperty("spam.blacklist");
             spamprop.setValue(this.origSpamWords);
             pmgr.saveProperty(spamprop);
             

@@ -10,7 +10,7 @@
             
             // add "spamtest" to refererSpamWords
             PropertiesManager pmgr = RollerFactory.getRoller().getPropertiesManager();
-            RollerPropertyData spamprop = pmgr.getProperty("spam.blacklist");
+            RuntimeConfigProperty spamprop = pmgr.getProperty("spam.blacklist");
             this.origSpamWords = spamprop.getValue();
             spamprop.setValue(spamprop.getValue() + ", spamtest");
             pmgr.saveProperty(spamprop);

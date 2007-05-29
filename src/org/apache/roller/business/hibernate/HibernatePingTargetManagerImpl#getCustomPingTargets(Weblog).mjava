@@ -4,7 +4,7 @@
     public List getCustomPingTargets(Weblog website) throws RollerException {
         try {
             Session session = ((HibernatePersistenceStrategy) strategy).getSession();
-            Criteria criteria = session.createCriteria(PingTargetData.class);
+            Criteria criteria = session.createCriteria(PingTarget.class);
             criteria.add(Expression.eq("website", website));
             criteria.addOrder(Order.asc("name"));
             return criteria.list();

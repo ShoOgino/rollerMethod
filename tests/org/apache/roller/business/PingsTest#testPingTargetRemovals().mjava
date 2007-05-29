@@ -5,20 +5,20 @@
         
         AutoPingManager mgr = RollerFactory.getRoller().getAutopingManager();
         PingTargetManager ptmgr = RollerFactory.getRoller().getPingTargetManager();
-        AutoPingData testAutoPing = null;
+        AutoPing testAutoPing = null;
         
         // create ping target to use for tests
-        PingTargetData pingTarget = TestUtils.setupPingTarget("fooPing", "http://foo/null");
-        PingTargetData pingTarget2 = TestUtils.setupPingTarget("blahPing", "http://blah/null");
-        PingTargetData pingTarget3 = TestUtils.setupPingTarget("gahPing", "http://gah/null");
+        PingTarget pingTarget = TestUtils.setupPingTarget("fooPing", "http://foo/null");
+        PingTarget pingTarget2 = TestUtils.setupPingTarget("blahPing", "http://blah/null");
+        PingTarget pingTarget3 = TestUtils.setupPingTarget("gahPing", "http://gah/null");
         
         try {
         
             // create auto pings for test
             testWeblog = TestUtils.getManagedWebsite(testWeblog);
-            AutoPingData autoPing = TestUtils.setupAutoPing(pingTarget, testWeblog);
-            AutoPingData autoPing2 = TestUtils.setupAutoPing(pingTarget2, testWeblog);
-            AutoPingData autoPing3 = TestUtils.setupAutoPing(pingTarget3, testWeblog);
+            AutoPing autoPing = TestUtils.setupAutoPing(pingTarget, testWeblog);
+            AutoPing autoPing2 = TestUtils.setupAutoPing(pingTarget2, testWeblog);
+            AutoPing autoPing3 = TestUtils.setupAutoPing(pingTarget3, testWeblog);
             TestUtils.endSession(true);
 
             // remove by weblog/target

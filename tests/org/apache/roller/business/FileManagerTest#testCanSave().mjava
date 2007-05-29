@@ -8,10 +8,10 @@
         FileManager fmgr = RollerFactory.getRoller().getFileManager();
         PropertiesManager pmgr = RollerFactory.getRoller().getPropertiesManager();
         Map config = config = pmgr.getProperties();
-        ((RollerPropertyData)config.get("uploads.dir.maxsize")).setValue("1.00");
-        ((RollerPropertyData)config.get("uploads.types.forbid")).setValue("");
-        ((RollerPropertyData)config.get("uploads.types.allowed")).setValue("");
-        ((RollerPropertyData)config.get("uploads.enabled")).setValue("true");
+        ((RuntimeConfigProperty)config.get("uploads.dir.maxsize")).setValue("1.00");
+        ((RuntimeConfigProperty)config.get("uploads.types.forbid")).setValue("");
+        ((RuntimeConfigProperty)config.get("uploads.types.allowed")).setValue("");
+        ((RuntimeConfigProperty)config.get("uploads.enabled")).setValue("true");
         pmgr.saveProperties(config);
         TestUtils.endSession(true);
         
@@ -29,7 +29,7 @@
         exception = null;
         
         config = pmgr.getProperties();
-        ((RollerPropertyData)config.get("uploads.dir.maxsize")).setValue("1.00");
+        ((RuntimeConfigProperty)config.get("uploads.dir.maxsize")).setValue("1.00");
         pmgr.saveProperties(config);
         TestUtils.endSession(true);
         
@@ -45,7 +45,7 @@
         
         
         config = pmgr.getProperties();
-        ((RollerPropertyData)config.get("uploads.types.forbid")).setValue("gif");
+        ((RuntimeConfigProperty)config.get("uploads.types.forbid")).setValue("gif");
         pmgr.saveProperties(config);
         TestUtils.endSession(true);
         
@@ -61,7 +61,7 @@
         
         
         config = pmgr.getProperties();
-        ((RollerPropertyData)config.get("uploads.enabled")).setValue("false");
+        ((RuntimeConfigProperty)config.get("uploads.enabled")).setValue("false");
         pmgr.saveProperties(config);
         TestUtils.endSession(true);
         

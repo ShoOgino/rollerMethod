@@ -36,7 +36,7 @@
         session.createQuery("delete from WeblogEntryTagAggregate where total <= 0").executeUpdate();       
                 
         // Remove the website's ping queue entries
-        Criteria criteria = session.createCriteria(PingQueueEntryData.class);
+        Criteria criteria = session.createCriteria(PingQueueEntry.class);
         criteria.add(Expression.eq("website", website));
         List queueEntries = criteria.list();
         
@@ -45,7 +45,7 @@
         List autopings = autoPingMgr.getAutoPingsByWebsite(website);
         Iterator it = autopings.iterator();
         while(it.hasNext()) {
-            this.strategy.remove((AutoPingData) it.next());
+            this.strategy.remove((AutoPing) it.next());
         }
         
         // Remove the website's custom ping targets
@@ -53,7 +53,7 @@
         List pingtargets = pingTargetMgr.getCustomPingTargets(website);
         it = pingtargets.iterator();
         while(it.hasNext()) {
-            this.strategy.remove((PingTargetData) it.next());
+            this.strategy.remove((PingTarget) it.next());
         }
         
         // remove entries

@@ -9,7 +9,7 @@
         assertEquals(count, refs.size());
         
         PropertiesManager pmgr = RollerFactory.getRoller().getPropertiesManager();
-        RollerPropertyData spamprop = pmgr.getProperty("spam.blacklist");
+        RuntimeConfigProperty spamprop = pmgr.getProperty("spam.blacklist");
         String origWords = spamprop.getValue();
         spamprop.setValue(spamprop.getValue() + ", test");
         pmgr.saveProperty(spamprop);

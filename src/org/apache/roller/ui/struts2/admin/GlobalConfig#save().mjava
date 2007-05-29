@@ -5,12 +5,12 @@
         
         // only set values for properties that are already defined
         String propName = null;
-        RollerPropertyData updProp = null;
+        RuntimeConfigProperty updProp = null;
         String incomingProp = null;
         Iterator propsIT = getProperties().keySet().iterator();
         while(propsIT.hasNext()) {
             propName = (String) propsIT.next();
-            updProp = (RollerPropertyData) getProperties().get(propName);
+            updProp = (RuntimeConfigProperty) getProperties().get(propName);
             incomingProp = this.getParameter(updProp.getName());
             
             log.debug("Checking property ["+propName+"]");

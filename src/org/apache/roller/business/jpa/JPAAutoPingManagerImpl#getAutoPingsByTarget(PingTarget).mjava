@@ -1,0 +1,7 @@
+    public List getAutoPingsByTarget(PingTarget pingTarget) 
+            throws RollerException {
+        Query q = strategy.getNamedQuery("AutoPing.getByPingTarget");
+        q.setParameter(1, pingTarget);
+        return q.getResultList();
+    }
+

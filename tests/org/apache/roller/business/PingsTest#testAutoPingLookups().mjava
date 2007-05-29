@@ -5,16 +5,16 @@
         
         AutoPingManager mgr = RollerFactory.getRoller().getAutopingManager();
         PingTargetManager ptmgr = RollerFactory.getRoller().getPingTargetManager();
-        AutoPingData autoPing = null;
+        AutoPing autoPing = null;
         
         // create autoPing target to use for tests
-        PingTargetData pingTarget = TestUtils.setupPingTarget("fooPing", "http://foo/null");
+        PingTarget pingTarget = TestUtils.setupPingTarget("fooPing", "http://foo/null");
         TestUtils.endSession(true);
         
         // create autoPing
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         pingTarget = ptmgr.getPingTarget(pingTarget.getId());
-        autoPing = new AutoPingData(null, pingTarget, testWeblog);
+        autoPing = new AutoPing(null, pingTarget, testWeblog);
         mgr.saveAutoPing(autoPing);
         String id = autoPing.getId();
         TestUtils.endSession(true);

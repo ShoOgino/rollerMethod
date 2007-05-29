@@ -4,7 +4,7 @@
     public boolean unregisterLease(RollerTask task) {
 
         // query for existing lease record first
-        TaskLockData taskLock = null;
+        TaskLock taskLock = null;
         try {
             taskLock = this.getTaskLockByName(task.getName());
 
@@ -13,14 +13,14 @@
             }
 
         } catch (RollerException ex) {
-            log.warn("Error getting TaskLockData", ex);
+            log.warn("Error getting TaskLock", ex);
             return false;
         }
 
         // try to release lease, just set lease time to 0
         try {
             Query q = strategy.getNamedUpdate(
-                    "TaskLockData.updateTimeLeasedByName&Client");
+                    "TaskLock.updateTimeLeasedByName&Client");
             q.setParameter(1, Integer.valueOf(task.getInterval()));
             q.setParameter(2, task.getName());
             q.setParameter(3, task.getClientId());

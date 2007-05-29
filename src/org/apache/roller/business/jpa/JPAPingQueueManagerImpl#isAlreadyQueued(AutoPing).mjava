@@ -1,0 +1,11 @@
+    // private helper to determine if an has already been queued 
+    // for the same website and ping target.
+    private boolean isAlreadyQueued(AutoPing autoPing) 
+        throws RollerException {
+        // first, determine if an entry already exists
+        Query q = strategy.getNamedQuery("PingQueueEntry.getByPingTarget&Website");
+        q.setParameter(1, autoPing.getPingTarget());
+        q.setParameter(2, autoPing.getWebsite());
+        return q.getResultList().size() > 0;
+    }
+

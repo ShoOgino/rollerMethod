@@ -36,7 +36,7 @@
                 String name = m.group(1).trim();
                 String url = m.group(2).trim();
                 logger.info("Creating common ping target '" + name + "' from configuration properties.");
-                PingTargetData pingTarget = new PingTargetData(null, name, url, null, false);
+                PingTarget pingTarget = new PingTarget(null, name, url, null, false);
                 pingTargetMgr.savePingTarget(pingTarget);
             } else {
                 logger.error("Unable to parse configured initial ping target '" + thisTarget + "'. Skipping this target. Check your setting of the property " + PINGS_INITIAL_COMMON_TARGETS_PROP);

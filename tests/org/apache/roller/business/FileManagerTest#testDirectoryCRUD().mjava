@@ -6,9 +6,9 @@
         // update roller properties to prepare for test
         PropertiesManager pmgr = RollerFactory.getRoller().getPropertiesManager();
         Map config = pmgr.getProperties();
-        ((RollerPropertyData)config.get("uploads.enabled")).setValue("true");
-        ((RollerPropertyData)config.get("uploads.types.allowed")).setValue("opml");
-        ((RollerPropertyData)config.get("uploads.dir.maxsize")).setValue("1.00");
+        ((RuntimeConfigProperty)config.get("uploads.enabled")).setValue("true");
+        ((RuntimeConfigProperty)config.get("uploads.types.allowed")).setValue("opml");
+        ((RuntimeConfigProperty)config.get("uploads.dir.maxsize")).setValue("1.00");
         pmgr.saveProperties(config);
         TestUtils.endSession(true);
         

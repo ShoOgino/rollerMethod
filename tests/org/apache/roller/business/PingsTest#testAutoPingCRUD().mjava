@@ -4,15 +4,15 @@
     public void testAutoPingCRUD() throws Exception {
         
         AutoPingManager mgr = RollerFactory.getRoller().getAutopingManager();
-        AutoPingData autoPing = null;
+        AutoPing autoPing = null;
         
         // create ping target to use for tests
-        PingTargetData pingTarget = TestUtils.setupPingTarget("fooPing", "http://foo/null");
-        PingTargetData pingTarget2 = TestUtils.setupPingTarget("blahPing", "http://blah/null");
+        PingTarget pingTarget = TestUtils.setupPingTarget("fooPing", "http://foo/null");
+        PingTarget pingTarget2 = TestUtils.setupPingTarget("blahPing", "http://blah/null");
         TestUtils.endSession(true);
         
         // create autoPing
-        autoPing = new AutoPingData(null, pingTarget, testWeblog);
+        autoPing = new AutoPing(null, pingTarget, testWeblog);
         mgr.saveAutoPing(autoPing);
         String id = autoPing.getId();
         TestUtils.endSession(true);

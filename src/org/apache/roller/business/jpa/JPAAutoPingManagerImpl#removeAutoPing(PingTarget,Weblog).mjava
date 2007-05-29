@@ -1,0 +1,8 @@
+    public void removeAutoPing(PingTarget pingTarget, Weblog website)
+            throws RollerException {
+        Query q = strategy.getNamedUpdate("AutoPing.removeByPingTarget&Website");
+        q.setParameter(1, pingTarget);
+        q.setParameter(2, website);
+        q.executeUpdate();
+    }
+
