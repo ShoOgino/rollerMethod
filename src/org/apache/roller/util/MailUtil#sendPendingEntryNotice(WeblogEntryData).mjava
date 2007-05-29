@@ -4,7 +4,7 @@
     public static void sendPendingEntryNotice(WeblogEntryData entry) 
             throws RollerException {
         
-        Session mailSession = getMailSession();
+        Session mailSession = MailProvider.getMailProvider().getSession();
         if(mailSession == null) {
             throw new RollerException("Couldn't get mail Session");
         }
@@ -59,7 +59,7 @@
                     );
             content = sb.toString();
             MailUtil.sendTextMessage(
-                    mailSession, from, to, cc, bcc, subject, content);
+                    from, to, cc, bcc, subject, content);
         } catch (MessagingException e) {
             log.error("ERROR: Problem sending pending entry notification email.");
         }

@@ -5,7 +5,7 @@
                                             UserData user)
             throws RollerException {
         
-        Session mailSession = getMailSession();
+        Session mailSession = MailProvider.getMailProvider().getSession();
         if(mailSession == null) {
             throw new RollerException("ERROR: Notification email(s) not sent, "
                     + "Roller's mail session not properly configured");
@@ -48,7 +48,7 @@
             }));
             content = sb.toString();
             MailUtil.sendTextMessage(
-                    mailSession, from, to, cc, bcc, subject, content);
+                    from, to, cc, bcc, subject, content);
         } catch (MessagingException e) {
             throw new RollerException("ERROR: Notification email(s) not sent, "
                     + "due to Roller configuration or mail server problem.", e);

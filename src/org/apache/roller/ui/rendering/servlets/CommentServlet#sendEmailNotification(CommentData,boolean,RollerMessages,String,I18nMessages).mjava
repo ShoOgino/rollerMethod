@@ -182,22 +182,18 @@
             //------------------------------------------
             // --- Send message to email recipients
             try {
-                Context ctx = (Context)
-                new InitialContext().lookup("java:comp/env");
-                Session session = (Session)ctx.lookup("mail/Session");
                 boolean isHtml = !escapeHtml;
                 // Send separate messages to owner and commenters
-                sendMessage(session, from,
-                        new String[]{user.getEmailAddress()}, null, null, subject, ownermsg.toString(), isHtml);
+                sendMessage(
+                    from, new String[]{user.getEmailAddress()}, null, 
+                    null, subject, ownermsg.toString(), isHtml);
                 if (notifySubscribers && commenterAddrs.length > 0) {
                     // If hiding commenter addrs, they go in Bcc: otherwise in the To: of the second message
                     String[] to = hideCommenterAddrs ? null : commenterAddrs;
                     String[] bcc = hideCommenterAddrs ? commenterAddrs : null;
-                    sendMessage(session, from, to, null, bcc, subject, msg.toString(), isHtml);
+                    sendMessage(from, to, null, bcc, subject, msg.toString(), isHtml);
 
                 }
-            } catch (NamingException ne) {
-                log.error("Unable to lookup mail session.  Check configuration.  NamingException: " + ne.getMessage());
             } catch (Exception e) {
                 log.warn("Exception sending comment mail: " + e.getMessage());
                 // This will log the stack trace if debug is enabled

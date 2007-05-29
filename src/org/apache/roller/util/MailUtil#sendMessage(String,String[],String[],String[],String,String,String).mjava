@@ -11,7 +11,6 @@
      */
     public static void sendMessage
             (
-            Session session,
             String from,
             String[] to,
             String[] cc,
@@ -21,6 +20,17 @@
             String mimeType
             )
             throws MessagingException {
+        
+        MailProvider mailProvider = null;
+        Session session = null;
+        try {
+            mailProvider = MailProvider.getMailProvider(); 
+        } catch (RollerException ex) {
+            // The MailProvider should have been constructed long before 
+            // we get to this point, so this should never ever happen
+            throw new RuntimeException("ERROR getting mail provider", ex);
+        }
+        session = mailProvider.getSession();
         Message message = new MimeMessage(session);
         
         // n.b. any default from address is expected to be determined by caller.
@@ -70,23 +80,29 @@
         
         SendFailedException sendex = new SendFailedException("Unable to send message to some recipients");
         
+        Transport transport = mailProvider.getTransport();
+        
         // Try to send while there remain some potentially good addresses
-        do
-        {
-            // Avoid a loop if we are stuck
-            nAddresses = remainingAddresses.length;
+        try { 
+            do {
+                // Avoid a loop if we are stuck
+                nAddresses = remainingAddresses.length;
+
+                try {
+                    // Send to the list of remaining addresses, ignoring the addresses attached to the message
+                    transport.send(message, remainingAddresses);
+                } catch(SendFailedException ex) {
+                    bFailedToSome=true;
+                    sendex.setNextException(ex);
+
+                    // Extract the remaining potentially good addresses
+                    remainingAddresses=ex.getValidUnsentAddresses();
+                }
+            } while (remainingAddresses!=null && remainingAddresses.length>0 && remainingAddresses.length!=nAddresses);
             
-            try {
-                // Send to the list of remaining addresses, ignoring the addresses attached to the message
-                Transport.send(message,remainingAddresses);
-            } catch(SendFailedException ex) {
-                bFailedToSome=true;
-                sendex.setNextException(ex);
-                
-                // Extract the remaining potentially good addresses
-                remainingAddresses=ex.getValidUnsentAddresses();
-            }
-        } while (remainingAddresses!=null && remainingAddresses.length>0 && remainingAddresses.length!=nAddresses);
+        } finally {
+            transport.close();
+        }
         
         if (bFailedToSome) throw sendex;
     }

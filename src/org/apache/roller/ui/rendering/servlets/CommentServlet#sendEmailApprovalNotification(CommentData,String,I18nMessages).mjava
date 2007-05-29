@@ -43,18 +43,13 @@
             //------------------------------------------
             // --- Send message to author of approved comment
             try {
-                Context ctx = (Context)
-                new InitialContext().lookup("java:comp/env");
-                Session session = (Session)ctx.lookup("mail/Session");
                 String[] cc = null;
                 String[] bcc = null;
-                sendMessage(session, from,
+                sendMessage(from,
                         new String[] {cd.getEmail()},
                         null, // cc
                         null, // bcc
                         subject, msg.toString(), false);
-            } catch (NamingException ne) {
-                log.error("Unable to lookup mail session.  Check configuration.  NamingException: " + ne.getMessage());
             } catch (Exception e) {
                 log.warn("Exception sending comment mail: " + e.getMessage());
                 // This will log the stack trace if debug is enabled

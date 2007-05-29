@@ -1,17 +1,15 @@
     /**
-     * This method overrides the sendHTMLMessage to specify
+     * This method overrides the sendTextMessage to specify
      * one receiver and mulitple cc recipients.
      *
      * @param from e-mail address of sender
-     * @param to e-mail address of recipient
-     * @param cc e-mail addresses of recipients
+     * @param to e-mail addresses of recipients
      * @param subject subject of e-mail
      * @param content the body of the e-mail
      * @throws MessagingException the exception to indicate failure
      */
-    public static void sendHTMLMessage
+    public static void sendTextMessage
             (
-            Session session,
             String from,
             String to,
             String[] cc,
@@ -23,6 +21,6 @@
         String[] recipient = null;
         if (to!=null) recipient = new String[] {to};
         
-        sendMessage(session, from, recipient, cc, bcc, subject, content, "text/html; charset=utf-8");
+        sendMessage(from, recipient, cc, bcc, subject, content, "text/plain; charset=utf-8");
     }
 

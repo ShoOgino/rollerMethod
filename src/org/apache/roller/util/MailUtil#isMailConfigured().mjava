@@ -1,0 +1,9 @@
+    /**
+     * Ideally mail senders should call this first to avoid errors that occur 
+     * when mail is not properly configured. We'll complain about that at 
+     * startup, no need to complain on every attempt to send.
+     */
+    public static boolean isMailConfigured() {
+        return MailProvider.isMailConfigured(); 
+    }
+

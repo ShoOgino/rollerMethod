@@ -1,15 +1,14 @@
     /**
-     * This method is used to send a Text Message.
+     * This method is used to send a HTML Message
      *
      * @param from e-mail address of sender
-     * @param to e-mail addresses of recipients
+     * @param to e-mail address(es) of recipients
      * @param subject subject of e-mail
      * @param content the body of the e-mail
      * @throws MessagingException the exception to indicate failure
      */
-    public static void sendTextMessage
+    public static void sendHTMLMessage
             (
-            Session session,
             String from,
             String[] to,
             String[] cc,
@@ -18,6 +17,6 @@
             String content
             )
             throws MessagingException {
-        sendMessage(session, from, to, cc, bcc, subject, content, "text/plain; charset=utf-8");
+        sendMessage(from, to, cc, bcc, subject, content, "text/html; charset=utf-8");
     }
 

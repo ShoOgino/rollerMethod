@@ -10,7 +10,6 @@
      */
     public static void sendHTMLMessage
             (
-            Session session,
             String from,
             String to,
             String cc,
@@ -27,6 +26,6 @@
         if (cc!=null) copy = new String[] {cc};
         if (bcc!=null) bcopy = new String[] {bcc};
         
-        sendMessage(session, from, recipient, copy, bcopy, subject, content, "text/html; charset=utf-8");
+        sendMessage(from, recipient, copy, bcopy, subject, content, "text/html; charset=utf-8");
     }
 

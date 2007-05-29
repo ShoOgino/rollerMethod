@@ -1,6 +1,5 @@
     /**
-     * This method overrides the sendTextMessage to specify
-     * one receiver and mulitple cc recipients.
+     * This method is used to send a Text Message.
      *
      * @param from e-mail address of sender
      * @param to e-mail addresses of recipients
@@ -10,18 +9,14 @@
      */
     public static void sendTextMessage
             (
-            Session session,
             String from,
-            String to,
+            String[] to,
             String[] cc,
             String[] bcc,
             String subject,
             String content
             )
             throws MessagingException {
-        String[] recipient = null;
-        if (to!=null) recipient = new String[] {to};
-        
-        sendMessage(session, from, recipient, cc, bcc, subject, content, "text/plain; charset=utf-8");
+        sendMessage(from, to, cc, bcc, subject, content, "text/plain; charset=utf-8");
     }
 
