@@ -22,7 +22,7 @@
         ctx.put("uploadPath", ContextLoader.figureResourcePath());
         
         try {
-            URL absUrl = RequestUtils.absoluteURL(request, "/");
+            URL absUrl = new URL(RollerRuntimeConfig.getAbsoluteContextURL());
             ctx.put("host", absUrl.getHost());
         } catch (MalformedURLException e) {
             throw new RollerException(e);
