@@ -10,34 +10,24 @@
      */
     public String strutsUrlHelper1( boolean useIds, boolean isAction,
             String path, String val1, String val2, Hashtable params) {
-        if (useIds) {
-            if (mFolder != null) {
-                params.put(RequestConstants.FOLDER_ID,
-                        mFolder.getId());
-            }
-            if (mWebsite != null) {
-                params.put(RequestConstants.WEBLOG, mWebsite.getHandle());
-            }
-        }
         
-        if (OldStringUtils.isNotEmpty(val1) && !val1.equals("null")) {
-            params.clear();
-            params.put("weblog", val1);
-        }
+        // NOTE: this method is now official defunct since Roller 4.0
+        // when we EOLed struts1 and had no real equivalent for this
         
-        String returnUrl = "";
-        try {
-            if (isAction) {
-                returnUrl = RequestUtils.computeURL( mPageContext,
-                        path, null, null, null, params, null, false);
-            } else {
-                returnUrl = RequestUtils.computeURL( mPageContext,
-                        null, path, null, null, params, null, false);
-            }
-        } catch (MalformedURLException mue) {
-            mLogger.warn("RollerRequest.strutsUrlHelper exception: ", mue);
-            returnUrl = "<span class=\"error\">ERROR generating link</span>";
+        if(path == null) {
+            return null;
+        } else if("weblogCreate".equals(path)) {
+            // a little hacky, but hopefully nobody is really using this anymore
+            return RollerRuntimeConfig.getRelativeContextURL()+"/roller-ui/createWeblog.rol";
+        } else if("editWebsite".equals(path)) {
+            // a little hacky, but hopefully nobody is really using this anymore
+            return RollerRuntimeConfig.getRelativeContextURL()+"/roller-ui/authoring/weblogConfig.rol?weblog="+val1;
+        } else if("logout-redirect".equals(path)) {
+            return URLUtilities.getLogoutURL(false);
+        } else if("login-redirect".equals(path)) {
+            return URLUtilities.getLoginURL(false);
+        } else {
+            return "<span class=\"error\">ERROR generating link</span>";
         }
-        return returnUrl;
     }
 
