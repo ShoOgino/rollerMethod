@@ -1,0 +1,25 @@
+    /**
+     * @see org.apache.roller.weblogger.pojos.RefererManager#getReferersToEntry(
+     * java.lang.String, java.lang.String)
+     */
+    public List getReferersToEntry(String entryid) throws RollerException {
+        if (null == entryid)
+            throw new RollerException("entryid is null");
+        
+        try {
+            Session session = ((HibernatePersistenceStrategy)strategy).getSession();
+            Criteria criteria = session.createCriteria(WeblogReferrer.class);
+            criteria.createAlias("weblogEntry","e");
+            
+            criteria.add(Expression.eq("e.id", entryid));
+            criteria.add(Expression.isNotNull("title"));
+            criteria.add(Expression.isNotNull("excerpt"));
+            
+            criteria.addOrder(Order.desc("totalHits"));
+            
+            return criteria.list();
+        } catch (HibernateException e) {
+            throw new RollerException(e);
+        }
+    }
+

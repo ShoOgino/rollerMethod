@@ -1,0 +1,29 @@
+    /**
+     * @see org.apache.roller.weblogger.model.BookmarkManager#retrieveBookmarks(
+     *      org.apache.roller.weblogger.pojos.FolderData, boolean)
+     */
+    public List getBookmarks(WeblogBookmarkFolder folder, boolean subfolders)
+            throws RollerException {
+        
+        try {
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
+            Criteria criteria = session.createCriteria(WeblogBookmark.class);
+            
+            if(!subfolders) {
+                // if no subfolders then this is an equals query
+                criteria.add(Expression.eq("folder", folder));
+            } else {
+                // if we are doing subfolders then do a case sensitive
+                // query using folder path
+                criteria.createAlias("folder", "fd");
+                criteria.add(Expression.like("fd.path", folder.getPath()+"%"));
+                criteria.add(Expression.eq("fd.website", folder.getWebsite()));
+            }
+            
+            return criteria.list();
+            
+        } catch (HibernateException e) {
+            throw new RollerException(e);
+        }
+    }
+

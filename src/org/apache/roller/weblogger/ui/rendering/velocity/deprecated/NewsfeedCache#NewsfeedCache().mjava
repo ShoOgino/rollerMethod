@@ -1,0 +1,21 @@
+    /** Constructor */
+    private NewsfeedCache() {
+        // lookup the props we need
+        String enabled = RollerConfig.getProperty("aggregator.enabled");
+        String usecache = RollerConfig.getProperty("aggregator.cache.enabled");
+        String cachetime = RollerConfig.getProperty("aggregator.cache.timeout");
+        
+        if("true".equalsIgnoreCase(enabled))
+            this.aggregator_enabled = true;
+        
+        if("true".equalsIgnoreCase(usecache))
+            this.aggregator_cache_enabled = true;
+        
+        try {
+            this.aggregator_cache_timeout = Integer.parseInt(cachetime);
+        } catch(Exception e) { mLogger.warn(e); }
+        
+        // finally ... create the cache
+        this.mCache = new LRUCache2(100, 1000 * this.aggregator_cache_timeout);
+    }
+

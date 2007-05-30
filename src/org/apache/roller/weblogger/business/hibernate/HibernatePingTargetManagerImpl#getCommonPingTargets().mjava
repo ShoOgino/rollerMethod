@@ -1,0 +1,16 @@
+    /**
+     * @see org.apache.roller.weblogger.model.PingTargetManager#getCommonPingTargets()
+     */
+    public List getCommonPingTargets() throws RollerException {
+        try {
+            Session session = ((HibernatePersistenceStrategy) strategy).getSession();
+            Criteria criteria = session.createCriteria(PingTarget.class);
+            criteria.add(Expression.isNull("website"));
+            criteria.addOrder(Order.asc("name"));
+            return criteria.list();
+        } catch (HibernateException e) {
+            throw new RollerException(e);
+        }
+        
+    }
+

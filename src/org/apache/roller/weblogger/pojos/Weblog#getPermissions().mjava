@@ -1,0 +1,10 @@
+    /**
+     * @hibernate.bag lazy="true" inverse="true" cascade="delete"
+     * @hibernate.collection-key column="website_id"
+     * @hibernate.collection-one-to-many
+     *    class="org.apache.roller.weblogger.pojos.WeblogPermission"
+     */
+    public List getPermissions() {
+        return permissions;
+    }
+

@@ -1,0 +1,10 @@
+    /**
+     * @see org.apache.roller.weblogger.model.Roller#getPingTargetManager()
+     */
+    public PingTargetManager getPingTargetManager() {
+        if (pingTargetManager == null) {
+            pingTargetManager = new HibernatePingTargetManagerImpl(strategy);
+        }
+        return pingTargetManager;
+    }
+

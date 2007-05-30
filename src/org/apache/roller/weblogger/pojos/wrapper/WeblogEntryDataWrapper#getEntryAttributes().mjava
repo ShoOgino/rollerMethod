@@ -1,0 +1,24 @@
+    /**
+     * pojo method tagged with @roller.wrapPojoMethod type="pojo-collection"
+     *
+     * This method returns a collection of pojos so we need to wrap
+     * each pojo that is part of the collection.
+     */
+    public java.util.List getEntryAttributes()
+    {
+        java.util.Set initialCollection = this.pojo.getEntryAttributes();
+
+        // iterate through and wrap
+        // we force the use of an ArrayList because it should be good enough to cover
+        // for any Collection type we encounter.
+        java.util.ArrayList wrappedCollection = new java.util.ArrayList(initialCollection.size());
+        java.util.Iterator it = initialCollection.iterator();
+        int i = 0;
+        while(it.hasNext()) {
+            wrappedCollection.add(i,org.apache.roller.weblogger.pojos.wrapper.EntryAttributeDataWrapper.wrap((org.apache.roller.weblogger.pojos.WeblogEntryAttribute) it.next()));
+            i++;
+        }
+
+        return wrappedCollection;
+    }
+

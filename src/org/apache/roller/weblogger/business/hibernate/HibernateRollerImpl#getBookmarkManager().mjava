@@ -1,0 +1,10 @@
+    /**
+     * @see org.apache.roller.weblogger.model.Roller#getBookmarkManager()
+     */
+    public BookmarkManager getBookmarkManager() {
+        if ( bookmarkManager == null ) {
+            bookmarkManager = new HibernateBookmarkManagerImpl(strategy);
+        }
+        return bookmarkManager;
+    }
+

@@ -1,0 +1,10 @@
+    /**
+     * @see org.apache.roller.weblogger.business.Roller#getWeblogManager()
+     */
+    public WeblogManager getWeblogManager() {
+        if ( weblogManager == null ) {
+            weblogManager = createJPAWeblogManager(strategy);
+        }
+        return weblogManager;
+    }
+

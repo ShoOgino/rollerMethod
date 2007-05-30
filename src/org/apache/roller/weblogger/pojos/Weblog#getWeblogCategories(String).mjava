@@ -1,0 +1,23 @@
+    /**
+     * 
+     * 
+     * @roller.wrapPojoMethod type="pojo-collection" class="org.apache.roller.weblogger.pojosWeblogCategorya"
+     */
+    public Set getWeblogCategories(String categoryPath) {
+        Set ret = new HashSet();
+        try {
+            Roller roller = RollerFactory.getRoller();
+            WeblogManager wmgr = roller.getWeblogManager();            
+            WeblogCategory category = null;
+            if (categoryPath != null && !categoryPath.equals("nil")) {
+                category = wmgr.getWeblogCategoryByPath(this, categoryPath);
+            } else {
+                category = this.getDefaultCategory();
+            }
+            ret = category.getWeblogCategories();
+        } catch (RollerException e) {
+            log.error("ERROR: fetching categories for path: " + categoryPath, e);
+        }
+        return ret;
+    }
+

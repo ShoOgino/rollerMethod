@@ -1,0 +1,10 @@
+    /**
+     * @see org.apache.roller.weblogger.model.Roller#getWeblogManager()
+     */
+    public WeblogManager getWeblogManager() {
+        if ( weblogManager == null ) {
+            weblogManager = new HibernateWeblogManagerImpl(strategy);
+        }
+        return weblogManager;
+    }
+

@@ -1,0 +1,15 @@
+    /**
+     * Retrieve all weblog entries in this category and, optionally, include
+     * weblog entries all sub-categories.
+     *
+     * @roller.wrapPojoMethod type="pojo-collection" class="org.apache.roller.weblogger.pojos.WeblogEntryData"
+     *
+     * @param subcats True if entries from sub-categories are to be returned.
+     * @return List of WeblogEntryData objects.
+     * @throws RollerException
+     */
+    public List retrieveWeblogEntries(boolean subcats) throws RollerException {
+        WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+        return wmgr.getWeblogEntries(this, subcats);
+    }
+

@@ -1,0 +1,20 @@
+    /**
+     * @see org.apache.roller.weblogger.model.UserManager#getPages(WebsiteData)
+     */
+    public List getPages(Weblog website) throws RollerException {
+        
+        if (website == null)
+            throw new RollerException("website is null");
+        
+        try {
+            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
+            Criteria criteria = session.createCriteria(WeblogTemplate.class);
+            criteria.add(Expression.eq("website",website));
+            criteria.addOrder(Order.asc("name"));
+            
+            return criteria.list();
+        } catch (HibernateException e) {
+            throw new RollerException(e);
+        }
+    }
+

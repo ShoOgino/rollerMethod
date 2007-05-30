@@ -1,0 +1,13 @@
+    /**
+     * @roller.wrapPojoMethod type="pojo-collection" class="org.apache.roller.weblogger.pojos.RefererData"
+     */
+    public List getReferers() {
+        List referers = null;
+        try {
+            referers = RollerFactory.getRoller().getRefererManager().getReferersToEntry(getId());
+        } catch (RollerException e) {
+            mLogger.error("Unexpected exception", e);
+        }
+        return referers;
+    }
+

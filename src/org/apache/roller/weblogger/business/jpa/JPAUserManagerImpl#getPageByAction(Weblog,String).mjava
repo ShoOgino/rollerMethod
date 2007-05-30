@@ -1,0 +1,23 @@
+    /**
+     * @see org.apache.roller.weblogger.model.UserManager#getPageByAction(Weblog, java.lang.String)
+     */
+    public WeblogTemplate getPageByAction(Weblog website, String action)
+            throws RollerException {
+        
+        if (website == null)
+            throw new RollerException("website is null");
+        
+        if (action == null)
+            throw new RollerException("Action name is null");
+        
+        
+        Query query = strategy.getNamedQuery("WeblogTemplate.getByAction"); 
+        query.setParameter(1, website);
+        query.setParameter(2, action);
+        try {
+            return (WeblogTemplate)query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }        
+    }
+
