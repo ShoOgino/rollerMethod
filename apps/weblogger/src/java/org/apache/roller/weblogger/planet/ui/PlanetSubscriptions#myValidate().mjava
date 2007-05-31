@@ -1,0 +1,18 @@
+    /** 
+     * Validate posted subscription, fill in blanks via Technorati 
+     */
+    private void myValidate() {
+        
+        if(StringUtils.isEmpty(getBean().getTitle())) {
+            addError("planetSubscription.error.title");
+        }
+        
+        if(StringUtils.isEmpty(getBean().getNewsfeedURL())) {
+            addError("planetSubscription.error.feedUrl");
+        }
+        
+        if(StringUtils.isEmpty(getBean().getWebsiteURL())) {
+            addError("planetSubscription.error.siteUrl");
+        }
+    }
+

@@ -1,0 +1,10 @@
+    public List<PlanetSubscriptionData> getSubscriptions() {
+        
+        List<PlanetSubscriptionData> subs = Collections.EMPTY_LIST;
+        if(getGroup() != null) {
+            Set subsSet = getGroup().getSubscriptions();
+            subs = new ArrayList(subsSet);
+        }
+        return subs;
+    }
+

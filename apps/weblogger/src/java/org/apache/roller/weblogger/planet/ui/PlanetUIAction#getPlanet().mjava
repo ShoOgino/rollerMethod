@@ -1,0 +1,12 @@
+    public PlanetData getPlanet() {
+        if(planet == null) {
+            try {
+                PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
+                planet = pmgr.getPlanetById(PLANET_HANDLE);
+            } catch(Exception ex) {
+                log.error("Error loading weblogger planet - "+PLANET_HANDLE, ex);
+            }
+        }
+        return planet;
+    }
+

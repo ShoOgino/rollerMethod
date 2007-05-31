@@ -1,0 +1,22 @@
+    /** 
+     * Delete subscription, reset form  
+     */
+    public String delete() {
+        
+        if(getSubscription() != null) try {
+            
+            PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
+            getGroup().getSubscriptions().remove(getSubscription());
+            pmgr.deleteSubscription(getSubscription());
+            PlanetFactory.getPlanet().flush();
+            
+            addMessage("planetSubscription.success.deleted");
+            
+        } catch (RollerException ex) {
+            log.error("Error removing planet subscription", ex);
+            addError("planetSubscription.error.deleting");
+        }
+
+        return LIST;
+    }
+

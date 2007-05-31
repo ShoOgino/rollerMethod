@@ -1,0 +1,18 @@
+    public List<PlanetGroupData> getGroups() {
+        
+        List<PlanetGroupData> displayGroups = new ArrayList();
+        
+        Iterator allgroups = getPlanet().getGroups().iterator();
+        while (allgroups.hasNext()) {
+            PlanetGroupData agroup = (PlanetGroupData) allgroups.next();
+            
+            // The "all" group is considered a special group and cannot be
+            // managed independently
+            if (!agroup.getHandle().equals("all")) {
+                displayGroups.add(agroup);
+            }
+        }
+        
+        return displayGroups;
+    }
+

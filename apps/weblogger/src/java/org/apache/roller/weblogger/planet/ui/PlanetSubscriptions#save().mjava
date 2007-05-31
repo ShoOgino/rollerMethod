@@ -1,0 +1,56 @@
+    /** 
+     * Save subscription, add to current group 
+     */
+    public String save() {
+        
+        myValidate();
+        
+        if(!hasActionErrors()) try {
+            PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
+            PlanetSubscriptionData sub = getSubscription();
+            if(sub == null) {
+                // Adding new subscription to group
+                // Does subscription to that feed already exist?
+                sub = pmgr.getSubscription(getBean().getNewsfeedURL());
+                if (sub != null) {
+                    log.debug("Adding Existing Subscription");
+                    
+                    // Subscription already exists
+                    addMessage("planetSubscription.foundExisting", sub.getTitle());
+                } else {
+                    log.debug("Adding New Subscription");
+                    
+                    // Add new subscription
+                    sub = new PlanetSubscriptionData();
+                    getBean().copyTo(sub);
+                    pmgr.saveSubscription(sub);
+                    
+                    // now that we know our new subs id, keep track of that
+                    getBean().setId(sub.getId());
+                }
+                
+                // add the subscription to our group
+                getGroup().getSubscriptions().add(sub);
+                sub.getGroups().add(getGroup());
+                pmgr.saveGroup(getGroup());
+            } else {
+                log.debug("Updating Subscription");
+                
+                // User editing an existing subscription within a group
+                getBean().copyTo(sub);
+                pmgr.saveSubscription(sub);
+            }
+            
+            // flush changes
+            PlanetFactory.getPlanet().flush();
+            
+            addMessage("planetSubscription.success.saved");
+            
+        } catch (RollerException ex) {
+            log.error("Unexpected error saving subscription", ex);
+            addError("planetSubscriptions.error.duringSave", ex.getRootCauseMessage());
+        }
+        
+        return LIST;
+    }
+

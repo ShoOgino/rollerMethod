@@ -1,0 +1,24 @@
+    @Override
+    public void myPrepare() {
+        
+        PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
+        
+        // lookup group we are operating on, if none specified then use default
+        if (getGroupHandle() == null) {
+            setGroupHandle("all");
+        }
+        
+        try {
+            setGroup(pmgr.getGroup(getPlanet(), getGroupHandle()));
+        } catch (RollerException ex) {
+            log.error("Error looking up planet group - "+getGroupHandle(), ex);
+        }
+                
+        // lookup subscription we are working with
+        if(getBean().getId() != null) try {
+            setSubscription(pmgr.getSubscriptionById(getBean().getId()));
+        } catch(Exception ex) {
+            log.error("Error looking up planet subscription - "+getBean().getId(), ex);
+        }
+    }
+
