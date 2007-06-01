@@ -1,4 +1,9 @@
     public void removePermissions(WeblogPermission perms) throws RollerException {
+        
+        // make sure associations are broken
+        perms.getWebsite().getPermissions().remove(perms);
+        perms.getUser().getPermissions().remove(perms);
+        
         this.strategy.remove(perms);
     }
 
