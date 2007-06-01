@@ -1,0 +1,27 @@
+    // validation when adding a new template
+    private void myValidate() {
+        
+        // make sure name is non-null and within proper size
+        if(StringUtils.isEmpty(getNewTmplName())) {
+            addError("TemplateEdit.error.nameNull");
+        } else if(getNewTmplName().length() > 255) {
+            addError("TemplateEdit.error.nameSize");
+        }
+        
+        // make sure action is a valid
+        if(StringUtils.isEmpty(getNewTmplAction())) {
+            addError("TemplateEdit.error.actionNull");
+        }
+        
+        // check if template by that name already exists
+        try {
+            UserManager umgr = RollerFactory.getRoller().getUserManager();
+            WeblogTemplate existingPage = umgr.getPageByName(getActionWeblog(), getNewTmplName());
+            if(existingPage != null) {
+                addError("pagesForm.error.alreadyExists", getNewTmplName());
+            }
+        } catch (RollerException ex) {
+            log.error("Error checking for existing template", ex);
+        }
+    }
+

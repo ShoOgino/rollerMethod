@@ -1,30 +1,31 @@
     /**
      * Save a new template.
      */
-    public String save() {
+    public String add() {
         
         // validation
         myValidate();
         
-        WeblogTemplate newTemplate = new WeblogTemplate();
-        newTemplate.setWebsite(getActionWeblog());
-        newTemplate.setAction(getNewTmplAction());
-        newTemplate.setName(getNewTmplName());
-        newTemplate.setDescription(newTemplate.getName());
-        newTemplate.setContents(getText("pageForm.newTemplateContent"));
-        newTemplate.setHidden(false);
-        newTemplate.setNavbar(false);
-        newTemplate.setLastModified( new Date() );
-        
-        // all templates start out as velocity templates
-        newTemplate.setTemplateLanguage("velocity");
-        
-        // for now, all templates just use _decorator
-        if(!"_decorator".equals(newTemplate.getName())) {
-            newTemplate.setDecoratorName("_decorator");
-        }
-        
-        try {
+        if(!hasActionErrors()) try {
+            
+            WeblogTemplate newTemplate = new WeblogTemplate();
+            newTemplate.setWebsite(getActionWeblog());
+            newTemplate.setAction(getNewTmplAction());
+            newTemplate.setName(getNewTmplName());
+            newTemplate.setDescription(newTemplate.getName());
+            newTemplate.setContents(getText("pageForm.newTemplateContent"));
+            newTemplate.setHidden(false);
+            newTemplate.setNavbar(false);
+            newTemplate.setLastModified( new Date() );
+            
+            // all templates start out as velocity templates
+            newTemplate.setTemplateLanguage("velocity");
+            
+            // for now, all templates just use _decorator
+            if(!"_decorator".equals(newTemplate.getName())) {
+                newTemplate.setDecoratorName("_decorator");
+            }
+            
             // save the new Template
             UserManager mgr = RollerFactory.getRoller().getUserManager();
             mgr.savePage( newTemplate );
@@ -49,6 +50,6 @@
             addError("Error adding new template");
         }
         
-        return SUCCESS;
+        return execute();
     }
 
