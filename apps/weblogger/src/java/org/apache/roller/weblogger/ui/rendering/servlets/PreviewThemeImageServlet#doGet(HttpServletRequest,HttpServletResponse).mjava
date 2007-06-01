@@ -1,0 +1,74 @@
+    /**
+     * Handles requests for user uploaded resources.
+     */
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        String theme = request.getParameter("theme");
+        
+        log.debug("Theme requested ["+theme+"]");
+        
+        long resourceLastMod = 0;
+        InputStream resourceStream = null;
+        String previewImagePath = null;
+        
+        // try looking up selected theme
+        try {
+            ThemeManager tmgr = RollerFactory.getRoller().getThemeManager();
+            SharedTheme previewTheme = tmgr.getTheme(theme);
+            ThemeResource previewImage = previewTheme.getPreviewImage();
+            if(previewImage != null) {
+                previewImagePath = previewImage.getPath();
+                resourceLastMod = previewImage.getLastModified();
+                resourceStream = previewImage.getInputStream();
+            }
+        } catch (Exception ex) {
+            log.debug("error looking up preview image", ex);
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        
+        // if we don't have a stream to the file then we can't continue
+        if(resourceStream == null) {
+            log.debug("Unable to get theme preview for theme - "+theme);
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        
+        // Respond with 304 Not Modified if it is not modified.
+        if (ModDateHeaderUtil.respondIfNotModified(request, response, resourceLastMod)) {
+            return;
+        } else {
+            // set last-modified date
+            ModDateHeaderUtil.setLastModifiedHeader(response, resourceLastMod);
+        }
+        
+        log.debug("Everything is cool, sending image");
+        
+        // set the content type based on whatever is in our web.xml mime defs
+        response.setContentType(this.context.getMimeType(previewImagePath));
+        
+        OutputStream out = null;
+        try {
+            // ok, lets serve up the file
+            byte[] buf = new byte[8192];
+            int length = 0;
+            out = response.getOutputStream();
+            while((length = resourceStream.read(buf)) > 0) {
+                out.write(buf, 0, length);
+            }
+            
+            // cleanup
+            out.close();
+            resourceStream.close();
+            
+        } catch (Exception ex) {
+            log.error("Error writing resource file", ex);
+            if(!response.isCommitted()) {
+                response.reset();
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            }
+        }
+
+    }
+

@@ -26,6 +26,14 @@
         setLastModified(new Date());
         setEnabled(true);
         
+        // load resource representing preview image
+        File previewFile = new File(this.themeDir + File.separator + themeMetadata.getPreviewImage());
+        if(!previewFile.exists() || !previewFile.canRead()) {
+            log.warn("Couldn't read preview image file ["+themeMetadata.getPreviewImage()+"]");
+        } else {
+            this.previewImage = new SharedThemeResourceFromDir(themeMetadata.getPreviewImage(), previewFile);
+        }
+        
         // go through static resources and add them to the theme
         String resourcePath = null;
         Iterator resourcesIter = themeMetadata.getResources().iterator();
