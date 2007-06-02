@@ -1,25 +1,18 @@
-    /**
-     * pojo method tagged with @roller.wrapPojoMethod type="pojo-collection"
-     *
-     * This method returns a collection of pojos so we need to wrap
-     * each pojo that is part of the collection.
-     */
-    public java.util.List getPages()
-        throws org.apache.roller.RollerException
-    {
-        java.util.List initialCollection = this.pojo.getPages();
-
+    public List getPages() throws RollerException {
+        
+        List initialCollection = this.pojo.getPages();
+        
         // iterate through and wrap
         // we force the use of an ArrayList because it should be good enough to cover
         // for any Collection type we encounter.
-        java.util.ArrayList wrappedCollection = new java.util.ArrayList(initialCollection.size());
-        java.util.Iterator it = initialCollection.iterator();
+        ArrayList wrappedCollection = new ArrayList(initialCollection.size());
+        Iterator it = initialCollection.iterator();
         int i = 0;
         while(it.hasNext()) {
-            wrappedCollection.add(i, org.apache.roller.weblogger.pojos.wrapper.TemplateWrapper.wrap((org.apache.roller.weblogger.pojos.ThemeTemplate) it.next()));
+            wrappedCollection.add(i, TemplateWrapper.wrap((ThemeTemplate) it.next()));
             i++;
         }
-
+        
         return wrappedCollection;
     }
 

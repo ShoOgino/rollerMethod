@@ -1,24 +1,17 @@
-    /**
-     * pojo method tagged with @roller.wrapPojoMethod type="pojo-collection"
-     *
-     * This method returns a collection of pojos so we need to wrap
-     * each pojo that is part of the collection.
-     */
-    public java.util.List getComments()
-    {
-        java.util.List initialCollection = this.pojo.getComments();
-
+    public List getComments() {
+        List initialCollection = this.pojo.getComments();
+        
         // iterate through and wrap
         // we force the use of an ArrayList because it should be good enough to cover
         // for any Collection type we encounter.
-        java.util.ArrayList wrappedCollection = new java.util.ArrayList(initialCollection.size());
-        java.util.Iterator it = initialCollection.iterator();
+        ArrayList wrappedCollection = new ArrayList(initialCollection.size());
+        Iterator it = initialCollection.iterator();
         int i = 0;
         while(it.hasNext()) {
-            wrappedCollection.add(i,org.apache.roller.weblogger.pojos.wrapper.CommentDataWrapper.wrap((org.apache.roller.weblogger.pojos.WeblogEntryComment) it.next()));
+            wrappedCollection.add(i,CommentDataWrapper.wrap((WeblogEntryComment) it.next()));
             i++;
         }
-
+        
         return wrappedCollection;
     }
 
