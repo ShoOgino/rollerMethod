@@ -5,7 +5,7 @@
             Map ctx,
             HttpServletRequest request,
             Weblog   website,
-            String locale) throws RollerException {
+            String locale) throws WebloggerException {
         
         mLogger.debug("Loading path values");
         
@@ -25,7 +25,7 @@
             URL absUrl = new URL(RollerRuntimeConfig.getAbsoluteContextURL());
             ctx.put("host", absUrl.getHost());
         } catch (MalformedURLException e) {
-            throw new RollerException(e);
+            throw new WebloggerException(e);
         }
     }
 

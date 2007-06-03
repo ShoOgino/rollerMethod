@@ -2,7 +2,7 @@
      * @inheritDoc
      */
     public void removeWeblogEntry(WeblogEntry entry)
-    throws RollerException {
+    throws WebloggerException {
         Query q = strategy.getNamedQuery("WeblogReferrer.getByWeblogEntry");
         q.setParameter(1, entry);
         List referers = q.getResultList();

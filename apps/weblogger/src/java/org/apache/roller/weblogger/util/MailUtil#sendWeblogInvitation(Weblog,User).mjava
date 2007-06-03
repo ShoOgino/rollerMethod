@@ -3,11 +3,11 @@
      */
     public static void sendWeblogInvitation(Weblog website, 
                                             User user)
-            throws RollerException {
+            throws WebloggerException {
         
         Session mailSession = MailProvider.getMailProvider().getSession();
         if(mailSession == null) {
-            throw new RollerException("ERROR: Notification email(s) not sent, "
+            throw new WebloggerException("ERROR: Notification email(s) not sent, "
                     + "Roller's mail session not properly configured");
         }
         
@@ -50,7 +50,7 @@
             MailUtil.sendTextMessage(
                     from, to, cc, bcc, subject, content);
         } catch (MessagingException e) {
-            throw new RollerException("ERROR: Notification email(s) not sent, "
+            throw new WebloggerException("ERROR: Notification email(s) not sent, "
                     + "due to Roller configuration or mail server problem.", e);
         }
     }

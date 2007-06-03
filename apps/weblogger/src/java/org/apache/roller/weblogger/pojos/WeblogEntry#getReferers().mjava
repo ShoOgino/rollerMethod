@@ -5,7 +5,7 @@
         List referers = null;
         try {
             referers = RollerFactory.getRoller().getRefererManager().getReferersToEntry(getId());
-        } catch (RollerException e) {
+        } catch (WebloggerException e) {
             mLogger.error("Unexpected exception", e);
         }
         return referers;

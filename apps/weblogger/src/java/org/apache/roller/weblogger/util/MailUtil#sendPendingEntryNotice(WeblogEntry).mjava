@@ -2,11 +2,11 @@
      * Send an email notice that a new pending entry has been submitted.
      */
     public static void sendPendingEntryNotice(WeblogEntry entry) 
-            throws RollerException {
+            throws WebloggerException {
         
         Session mailSession = MailProvider.getMailProvider().getSession();
         if(mailSession == null) {
-            throw new RollerException("Couldn't get mail Session");
+            throw new WebloggerException("Couldn't get mail Session");
         }
         
         try {

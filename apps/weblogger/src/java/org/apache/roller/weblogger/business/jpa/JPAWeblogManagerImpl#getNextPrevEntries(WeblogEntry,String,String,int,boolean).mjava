@@ -1,6 +1,6 @@
     public List getNextPrevEntries(WeblogEntry current, String catName,
             String locale, int maxEntries, boolean next)
-            throws RollerException {
+            throws WebloggerException {
         Query query = null;
         List results = null;
         WeblogCategory category = null;
@@ -36,7 +36,7 @@
                 params.add(size++, category);
                 whereClause.append(" AND e.category = ?" + size);
             } else {
-                throw new RollerException("Cannot find category: " + catName);
+                throw new WebloggerException("Cannot find category: " + catName);
             } 
         }
         

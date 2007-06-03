@@ -30,7 +30,7 @@
             try {
                 wmgr.removeWeblogEntry(TestUtils.getManagedWeblogEntry(entry));
                 TestUtils.endSession(true);
-            } catch (RollerException e) {
+            } catch (WebloggerException e) {
                 ex = e;
             }
             assertNull(ex);
@@ -54,7 +54,7 @@
                 weblog = TestUtils.getManagedWebsite(weblog);
                 umgr.removeWebsite(weblog);
                 TestUtils.endSession(true);
-            } catch (RollerException e) {
+            } catch (WebloggerException e) {
                 StringWriter sw = new StringWriter();
                 PrintWriter pw = new PrintWriter(sw); 
                 e.printStackTrace(pw);

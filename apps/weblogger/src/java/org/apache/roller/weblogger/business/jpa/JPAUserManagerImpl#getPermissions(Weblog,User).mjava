@@ -2,7 +2,7 @@
      * Return permissions for specified user in website
      */
     public WeblogPermission getPermissions(
-            Weblog website, User user) throws RollerException {
+            Weblog website, User user) throws WebloggerException {
         Query q = strategy.getNamedQuery(
                 "WeblogPermission.getByWebsiteAndUser");
         q.setParameter(1, website);

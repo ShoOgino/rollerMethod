@@ -3,7 +3,7 @@
         try {
             WeblogEntry entry = mWeblogMgr.getWeblogEntry(entryId);
             return entry.getComments(noSpam, approvedOnly).size();
-        } catch (RollerException alreadyLogged) {}
+        } catch (WebloggerException alreadyLogged) {}
         return 0;
     }
 

@@ -1,5 +1,5 @@
     protected List getBlackListedReferer(String[] blacklist) throws
-            RollerException {
+            WebloggerException {
         StringBuffer queryString = getQueryStringForBlackList(blacklist);
         Query query = strategy.getDynamicQuery(queryString.toString());
         return (List) query.getResultList();

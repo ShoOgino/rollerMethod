@@ -7,7 +7,7 @@
     public boolean isInUse() {
         try {
             return RollerFactory.getRoller().getWeblogManager().isWeblogCategoryInUse(this);
-        } catch (RollerException e) {
+        } catch (WebloggerException e) {
             throw new RuntimeException(e);
         }
     }

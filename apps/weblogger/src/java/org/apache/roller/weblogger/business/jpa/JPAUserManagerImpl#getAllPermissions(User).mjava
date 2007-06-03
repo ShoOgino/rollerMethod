@@ -1,7 +1,7 @@
     /**
      * Get all permissions of a user.
      */
-    public List getAllPermissions(User user) throws RollerException {
+    public List getAllPermissions(User user) throws WebloggerException {
         Query q = strategy.getNamedQuery(
                 "WeblogPermission.getByUserAndPending");
         q.setParameter(1, user);

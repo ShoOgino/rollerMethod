@@ -1,7 +1,7 @@
     /**
      * Get pending permissions for website
      */
-    public List getPendingPermissions(Weblog website) throws RollerException {
+    public List getPendingPermissions(Weblog website) throws WebloggerException {
         Query q = strategy.getNamedQuery(
                 "WeblogPermission.getByWebsiteAndPending");
         q.setParameter(1, website);

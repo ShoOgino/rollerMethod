@@ -1,7 +1,7 @@
     /**
      * Upgrade database for Roller 1.3.0
      */
-    private static void upgradeTo130(Connection con) throws RollerException {
+    private static void upgradeTo130(Connection con) throws WebloggerException {
         try {
             /*
              * The new theme management code is going into place and it uses
@@ -31,7 +31,7 @@
             
         } catch (SQLException e) {
             mLogger.error("Problem upgrading database to version 130", e);
-            throw new RollerException("Problem upgrading database to version 130", e);
+            throw new WebloggerException("Problem upgrading database to version 130", e);
         }
         
         // If someone is upgrading to 1.3.x then we are setting the db version

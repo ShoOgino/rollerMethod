@@ -7,7 +7,7 @@
         try {
             UserManager uMgr = RollerFactory.getRoller().getUserManager();
             this.website = uMgr.getWebsite(this.website.getId());
-        } catch (RollerException ex) {
+        } catch (WebloggerException ex) {
             mLogger.error("Error getting website object", ex);
             return;
         }

@@ -1,6 +1,6 @@
     public List getNextPrevEntries(WeblogEntry current, String catName, 
                                    String locale, int maxEntries, boolean next)
-            throws RollerException {
+            throws WebloggerException {
         
         Junction conjunction = Expression.conjunction();
         conjunction.add(Expression.eq("website", current.getWebsite()));
@@ -18,7 +18,7 @@
             if (category != null) {
                 conjunction.add(Expression.eq("category", category));
             } else {
-                throw new RollerException("Cannot find category: "+catName);
+                throw new WebloggerException("Cannot find category: "+catName);
             }
         }
         
@@ -35,7 +35,7 @@
             List results = criteria.list();
             return results;
         } catch (HibernateException e) {
-            throw new RollerException(e);
+            throw new WebloggerException(e);
         }
     }
 

@@ -45,7 +45,7 @@
                 try {
                     weblog = umgr.getWebsiteByHandle(key);
                     wmgr.incrementHitCount(weblog, ((Long)hitsTally.get(key)).intValue());
-                } catch (RollerException ex) {
+                } catch (WebloggerException ex) {
                     log.error(ex);
                 }
             }
@@ -57,7 +57,7 @@
             
             log.debug("Completed: "+ (endTime-startTime)/1000 + " secs");
             
-        } catch (RollerException ex) {
+        } catch (WebloggerException ex) {
             log.error("Error persisting updated hit counts", ex);
         } finally {
             // release session

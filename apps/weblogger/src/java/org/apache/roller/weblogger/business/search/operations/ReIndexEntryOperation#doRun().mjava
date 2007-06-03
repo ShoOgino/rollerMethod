@@ -6,7 +6,7 @@
         try {
             WeblogManager wMgr = RollerFactory.getRoller().getWeblogManager();
             this.data = wMgr.getWeblogEntry(this.data.getId());
-        } catch (RollerException ex) {
+        } catch (WebloggerException ex) {
             mLogger.error("Error getting weblogentry object", ex);
             return;
         }

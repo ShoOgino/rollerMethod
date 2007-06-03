@@ -2,7 +2,7 @@
      * Update the existing database.version property
      */
     private static void updateDatabaseVersion(Connection con, int version)
-            throws RollerException {
+            throws WebloggerException {
         
         try {
             Statement stmt = con.createStatement();
@@ -12,7 +12,7 @@
             
             mLogger.debug("Updated database verstion to "+version);
         } catch(SQLException se) {
-            throw new RollerException("Error setting database version.", se);
+            throw new WebloggerException("Error setting database version.", se);
         }
     }
 

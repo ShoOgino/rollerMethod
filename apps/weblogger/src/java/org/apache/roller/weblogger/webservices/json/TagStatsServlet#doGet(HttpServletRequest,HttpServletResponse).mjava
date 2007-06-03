@@ -58,8 +58,8 @@
                     UserManager umgr = RollerFactory.getRoller().getUserManager();
                     website = umgr.getWebsiteByHandle(handle, Boolean.TRUE);
                     if (website == null)
-                        throw new RollerException();                
-                } catch (RollerException ex) {
+                        throw new WebloggerException();                
+                } catch (WebloggerException ex) {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND, "Weblog handle not found.");
                     return;
                 }    
@@ -89,7 +89,7 @@
             response.getWriter().println("\n  ]\n}");
             
             response.flushBuffer();
-        } catch (RollerException e) {
+        } catch (WebloggerException e) {
             throw new ServletException(e.getMessage());
         }
     }

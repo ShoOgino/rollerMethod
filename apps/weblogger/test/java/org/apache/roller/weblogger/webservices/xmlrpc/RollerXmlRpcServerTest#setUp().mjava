@@ -14,8 +14,6 @@
             
             mockRequest = mockFactory.getMockRequest();
             mockRequest.setContextPath("/roller");
-            RollerRequest.getRollerRequest(
-                    mockRequest, mockFactory.getMockServletContext());
             
             servletTestModule = new ServletTestModule(mockFactory);
             servletTestModule.createServlet(XmlRpcServlet.class);

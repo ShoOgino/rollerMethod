@@ -8,7 +8,7 @@
             try {
                 UserManager mgr = RollerFactory.getRoller().getUserManager();
                 authenticUser = mgr.getUser(userId);
-            } catch (RollerException ex) {
+            } catch (WebloggerException ex) {
                 log.warn("Error looking up authenticated user "+userId, ex);
             }
         }

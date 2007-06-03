@@ -7,7 +7,7 @@
             if(entry != null) {
                 return URLUtilities.getEntryEditURL(weblog.getHandle(), entry.getId(), false);
             }
-        } catch (RollerException ex) {
+        } catch (WebloggerException ex) {
             log.error("Error looking up entry by anchor - "+anchor, ex);
         }
         return null;

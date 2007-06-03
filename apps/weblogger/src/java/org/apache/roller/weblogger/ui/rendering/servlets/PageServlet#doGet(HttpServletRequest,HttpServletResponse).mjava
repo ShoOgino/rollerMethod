@@ -29,7 +29,7 @@
             
             weblog = pageRequest.getWeblog();
             if(weblog == null) {
-                throw new RollerException("unable to lookup weblog: "+
+                throw new WebloggerException("unable to lookup weblog: "+
                         pageRequest.getWeblogHandle());
             }
             
@@ -213,7 +213,7 @@
                 // tags specified.  make sure they exist.
                 WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
                 invalid = !wmgr.getTagComboExists(pageRequest.getTags(), (isSiteWide) ? null : weblog);
-            } catch (RollerException ex) {
+            } catch (WebloggerException ex) {
                 invalid = true;
             }
         }
@@ -286,7 +286,7 @@
             // ick, gotta load pre-3.0 model stuff as well :(
             ModelLoader.loadOldModels(model, request, response, pageContext, pageRequest);
             
-        } catch (RollerException ex) {
+        } catch (WebloggerException ex) {
             log.error("Error loading model objects for page", ex);
             
             if(!response.isCommitted()) response.reset();

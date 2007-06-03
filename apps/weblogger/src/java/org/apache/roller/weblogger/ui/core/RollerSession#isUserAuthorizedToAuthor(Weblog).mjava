@@ -2,7 +2,7 @@
      * Is session's authenticated user authorized to post in current weblog?
      */
     public boolean isUserAuthorizedToAuthor(Weblog website)
-            throws RollerException {
+            throws WebloggerException {
         
         User user = getAuthenticatedUser();
         if (user != null && user.getEnabled().booleanValue())

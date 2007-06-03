@@ -2,13 +2,13 @@
      * @see org.apache.roller.weblogger.model.UserManager#getPageByAction(WebsiteData, java.lang.String)
      */
     public WeblogTemplate getPageByAction(Weblog website, String action)
-            throws RollerException {
+            throws WebloggerException {
         
         if (website == null)
-            throw new RollerException("website is null");
+            throw new WebloggerException("website is null");
         
         if (action == null)
-            throw new RollerException("Action name is null");
+            throw new WebloggerException("Action name is null");
         
         try {
             Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
@@ -18,7 +18,7 @@
             
             return (WeblogTemplate) criteria.uniqueResult();
         } catch (HibernateException e) {
-            throw new RollerException(e);
+            throw new WebloggerException(e);
         }
     }
 

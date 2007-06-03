@@ -3,16 +3,16 @@
      * @param website Web site.
      * @param date YYYYMMDD format of day's date.
      * @return List of type WeblogReferrer.
-     * @throws org.apache.roller.RollerException
+     * @throws org.apache.roller.weblogger.WebloggerException
      */
     public List getReferersToDate(Weblog website, String date)
-            throws RollerException {
+            throws WebloggerException {
 
         if (website==null )
-            throw new RollerException("website is null");
+            throw new WebloggerException("website is null");
         
         if (date==null )
-            throw new RollerException("Date is null");
+            throw new WebloggerException("Date is null");
         
         Query q = strategy.getNamedQuery(
             "WeblogReferrer.getByWebsite&DateString&DuplicateOrderByTotalHitsDesc");

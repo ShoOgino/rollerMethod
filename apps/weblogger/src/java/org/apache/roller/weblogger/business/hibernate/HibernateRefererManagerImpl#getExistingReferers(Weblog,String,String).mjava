@@ -2,7 +2,7 @@
      * Use Hibernate directly because Roller's Query API does too much allocation.
      */
     protected List getExistingReferers(Weblog website, String dateString,
-            String permalink) throws RollerException {
+            String permalink) throws WebloggerException {
         
         try {
             Session session = ((HibernatePersistenceStrategy)strategy).getSession();
@@ -14,7 +14,7 @@
             
             return criteria.list();
         } catch (HibernateException e) {
-            throw new RollerException(e);
+            throw new WebloggerException(e);
         }
     }
 

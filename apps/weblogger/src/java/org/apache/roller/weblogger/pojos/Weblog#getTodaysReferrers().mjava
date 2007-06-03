@@ -9,7 +9,7 @@
             RefererManager rmgr = roller.getRefererManager();
             return rmgr.getTodaysReferers(this);
             
-        } catch (RollerException e) {
+        } catch (WebloggerException e) {
             log.error("PageModel getTodaysReferers()", e);
         }
         return (referers == null ? Collections.EMPTY_LIST : referers);        

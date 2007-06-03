@@ -15,7 +15,7 @@
             // lookup weblog specified by preview request
             weblog = previewRequest.getWeblog();
             if(weblog == null) {
-                throw new RollerException("unable to lookup weblog: "+
+                throw new WebloggerException("unable to lookup weblog: "+
                         previewRequest.getWeblogHandle());
             }
         } catch (Exception e) {
@@ -50,9 +50,9 @@
             page = tmpWebsite.getDefaultPage();
             
             if(page == null) {
-                throw new RollerException("No default page for weblog: "+tmpWebsite.getHandle());
+                throw new WebloggerException("No default page for weblog: "+tmpWebsite.getHandle());
             }
-        } catch(RollerException re) {
+        } catch(WebloggerException re) {
             // couldn't get page
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             log.error("Error getting default page for preview", re);
@@ -104,7 +104,7 @@
             // ick, gotta load pre-3.0 model stuff as well :(
             ModelLoader.loadOldModels(model, request, response, pageContext, previewRequest);
             
-        } catch (RollerException ex) {
+        } catch (WebloggerException ex) {
             log.error("ERROR loading model for page", ex);
             
             if(!response.isCommitted()) response.reset();

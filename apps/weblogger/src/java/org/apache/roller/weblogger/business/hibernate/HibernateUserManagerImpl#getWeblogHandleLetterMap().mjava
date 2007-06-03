@@ -1,4 +1,4 @@
-    public Map getWeblogHandleLetterMap() throws RollerException {
+    public Map getWeblogHandleLetterMap() throws WebloggerException {
         // TODO: ATLAS getWeblogHandleLetterMap DONE
         String msg = "Getting weblog letter map";
         try {      
@@ -16,7 +16,7 @@
             return results;
         } catch (Throwable pe) {
             log.error(msg, pe);
-            throw new RollerException(msg, pe);
+            throw new WebloggerException(msg, pe);
         }
     }
 

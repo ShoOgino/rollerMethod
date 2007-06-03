@@ -2,13 +2,13 @@
      * @see org.apache.roller.weblogger.model.UserManager#getPageByName(Weblog, java.lang.String)
      */
     public WeblogTemplate getPageByName(Weblog website, String pagename)
-    throws RollerException {
+    throws WebloggerException {
         
         if (website == null)
-            throw new RollerException("website is null");
+            throw new WebloggerException("website is null");
         
         if (pagename == null)
-            throw new RollerException("Page name is null");
+            throw new WebloggerException("Page name is null");
         
         Query query = strategy.getNamedQuery("WeblogTemplate.getByWebsite&Name");
         query.setParameter(1, website);

@@ -2,9 +2,9 @@
      * Roller lowercases all tags based on locale because there's not a 1:1 mapping
      * between uppercase/lowercase characters across all languages.  
      * @param name
-     * @throws RollerException
+     * @throws WebloggerException
      */
-    public void addTag(String name) throws RollerException {
+    public void addTag(String name) throws WebloggerException {
         Locale locale = getWebsite() != null ? getWebsite().getLocaleInstance() : Locale.getDefault();
         name = Utilities.normalizeTag(name, locale);
         if(name.length() == 0)

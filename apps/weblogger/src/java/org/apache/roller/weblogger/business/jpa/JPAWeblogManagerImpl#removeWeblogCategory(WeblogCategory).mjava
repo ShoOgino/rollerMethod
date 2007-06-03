@@ -2,9 +2,9 @@
      * @inheritDoc
      */
     public void removeWeblogCategory(WeblogCategory cat)
-    throws RollerException {
+    throws WebloggerException {
         if(cat.retrieveWeblogEntries(true).size() > 0) {
-            throw new RollerException("Cannot remove category with entries");
+            throw new WebloggerException("Cannot remove category with entries");
         }
         
         // remove cat

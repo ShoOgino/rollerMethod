@@ -1,11 +1,11 @@
     /**
      * @inheritDoc
      */
-    public void saveWeblogCategory(WeblogCategory cat) throws RollerException {
+    public void saveWeblogCategory(WeblogCategory cat) throws WebloggerException {
         boolean exists = getWeblogCategory(cat.getId()) != null;
         if (!exists) {
             if (isDuplicateWeblogCategoryName(cat)) {
-                throw new RollerException("Duplicate category name, cannot save category");
+                throw new WebloggerException("Duplicate category name, cannot save category");
             }
             // Newly added object. If it has a parent,
             // maintain relationship from both sides

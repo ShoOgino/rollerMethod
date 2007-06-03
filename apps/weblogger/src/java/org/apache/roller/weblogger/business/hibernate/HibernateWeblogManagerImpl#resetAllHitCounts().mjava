@@ -1,10 +1,10 @@
-    public void resetAllHitCounts() throws RollerException {
+    public void resetAllHitCounts() throws WebloggerException {
         
         try {
             Session session = ((HibernatePersistenceStrategy)strategy).getSession();
             session.createQuery("update WeblogHitCount set dailyHits = 0").executeUpdate();
         } catch (Exception e) {
-            throw new RollerException(e);
+            throw new WebloggerException(e);
         }
     }
 

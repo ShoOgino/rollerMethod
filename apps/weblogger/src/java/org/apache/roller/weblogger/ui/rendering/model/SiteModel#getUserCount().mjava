@@ -4,7 +4,7 @@
             Roller roller = RollerFactory.getRoller();
             UserManager mgr = roller.getUserManager();
             count = mgr.getUserCount();            
-        } catch (RollerException e) {
+        } catch (WebloggerException e) {
             log.error("Error getting user count for site", e);
         }
         return count;

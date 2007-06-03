@@ -6,7 +6,7 @@
      */
     public static void loadModels(String modelsString, Map model, 
                                    Map initData, boolean fail) 
-            throws RollerException {
+            throws WebloggerException {
         
         String[] models = Utilities.stringToStringArray(modelsString, ",");
         for(int i=0; i < models.length; i++) {
@@ -15,7 +15,7 @@
                 Model pageModel = (Model) modelClass.newInstance();
                 pageModel.init(initData);
                 model.put(pageModel.getModelName(), pageModel);
-            } catch (RollerException re) {
+            } catch (WebloggerException re) {
                 if(fail) {
                     throw re;
                 } else {
@@ -23,19 +23,19 @@
                 }
             } catch (ClassNotFoundException cnfe) {
                 if(fail) {
-                    throw new RollerException("Error finding model: " + models[i], cnfe);
+                    throw new WebloggerException("Error finding model: " + models[i], cnfe);
                 } else {
                     log.warn("Error finding model: " + models[i]);
                 }
             } catch (InstantiationException ie) {
                 if(fail) {
-                    throw new RollerException("Error insantiating model: " + models[i], ie);
+                    throw new WebloggerException("Error insantiating model: " + models[i], ie);
                 } else {
                     log.warn("Error insantiating model: " + models[i]);
                 }
             } catch (IllegalAccessException iae) {
                 if(fail) {
-                    throw new RollerException("Error accessing model: " + models[i], iae);
+                    throw new WebloggerException("Error accessing model: " + models[i], iae);
                 } else {
                     log.warn("Error accessing model: " + models[i]);
                 }

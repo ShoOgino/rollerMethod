@@ -1,6 +1,6 @@
-	public User getUserByActivationCode(String activationCode) throws RollerException {
+	public User getUserByActivationCode(String activationCode) throws WebloggerException {
 		if (activationCode == null)
-			throw new RollerException("activationcode is null");
+			throw new WebloggerException("activationcode is null");
         Query q = strategy.getNamedQuery("User.getUserByActivationCode");
         q.setParameter(1, activationCode);
         try {

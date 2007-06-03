@@ -2,11 +2,11 @@
      * Send a weblog invitation email.
      */
     public static void sendUserActivationEmail(User user)
-            throws RollerException {
+            throws WebloggerException {
         
         Session mailSession = MailProvider.getMailProvider().getSession();
         if(mailSession == null) {
-            throw new RollerException("ERROR: Notification email(s) not sent, "
+            throw new WebloggerException("ERROR: Notification email(s) not sent, "
                     + "Roller's mail session not properly configured");
         }
         
@@ -40,7 +40,7 @@
             
             sendHTMLMessage(from, to, cc, bcc, subject, content);
         } catch (MessagingException e) {
-            throw new RollerException("ERROR: Problem sending activation email.", e);
+            throw new WebloggerException("ERROR: Problem sending activation email.", e);
         }
     }
 

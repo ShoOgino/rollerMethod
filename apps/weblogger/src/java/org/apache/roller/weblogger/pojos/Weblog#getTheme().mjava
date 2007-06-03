@@ -6,7 +6,7 @@
             // let the ThemeManager handle it
             ThemeManager themeMgr = RollerFactory.getRoller().getThemeManager();
             return themeMgr.getTheme(this);
-        } catch (RollerException ex) {
+        } catch (WebloggerException ex) {
             log.error("Error getting theme for weblog - "+getHandle(), ex);
         }
         

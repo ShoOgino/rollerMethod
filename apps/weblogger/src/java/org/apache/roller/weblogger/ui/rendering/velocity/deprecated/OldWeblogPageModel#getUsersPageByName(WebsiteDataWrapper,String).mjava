@@ -12,7 +12,7 @@
             page = TemplateWrapper.wrap(website.getPageByName(pageName));
         } catch (NullPointerException npe) {
             mLogger.warn(npe.getMessage());
-        } catch (RollerException e) {
+        } catch (WebloggerException e) {
             mLogger.error("ERROR getting user's page by name: " + e.getMessage(),e);
         }
         return page;

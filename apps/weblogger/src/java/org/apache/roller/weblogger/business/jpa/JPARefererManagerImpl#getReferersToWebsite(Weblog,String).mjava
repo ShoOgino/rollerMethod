@@ -2,7 +2,7 @@
      * Query for collection of referers.
      */
     protected List getReferersToWebsite(Weblog website, String refererUrl)
-            throws RollerException {
+            throws WebloggerException {
         Query q = strategy.getNamedQuery( 
             "WeblogReferrer.getByWebsite&RefererUrl");
         q.setParameter(1, website);

@@ -5,7 +5,7 @@
                                             String requestUrl,
                                             String title,
                                             String excerpt)
-            throws RollerException {
+            throws WebloggerException {
         
         try {
             Session session = ((HibernatePersistenceStrategy)strategy).getSession();
@@ -24,7 +24,7 @@
             
             return criteria.list();
         } catch (HibernateException e) {
-            throw new RollerException(e);
+            throw new WebloggerException(e);
         }
     }
 

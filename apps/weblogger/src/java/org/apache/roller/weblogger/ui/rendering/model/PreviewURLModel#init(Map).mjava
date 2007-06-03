@@ -1,9 +1,9 @@
-    public void init(Map initData) throws RollerException {
+    public void init(Map initData) throws WebloggerException {
         
         // need a weblog request so that we can know the weblog and locale
         WeblogRequest weblogRequest = (WeblogRequest) initData.get("weblogRequest");
         if(weblogRequest == null) {
-            throw new RollerException("Expected 'weblogRequest' init param!");
+            throw new WebloggerException("Expected 'weblogRequest' init param!");
         }
         
         // PreviewURLModel only works on preview requests, so cast weblogRequest
@@ -11,7 +11,7 @@
         if(weblogRequest instanceof WeblogPreviewRequest) {
             this.previewRequest = (WeblogPreviewRequest) weblogRequest;
         } else {
-            throw new RollerException("weblogRequest is not a WeblogPreviewRequest."+
+            throw new WebloggerException("weblogRequest is not a WeblogPreviewRequest."+
                     "  PreviewURLModel only supports preview requests.");
         }
         

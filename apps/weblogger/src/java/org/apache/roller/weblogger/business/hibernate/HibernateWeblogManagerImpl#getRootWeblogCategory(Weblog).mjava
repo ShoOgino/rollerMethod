@@ -1,7 +1,7 @@
     public WeblogCategory getRootWeblogCategory(Weblog website)
-    throws RollerException {
+    throws WebloggerException {
         if (website == null)
-            throw new RollerException("website is null");
+            throw new WebloggerException("website is null");
         
         try {
             Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
@@ -14,7 +14,7 @@
             return (WeblogCategory) criteria.uniqueResult();
             
         } catch (HibernateException e) {
-            throw new RollerException(e);
+            throw new WebloggerException(e);
         }
     }
 

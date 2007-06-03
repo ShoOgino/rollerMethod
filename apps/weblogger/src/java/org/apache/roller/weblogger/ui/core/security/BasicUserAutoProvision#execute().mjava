@@ -12,7 +12,7 @@
         mgr = RollerFactory.getRoller().getUserManager();
         mgr.addUser(ud);
         RollerFactory.getRoller().flush();
-      } catch (RollerException e) {
+      } catch (WebloggerException e) {
         log.warn("Error while auto-provisioning user from SSO.", e);
       }
     }

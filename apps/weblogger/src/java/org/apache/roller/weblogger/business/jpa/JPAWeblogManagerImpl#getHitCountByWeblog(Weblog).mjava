@@ -2,7 +2,7 @@
      * @inheritDoc
      */
     public WeblogHitCount getHitCountByWeblog(Weblog weblog)
-    throws RollerException {
+    throws WebloggerException {
         Query q = strategy.getNamedQuery("WeblogHitCount.getByWeblog");
         q.setParameter(1, weblog);
         try {

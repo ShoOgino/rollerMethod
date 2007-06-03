@@ -1,7 +1,7 @@
     /**
      * Upgrade database for Roller 2.1.0
      */
-    private static void upgradeTo210(Connection con) throws RollerException {
+    private static void upgradeTo210(Connection con) throws WebloggerException {
         try {
             /*
              * For Roller 2.1.0 we are going to standardize some of the
@@ -97,7 +97,7 @@
             
         } catch (SQLException e) {
             mLogger.error("Problem upgrading database to version 210", e);
-            throw new RollerException("Problem upgrading database to version 210", e);
+            throw new WebloggerException("Problem upgrading database to version 210", e);
         }
         
         UpgradeDatabase.updateDatabaseVersion(con, 210);

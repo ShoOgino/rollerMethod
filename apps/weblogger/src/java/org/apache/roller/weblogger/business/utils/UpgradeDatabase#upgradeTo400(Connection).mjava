@@ -1,7 +1,7 @@
     /**
      * Upgrade database for Roller 4.0.0
      */
-    private static void upgradeTo400(Connection con) throws RollerException {
+    private static void upgradeTo400(Connection con) throws WebloggerException {
         
         mLogger.info("Doing upgrade to 400 ...");
         
@@ -55,7 +55,7 @@
             
         } catch (SQLException e) {
             mLogger.error("Problem upgrading database to version 400", e);
-            throw new RollerException("Problem upgrading database to version 400", e);
+            throw new WebloggerException("Problem upgrading database to version 400", e);
         }
         
         // finally, upgrade db version string to 400

@@ -1,7 +1,7 @@
     /**
      * @inheritDoc
      */
-    public long getEntryCount(Weblog website) throws RollerException {
+    public long getEntryCount(Weblog website) throws WebloggerException {
         Query q = strategy.getNamedQuery(
                 "WeblogEntry.getCountDistinctByStatus&Website");
         q.setParameter(1, "PUBLISHED");

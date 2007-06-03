@@ -1,15 +1,15 @@
-    public void init(Map initData) throws RollerException {
+    public void init(Map initData) throws WebloggerException {
         
         // we expect the init data to contain a weblogRequest object
         WeblogRequest weblogRequest = (WeblogRequest) initData.get("weblogRequest");
         if(weblogRequest == null) {
-            throw new RollerException("expected weblogRequest from init data");
+            throw new WebloggerException("expected weblogRequest from init data");
         }
         
         if(weblogRequest instanceof WeblogFeedRequest) {
             this.feedRequest = (WeblogFeedRequest) weblogRequest;
         } else {
-            throw new RollerException("weblogRequest is not a WeblogFeedRequest."+
+            throw new WebloggerException("weblogRequest is not a WeblogFeedRequest."+
                     "  FeedModel only supports feed requests.");
         }
                 

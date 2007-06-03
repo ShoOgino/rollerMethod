@@ -1,5 +1,5 @@
     /** Creates a new instance of MailProvider */
-    public MailProvider() throws RollerException {
+    public MailProvider() throws WebloggerException {
         String connectionTypeString = RollerConfig.getProperty("mail.configurationType"); 
         if ("properties".equals(connectionTypeString)) {
             type = ConfigurationType.MAIL_PROPERTIES;
@@ -21,7 +21,7 @@
                 Context ctx = (Context) new InitialContext().lookup(name);
                 session = (Session)ctx.lookup(name);        
             } catch (NamingException ex) {
-                throw new RollerException("ERROR looking up mail-session with JNDI name: " + name);
+                throw new WebloggerException("ERROR looking up mail-session with JNDI name: " + name);
             }
         } else {
             Properties props = new Properties();
@@ -34,7 +34,7 @@
             Transport transport = getTransport();
             transport.close();
         } catch (Throwable t) {
-            throw new RollerException("ERROR connecting to mail server", t);
+            throw new WebloggerException("ERROR connecting to mail server", t);
         }
         
     }

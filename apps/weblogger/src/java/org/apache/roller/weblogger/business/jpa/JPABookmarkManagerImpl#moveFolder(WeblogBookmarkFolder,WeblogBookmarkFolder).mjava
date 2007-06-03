@@ -1,9 +1,9 @@
     public void moveFolder(WeblogBookmarkFolder srcFolder, WeblogBookmarkFolder destFolder)
-            throws RollerException {
+            throws WebloggerException {
         
         // TODO: this check should be made before calling this method?
         if (destFolder.descendentOf(srcFolder)) {
-            throw new RollerException(
+            throw new WebloggerException(
                     "ERROR cannot move parent folder into it's own child");
         }
         

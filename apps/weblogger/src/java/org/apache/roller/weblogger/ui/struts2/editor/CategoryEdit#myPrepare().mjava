@@ -4,7 +4,7 @@
             if(!StringUtils.isEmpty(getBean().getId())) {
                 setCategory(wmgr.getWeblogCategory(getBean().getId()));
             }
-        } catch (RollerException ex) {
+        } catch (WebloggerException ex) {
             log.error("Error looking up category", ex);
         }
     }

@@ -39,7 +39,7 @@
                 weblog = uMgr.getWebsiteByHandle(trackbackRequest.getWeblogHandle());
                 
                 if (weblog == null) {
-                    throw new RollerException("unable to lookup weblog: "+
+                    throw new WebloggerException("unable to lookup weblog: "+
                             trackbackRequest.getWeblogHandle());
                 }
                 
@@ -48,7 +48,7 @@
                 entry = weblogMgr.getWeblogEntryByAnchor(weblog, trackbackRequest.getWeblogAnchor());
                 
                 if (entry == null) {
-                    throw new RollerException("unable to lookup entry: "+
+                    throw new WebloggerException("unable to lookup entry: "+
                             trackbackRequest.getWeblogAnchor());
                 }
                 

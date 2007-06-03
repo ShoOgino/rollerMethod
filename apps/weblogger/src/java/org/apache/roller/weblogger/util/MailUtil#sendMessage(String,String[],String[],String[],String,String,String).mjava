@@ -25,7 +25,7 @@
         Session session = null;
         try {
             mailProvider = MailProvider.getMailProvider(); 
-        } catch (RollerException ex) {
+        } catch (WebloggerException ex) {
             // The MailProvider should have been constructed long before 
             // we get to this point, so this should never ever happen
             throw new RuntimeException("ERROR getting mail provider", ex);

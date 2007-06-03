@@ -2,13 +2,13 @@
      * Use JPA directly because Roller's Query API does too much allocation.
      */
     public WeblogTemplate getPageByLink(Weblog website, String pagelink)
-    throws RollerException {
+    throws WebloggerException {
         
         if (website == null)
-            throw new RollerException("userName is null");
+            throw new WebloggerException("userName is null");
         
         if (pagelink == null)
-            throw new RollerException("Pagelink is null");
+            throw new WebloggerException("Pagelink is null");
         
         Query query = strategy.getNamedQuery("WeblogTemplate.getByWebsite&Link");
         query.setParameter(1, website);

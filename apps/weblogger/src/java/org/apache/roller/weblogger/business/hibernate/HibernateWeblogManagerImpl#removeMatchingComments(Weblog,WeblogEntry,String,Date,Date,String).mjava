@@ -4,7 +4,7 @@
             String  searchString, 
             Date    startDate, 
             Date    endDate, 
-            String status) throws RollerException {
+            String status) throws WebloggerException {
 
         try {
             List comments = getComments( 
@@ -102,7 +102,7 @@
                         
         } catch (HibernateException e) {
             log.error(e);
-            throw new RollerException(e);
+            throw new WebloggerException(e);
         }
     }
 

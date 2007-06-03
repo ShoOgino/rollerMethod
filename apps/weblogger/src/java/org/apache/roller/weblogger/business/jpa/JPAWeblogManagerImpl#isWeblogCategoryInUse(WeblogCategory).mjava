@@ -2,7 +2,7 @@
      * @inheritDoc
      */
     public boolean isWeblogCategoryInUse(WeblogCategory cat)
-    throws RollerException {
+    throws WebloggerException {
         
         Query q = strategy.getNamedQuery("WeblogEntry.getByCategory");
         q.setParameter(1, cat);

@@ -2,7 +2,7 @@
      * @see org.apache.roller.weblogger.model.ThemeManager#importTheme(website, theme)
      */
     public void importTheme(Weblog website, SharedTheme theme)
-            throws RollerException {
+            throws WebloggerException {
         
         log.debug("Importing theme ["+theme.getName()+"] to weblog ["+website.getName()+"]");
         
@@ -103,7 +103,7 @@
             
         } catch (Exception e) {
             log.error("ERROR importing theme", e);
-            throw new RollerException( e );
+            throw new WebloggerException( e );
         }
     }
 

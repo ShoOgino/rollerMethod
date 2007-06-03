@@ -5,9 +5,9 @@
             WeblogBookmarkFolder rootFolder = bMgr.getRootFolder(entry.getWebsite());
             text = matchBookmarks(text, rootFolder);
             text = lookInFolders(text, rootFolder.getFolders());
-        } catch (RollerException e) {
+        } catch (WebloggerException e) {
             // nothing much I can do, go with default "Weblog" value
-            // could be RollerException or NullPointerException
+            // could be WebloggerException or NullPointerException
             mLogger.warn(e);
         }
         return text;

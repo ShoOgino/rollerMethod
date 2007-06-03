@@ -10,7 +10,7 @@
                 entry.setStatus(WeblogEntry.DRAFT);
                 IndexManager manager = RollerFactory.getRoller().getIndexManager();
                 manager.addEntryReIndexOperation(entry);
-            } catch (RollerException ex) {
+            } catch (WebloggerException ex) {
                 log.warn("Trouble triggering entry indexing", ex);
             }
             

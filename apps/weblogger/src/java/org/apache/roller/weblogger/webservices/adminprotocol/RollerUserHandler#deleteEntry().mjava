@@ -12,7 +12,7 @@
             getRoller().getUserManager().removeUser(ud);
             getRoller().flush();
             CacheManager.invalidate(ud);
-        } catch (RollerException re) {
+        } catch (WebloggerException re) {
             throw new InternalException("ERROR: could not delete user data", re);
         }
         

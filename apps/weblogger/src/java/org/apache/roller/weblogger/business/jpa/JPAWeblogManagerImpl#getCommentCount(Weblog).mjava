@@ -1,7 +1,7 @@
     /**
      * @inheritDoc
      */
-    public long getCommentCount(Weblog website) throws RollerException {
+    public long getCommentCount(Weblog website) throws WebloggerException {
         Query q = strategy.getNamedQuery(
                 "WeblogEntryComment.getCountDistinctByWebsite&Status");
         q.setParameter(1, website);

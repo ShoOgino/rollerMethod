@@ -13,7 +13,7 @@
                 permissionsDatas.add(pd);
             }
             return toMemberEntrySet((WeblogPermission[])permissionsDatas.toArray(new WeblogPermission[0]));
-        } catch (RollerException re) {
+        } catch (WebloggerException re) {
             throw new InternalException("ERROR: Could not create members", re);
         }
     }

@@ -4,7 +4,7 @@
             Roller roller = RollerFactory.getRoller();
             WeblogManager mgr = roller.getWeblogManager();
             count = mgr.getCommentCount();            
-        } catch (RollerException e) {
+        } catch (WebloggerException e) {
             log.error("Error getting comment count for site ", e);
         }
         return count;

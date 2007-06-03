@@ -1,7 +1,7 @@
     /**
      * Upgrade database for Roller 3.0.0
      */
-    private static void upgradeTo300(Connection con) throws RollerException {
+    private static void upgradeTo300(Connection con) throws WebloggerException {
         try {
             /*
              * For Roller 3.0.0 we are allowing each weblogentry to track a
@@ -62,7 +62,7 @@
             
         } catch (SQLException e) {
             mLogger.error("Problem upgrading database to version 300", e);
-            throw new RollerException("Problem upgrading database to version 300", e);
+            throw new WebloggerException("Problem upgrading database to version 300", e);
         }
         
         UpgradeDatabase.updateDatabaseVersion(con, 300);

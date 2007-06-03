@@ -14,7 +14,7 @@
                     ThemeManager themeMgr = RollerFactory.getRoller().getThemeManager();
                     SharedTheme importTheme = themeMgr.getTheme(getImportThemeId());
                     themeMgr.importTheme(getActionWeblog(), importTheme);
-                } catch(RollerException re) {
+                } catch(WebloggerException re) {
                     log.error("Error customizing theme for weblog - "+getActionWeblog().getHandle(), re);
                     // TODO: i18n
                     addError("Error importing theme");
@@ -59,7 +59,7 @@
                 // TODO: i18n
                 addMessage("Successfully updated theme");
                 
-            } catch(RollerException re) {
+            } catch(WebloggerException re) {
                 log.error("Error saving weblog - "+getActionWeblog().getHandle(), re);
                 addError("Error setting theme");
             }

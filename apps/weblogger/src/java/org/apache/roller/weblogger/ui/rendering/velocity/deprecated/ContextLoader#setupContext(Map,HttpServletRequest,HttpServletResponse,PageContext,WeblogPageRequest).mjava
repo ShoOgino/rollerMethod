@@ -7,7 +7,7 @@
             HttpServletRequest  request,
             HttpServletResponse response,
             PageContext pageContext,
-            WeblogPageRequest pageRequest) throws RollerException {
+            WeblogPageRequest pageRequest) throws WebloggerException {
         
         mLogger.debug("setupContext( ctx = "+ctx+")");
         
@@ -77,7 +77,7 @@
             ctx.put("pages", pageModel.getPages());
             
         } catch (Exception e) {
-            throw new RollerException("ERROR creating Page Model",e);
+            throw new WebloggerException("ERROR creating Page Model",e);
         }
         
         // Add page helper to context

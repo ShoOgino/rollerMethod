@@ -1,5 +1,5 @@
     public boolean isWeblogCategoryInUse(WeblogCategory cat)
-    throws RollerException {
+    throws WebloggerException {
         try {
             Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
             Criteria criteria = session.createCriteria(WeblogEntry.class);
@@ -29,7 +29,7 @@
             
             return false;
         } catch (HibernateException e) {
-            throw new RollerException(e);
+            throw new WebloggerException(e);
         }
     }
 

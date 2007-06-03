@@ -1,7 +1,7 @@
     /**
      * Grant to user role specified by role name.
      */
-    public void grantRole(String roleName) throws RollerException {
+    public void grantRole(String roleName) throws WebloggerException {
         if (!hasRole(roleName)) {
             UserRole role = new UserRole(null, this, roleName);
             getRoles().add(role);

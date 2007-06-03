@@ -1,7 +1,7 @@
-	public User getUserByActivationCode(String activationCode) throws RollerException {
+	public User getUserByActivationCode(String activationCode) throws WebloggerException {
 
 		if (activationCode == null)
-			throw new RollerException("activationcode is null");
+			throw new WebloggerException("activationcode is null");
 
 		try {
 			Session session = ((HibernatePersistenceStrategy) this.strategy)
@@ -14,7 +14,7 @@
 
 			return user;
 		} catch (HibernateException e) {
-			throw new RollerException(e);
+			throw new WebloggerException(e);
 		}		
 	}
 

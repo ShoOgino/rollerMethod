@@ -2,7 +2,7 @@
      * @inheritDoc
      */
     public List getWeblogEntriesPinnedToMain(Integer max)
-    throws RollerException {
+    throws WebloggerException {
         Query query = strategy.getNamedQuery(
                 "WeblogEntry.getByPinnedToMain&statusOrderByPubTimeDesc");
         query.setParameter(1, Boolean.TRUE);

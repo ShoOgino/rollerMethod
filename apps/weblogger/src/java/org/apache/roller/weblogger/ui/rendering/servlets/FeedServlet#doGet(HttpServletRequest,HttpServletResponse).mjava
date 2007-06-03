@@ -16,7 +16,7 @@
 
             weblog = feedRequest.getWeblog();
             if(weblog == null) {
-                throw new RollerException("unable to lookup weblog: "+
+                throw new WebloggerException("unable to lookup weblog: "+
                         feedRequest.getWeblogHandle());
             }
 
@@ -114,7 +114,7 @@
                 // tags specified.  make sure they exist.
                 WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
                 invalid = !wmgr.getTagComboExists(feedRequest.getTags(), (isSiteWide) ? null : weblog);
-            } catch (RollerException ex) {
+            } catch (WebloggerException ex) {
                 invalid = true;
             }
         }
@@ -161,7 +161,7 @@
                 ModelLoader.loadModels(SearchResultsFeedModel.class.getName(), model, initData, true);
             }                        
 
-        } catch (RollerException ex) {
+        } catch (WebloggerException ex) {
             log.error("ERROR loading model for page", ex);
 
             if(!response.isCommitted()) response.reset();

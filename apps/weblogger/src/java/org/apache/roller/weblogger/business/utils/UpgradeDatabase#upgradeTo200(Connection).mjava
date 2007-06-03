@@ -1,7 +1,7 @@
     /**
      * Upgrade database for Roller 2.0.0
      */
-    private static void upgradeTo200(Connection con) throws RollerException {
+    private static void upgradeTo200(Connection con) throws WebloggerException {
         try {
             mLogger.info("Doing upgrade to 200 ...");
             mLogger.info("Populating roller_user_permissions table");
@@ -66,7 +66,7 @@
             
         } catch (SQLException e) {
             mLogger.error("Problem upgrading database to version 200", e);
-            throw new RollerException("Problem upgrading database to version 200", e);
+            throw new WebloggerException("Problem upgrading database to version 200", e);
         }
         
         UpgradeDatabase.updateDatabaseVersion(con, 200);

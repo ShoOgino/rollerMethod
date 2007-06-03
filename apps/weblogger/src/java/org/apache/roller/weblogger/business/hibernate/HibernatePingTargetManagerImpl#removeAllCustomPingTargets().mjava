@@ -1,7 +1,7 @@
     /**
      * @see org.apache.roller.weblogger.model.PingTargetManager#removeAllCustomPingTargets()
      */
-    public void removeAllCustomPingTargets() throws RollerException {
+    public void removeAllCustomPingTargets() throws WebloggerException {
         
         try {
             Session session = strategy.getSession();
@@ -10,7 +10,7 @@
             List allCustomTargets = criteria.list();
             removeTargets(allCustomTargets);
         } catch (HibernateException e) {
-            throw new RollerException(e);
+            throw new WebloggerException(e);
         }
     }
 

@@ -5,7 +5,7 @@
             WeblogPermission pd = getRoller().getUserManager().getPermissions(wd, ud);
             
             return pd;
-        } catch (RollerException re) {
+        } catch (WebloggerException re) {
             throw new InternalException("ERROR: Could not get permissions data for weblog handle: " + handle + ", user name: " + username, re);
         }
     }

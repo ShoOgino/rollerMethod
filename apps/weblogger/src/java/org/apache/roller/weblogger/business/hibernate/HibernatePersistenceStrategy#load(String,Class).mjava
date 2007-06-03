@@ -1,10 +1,10 @@
     /**
      * Retrieve object.  We return null if the object is not found.
      */
-    public Object load(String id, Class clazz) throws RollerException {
+    public Object load(String id, Class clazz) throws WebloggerException {
         
         if(id == null || clazz == null) {
-            throw new RollerException("Cannot load objects when value is null");
+            throw new WebloggerException("Cannot load objects when value is null");
         }
         
         return (Object) getSession().get(clazz, id);

@@ -4,7 +4,7 @@
             try {
                 WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
                 weblogCategory = wmgr.getWeblogCategoryByPath(getWeblog(), weblogCategoryName);
-            } catch (RollerException ex) {
+            } catch (WebloggerException ex) {
                 log.error("Error getting weblog category "+weblogCategoryName, ex);
             }
         }

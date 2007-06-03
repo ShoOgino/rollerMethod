@@ -34,7 +34,7 @@
             returnStruct.put("url", fileLink);
             return returnStruct;
             
-        } catch (RollerException e) {
+        } catch (WebloggerException e) {
             String msg = "ERROR in MetaWeblogAPIHandler.newMediaObject";
             mLogger.error(msg,e);
             throw new XmlRpcException(UNKNOWN_EXCEPTION, msg);

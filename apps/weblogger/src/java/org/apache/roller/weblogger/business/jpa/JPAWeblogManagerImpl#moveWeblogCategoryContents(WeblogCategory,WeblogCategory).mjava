@@ -3,11 +3,11 @@
      */
     public void moveWeblogCategoryContents(WeblogCategory srcCat,
             WeblogCategory destCat)
-            throws RollerException {
+            throws WebloggerException {
         
         // TODO: this check should be made before calling this method?
         if (destCat.descendentOf(srcCat)) {
-            throw new RollerException(
+            throw new WebloggerException(
                     "ERROR cannot move parent category into it's own child");
         }
         

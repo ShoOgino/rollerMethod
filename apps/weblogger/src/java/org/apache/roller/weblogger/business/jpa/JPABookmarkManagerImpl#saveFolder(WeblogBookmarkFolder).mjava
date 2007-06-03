@@ -1,9 +1,9 @@
-    public void saveFolder(WeblogBookmarkFolder folder) throws RollerException {
+    public void saveFolder(WeblogBookmarkFolder folder) throws WebloggerException {
         
         if(folder.getId() == null || this.getFolder(folder.getId()) == null) {
             // New folder, so make sure name is unique
             if (isDuplicateFolderName(folder)) {
-                throw new RollerException("Duplicate folder name");
+                throw new WebloggerException("Duplicate folder name");
             }
 
             // And If it has a parent, maintain relationship from both sides

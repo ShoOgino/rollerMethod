@@ -1,5 +1,5 @@
     public List getCustomPingTargets(Weblog website)
-            throws RollerException {
+            throws WebloggerException {
         Query q = strategy.getNamedQuery(
                 "PingTarget.getByWebsiteOrderByName");
         q.setParameter(1, website);

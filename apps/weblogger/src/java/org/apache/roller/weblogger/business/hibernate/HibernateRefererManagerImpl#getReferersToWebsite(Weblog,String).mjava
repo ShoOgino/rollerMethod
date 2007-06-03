@@ -2,7 +2,7 @@
      * Query for collection of referers.
      */
     protected List getReferersToWebsite(Weblog website, String refererUrl)
-            throws RollerException {
+            throws WebloggerException {
         
         try {
             Session session = ((HibernatePersistenceStrategy)strategy).getSession();
@@ -12,7 +12,7 @@
             
             return criteria.list();
         } catch (HibernateException e) {
-            throw new RollerException(e);
+            throw new WebloggerException(e);
         }
     }
 

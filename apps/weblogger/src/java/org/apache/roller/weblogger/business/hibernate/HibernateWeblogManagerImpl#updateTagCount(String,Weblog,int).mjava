@@ -1,14 +1,14 @@
-    public void updateTagCount(String name, Weblog website, int amount) throws RollerException {
+    public void updateTagCount(String name, Weblog website, int amount) throws WebloggerException {
         
         Session session = ((HibernatePersistenceStrategy) strategy)
         .getSession();
         
         if(amount == 0) {
-            throw new RollerException("Tag increment amount cannot be zero.");
+            throw new WebloggerException("Tag increment amount cannot be zero.");
         }
         
         if(website == null) {
-            throw new RollerException("Website cannot be NULL.");
+            throw new WebloggerException("Website cannot be NULL.");
         }
                         
         Junction conjunction = Expression.conjunction();

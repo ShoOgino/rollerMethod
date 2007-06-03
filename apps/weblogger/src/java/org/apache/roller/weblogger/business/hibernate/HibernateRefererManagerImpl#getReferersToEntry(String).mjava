@@ -2,9 +2,9 @@
      * @see org.apache.roller.weblogger.pojos.RefererManager#getReferersToEntry(
      * java.lang.String, java.lang.String)
      */
-    public List getReferersToEntry(String entryid) throws RollerException {
+    public List getReferersToEntry(String entryid) throws WebloggerException {
         if (null == entryid)
-            throw new RollerException("entryid is null");
+            throw new WebloggerException("entryid is null");
         
         try {
             Session session = ((HibernatePersistenceStrategy)strategy).getSession();
@@ -19,7 +19,7 @@
             
             return criteria.list();
         } catch (HibernateException e) {
-            throw new RollerException(e);
+            throw new WebloggerException(e);
         }
     }
 

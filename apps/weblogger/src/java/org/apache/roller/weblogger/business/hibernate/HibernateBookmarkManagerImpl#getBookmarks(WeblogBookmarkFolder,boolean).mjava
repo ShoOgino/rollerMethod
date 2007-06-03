@@ -3,7 +3,7 @@
      *      org.apache.roller.weblogger.pojos.FolderData, boolean)
      */
     public List getBookmarks(WeblogBookmarkFolder folder, boolean subfolders)
-            throws RollerException {
+            throws WebloggerException {
         
         try {
             Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
@@ -23,7 +23,7 @@
             return criteria.list();
             
         } catch (HibernateException e) {
-            throw new RollerException(e);
+            throw new WebloggerException(e);
         }
     }
 

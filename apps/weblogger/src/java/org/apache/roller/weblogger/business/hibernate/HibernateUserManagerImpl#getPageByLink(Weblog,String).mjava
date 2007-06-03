@@ -2,13 +2,13 @@
      * Use Hibernate directly because Roller's Query API does too much allocation.
      */
     public WeblogTemplate getPageByLink(Weblog website, String pagelink)
-            throws RollerException {
+            throws WebloggerException {
         
         if (website == null)
-            throw new RollerException("userName is null");
+            throw new WebloggerException("userName is null");
         
         if (pagelink == null)
-            throw new RollerException("Pagelink is null");
+            throw new WebloggerException("Pagelink is null");
         
         try {
             Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
@@ -18,7 +18,7 @@
             
             return (WeblogTemplate) criteria.uniqueResult();
         } catch (HibernateException e) {
-            throw new RollerException(e);
+            throw new WebloggerException(e);
         }
     }
 

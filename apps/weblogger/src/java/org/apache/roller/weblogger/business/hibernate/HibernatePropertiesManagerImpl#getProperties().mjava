@@ -6,7 +6,7 @@
      * uses the property name as the key and the RuntimeConfigProperty object
      * as the value.
      */
-    public Map getProperties() throws RollerException {
+    public Map getProperties() throws WebloggerException {
         
         HashMap props = new HashMap();
         
@@ -28,7 +28,7 @@
                 props.put(prop.getName(), prop);
             }
         } catch (HibernateException e) {
-            throw new RollerException(e);
+            throw new WebloggerException(e);
         }
         
         return props;

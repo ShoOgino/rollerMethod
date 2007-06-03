@@ -46,14 +46,14 @@
             weblog = uMgr.getWebsiteByHandle(commentRequest.getWeblogHandle());
             
             if(weblog == null) {
-                throw new RollerException("unable to lookup weblog: "+
+                throw new WebloggerException("unable to lookup weblog: "+
                         commentRequest.getWeblogHandle());
             }
             
             // lookup entry specified by comment request
             entry = commentRequest.getWeblogEntry();
             if(entry == null) {
-                throw new RollerException("unable to lookup entry: "+
+                throw new WebloggerException("unable to lookup entry: "+
                         commentRequest.getWeblogAnchor());
             }
             
@@ -159,7 +159,7 @@
                     cf = new WeblogEntryCommentForm();
                 }
                 
-            } catch (RollerException re) {
+            } catch (WebloggerException re) {
                 log.error("Error saving comment", re);
                 error = re.getMessage();
             }

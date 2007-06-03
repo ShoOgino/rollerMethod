@@ -10,7 +10,7 @@
             Roller roller = RollerFactory.getRoller();
             WeblogManager wmgr = roller.getWeblogManager();
             entry = wmgr.getWeblogEntryByAnchor(this, anchor);
-        } catch (RollerException e) {
+        } catch (WebloggerException e) {
             this.log.error("ERROR: getting entry by anchor");
         }
         return entry;

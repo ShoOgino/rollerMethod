@@ -36,7 +36,7 @@
                 log.info("Ping usage has been disabled.  Removing any existing auto ping configurations.");
                 RollerFactory.getRoller().getAutopingManager().removeAllAutoPings();
             }
-        } catch (RollerException e) {
+        } catch (WebloggerException e) {
             log.error("ERROR configing ping managers", e);
         }
     }

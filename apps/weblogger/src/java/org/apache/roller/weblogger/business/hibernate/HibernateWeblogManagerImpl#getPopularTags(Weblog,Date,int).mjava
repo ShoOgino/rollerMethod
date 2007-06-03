@@ -2,7 +2,7 @@
      * @see org.apache.roller.weblogger.model.WeblogManager#getPopularTags(org.apache.roller.weblogger.pojos.WebsiteData, java.util.Date, int)
      */
     public List getPopularTags(Weblog website, Date startDate, int limit)
-            throws RollerException {
+            throws WebloggerException {
         try {
             Session session = ((HibernatePersistenceStrategy) strategy)
                     .getSession();
@@ -66,7 +66,7 @@
             return results;
 
         } catch (HibernateException e) {
-            throw new RollerException(e);
+            throw new WebloggerException(e);
         }
     }
 

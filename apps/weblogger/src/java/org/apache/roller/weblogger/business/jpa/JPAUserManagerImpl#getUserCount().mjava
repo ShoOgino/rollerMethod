@@ -1,7 +1,7 @@
     /**
      * Get count of users, enabled only
      */
-    public long getUserCount() throws RollerException {
+    public long getUserCount() throws WebloggerException {
         long ret = 0;
         Query q = strategy.getNamedQuery("User.getCountEnabledDistinct");
         q.setParameter(1, Boolean.TRUE);

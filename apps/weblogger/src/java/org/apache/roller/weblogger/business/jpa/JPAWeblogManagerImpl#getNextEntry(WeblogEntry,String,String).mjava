@@ -2,7 +2,7 @@
      * @inheritDoc
      */
     public WeblogEntry getNextEntry(WeblogEntry current,
-            String catName, String locale) throws RollerException {
+            String catName, String locale) throws WebloggerException {
         WeblogEntry entry = null;
         List entryList = getNextPrevEntries(current, catName, locale, 1, true);
         if (entryList != null && entryList.size() > 0) {

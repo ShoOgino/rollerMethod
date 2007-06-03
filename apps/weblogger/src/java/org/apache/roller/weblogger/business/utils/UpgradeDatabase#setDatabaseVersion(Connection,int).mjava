@@ -4,7 +4,7 @@
      * This should only be called once for new installations
      */
     private static void setDatabaseVersion(Connection con, int version)
-            throws RollerException {
+            throws WebloggerException {
         
         try {
             Statement stmt = con.createStatement();
@@ -13,7 +13,7 @@
             
             mLogger.debug("Set database verstion to "+version);
         } catch(SQLException se) {
-            throw new RollerException("Error setting database version.", se);
+            throw new WebloggerException("Error setting database version.", se);
         }
     }
 

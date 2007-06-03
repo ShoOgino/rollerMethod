@@ -25,7 +25,7 @@
             UserManager umgr = RollerFactory.getRoller().getUserManager();
             umgr.removeWebsite(TestUtils.getManagedWebsite(testWeblog));
             TestUtils.endSession(true);
-        } catch (RollerException e) {
+        } catch (WebloggerException e) {
             ex = e;
         }
         assertNull(ex);

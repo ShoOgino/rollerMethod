@@ -27,7 +27,7 @@
             // This rethrows as a Runtime exception after logging.
             mLogger.error(uex);
             throw new RuntimeException(uex);
-        } catch (RollerException re) {
+        } catch (WebloggerException re) {
             String msg = "RollerResourceLoader Error: " +
                     "database problem trying to load resource " + name;
             mLogger.error( msg, re );

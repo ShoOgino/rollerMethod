@@ -5,7 +5,7 @@
      * @param ctx  Plugins may place objects into the Velocity Context.
      * @see PagWeblogEntryPluginit(org.apache.roller.weblogger.presentation.RollerRequest, org.apache.velocity.context.Context)
      */
-    public void init(Weblog website) throws RollerException
+    public void init(Weblog website) throws WebloggerException
     {
         if (mLogger.isDebugEnabled())
         {
@@ -35,13 +35,13 @@
         }
         catch (PatternSyntaxException e)
         {
-            throw new RollerException("Invalid regular expression for topic tags with bookmark '" +
+            throw new WebloggerException("Invalid regular expression for topic tags with bookmark '" +
                 tagRegexWithBookmark + "': " + e.getMessage());
         }
         int groupCount = tagPatternWithBookmark.matcher("").groupCount();
         if (groupCount != 2)
         {
-            throw new RollerException("Regular expression for topic tags with bookmark '" + tagRegexWithBookmark +
+            throw new WebloggerException("Regular expression for topic tags with bookmark '" + tagRegexWithBookmark +
                 "' contains wrong number of capture groups.  Must have exactly 2.  Contains " + groupCount);
         }
 
@@ -51,13 +51,13 @@
         }
         catch (PatternSyntaxException e)
         {
-            throw new RollerException("Invalid regular expression for topic tags without bookmark '" +
+            throw new WebloggerException("Invalid regular expression for topic tags without bookmark '" +
                 tagRegexWithoutBookmark + "': " + e.getMessage());
         }
         groupCount = tagPatternWithoutBookmark.matcher("").groupCount();
         if (groupCount != 1)
         {
-            throw new RollerException("Regular expression for topic tags without bookmark '" + tagRegexWithoutBookmark +
+            throw new WebloggerException("Regular expression for topic tags without bookmark '" + tagRegexWithoutBookmark +
                 "' contains wrong number of capture groups.  Must have exactly 1.  Contains " + groupCount);
         }
 

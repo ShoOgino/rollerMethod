@@ -1,7 +1,7 @@
     /**
      * Get pending permissions for user
      */
-    public List getPendingPermissions(User user) throws RollerException {
+    public List getPendingPermissions(User user) throws WebloggerException {
         
         try {
             Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
@@ -11,7 +11,7 @@
             
             return criteria.list();
         } catch (HibernateException e) {
-            throw new RollerException(e);
+            throw new WebloggerException(e);
         }
     }
 

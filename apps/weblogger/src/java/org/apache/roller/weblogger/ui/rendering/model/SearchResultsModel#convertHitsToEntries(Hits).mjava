@@ -1,4 +1,4 @@
-    private void convertHitsToEntries(Hits hits) throws RollerException {
+    private void convertHitsToEntries(Hits hits) throws WebloggerException {
         
         // determine offset
         this.offset = searchRequest.getPageNum() * RESULTS_PER_PAGE;
@@ -56,7 +56,7 @@
                 this.categories = categories;
             }
         } catch(IOException e) {
-            throw new RollerException(e);
+            throw new WebloggerException(e);
         }
     }
 

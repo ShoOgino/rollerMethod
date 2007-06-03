@@ -39,7 +39,7 @@
             flushPageCache(page.getWebsite());
             
             return true;
-        } catch (RollerException e) {
+        } catch (WebloggerException e) {
             String msg = "ERROR in BlooggerAPIHander.setTemplate";
             mLogger.error(msg,e);
             throw new XmlRpcException(UNKNOWN_EXCEPTION,msg);

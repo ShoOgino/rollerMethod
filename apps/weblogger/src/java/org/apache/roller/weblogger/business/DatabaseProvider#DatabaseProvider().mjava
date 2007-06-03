@@ -2,7 +2,7 @@
      * Reads configuraiton, loads driver or locates data-source and attempts
      * to get test connecton so that we can fail early.
      */ 
-    private DatabaseProvider() throws RollerException {
+    private DatabaseProvider() throws WebloggerException {
         String connectionTypeString = 
                 RollerConfig.getProperty("database.configurationType"); 
         if ("jdbc".equals(connectionTypeString)) {
@@ -20,7 +20,7 @@
             try {
                 Class.forName(getJdbcDriverClass());
             } catch (ClassNotFoundException ex) {
-                throw new RollerException(
+                throw new WebloggerException(
                    "Cannot load specified JDBC driver class [" +getJdbcDriverClass()+ "]", ex);
             }
             if (getJdbcUsername() != null || getJdbcPassword() != null) {
@@ -35,7 +35,7 @@
                 InitialContext ic = new InitialContext();
                 dataSource = (DataSource)ic.lookup(name);
             } catch (NamingException ex) {
-                throw new RollerException(
+                throw new WebloggerException(
                     "ERROR looking up data-source with JNDI name: " + name, ex);
             }            
         }
@@ -43,7 +43,7 @@
             Connection testcon = getConnection();
             testcon.close();
         } catch (Throwable t) {
-            throw new RollerException("ERROR unable to obtain connection", t);
+            throw new WebloggerException("ERROR unable to obtain connection", t);
         }
     }
 

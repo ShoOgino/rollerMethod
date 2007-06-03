@@ -2,7 +2,7 @@
      * Is session's authenticated user authorized to work in current website?
      */
     public boolean isUserAuthorized(Weblog website)
-            throws RollerException {
+            throws WebloggerException {
         
         User user = getAuthenticatedUser();
         if (user != null && user.getEnabled().booleanValue())

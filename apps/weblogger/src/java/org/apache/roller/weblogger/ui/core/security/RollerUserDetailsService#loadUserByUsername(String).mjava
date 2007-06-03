@@ -6,7 +6,7 @@
             Roller roller = RollerFactory.getRoller();
             UserManager umgr = roller.getUserManager();
             userData = umgr.getUserByUserName(userName, Boolean.TRUE); 
-        } catch (RollerException ex) {
+        } catch (WebloggerException ex) {
             throw new DataRetrievalFailureException("ERROR in user lookup", ex);
         } 
         

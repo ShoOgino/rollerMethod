@@ -12,7 +12,7 @@
         List autopings = Collections.EMPTY_LIST;
         try {
             autopings = autoPingMgr.getAutoPingsByWebsite(getActionWeblog());
-        } catch (RollerException ex) {
+        } catch (WebloggerException ex) {
             log.error("Error looking up auto pings for weblog - "+getActionWeblog().getHandle(), ex);
         }
         

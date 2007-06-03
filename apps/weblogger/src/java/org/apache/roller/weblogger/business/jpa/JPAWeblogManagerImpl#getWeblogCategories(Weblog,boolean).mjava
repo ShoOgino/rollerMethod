@@ -2,9 +2,9 @@
      * @inheritDoc
      */
     public List getWeblogCategories(Weblog website, boolean includeRoot)
-    throws RollerException {
+    throws WebloggerException {
         if (website == null)
-            throw new RollerException("website is null");
+            throw new WebloggerException("website is null");
         
         if (includeRoot) return getWeblogCategories(website);
         

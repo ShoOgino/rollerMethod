@@ -29,7 +29,7 @@
                 WeblogEntry prevEntry = (WeblogEntry)prevEntries.get(0);
                 prevMonth = DateUtil.getStartOfMonth(new Date(prevEntry.getPubTime().getTime()));
             }
-        } catch (RollerException e) {
+        } catch (WebloggerException e) {
             log.error("ERROR determining previous non-empty month");
         }
         
@@ -55,7 +55,7 @@
                 WeblogEntry nextEntry = (WeblogEntry)nextEntries.get(0);
                 nextMonth = DateUtil.getStartOfMonth(new Date(nextEntry.getPubTime().getTime()));
             }
-        } catch (RollerException e) {
+        } catch (WebloggerException e) {
             log.error("ERROR determining next non-empty month");
         }  
         

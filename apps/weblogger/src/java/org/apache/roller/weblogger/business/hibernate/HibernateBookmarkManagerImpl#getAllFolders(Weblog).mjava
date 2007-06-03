@@ -1,6 +1,6 @@
-    public List getAllFolders(Weblog website) throws RollerException {
+    public List getAllFolders(Weblog website) throws WebloggerException {
         if (website == null)
-            throw new RollerException("Website is null");
+            throw new WebloggerException("Website is null");
         
         try {
             Session session = ((HibernatePersistenceStrategy) strategy).getSession();
@@ -8,7 +8,7 @@
             criteria.add(Expression.eq("website", website));
             return criteria.list();
         } catch (HibernateException e) {
-            throw new RollerException(e);
+            throw new WebloggerException(e);
         }
         
     }

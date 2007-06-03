@@ -1,5 +1,5 @@
     // private helper to determine if an has already been queued for the same website and ping target.
-    private boolean isAlreadyQueued(AutoPing autoPing) throws RollerException {
+    private boolean isAlreadyQueued(AutoPing autoPing) throws WebloggerException {
         try {
             Session session = ((HibernatePersistenceStrategy) strategy).getSession();
             Criteria criteria = session.createCriteria(PingQueueEntry.class);
@@ -7,7 +7,7 @@
             criteria.add(Expression.eq("website", autoPing.getWebsite()));
             return !criteria.list().isEmpty();
         } catch (HibernateException e) {
-            throw new RollerException("ERROR determining if preexisting queue entry is present.",e);
+            throw new WebloggerException("ERROR determining if preexisting queue entry is present.",e);
         }
     }
 

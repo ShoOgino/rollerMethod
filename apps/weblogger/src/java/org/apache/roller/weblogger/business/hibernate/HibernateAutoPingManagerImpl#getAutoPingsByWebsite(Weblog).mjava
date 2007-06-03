@@ -1,4 +1,4 @@
-    public List getAutoPingsByWebsite(Weblog website) throws RollerException {
+    public List getAutoPingsByWebsite(Weblog website) throws WebloggerException {
         try {
             Session session = ((HibernatePersistenceStrategy) strategy).getSession();
             Criteria criteria = session.createCriteria(AutoPing.class);
@@ -7,7 +7,7 @@
             criteria.add(Expression.eq("website", website));
             return criteria.list();
         } catch (HibernateException e) {
-            throw new RollerException(e);
+            throw new WebloggerException(e);
         }
     }
 

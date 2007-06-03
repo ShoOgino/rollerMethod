@@ -1,7 +1,7 @@
-    public WeblogBookmarkFolder getRootFolder(Weblog website) throws RollerException {
+    public WeblogBookmarkFolder getRootFolder(Weblog website) throws WebloggerException {
         
         if (website == null)
-            throw new RollerException("website is null");
+            throw new WebloggerException("website is null");
         
         try {
             Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
@@ -14,7 +14,7 @@
             return (WeblogBookmarkFolder) criteria.uniqueResult();
             
         } catch (HibernateException e) {
-            throw new RollerException(e);
+            throw new WebloggerException(e);
         }
     }
 

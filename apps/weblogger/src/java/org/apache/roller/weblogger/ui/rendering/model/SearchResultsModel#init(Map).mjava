@@ -1,9 +1,9 @@
-    public void init(Map initData) throws RollerException {
+    public void init(Map initData) throws WebloggerException {
         
         // we expect the init data to contain a searchRequest object
         searchRequest = (WeblogSearchRequest) initData.get("searchRequest");
         if(searchRequest == null) {
-            throw new RollerException("expected searchRequest from init data");
+            throw new WebloggerException("expected searchRequest from init data");
         }
         
         // let parent initialize

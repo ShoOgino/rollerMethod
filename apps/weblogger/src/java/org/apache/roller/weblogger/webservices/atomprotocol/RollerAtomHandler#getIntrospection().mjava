@@ -8,13 +8,13 @@
         List perms = null;
         try {
             perms = roller.getUserManager().getAllPermissions(user);
-        } catch (RollerException re) {
+        } catch (WebloggerException re) {
             throw new AtomException("Getting user's weblogs", re);
         }
         String accept = null;
         try {
             accept = getAcceptedContentTypeRange();
-        } catch (RollerException re) {
+        } catch (WebloggerException re) {
             throw new AtomException("Getting site's accept range", re);
         }
         if (perms != null) {

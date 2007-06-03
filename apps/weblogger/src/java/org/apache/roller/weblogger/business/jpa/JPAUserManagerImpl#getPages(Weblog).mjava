@@ -1,9 +1,9 @@
     /**
      * @see org.apache.roller.weblogger.model.UserManager#getPages(Weblog)
      */
-    public List getPages(Weblog website) throws RollerException {
+    public List getPages(Weblog website) throws WebloggerException {
         if (website == null)
-            throw new RollerException("website is null");
+            throw new WebloggerException("website is null");
         Query q = strategy.getNamedQuery(
                 "WeblogTemplate.getByWebsiteOrderByName");
         q.setParameter(1, website);

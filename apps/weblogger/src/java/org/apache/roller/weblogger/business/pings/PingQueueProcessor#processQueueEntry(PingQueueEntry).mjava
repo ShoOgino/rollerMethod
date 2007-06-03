@@ -2,10 +2,10 @@
      * Process an individual ping queue entry.
      *
      * @param pingQueueEntry     the ping queue entry
-     * @throws RollerException only if there are problems processing the queue.  Exceptions from sending pings are
+     * @throws WebloggerException only if there are problems processing the queue.  Exceptions from sending pings are
      *                         handled, not thrown.
      */
-    private void processQueueEntry(PingQueueEntry pingQueueEntry) throws RollerException {
+    private void processQueueEntry(PingQueueEntry pingQueueEntry) throws WebloggerException {
         if (logger.isDebugEnabled()) logger.debug("Processing ping queue entry: " + pingQueueEntry);
         
         PingTarget pingTarget = pingQueueEntry.getPingTarget();

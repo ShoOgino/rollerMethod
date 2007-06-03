@@ -3,7 +3,7 @@
      * reference the given ping target.
      */
     private void removePingTargetContents(PingTarget ping) 
-            throws RollerException {
+            throws WebloggerException {
         // Remove the website's ping queue entries
         Query q = strategy.getNamedUpdate("PingQueueEntry.removeByPingTarget");
         q.setParameter(1, ping);

@@ -1,4 +1,4 @@
-    public List getAllQueueEntries() throws RollerException {
+    public List getAllQueueEntries() throws WebloggerException {
         try {
             Session session = ((HibernatePersistenceStrategy) strategy).getSession();
             Criteria criteria = session.createCriteria(PingQueueEntry.class);
@@ -6,7 +6,7 @@
             
             return criteria.list();
         } catch (HibernateException e) {
-            throw new RollerException("ERROR retrieving queue entries.", e);
+            throw new WebloggerException("ERROR retrieving queue entries.", e);
         }
     }
 

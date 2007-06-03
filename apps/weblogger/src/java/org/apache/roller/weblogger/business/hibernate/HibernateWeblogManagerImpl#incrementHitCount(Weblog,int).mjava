@@ -1,14 +1,14 @@
     public void incrementHitCount(Weblog weblog, int amount)
-        throws RollerException {
+        throws WebloggerException {
         
         Session session = ((HibernatePersistenceStrategy) strategy).getSession();
         
         if(amount == 0) {
-            throw new RollerException("Tag increment amount cannot be zero.");
+            throw new WebloggerException("Tag increment amount cannot be zero.");
         }
         
         if(weblog == null) {
-            throw new RollerException("Website cannot be NULL.");
+            throw new WebloggerException("Website cannot be NULL.");
         }
         
         Criteria criteria = session.createCriteria(WeblogHitCount.class);

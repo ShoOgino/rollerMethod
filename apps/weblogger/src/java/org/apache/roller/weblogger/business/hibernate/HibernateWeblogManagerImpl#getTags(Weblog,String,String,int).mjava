@@ -4,7 +4,7 @@
      * @see org.apache.roller.weblogger.model.WeblogManager#getTags(org.apache.roller.weblogger.pojos.WebsiteData,
      *      java.lang.String, java.lang.String, int)
      */
-    public List getTags(Weblog website, String sortBy, String startsWith, int limit) throws RollerException {    
+    public List getTags(Weblog website, String sortBy, String startsWith, int limit) throws WebloggerException {    
         try {
             List results = new ArrayList();
 
@@ -44,7 +44,7 @@
             return results;
 
         } catch (HibernateException e) {
-            throw new RollerException(e);
+            throw new WebloggerException(e);
         }
 
     }

@@ -7,7 +7,7 @@
             Roller roller = RollerFactory.getRoller();
             WeblogManager mgr = roller.getWeblogManager();
             count = mgr.getEntryCount(this);            
-        } catch (RollerException e) {
+        } catch (WebloggerException e) {
             log.error("Error getting entry count for weblog " + this.getName(), e);
         }
         return count;

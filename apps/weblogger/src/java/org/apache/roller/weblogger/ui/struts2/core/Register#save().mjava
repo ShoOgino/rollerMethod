@@ -50,7 +50,7 @@
                     }
                     // In more unlikely event that three retries isn't enough
                     if (activationCode == null){
-                        throw new RollerException("error.add.user.activationCodeInUse");
+                        throw new WebloggerException("error.add.user.activationCodeInUse");
                     }
                 }
                 ud.setActivationCode(activationCode);
@@ -65,7 +65,7 @@
                 try {
                     // send activation mail to the user
                     MailUtil.sendUserActivationEmail(ud);
-                } catch (RollerException ex) {
+                } catch (WebloggerException ex) {
                     log.error("Error sending activation email to - "+ud.getEmailAddress(), ex);
                 }
                 
@@ -82,7 +82,7 @@
             
             return SUCCESS;
             
-        } catch (RollerException ex) {
+        } catch (WebloggerException ex) {
             log.error("Error adding new user", ex);
             // TODO: i18n
             addError("Error adding new user");

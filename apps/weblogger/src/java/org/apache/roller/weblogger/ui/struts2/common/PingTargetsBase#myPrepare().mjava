@@ -9,7 +9,7 @@
             try {
                 PingTargetManager pingTargetMgr = RollerFactory.getRoller().getPingTargetManager();
                 setPingTarget(pingTargetMgr.getPingTarget(getPingTargetId()));
-            } catch (RollerException ex) {
+            } catch (WebloggerException ex) {
                 getLogger().error("Error looking up ping target - "+getPingTargetId(), ex);
             }
         }

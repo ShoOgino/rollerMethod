@@ -1,7 +1,7 @@
     /**
      * Get count of weblogs, active and inactive
      */
-    public long getWeblogCount() throws RollerException {
+    public long getWeblogCount() throws WebloggerException {
         long ret = 0;
         List results = strategy.getNamedQuery(
                 "Weblog.getCountAllDistinct").getResultList();

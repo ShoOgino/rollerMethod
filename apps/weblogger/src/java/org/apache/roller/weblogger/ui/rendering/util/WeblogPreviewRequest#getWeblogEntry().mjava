@@ -12,7 +12,7 @@
             try {
                 WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
                 weblogEntry = wmgr.getWeblogEntryByAnchor(getWeblog(), anchor);
-            } catch (RollerException ex) {
+            } catch (WebloggerException ex) {
                 log.error("Error getting weblog entry "+anchor, ex);
             }
         }

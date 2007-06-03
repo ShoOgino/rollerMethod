@@ -25,7 +25,7 @@
                     getWeblogManager();
                 entry = weblogMgr.getWeblogEntryByAnchor(weblog, entryAnchor);
             }
-        } catch (RollerException re) {
+        } catch (WebloggerException re) {
             // problem looking up website, gotta bail
             log.error("Error looking up website object", re);
             return;
@@ -131,7 +131,7 @@
                     saveReferer(ref);
                 }
             }
-        } catch (RollerException pe) {
+        } catch (WebloggerException pe) {
             log.error(pe);
         } catch (NullPointerException npe) {
             log.error(npe);

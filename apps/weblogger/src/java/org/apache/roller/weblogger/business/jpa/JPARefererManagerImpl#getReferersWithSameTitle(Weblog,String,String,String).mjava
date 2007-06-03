@@ -5,7 +5,7 @@
                                             String requestUrl,
                                             String title,
                                             String excerpt)
-            throws RollerException {
+            throws WebloggerException {
         Query q = strategy.getNamedQuery( 
             "WeblogReferrer.getByWebsite&RequestURL&TitleOrExcerpt");
         q.setParameter(1, website);

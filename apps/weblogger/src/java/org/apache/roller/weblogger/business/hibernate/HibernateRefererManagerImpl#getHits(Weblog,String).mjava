@@ -1,7 +1,7 @@
     /**
      * Use raw SQL because Hibernate can't handle the query.
      */
-    protected int getHits(Weblog website, String type) throws RollerException {
+    protected int getHits(Weblog website, String type) throws WebloggerException {
         int hits = 0;
         if (log.isDebugEnabled()) {
             log.debug("getHits: " + website.getName());
@@ -24,7 +24,7 @@
             q.setParameters(args, types);
             results = q.list();
         } catch (HibernateException e) {
-            throw new RollerException(e);
+            throw new WebloggerException(e);
         }
         Object[] resultsArray = (Object[]) results.get(0);
         

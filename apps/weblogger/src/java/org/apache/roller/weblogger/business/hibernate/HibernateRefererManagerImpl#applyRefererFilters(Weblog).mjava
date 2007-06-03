@@ -1,9 +1,9 @@
     /**
      * Apply ignoreWord/spam filters to all referers in website.
      */
-    public void applyRefererFilters(Weblog website) throws RollerException {
+    public void applyRefererFilters(Weblog website) throws WebloggerException {
         
-        if (null == website) throw new RollerException("website is null");
+        if (null == website) throw new WebloggerException("website is null");
         if (null == website.getBlacklist()) return;
         
         try {
@@ -27,7 +27,7 @@
             }
             
         } catch (HibernateException e) {
-            throw new RollerException(e);
+            throw new WebloggerException(e);
         }
     }   
 

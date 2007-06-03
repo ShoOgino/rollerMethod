@@ -6,9 +6,9 @@
      *
      * @param subcats True if entries from sub-categories are to be returned.
      * @return List of WeblogEntryData objects.
-     * @throws RollerException
+     * @throws WebloggerException
      */
-    public List retrieveWeblogEntries(boolean subcats) throws RollerException {
+    public List retrieveWeblogEntries(boolean subcats) throws WebloggerException {
         WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
         return wmgr.getWeblogEntries(this, subcats);
     }

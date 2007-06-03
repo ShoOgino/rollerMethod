@@ -1,4 +1,4 @@
-    public List getWeblogEntriesPinnedToMain(Integer max) throws RollerException {
+    public List getWeblogEntriesPinnedToMain(Integer max) throws WebloggerException {
         try {
             Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
             Criteria criteria = session.createCriteria(WeblogEntry.class);
@@ -11,7 +11,7 @@
             return criteria.list();
         } catch (HibernateException e) {
             log.error(e);
-            throw new RollerException(e);
+            throw new WebloggerException(e);
         }
     }
 

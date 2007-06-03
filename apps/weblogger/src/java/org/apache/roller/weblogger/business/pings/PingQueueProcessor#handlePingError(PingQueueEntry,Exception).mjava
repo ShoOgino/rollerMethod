@@ -3,10 +3,10 @@
      *
      * @param pingQueueEntry the ping queue entry
      * @param ex             the exception that occurred on the ping attempt
-     * @throws RollerException
+     * @throws WebloggerException
      */
     private void handlePingError(PingQueueEntry pingQueueEntry, Exception ex)
-            throws RollerException {
+            throws WebloggerException {
         
         if ((pingQueueEntry.incrementAttempts() < PingConfig.getMaxPingAttempts()) && WeblogUpdatePinger.shouldRetry(ex)) {
             // We have attempts remaining, and it looks like we should retry,

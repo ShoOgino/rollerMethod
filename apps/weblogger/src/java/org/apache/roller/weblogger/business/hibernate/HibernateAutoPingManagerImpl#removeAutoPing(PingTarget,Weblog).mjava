@@ -1,4 +1,4 @@
-    public void removeAutoPing(PingTarget pingTarget, Weblog website) throws RollerException {
+    public void removeAutoPing(PingTarget pingTarget, Weblog website) throws WebloggerException {
         try {
             Session session = strategy.getSession();
             Criteria criteria = session.createCriteria(AutoPing.class);
@@ -12,7 +12,7 @@
             // This should have at most one element, but we remove them all regardless.
             this.removeAutoPings(matches);
         } catch (HibernateException e) {
-            throw new RollerException(e);
+            throw new WebloggerException(e);
         }
     }
 

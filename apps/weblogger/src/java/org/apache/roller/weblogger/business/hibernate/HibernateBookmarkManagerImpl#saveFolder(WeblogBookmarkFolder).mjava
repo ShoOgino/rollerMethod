@@ -1,8 +1,8 @@
-    public void saveFolder(WeblogBookmarkFolder folder) throws RollerException {
+    public void saveFolder(WeblogBookmarkFolder folder) throws WebloggerException {
         
         WeblogBookmarkFolder existingFolder = getFolder(folder.getId());        
         if(existingFolder == null && isDuplicateFolderName(folder)) {
-            throw new RollerException("Duplicate folder name");
+            throw new WebloggerException("Duplicate folder name");
         }
         
         this.strategy.store(folder);

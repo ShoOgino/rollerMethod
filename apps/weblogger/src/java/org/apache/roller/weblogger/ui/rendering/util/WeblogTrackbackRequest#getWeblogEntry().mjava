@@ -4,7 +4,7 @@
             try {
                 WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
                 weblogEntry = wmgr.getWeblogEntryByAnchor(getWeblog(), weblogAnchor);
-            } catch (RollerException ex) {
+            } catch (WebloggerException ex) {
                 log.error("Error getting weblog entry "+weblogAnchor, ex);
             }
         }

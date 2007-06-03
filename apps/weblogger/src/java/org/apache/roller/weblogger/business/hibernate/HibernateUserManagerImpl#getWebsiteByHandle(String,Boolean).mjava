@@ -2,10 +2,10 @@
      * Return website specified by handle.
      */
     public Weblog getWebsiteByHandle(String handle, Boolean enabled)
-    throws RollerException {
+    throws WebloggerException {
         
         if (handle==null )
-            throw new RollerException("Handle cannot be null");
+            throw new WebloggerException("Handle cannot be null");
         
         // check cache first
         // NOTE: if we ever allow changing handles then this needs updating
@@ -47,7 +47,7 @@
             }
             
         } catch (HibernateException e) {
-            throw new RollerException(e);
+            throw new WebloggerException(e);
         }
     }
 

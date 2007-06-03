@@ -2,13 +2,13 @@
      * @inheritDoc
      */
     public WeblogEntry getWeblogEntryByAnchor(Weblog website,
-            String anchor) throws RollerException {
+            String anchor) throws WebloggerException {
         
         if (website == null)
-            throw new RollerException("Website is null");
+            throw new WebloggerException("Website is null");
         
         if (anchor == null)
-            throw new RollerException("Anchor is null");
+            throw new WebloggerException("Anchor is null");
         
         // mapping key is combo of weblog + anchor
         String mappingKey = website.getHandle()+":"+anchor;

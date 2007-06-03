@@ -1,11 +1,11 @@
-    public void removeAllAutoPings() throws RollerException {
+    public void removeAllAutoPings() throws WebloggerException {
         try {
             Session session = ((HibernatePersistenceStrategy) strategy).getSession();
             Criteria criteria = session.createCriteria(AutoPing.class);
             List allAutoPings = criteria.list();
             this.removeAutoPings(allAutoPings);
         } catch (HibernateException e) {
-            throw new RollerException(e);
+            throw new WebloggerException(e);
         }
     }
 

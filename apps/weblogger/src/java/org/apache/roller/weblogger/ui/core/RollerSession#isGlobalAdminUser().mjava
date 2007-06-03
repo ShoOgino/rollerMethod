@@ -1,7 +1,7 @@
     /**
      * Does our authenticated user have the global admin role?
      */
-    public boolean isGlobalAdminUser() throws RollerException {
+    public boolean isGlobalAdminUser() throws WebloggerException {
         
         User user = getAuthenticatedUser();
         if (user != null && user.hasRole("admin")

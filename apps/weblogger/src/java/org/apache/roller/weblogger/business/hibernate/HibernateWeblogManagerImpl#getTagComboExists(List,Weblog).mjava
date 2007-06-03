@@ -5,7 +5,7 @@
      * miss and we return false.
      */
     public boolean getTagComboExists(List tags, Weblog weblog) 
-            throws RollerException {
+            throws WebloggerException {
         
         boolean comboExists = false;
         
@@ -35,7 +35,7 @@
             comboExists = (results != null && results.size() == tags.size());
             
         } catch (HibernateException ex) {
-            throw new RollerException(ex);
+            throw new WebloggerException(ex);
         }
             
         return comboExists;

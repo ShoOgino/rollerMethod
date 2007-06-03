@@ -1,4 +1,4 @@
-    protected HibernateRollerImpl() throws RollerException {
+    protected HibernateRollerImpl() throws WebloggerException {
         try {
             String dialect =  
                 RollerConfig.getProperty("hibernate.dialect");
@@ -9,7 +9,7 @@
         } catch(Throwable t) {
             // if this happens then we are screwed
             mLogger.fatal("Error initializing Hibernate", t);
-            throw new RollerException(t);
+            throw new WebloggerException(t);
         }
     }
 
