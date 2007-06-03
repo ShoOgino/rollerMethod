@@ -1,0 +1,13 @@
+    /**
+     * Return true if a transaction is active on the current EntityManager.
+     * @param em the persistence manager
+     * @return true if the persistence manager is not null and has an active
+     *         transaction
+     */
+    private boolean isTransactionActive(EntityManager em) {
+        if (em == null) {
+            return false;
+        }
+        return em.getTransaction().isActive();
+    }
+

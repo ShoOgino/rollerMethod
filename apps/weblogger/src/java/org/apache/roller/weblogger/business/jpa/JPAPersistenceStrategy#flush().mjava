@@ -1,0 +1,13 @@
+    /**
+     * Flush changes to the datastore, commit transaction, release em.
+     * @throws org.apache.roller.WebloggerException on any error
+     */
+    public void flush() throws WebloggerException {
+        try {
+            EntityManager em = getEntityManager(true);
+            em.getTransaction().commit();
+        } catch (PersistenceException pe) {
+            throw new WebloggerException(pe);
+        }
+    }
+

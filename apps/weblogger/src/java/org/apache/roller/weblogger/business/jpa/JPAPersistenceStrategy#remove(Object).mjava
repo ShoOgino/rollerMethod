@@ -1,0 +1,10 @@
+    /**
+     * Remove object from persistence storage.
+     * @param po the persistent object to remove
+     * @throws org.apache.roller.WebloggerException on any error
+     */
+    public void remove(Object po) throws WebloggerException {
+        EntityManager em = getEntityManager(true);
+        em.remove(po);
+    }
+

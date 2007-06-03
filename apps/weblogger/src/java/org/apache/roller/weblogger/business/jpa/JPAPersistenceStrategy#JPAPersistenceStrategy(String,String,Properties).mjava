@@ -1,0 +1,33 @@
+    /**
+     * Construct by finding JPA EntityManagerFactory.
+     * @throws org.apache.roller.WebloggerException on any error
+     */
+    public JPAPersistenceStrategy(
+            String puName,             
+            String jndiName, 
+            Properties properties) throws WebloggerException { 
+                
+        // set strategy used by Datamapper
+        // You can configure JPA completely via the JPAEMF.properties file
+        Properties emfProps = loadPropertiesFromResourceName(
+           "JPAEMF.properties", getContextClassLoader());
+                
+        // Add additional properties passed in 
+        Enumeration keys = properties.keys();
+        while (keys.hasMoreElements()) {
+            String key = (String)keys.nextElement();
+            String value = properties.getProperty(key);
+            logger.info(key + ": " + value);
+            emfProps.setProperty(key, value);
+        }
+        
+        emfProps.setProperty("openjpa.ConnectionFactoryName", jndiName);
+
+        try {
+            this.emf = Persistence.createEntityManagerFactory(puName, emfProps);
+        } catch (PersistenceException pe) {
+            logger.error("ERROR: creating entity manager", pe);
+            throw new WebloggerException(pe);
+        }
+    }    
+
