@@ -1,0 +1,11 @@
+    /**
+     * Get a Menu representing the admin UI action menu, if the user is 
+     * currently logged in and is an admin.
+     */
+    public Menu getAdminMenu() {
+        if(pageRequest.isLoggedIn() && pageRequest.getUser().hasRole("admin")) {
+            return MenuHelper.getMenu("admin", "noAction", pageRequest.getUser(), pageRequest.getWeblog());
+        }
+        return null;
+    }
+

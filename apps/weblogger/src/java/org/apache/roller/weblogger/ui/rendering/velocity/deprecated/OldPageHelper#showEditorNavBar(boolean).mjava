@@ -4,14 +4,8 @@
      * @return String HTML for navbar.
      */
     public String showEditorNavBar(boolean vertical) {
-        EditorNavigationBarTag editorTag = new EditorNavigationBarTag();
-        editorTag.setPageContext(mPageContext);
-        if ( vertical ) {
-            editorTag.setView("templates/navbar/navbar-vertical.vm");
-        } else {
-            editorTag.setView("templates/navbar/navbar-horizontal.vm");
-        }
-        editorTag.setModel("editor-menu.xml");
-        return editorTag.emit();
+        // this method has been EOLd starting in Roller 4.0
+        // this same functionality can be obtained via the #showAuthorMenu() macro
+        return null;
     }
 

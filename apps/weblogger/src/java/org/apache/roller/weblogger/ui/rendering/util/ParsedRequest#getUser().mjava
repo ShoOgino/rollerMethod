@@ -1,0 +1,14 @@
+    public User getUser() {
+        
+        if(user == null && authenticUser != null) {
+            try {
+                UserManager umgr = RollerFactory.getRoller().getUserManager();
+                user = umgr.getUserByUserName(authenticUser);
+            } catch (RollerException ex) {
+                log.error("Error looking up user "+authenticUser, ex);
+            }
+        }
+        
+        return user;
+    }
+
