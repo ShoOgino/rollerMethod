@@ -36,7 +36,7 @@
             
             // flush changes
             PlanetFactory.getPlanet().flush();
-        } catch (RollerException ex) {
+        } catch (PlanetException ex) {
             log.error("Error saving subscription", ex);
             setError("PlanetSubscriptionForm.error.saveFailed");
             return INPUT;

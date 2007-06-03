@@ -16,13 +16,13 @@
             
             planet = feedRequest.getPlanet();
             if(planet == null) {
-                throw new RollerException("unable to lookup planet: "+
+                throw new PlanetException("unable to lookup planet: "+
                         feedRequest.getPlanetHandle());
             }
             
             group = feedRequest.getGroup();
             if(group == null) {
-                throw new RollerException("unable to lookup group: "+
+                throw new PlanetException("unable to lookup group: "+
                         feedRequest.getGroupHandle());
             }
 
@@ -60,7 +60,7 @@
             String feedModels = PlanetConfig.getProperty("rendering.feedModels");
             ModelLoader.loadModels(feedModels, model, initData, true);
 
-        } catch (RollerException ex) {
+        } catch (PlanetException ex) {
             log.error("ERROR loading model for page", ex);
 
             if(!response.isCommitted()) response.reset();

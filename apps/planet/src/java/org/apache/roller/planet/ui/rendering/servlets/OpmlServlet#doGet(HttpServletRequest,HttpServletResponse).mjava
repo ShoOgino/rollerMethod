@@ -16,13 +16,13 @@
 
             planet = opmlRequest.getPlanet();
             if(planet == null) {
-                throw new RollerException("unable to lookup planet: "+
+                throw new PlanetException("unable to lookup planet: "+
                         opmlRequest.getPlanetHandle());
             }
             
             group = opmlRequest.getGroup();
             if(group == null) {
-                throw new RollerException("unable to lookup group: "+
+                throw new PlanetException("unable to lookup group: "+
                         opmlRequest.getGroupHandle());
             }
 
@@ -48,7 +48,7 @@
             String opmlModels = PlanetConfig.getProperty("rendering.opmlModels");
             ModelLoader.loadModels(opmlModels, model, initData, true);
 
-        } catch (RollerException ex) {
+        } catch (PlanetException ex) {
             log.error("ERROR loading model for page", ex);
 
             if(!response.isCommitted()) response.reset();

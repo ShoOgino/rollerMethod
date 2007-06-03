@@ -4,7 +4,7 @@
             try {
                 PlanetManager mgr = PlanetFactory.getPlanet().getPlanetManager();
                 group = mgr.getGroup(getPlanet(), groupHandle);
-            } catch (RollerException ex) {
+            } catch (PlanetException ex) {
                 log.error("Error looking up group "+groupHandle, ex);
             }
         }

@@ -20,7 +20,7 @@
             String models = PlanetConfig.getProperty("rendering.homepageModels");
             ModelLoader.loadModels(models, model, initData, true);
 
-        } catch (RollerException ex) {
+        } catch (PlanetException ex) {
             log.error("ERROR loading model", ex);
 
             if(!response.isCommitted()) response.reset();

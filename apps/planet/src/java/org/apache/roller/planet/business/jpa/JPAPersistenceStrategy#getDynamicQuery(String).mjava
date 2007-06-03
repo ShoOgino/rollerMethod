@@ -1,0 +1,14 @@
+    /**
+     * Create query from queryString with FlushModeType.COMMIT
+     * @param queryString the quuery
+     * @throws org.apache.roller.planet.PlanetException on any error
+     */
+    public Query getDynamicQuery(String queryString)
+    throws PlanetException {
+        EntityManager em = getEntityManager(false);
+        Query q = em.createQuery(queryString);
+        // Never flush for queries. Roller code assumes this behavior
+        q.setFlushMode(FlushModeType.COMMIT);
+        return q;
+    }
+

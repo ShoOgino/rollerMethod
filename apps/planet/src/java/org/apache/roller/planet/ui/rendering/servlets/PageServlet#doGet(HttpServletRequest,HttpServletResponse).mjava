@@ -16,7 +16,7 @@
 
             planet = pageRequest.getPlanet();
             if(planet == null) {
-                throw new RollerException("unable to lookup planet: "+
+                throw new PlanetException("unable to lookup planet: "+
                         pageRequest.getPlanetHandle());
             }
             
@@ -44,7 +44,7 @@
             String pageModels = PlanetConfig.getProperty("rendering.pageModels");
             ModelLoader.loadModels(pageModels, model, initData, true);
 
-        } catch (RollerException ex) {
+        } catch (PlanetException ex) {
             log.error("ERROR loading model for page", ex);
 
             if(!response.isCommitted()) response.reset();

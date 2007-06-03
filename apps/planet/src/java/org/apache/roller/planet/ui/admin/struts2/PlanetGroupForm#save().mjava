@@ -12,7 +12,7 @@
             
             // call setGroupid() just in case this was a new group with no id yet
             setGroupid(this.group.getId());
-        } catch (RollerException ex) {
+        } catch (PlanetException ex) {
             log.error("Error saving planet group", ex);
             setError("PlanetGroupForm.error.saveFailed");
             return INPUT;

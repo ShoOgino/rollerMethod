@@ -2,7 +2,7 @@
      * Get top X subscriptions, restricted by group.
      */
     public List getTopSubscriptions(
-            PlanetGroupData group, int offset, int len) throws RollerException {
+            PlanetGroupData group, int offset, int len) throws PlanetException {
         List result = null;
         if (group != null) {
             Query q = strategy.getNamedQuery(

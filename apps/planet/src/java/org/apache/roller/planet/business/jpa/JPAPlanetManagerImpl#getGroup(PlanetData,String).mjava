@@ -1,4 +1,4 @@
-    public PlanetGroupData getGroup(PlanetData planet, String handle) throws RollerException {
+    public PlanetGroupData getGroup(PlanetData planet, String handle) throws PlanetException {
         Query q = strategy.getNamedQuery("PlanetGroupData.getByPlanetAndHandle");
         q.setParameter(1, planet.getHandle());
         q.setParameter(2, handle);

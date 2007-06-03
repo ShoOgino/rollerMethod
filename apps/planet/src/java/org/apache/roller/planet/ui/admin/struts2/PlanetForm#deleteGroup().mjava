@@ -15,7 +15,7 @@
                 
                 setSuccess("PlanetForm.message.groupDeleteSucceeded", group.getHandle());
                 return INPUT;
-            } catch (RollerException ex) {
+            } catch (PlanetException ex) {
                 log.error("Error deleting planet group", ex);
                 setError("PlanetForm.error.groupDeleteFailed", getGroupid());
                 return INPUT;

@@ -1,6 +1,6 @@
-    public List getEntries(PlanetSubscriptionData sub, int offset, int len) throws RollerException {            
+    public List getEntries(PlanetSubscriptionData sub, int offset, int len) throws PlanetException {            
         if(sub == null) {
-            throw new RollerException("subscription cannot be null");
+            throw new PlanetException("subscription cannot be null");
         }
         Query q = strategy.getNamedQuery("PlanetEntryData.getBySubscription");
         q.setParameter(1, sub);

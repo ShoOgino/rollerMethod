@@ -2,7 +2,7 @@
     public Connection getConnection() throws SQLException {
         try {
             return DatabaseProvider.getDatabaseProvider().getConnection();
-        } catch (RollerException ex) {
+        } catch (PlanetException ex) {
             // The DatabaseProvider should have been constructed long before 
             // we get to this point, so this should never ever happen
             throw new RuntimeException("ERROR getting database provider", ex);

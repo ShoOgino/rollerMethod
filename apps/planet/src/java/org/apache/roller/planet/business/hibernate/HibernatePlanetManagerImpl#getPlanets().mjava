@@ -1,12 +1,12 @@
     // lookup all Planets
-    public List getPlanets() throws RollerException {
+    public List getPlanets() throws PlanetException {
         try {
             Session session = ((HibernatePersistenceStrategy)strategy).getSession();
             Criteria criteria = session.createCriteria(PlanetData.class);
             criteria.addOrder(Order.asc("title"));
             return criteria.list();
         } catch (HibernateException e) {
-            throw new RollerException(e);
+            throw new PlanetException(e);
         }
     }
 

@@ -1,6 +1,6 @@
     // lookup all Subscriptions
     // TODO: make pageable
-    public List getSubscriptions() throws RollerException {
+    public List getSubscriptions() throws PlanetException {
         try {
             Session session = ((HibernatePersistenceStrategy)strategy).getSession();
             Criteria criteria =
@@ -8,7 +8,7 @@
             criteria.addOrder(Order.asc("feedURL"));
             return criteria.list();
         } catch (Throwable e) {
-            throw new RollerException("ERROR fetching subscription collection", e);
+            throw new PlanetException("ERROR fetching subscription collection", e);
         }
     }
 

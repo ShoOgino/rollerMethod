@@ -1,11 +1,11 @@
-    protected JPAPlanetImpl() throws RollerException {
+    protected JPAPlanetImpl() throws PlanetException {
         
         strategy = getStrategy();
         
         try {
             String feedFetchClass = PlanetConfig.getProperty("feedfetcher.classname");
             if(feedFetchClass == null || feedFetchClass.trim().length() < 1) {
-                throw new RollerException("No FeedFetcher configured!!!");
+                throw new PlanetException("No FeedFetcher configured!!!");
             }
             
             Class fetchClass = Class.forName(feedFetchClass);
@@ -15,7 +15,7 @@
             setFeedFetcher(feedFetcher); 
             
         } catch (Exception e) {
-            throw new RollerException("Error initializing feed fetcher", e);
+            throw new PlanetException("Error initializing feed fetcher", e);
         }
         
     }

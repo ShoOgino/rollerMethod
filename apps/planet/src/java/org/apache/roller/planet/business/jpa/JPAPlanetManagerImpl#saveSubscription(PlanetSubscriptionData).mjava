@@ -1,10 +1,10 @@
     public void saveSubscription(PlanetSubscriptionData sub)
-    throws RollerException {
+    throws PlanetException {
         PlanetSubscriptionData existing = getSubscription(sub.getFeedURL());
         if (existing == null || (existing.getId().equals(sub.getId()))) {
             strategy.store(sub);
         } else {
-            throw new RollerException("ERROR: duplicate feed URLs not allowed");
+            throw new PlanetException("ERROR: duplicate feed URLs not allowed");
         }
     }
 

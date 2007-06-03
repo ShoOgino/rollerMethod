@@ -1,4 +1,4 @@
-    public void flush() throws RollerException {
+    public void flush() throws PlanetException {
         
         Session session = getSession();
         try {
@@ -15,7 +15,7 @@
             release();
             
             // wrap and rethrow so caller knows something bad happened
-            throw new RollerException(t);
+            throw new PlanetException(t);
         }
     }
 

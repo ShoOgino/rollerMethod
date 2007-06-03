@@ -1,7 +1,7 @@
     // get popular Subscriptions from a specific Group
     // TODO: test this method
     public List getTopSubscriptions(PlanetGroupData group, int offset, int length) 
-            throws RollerException {
+            throws PlanetException {
         
         List ret = null;
         try {
@@ -27,7 +27,7 @@
             }
             ret = query.list();
         } catch (HibernateException e) {
-            throw new RollerException(e);
+            throw new PlanetException(e);
         }
         return ret;
     }

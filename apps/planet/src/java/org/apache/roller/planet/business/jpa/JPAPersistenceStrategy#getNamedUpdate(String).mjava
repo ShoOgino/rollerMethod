@@ -1,0 +1,13 @@
+    /**
+     * Get named update query with default flush mode
+     * @param clazz the class of instances to find
+     * @param queryName the name of the query
+     * @throws org.apache.roller.planet.PlanetException on any error
+     */
+    public Query getNamedUpdate(String queryName)
+    throws PlanetException {
+        EntityManager em = getEntityManager(true);
+        Query q = em.createNamedQuery(queryName);
+        return q;
+    }
+

@@ -1,4 +1,4 @@
-    protected HibernatePersistenceStrategy getStrategy() throws RollerException {
+    protected HibernatePersistenceStrategy getStrategy() throws PlanetException {
         try {
             String dialect =  
                 PlanetConfig.getProperty("hibernate.dialect");
@@ -10,7 +10,7 @@
         } catch(Throwable t) {
             // if this happens then we are screwed
             log.fatal("Error initializing Hibernate", t);
-            throw new RollerException(t);
+            throw new PlanetException(t);
         }        
     }
 

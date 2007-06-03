@@ -1,5 +1,5 @@
     // lookup Planet by handle
-    public PlanetData getPlanet(String handle) throws RollerException {
+    public PlanetData getPlanet(String handle) throws PlanetException {
         PlanetData planet = null;
         try {
             Session session = ((HibernatePersistenceStrategy)strategy).getSession();
@@ -7,7 +7,7 @@
             criteria.add(Expression.ilike("handle", handle));
             planet = (PlanetData) criteria.uniqueResult();
         } catch (HibernateException e) {
-            throw new RollerException(e);
+            throw new PlanetException(e);
         }
         return planet;
     }

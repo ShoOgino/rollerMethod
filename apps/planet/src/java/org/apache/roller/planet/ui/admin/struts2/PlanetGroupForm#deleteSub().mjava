@@ -23,7 +23,7 @@
             setError("PlanetGroupForm.error.subscriptionNull");
             return INPUT;
             
-        } catch (RollerException ex) {
+        } catch (PlanetException ex) {
             log.error("Unable to lookup planet group", ex);
             setError("PlanetGroupForm.error.subscriptionDeleteFailed", getSubid());
             return INPUT;

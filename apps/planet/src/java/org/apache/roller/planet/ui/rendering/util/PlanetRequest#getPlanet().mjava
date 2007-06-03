@@ -4,7 +4,7 @@
             try {
                 PlanetManager mgr = PlanetFactory.getPlanet().getPlanetManager();
                 planet = mgr.getPlanet(planetHandle);
-            } catch (RollerException ex) {
+            } catch (PlanetException ex) {
                 log.error("Error looking up planet "+planetHandle, ex);
             }
         }

@@ -1,4 +1,4 @@
-    public void init(Map initData) throws RollerException {
+    public void init(Map initData) throws PlanetException {
         
         // grab a reference to the url strategy
         this.urlStrategy = PlanetFactory.getPlanet().getURLStrategy();
@@ -6,7 +6,7 @@
         // need a weblog request so that we can know the weblog and locale
         PlanetRequest planetRequest = (PlanetRequest) initData.get("planetRequest");
         if(planetRequest == null) {
-            throw new RollerException("Expected 'planetRequest' init param!");
+            throw new PlanetException("Expected 'planetRequest' init param!");
         }
         
         this.planet = planetRequest.getPlanet();

@@ -1,9 +1,9 @@
     // lookup Entries from a specific Subscription
     public List getEntries(PlanetSubscriptionData sub, int offset, int length)
-            throws RollerException {
+            throws PlanetException {
             
         if(sub == null) {
-            throw new RollerException("subscription cannot be null");
+            throw new PlanetException("subscription cannot be null");
         }
         
         try {
@@ -15,7 +15,7 @@
             if (length != -1) criteria.setMaxResults(length);
             return criteria.list();
         } catch (HibernateException e) {
-            throw new RollerException(e);
+            throw new PlanetException(e);
         }
     }
 

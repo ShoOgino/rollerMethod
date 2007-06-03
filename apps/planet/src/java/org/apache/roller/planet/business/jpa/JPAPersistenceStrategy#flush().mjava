@@ -1,0 +1,13 @@
+    /**
+     * Flush changes to the datastore, commit transaction, release em.
+     * @throws org.apache.roller.planet.PlanetException on any error
+     */
+    public void flush() throws PlanetException {
+        try {
+            EntityManager em = getEntityManager(true);
+            em.getTransaction().commit();
+        } catch (PersistenceException pe) {
+            throw new PlanetException(pe);
+        }
+    }
+

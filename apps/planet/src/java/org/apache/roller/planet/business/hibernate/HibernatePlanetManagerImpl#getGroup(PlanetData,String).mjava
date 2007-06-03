@@ -1,9 +1,9 @@
     // lookup a Group by Planet & handle
     public PlanetGroupData getGroup(PlanetData planet, String handle) 
-            throws RollerException {
+            throws PlanetException {
         
         if(planet == null) {
-            throw new RollerException("planet cannot be null");
+            throw new PlanetException("planet cannot be null");
         }
         
         try {
@@ -13,7 +13,7 @@
             criteria.add(Expression.eq("handle", handle));
             return (PlanetGroupData) criteria.uniqueResult();
         } catch (HibernateException e) {
-            throw new RollerException(e);
+            throw new PlanetException(e);
         }
     }
 

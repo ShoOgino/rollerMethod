@@ -46,7 +46,7 @@
             pMgr.saveProperties(this.properties);
             PlanetFactory.getPlanet().flush();
             
-        } catch (RollerException e) {
+        } catch (PlanetException e) {
             log.error(e);
             setError("ConfigForm.error.saveFailed");
         }

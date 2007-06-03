@@ -2,7 +2,7 @@
      * Reads configuraiton, loads driver or locates data-source and attempts
      * to get test connecton so that we can fail early.
      */ 
-    private DatabaseProvider() throws RollerException {
+    private DatabaseProvider() throws PlanetException {
         String connectionTypeString = 
                 PlanetConfig.getProperty("database.configurationType"); 
         if ("jdbc".equals(connectionTypeString)) {
@@ -20,7 +20,7 @@
             try {
                 Class.forName(jdbcDriverClass);
             } catch (ClassNotFoundException ex) {
-                throw new RollerException(
+                throw new PlanetException(
                    "Cannot load specified JDBC driver class [" +jdbcDriverClass+ "]", ex);
             }
             if (jdbcUsername != null || jdbcPassword != null) {
@@ -35,7 +35,7 @@
                 InitialContext ic = new InitialContext();
                 dataSource = (DataSource)ic.lookup(name);
             } catch (NamingException ex) {
-                throw new RollerException(
+                throw new PlanetException(
                     "ERROR looking up data-source with JNDI name: " + name, ex);
             }            
         }
@@ -43,7 +43,7 @@
             Connection testcon = getConnection();
             testcon.close();
         } catch (Throwable t) {
-            throw new RollerException("ERROR unable to obtain connection", t);
+            throw new PlanetException("ERROR unable to obtain connection", t);
         }
     }
 
