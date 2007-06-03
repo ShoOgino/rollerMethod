@@ -1,4 +1,4 @@
-    protected JPAPersistenceStrategy getStrategy() throws RollerException {
+    protected JPAPersistenceStrategy getStrategy() throws PlanetException {
         
         // Add OpenJPA, Toplink and Hibernate properties to Roller config.
         Properties props = new Properties();
@@ -12,7 +12,13 @@
             }
         }
         
-        DatabaseProvider dbProvider = DatabaseProvider.getDatabaseProvider();
+        DatabaseProvider dbProvider;
+        try {
+            dbProvider = DatabaseProvider.getDatabaseProvider();
+        } catch (WebloggerException ex) {
+            throw new PlanetException(ex);
+        }
+        
         if (dbProvider.getType() == DatabaseProvider.ConfigurationType.JNDI_NAME) {
             return new JPAPersistenceStrategy(
                 "PlanetPU", "java:comp/env/" + dbProvider.getJndiName(), props); 
