@@ -1,0 +1,57 @@
+    /**
+     * Send message to author of approved comment
+     *
+     * TODO: Make the addressing options configurable on a per-website basis.
+     */
+    public static void sendEmailApprovalNotification(WeblogEntryComment cd, 
+                                                     I18nMessages resources) 
+            throws MailingException {
+        
+        WeblogEntry entry = cd.getWeblogEntry();
+        Weblog weblog = entry.getWebsite();
+        User user = entry.getCreator();
+        
+        // Only send email if email notificaiton is enabled
+        boolean notify = RollerRuntimeConfig.getBooleanProperty("users.comments.emailnotify");
+        if (!notify || !weblog.getEmailComments().booleanValue()) {
+            // notifications disabled, just bail
+            return;
+        }
+        
+        log.debug("Comment notification enabled ... preparing email");
+        
+        // use either the weblog configured from address or the site configured from address
+        String from = weblog.getEmailFromAddress();
+        if(StringUtils.isEmpty(from)) {
+            // TODO: this should not be the users email address
+            from = user.getEmailAddress();
+        }
+        
+        // form the message to be sent
+        String subject = resources.getString("email.comment.commentApproved");
+        
+        StringBuffer msg = new StringBuffer();
+        msg.append(resources.getString("email.comment.commentApproved"));
+        msg.append("\n\n");
+        msg.append(URLUtilities.getWeblogCommentsURL(weblog, null, entry.getAnchor(), true));
+        
+        // send message to author of approved comment
+        try {
+            sendTextMessage(
+                    from, // from
+                    new String[] {cd.getEmail()}, // to
+                    null, // cc
+                    null, // bcc
+                    subject, // subject
+                    msg.toString()); // message
+        } catch (Exception e) {
+            log.warn("Exception sending comment mail: " + e.getMessage());
+            // This will log the stack trace if debug is enabled
+            if (log.isDebugEnabled()) {
+                log.debug(e);
+            }
+        }
+        
+        log.debug("Done sending email message");
+    }
+

@@ -4,7 +4,7 @@
      * Here we handle incoming comment postings.
      */
     public void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws IOException, ServletException {
+            throws IOException, ServletException {
         
         String error = null;
         String dispatch_url = null;
@@ -72,7 +72,7 @@
         }
         
         
-        log.debug("Doing comment posting for entry = "+entry.getPermaLink());
+        log.debug("Doing comment posting for entry = "+entry.getPermalink());
         
         // collect input from request params and construct new comment object
         // fields: name, email, url, content, notify
@@ -142,14 +142,21 @@
                     mgr.saveComment(comment);
                     RollerFactory.getRoller().flush();
                     
-                    // Send email notifications, but only to subscribers if comment is 100% valid
+                    // Send email notifications only to subscribers if comment is 100% valid
                     boolean notifySubscribers = (validationScore == 100);
-                    String rootURL = RollerRuntimeConfig.getAbsoluteContextURL();
-                    sendEmailNotification(comment, notifySubscribers, messages, rootURL, messageUtils);
+                    MailUtil.sendEmailNotification(comment, messages, messageUtils, notifySubscribers);
                     
                     // only re-index/invalidate the cache if comment isn't moderated
                     if(!weblog.getCommentModerationRequired()) {
-                        reindexEntry(entry);
+                        IndexManager manager = RollerFactory.getRoller().getIndexManager();
+                        
+                        // remove entry before (re)adding it, or in case it isn't Published
+                        manager.removeEntryIndexOperation(entry);
+                        
+                        // if published, index the entry
+                        if (entry.isPublished()) {
+                            manager.addEntryIndexOperation(entry);
+                        }
                         
                         // Clear all caches associated with comment
                         CacheManager.invalidate(comment);
