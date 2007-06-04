@@ -7,7 +7,7 @@
         loadComments();
         
         // load bean data using comments list
-        getBean().loadCheckboxes(getComments());
+        getBean().loadCheckboxes(getPager().getItems());
         
         try {
             WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
@@ -22,7 +22,7 @@
                     0,
                     -1);
             
-            if(allMatchingComments.size() > getBean().getCount()) {
+            if(allMatchingComments.size() > COUNT) {
                 setBulkDeleteCount(allMatchingComments.size());
             }
             
