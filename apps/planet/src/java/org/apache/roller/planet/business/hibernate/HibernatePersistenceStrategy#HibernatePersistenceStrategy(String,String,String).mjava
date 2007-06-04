@@ -4,7 +4,9 @@
      * 'hibernate.dialect' - the classname of the Hibernate dialect to be used,
      * 'hibernate.connectionProvider - the classname of Roller's connnection provider impl.
      */
-    public HibernatePersistenceStrategy(String configResource, String dialect, String connectionProvider) {
+    public HibernatePersistenceStrategy(String configResource, 
+                                        String dialect, 
+                                        String connectionProvider) {
         
         // Read Hibernate config file specified by Roller config
         Configuration config = new Configuration();
@@ -16,6 +18,6 @@
         props.put(Environment.CONNECTION_PROVIDER, connectionProvider);
         config.mergeProperties(props);
         
-        this.sessionFactory = config.buildSessionFactory(); 
+        sessionFactory = config.buildSessionFactory(); 
     }
 
