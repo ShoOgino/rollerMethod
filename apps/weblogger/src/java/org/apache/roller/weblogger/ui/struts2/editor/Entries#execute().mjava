@@ -4,11 +4,13 @@
             log.debug("entries bean is ...\n"+getBean().toString());
         }
         
+        List<WeblogEntry> entries = null;
+        boolean hasMore = false;
         try {
             String status = getBean().getStatus();
             
             WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
-            List<WeblogEntry> entries = wmgr.getWeblogEntries(
+            entries = wmgr.getWeblogEntries(
                     getActionWeblog(),
                     null,
                     getBean().getStartDate(),
@@ -20,18 +22,17 @@
                     getBean().getSortBy(),
                     null,
                     null,
-                    getBean().getOffset(),
-                    getBean().getCount() + 1);
+                    getBean().getPage() * COUNT,
+                    COUNT + 1);
             
             if(entries != null && entries.size() > 0) {
                 log.debug("query found "+entries.size()+" results");
                 
-                if(entries.size() > getBean().getCount()) {
+                if(entries.size() > COUNT) {
                     entries.remove(entries.size()-1);
-                    setMoreResults(true);
+                    hasMore = true;
                 }
                 
-                setEntries(entries);
                 setFirstEntry((WeblogEntry)entries.get(0));
                 setLastEntry((WeblogEntry)entries.get(entries.size()-1));
             }
@@ -41,6 +42,10 @@
             addError("Error looking up entries");
         }
         
+        // build entries pager
+        String baseUrl = buildBaseUrl();
+        setPager(new EntriesPager(baseUrl, getBean().getPage(), entries, hasMore));
+                
         return LIST;
     }
 
