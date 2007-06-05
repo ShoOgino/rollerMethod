@@ -1,8 +1,8 @@
     /**
      * Get the previous occurring Entry.
      */
-    public WeblogEntryDataWrapper getPreviousEntry() {
-        WeblogEntryDataWrapper currentEntry = getWeblogEntry();
+    public WeblogEntryWrapper getPreviousEntry() {
+        WeblogEntryWrapper currentEntry = getWeblogEntry();
         if (mLastEntry != null) currentEntry = mLastEntry;
         if (mPreviousEntry == null && currentEntry != null ) {
             String catName = null;
@@ -14,7 +14,7 @@
                         mWeblogMgr.getPreviousEntry(currentEntry.getPojo(), catName, mLocale);
                 
                 if(prevEntry != null)
-                    mPreviousEntry = WeblogEntryDataWrapper.wrap(prevEntry);
+                    mPreviousEntry = WeblogEntryWrapper.wrap(prevEntry);
             } catch (WebloggerException e) {
                 mLogger.error("PageModel.getPreviousEntry)", e);
             }

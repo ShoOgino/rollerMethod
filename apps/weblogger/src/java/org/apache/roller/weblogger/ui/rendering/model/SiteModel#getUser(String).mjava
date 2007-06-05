@@ -1,11 +1,11 @@
     /** Get User object by username */
-    public UserDataWrapper getUser(String username) {
-        UserDataWrapper wrappedUser = null;
+    public UserWrapper getUser(String username) {
+        UserWrapper wrappedUser = null;
         try {            
             Roller roller = RollerFactory.getRoller();
             UserManager umgr = roller.getUserManager();
             User user = umgr.getUserByUserName(username, Boolean.TRUE);
-            wrappedUser = UserDataWrapper.wrap(user);
+            wrappedUser = UserWrapper.wrap(user);
         } catch (Exception e) {
             log.error("ERROR: fetching users by letter", e);
         }

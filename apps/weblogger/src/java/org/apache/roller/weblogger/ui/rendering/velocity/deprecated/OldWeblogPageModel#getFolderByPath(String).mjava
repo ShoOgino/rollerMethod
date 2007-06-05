@@ -1,9 +1,9 @@
-    public FolderDataWrapper getFolderByPath(String path) {
+    public WeblogBookmarkFolderWrapper getFolderByPath(String path) {
         try {
             WeblogBookmarkFolder folder = mBookmarkMgr.getFolder(mWebsite, path);
             
             if(folder != null)
-                return FolderDataWrapper.wrap(folder);
+                return WeblogBookmarkFolderWrapper.wrap(folder);
         } catch (WebloggerException e) {
             mLogger.error(e);
         }

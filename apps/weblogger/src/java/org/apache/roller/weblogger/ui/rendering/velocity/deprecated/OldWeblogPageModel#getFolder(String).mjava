@@ -1,7 +1,7 @@
     /** Encapsulates BookmarkManager.getFolder() */
-    public FolderDataWrapper getFolder(String folderPath) {
+    public WeblogBookmarkFolderWrapper getFolder(String folderPath) {
         try {
-            return FolderDataWrapper.wrap(
+            return WeblogBookmarkFolderWrapper.wrap(
                     mBookmarkMgr.getFolder(
                     mUserMgr.getWebsiteByHandle(mWebsite.getHandle()), folderPath));
         } catch (WebloggerException e) {

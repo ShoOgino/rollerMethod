@@ -23,7 +23,7 @@
             recentComments = new ArrayList(recent.size());
             Iterator it = recent.iterator();
             while(it.hasNext()) {
-                recentComments.add(CommentDataWrapper.wrap((WeblogEntryComment) it.next()));
+                recentComments.add(WeblogEntryCommentWrapper.wrap((WeblogEntryComment) it.next()));
             }
         } catch (WebloggerException e) {
             mLogger.error(e);

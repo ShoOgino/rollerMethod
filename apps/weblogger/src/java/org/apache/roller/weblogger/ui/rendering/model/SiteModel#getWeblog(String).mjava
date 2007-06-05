@@ -1,11 +1,11 @@
     /** Get Website object by handle */
-    public WebsiteDataWrapper getWeblog(String handle) {
-        WebsiteDataWrapper wrappedWebsite = null;
+    public WeblogWrapper getWeblog(String handle) {
+        WeblogWrapper wrappedWebsite = null;
         try {            
             Roller roller = RollerFactory.getRoller();
             UserManager umgr = roller.getUserManager();
             Weblog website = umgr.getWebsiteByHandle(handle);
-            wrappedWebsite = WebsiteDataWrapper.wrap(website);
+            wrappedWebsite = WeblogWrapper.wrap(website);
         } catch (Exception e) {
             log.error("ERROR: fetching users by letter", e);
         }

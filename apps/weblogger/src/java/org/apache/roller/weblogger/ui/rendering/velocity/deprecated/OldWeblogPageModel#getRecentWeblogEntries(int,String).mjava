@@ -80,7 +80,7 @@
                 List wrappedEntries = new ArrayList();
                 List entries = (List) mRet.get(key);
                 for(int i=0; i < entries.size(); i++) {
-                    wrappedEntries.add(i,WeblogEntryDataWrapper.wrap((WeblogEntry)entries.get(i)));
+                    wrappedEntries.add(i,WeblogEntryWrapper.wrap((WeblogEntry)entries.get(i)));
                 }
                 mRet.put(key, wrappedEntries);
             }

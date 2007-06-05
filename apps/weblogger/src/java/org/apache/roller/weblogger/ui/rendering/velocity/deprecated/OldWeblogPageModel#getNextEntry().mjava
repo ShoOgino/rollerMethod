@@ -1,8 +1,8 @@
     /**
      * Get the next occurring Entry.
      */
-    public WeblogEntryDataWrapper getNextEntry() {
-        WeblogEntryDataWrapper currentEntry = getWeblogEntry();
+    public WeblogEntryWrapper getNextEntry() {
+        WeblogEntryWrapper currentEntry = getWeblogEntry();
         if (mFirstEntry != null) currentEntry = mFirstEntry;
         if (mNextEntry == null && currentEntry != null) {
             String catName = null;
@@ -14,7 +14,7 @@
                         mWeblogMgr.getNextEntry(currentEntry.getPojo(), catName, mLocale);
                 
                 if(nextEntry != null)
-                    mNextEntry = WeblogEntryDataWrapper.wrap(nextEntry);
+                    mNextEntry = WeblogEntryWrapper.wrap(nextEntry);
                 
                 // make sure that mNextEntry is not published to future
                 if (mNextEntry != null &&

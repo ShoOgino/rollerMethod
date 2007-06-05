@@ -11,14 +11,14 @@
             List vals = (List)days.get( keys[0] );
             int valSize = vals.size();
             if (valSize > 0) {
-                mFirstEntry = (WeblogEntryDataWrapper)vals.get(0);
+                mFirstEntry = (WeblogEntryWrapper)vals.get(0);
             }
             
             // get last entry in map
             vals = (List)days.get( keys[--numDays] );
             valSize = vals.size();
             if (valSize > 0) {
-                mLastEntry = (WeblogEntryDataWrapper)vals.get(--valSize);
+                mLastEntry = (WeblogEntryWrapper)vals.get(--valSize);
             }
         }
     }

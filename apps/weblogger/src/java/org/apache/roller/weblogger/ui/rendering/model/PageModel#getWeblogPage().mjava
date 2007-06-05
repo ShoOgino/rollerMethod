@@ -1,12 +1,12 @@
     /**
      * Get weblog entry being displayed or null if none specified by request.
      */
-    public TemplateWrapper getWeblogPage() {
+    public ThemeTemplateWrapper getWeblogPage() {
         if(pageRequest.getWeblogPageName() != null) {
-            return TemplateWrapper.wrap(pageRequest.getWeblogPage());
+            return ThemeTemplateWrapper.wrap(pageRequest.getWeblogPage());
         } else {
             try {
-                return TemplateWrapper.wrap(weblog.getDefaultPage());
+                return ThemeTemplateWrapper.wrap(weblog.getDefaultPage());
             } catch (WebloggerException ex) {
                 log.error("Error getting default page", ex);
             }

@@ -17,7 +17,7 @@
                 null, Boolean.TRUE, Boolean.TRUE, startDate, null, 0, length);
             for (Iterator it = weblogs.iterator(); it.hasNext();) {
                 Weblog website = (Weblog) it.next();
-                results.add(WebsiteDataWrapper.wrap(website));
+                results.add(WeblogWrapper.wrap(website));
             }
         } catch (Exception e) {
             log.error("ERROR: fetching weblog list", e);

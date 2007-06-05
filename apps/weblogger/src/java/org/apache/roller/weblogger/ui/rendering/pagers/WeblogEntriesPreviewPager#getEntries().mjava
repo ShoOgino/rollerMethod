@@ -16,12 +16,12 @@
                 
                 // store the entry in the collection
                 entries = new TreeMap();
-                entries.put(tmpEntry.getPubTime(),
-                        Collections.singletonList(WeblogEntryDataWrapper.wrap(tmpEntry)));
+                entries.put(tmpEntry.getPubTime(),Collections.singletonList(WeblogEntryWrapper.wrap(tmpEntry)));
             }
         } catch (Exception e) {
             log.error("ERROR: fetching entry", e);
         }
+
 
         
         return entries;

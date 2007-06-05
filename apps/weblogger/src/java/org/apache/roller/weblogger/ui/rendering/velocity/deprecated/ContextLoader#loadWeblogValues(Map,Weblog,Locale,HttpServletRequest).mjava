@@ -26,7 +26,7 @@
         // setup Timezone for future rendering
         ctx.put("timezone", weblog.getTimeZoneInstance());
         ctx.put("timeZone", weblog.getTimeZoneInstance());
-        ctx.put("website", WebsiteDataWrapper.wrap(weblog) );
+        ctx.put("website",WeblogWrapper.wrap(weblog) );
         
         String siteName = ((RuntimeConfigProperty)props.get("site.name")).getValue();
         if ("Roller-based Site".equals(siteName)) siteName = "Main";
@@ -42,7 +42,7 @@
         // alternative display pages - customization
         ThemeTemplate entryPage = weblog.getPageByName("_entry");
         if (entryPage != null) {
-            ctx.put("entryPage", TemplateWrapper.wrap(entryPage));
+            ctx.put("entryPage",ThemeTemplateWrapper.wrap(entryPage));
         }
         // TODO: ATLAS: no templates use this, should be safe to remove
         // Template descPage = weblog.getPageByName("_desc");
