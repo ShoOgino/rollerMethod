@@ -3,6 +3,9 @@
         
         Map<String, String> params = new HashMap();
         
+        if(!StringUtils.isEmpty(getBean().getEntryId())) {
+            params.put("bean.entryId", getBean().getEntryId());
+        }
         if(!StringUtils.isEmpty(getBean().getSearchString())) {
             params.put("bean.searchString", getBean().getSearchString());
         }

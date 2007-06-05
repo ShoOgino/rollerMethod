@@ -4,9 +4,17 @@
         boolean hasMore = false;
         try {
             WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+            
+            // lookup weblog entry if necessary
+            WeblogEntry queryEntry = null;
+            if(!StringUtils.isEmpty(getBean().getEntryId())) {
+                queryEntry = wmgr.getWeblogEntry(getBean().getEntryId());
+            }
+            
+            // query for comments
             comments = wmgr.getComments(
                     getActionWeblog(),
-                    null,
+                    queryEntry,
                     getBean().getSearchString(),
                     getBean().getStartDate(),
                     getBean().getEndDate(),
