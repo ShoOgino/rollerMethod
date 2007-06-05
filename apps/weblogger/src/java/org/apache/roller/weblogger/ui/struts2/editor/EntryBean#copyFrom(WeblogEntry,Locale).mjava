@@ -30,7 +30,7 @@
             setMinutes(cal.get(Calendar.MINUTE));
             setSeconds(cal.get(Calendar.SECOND));
             
-            DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, locale);
+            DateFormat df = new SimpleDateFormat("MM/dd/yy", locale);
             df.setTimeZone(entry.getWebsite().getTimeZoneInstance());
             setDateString(df.format(entry.getPubTime()));
             

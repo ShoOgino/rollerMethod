@@ -1,4 +1,8 @@
     public Date getStartDate() {
-        return startDate;
+        if(!StringUtils.isEmpty(getStartDateString())) try {
+            DateFormat df = new SimpleDateFormat("MM/dd/yy");
+            return df.parse(getStartDateString());
+        } catch(Exception e) { }
+        return null;
     }
 
