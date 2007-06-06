@@ -1,4 +1,5 @@
-    private ThemeMetadataTemplate elementToTemplateMetadata(Element element) {
+    private ThemeMetadataTemplate elementToTemplateMetadata(Element element) 
+            throws ThemeParsingException {
         
         ThemeMetadataTemplate template = new ThemeMetadataTemplate();
         
@@ -18,6 +19,17 @@
         String hidden = element.getChildText("hidden");
         if("true".equalsIgnoreCase(hidden)) {
             template.setHidden(true);
+        }
+        
+        // validate template
+        if(StringUtils.isEmpty(template.getAction())) {
+            throw new ThemeParsingException("templates must contain an 'action' attribute");
+        }
+        if(StringUtils.isEmpty(template.getName())) {
+            throw new ThemeParsingException("templates must contain a 'name' element");
+        }
+        if(StringUtils.isEmpty(template.getTemplateLanguage())) {
+            throw new ThemeParsingException("templates must contain a 'templateLanguage' element");
         }
         
         return template;

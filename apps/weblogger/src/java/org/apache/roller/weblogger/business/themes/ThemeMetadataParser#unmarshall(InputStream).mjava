@@ -19,6 +19,11 @@
         theme.setName(root.getChildText("name"));
         theme.setAuthor(root.getChildText("author"));
         
+        // if either id or name is null then throw a parsing exception
+        if(StringUtils.isEmpty(theme.getId()) || StringUtils.isEmpty(theme.getName())) {
+            throw new ThemeParsingException("'id' and 'name' are required theme elements");
+        }
+        
         // now grab the preview image path
         Element previewImage = root.getChild("preview-image");
         if(previewImage != null) {
@@ -42,15 +47,24 @@
         }
         
         // now grab the templates
+        boolean weblogActionTemplate = false;
         List templates = root.getChildren("template");
         Iterator templatesIter = templates.iterator();
         while (templatesIter.hasNext()) {
             Element template = (Element) templatesIter.next();
-            theme.addTemplate(this.elementToTemplateMetadata(template));
+            ThemeMetadataTemplate tmpl = elementToTemplateMetadata(template);
+            theme.addTemplate(tmpl);
+            
+            if(WeblogTemplate.ACTION_WEBLOG.equals(tmpl.getAction())) {
+                weblogActionTemplate = true;
+            }
         }
         
-        // TODO: validation
         // make sure all required elements are present and values are valid
+        // check that there is a template with action='weblog'
+        if(!weblogActionTemplate) {
+            throw new ThemeParsingException("did not find a template of action = 'weblog'");
+        }
         
         return theme;
     }
