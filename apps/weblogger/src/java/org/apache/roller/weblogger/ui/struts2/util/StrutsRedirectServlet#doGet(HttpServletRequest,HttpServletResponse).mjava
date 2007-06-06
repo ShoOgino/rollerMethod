@@ -1,0 +1,27 @@
+    // only handle GET requests
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
+        
+        String redirectUrl = null;
+        
+        String servlet = request.getServletPath();
+        if(servlet != null && "/roller-ui/authoring/commentManagement.do".equals(servlet)) {
+            // redirect to new comment management action
+            Map<String, String> params = new HashMap();
+            params.put("weblog", request.getParameter("weblog"));
+            params.put("bean.entryId", request.getParameter("entryId"));
+            redirectUrl = URLUtilities.getActionURL("comments", "/roller-ui/authoring", null, params, true);
+            
+        } else if(servlet != null && "/roller-ui/yourWebsites.do".equals(servlet)) {
+            // redirect to new main menu action
+            redirectUrl = URLUtilities.getActionURL("menu", "/roller-ui", null, null, true);
+        }
+        
+        if(redirectUrl != null) {
+            response.setStatus(response.SC_MOVED_PERMANENTLY);
+            response.setHeader("Location", redirectUrl);
+        } else {
+            response.sendError(response.SC_NOT_FOUND);
+        }
+    }
+
