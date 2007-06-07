@@ -1,7 +1,8 @@
     // has this weblog had a custom theme before?
     public boolean isFirstCustomization() {
         try {
-            return (getActionWeblog().getPageByAction(WeblogTemplate.ACTION_WEBLOG) == null);
+            UserManager umgr = RollerFactory.getRoller().getUserManager();
+            return (umgr.getPageByAction(getActionWeblog(), WeblogTemplate.ACTION_WEBLOG) == null);
         } catch (WebloggerException ex) {
             log.error("Error looking up weblog template", ex);
         }
