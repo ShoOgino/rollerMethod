@@ -27,7 +27,7 @@
             ByteArrayOutputStream outputStream = responseWrapper.getByteArrayOutputStream();
             
             // Get character array representing output.
-            mLogger.debug("Pre-zip size:" + outputStream.size());
+            log.debug("Pre-zip size:" + outputStream.size());
             
             // Make a writer that compresses data and puts
             // it into a byte array.
@@ -40,7 +40,7 @@
             // Gzip streams must be explicitly closed.
             zipOut.close();
             
-            mLogger.debug("Gzip size:" + byteStream.size());
+            log.debug("Gzip size:" + byteStream.size());
             
             // Update the Content-Length header.
             res.setContentLength(byteStream.size());

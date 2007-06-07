@@ -1,0 +1,6 @@
+        public ByteArrayResponseWrapper(ServletResponse inResp) throws IOException {
+            super((HttpServletResponse) inResp);
+            tpStream = new ByteArrayOutputStreamWrapper(inResp.getOutputStream());
+            tpWriter = new PrintWriter(new OutputStreamWriter(tpStream,"UTF-8"));
+        }
+
