@@ -33,7 +33,7 @@
             
             List pages = Collections.EMPTY_LIST;
             try {
-                pages = mWebsite.getPages();
+                pages = mWebsite.getTheme().getTemplates();
             } catch (WebloggerException ex) {
                 mLogger.error("error getting weblog pages", ex);
             }

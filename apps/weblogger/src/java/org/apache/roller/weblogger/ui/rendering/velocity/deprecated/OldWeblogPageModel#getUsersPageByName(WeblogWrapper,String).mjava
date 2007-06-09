@@ -9,7 +9,7 @@
             if (pageName == null)
                 throw new NullPointerException("pageName is null");
             
-            page = ThemeTemplateWrapper.wrap(website.getPageByName(pageName));
+            page = ThemeTemplateWrapper.wrap(website.getTheme().getTemplateByName(pageName));
         } catch (NullPointerException npe) {
             mLogger.warn(npe.getMessage());
         } catch (WebloggerException e) {

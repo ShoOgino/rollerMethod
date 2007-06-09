@@ -47,7 +47,7 @@
         Template page = null;
         try {
             // we just want to show the default view
-            page = tmpWebsite.getDefaultPage();
+            page = tmpWebsite.getTheme().getDefaultTemplate();
             
             if(page == null) {
                 throw new WebloggerException("No default page for weblog: "+tmpWebsite.getHandle());

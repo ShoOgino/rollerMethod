@@ -28,11 +28,11 @@
         ThemeTemplate page = null;
         try {
             // first try looking for a specific search page
-            page = weblog.getPageByAction(ThemeTemplate.ACTION_SEARCH);
+            page = weblog.getTheme().getTemplateByAction(ThemeTemplate.ACTION_SEARCH);
             
             // if not found then fall back on default page
             if(page == null) {
-                page = weblog.getDefaultPage();
+                page = weblog.getTheme().getDefaultTemplate();
             }
             
             // if still null then that's a problem

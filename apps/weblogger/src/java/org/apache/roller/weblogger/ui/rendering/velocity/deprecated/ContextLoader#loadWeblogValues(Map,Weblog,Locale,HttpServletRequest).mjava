@@ -40,7 +40,7 @@
         mLogger.debug("context viewLocale = "+ctx.get( "viewLocale"));
         
         // alternative display pages - customization
-        ThemeTemplate entryPage = weblog.getPageByName("_entry");
+        ThemeTemplate entryPage = weblog.getTheme().getTemplateByName("_entry");
         if (entryPage != null) {
             ctx.put("entryPage",ThemeTemplateWrapper.wrap(entryPage));
         }
