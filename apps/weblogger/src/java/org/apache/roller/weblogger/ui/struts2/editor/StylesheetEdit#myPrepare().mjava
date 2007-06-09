@@ -1,33 +1,39 @@
+    @Override
     public void myPrepare() {
-        String stylesheetPath = getActionWeblog().getTheme().getCustomStylesheet();
-        log.debug("custom stylesheet path is - "+stylesheetPath);
         
-        if(stylesheetPath != null) {
+        ThemeTemplate stylesheet = null;
+        try {
+            stylesheet = getActionWeblog().getTheme().getStylesheet();
+        } catch (WebloggerException ex) {
+            log.error("Error looking up stylesheet on weblog - "+getActionWeblog().getHandle(), ex);
+        }
+        
+        if(stylesheet != null) {
+            log.debug("custom stylesheet path is - "+stylesheet.getLink());
             try {
                 UserManager mgr = RollerFactory.getRoller().getUserManager();
-                setTemplate(mgr.getPageByLink(getActionWeblog(), stylesheetPath));
+                setTemplate(mgr.getPageByLink(getActionWeblog(), stylesheet.getLink()));
                 
                 if(getTemplate() == null) {
                     log.debug("custom stylesheet not found, creating it");
+                    
                     // template doesn't exist yet, so create it
-                    WeblogTemplate stylesheet = new WeblogTemplate();
-                    stylesheet.setWebsite(getActionWeblog());
-                    stylesheet.setAction(stylesheet.ACTION_CUSTOM);
-                    stylesheet.setName(stylesheetPath);
-                    stylesheet.setDescription(stylesheetPath);
-                    stylesheet.setLink(stylesheetPath);
-                    stylesheet.setContents("");
-                    stylesheet.setHidden(false);
-                    stylesheet.setNavbar(false);
-                    stylesheet.setLastModified(new Date());
+                    WeblogTemplate stylesheetTmpl = new WeblogTemplate();
+                    stylesheetTmpl.setWebsite(getActionWeblog());
+                    stylesheetTmpl.setAction(stylesheet.ACTION_CUSTOM);
+                    stylesheetTmpl.setName(stylesheet.getName());
+                    stylesheetTmpl.setDescription(stylesheet.getDescription());
+                    stylesheetTmpl.setLink(stylesheet.getLink());
+                    stylesheetTmpl.setContents(stylesheet.getContents());
+                    stylesheetTmpl.setHidden(false);
+                    stylesheetTmpl.setNavbar(false);
+                    stylesheetTmpl.setLastModified(new Date());
+                    stylesheetTmpl.setTemplateLanguage(stylesheet.getTemplateLanguage());
                     
-                    // all templates start out as velocity templates
-                    stylesheet.setTemplateLanguage("velocity");
-                    
-                    mgr.savePage(stylesheet);
+                    mgr.savePage(stylesheetTmpl);
                     RollerFactory.getRoller().flush();
                     
-                    setTemplate(stylesheet);
+                    setTemplate(stylesheetTmpl);
                 }
             } catch (WebloggerException ex) {
                 log.error("Error finding/adding stylesheet tempalate from weblog - "+getActionWeblog().getHandle(), ex);

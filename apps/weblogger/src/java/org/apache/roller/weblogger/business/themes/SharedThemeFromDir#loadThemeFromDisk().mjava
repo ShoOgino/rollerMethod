@@ -22,7 +22,6 @@
         setName(themeMetadata.getName());
         setDescription(themeMetadata.getName());
         setAuthor(themeMetadata.getAuthor());
-        setCustomStylesheet(themeMetadata.getCustomStylesheet());
         setLastModified(new Date());
         setEnabled(true);
         
@@ -32,6 +31,47 @@
             log.warn("Couldn't read preview image file ["+themeMetadata.getPreviewImage()+"]");
         } else {
             this.previewImage = new SharedThemeResourceFromDir(themeMetadata.getPreviewImage(), previewFile);
+        }
+        
+        // load stylesheet if possible
+        if(themeMetadata.getStylesheet() != null) {
+            
+            ThemeMetadataTemplate stylesheetTmpl = themeMetadata.getStylesheet();
+            
+            // construct File object from path
+            File templateFile = new File(this.themeDir + File.separator + 
+                    stylesheetTmpl.getContentsFile());
+            
+            // read stylesheet contents
+            String contents = loadTemplateFile(templateFile);
+            if(contents == null) {
+                // if we don't have any contents then skip this one
+                log.error("Couldn't load stylesheet template file ["+templateFile+"]");
+            } else {
+                
+                // construct ThemeTemplate representing this file
+                // a few restrictions for now:
+                //   - decorator is always "_decorator" or null
+                SharedThemeTemplate theme_template = new SharedThemeTemplate(
+                        this,
+                        themeMetadata.getId()+":"+stylesheetTmpl.getName(),
+                        WeblogTemplate.ACTION_CUSTOM,
+                        stylesheetTmpl.getName(),
+                        stylesheetTmpl.getDescription(),
+                        contents,
+                        stylesheetTmpl.getLink(),
+                        new Date(templateFile.lastModified()),
+                        stylesheetTmpl.getTemplateLanguage(),
+                        false,
+                        false,
+                        null);
+                
+                // store it
+                this.stylesheet = theme_template;
+                
+                // add it to templates list
+                addTemplate(theme_template);
+            }
         }
         
         // go through static resources and add them to the theme
@@ -64,23 +104,10 @@
             File templateFile = new File(this.themeDir + File.separator + 
                     templateMetadata.getContentsFile());
             
-            // Continue reading theme even if problem encountered with one file
-            if(!templateFile.exists() && !templateFile.canRead()) {
-                log.error("Couldn't read theme template file ["+templateFile+"]");
-                continue;
-            }
-            
-            char[] chars = null;
-            int length;
-            try {
-                chars = new char[(int) templateFile.length()];
-            	FileInputStream stream = new FileInputStream(templateFile);
-            	InputStreamReader reader = new InputStreamReader(stream, "UTF-8");
-                length = reader.read(chars);            
-            } catch (Exception noprob) {
-                log.error("Exception reading template file ["+templateFile+"]");
-                if (log.isDebugEnabled()) 
-                    log.debug(noprob);
+            String contents = loadTemplateFile(templateFile);
+            if(contents == null) {
+                // if we don't have any contents then skip this one
+                log.error("Couldn't load theme template file ["+templateFile+"]");
                 continue;
             }
             
@@ -98,7 +125,7 @@
                     templateMetadata.getAction(),
                     templateMetadata.getName(),
                     templateMetadata.getDescription(),
-                    new String(chars, 0, length),
+                    contents,
                     templateMetadata.getLink(),
                     new Date(templateFile.lastModified()),
                     templateMetadata.getTemplateLanguage(),

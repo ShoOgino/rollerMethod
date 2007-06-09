@@ -1,7 +1,7 @@
     /**
-     * Save an existing stylesheet.
+     * Revert the stylesheet to its original state.
      */
-    public String save() {
+    public String revert() {
         
         if(getTemplate() == null) {
             // TODO: i18n
@@ -9,12 +9,23 @@
             return ERROR;
         }
         
+        // make sure we are still using a shared theme so that reverting is possible
+        if(WeblogTheme.CUSTOM.equals(getActionWeblog().getEditorTheme())) {
+            // TODO: i18n
+            addError("stylesheetEdit.error.customTheme");
+        }
+        
         if(!hasActionErrors()) try {
             
             WeblogTemplate stylesheet = getTemplate();
             
+            // lookup the theme used by this weblog
+            ThemeManager tmgr = RollerFactory.getRoller().getThemeManager();
+            Theme theme = tmgr.getTheme(getActionWeblog().getEditorTheme());
+            
+            // lookup 
             stylesheet.setLastModified(new Date());
-            stylesheet.setContents(getContents());
+            stylesheet.setContents(theme.getStylesheet().getContents());
             
             // save template and flush
             UserManager mgr = RollerFactory.getRoller().getUserManager();
@@ -25,7 +36,7 @@
             CacheManager.invalidate(stylesheet);
             
             // success message
-            addMessage("stylesheetEdit.save.success", stylesheet.getName());
+            addMessage("stylesheetEdit.revert.success", stylesheet.getName());
             
         } catch (WebloggerException ex) {
             log.error("Error updating stylesheet template for weblog - "+getActionWeblog().getHandle(), ex);
@@ -33,6 +44,6 @@
             addError("Error saving template");
         }
         
-        return INPUT;
+        return execute();
     }
 

@@ -32,10 +32,10 @@
             throw new ThemeParsingException("No preview image specified");
         }
         
-        // grab the custom stylesheet path
-        Element customStylesheet = root.getChild("custom-stylesheet");
-        if(customStylesheet != null) {
-            theme.setCustomStylesheet(customStylesheet.getAttributeValue("path"));
+        // grab the stylesheet if it exists
+        Element stylesheet = root.getChild("stylesheet");
+        if(stylesheet != null) {
+            theme.setStylesheet(elementToStylesheet(stylesheet));
         }
         
         // now grab the static resources

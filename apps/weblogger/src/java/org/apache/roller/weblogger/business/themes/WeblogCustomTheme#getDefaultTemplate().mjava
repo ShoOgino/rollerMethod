@@ -1,3 +1,7 @@
+    /**
+     * Lookup the default template.
+     * Returns null if the template cannot be found.
+     */
     public ThemeTemplate getDefaultTemplate() throws WebloggerException {
         UserManager userMgr = RollerFactory.getRoller().getUserManager();
         return userMgr.getPageByAction(this.weblog, ThemeTemplate.ACTION_WEBLOG);
