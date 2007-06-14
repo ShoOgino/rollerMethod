@@ -4,14 +4,14 @@
         if ("properties".equals(connectionTypeString)) {
             type = ConfigurationType.MAIL_PROPERTIES;
         }
-        jndiName =     RollerConfig.getProperty("mail.jndiName");
+        jndiName =     RollerConfig.getProperty("mail.jndi.name");
         mailHostname = RollerConfig.getProperty("mail.hostname");
         mailUsername = RollerConfig.getProperty("mail.username");
         mailPassword = RollerConfig.getProperty("mail.password");
         try {
             mailPort = Integer.parseInt(RollerConfig.getProperty("mail.port"));
         } catch (Throwable t) {
-            log.error("ERROR mail server port not a valid integer, ignoring");
+            log.warn("mail server port not a valid integer, ignoring");
         }
         
         // init and connect now so we fail early
