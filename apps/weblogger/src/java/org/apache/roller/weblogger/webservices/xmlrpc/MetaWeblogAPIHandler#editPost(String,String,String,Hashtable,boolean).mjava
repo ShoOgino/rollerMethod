@@ -22,8 +22,8 @@
         
         String cat = null;
         if ( postcontent.get("categories") != null ) {
-            Vector cats = (Vector)postcontent.get("categories");
-            cat = (String)cats.elementAt(0);
+            Object[] cats = (Object[])postcontent.get("categories");
+            cat = (String)cats[0];
         }
         mLogger.debug("      Title: " + title);
         mLogger.debug("   Category: " + cat);
