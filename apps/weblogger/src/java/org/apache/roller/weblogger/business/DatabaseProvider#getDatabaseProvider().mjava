@@ -2,6 +2,10 @@
      * Get global database provider singlton, instantiating if necessary.
      */
     public static DatabaseProvider getDatabaseProvider() throws WebloggerException {
+        // No need to jam log with database connection attempts
+        if (startupException != null) {
+            throw startupException;
+        }
         if (singletonInstance == null) {
             singletonInstance = new DatabaseProvider();
         }

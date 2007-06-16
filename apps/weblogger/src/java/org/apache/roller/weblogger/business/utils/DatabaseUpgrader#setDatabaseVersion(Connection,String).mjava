@@ -1,0 +1,9 @@
+    /**
+     * Insert a new database.version property.
+     * This should only be called once for new installations
+     */
+    public static void setDatabaseVersion(Connection con, String version) 
+            throws WebloggerException {
+        setDatabaseVersion(con, parseVersionString(version));
+    }
+

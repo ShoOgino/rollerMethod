@@ -1,0 +1,9 @@
+    /** 
+     * Determine if database schema needs to be upgraded.
+     */
+    public static boolean isUpgradeRequired() throws WebloggerException {        
+        int desiredVersion = parseVersionString(RollerFactory.getRoller().getVersion());
+        int databaseVersion = getDatabaseVersion();
+        return databaseVersion < desiredVersion;
+    }
+

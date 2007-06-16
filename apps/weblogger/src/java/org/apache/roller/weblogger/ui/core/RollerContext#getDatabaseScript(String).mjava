@@ -1,0 +1,7 @@
+    /**
+     * Get database script as stream, path is relative to dbscripts directory.
+     */
+    public InputStream getDatabaseScript(String path) throws Exception {
+        return getServletContext().getResourceAsStream("/WEB-INF/dbscripts/" + path);
+    }
+

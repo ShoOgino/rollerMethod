@@ -1,0 +1,21 @@
+    /**
+     * Upgrade database for Roller 2.4.0
+     */
+    private void upgradeTo240(Connection con, boolean runScripts) throws WebloggerException {
+        try {
+            if (runScripts) {
+                String handle = DatabaseCreator.getDatabaseHandle(con);
+                String scriptPath = handle + "/230-to-240-migration.sql";
+                successMessage("Running database upgrade script: "+scriptPath);                
+                SQLScriptRunner runner = new SQLScriptRunner(scripts.getDatabaseScript(scriptPath));
+                runner.runScript(con, true);
+                messages.addAll(runner.getMessages());
+            }
+        } catch (Exception e) {
+            errorMessage("Problem upgrading database to version 240", e);
+            throw new WebloggerException("Problem upgrading database to version 240", e);
+        }
+        
+        DatabaseUpgrader.updateDatabaseVersion(con, 240);
+    }
+

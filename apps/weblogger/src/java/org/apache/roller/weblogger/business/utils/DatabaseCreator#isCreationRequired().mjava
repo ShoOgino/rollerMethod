@@ -1,0 +1,19 @@
+    /** 
+     * Determine if database schema needs to be upgraded.
+     */
+    public static boolean isCreationRequired() throws WebloggerException {
+        Connection con = null;
+        try {            
+            con = DatabaseProvider.getDatabaseProvider().getConnection();
+            
+            // just check for a couple key Roller tables
+            if (tableExists(con, "rolleruser") && tableExists(con, "userrole")) return false;
+            
+        } catch (SQLException e) {
+            throw new WebloggerException("ERROR obtaining connection");            
+        } finally {
+            try { if (con != null) con.close(); } catch (Exception ignored) {}
+        }
+        return true;
+    }
+

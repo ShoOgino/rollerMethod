@@ -1,9 +1,0 @@
-    /**
-     * Trigger any database upgrade work that needs to be done.
-     */
-    private void upgradeDatabaseIfNeeded() throws Exception {        
-        Connection con = DatabaseProvider.getDatabaseProvider().getConnection();
-        UpgradeDatabase.upgradeDatabase(con, RollerFactory.getRoller().getVersion());
-        con.close();
-    }
-

@@ -1,0 +1,7 @@
+    public String getRootCauseStackTrace() {
+        StringWriter sw = new java.io.StringWriter();
+        Throwable e = getRootCauseException();
+        e.printStackTrace(new java.io.PrintWriter(sw));
+        return sw.toString().trim();
+    }
+

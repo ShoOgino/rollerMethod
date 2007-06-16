@@ -1,0 +1,12 @@
+    public String create() {
+        DatabaseCreator creator = new DatabaseCreator(scripts);
+        try {
+            creator.createDatabase();
+        } catch (Exception ex) {
+            log.error("ERROR running database creation script", ex);
+            error = true;
+        }
+        messages = creator.getMessages();
+        return SUCCESS;
+    }
+
