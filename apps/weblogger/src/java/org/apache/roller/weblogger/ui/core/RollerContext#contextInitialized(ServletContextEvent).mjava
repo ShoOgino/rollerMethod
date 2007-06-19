@@ -12,9 +12,6 @@
             // Keep a reverence to ServletContext object
             this.servletContext = sce.getServletContext();
 
-            // Save self to context as DatabaseScriptProvider
-            this.servletContext.setAttribute("DatabaseScriptProvider", this);
-
             // Call Spring's context ContextLoaderListener to initialize all the 
             // context files specified in web.xml. This is necessary because 
             // listeners don't initialize in the order specified in 2.3 containers
@@ -59,7 +56,8 @@
             // If installation type is manual, then don't run migraton scripts
             if ("manual".equals(RollerConfig.getProperty("installation.type"))) {
                 if (DatabaseUpgrader.isUpgradeRequired()) {
-                    DatabaseUpgrader upgrader = new DatabaseUpgrader(this); 
+                    DatabaseUpgrader upgrader = new DatabaseUpgrader(
+                            new ServletContextDatabaseScriptProvider());  
                     upgrader.upgradeDatabase(false);
                 }
             }

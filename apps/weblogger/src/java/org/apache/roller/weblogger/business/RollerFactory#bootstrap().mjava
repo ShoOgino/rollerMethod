@@ -1,7 +1,14 @@
     /**
      * Bootstrap the Roller Weblogger business tier.
      */
-    public static final void bootstrap() {
+    public static final void bootstrap() throws WebloggerException {
+        
+        if ("manual".equals(RollerConfig.getProperty("installation.type"))) {
+            if (DatabaseCreator.isCreationRequired() 
+             || DatabaseUpgrader.isUpgradeRequired()) { 
+                return;
+            }
+        }        
         
         // This will cause instantiation and initialziation of Roller impl
         Roller roller = getRoller();

@@ -1,0 +1,35 @@
+    public String execute() {
+
+        try {
+            DatabaseProvider dp = DatabaseProvider.getDatabaseProvider();             
+        } catch (RollerException e) {
+            return DATABASE_ERROR;
+        }   
+        
+        try {               
+            if (DatabaseCreator.isCreationRequired()) {  
+                log.info("Forwarding to database table creation page");
+                return CREATE_DATABASE;
+            } 
+            if (DatabaseUpgrader.isUpgradeRequired()) {
+                log.info("Forwarding to database table upgrade page");
+                return UPGRADE_DATABASE;
+            }
+        } catch (Throwable t) {
+            rootCauseException = t;
+            log.error("ERROR checking database status", t);
+            return UNKNOWN_ERROR;
+        } 
+        
+        try {
+            log.info("Attempting to bootstrap Roller");
+            RollerFactory.bootstrap();
+        } catch (Throwable t) {
+            rootCauseException = t;
+            log.error("ERROR bootstrapping Roller", t);
+            return UNKNOWN_ERROR;
+        }
+        
+        return SUCCESS;
+    }
+

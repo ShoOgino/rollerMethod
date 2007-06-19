@@ -1,5 +1,6 @@
     public String upgrade() {
-        DatabaseUpgrader upgrader = new DatabaseUpgrader(scripts);
+        DatabaseUpgrader upgrader = new DatabaseUpgrader(
+                new ServletContextDatabaseScriptProvider());
         try {
             upgrader.upgradeDatabase(true);
         } catch (Exception ex) {
