@@ -36,9 +36,6 @@
             // do the invocation
             rollerInstance = (Roller) instanceMethod.invoke(rollerClass, (Object[])null);
             
-            // note that we've now been bootstrapped
-            bootstrapped = true;
-            
         } catch (Throwable ex) {
             // bootstrapping failed
             throw new BootstrapException("Exception doing bootstrapping", ex);

@@ -1,7 +1,4 @@
     public ThemeManagerImpl() {
-        
-        log.debug("Initializing ThemeManagerImpl");
-        
         // get theme directory from config and verify it
         this.themeDir = RollerConfig.getProperty("themes.dir");
         if(themeDir == null || themeDir.trim().length() < 1) {
@@ -19,12 +16,6 @@
                     !themeDirFile.canRead()) {
                 throw new RuntimeException("couldn't access theme dir ["+themeDir+"]");
             }
-            
-            // rather than be lazy we are going to load all themes from
-            // the disk preemptively during initialization and cache them
-            this.themes = loadAllThemesFromDisk();
-            
-            log.info("Loaded "+this.themes.size()+" themes from disk.");
         }
     }
 

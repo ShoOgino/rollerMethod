@@ -1,16 +1,15 @@
-    private void init() {
+    /**
+     * @inheritDoc
+     */
+    public void initialize() throws InitializationException {
+        
         Map props = null;
         try {
             props = this.getProperties();
-
-            if(props.size() < 1) {
-                // empty props table ... load defaults
-                props = initializeMissingProps(props);
-            } else {
-                // found existing props ... check for new props
-                props = initializeMissingProps(props);
-            }
-
+            
+            // check for new props
+            props = initializeMissingProps(props);
+            
             // save our changes
             this.saveProperties(props);
         } catch (Exception e) {
@@ -18,6 +17,6 @@
                     "Please check that the database has been upgraded!", e);
             throw new RuntimeException(e);
         }
-
+        
     }
 

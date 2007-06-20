@@ -1,11 +1,20 @@
-    private void init() {
+    /**
+     * @inheritDoc
+     */
+    public void initialize() throws InitializationException {
+        
         Map props = null;
         try {
             props = this.getProperties();
-            
-            // check for new props
-            props = initializeMissingProps(props);
-            
+
+            if(props.size() < 1) {
+                // empty props table ... load defaults
+                props = initializeMissingProps(props);
+            } else {
+                // found existing props ... check for new props
+                props = initializeMissingProps(props);
+            }
+
             // save our changes
             this.saveProperties(props);
         } catch (Exception e) {
