@@ -2,7 +2,9 @@
      * Create and connect to transport, caller is responsible for closing transport.
      */
     public Transport getTransport() throws NoSuchProviderException, MessagingException {
+        
         Transport transport = null;
+        
         if (type == ConfigurationType.MAIL_PROPERTIES) {
             // Configure transport ourselves using mail properties
             transport = session.getTransport("smtp"); 
@@ -16,6 +18,7 @@
             transport = session.getTransport(); 
             transport.connect();
         }
+        
         return transport;
     }
 

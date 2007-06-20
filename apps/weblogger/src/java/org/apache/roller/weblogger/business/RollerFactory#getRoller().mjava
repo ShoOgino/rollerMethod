@@ -1,53 +1,12 @@
     /**
-     * Static accessor for the instance of Roller.
+     * Accessor to the Roller Weblogger business tier.
+     *
+     * @return Roller An instance of Roller.
+     * @throws IllegalStateException If the app has not been properly bootstrapped yet.
      */
     public static final Roller getRoller() {
-        
-        // check to see if we need to instantiate
         if(rollerInstance == null) {
-            
-            // lookup value for the roller classname to use
-            String roller_classname =
-                    RollerConfig.getProperty("persistence.roller.classname");
-            if(roller_classname == null || roller_classname.trim().length() < 1)
-                roller_classname = DEFAULT_IMPL;
-            
-            try {
-                Class rollerClass = Class.forName(roller_classname);
-                java.lang.reflect.Method instanceMethod =
-                        rollerClass.getMethod("instantiate", (Class[])null);
-                
-                // do the invocation
-                rollerInstance = (Roller) instanceMethod.invoke(rollerClass, (Object[])null);
-                
-                log.info("Using Roller Impl: " + roller_classname);
-                
-            } catch (Throwable e) {
-                
-                // uh oh
-                log.error("Error instantiating " + roller_classname, e);
-                
-                try {
-                    // if we didn't already try DEFAULT_IMPL then try it now
-                    if( ! DEFAULT_IMPL.equals(roller_classname)) {
-                        
-                        log.info("** Trying DEFAULT_IMPL "+DEFAULT_IMPL+" **");
-                        
-                        Class rollerClass = Class.forName(DEFAULT_IMPL);
-                        java.lang.reflect.Method instanceMethod =
-                                rollerClass.getMethod("instantiate", (Class[])null);
-                        
-                        // do the invocation
-                        rollerInstance = (Roller) instanceMethod.invoke(rollerClass, (Object[])null);
-                    } else {
-                        // we just do this so that the logger gets the message
-                        throw new Exception("Doh! Couldn't instantiate a roller class");
-                    }
-                    
-                } catch (Exception re) {
-                    log.fatal("Failed to instantiate fallback roller impl", re);
-                }
-            }
+            throw new IllegalStateException("Roller Weblogger has not been bootstrapped yet");
         }
         
         return rollerInstance;

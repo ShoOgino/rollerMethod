@@ -1,0 +1,14 @@
+    /** 
+     * Determine if database schema needs to be upgraded.
+     */
+    public boolean isUpgradeRequired() {        
+        int desiredVersion = parseVersionString(version);
+        int databaseVersion;
+        try {
+            databaseVersion = getDatabaseVersion();
+        } catch (StartupException ex) {
+            throw new RuntimeException(ex);
+        }
+        return databaseVersion < desiredVersion;
+    }
+

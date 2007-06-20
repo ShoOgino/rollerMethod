@@ -16,7 +16,7 @@
             }
         }
         
-        DatabaseProvider dbProvider = DatabaseProvider.getDatabaseProvider();
+        DatabaseProvider dbProvider = WebloggerStartup.getDatabaseProvider();
         if (dbProvider.getType() == DatabaseProvider.ConfigurationType.JNDI_NAME) {
             strategy = new JPAPersistenceStrategy(
                 "RollerPU", "java:comp/env/" + dbProvider.getJndiName(), props); 

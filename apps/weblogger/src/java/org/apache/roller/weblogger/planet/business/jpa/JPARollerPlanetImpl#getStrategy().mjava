@@ -12,12 +12,7 @@
             }
         }
         
-        DatabaseProvider dbProvider;
-        try {
-            dbProvider = DatabaseProvider.getDatabaseProvider();
-        } catch (WebloggerException ex) {
-            throw new PlanetException(ex);
-        }
+        DatabaseProvider dbProvider = WebloggerStartup.getDatabaseProvider();
         
         if (dbProvider.getType() == DatabaseProvider.ConfigurationType.JNDI_NAME) {
             return new JPAPersistenceStrategy(

@@ -4,7 +4,7 @@
     public static void sendPendingEntryNotice(WeblogEntry entry) 
             throws WebloggerException {
         
-        Session mailSession = MailProvider.getMailProvider().getSession();
+        Session mailSession = WebloggerStartup.getMailProvider().getSession();
         if(mailSession == null) {
             throw new WebloggerException("Couldn't get mail Session");
         }

@@ -1,0 +1,23 @@
+    public String bootstrap() {
+        
+        try {
+            // trigger bootstrapping process
+            RollerFactory.bootstrap();
+            
+            // trigger initialization process
+            RollerFactory.initialize();
+            
+            // flush any changes made during initialization
+            RollerFactory.getRoller().flush();
+            
+            return SUCCESS;
+            
+        } catch (BootstrapException ex) {
+            rootCauseException = ex;
+        } catch (WebloggerException ex) {
+            rootCauseException = ex;
+        }
+        
+        return BOOTSTRAP;
+    }
+

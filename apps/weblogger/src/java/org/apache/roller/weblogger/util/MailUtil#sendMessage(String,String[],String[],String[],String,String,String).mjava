@@ -21,16 +21,12 @@
             )
             throws MessagingException {
         
-        MailProvider mailProvider = null;
-        Session session = null;
-        try {
-            mailProvider = MailProvider.getMailProvider(); 
-        } catch (WebloggerException ex) {
-            // The MailProvider should have been constructed long before 
-            // we get to this point, so this should never ever happen
-            throw new RuntimeException("ERROR getting mail provider", ex);
+        MailProvider mailProvider = WebloggerStartup.getMailProvider();
+        if(mailProvider == null) {
+            return;
         }
-        session = mailProvider.getSession();
+        
+        Session session = mailProvider.getSession();
         Message message = new MimeMessage(session);
         
         // n.b. any default from address is expected to be determined by caller.

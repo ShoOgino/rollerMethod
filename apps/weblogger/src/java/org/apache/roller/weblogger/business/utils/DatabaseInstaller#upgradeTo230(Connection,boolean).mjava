@@ -1,0 +1,21 @@
+    /**
+     * Upgrade database for Roller 2.3.0
+     */
+    private void upgradeTo230(Connection con, boolean runScripts) throws StartupException {
+        try {
+            if (runScripts) {
+                String handle = getDatabaseHandle(con);
+                String scriptPath = handle + "/210-to-230-migration.sql";
+                successMessage("Running database upgrade script: "+scriptPath);                
+                SQLScriptRunner runner = new SQLScriptRunner(scripts.getDatabaseScript(scriptPath));
+                runner.runScript(con, true);
+                messages.addAll(runner.getMessages());
+            }
+        } catch (Exception e) {
+            errorMessage("Problem upgrading database to version 230", e);
+            throw new StartupException("Problem upgrading database to version 230", e);
+        }
+        
+        updateDatabaseVersion(con, 230);
+    }
+

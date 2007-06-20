@@ -1,35 +1,27 @@
     public String execute() {
 
-        try {
-            DatabaseProvider dp = DatabaseProvider.getDatabaseProvider();             
-        } catch (RollerException e) {
+        if(WebloggerStartup.getDatabaseProviderException() != null) {
+            StartupException se = WebloggerStartup.getDatabaseProviderException();
+            if (se.getRootCause() != null) {
+                rootCauseException = se.getRootCause();
+            } else {
+                rootCauseException = se;
+            }
+            messages = se.getStartupLog();
+            
+            log.debug("Forwarding to database error page");
             return DATABASE_ERROR;
         }   
         
-        try {               
-            if (DatabaseCreator.isCreationRequired()) {  
-                log.info("Forwarding to database table creation page");
-                return CREATE_DATABASE;
-            } 
-            if (DatabaseUpgrader.isUpgradeRequired()) {
-                log.info("Forwarding to database table upgrade page");
-                return UPGRADE_DATABASE;
-            }
-        } catch (Throwable t) {
-            rootCauseException = t;
-            log.error("ERROR checking database status", t);
-            return UNKNOWN_ERROR;
-        } 
-        
-        try {
-            log.info("Attempting to bootstrap Roller");
-            RollerFactory.bootstrap();
-        } catch (Throwable t) {
-            rootCauseException = t;
-            log.error("ERROR bootstrapping Roller", t);
-            return UNKNOWN_ERROR;
+        if (WebloggerStartup.isDatabaseCreationRequired()) {
+            log.debug("Forwarding to database table creation page");
+            return CREATE_DATABASE;
+        }
+        if (WebloggerStartup.isDatabaseUpgradeRequired()) {
+            log.debug("Forwarding to database table upgrade page");
+            return UPGRADE_DATABASE;
         }
         
-        return SUCCESS;
+        return BOOTSTRAP;
     }
 

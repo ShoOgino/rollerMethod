@@ -1,9 +1,0 @@
-    public String getDatabaseProductName() {
-        String name = "error";
-        try {
-            Connection con = DatabaseProvider.getDatabaseProvider().getConnection();
-            name = con.getMetaData().getDatabaseProductName();
-        } catch (Exception intentionallyIgnored) {}
-        return name;
-    }
-

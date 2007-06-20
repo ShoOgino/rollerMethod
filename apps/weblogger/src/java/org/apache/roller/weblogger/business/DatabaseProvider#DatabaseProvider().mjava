@@ -2,7 +2,7 @@
      * Reads configuraiton, loads driver or locates data-source and attempts
      * to get test connecton so that we can fail early.
      */ 
-    private DatabaseProvider() throws WebloggerException {
+    public DatabaseProvider() throws StartupException {
         
         String connectionTypeString = 
                 RollerConfig.getProperty("database.configurationType"); 
@@ -30,8 +30,7 @@
                      "ERROR: cannot load JDBC driver class [" + getJdbcDriverClass()+ "]. "
                     +"Likely problem: JDBC driver jar missing from server classpath.";
                 errorMessage(errorMsg);
-                startupException = new WebloggerException(errorMsg, ex);
-                throw startupException;
+                throw new StartupException(errorMsg, ex, startupLog);
             }
             successMessage("SUCCESS: loaded JDBC driver class [" +getJdbcDriverClass()+ "]");
             
@@ -53,8 +52,7 @@
                     "ERROR: cannot locate JNDI DataSource [" +name+ "]. "
                    +"Likely problem: no DataSource or datasource is misconfigured.";
                 errorMessage(errorMsg);
-                startupException =  new WebloggerException(errorMsg, ex);
-                throw startupException;
+                throw new StartupException(errorMsg, ex, startupLog);
             }            
             successMessage("SUCCESS: located JNDI DataSource [" +name+ "]");
         }
@@ -68,8 +66,7 @@
                 "ERROR: unable to obtain database connection. "
                +"Likely problem: bad connection parameters or database unavailable.";
             errorMessage(errorMsg);
-            startupException =  new WebloggerException(errorMsg, t);
-            throw startupException;
+            throw new StartupException(errorMsg, t, startupLog);
         }
     }
 

@@ -1,0 +1,14 @@
+    public String create() {
+        
+        try {
+            messages = WebloggerStartup.createDatabase();
+            
+            success = true;
+        } catch (StartupException se) {
+            error = true;
+            messages = se.getStartupLog();
+        }
+        
+        return CREATE_DATABASE;
+    }
+

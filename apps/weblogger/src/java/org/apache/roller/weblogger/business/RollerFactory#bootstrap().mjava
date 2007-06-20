@@ -1,52 +1,49 @@
     /**
      * Bootstrap the Roller Weblogger business tier.
+     *
+     * Bootstrapping the application effectively instantiates all the necessary
+     * pieces of the business tier and wires them together so that the app is 
+     * ready to run.
+     *
+     * @throws IllegalStateException If the app has not been properly prepared yet.
+     * @throws BootstrapException If an error happens during the bootstrap process.
      */
-    public static final void bootstrap() throws WebloggerException {
+    public static final void bootstrap() throws BootstrapException {
         
-        if ("manual".equals(RollerConfig.getProperty("installation.type"))) {
-            if (DatabaseCreator.isCreationRequired() 
-             || DatabaseUpgrader.isUpgradeRequired()) { 
-                return;
-            }
-        }        
-        
-        // This will cause instantiation and initialziation of Roller impl
-        Roller roller = getRoller();
-        
-        // TODO: this initialization process should probably be controlled by
-        // a more generalized application lifecycle event framework
-        
-        // Now that Roller has been instantiated, initialize individual managers
-        roller.getPropertiesManager();
-        roller.getIndexManager();
-        roller.getThemeManager();
-        
-        // And this will schedule all configured tasks
-        roller.getThreadManager().startTasks();
-        
-        // Initialize ping systems
-        try {
-            // Initialize common targets from the configuration
-            PingConfig.initializeCommonTargets();
-            
-            // Initialize ping variants
-            PingConfig.initializePingVariants();
-            
-            // Remove custom ping targets if they have been disallowed
-            if (PingConfig.getDisallowCustomTargets()) {
-                log.info("Custom ping targets have been disallowed.  Removing any existing custom targets.");
-                RollerFactory.getRoller().getPingTargetManager().removeAllCustomPingTargets();
-            }
-            
-            // Remove all autoping configurations if ping usage has been disabled.
-            if (PingConfig.getDisablePingUsage()) {
-                log.info("Ping usage has been disabled.  Removing any existing auto ping configurations.");
-                RollerFactory.getRoller().getAutopingManager().removeAllAutoPings();
-            }
-        } catch (WebloggerException e) {
-            log.error("ERROR configing ping managers", e);
+        // if the app hasn't been properly started so far then bail
+        if (!WebloggerStartup.isPrepared()) {
+            throw new IllegalStateException("Cannot bootstrap until application has been properly prepared");
         }
         
-        bootstrapped = true;
+        log.info("Bootstrapping Roller Weblogger business tier");
+        
+        // bootstrap Roller Weblogger business tier
+        
+        // lookup value for the roller classname to use
+        String roller_classname =
+                RollerConfig.getProperty("persistence.roller.classname");
+        if(roller_classname == null || roller_classname.trim().length() < 1) {
+            throw new BootstrapException("Invalid roller classname - "+roller_classname);
+        } else {
+            log.info("Using Roller Impl: " + roller_classname);
+        }
+        
+        try {
+            Class rollerClass = Class.forName(roller_classname);
+            java.lang.reflect.Method instanceMethod =
+                    rollerClass.getMethod("instantiate", (Class[])null);
+            
+            // do the invocation
+            rollerInstance = (Roller) instanceMethod.invoke(rollerClass, (Object[])null);
+            
+            // note that we've now been bootstrapped
+            bootstrapped = true;
+            
+        } catch (Throwable ex) {
+            // bootstrapping failed
+            throw new BootstrapException("Exception doing bootstrapping", ex);
+        }
+        
+        log.info("Roller Weblogger business tier successfully bootstrapped");
     }
 

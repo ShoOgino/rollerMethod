@@ -4,7 +4,7 @@
     public static void sendUserActivationEmail(User user)
             throws WebloggerException {
         
-        Session mailSession = MailProvider.getMailProvider().getSession();
+        Session mailSession = WebloggerStartup.getMailProvider().getSession();
         if(mailSession == null) {
             throw new WebloggerException("ERROR: Notification email(s) not sent, "
                     + "Roller's mail session not properly configured");
