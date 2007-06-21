@@ -1,5 +1,9 @@
     public String bootstrap() {
         
+        if(RollerFactory.isBootstrapped()) {
+            return SUCCESS;
+        }
+        
         try {
             // trigger bootstrapping process
             RollerFactory.bootstrap();

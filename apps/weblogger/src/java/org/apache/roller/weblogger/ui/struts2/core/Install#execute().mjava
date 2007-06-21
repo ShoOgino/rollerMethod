@@ -1,5 +1,9 @@
     public String execute() {
-
+        
+        if(RollerFactory.isBootstrapped()) {
+            return SUCCESS;
+        }
+        
         if(WebloggerStartup.getDatabaseProviderException() != null) {
             StartupException se = WebloggerStartup.getDatabaseProviderException();
             if (se.getRootCause() != null) {

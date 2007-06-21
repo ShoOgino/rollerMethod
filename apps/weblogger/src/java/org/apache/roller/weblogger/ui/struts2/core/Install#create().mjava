@@ -1,5 +1,9 @@
     public String create() {
         
+        if(RollerFactory.isBootstrapped()) {
+            return SUCCESS;
+        }
+        
         try {
             messages = WebloggerStartup.createDatabase();
             
