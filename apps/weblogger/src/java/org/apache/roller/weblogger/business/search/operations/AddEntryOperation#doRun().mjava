@@ -5,14 +5,13 @@
         // the weblog object passed in as a detached object which is proned to
         // lazy initialization problems, so requery for the object now
         try {
-            WeblogManager wMgr = RollerFactory.getRoller().getWeblogManager();
+            WeblogManager wMgr = roller.getWeblogManager();
             this.data = wMgr.getWeblogEntry(this.data.getId());
         } catch (WebloggerException ex) {
             mLogger.error("Error getting weblogentry object", ex);
             return;
         }
         
-        Roller roller = RollerFactory.getRoller();
         try {
             if (writer != null) {
                 writer.addDocument(getDocument(data));

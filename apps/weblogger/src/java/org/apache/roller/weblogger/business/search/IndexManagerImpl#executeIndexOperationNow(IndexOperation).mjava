@@ -6,7 +6,7 @@
             // only if search is enabled
             if(this.searchEnabled) {
                 mLogger.debug("Executing index operation now: "+op.getClass().getName());
-                RollerFactory.getRoller().getThreadManager().executeInForeground(op);
+                roller.getThreadManager().executeInForeground(op);
             }
         } catch (InterruptedException e) {
             mLogger.error("Error executing operation", e);

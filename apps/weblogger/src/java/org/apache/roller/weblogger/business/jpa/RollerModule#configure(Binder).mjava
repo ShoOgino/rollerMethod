@@ -1,0 +1,24 @@
+    public void configure(Binder binder) {
+
+        binder.bind(Roller.class).to(JPARollerImpl.class);
+        
+        binder.bind(JPAPersistenceStrategy.class);       
+        binder.bind(org.apache.roller.weblogger.planet.business.jpa.JPARollerPlanetPersistenceStrategy.class);   
+        
+        binder.bind(AutoPingManager.class).to(     JPAAutoPingManagerImpl.class);   
+        binder.bind(BookmarkManager.class).to(     JPABookmarkManagerImpl.class);  
+        binder.bind(PingQueueManager.class).to(    JPAPingQueueManagerImpl.class);   
+        binder.bind(PingTargetManager.class).to(   JPAPingTargetManagerImpl.class); 
+        binder.bind(PropertiesManager.class).to(   JPAPropertiesManagerImpl.class);   
+        binder.bind(RefererManager.class).to(      JPARefererManagerImpl.class);
+        binder.bind(ThreadManager.class).to(       JPAThreadManagerImpl.class);  
+        binder.bind(UserManager.class).to(         JPAUserManagerImpl.class);   
+        binder.bind(WeblogManager.class).to(       JPAWeblogManagerImpl.class);   
+                
+        binder.bind(ReferrerQueueManager.class).to(ReferrerQueueManagerImpl.class); 
+        binder.bind(FileManager.class).to(         FileManagerImpl.class);   
+        binder.bind(IndexManager.class).to(        IndexManagerImpl.class);
+        binder.bind(PluginManager.class).to(       PluginManagerImpl.class);    
+        binder.bind(ThemeManager.class).to(        ThemeManagerImpl.class);  
+    }    
+

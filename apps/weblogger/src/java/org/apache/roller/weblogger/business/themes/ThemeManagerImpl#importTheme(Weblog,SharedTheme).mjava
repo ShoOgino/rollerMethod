@@ -7,7 +7,7 @@
         log.debug("Importing theme ["+theme.getName()+"] to weblog ["+website.getName()+"]");
         
         try {
-            UserManager userMgr = RollerFactory.getRoller().getUserManager();
+            UserManager userMgr = roller.getUserManager();
             
             Set importedActionTemplates = new HashSet();
             ThemeTemplate themeTemplate = null;
@@ -87,7 +87,7 @@
             
             
             // now lets import all the theme resources
-            FileManager fileMgr = RollerFactory.getRoller().getFileManager();
+            FileManager fileMgr = roller.getFileManager();
             
             List resources = theme.getResources();
             Iterator iterat = resources.iterator();

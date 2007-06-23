@@ -15,13 +15,13 @@
 
         // lookup the weblog now
         try {
-            UserManager userMgr = RollerFactory.getRoller().getUserManager();
+            UserManager userMgr = roller.getUserManager();
             weblog = userMgr.getWebsiteByHandle(weblogHandle);
             if (weblog == null) return;
 
             // now lookup weblog entry if possible
             if (entryAnchor != null) {
-                WeblogManager weblogMgr = RollerFactory.getRoller().
+                WeblogManager weblogMgr = roller.
                     getWeblogManager();
                 entry = weblogMgr.getWeblogEntryByAnchor(weblog, entryAnchor);
             }
@@ -121,7 +121,7 @@
                     // Launch thread to extract referer linkback
 
                     try {
-                        Roller mRoller = RollerFactory.getRoller();
+                        Roller mRoller = roller;
                         mRoller.getThreadManager().executeInBackground(
                                 new LinkbackExtractorRunnable(ref));
                     } catch (InterruptedException e) {

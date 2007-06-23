@@ -17,30 +17,11 @@
         
         log.info("Bootstrapping Roller Weblogger business tier");
         
-        // bootstrap Roller Weblogger business tier
-        
-        // lookup value for the roller classname to use
-        String roller_classname =
-                RollerConfig.getProperty("persistence.roller.classname");
-        if(roller_classname == null || roller_classname.trim().length() < 1) {
-            throw new BootstrapException("Invalid roller classname - "+roller_classname);
-        } else {
-            log.info("Using Roller Impl: " + roller_classname);
-        }
-        
-        try {
-            Class rollerClass = Class.forName(roller_classname);
-            java.lang.reflect.Method instanceMethod =
-                    rollerClass.getMethod("instantiate", (Class[])null);
+        rollerInstance = injector.getInstance(Roller.class);
             
-            // do the invocation
-            rollerInstance = (Roller) instanceMethod.invoke(rollerClass, (Object[])null);
+        // note that we've now been bootstrapped
+        bootstrapped = true;
             
-        } catch (Throwable ex) {
-            // bootstrapping failed
-            throw new BootstrapException("Exception doing bootstrapping", ex);
-        }
-        
         log.info("Roller Weblogger business tier successfully bootstrapped");
-    }
+    }    
 

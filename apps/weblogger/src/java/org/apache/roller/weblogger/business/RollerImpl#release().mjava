@@ -1,8 +1,15 @@
     public void release() {
         try {
-            if (fileManager != null) fileManager.release();
-            if (threadManager != null) threadManager.release();
-            if (pluginManager != null) pluginManager.release();
+            autoPingManager.release();
+            bookmarkManager.release();
+            fileManager.release();
+            pingTargetManager.release();
+            pingQueueManager.release();
+            pluginManager.release();
+            refererManager.release();
+            threadManager.release();
+            userManager.release();
+            weblogManager.release();
         } catch(Throwable e) {
             mLogger.error("Error calling Roller.release()", e);
         }

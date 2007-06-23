@@ -1,7 +1,7 @@
     private void addWeblogContents(Weblog newWeblog) throws WebloggerException {
         
-        UserManager umgr = RollerFactory.getRoller().getUserManager();
-        WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+        UserManager umgr = roller.getUserManager();
+        WeblogManager wmgr = roller.getWeblogManager();
         
         // grant weblog creator ADMIN permissions
         WeblogPermission perms = new WeblogPermission();
@@ -71,8 +71,8 @@
         }
         
         // add any auto enabled ping targets
-        PingTargetManager pingTargetMgr = RollerFactory.getRoller().getPingTargetManager();
-        AutoPingManager autoPingMgr = RollerFactory.getRoller().getAutopingManager();
+        PingTargetManager pingTargetMgr = roller.getPingTargetManager();
+        AutoPingManager autoPingMgr = roller.getAutopingManager();
         
         Iterator pingTargets = pingTargetMgr.getCommonPingTargets().iterator();
         PingTarget pingTarget = null;

@@ -1,0 +1,10 @@
+    public StartupException(String msg, Throwable t, List<String> log) {
+        super(msg, t);
+        
+        if(log != null) {
+            this.startupLog = log;
+        } else {
+            this.startupLog = Collections.EMPTY_LIST;
+        }
+    }
+

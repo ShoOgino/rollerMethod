@@ -5,8 +5,8 @@
     private void removeWebsiteContents(Weblog website)
     throws  WebloggerException {
         
-        BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
-        WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+        BookmarkManager bmgr = roller.getBookmarkManager();
+        WeblogManager wmgr = roller.getWeblogManager();
         
         // remove tags
         Query tagQuery = strategy.getNamedQuery("WeblogEntryTag.getByWeblog");
@@ -45,7 +45,7 @@
         }
         
         // Remove the website's auto ping configurations
-        AutoPingManager autoPingMgr = RollerFactory.getRoller()
+        AutoPingManager autoPingMgr = roller
         .getAutopingManager();
         List autopings = autoPingMgr.getAutoPingsByWebsite(website);
         it = autopings.iterator();
@@ -54,7 +54,7 @@
         }
         
         // Remove the website's custom ping targets
-        PingTargetManager pingTargetMgr = RollerFactory.getRoller().getPingTargetManager();
+        PingTargetManager pingTargetMgr = roller.getPingTargetManager();
         List pingtargets = pingTargetMgr.getCustomPingTargets(website);
         it = pingtargets.iterator();
         while(it.hasNext()) {

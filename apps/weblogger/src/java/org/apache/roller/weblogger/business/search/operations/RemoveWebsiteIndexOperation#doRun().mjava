@@ -5,7 +5,7 @@
         // the weblog object passed in as a detached object which is proned to
         // lazy initialization problems, so requery for the object now
         try {
-            UserManager uMgr = RollerFactory.getRoller().getUserManager();
+            UserManager uMgr = roller.getUserManager();
             this.website = uMgr.getWebsite(this.website.getId());
         } catch (WebloggerException ex) {
             mLogger.error("Error getting website object", ex);

@@ -18,7 +18,7 @@
                 
                 // save it and flush
                 this.saveTaskLock(taskLock);
-                RollerFactory.getRoller().flush();
+                roller.flush();
             }
             
         } catch (WebloggerException ex) {
@@ -48,7 +48,7 @@
             int result = query.executeUpdate();
             
             // this may not be needed
-            RollerFactory.getRoller().flush();
+            roller.flush();
             
             if(result == 1) {
                 return true;

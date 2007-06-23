@@ -1,4 +1,10 @@
+    /**
+     * Static accessor for the instance of Roller
+     */
     public static Planet getPlanet() {
+        if (planetInstance == null) {
+            throw new IllegalStateException("Roller Planet has not been bootstrapped yet");
+        }        
         return planetInstance;
-    }
+    }     
 

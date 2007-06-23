@@ -1,0 +1,15 @@
+    /**
+     * Persistence strategy configures itself by using 'planet-hibernate.cfg.xml' 
+     * and Roller properties: 'hibernate.dialect' - the classname of the Hibernate 
+     * dialect to be used, 'hibernate.connectionProvider - the classname of 
+     * Roller's connnection provider impl.
+     */
+    protected HibernateRollerPlanetPersistenceStrategy() throws PlanetException {        
+        String dialect =  
+            RollerConfig.getProperty("hibernate.dialect");
+        String connectionProvider = 
+            RollerConfig.getProperty("hibernate.connectionProvider");        
+        String configuration = "planet-hibernate.cfg.xml";
+        init(dialect, connectionProvider, configuration);
+    }   
+

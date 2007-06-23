@@ -6,7 +6,7 @@
         // lazy initialization problems, so requery for the object now
         if(this.website != null) {
             try {
-                UserManager uMgr = RollerFactory.getRoller().getUserManager();
+                UserManager uMgr = roller.getUserManager();
                 this.website = uMgr.getWebsite(this.website.getId());
             } catch (WebloggerException ex) {
                 mLogger.error("Error getting website object", ex);
@@ -40,7 +40,6 @@
         
         IndexWriter writer = beginWriting();
         
-        Roller roller = RollerFactory.getRoller();
         try {
             if (writer != null) {
                 WeblogManager weblogManager = roller.getWeblogManager();

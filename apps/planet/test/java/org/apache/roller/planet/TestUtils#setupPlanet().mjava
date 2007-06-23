@@ -1,0 +1,13 @@
+    public static void setupPlanet() throws Exception {
+        
+        if(!PlanetFactory.isBootstrapped()) {
+            
+            // do core services preparation
+            PlanetStartup.prepare();
+            
+            // do application bootstrapping and init
+            PlanetFactory.bootstrap();
+            PlanetFactory.getPlanet().initialize();
+        }
+    }
+

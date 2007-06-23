@@ -3,7 +3,7 @@
             // only if search is enabled
             if(this.searchEnabled) {
                 mLogger.debug("Starting scheduled index operation: "+op.getClass().getName());
-                RollerFactory.getRoller().getThreadManager().executeInBackground(op);
+                roller.getThreadManager().executeInBackground(op);
             }
         } catch (InterruptedException e) {
             mLogger.error("Error executing operation", e);

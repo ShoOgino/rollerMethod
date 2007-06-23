@@ -4,7 +4,6 @@
         //Now remove it from database
         this.strategy.remove(bookmark);
         // update weblog last modified date.  date updated by saveWebsite()
-        RollerFactory.getRoller().getUserManager()
-                .saveWebsite(bookmark.getWebsite());
+        roller.getUserManager().saveWebsite(bookmark.getWebsite());
     }
 

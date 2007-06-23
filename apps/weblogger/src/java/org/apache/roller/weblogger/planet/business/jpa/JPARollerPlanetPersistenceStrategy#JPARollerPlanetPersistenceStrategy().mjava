@@ -1,0 +1,56 @@
+    /**
+     * Construct by finding using DatabaseProvider and RollerConfig.
+     * @throws org.apache.roller.PlanetException on any error
+     */
+    protected JPARollerPlanetPersistenceStrategy() throws PlanetException { 
+
+        DatabaseProvider dbProvider = WebloggerStartup.getDatabaseProvider();
+        
+        // Pull in any properties defined in JMAEMF.properties config file
+        Properties emfProps = loadPropertiesFromResourceName(
+           "JPAEMF.properties", getContextClassLoader());
+                
+        // Add all OpenJPA and Toplinks properties found in RollerConfig
+        Enumeration keys = RollerConfig.keys();
+        while (keys.hasMoreElements()) {
+            String key = (String)keys.nextElement();
+            if (key.startsWith("openjpa.") || key.startsWith("toplink.")) {
+                String value = RollerConfig.getProperty(key);
+                logger.info(key + ": " + value);
+                emfProps.setProperty(key, value);
+            }
+        }
+        
+        if (dbProvider.getType() == DatabaseProvider.ConfigurationType.JNDI_NAME) {
+            // We're doing JNDI, so set OpenJPA JNDI name property
+            String jndiName = "java:comp/env/" + dbProvider.getJndiName();
+            emfProps.setProperty("openjpa.ConnectionFactoryName", jndiName);
+            
+        } else {
+            // So set JDBD properties for OpenJPA
+            emfProps.setProperty("openjpa.ConnectionDriverName",     dbProvider.getJdbcDriverClass());
+            emfProps.setProperty("openjpa.ConnectionURL",            dbProvider.getJdbcConnectionURL());
+            emfProps.setProperty("openjpa.ConnectionUserName",       dbProvider.getJdbcUsername());
+            emfProps.setProperty("openjpa.ConnectionPassword",       dbProvider.getJdbcPassword()); 
+
+            // And Toplink JPA
+            emfProps.setProperty("toplink.jdbc.driver",              dbProvider.getJdbcDriverClass());
+            emfProps.setProperty("toplink.jdbc.url",                 dbProvider.getJdbcConnectionURL());
+            emfProps.setProperty("toplink.jdbc.user",                dbProvider.getJdbcUsername());
+            emfProps.setProperty("toplink.jdbc.password",            dbProvider.getJdbcPassword());
+
+            // And Hibernate JPA
+            emfProps.setProperty("hibernate.connection.driver_class",dbProvider.getJdbcDriverClass());
+            emfProps.setProperty("hibernate.connection.url",         dbProvider.getJdbcConnectionURL());
+            emfProps.setProperty("hibernate.connection.username",    dbProvider.getJdbcUsername());
+            emfProps.setProperty("hibernate.connection.password",    dbProvider.getJdbcPassword()); 
+        }
+        
+        try {
+            this.emf = Persistence.createEntityManagerFactory("PlanetPU", emfProps);
+        } catch (PersistenceException pe) {
+            logger.error("ERROR: creating entity manager", pe);
+            throw new PlanetException(pe);
+        }
+    }  
+
