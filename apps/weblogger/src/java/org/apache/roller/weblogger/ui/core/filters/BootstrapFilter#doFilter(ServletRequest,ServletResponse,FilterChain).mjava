@@ -10,8 +10,10 @@
                 "auto".equals(RollerConfig.getProperty("installation.type")) &&
                 !isInstallUrl(request.getServletPath())) {
             
-            // just redirect to install action
-            response.sendRedirect("/roller-ui/install/install.rol");
+            // we doing an install, so forward to installer
+            RequestDispatcher rd = context.getRequestDispatcher(
+                "/roller-ui/install/install.rol");
+            rd.forward(req, res);
             
         } else {
             chain.doFilter(request, response);
