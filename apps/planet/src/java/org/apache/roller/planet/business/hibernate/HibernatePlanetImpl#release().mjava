@@ -1,13 +1,8 @@
     @Override
     public void release() {
         // allow managers to do any session cleanup
-        if(this.propertiesManager != null) {
-            this.propertiesManager.release();
-        }
-        
-        if(this.planetManager != null) {
-            this.planetManager.release();
-        }
+        getPropertiesManager().release();
+        getPlanetManager().release();
         
         // close down the session
         this.strategy.release();

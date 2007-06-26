@@ -1,13 +1,8 @@
     @Override
     public void shutdown() {
         // allow managers to do any shutdown needed
-        if(this.propertiesManager != null) {
-            this.propertiesManager.shutdown();
-        }
-        
-        if(this.planetManager != null) {
-            this.planetManager.shutdown();
-        }
+        getPropertiesManager().shutdown();
+        getPlanetManager().shutdown();
         
         // trigger the final release()
         this.release();
