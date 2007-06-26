@@ -1,13 +1,14 @@
     public void configure(Binder binder) {
-        
-        binder.bind(Planet.class).to(HibernatePlanetImpl.class);
 
-        // Use special Planet persistence strategy that works against RollerConfig
-        binder.bind(HibernatePersistenceStrategy.class).to(HibernateRollerPlanetPersistenceStrategy.class);
+        binder.bind(HibernatePersistenceStrategy.class);
         
         binder.bind(PlanetManager.class).to(     HibernatePlanetManagerImpl.class);   
         binder.bind(PropertiesManager.class).to( HibernatePropertiesManagerImpl.class);   
         binder.bind(URLStrategy.class).to(       MultiPlanetURLStrategy.class);
-        binder.bind(FeedFetcher.class).to(       RomeFeedFetcher.class);
+        
+        // use custom Weblogger feed fetcher
+        binder.bind(FeedFetcher.class).to(       RollerRomeFeedFetcher.class);
+        
+        binder.bind(Planet.class).to(HibernatePlanetImpl.class);
     }
 
