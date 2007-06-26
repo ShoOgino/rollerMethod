@@ -4,12 +4,23 @@
      * 'hibernate.dialect' - the classname of the Hibernate dialect to be used,
      * 'hibernate.connectionProvider - the classname of Roller's connnection provider impl.
      */
-    protected HibernatePersistenceStrategy() throws PlanetException {        
+    protected HibernatePersistenceStrategy() throws PlanetException {
+        
         String dialect =  
             PlanetConfig.getProperty("hibernate.dialect");
         String connectionProvider = 
             PlanetConfig.getProperty("hibernate.connectionProvider");        
         String configuration = "hibernate.cfg.xml";
-        init(dialect, connectionProvider, configuration);
-    }   
+        
+        Configuration config = new Configuration();
+        config.configure(configuration);
+
+        // Add dialect specified by Roller config and our connection provider
+        Properties props = new Properties();
+        props.put(Environment.DIALECT, dialect);
+        props.put(Environment.CONNECTION_PROVIDER, connectionProvider);
+        config.mergeProperties(props);
+        
+        sessionFactory = config.buildSessionFactory(); 
+    }
 
