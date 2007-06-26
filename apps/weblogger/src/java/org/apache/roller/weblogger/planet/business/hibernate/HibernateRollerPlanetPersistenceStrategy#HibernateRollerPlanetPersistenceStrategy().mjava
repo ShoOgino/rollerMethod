@@ -10,6 +10,16 @@
         String connectionProvider = 
             RollerConfig.getProperty("hibernate.connectionProvider");        
         String configuration = "planet-hibernate.cfg.xml";
-        init(dialect, connectionProvider, configuration);
-    }   
+        
+        Configuration config = new Configuration();
+        config.configure(configuration);
+
+        // Add dialect specified by Roller config and our connection provider
+        Properties props = new Properties();
+        props.put(Environment.DIALECT, dialect);
+        props.put(Environment.CONNECTION_PROVIDER, connectionProvider);
+        config.mergeProperties(props);
+        
+        sessionFactory = config.buildSessionFactory(); 
+    }
 

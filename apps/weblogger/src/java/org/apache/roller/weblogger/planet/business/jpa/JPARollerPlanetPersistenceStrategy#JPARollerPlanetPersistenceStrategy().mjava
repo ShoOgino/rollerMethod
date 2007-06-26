@@ -47,10 +47,10 @@
         }
         
         try {
-            this.emf = Persistence.createEntityManagerFactory("PlanetPU", emfProps);
+            emf = Persistence.createEntityManagerFactory("PlanetPU", emfProps);
         } catch (PersistenceException pe) {
             logger.error("ERROR: creating entity manager", pe);
             throw new PlanetException(pe);
         }
-    }  
+    }
 
