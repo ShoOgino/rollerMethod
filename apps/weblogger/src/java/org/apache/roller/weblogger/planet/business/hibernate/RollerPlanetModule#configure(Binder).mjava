@@ -3,11 +3,11 @@
         binder.bind(Planet.class).to(HibernatePlanetImpl.class);
 
         // Use special Planet persistence strategy that works against RollerConfig
-        binder.bind(HibernateRollerPlanetPersistenceStrategy.class); 
+        binder.bind(HibernatePersistenceStrategy.class).to(HibernateRollerPlanetPersistenceStrategy.class);
         
         binder.bind(PlanetManager.class).to(     HibernatePlanetManagerImpl.class);   
         binder.bind(PropertiesManager.class).to( HibernatePropertiesManagerImpl.class);   
         binder.bind(URLStrategy.class).to(       MultiPlanetURLStrategy.class);
         binder.bind(FeedFetcher.class).to(       RomeFeedFetcher.class);
-    }    
+    }
 
