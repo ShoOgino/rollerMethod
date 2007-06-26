@@ -1,9 +1,9 @@
     @com.google.inject.Inject    
-    protected HibernateThreadManagerImpl(HibernatePersistenceStrategy strat) {
+    protected HibernateThreadManagerImpl(Roller roller, HibernatePersistenceStrategy strat) {
         super();
         
         log.debug("Instantiating Hibernate Thread Manager");
-        this.roller = roller;        
+        this.roller = roller;
         this.strategy = strat;
     }
 

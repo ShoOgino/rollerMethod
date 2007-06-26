@@ -1,6 +1,8 @@
     @com.google.inject.Inject
     protected ThemeManagerImpl(Roller roller) {
+        
         this.roller = roller;
+        
         // get theme directory from config and verify it
         this.themeDir = RollerConfig.getProperty("themes.dir");
         if(themeDir == null || themeDir.trim().length() < 1) {

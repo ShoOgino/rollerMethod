@@ -1,3 +1,6 @@
+    /**
+     * @inheritDoc
+     */
     public void shutdown() {
         try {
             HitCountQueue.getInstance().shutdown();
@@ -5,7 +8,7 @@
             if (indexManager != null) indexManager.shutdown();
             if (threadManager != null) threadManager.shutdown();
         } catch(Throwable e) {
-            mLogger.error("Error calling Roller.shutdown()", e);
+            log.error("Error calling Roller.shutdown()", e);
         }
     }
 

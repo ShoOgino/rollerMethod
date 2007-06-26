@@ -33,7 +33,7 @@
         try {
             props.load(getClass().getResourceAsStream("/version.properties"));
         } catch (IOException e) {
-            mLogger.error("version.properties not found", e);
+            log.error("version.properties not found", e);
         }
         
         version = props.getProperty("ro.version", "UNKNOWN");
