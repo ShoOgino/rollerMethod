@@ -1,0 +1,13 @@
+    /**
+     * Get the list of all categories for the action weblog, not including root.
+     */
+    public List<WeblogCategory> getCategories() {
+        try {
+            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+            return wmgr.getWeblogCategories(getActionWeblog(), false);
+        } catch (WebloggerException ex) {
+            log.error("Error getting category list for weblog - "+getWeblog(), ex);
+            return Collections.EMPTY_LIST;
+        }
+    }
+
