@@ -12,7 +12,7 @@
         cal.add(Calendar.DATE, -1 * sinceDays);
         Date startDate = cal.getTime();
         try {            
-            Roller roller = RollerFactory.getRoller();
+            Weblogger roller = RollerFactory.getRoller();
             UserManager umgr = roller.getUserManager();
             results = umgr.getMostCommentedWebsites(
                     startDate, new Date(), 0, length);

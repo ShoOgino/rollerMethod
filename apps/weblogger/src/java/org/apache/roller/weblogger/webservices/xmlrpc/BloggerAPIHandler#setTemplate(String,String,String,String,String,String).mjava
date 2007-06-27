@@ -1,15 +1,15 @@
     /**
-     * Edits the main index template of a given blog. Roller only support
+     * Edits the main index template of a given blog. Weblogger only support
      * updating the main template, the default template of your weblog.
-     *
+     * 
      * @param appkey Unique identifier/passcode of the application sending the post
      * @param blogid Unique identifier of the blog the post will be added to
      * @param userid Login for a Blogger user who has permission to post to the blog
      * @param password Password for said username
      * @param template The text for the new template (usually mostly HTML).
      * @param templateType Determines which of the blog's templates is to be set.
+     * @return 
      * @throws XmlRpcException
-     * @return
      */
     public boolean setTemplate(String appkey, String blogid, String userid,
             String password, String templateData,
@@ -30,7 +30,7 @@
         }
         
         try {
-            Roller roller = RollerFactory.getRoller();
+            Weblogger roller = RollerFactory.getRoller();
             UserManager userMgr = roller.getUserManager();
             
             WeblogTemplate page = userMgr.getPage(templateType);

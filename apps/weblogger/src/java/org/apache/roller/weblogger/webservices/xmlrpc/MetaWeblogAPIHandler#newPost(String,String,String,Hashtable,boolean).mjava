@@ -25,7 +25,7 @@
         mLogger.debug("      Title: " + title);
         
         try {
-            Roller roller = RollerFactory.getRoller();
+            Weblogger roller = RollerFactory.getRoller();
             WeblogManager weblogMgr = roller.getWeblogManager();
             User user = roller.getUserManager().getUserByUserName(userid);
             Timestamp current =
@@ -46,7 +46,7 @@
                 entry.setStatus(WeblogEntry.DRAFT);
             }
             
-            // MetaWeblog supports multiple cats, Roller supports one/entry
+            // MetaWeblog supports multiple cats, Weblogger supports one/entry
             // so here we take accept the first category that exists
             WeblogCategory rollerCat = null;
             if ( postcontent.get("categories") != null ) {
@@ -76,7 +76,7 @@
             // notify cache
             flushPageCache(entry.getWebsite());
             
-            // TODO: Roller timestamps need better than 1 second accuracy
+            // TODO: Weblogger timestamps need better than 1 second accuracy
             // Until then, we can't allow more than one post per second
             Thread.sleep(1000);
             

@@ -1,5 +1,5 @@
     /**
-     * Create a Rome Atom entry based on a Roller entry.
+     * Create a Rome Atom entry based on a Weblogger entry.
      * Content is escaped.
      * Link is stored as rel=alternate link.
      */
@@ -30,14 +30,14 @@
         author.setEmail(        creator.getEmailAddress());
         atomEntry.setAuthors(   Collections.singletonList(author));
         
-        // Add Atom category for Roller category, using category scheme
+        // Add Atom category for Weblogger category, using category scheme
         List categories = new ArrayList();
         Category atomCat = new Category();
         atomCat.setScheme(getWeblogCategoryScheme(entry.getWebsite()));
         atomCat.setTerm(entry.getCategory().getPath().substring(1));
         categories.add(atomCat);
         
-        // Add Atom categories for each Roller tag with null scheme
+        // Add Atom categories for each Weblogger tag with null scheme
         for (Iterator tagit = entry.getTags().iterator(); tagit.hasNext();) {
             WeblogEntryTag tag = (WeblogEntryTag) tagit.next();
             Category newcat = new Category();

@@ -4,7 +4,7 @@
      */
     private String getAcceptedContentTypeRange() throws WebloggerException {
         StringBuffer sb = new StringBuffer();
-        Roller roller = RollerFactory.getRoller();
+        Weblogger roller = RollerFactory.getRoller();
         Map config = roller.getPropertiesManager().getProperties();        
         String allows = ((RuntimeConfigProperty)config.get("uploads.types.allowed")).getValue();
         String[] rules = StringUtils.split(StringUtils.deleteWhitespace(allows), ",");

@@ -1,11 +1,11 @@
     /**
      * Authenticates a user and returns the categories available in the website
-     *
-     * @param blogid Dummy Value for Roller
+     * 
+     * @param blogid Dummy Value for Weblogger
      * @param userid Login for a MetaWeblog user who has permission to post to the blog
      * @param password Password for said username
+     * @return 
      * @throws Exception
-     * @return
      */
     public Object getCategories(String blogid, String userid, String password)
     throws Exception {
@@ -15,7 +15,7 @@
         mLogger.debug("     UserId: " + userid);
         
         Weblog website = validate(blogid, userid,password);
-        Roller roller = RollerFactory.getRoller();
+        Weblogger roller = RollerFactory.getRoller();
         try {
             Hashtable result = new Hashtable();
             WeblogManager weblogMgr = roller.getWeblogManager();

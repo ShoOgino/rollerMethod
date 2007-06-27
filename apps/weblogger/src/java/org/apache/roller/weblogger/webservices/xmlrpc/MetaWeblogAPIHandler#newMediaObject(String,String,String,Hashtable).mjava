@@ -1,5 +1,5 @@
     /**
-     * Allows user to post a binary object, a file, to Roller. If the file is
+     * Allows user to post a binary object, a file, to Weblogger. If the file is
      * allowed by the RollerConfig file-upload settings, then the file will be
      * placed in the user's upload diretory.
      */
@@ -21,7 +21,7 @@
             
             byte[] bits = (byte[]) struct.get("bits");
             
-            Roller roller = RollerFactory.getRoller();
+            Weblogger roller = RollerFactory.getRoller();
             FileManager fmgr = roller.getFileManager();
             RollerMessages msgs = new RollerMessages();
             

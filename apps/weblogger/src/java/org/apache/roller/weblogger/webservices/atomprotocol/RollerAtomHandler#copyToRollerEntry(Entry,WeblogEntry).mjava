@@ -1,5 +1,5 @@
     /**
-     * Copy fields from ROME entry to Roller entry.
+     * Copy fields from ROME entry to Weblogger entry.
      */
     private void copyToRollerEntry(Entry entry,WeblogEntry rollerEntry) throws WebloggerException {
         
@@ -32,8 +32,8 @@
         }
                 
         // Process incoming categories:
-        // Atom categories with weblog-level scheme are Roller categories.
-        // Atom supports multiple cats, but Roller supports one/entry
+        // Atom categories with weblog-level scheme are Weblogger categories.
+        // Atom supports multiple cats, but Weblogger supports one/entry
         // so here we take accept the first category that exists.
         List categories = entry.getCategories();
         if (categories != null && categories.size() > 0) {

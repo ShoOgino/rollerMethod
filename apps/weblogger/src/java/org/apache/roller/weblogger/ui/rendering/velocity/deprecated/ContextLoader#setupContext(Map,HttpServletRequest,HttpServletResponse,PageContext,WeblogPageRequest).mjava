@@ -1,6 +1,6 @@
     /**
      * Setup the a Velocity context by loading it with objects, values, and
-     * RollerPagePlugins needed for Roller page execution.
+     * RollerPagePlugins needed for Weblogger page execution.
      */
     public static void setupContext(
             Map                 ctx,
@@ -92,7 +92,7 @@
                 pageRequest);
         ctx.put("pageHelper", pageHelper);
         
-        // Load standard Roller objects and values into the context
+        // Load standard Weblogger objects and values into the context
         loadWeblogValues(ctx, weblog, pageRequest.getLocaleInstance(), request);
         loadPathValues(ctx, request, weblog, locale);
         loadRssValues(ctx, request, weblog, category);

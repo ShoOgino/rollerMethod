@@ -1,6 +1,6 @@
     private WeblogEntry getPrevEntry() {
         if (prevEntry == null) try {
-            Roller roller = RollerFactory.getRoller();
+            Weblogger roller = RollerFactory.getRoller();
             WeblogManager wmgr = roller.getWeblogManager();
             prevEntry = wmgr.getPreviousEntry(currEntry, null, locale);
             // make sure that entry is published and not to future
