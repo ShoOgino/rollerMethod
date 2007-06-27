@@ -3,7 +3,7 @@
      * @return True if comment matches blacklist term
      */
     public static boolean checkComment(WeblogEntryComment comment) {
-        if (RollerConfig.getBooleanProperty("site.blacklist.enable.comments")) {
+        if (WebloggerConfig.getBooleanProperty("site.blacklist.enable.comments")) {
             return testComment(comment);
         }
         return false;

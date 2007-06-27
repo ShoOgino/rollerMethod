@@ -7,7 +7,7 @@
         log.debug("Entered "+request.getRequestURI());
         
         if (!WebloggerFactory.isBootstrapped() &&
-                "auto".equals(RollerConfig.getProperty("installation.type")) &&
+                "auto".equals(WebloggerConfig.getProperty("installation.type")) &&
                 !isInstallUrl(request.getServletPath())) {
             
             // we doing an install, so forward to installer

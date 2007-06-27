@@ -1,7 +1,7 @@
     // TODO: replace with struts2 validation
     private void myValidate() {
         
-        String allowed = RollerConfig.getProperty("username.allowedChars");
+        String allowed = WebloggerConfig.getProperty("username.allowedChars");
         if(allowed == null || allowed.trim().length() == 0) {
             allowed = Register.DEFAULT_ALLOWED_CHARS;
         }

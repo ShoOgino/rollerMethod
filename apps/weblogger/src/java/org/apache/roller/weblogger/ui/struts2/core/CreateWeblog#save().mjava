@@ -2,7 +2,7 @@
         
         User user = getAuthenticatedUser();
         try {
-            if (!RollerConfig.getBooleanProperty("groupblogging.enabled")) {
+            if (!WebloggerConfig.getBooleanProperty("groupblogging.enabled")) {
                 UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
                 List permissions = mgr.getAllPermissions(user);
                 if (permissions.size() > 0) {

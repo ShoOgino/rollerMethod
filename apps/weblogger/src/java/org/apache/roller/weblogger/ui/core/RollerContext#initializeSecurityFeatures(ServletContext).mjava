@@ -7,7 +7,7 @@
                 WebApplicationContextUtils.getRequiredWebApplicationContext(context);
         
 
-        String rememberMe = RollerConfig.getProperty("rememberme.enabled");
+        String rememberMe = WebloggerConfig.getProperty("rememberme.enabled");
         boolean rememberMeEnabled = Boolean.valueOf(rememberMe).booleanValue();
         
         log.info("Remember Me enabled: " + rememberMeEnabled);
@@ -20,13 +20,13 @@
         }
         
 
-        String encryptPasswords = RollerConfig.getProperty("passwds.encryption.enabled");
+        String encryptPasswords = WebloggerConfig.getProperty("passwds.encryption.enabled");
         boolean doEncrypt = Boolean.valueOf(encryptPasswords).booleanValue();
         
         if (doEncrypt) {
             DaoAuthenticationProvider provider =
                     (DaoAuthenticationProvider) ctx.getBean("daoAuthenticationProvider");
-            String algorithm = RollerConfig.getProperty("passwds.encryption.algorithm");
+            String algorithm = WebloggerConfig.getProperty("passwds.encryption.algorithm");
             PasswordEncoder encoder = null;
             if (algorithm.equalsIgnoreCase("SHA")) {
                 encoder = new ShaPasswordEncoder();
@@ -43,7 +43,7 @@
         }
         
 
-        if (RollerConfig.getBooleanProperty("securelogin.enabled")) {
+        if (WebloggerConfig.getBooleanProperty("securelogin.enabled")) {
             AuthenticationProcessingFilterEntryPoint entryPoint =
                 (AuthenticationProcessingFilterEntryPoint)
                     ctx.getBean("authenticationProcessingFilterEntryPoint");
@@ -51,7 +51,7 @@
         }
                 
         /*
-        if (RollerConfig.getBooleanProperty("schemeenforcement.enabled")) {
+        if (WebloggerConfig.getBooleanProperty("schemeenforcement.enabled")) {
             
             ChannelProcessingFilter procfilter =
                     (ChannelProcessingFilter)ctx.getBean("channelProcessingFilter");
@@ -63,7 +63,7 @@
                     (PathBasedFilterInvocationDefinitionMap)procfilter.getFilterInvocationDefinitionSource();
             
             // add HTTPS URL path patterns to Acegi config
-            String httpsUrlsProp = RollerConfig.getProperty("schemeenforcement.https.urls");
+            String httpsUrlsProp = WebloggerConfig.getProperty("schemeenforcement.https.urls");
             if (httpsUrlsProp != null) {
                 String[] httpsUrls = StringUtils.stripAll(StringUtils.split(httpsUrlsProp, ",") );
                 for (int i=0; i<httpsUrls.length; i++) {

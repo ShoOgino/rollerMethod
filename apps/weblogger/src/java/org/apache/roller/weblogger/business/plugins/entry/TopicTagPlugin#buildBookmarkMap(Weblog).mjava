@@ -6,7 +6,7 @@
     protected Map buildBookmarkMap(Weblog website) throws WebloggerException
     {
         Map bookmarkMap = new HashMap();
-        if (RollerConfig.getBooleanProperty("plugins.topictag.ignoreBookmarks")) {
+        if (WebloggerConfig.getBooleanProperty("plugins.topictag.ignoreBookmarks")) {
             return bookmarkMap;
         }
         if (website == null)

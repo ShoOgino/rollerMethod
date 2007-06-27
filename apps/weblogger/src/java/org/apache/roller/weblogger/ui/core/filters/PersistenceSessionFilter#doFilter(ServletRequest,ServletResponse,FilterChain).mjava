@@ -17,7 +17,7 @@
                 WebloggerFactory.getWeblogger().release();
                 
                 // if planet is enabled then release planet backend as well
-                if (RollerConfig.getBooleanProperty("planet.aggregator.enabled")) {
+                if (WebloggerConfig.getBooleanProperty("planet.aggregator.enabled")) {
                     if (PlanetFactory.isBootstrapped()) {
                         PlanetFactory.getPlanet().release();
                     }

@@ -9,7 +9,7 @@
      * @see org.apache.roller.weblogger.ui.core.RollerContext#contextInitialized(javax.servlet.ServletContextEvent)
      */
     public static void initializeCommonTargets() throws WebloggerException {
-        String configuredVal = RollerConfig.getProperty(PINGS_INITIAL_COMMON_TARGETS_PROP);
+        String configuredVal = WebloggerConfig.getProperty(PINGS_INITIAL_COMMON_TARGETS_PROP);
         if (configuredVal == null || configuredVal.trim().length() == 0) {
             if (logger.isDebugEnabled()) {
                 logger.debug("No (or empty) value of " + PINGS_INITIAL_COMMON_TARGETS_PROP + " present in the configuration.  Skipping initialization of commmon targets.");

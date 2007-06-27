@@ -3,11 +3,11 @@
         Date now = new Date();
         
         // okay, first we look for what tasks have been enabled
-        String tasksStr = RollerConfig.getProperty("tasks.enabled");
+        String tasksStr = WebloggerConfig.getProperty("tasks.enabled");
         String[] tasks = StringUtils.stripAll(StringUtils.split(tasksStr, ","));
         for (int i=0; i < tasks.length; i++) {
             
-            String taskClassName = RollerConfig.getProperty("tasks."+tasks[i]+".class");
+            String taskClassName = WebloggerConfig.getProperty("tasks."+tasks[i]+".class");
             if(taskClassName != null) {
                 log.info("Initializing task: "+tasks[i]);
                 

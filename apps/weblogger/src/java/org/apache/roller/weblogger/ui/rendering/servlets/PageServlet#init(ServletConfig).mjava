@@ -8,7 +8,7 @@
         log.info("Initializing PageServlet");
         
         this.excludeOwnerPages = 
-                RollerConfig.getBooleanProperty("cache.excludeOwnerEditPages");
+                WebloggerConfig.getBooleanProperty("cache.excludeOwnerEditPages");
         
         // get a reference to the weblog page cache
         this.weblogPageCache = WeblogPageCache.getInstance();
@@ -18,12 +18,12 @@
         
         // see if built-in referrer processing is enabled
         this.processReferrers = 
-                RollerConfig.getBooleanProperty("referrers.processing.enabled");
+                WebloggerConfig.getBooleanProperty("referrers.processing.enabled");
         
         log.info("Referrer processing enabled = "+this.processReferrers);
         
         // check for possible robot pattern
-        String robotPatternStr = RollerConfig.getProperty("referrer.robotCheck.userAgentPattern");
+        String robotPatternStr = WebloggerConfig.getProperty("referrer.robotCheck.userAgentPattern");
         if (robotPatternStr != null && robotPatternStr.length() > 0) {
             // Parse the pattern, and store the compiled form.
             try {

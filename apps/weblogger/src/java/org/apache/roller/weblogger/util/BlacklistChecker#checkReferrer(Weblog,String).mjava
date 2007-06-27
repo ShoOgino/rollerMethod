@@ -3,7 +3,7 @@
      * @return True if comment matches blacklist term
      */
     public static boolean checkReferrer(Weblog website, String referrerURL) {
-        if (RollerConfig.getBooleanProperty("site.blacklist.enable.referrers")) {
+        if (WebloggerConfig.getBooleanProperty("site.blacklist.enable.referrers")) {
             List stringRules = new ArrayList();
             List regexRules = new ArrayList();
             Blacklist.populateSpamRules(

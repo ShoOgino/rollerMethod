@@ -7,7 +7,7 @@
     private void loadPagePluginClasses() {
         log.debug("Initializing page plugins");
         
-        String pluginStr = RollerConfig.getProperty("plugins.page");
+        String pluginStr = WebloggerConfig.getProperty("plugins.page");
         if (log.isDebugEnabled()) log.debug(pluginStr);
         if (pluginStr != null) {
             String[] plugins = StringUtils.stripAll(

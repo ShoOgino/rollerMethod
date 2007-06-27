@@ -6,7 +6,7 @@
     private AtomHandler createAtomRequestHandler(HttpServletRequest request) 
     throws ServletException {
         log.debug("Creating Atom handler");
-        boolean enabled = RollerConfig.getBooleanProperty(
+        boolean enabled = WebloggerConfig.getBooleanProperty(
             "webservices.atomprotocol.enabled");
         if (!enabled) {
             throw new ServletException("ERROR: Atom protocol not enabled");

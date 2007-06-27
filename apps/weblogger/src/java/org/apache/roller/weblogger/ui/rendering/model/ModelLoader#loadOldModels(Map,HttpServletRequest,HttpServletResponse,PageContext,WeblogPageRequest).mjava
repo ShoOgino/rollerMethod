@@ -9,7 +9,7 @@
             WeblogPageRequest pageRequest) throws WebloggerException {
         
         // Only load old models if it's enabled     
-        if (RollerConfig.getBooleanProperty("rendering.legacyModels.enabled")) { 
+        if (WebloggerConfig.getBooleanProperty("rendering.legacyModels.enabled")) { 
             ContextLoader.setupContext(model, request, response, pageContext, pageRequest);            
         }
     }

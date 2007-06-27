@@ -1,7 +1,7 @@
     public void init(FilterConfig config) throws ServletException {
         
         // is compression enabled?
-        if(RollerConfig.getBooleanProperty("compression.gzipResponse.enabled")) {
+        if(WebloggerConfig.getBooleanProperty("compression.gzipResponse.enabled")) {
             this.enabled = true;
             log.info("Compressed Output ENABLED");
         } else {

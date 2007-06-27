@@ -5,7 +5,7 @@
         
         log.debug("Initializing entry editor plugins");
         
-        String editorStr = RollerConfig.getProperty("plugins.weblogEntryEditors");
+        String editorStr = WebloggerConfig.getProperty("plugins.weblogEntryEditors");
         if (editorStr != null) {
             
             String[] editorList = StringUtils.stripAll(StringUtils.split(editorStr, ","));
@@ -36,7 +36,7 @@
         }
         
         // make sure the default editor is defined
-        String defaultEditorId = RollerConfig.getProperty("plugins.defaultEditor");
+        String defaultEditorId = WebloggerConfig.getProperty("plugins.defaultEditor");
         if(defaultEditorId != null) {
             this.defaultEditor = (WeblogEntryEditor) this.editors.get(defaultEditorId);
         }

@@ -12,7 +12,7 @@
         try {
             // Let's see if there's any user-authentication available from Acegi
             // and retrieve custom user data to pre-populate form.
-            boolean usingSSO = RollerConfig.getBooleanProperty("users.sso.enabled");
+            boolean usingSSO = WebloggerConfig.getBooleanProperty("users.sso.enabled");
             if(usingSSO) {
                 User fromSSO = CustomUserRegistry.getUserDetailsFromAuthentication();
                 if(fromSSO != null) {

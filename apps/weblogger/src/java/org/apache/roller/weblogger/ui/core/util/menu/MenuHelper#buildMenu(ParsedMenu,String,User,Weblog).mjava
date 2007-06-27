@@ -16,9 +16,9 @@
             // does this tab have an enabledProperty?
             boolean includeTab = true;
             if(configTab.getEnabledProperty() != null) {
-                includeTab = RollerConfig.getBooleanProperty(configTab.getEnabledProperty());
+                includeTab = WebloggerConfig.getBooleanProperty(configTab.getEnabledProperty());
             } else if(configTab.getDisabledProperty() != null) {
-                includeTab = ! RollerConfig.getBooleanProperty(configTab.getDisabledProperty());
+                includeTab = ! WebloggerConfig.getBooleanProperty(configTab.getDisabledProperty());
             }
             
             if(includeTab) {
@@ -53,9 +53,9 @@
                     
                     boolean includeItem = true;
                     if(configTabItem.getEnabledProperty() != null) {
-                        includeItem = RollerConfig.getBooleanProperty(configTabItem.getEnabledProperty());
+                        includeItem = WebloggerConfig.getBooleanProperty(configTabItem.getEnabledProperty());
                     } else if(configTabItem.getDisabledProperty() != null) {
-                        includeItem = ! RollerConfig.getBooleanProperty(configTabItem.getDisabledProperty());
+                        includeItem = ! WebloggerConfig.getBooleanProperty(configTabItem.getDisabledProperty());
                     }
                     
                     if(includeItem) {

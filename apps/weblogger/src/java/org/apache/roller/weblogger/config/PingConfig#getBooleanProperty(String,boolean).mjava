@@ -6,7 +6,7 @@
      * @return the configured value or the default if it the configured value is not present.
      */
     private static boolean getBooleanProperty(String propName, boolean defaultValue) {
-        String configuredVal = RollerConfig.getProperty(propName);
+        String configuredVal = WebloggerConfig.getProperty(propName);
         if (configuredVal == null) {
             if (logger.isDebugEnabled()) {
                 logger.debug("PingConfig property '" + propName + "' is not present in the configuration.  Using default value: " + defaultValue);

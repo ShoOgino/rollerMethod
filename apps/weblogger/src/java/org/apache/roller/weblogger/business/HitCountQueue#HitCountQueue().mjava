@@ -1,7 +1,7 @@
     // non-instantiable because we are a singleton
     private HitCountQueue() {
         
-        String sleep = RollerConfig.getProperty("hitcount.queue.sleepTime", "180");
+        String sleep = WebloggerConfig.getProperty("hitcount.queue.sleepTime", "180");
         
         try {
             // multiply by 1000 because we expect input in seconds

@@ -1,8 +1,8 @@
     public void init(FilterConfig filterConfig) {
         
         // lookup set of request mappers we are going to use
-        String rollerMappers = RollerConfig.getProperty("rendering.rollerRequestMappers");
-        String userMappers = RollerConfig.getProperty("rendering.userRequestMappers");
+        String rollerMappers = WebloggerConfig.getProperty("rendering.rollerRequestMappers");
+        String userMappers = WebloggerConfig.getProperty("rendering.userRequestMappers");
         
         // instantiate user defined request mapper classes
         if(userMappers != null && userMappers.trim().length() > 0) {

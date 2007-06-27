@@ -22,11 +22,11 @@
                             if (enabled) {
                                 // are passwords encrypted?
                                 String encrypted =
-                                        RollerConfig.getProperty("passwds.encryption.enabled");
+                                        WebloggerConfig.getProperty("passwds.encryption.enabled");
                                 password = userPass.substring(p+1);
                                 if ("true".equalsIgnoreCase(encrypted)) {
                                     password = Utilities.encodePassword(password,
-                                            RollerConfig.getProperty("passwds.encryption.algorithm"));
+                                            WebloggerConfig.getProperty("passwds.encryption.algorithm"));
                                 }
                                 valid = user.getPassword().equals(password);
                             }

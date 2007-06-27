@@ -1,9 +1,9 @@
     /** Constructor */
     private NewsfeedCache() {
         // lookup the props we need
-        String enabled = RollerConfig.getProperty("aggregator.enabled");
-        String usecache = RollerConfig.getProperty("aggregator.cache.enabled");
-        String cachetime = RollerConfig.getProperty("aggregator.cache.timeout");
+        String enabled = WebloggerConfig.getProperty("aggregator.enabled");
+        String usecache = WebloggerConfig.getProperty("aggregator.cache.enabled");
+        String cachetime = WebloggerConfig.getProperty("aggregator.cache.timeout");
         
         if("true".equalsIgnoreCase(enabled))
             this.aggregator_enabled = true;

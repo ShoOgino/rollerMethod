@@ -25,20 +25,20 @@
         // we leave it here for now to allow users to keep writing
         // uploads into their webapp context, but this is a bad idea
         //
-        // also, the RollerConfig.setUploadsDir() method is smart
+        // also, the WebloggerConfig.setUploadsDir() method is smart
         // enough to disregard this call unless the uploads.path
         // is set to ${webapp.context}
-        RollerConfig.setUploadsDir(ctxPath);
+        WebloggerConfig.setUploadsDir(ctxPath);
         
         // try setting the themes path to <context>/themes
         // NOTE: this should go away at some point
         // we leave it here for now to allow users to keep using
         // themes in their webapp context, but this is a bad idea
         //
-        // also, the RollerConfig.setThemesDir() method is smart
+        // also, the WebloggerConfig.setThemesDir() method is smart
         // enough to disregard this call unless the themes.dir
         // is set to ${webapp.context}
-        RollerConfig.setThemesDir(servletContext.getRealPath("/")+File.separator+"themes");
+        WebloggerConfig.setThemesDir(servletContext.getRealPath("/")+File.separator+"themes");
         
         
         // Now prepare the core services of the app so we can bootstrap
@@ -70,7 +70,7 @@
             
             // Initialize Planet if necessary
             if (WebloggerFactory.isBootstrapped()) {
-                if (RollerConfig.getBooleanProperty("planet.aggregator.enabled")) {
+                if (WebloggerConfig.getBooleanProperty("planet.aggregator.enabled")) {
                     
                     // Now prepare the core services of planet so we can bootstrap it
                     try {

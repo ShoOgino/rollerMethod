@@ -1,7 +1,7 @@
     public String execute() {
         
         // if group blogging is disabled then you can't change permissions
-        if (!RollerConfig.getBooleanProperty("groupblogging.enabled")) {
+        if (!WebloggerConfig.getBooleanProperty("groupblogging.enabled")) {
             // TODO: i18n
             addError("invitations disabled");
             return SUCCESS;
