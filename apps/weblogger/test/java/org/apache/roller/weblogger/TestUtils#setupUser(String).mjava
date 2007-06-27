@@ -15,11 +15,11 @@
         testUser.setEnabled(Boolean.TRUE);
         
         // store the user
-        UserManager mgr = WebloggerFactory.getRoller().getUserManager();
+        UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
         mgr.addUser(testUser);
         
         // flush to db
-        WebloggerFactory.getRoller().flush();
+        WebloggerFactory.getWeblogger().flush();
         
         // query for the user to make sure we return the persisted object
         User user = mgr.getUserByUserName(username);

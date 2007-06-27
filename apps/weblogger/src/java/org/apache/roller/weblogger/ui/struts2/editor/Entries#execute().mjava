@@ -9,7 +9,7 @@
         try {
             String status = getBean().getStatus();
             
-            WeblogManager wmgr = WebloggerFactory.getRoller().getWeblogManager();
+            WeblogManager wmgr = WebloggerFactory.getWeblogger().getWeblogManager();
             List<WeblogEntry> rawEntries = wmgr.getWeblogEntries(
                     getActionWeblog(),
                     null,

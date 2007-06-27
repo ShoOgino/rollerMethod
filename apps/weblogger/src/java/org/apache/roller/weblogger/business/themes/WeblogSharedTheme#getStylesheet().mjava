@@ -11,7 +11,7 @@
         ThemeTemplate stylesheet = this.theme.getStylesheet();
         if(stylesheet != null) {
             // now try getting custom version from weblog
-            UserManager umgr = WebloggerFactory.getRoller().getUserManager();
+            UserManager umgr = WebloggerFactory.getWeblogger().getUserManager();
             ThemeTemplate override = umgr.getPageByLink(this.weblog, stylesheet.getLink());
             if(override != null) {
                 stylesheet = override;

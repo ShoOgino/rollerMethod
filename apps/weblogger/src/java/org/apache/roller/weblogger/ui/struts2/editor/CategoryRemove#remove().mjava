@@ -4,16 +4,16 @@
     public String remove() {
         
         if(getCategory() != null) try {
-            WeblogManager wmgr = WebloggerFactory.getRoller().getWeblogManager();
+            WeblogManager wmgr = WebloggerFactory.getWeblogger().getWeblogManager();
             
             if(getTargetCategoryId() != null) {
                 WeblogCategory target = wmgr.getWeblogCategory(getTargetCategoryId());
                 wmgr.moveWeblogCategoryContents(getCategory(), target);
-                WebloggerFactory.getRoller().flush();
+                WebloggerFactory.getWeblogger().flush();
             }
             
             wmgr.removeWeblogCategory(getCategory());
-            WebloggerFactory.getRoller().flush();
+            WebloggerFactory.getWeblogger().flush();
             
             // notify cache
             CacheManager.invalidate(getCategory());

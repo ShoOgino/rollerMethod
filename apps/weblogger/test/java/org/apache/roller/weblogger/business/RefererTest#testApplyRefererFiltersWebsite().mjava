@@ -2,14 +2,14 @@
         
         log.info("Test apply referers (weblog)");
         
-        RefererManager rmgr = WebloggerFactory.getRoller().getRefererManager();
+        RefererManager rmgr = WebloggerFactory.getWeblogger().getRefererManager();
         
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         List refs = rmgr.getReferers(testWeblog);
         assertEquals(count, refs.size());
         String origWords = null;
         
-        UserManager umgr = WebloggerFactory.getRoller().getUserManager();
+        UserManager umgr = WebloggerFactory.getWeblogger().getUserManager();
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         origWords = testWeblog.getBlacklist();
         testWeblog.setBlacklist("test");

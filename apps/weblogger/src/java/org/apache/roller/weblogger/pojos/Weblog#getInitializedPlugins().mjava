@@ -4,7 +4,7 @@
     public Map getInitializedPlugins() {
         if (initializedPlugins == null) {
             try {
-                Weblogger roller = WebloggerFactory.getRoller();
+                Weblogger roller = WebloggerFactory.getWeblogger();
                 PluginManager ppmgr = roller.getPagePluginManager();
                 initializedPlugins = ppmgr.getWeblogEntryPlugins(this); 
             } catch (Exception e) {

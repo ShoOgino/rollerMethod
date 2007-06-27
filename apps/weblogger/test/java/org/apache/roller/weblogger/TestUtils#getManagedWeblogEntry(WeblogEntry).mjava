@@ -2,7 +2,7 @@
      * Convenience method that returns managed copy of given WeblogEntry.
      */
     public static WeblogEntry getManagedWeblogEntry(WeblogEntry weblogEntry) throws WebloggerException {
-        WeblogManager mgr = WebloggerFactory.getRoller().getWeblogManager();
+        WeblogManager mgr = WebloggerFactory.getWeblogger().getWeblogManager();
         return mgr.getWeblogEntry(weblogEntry.getId());
     }
 

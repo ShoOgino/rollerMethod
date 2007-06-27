@@ -1,6 +1,6 @@
     private WeblogEntry getNextEntry() {
         if (nextEntry == null) try {
-            Weblogger roller = WebloggerFactory.getRoller();
+            Weblogger roller = WebloggerFactory.getWeblogger();
             WeblogManager wmgr = roller.getWeblogManager();
             nextEntry = wmgr.getNextEntry(currEntry, null, locale);
             // make sure that entry is published and not to future

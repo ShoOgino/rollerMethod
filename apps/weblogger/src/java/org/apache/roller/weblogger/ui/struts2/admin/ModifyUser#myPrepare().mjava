@@ -4,14 +4,14 @@
         // load the user object we are modifying
         if(getUserName() != null) {
             try {
-                UserManager mgr = WebloggerFactory.getRoller().getUserManager();
+                UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
                 setUser(mgr.getUserByUserName(getUserName()));
             } catch(Exception e) {
                 log.error("Error looking up user - "+getUserName(), e);
             }
         } else if(getBean().getId() != null) {
             try {
-                UserManager mgr = WebloggerFactory.getRoller().getUserManager();
+                UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
                 setUser(mgr.getUser(getBean().getId()));
             } catch(Exception e) {
                 log.error("Error looking up user - "+getBean().getId(), e);

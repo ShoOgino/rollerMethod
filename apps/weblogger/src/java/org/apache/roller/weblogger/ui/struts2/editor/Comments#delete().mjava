@@ -4,7 +4,7 @@
     public String delete() {
         
         try {
-            WeblogManager wmgr = WebloggerFactory.getRoller().getWeblogManager();
+            WeblogManager wmgr = WebloggerFactory.getWeblogger().getWeblogManager();
             int deleted = wmgr.removeMatchingComments(
                     getActionWeblog(),
                     null,

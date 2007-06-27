@@ -7,7 +7,7 @@
     public List getRecentComments(int maxCount) {
         List recentComments = new ArrayList();
         try {
-            WeblogManager wmgr = WebloggerFactory.getRoller().getWeblogManager();
+            WeblogManager wmgr = WebloggerFactory.getWeblogger().getWeblogManager();
             List recent = wmgr.getComments(
                     
                     mWebsite,

@@ -9,11 +9,11 @@
         testPing.setPingUrl("http://localhost/testCommonPing");
         
         // store ping
-        PingTargetManager pingMgr = WebloggerFactory.getRoller().getPingTargetManager();
+        PingTargetManager pingMgr = WebloggerFactory.getWeblogger().getPingTargetManager();
         pingMgr.savePingTarget(testPing);
         
         // flush to db
-        WebloggerFactory.getRoller().flush();
+        WebloggerFactory.getWeblogger().flush();
         
         // query for it
         PingTarget ping = pingMgr.getPingTarget(testPing.getId());

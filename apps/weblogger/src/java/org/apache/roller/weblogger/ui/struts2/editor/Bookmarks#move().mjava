@@ -4,7 +4,7 @@
     public String move() {
         
         try {
-            BookmarkManager bmgr = WebloggerFactory.getRoller().getBookmarkManager();
+            BookmarkManager bmgr = WebloggerFactory.getWeblogger().getBookmarkManager();
             
             log.debug("Moving folders and bookmarks to folder - "+getTargetFolderId());
             
@@ -37,7 +37,7 @@
             }
             
             // flush changes
-            WebloggerFactory.getRoller().flush();
+            WebloggerFactory.getWeblogger().flush();
             
             // notify caches
             CacheManager.invalidate(getActionWeblog());

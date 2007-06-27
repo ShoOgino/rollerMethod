@@ -11,7 +11,7 @@
         if(stylesheet != null) {
             log.debug("custom stylesheet path is - "+stylesheet.getLink());
             try {
-                UserManager mgr = WebloggerFactory.getRoller().getUserManager();
+                UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
                 setTemplate(mgr.getPageByLink(getActionWeblog(), stylesheet.getLink()));
                 
                 if(getTemplate() == null) {
@@ -31,7 +31,7 @@
                     stylesheetTmpl.setTemplateLanguage(stylesheet.getTemplateLanguage());
                     
                     mgr.savePage(stylesheetTmpl);
-                    WebloggerFactory.getRoller().flush();
+                    WebloggerFactory.getWeblogger().flush();
                     
                     setTemplate(stylesheetTmpl);
                 }

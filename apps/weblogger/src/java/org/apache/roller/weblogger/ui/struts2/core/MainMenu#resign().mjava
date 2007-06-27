@@ -3,17 +3,17 @@
         User user = getAuthenticatedUser();
         
         try {
-            UserManager mgr = WebloggerFactory.getRoller().getUserManager();
+            UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
             Weblog website = mgr.getWebsite(getWebsiteId());
             
-            UserManager userMgr = WebloggerFactory.getRoller().getUserManager();
+            UserManager userMgr = WebloggerFactory.getWeblogger().getUserManager();
             WeblogPermission perms = userMgr.getPermissions(website, user);
             
             if (perms != null) {
                 // TODO ROLLER_2.0: notify website members that user has resigned
                 // TODO EXCEPTIONS: better exception handling
                 userMgr.removePermissions(perms);
-                WebloggerFactory.getRoller().flush();
+                WebloggerFactory.getWeblogger().flush();
             }
             
             addMessage("yourWebsites.resigned", perms.getWebsite().getHandle());

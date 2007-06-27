@@ -5,9 +5,9 @@
         
         if(getTemplate() != null) try {
             if(!getTemplate().isRequired()) {
-                UserManager umgr = WebloggerFactory.getRoller().getUserManager();
+                UserManager umgr = WebloggerFactory.getWeblogger().getUserManager();
                 umgr.removePage(getTemplate());
-                WebloggerFactory.getRoller().flush();
+                WebloggerFactory.getWeblogger().flush();
                 
                 // notify cache
                 CacheManager.invalidate(getTemplate());

@@ -4,13 +4,13 @@
     public static void teardownHitCount(String id) throws Exception {
         
         // query for it
-        WeblogManager mgr = WebloggerFactory.getRoller().getWeblogManager();
+        WeblogManager mgr = WebloggerFactory.getWeblogger().getWeblogManager();
         WeblogHitCount testCount = mgr.getHitCount(id);
         
         // remove
         mgr.removeHitCount(testCount);
         
         // flush to db
-        WebloggerFactory.getRoller().flush();
+        WebloggerFactory.getWeblogger().flush();
     }
 

@@ -7,9 +7,9 @@
             try {
                 getPingTarget().setAutoEnabled(true);
                 
-                PingTargetManager pingTargetMgr = WebloggerFactory.getRoller().getPingTargetManager();
+                PingTargetManager pingTargetMgr = WebloggerFactory.getWeblogger().getPingTargetManager();
                 pingTargetMgr.savePingTarget(getPingTarget());
-                WebloggerFactory.getRoller().flush();
+                WebloggerFactory.getWeblogger().flush();
             } catch (Exception ex) {
                 getLogger().error("Error saving ping target", ex);
                 // TODO: i18n

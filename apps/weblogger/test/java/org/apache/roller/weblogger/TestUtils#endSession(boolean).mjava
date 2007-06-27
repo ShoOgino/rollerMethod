@@ -9,9 +9,9 @@
     public static void endSession(boolean flush) throws Exception {
         
         if(flush) {
-            WebloggerFactory.getRoller().flush();
+            WebloggerFactory.getWeblogger().flush();
         }
         
-        WebloggerFactory.getRoller().release();
+        WebloggerFactory.getWeblogger().release();
     }
 

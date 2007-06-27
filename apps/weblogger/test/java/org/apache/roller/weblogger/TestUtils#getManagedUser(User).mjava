@@ -2,7 +2,7 @@
      * Convenience method that returns managed copy of given user.
      */
     public static User getManagedUser(User user) throws WebloggerException {
-        UserManager mgr = WebloggerFactory.getRoller().getUserManager();
+        UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
         return mgr.getUser(user.getId());
     }
 

@@ -25,7 +25,7 @@
             try {
                 Timestamp current = new Timestamp(System.currentTimeMillis());
                 
-                Weblogger roller = WebloggerFactory.getRoller();
+                Weblogger roller = WebloggerFactory.getWeblogger();
                 WeblogManager weblogMgr = roller.getWeblogManager();
                 WeblogEntry entry = weblogMgr.getWeblogEntry(postid);
                 entry.setText(content);

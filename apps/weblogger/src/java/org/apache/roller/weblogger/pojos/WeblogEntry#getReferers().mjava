@@ -4,7 +4,7 @@
     public List getReferers() {
         List referers = null;
         try {
-            referers = WebloggerFactory.getRoller().getRefererManager().getReferersToEntry(getId());
+            referers = WebloggerFactory.getWeblogger().getRefererManager().getReferersToEntry(getId());
         } catch (WebloggerException e) {
             mLogger.error("Unexpected exception", e);
         }

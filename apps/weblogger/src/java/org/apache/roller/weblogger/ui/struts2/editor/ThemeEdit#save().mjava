@@ -14,7 +14,7 @@
                 // do theme import if necessary
                 SharedTheme importTheme = null;
                 if(isImportTheme() && !StringUtils.isEmpty(getImportThemeId())) try {
-                    ThemeManager themeMgr = WebloggerFactory.getRoller().getThemeManager();
+                    ThemeManager themeMgr = WebloggerFactory.getWeblogger().getThemeManager();
                     importTheme = themeMgr.getTheme(getImportThemeId());
                     themeMgr.importTheme(getActionWeblog(), importTheme);
                 } catch(WebloggerException re) {
@@ -28,9 +28,9 @@
                     log.debug("Saving custom theme for weblog "+weblog.getHandle());
                     
                     // save updated weblog and flush
-                    UserManager userMgr = WebloggerFactory.getRoller().getUserManager();
+                    UserManager userMgr = WebloggerFactory.getWeblogger().getUserManager();
                     userMgr.saveWebsite(weblog);
-                    WebloggerFactory.getRoller().flush();
+                    WebloggerFactory.getWeblogger().flush();
                     
                     // make sure to flush the page cache so ppl can see the change
                     CacheManager.invalidate(weblog);
@@ -65,7 +65,7 @@
                 
             } else {
                 try {
-                    ThemeManager themeMgr = WebloggerFactory.getRoller().getThemeManager();
+                    ThemeManager themeMgr = WebloggerFactory.getWeblogger().getThemeManager();
                     newTheme = themeMgr.getTheme(getThemeId());
                     
                     if(!newTheme.isEnabled()) {
@@ -85,9 +85,9 @@
                 log.debug("Saving theme "+getThemeId()+" for weblog "+weblog.getHandle());
                 
                 // save updated weblog and flush
-                UserManager userMgr = WebloggerFactory.getRoller().getUserManager();
+                UserManager userMgr = WebloggerFactory.getWeblogger().getUserManager();
                 userMgr.saveWebsite(weblog);
-                WebloggerFactory.getRoller().flush();
+                WebloggerFactory.getWeblogger().flush();
                 
                 // make sure to flush the page cache so ppl can see the change
                 CacheManager.invalidate(weblog);

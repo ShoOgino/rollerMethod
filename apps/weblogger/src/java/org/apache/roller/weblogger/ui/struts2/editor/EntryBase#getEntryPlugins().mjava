@@ -1,7 +1,7 @@
     public List<WeblogEntryPlugin> getEntryPlugins() {
         List<WeblogEntryPlugin> availablePlugins = Collections.EMPTY_LIST;
         try {
-            PluginManager ppmgr = WebloggerFactory.getRoller().getPagePluginManager();
+            PluginManager ppmgr = WebloggerFactory.getWeblogger().getPagePluginManager();
             Map<String, WeblogEntryPlugin> plugins = ppmgr.getWeblogEntryPlugins(getActionWeblog());
             
             if(plugins.size() > 0) {

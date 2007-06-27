@@ -1,7 +1,7 @@
     public long getWeblogCount() {
         long count = 0;
         try {
-            Weblogger roller = WebloggerFactory.getRoller();
+            Weblogger roller = WebloggerFactory.getWeblogger();
             UserManager mgr = roller.getUserManager();
             count = mgr.getWeblogCount();            
         } catch (WebloggerException e) {

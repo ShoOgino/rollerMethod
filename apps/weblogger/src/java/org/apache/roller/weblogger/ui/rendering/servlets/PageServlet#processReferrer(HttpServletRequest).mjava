@@ -98,7 +98,7 @@
             referrer.setWeblogDateString(pageRequest.getWeblogDate());
             
             ReferrerQueueManager refQueue =
-                    WebloggerFactory.getRoller().getReferrerQueueManager();
+                    WebloggerFactory.getWeblogger().getReferrerQueueManager();
             refQueue.processReferrer(referrer);
         } catch(Exception e) {
             log.error("Error processing referrer", e);

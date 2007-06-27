@@ -8,7 +8,7 @@
         
         if (!hasActionErrors()) try {
             
-            UserManager mgr = WebloggerFactory.getRoller().getUserManager();
+            UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
             
             // copy form data into new user pojo
             User ud = new User();
@@ -20,7 +20,7 @@
             // If user set both password and passwordConfirm then reset password
             if (!StringUtils.isEmpty(getBean().getPasswordText()) && 
                     !StringUtils.isEmpty(getBean().getPasswordConfirm())) {
-                ud.resetPassword(WebloggerFactory.getRoller(),
+                ud.resetPassword(WebloggerFactory.getWeblogger(),
                         getBean().getPasswordText(), getBean().getPasswordConfirm());
             }
             
@@ -57,7 +57,7 @@
             
             // save new user
             mgr.addUser(ud);
-            WebloggerFactory.getRoller().flush();
+            WebloggerFactory.getWeblogger().flush();
             
             // now send activation email if necessary
             if (activationEnabled && ud.getActivationCode() != null) {

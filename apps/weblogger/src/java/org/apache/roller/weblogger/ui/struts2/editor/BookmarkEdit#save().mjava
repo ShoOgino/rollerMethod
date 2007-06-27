@@ -13,9 +13,9 @@
             
             getBean().copyTo(getBookmark());
             
-            BookmarkManager bmgr = WebloggerFactory.getRoller().getBookmarkManager();
+            BookmarkManager bmgr = WebloggerFactory.getWeblogger().getBookmarkManager();
             bmgr.saveBookmark(getBookmark());
-            WebloggerFactory.getRoller().flush();
+            WebloggerFactory.getWeblogger().flush();
             
             CacheManager.invalidate(getBookmark());
             

@@ -6,7 +6,7 @@
     public List getComments(boolean ignoreSpam, boolean approvedOnly) {
         List list = new ArrayList();
         try {
-            WeblogManager wmgr = WebloggerFactory.getRoller().getWeblogManager();
+            WeblogManager wmgr = WebloggerFactory.getWeblogger().getWeblogManager();
             return wmgr.getComments(
                     
                     getWebsite(),

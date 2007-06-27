@@ -2,7 +2,7 @@
     public WeblogWrapper getWeblog(String handle) {
         WeblogWrapper wrappedWebsite = null;
         try {            
-            Weblogger roller = WebloggerFactory.getRoller();
+            Weblogger roller = WebloggerFactory.getWeblogger();
             UserManager umgr = roller.getUserManager();
             Weblog website = umgr.getWebsiteByHandle(handle);
             wrappedWebsite = WeblogWrapper.wrap(website);

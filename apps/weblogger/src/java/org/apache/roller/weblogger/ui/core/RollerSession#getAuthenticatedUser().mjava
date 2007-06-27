@@ -6,7 +6,7 @@
         User authenticUser = null;
         if(userId != null) {
             try {
-                UserManager mgr = WebloggerFactory.getRoller().getUserManager();
+                UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
                 authenticUser = mgr.getUser(userId);
             } catch (WebloggerException ex) {
                 log.warn("Error looking up authenticated user "+userId, ex);

@@ -1,7 +1,7 @@
     public void testWeblogStats() throws Exception {
         
-        WeblogManager wmgr = WebloggerFactory.getRoller().getWeblogManager();
-        UserManager umgr = WebloggerFactory.getRoller().getUserManager();
+        WeblogManager wmgr = WebloggerFactory.getWeblogger().getWeblogManager();
+        UserManager umgr = WebloggerFactory.getWeblogger().getUserManager();
         
         User user1 = TestUtils.setupUser("statuser1");
         Weblog blog1 = TestUtils.setupWeblog("statblog1", user1);

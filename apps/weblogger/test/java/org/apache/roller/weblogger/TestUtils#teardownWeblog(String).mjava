@@ -4,13 +4,13 @@
     public static void teardownWeblog(String id) throws Exception {
         
         // lookup the weblog
-        UserManager mgr = WebloggerFactory.getRoller().getUserManager();
+        UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
         Weblog weblog = mgr.getWebsite(id);
         
         // remove the weblog
         mgr.removeWebsite(weblog);
         
         // flush to db
-        WebloggerFactory.getRoller().flush();
+        WebloggerFactory.getWeblogger().flush();
     }
 

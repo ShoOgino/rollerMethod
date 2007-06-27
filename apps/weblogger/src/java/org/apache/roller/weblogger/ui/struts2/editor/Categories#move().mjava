@@ -1,7 +1,7 @@
     public String move() {
         
         try {
-            WeblogManager wmgr = WebloggerFactory.getRoller().getWeblogManager();
+            WeblogManager wmgr = WebloggerFactory.getWeblogger().getWeblogManager();
             
             log.debug("Moving categories to category - "+getTargetCategoryId());
             
@@ -23,7 +23,7 @@
                 }
                 
                 // flush changes
-                WebloggerFactory.getRoller().flush();
+                WebloggerFactory.getWeblogger().flush();
             }
             
         } catch (WebloggerException ex) {

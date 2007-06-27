@@ -6,7 +6,7 @@
     public List getPinnedWeblogEntries(int length) {
         List results = new ArrayList();
         try {            
-            Weblogger roller = WebloggerFactory.getRoller();
+            Weblogger roller = WebloggerFactory.getWeblogger();
             WeblogManager wmgr = roller.getWeblogManager();
             List weblogs = wmgr.getWeblogEntriesPinnedToMain(new Integer(length));
             for (Iterator it = weblogs.iterator(); it.hasNext();) {

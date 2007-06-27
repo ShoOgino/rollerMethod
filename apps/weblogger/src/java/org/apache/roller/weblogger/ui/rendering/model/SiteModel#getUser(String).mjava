@@ -2,7 +2,7 @@
     public UserWrapper getUser(String username) {
         UserWrapper wrappedUser = null;
         try {            
-            Weblogger roller = WebloggerFactory.getRoller();
+            Weblogger roller = WebloggerFactory.getWeblogger();
             UserManager umgr = roller.getUserManager();
             User user = umgr.getUserByUserName(username, Boolean.TRUE);
             wrappedUser = UserWrapper.wrap(user);

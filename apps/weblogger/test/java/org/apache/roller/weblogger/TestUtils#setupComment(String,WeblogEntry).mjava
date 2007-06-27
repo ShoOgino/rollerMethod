@@ -15,11 +15,11 @@
         testComment.setStatus(WeblogEntryComment.APPROVED);
         
         // store testComment
-        WeblogManager mgr = WebloggerFactory.getRoller().getWeblogManager();
+        WeblogManager mgr = WebloggerFactory.getWeblogger().getWeblogManager();
         mgr.saveComment(testComment);
         
         // flush to db
-        WebloggerFactory.getRoller().flush();
+        WebloggerFactory.getWeblogger().flush();
         
         // query for object
         WeblogEntryComment comment = mgr.getComment(testComment.getId());

@@ -6,7 +6,7 @@
     public String save() {
         
         if(!hasActionErrors()) try {
-            WeblogManager weblogMgr = WebloggerFactory.getRoller().getWeblogManager();
+            WeblogManager weblogMgr = WebloggerFactory.getWeblogger().getWeblogManager();
             
             WeblogEntry entry = new WeblogEntry();
             entry.setCreator(getAuthenticatedUser());
@@ -60,7 +60,7 @@
             
             log.debug("Saving entry");
             weblogMgr.saveWeblogEntry(entry);
-            WebloggerFactory.getRoller().flush();
+            WebloggerFactory.getWeblogger().flush();
             
             // notify search of the new entry
             reindexEntry(entry);
@@ -70,7 +70,7 @@
             
             // Queue applicable pings for this update.
             if(entry.isPublished()) {
-                WebloggerFactory.getRoller().getAutopingManager().queueApplicableAutoPings(entry);
+                WebloggerFactory.getWeblogger().getAutopingManager().queueApplicableAutoPings(entry);
             }
             
             if(entry.isPending()) {

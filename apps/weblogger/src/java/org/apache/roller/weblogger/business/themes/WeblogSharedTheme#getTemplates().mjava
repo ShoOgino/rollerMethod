@@ -8,7 +8,7 @@
         // first get the pages from the db
         try {
             ThemeTemplate template = null;
-            UserManager userMgr = WebloggerFactory.getRoller().getUserManager();
+            UserManager userMgr = WebloggerFactory.getWeblogger().getUserManager();
             Iterator dbPages = userMgr.getPages(this.weblog).iterator();
             while(dbPages.hasNext()) {
                 template = (ThemeTemplate) dbPages.next();

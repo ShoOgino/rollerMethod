@@ -6,7 +6,7 @@
     public WeblogCategory getWeblogCategory(String categoryPath) {
         WeblogCategory category = null;
         try {
-            Weblogger roller = WebloggerFactory.getRoller();
+            Weblogger roller = WebloggerFactory.getWeblogger();
             WeblogManager wmgr = roller.getWeblogManager();
             if (categoryPath != null && !categoryPath.equals("nil")) {
                 category = wmgr.getWeblogCategoryByPath(this, categoryPath);

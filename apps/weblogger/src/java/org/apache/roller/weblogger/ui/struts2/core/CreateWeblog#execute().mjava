@@ -5,7 +5,7 @@
         
         try {
             if (!RollerConfig.getBooleanProperty("groupblogging.enabled")) {
-                UserManager mgr = WebloggerFactory.getRoller().getUserManager();
+                UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
                 List permissions = mgr.getAllPermissions(user);
                 if (permissions.size() > 0) {
                     // sneaky user trying to get around 1 blog limit that applies

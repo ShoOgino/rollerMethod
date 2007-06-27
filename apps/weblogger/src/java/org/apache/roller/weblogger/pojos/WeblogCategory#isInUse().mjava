@@ -4,7 +4,7 @@
      */
     public boolean isInUse() {
         try {
-            return WebloggerFactory.getRoller().getWeblogManager().isWeblogCategoryInUse(this);
+            return WebloggerFactory.getWeblogger().getWeblogManager().isWeblogCategoryInUse(this);
         } catch (WebloggerException e) {
             throw new RuntimeException(e);
         }

@@ -1,14 +1,14 @@
     public String accept() {
         
         try {
-            UserManager userMgr = WebloggerFactory.getRoller().getUserManager();
+            UserManager userMgr = WebloggerFactory.getWeblogger().getUserManager();
             WeblogPermission perms = userMgr.getPermissions(getInviteId());
             if (perms != null) {        
                 // TODO ROLLER_2.0: notify inviter that invitee has accepted invitation
                 // TODO EXCEPTIONS: better exception handling
                 perms.setPending(false);
                 userMgr.savePermissions(perms);
-                WebloggerFactory.getRoller().flush();
+                WebloggerFactory.getWeblogger().flush();
 
                 addMessage("yourWebsites.accepted", perms.getWebsite().getHandle());
             } else {

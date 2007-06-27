@@ -4,14 +4,14 @@
     public static AutoPing setupAutoPing(PingTarget ping, Weblog weblog)
             throws Exception {
         
-        AutoPingManager mgr = WebloggerFactory.getRoller().getAutopingManager();
+        AutoPingManager mgr = WebloggerFactory.getWeblogger().getAutopingManager();
         
         // store auto ping
         AutoPing autoPing = new AutoPing(null, ping, getManagedWebsite(weblog) );
         mgr.saveAutoPing(autoPing);
         
         // flush to db
-        WebloggerFactory.getRoller().flush();
+        WebloggerFactory.getWeblogger().flush();
         
         // query for it
         autoPing = mgr.getAutoPing(autoPing.getId());

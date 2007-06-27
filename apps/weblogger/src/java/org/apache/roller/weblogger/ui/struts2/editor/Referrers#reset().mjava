@@ -4,9 +4,9 @@
     public String reset() {
         
         try {
-            RefererManager refmgr = WebloggerFactory.getRoller().getRefererManager();
+            RefererManager refmgr = WebloggerFactory.getWeblogger().getRefererManager();
             refmgr.clearReferrers(getActionWeblog());
-            WebloggerFactory.getRoller().flush();
+            WebloggerFactory.getWeblogger().flush();
             
             CacheManager.invalidate(getActionWeblog());
         } catch (Exception ex) {

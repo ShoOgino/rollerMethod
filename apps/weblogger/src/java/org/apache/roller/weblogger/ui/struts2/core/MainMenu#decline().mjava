@@ -1,13 +1,13 @@
     public String decline() {
         
         try {
-            UserManager userMgr = WebloggerFactory.getRoller().getUserManager();
+            UserManager userMgr = WebloggerFactory.getWeblogger().getUserManager();
             WeblogPermission perms = userMgr.getPermissions(getInviteId());
             if (perms != null) {
                 // TODO ROLLER_2.0: notify inviter that invitee has declined invitation
                 // TODO EXCEPTIONS: better exception handling here
                 userMgr.removePermissions(perms);
-                WebloggerFactory.getRoller().flush();
+                WebloggerFactory.getWeblogger().flush();
 
                 addMessage("yourWebsites.declined", perms.getWebsite().getHandle());
             } else {

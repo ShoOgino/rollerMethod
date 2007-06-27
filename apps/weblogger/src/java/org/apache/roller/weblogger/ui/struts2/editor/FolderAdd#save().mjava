@@ -21,9 +21,9 @@
             getFolder().addFolder(newFolder);
             
             // save changes
-            BookmarkManager bmgr = WebloggerFactory.getRoller().getBookmarkManager();
+            BookmarkManager bmgr = WebloggerFactory.getWeblogger().getBookmarkManager();
             bmgr.saveFolder(newFolder);
-            WebloggerFactory.getRoller().flush();
+            WebloggerFactory.getWeblogger().flush();
             
             // notify caches
             CacheManager.invalidate(newFolder);
