@@ -20,7 +20,7 @@
         }
         
         // if this came from site-wide frontpage then skip it
-        if(RollerRuntimeConfig.isSiteWideWeblog(pageRequest.getWeblogHandle())) {
+        if(WebloggerRuntimeConfig.isSiteWideWeblog(pageRequest.getWeblogHandle())) {
             return false;
         }
         
@@ -56,7 +56,7 @@
             
             // Base page URLs, with and without www.
             String basePageUrlWWW =
-                    RollerRuntimeConfig.getAbsoluteContextURL() + "/" + pageRequest.getWeblogHandle();
+                    WebloggerRuntimeConfig.getAbsoluteContextURL() + "/" + pageRequest.getWeblogHandle();
             String basePageUrl = basePageUrlWWW;
             if ( basePageUrlWWW.startsWith("http://www.") ) {
                 // chop off the http://www.

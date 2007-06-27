@@ -21,7 +21,7 @@
         SearchOperation search = new SearchOperation(indexMgr);
         search.setTerm(searchRequest.getQuery());
         
-        if(RollerRuntimeConfig.isSiteWideWeblog(searchRequest.getWeblogHandle())) {
+        if(WebloggerRuntimeConfig.isSiteWideWeblog(searchRequest.getWeblogHandle())) {
             this.websiteSpecificSearch = false;
         } else {
             search.setWebsiteHandle(searchRequest.getWeblogHandle());

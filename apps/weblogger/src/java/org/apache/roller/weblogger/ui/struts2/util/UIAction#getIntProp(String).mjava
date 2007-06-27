@@ -2,7 +2,7 @@
         // first try static config
         String value = WebloggerConfig.getProperty(key);
         if(value == null) {
-            value = RollerRuntimeConfig.getProperty(key);
+            value = WebloggerRuntimeConfig.getProperty(key);
         }
         
         return (value == null) ? 0 : (new Integer(value)).intValue();

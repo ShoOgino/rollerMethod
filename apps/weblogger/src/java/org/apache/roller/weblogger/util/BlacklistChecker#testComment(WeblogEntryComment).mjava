@@ -9,7 +9,7 @@
         Weblog website = c.getWeblogEntry().getWebsite();
         Blacklist.populateSpamRules(
             website.getBlacklist(), stringRules, regexRules, 
-            RollerRuntimeConfig.getProperty("spam.blacklist"));
+            WebloggerRuntimeConfig.getProperty("spam.blacklist"));
         Blacklist blacklist = Blacklist.getBlacklist();
         if (   blacklist.isBlacklisted(c.getUrl(),     stringRules, regexRules)
             || blacklist.isBlacklisted(c.getEmail(),   stringRules, regexRules)

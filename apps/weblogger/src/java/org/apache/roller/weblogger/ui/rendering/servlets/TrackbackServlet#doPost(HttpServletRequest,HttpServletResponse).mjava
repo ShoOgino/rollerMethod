@@ -15,7 +15,7 @@
         RollerMessages messages = new RollerMessages();
         
         WeblogTrackbackRequest trackbackRequest = null;
-        if (!RollerRuntimeConfig.getBooleanProperty("users.trackbacks.enabled")) {
+        if (!WebloggerRuntimeConfig.getBooleanProperty("users.trackbacks.enabled")) {
             // TODO: i18n
             error = "Trackbacks are disabled for this site";
         } else {
@@ -96,7 +96,7 @@
                 
                 // save, commit, send response
                 if(!WeblogEntryComment.SPAM.equals(comment.getStatus()) ||
-                        !RollerRuntimeConfig.getBooleanProperty("trackbacks.ignoreSpam.enabled")) {
+                        !WebloggerRuntimeConfig.getBooleanProperty("trackbacks.ignoreSpam.enabled")) {
                     
                     WeblogManager mgr = WebloggerFactory.getWeblogger().getWeblogManager();
                     mgr.saveComment(comment);

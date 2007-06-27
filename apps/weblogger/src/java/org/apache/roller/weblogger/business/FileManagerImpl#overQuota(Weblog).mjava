@@ -3,8 +3,8 @@
      */
     public boolean overQuota(Weblog weblog) {
         
-        String maxDir = RollerRuntimeConfig.getProperty("uploads.dir.maxsize");
-        String maxFile = RollerRuntimeConfig.getProperty("uploads.file.maxsize");
+        String maxDir = WebloggerRuntimeConfig.getProperty("uploads.dir.maxsize");
+        String maxFile = WebloggerRuntimeConfig.getProperty("uploads.file.maxsize");
         BigDecimal maxDirSize = new BigDecimal(maxDir); // in megabytes
         BigDecimal maxFileSize = new BigDecimal(maxFile); // in megabytes
         

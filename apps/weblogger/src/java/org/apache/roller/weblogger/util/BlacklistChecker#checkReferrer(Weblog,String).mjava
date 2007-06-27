@@ -8,9 +8,9 @@
             List regexRules = new ArrayList();
             Blacklist.populateSpamRules(
                 website.getBlacklist(), stringRules, regexRules, null);
-            if (RollerRuntimeConfig.getProperty("spam.blacklist") != null) {
+            if (WebloggerRuntimeConfig.getProperty("spam.blacklist") != null) {
                 Blacklist.populateSpamRules(
-                    RollerRuntimeConfig.getProperty("spam.blacklist"), stringRules, regexRules, null);
+                    WebloggerRuntimeConfig.getProperty("spam.blacklist"), stringRules, regexRules, null);
             }
             return Blacklist.matchesRulesOnly(referrerURL, stringRules, regexRules);
         }

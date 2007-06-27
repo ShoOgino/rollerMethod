@@ -7,7 +7,7 @@
             Session session = ((HibernatePersistenceStrategy)strategy).getSession();
             Criteria criteria = session.createCriteria(WeblogReferrer.class);
             
-            String spamwords = RollerRuntimeConfig.getProperty("spam.blacklist");
+            String spamwords = WebloggerRuntimeConfig.getProperty("spam.blacklist");
             
             String[] blacklist = StringUtils.split(
                     StringUtils.deleteWhitespace(spamwords),",");

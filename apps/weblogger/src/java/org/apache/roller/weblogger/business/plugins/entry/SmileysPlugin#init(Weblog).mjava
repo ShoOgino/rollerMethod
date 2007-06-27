@@ -6,7 +6,7 @@
     public synchronized void init(Weblog website) throws WebloggerException {
         // don't do this work if Smileys already loaded
         if (SmileysPlugin.smileyPatterns.length < 1) {
-            String baseURL = RollerRuntimeConfig.getAbsoluteContextURL();
+            String baseURL = WebloggerRuntimeConfig.getAbsoluteContextURL();
             
             Pattern[] tempP = new Pattern[SmileysPlugin.smileyDefs.size()];
             String[] tempS = new String[SmileysPlugin.smileyDefs.size()];

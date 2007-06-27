@@ -2,7 +2,7 @@
     private void myValidate() {
         
         // make sure user didn't enter an invalid entry display count
-        int maxEntries = RollerRuntimeConfig.getIntProperty("site.pages.maxEntries");
+        int maxEntries = WebloggerRuntimeConfig.getIntProperty("site.pages.maxEntries");
         if(getBean().getEntryDisplayCount() > maxEntries) {
             addError("websiteSettings.error.entryDisplayCount");
         }

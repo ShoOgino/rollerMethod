@@ -15,7 +15,7 @@
                 }
             }        
             String handle = pathInfo[0];
-            String absUrl = RollerRuntimeConfig.getAbsoluteContextURL();
+            String absUrl = WebloggerRuntimeConfig.getAbsoluteContextURL();
             Weblog website = roller.getUserManager().getWebsiteByHandle(handle);
             if (website == null) {
                 throw new AtomNotFoundException("Cannot find specified weblog");

@@ -1,6 +1,6 @@
     public String save() {
         
-        if(!RollerRuntimeConfig.getBooleanProperty("users.registration.enabled")) {
+        if(!WebloggerRuntimeConfig.getBooleanProperty("users.registration.enabled")) {
             return "disabled";
         }
         
@@ -24,7 +24,7 @@
             }
             
             // are we using email activation?
-            boolean activationEnabled = RollerRuntimeConfig.getBooleanProperty(
+            boolean activationEnabled = WebloggerRuntimeConfig.getBooleanProperty(
                     "user.account.activation.enabled");
             if (activationEnabled) {
                 // User account will be enabled after the activation process

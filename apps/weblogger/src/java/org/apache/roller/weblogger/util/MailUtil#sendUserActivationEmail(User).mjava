@@ -14,7 +14,7 @@
             ResourceBundle resources = ResourceBundle.getBundle(
                     "ApplicationResources", I18nUtils.toLocale(user.getLocale()));
             
-            String from = RollerRuntimeConfig.getProperty(
+            String from = WebloggerRuntimeConfig.getProperty(
                     "user.account.activation.mail.from");
             
             String cc[] = new String[0];
@@ -24,7 +24,7 @@
                     "user.account.activation.mail.subject");
             String content;
             
-            String rootURL = RollerRuntimeConfig.getAbsoluteContextURL();
+            String rootURL = WebloggerRuntimeConfig.getAbsoluteContextURL();
             
             StringBuffer sb = new StringBuffer();
             

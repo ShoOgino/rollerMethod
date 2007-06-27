@@ -12,7 +12,7 @@
         User user = entry.getCreator();
         
         // Only send email if email notificaiton is enabled
-        boolean notify = RollerRuntimeConfig.getBooleanProperty("users.comments.emailnotify");
+        boolean notify = WebloggerRuntimeConfig.getBooleanProperty("users.comments.emailnotify");
         if (!notify || !weblog.getEmailComments().booleanValue()) {
             // notifications disabled, just bail
             return;

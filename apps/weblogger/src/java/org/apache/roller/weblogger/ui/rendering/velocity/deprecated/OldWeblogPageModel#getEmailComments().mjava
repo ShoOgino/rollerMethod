@@ -1,6 +1,6 @@
     public boolean getEmailComments() {
         if (mWebsite != null) {
-            boolean emailComments = RollerRuntimeConfig.getBooleanProperty("users.comments.emailnotify");
+            boolean emailComments = WebloggerRuntimeConfig.getBooleanProperty("users.comments.emailnotify");
             return (mWebsite.getEmailComments().booleanValue() && emailComments);
         }
         return false;

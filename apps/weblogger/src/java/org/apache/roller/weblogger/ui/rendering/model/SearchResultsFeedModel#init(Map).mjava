@@ -28,7 +28,7 @@
             return;
         }
         
-        this.entryCount = RollerRuntimeConfig.getIntProperty("site.newsfeeds.defaultEntries");
+        this.entryCount = WebloggerRuntimeConfig.getIntProperty("site.newsfeeds.defaultEntries");
         
         // setup the search
         IndexManager indexMgr = WebloggerFactory.getWeblogger().getIndexManager();
@@ -36,7 +36,7 @@
         SearchOperation search = new SearchOperation(indexMgr);
         search.setTerm(feedRequest.getTerm());
         
-        if(RollerRuntimeConfig.isSiteWideWeblog(feedRequest.getWeblogHandle())) {
+        if(WebloggerRuntimeConfig.isSiteWideWeblog(feedRequest.getWeblogHandle())) {
             this.websiteSpecificSearch  = false;
         } else {
             search.setWebsiteHandle(feedRequest.getWeblogHandle());

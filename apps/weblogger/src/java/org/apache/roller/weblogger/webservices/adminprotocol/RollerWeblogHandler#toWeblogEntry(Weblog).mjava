@@ -13,7 +13,7 @@
         we.setEnabled(wd.getEnabled());
         
         try {
-            AppUrl appUrl = new AppUrl(RollerRuntimeConfig.getAbsoluteContextURL(), wd.getHandle());
+            AppUrl appUrl = new AppUrl(WebloggerRuntimeConfig.getAbsoluteContextURL(), wd.getHandle());
             we.setAppEntriesUrl(appUrl.getEntryUrl().toString());
             we.setAppResourcesUrl(appUrl.getResourceUrl().toString());
         } catch (MalformedURLException mfue) {

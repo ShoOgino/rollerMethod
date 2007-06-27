@@ -12,10 +12,10 @@
         String weblog = feedRequest.getWeblogHandle();
         if(weblog == null) {
             // must be site-wide feed
-            weblog = RollerRuntimeConfig.getProperty("site.frontpage.weblog.handle");
+            weblog = WebloggerRuntimeConfig.getProperty("site.frontpage.weblog.handle");
         }
         
-        String newUrl = RollerRuntimeConfig.getRelativeContextURL();
+        String newUrl = WebloggerRuntimeConfig.getRelativeContextURL();
         newUrl += "/"+weblog+"/feed/entries/"+feedRequest.getFlavor();
         
         Map params = new HashMap();

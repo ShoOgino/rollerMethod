@@ -19,7 +19,7 @@
           this.tags = tags;
         
         // make sure offset, length, and page are valid
-        int maxLength = RollerRuntimeConfig.getIntProperty("site.pages.maxEntries");
+        int maxLength = WebloggerRuntimeConfig.getIntProperty("site.pages.maxEntries");
         length = weblog.getEntryDisplayCount();
         if(length > maxLength) {
             length = maxLength;

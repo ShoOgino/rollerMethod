@@ -4,7 +4,7 @@
     public String upload() {
         
         // make sure uploads are enabled
-        if(!RollerRuntimeConfig.getBooleanProperty("uploads.enabled")) {
+        if(!WebloggerRuntimeConfig.getBooleanProperty("uploads.enabled")) {
             addError("error.upload.disabled");
             return execute();
         }

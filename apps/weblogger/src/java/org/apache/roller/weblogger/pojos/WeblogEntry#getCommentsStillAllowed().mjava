@@ -6,7 +6,7 @@
      * @roller.wrapPojoMethod type="simple"
      */
     public boolean getCommentsStillAllowed() {
-        if (!RollerRuntimeConfig.getBooleanProperty("users.comments.enabled")) {
+        if (!WebloggerRuntimeConfig.getBooleanProperty("users.comments.enabled")) {
             return false;
         }
         if (website.getAllowComments() != null && !website.getAllowComments().booleanValue()) {

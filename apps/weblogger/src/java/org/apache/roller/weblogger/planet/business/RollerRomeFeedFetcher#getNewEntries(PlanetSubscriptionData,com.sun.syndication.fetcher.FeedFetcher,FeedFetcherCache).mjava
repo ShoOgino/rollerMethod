@@ -4,7 +4,7 @@
                                 FeedFetcherCache feedInfoCache)
             throws PlanetException {
         
-        String localURL = RollerRuntimeConfig.getProperty("site.absoluteurl");
+        String localURL = WebloggerRuntimeConfig.getProperty("site.absoluteurl");
         
         // if this is not a local url then let parent deal with it
         if (StringUtils.isEmpty(localURL) || !sub.getFeedURL().startsWith(localURL)) {            
@@ -41,7 +41,7 @@
                 // if website last update time > subsciption last update time
                 List entries = new ArrayList();
                 if (sub.getLastUpdated()==null || siteUpdated.after(sub.getLastUpdated())) {
-                    int entryCount = RollerRuntimeConfig.getIntProperty(
+                    int entryCount = WebloggerRuntimeConfig.getIntProperty(
                             "site.newsfeeds.defaultEntries");
                     entries = blogmgr.getWeblogEntries(
                             

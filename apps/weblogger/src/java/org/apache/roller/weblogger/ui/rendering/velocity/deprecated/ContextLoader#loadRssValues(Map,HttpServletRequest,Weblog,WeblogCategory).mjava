@@ -22,7 +22,7 @@
         
         // But don't exceed installation-wide maxEntries settings
         int defaultEntries =
-                RollerRuntimeConfig.getIntProperty("site.newsfeeds.defaultEntries");
+                WebloggerRuntimeConfig.getIntProperty("site.newsfeeds.defaultEntries");
         if (entryCount < 1) entryCount = defaultEntries;
         if (entryCount > defaultEntries) entryCount = defaultEntries;
         ctx.put("entryCount",  new Integer(entryCount));

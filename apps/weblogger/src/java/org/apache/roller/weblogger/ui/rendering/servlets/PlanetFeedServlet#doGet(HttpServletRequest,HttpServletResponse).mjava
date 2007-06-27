@@ -64,11 +64,11 @@
             model.put("planet", planet);
             model.put("date", new Date());
             model.put("utils", new UtilitiesModel());
-            model.put("absoluteSite", RollerRuntimeConfig.getAbsoluteContextURL());
-            model.put("feedStyle", new Boolean(RollerRuntimeConfig.getBooleanProperty("site.newsfeeds.styledFeeds")));
+            model.put("absoluteSite", WebloggerRuntimeConfig.getAbsoluteContextURL());
+            model.put("feedStyle", new Boolean(WebloggerRuntimeConfig.getBooleanProperty("site.newsfeeds.styledFeeds")));
 
             int numEntries =
-                    RollerRuntimeConfig.getIntProperty("site.newsfeeds.defaultEntries");
+                    WebloggerRuntimeConfig.getIntProperty("site.newsfeeds.defaultEntries");
             int entryCount = numEntries;
             String sCount = request.getParameter("count");
             if (sCount!=null) {

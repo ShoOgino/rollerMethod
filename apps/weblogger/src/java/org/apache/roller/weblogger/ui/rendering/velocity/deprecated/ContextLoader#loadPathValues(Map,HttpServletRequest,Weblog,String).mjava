@@ -13,16 +13,16 @@
         if (website != null  && !"zzz_none_zzz".equals(website.getHandle())) {
             url = URLUtilities.getWeblogURL(website, locale, true);
         } else {
-            url= RollerRuntimeConfig.getAbsoluteContextURL();
+            url= WebloggerRuntimeConfig.getAbsoluteContextURL();
         }
         ctx.put("websiteURL", url);
-        ctx.put("baseURL",    RollerRuntimeConfig.getRelativeContextURL() );
-        ctx.put("absBaseURL", RollerRuntimeConfig.getAbsoluteContextURL() );
-        ctx.put("ctxPath",    RollerRuntimeConfig.getRelativeContextURL() );
+        ctx.put("baseURL",    WebloggerRuntimeConfig.getRelativeContextURL() );
+        ctx.put("absBaseURL", WebloggerRuntimeConfig.getAbsoluteContextURL() );
+        ctx.put("ctxPath",    WebloggerRuntimeConfig.getRelativeContextURL() );
         ctx.put("uploadPath", ContextLoader.figureResourcePath());
         
         try {
-            URL absUrl = new URL(RollerRuntimeConfig.getAbsoluteContextURL());
+            URL absUrl = new URL(WebloggerRuntimeConfig.getAbsoluteContextURL());
             ctx.put("host", absUrl.getHost());
         } catch (MalformedURLException e) {
             throw new WebloggerException(e);

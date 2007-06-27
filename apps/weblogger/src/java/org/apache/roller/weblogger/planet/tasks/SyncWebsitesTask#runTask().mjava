@@ -4,7 +4,7 @@
     public void runTask() {
         
         // make sure we have an absolute url value
-        String absUrl = RollerRuntimeConfig.getProperty("site.absoluteurl");
+        String absUrl = WebloggerRuntimeConfig.getProperty("site.absoluteurl");
         if(absUrl == null || absUrl.trim().length() == 0) {
             log.error("ERROR: cannot sync websites with Planet Roller - "
                     +"absolute URL not specified in Roller Config");

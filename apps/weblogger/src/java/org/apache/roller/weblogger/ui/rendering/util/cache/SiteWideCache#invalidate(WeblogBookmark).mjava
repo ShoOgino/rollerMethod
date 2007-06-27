@@ -2,7 +2,7 @@
      * A bookmark has changed.
      */
     public void invalidate(WeblogBookmark bookmark) {
-        if(RollerRuntimeConfig.isSiteWideWeblog(bookmark.getWebsite().getHandle())) {
+        if(WebloggerRuntimeConfig.isSiteWideWeblog(bookmark.getWebsite().getHandle())) {
             invalidate(bookmark.getWebsite());
         }
     }

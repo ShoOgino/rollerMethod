@@ -2,7 +2,7 @@
      * Apply ignoreWord/spam filters to all referers in system.
      */
     public void applyRefererFilters() throws WebloggerException {
-        String spamwords = RollerRuntimeConfig.getProperty("spam.blacklist");
+        String spamwords = WebloggerRuntimeConfig.getProperty("spam.blacklist");
         String[] blacklist = StringUtils.split(
                 StringUtils.deleteWhitespace(spamwords),",");
         if (blacklist.length == 0) return;
