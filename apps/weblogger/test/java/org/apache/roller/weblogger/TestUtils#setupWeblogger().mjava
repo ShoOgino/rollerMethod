@@ -1,15 +1,15 @@
     public static void setupWeblogger() throws Exception {
         
-        if(!RollerFactory.isBootstrapped()) {
+        if(!WebloggerFactory.isBootstrapped()) {
             // do core services preparation
             WebloggerStartup.prepare();
             
             // do application bootstrapping
-            RollerFactory.bootstrap();
+            WebloggerFactory.bootstrap();
             
             // always initialize the properties manager and flush
-            RollerFactory.getRoller().getPropertiesManager().initialize();
-            RollerFactory.getRoller().flush();
+            WebloggerFactory.getRoller().getPropertiesManager().initialize();
+            WebloggerFactory.getRoller().flush();
         }
     }
 

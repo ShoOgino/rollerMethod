@@ -36,7 +36,7 @@
         
         // check that username is not taken
         if(!StringUtils.isEmpty(getBean().getUserName())) try {
-            UserManager mgr = RollerFactory.getRoller().getUserManager();
+            UserManager mgr = WebloggerFactory.getRoller().getUserManager();
             if(mgr.getUserByUserName(getBean().getUserName(), null) != null) {
                 addError("error.add.user.userNameInUse");
                 // reset user name

@@ -40,9 +40,9 @@
         
         try {
             // save 'em and flush
-            PropertiesManager mgr = RollerFactory.getRoller().getPropertiesManager();
+            PropertiesManager mgr = WebloggerFactory.getRoller().getPropertiesManager();
             mgr.saveProperties(getProperties());
-            RollerFactory.getRoller().flush();
+            WebloggerFactory.getRoller().flush();
             
             // notify user of our success
             addMessage("weblogEdit.changesSaved");

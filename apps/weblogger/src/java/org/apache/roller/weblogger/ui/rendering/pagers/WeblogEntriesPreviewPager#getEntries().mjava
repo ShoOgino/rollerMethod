@@ -1,6 +1,6 @@
     public Map getEntries() {
         if (entries == null) try {
-            Weblogger roller = RollerFactory.getRoller();
+            Weblogger roller = WebloggerFactory.getRoller();
             WeblogManager wmgr = roller.getWeblogManager();
             currEntry = wmgr.getWeblogEntryByAnchor(weblog, entryAnchor);
             if (currEntry != null) {

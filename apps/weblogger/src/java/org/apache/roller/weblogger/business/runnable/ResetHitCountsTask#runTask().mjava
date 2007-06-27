@@ -6,9 +6,9 @@
         try {
             log.info("task started");
             
-            WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+            WeblogManager mgr = WebloggerFactory.getRoller().getWeblogManager();
             mgr.resetAllHitCounts();
-            RollerFactory.getRoller().flush();
+            WebloggerFactory.getRoller().flush();
             
             log.info("task completed");
             
@@ -18,7 +18,7 @@
             log.error("unexpected exception", ee);
         } finally {
             // always release
-            RollerFactory.getRoller().release();
+            WebloggerFactory.getRoller().release();
         }
         
     }

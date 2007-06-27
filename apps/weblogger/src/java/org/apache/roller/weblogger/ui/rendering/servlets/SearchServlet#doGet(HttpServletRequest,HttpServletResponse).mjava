@@ -14,7 +14,7 @@
             searchRequest = new WeblogSearchRequest(request);
             
             // now make sure the specified weblog really exists
-            UserManager userMgr = RollerFactory.getRoller().getUserManager();
+            UserManager userMgr = WebloggerFactory.getRoller().getUserManager();
             weblog = userMgr.getWebsiteByHandle(searchRequest.getWeblogHandle(), Boolean.TRUE);
             
         } catch(Exception e) {

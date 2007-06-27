@@ -9,7 +9,7 @@
         
         try {
             // Build list of all folders, except for current one, sorted by path.
-            BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
+            BookmarkManager bmgr = WebloggerFactory.getRoller().getBookmarkManager();
             List<WeblogBookmarkFolder> folders = bmgr.getAllFolders(getActionWeblog());
             for(WeblogBookmarkFolder fd : folders) {
                 if (!fd.getId().equals(getFolderId())) {

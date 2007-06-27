@@ -2,7 +2,7 @@
      * Get the collection of all templates associated with this Theme.
      */
     public List getTemplates() throws WebloggerException {
-        UserManager userMgr = RollerFactory.getRoller().getUserManager();
+        UserManager userMgr = WebloggerFactory.getRoller().getUserManager();
         return userMgr.getPages(this.weblog);
     }
 

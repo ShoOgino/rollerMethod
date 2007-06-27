@@ -1,7 +1,7 @@
     public long getCommentCount() {
         long count = 0;
         try {
-            Weblogger roller = RollerFactory.getRoller();
+            Weblogger roller = WebloggerFactory.getRoller();
             WeblogManager mgr = roller.getWeblogManager();
             count = mgr.getCommentCount();            
         } catch (WebloggerException e) {

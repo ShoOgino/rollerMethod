@@ -5,7 +5,7 @@
     public List getTodaysReferrers() {
         List referers = null;
         try {
-            Weblogger roller = RollerFactory.getRoller();
+            Weblogger roller = WebloggerFactory.getRoller();
             RefererManager rmgr = roller.getRefererManager();
             return rmgr.getTodaysReferers(this);
             

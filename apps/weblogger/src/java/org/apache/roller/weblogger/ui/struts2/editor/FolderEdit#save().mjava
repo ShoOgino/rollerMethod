@@ -18,9 +18,9 @@
             getBean().copyTo(getFolder());
             
             // save changes
-            BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
+            BookmarkManager bmgr = WebloggerFactory.getRoller().getBookmarkManager();
             bmgr.saveFolder(getFolder());
-            RollerFactory.getRoller().flush();
+            WebloggerFactory.getRoller().flush();
             
             // notify caches
             CacheManager.invalidate(getFolder());

@@ -6,9 +6,9 @@
         if(getPingTarget() != null) {
             
             try {
-                PingTargetManager pingTargetMgr = RollerFactory.getRoller().getPingTargetManager();
+                PingTargetManager pingTargetMgr = WebloggerFactory.getRoller().getPingTargetManager();
                 pingTargetMgr.removePingTarget(getPingTarget());
-                RollerFactory.getRoller().flush();
+                WebloggerFactory.getRoller().flush();
                 
                 // remove deleted target from list
                 getPingTargets().remove(getPingTarget());

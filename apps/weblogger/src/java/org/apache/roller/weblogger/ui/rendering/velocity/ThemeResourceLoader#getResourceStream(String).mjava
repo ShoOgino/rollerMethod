@@ -14,7 +14,7 @@
                 throw new ResourceNotFoundException("Invalid ThemeRL key "+name);
             
             // lookup the template from the proper theme
-            ThemeManager themeMgr = RollerFactory.getRoller().getThemeManager();
+            ThemeManager themeMgr = WebloggerFactory.getRoller().getThemeManager();
             Theme theme = themeMgr.getTheme(split[0]);
             ThemeTemplate template = theme.getTemplateByName(split[1]);
             

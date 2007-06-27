@@ -15,7 +15,7 @@
             Principal principal = request.getUserPrincipal();
             if (rollerSession.getAuthenticatedUser() == null && principal != null) {
                 try {
-                    UserManager umgr = RollerFactory.getRoller().getUserManager();
+                    UserManager umgr = WebloggerFactory.getRoller().getUserManager();
                     User user = umgr.getUserByUserName(principal.getName());
                     
                     // try one time to auto-provision, only happens if user==null

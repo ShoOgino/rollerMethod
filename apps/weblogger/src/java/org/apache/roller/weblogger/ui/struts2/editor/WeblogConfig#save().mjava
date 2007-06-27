@@ -7,8 +7,8 @@
         myValidate();
         
         if(!hasActionErrors()) try {
-            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
-            UserManager umgr = RollerFactory.getRoller().getUserManager();
+            WeblogManager wmgr = WebloggerFactory.getRoller().getWeblogManager();
+            UserManager umgr = WebloggerFactory.getRoller().getUserManager();
             
             Weblog weblog = getActionWeblog();
             
@@ -42,10 +42,10 @@
             }
             
             // apply referer filters
-            RollerFactory.getRoller().getRefererManager().applyRefererFilters(weblog);
+            WebloggerFactory.getRoller().getRefererManager().applyRefererFilters(weblog);
             
             // flush
-            RollerFactory.getRoller().flush();
+            WebloggerFactory.getRoller().flush();
             
             addMessage("websiteSettings.savedChanges");
             

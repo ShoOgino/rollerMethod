@@ -17,7 +17,7 @@
             if (!StringUtils.isEmpty(getBean().getPasswordText()) && 
                     !StringUtils.isEmpty(getBean().getPasswordConfirm())) {
                 try {
-                    existingUser.resetPassword(RollerFactory.getRoller(),
+                    existingUser.resetPassword(WebloggerFactory.getRoller(),
                             getBean().getPasswordText(),
                             getBean().getPasswordConfirm());
                 } catch (WebloggerException e) {
@@ -27,9 +27,9 @@
             
             try {
                 // save the updated profile
-                UserManager mgr = RollerFactory.getRoller().getUserManager();
+                UserManager mgr = WebloggerFactory.getRoller().getUserManager();
                 mgr.saveUser(existingUser);
-                RollerFactory.getRoller().flush();
+                WebloggerFactory.getRoller().flush();
                 
                 // TODO: i18n
                 addMessage("profile updated.");

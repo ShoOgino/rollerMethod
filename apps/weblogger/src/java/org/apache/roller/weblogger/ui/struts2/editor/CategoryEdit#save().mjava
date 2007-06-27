@@ -18,9 +18,9 @@
             getBean().copyTo(getCategory());
             
             // save changes
-            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+            WeblogManager wmgr = WebloggerFactory.getRoller().getWeblogManager();
             wmgr.saveWeblogCategory(getCategory());
-            RollerFactory.getRoller().flush();
+            WebloggerFactory.getRoller().flush();
             
             // notify caches
             CacheManager.invalidate(getCategory());

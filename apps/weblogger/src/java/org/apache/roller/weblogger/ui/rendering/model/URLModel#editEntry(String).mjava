@@ -2,7 +2,7 @@
     public String editEntry(String anchor) {
         try {
             // need to determine entryId from anchor
-            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+            WeblogManager wmgr = WebloggerFactory.getRoller().getWeblogManager();
             WeblogEntry entry = wmgr.getWeblogEntryByAnchor(weblog, anchor);
             if(entry != null) {
                 return URLUtilities.getEntryEditURL(weblog.getHandle(), entry.getId(), false);

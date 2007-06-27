@@ -8,16 +8,16 @@
                 // remove the entry from the search index
                 // TODO: can we do this in a better way?
                 entry.setStatus(WeblogEntry.DRAFT);
-                IndexManager manager = RollerFactory.getRoller().getIndexManager();
+                IndexManager manager = WebloggerFactory.getRoller().getIndexManager();
                 manager.addEntryReIndexOperation(entry);
             } catch (WebloggerException ex) {
                 log.warn("Trouble triggering entry indexing", ex);
             }
             
             // remove entry itself
-            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+            WeblogManager wmgr = WebloggerFactory.getRoller().getWeblogManager();
             wmgr.removeWeblogEntry(entry);
-            RollerFactory.getRoller().flush();
+            WebloggerFactory.getRoller().flush();
             
             // flush caches
             CacheManager.invalidate(entry);

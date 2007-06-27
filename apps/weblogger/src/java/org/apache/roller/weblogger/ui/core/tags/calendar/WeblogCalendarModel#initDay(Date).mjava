@@ -11,7 +11,7 @@
         // Get entries before startDate, using category restriction limit 1
         // Use entry's date as previous month
         try {
-            WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+            WeblogManager mgr = WebloggerFactory.getRoller().getWeblogManager();
             List prevEntries = mgr.getWeblogEntries(
                     
                     weblog,                    // website
@@ -37,7 +37,7 @@
         // Get entries after endDate, using category restriction limit 1
         // Use entry's date as next month
         try {
-            WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+            WeblogManager mgr = WebloggerFactory.getRoller().getWeblogManager();
             List nextEntries = mgr.getWeblogEntries(
                     
                     weblog,                    // website

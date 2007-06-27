@@ -4,13 +4,13 @@
     public static void teardownPermissions(String id) throws Exception {
         
         // lookup the permissions
-        UserManager mgr = RollerFactory.getRoller().getUserManager();
+        UserManager mgr = WebloggerFactory.getRoller().getUserManager();
         WeblogPermission perm = mgr.getPermissions(id);
         
         // remove the permissions
         mgr.removePermissions(perm);
         
         // flush to db
-        RollerFactory.getRoller().flush();
+        WebloggerFactory.getRoller().flush();
     }
 

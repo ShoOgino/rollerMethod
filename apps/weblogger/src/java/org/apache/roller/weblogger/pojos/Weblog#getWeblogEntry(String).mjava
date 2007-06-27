@@ -7,7 +7,7 @@
     public WeblogEntry getWeblogEntry(String anchor) {
         WeblogEntry entry = null;
         try {
-            Weblogger roller = RollerFactory.getRoller();
+            Weblogger roller = WebloggerFactory.getRoller();
             WeblogManager wmgr = roller.getWeblogManager();
             entry = wmgr.getWeblogEntryByAnchor(this, anchor);
         } catch (WebloggerException e) {

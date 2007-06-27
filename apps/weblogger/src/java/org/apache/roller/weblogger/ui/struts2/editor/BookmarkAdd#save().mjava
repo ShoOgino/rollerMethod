@@ -15,9 +15,9 @@
             newBookmark.setFolder(getFolder());
             getBean().copyTo(newBookmark);
             
-            BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
+            BookmarkManager bmgr = WebloggerFactory.getRoller().getBookmarkManager();
             bmgr.saveBookmark(newBookmark);
-            RollerFactory.getRoller().flush();
+            WebloggerFactory.getRoller().flush();
             
             CacheManager.invalidate(newBookmark);
             

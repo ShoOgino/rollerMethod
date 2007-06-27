@@ -7,7 +7,7 @@
     private Properties loadAcronyms(Weblog website) {
         Properties acronyms = new Properties();
         try {
-            UserManager userMgr = RollerFactory.getRoller().getUserManager();
+            UserManager userMgr = WebloggerFactory.getRoller().getUserManager();
             WeblogTemplate acronymsPage = userMgr.getPageByName(
                     website, "_acronyms");
             if (acronymsPage != null) {

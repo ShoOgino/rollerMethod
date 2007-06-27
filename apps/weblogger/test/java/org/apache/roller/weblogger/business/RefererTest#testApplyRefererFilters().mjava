@@ -2,13 +2,13 @@
         
         log.info("Test apply referers (global)");
         
-        RefererManager rmgr = RollerFactory.getRoller().getRefererManager();
+        RefererManager rmgr = WebloggerFactory.getRoller().getRefererManager();
         
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         List refs = rmgr.getReferers(testWeblog);
         assertEquals(count, refs.size());
         
-        PropertiesManager pmgr = RollerFactory.getRoller().getPropertiesManager();
+        PropertiesManager pmgr = WebloggerFactory.getRoller().getPropertiesManager();
         RuntimeConfigProperty spamprop = pmgr.getProperty("spam.blacklist");
         String origWords = spamprop.getValue();
         spamprop.setValue(spamprop.getValue() + ", test");

@@ -7,7 +7,7 @@
      * @throws WebloggerException
      */
     public List retrieveWeblogEntries(boolean subcats) throws WebloggerException {
-        WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+        WeblogManager wmgr = WebloggerFactory.getRoller().getWeblogManager();
         return wmgr.getWeblogEntries(this, subcats);
     }
 

@@ -1,6 +1,6 @@
     public void myPrepare() {
         if(getRemoveId() != null) try {
-            UserManager umgr = RollerFactory.getRoller().getUserManager();
+            UserManager umgr = WebloggerFactory.getRoller().getUserManager();
             setTemplate(umgr.getPage(getRemoveId()));
         } catch (WebloggerException ex) {
             log.error("Error looking up template by id - "+getRemoveId(), ex);

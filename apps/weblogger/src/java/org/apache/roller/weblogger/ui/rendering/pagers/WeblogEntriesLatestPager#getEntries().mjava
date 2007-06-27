@@ -3,9 +3,9 @@
         if (entries == null) {
             entries = new TreeMap(new ReverseComparator());
             try {
-                Weblogger roller = RollerFactory.getRoller();
+                Weblogger roller = WebloggerFactory.getRoller();
                 WeblogManager wmgr = roller.getWeblogManager();
-                Map mmap = RollerFactory.getRoller().getWeblogManager().getWeblogEntryObjectMap(
+                Map mmap = WebloggerFactory.getRoller().getWeblogManager().getWeblogEntryObjectMap(
                         weblog,
                         null,
                         new Date(),

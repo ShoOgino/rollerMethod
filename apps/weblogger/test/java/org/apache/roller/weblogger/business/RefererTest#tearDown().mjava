@@ -2,7 +2,7 @@
         
         try {
             // reset refererSpamWords to original value
-            PropertiesManager pmgr = RollerFactory.getRoller().getPropertiesManager();
+            PropertiesManager pmgr = WebloggerFactory.getRoller().getPropertiesManager();
             RuntimeConfigProperty spamprop = pmgr.getProperty("spam.blacklist");
             spamprop.setValue(this.origSpamWords);
             pmgr.saveProperty(spamprop);

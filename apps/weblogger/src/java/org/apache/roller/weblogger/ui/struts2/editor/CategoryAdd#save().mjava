@@ -25,9 +25,9 @@
             getCategory().addCategory(newCategory);
             
             // save changes
-            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+            WeblogManager wmgr = WebloggerFactory.getRoller().getWeblogManager();
             wmgr.saveWeblogCategory(newCategory);
-            RollerFactory.getRoller().flush();
+            WebloggerFactory.getRoller().flush();
             
             // notify caches
             CacheManager.invalidate(newCategory);

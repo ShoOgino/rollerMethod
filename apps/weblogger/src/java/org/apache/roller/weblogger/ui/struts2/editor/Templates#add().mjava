@@ -27,7 +27,7 @@
             }
             
             // save the new Template
-            UserManager mgr = RollerFactory.getRoller().getUserManager();
+            UserManager mgr = WebloggerFactory.getRoller().getUserManager();
             mgr.savePage( newTemplate );
             
             // if this person happened to create a Weblog template from
@@ -38,7 +38,7 @@
             }
             
             // flush results to db
-            RollerFactory.getRoller().flush();
+            WebloggerFactory.getRoller().flush();
             
             // reset form fields
             setNewTmplName(null);

@@ -1,7 +1,7 @@
     public String activate() {
         
         try {
-            UserManager mgr = RollerFactory.getRoller().getUserManager();
+            UserManager mgr = WebloggerFactory.getRoller().getUserManager();
             
             if (getActivationCode() == null) {
                 addError("error.activate.user.missingActivationCode");
@@ -13,7 +13,7 @@
                     user.setEnabled(Boolean.TRUE);
                     user.setActivationCode(null);
                     mgr.saveUser(user);
-                    RollerFactory.getRoller().flush();
+                    WebloggerFactory.getRoller().flush();
                     
                     setActivationStatus("active");
                     

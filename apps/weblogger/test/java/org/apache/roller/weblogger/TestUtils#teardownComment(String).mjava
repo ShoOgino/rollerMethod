@@ -4,13 +4,13 @@
     public static void teardownComment(String id) throws Exception {
         
         // lookup the comment
-        WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+        WeblogManager mgr = WebloggerFactory.getRoller().getWeblogManager();
         WeblogEntryComment comment = mgr.getComment(id);
         
         // remove the comment
         mgr.removeComment(comment);
         
         // flush to db
-        RollerFactory.getRoller().flush();
+        WebloggerFactory.getRoller().flush();
     }
 

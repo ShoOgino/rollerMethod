@@ -1,5 +1,5 @@
     public void testSearch() throws Exception {
-        IndexManager imgr = RollerFactory.getRoller().getIndexManager();
+        IndexManager imgr = WebloggerFactory.getRoller().getIndexManager();
 
         Weblog website = new Weblog();
         website.setHandle("trekker");
@@ -20,7 +20,7 @@
         +"U.S.S. Defiant which vanished 3 weeks ago, the warp engines  "
         +"begin to lose power, and Spock reports strange sensor readings.");
         imgr.executeIndexOperationNow(
-            new AddEntryOperation(RollerFactory.getRoller(), (IndexManagerImpl)imgr, wd1));
+            new AddEntryOperation(WebloggerFactory.getRoller(), (IndexManagerImpl)imgr, wd1));
 
         WeblogEntry wd2 = new WeblogEntry();
         wd2.setId("dummy2");
@@ -35,7 +35,7 @@
           +"the inhabitants of planet Sigma Iotia II, and Uhura puts Kirk "
           +"in communication with Boss Oxmyx.");
          imgr.executeIndexOperationNow(
-             new AddEntryOperation(RollerFactory.getRoller(), (IndexManagerImpl)imgr, wd2));
+             new AddEntryOperation(WebloggerFactory.getRoller(), (IndexManagerImpl)imgr, wd2));
 
         Thread.sleep(1000);
 

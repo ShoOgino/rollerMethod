@@ -1,7 +1,7 @@
     public void myPrepare() {
         
         try {
-            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+            WeblogManager wmgr = WebloggerFactory.getRoller().getWeblogManager();
             
             // set categories list
             setWeblogCategories(wmgr.getWeblogCategories(getActionWeblog(), false));
@@ -14,7 +14,7 @@
             }
             
             // set plugins list
-            PluginManager ppmgr = RollerFactory.getRoller().getPagePluginManager();
+            PluginManager ppmgr = WebloggerFactory.getRoller().getPagePluginManager();
             Map pluginsMap = ppmgr.getWeblogEntryPlugins(getActionWeblog());
             List plugins = new ArrayList();
             Iterator iter = pluginsMap.values().iterator();

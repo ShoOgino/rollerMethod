@@ -4,7 +4,7 @@
     public String update() {
         
         try {
-            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+            WeblogManager wmgr = WebloggerFactory.getRoller().getWeblogManager();
             
             List<WeblogEntryComment> flushList = new ArrayList();
             
@@ -77,7 +77,7 @@
                 }
             }
             
-            RollerFactory.getRoller().flush();
+            WebloggerFactory.getRoller().flush();
             
             // notify caches of changes
             for(WeblogEntryComment comm : flushList) {

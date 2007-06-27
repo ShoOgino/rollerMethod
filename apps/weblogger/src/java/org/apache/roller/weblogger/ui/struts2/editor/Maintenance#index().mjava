@@ -4,7 +4,7 @@
     public String index() {
         
         try {
-            IndexManager manager = RollerFactory.getRoller().getIndexManager();
+            IndexManager manager = WebloggerFactory.getRoller().getIndexManager();
             manager.rebuildWebsiteIndex(getActionWeblog());
             
             addMessage("maintenance.message.indexed");

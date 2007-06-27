@@ -18,9 +18,9 @@
         
         if(!hasActionErrors()) try {
             // Appears to be ok.  Save it and flush.
-            PingTargetManager pingTargetMgr = RollerFactory.getRoller().getPingTargetManager();
+            PingTargetManager pingTargetMgr = WebloggerFactory.getRoller().getPingTargetManager();
             pingTargetMgr.savePingTarget(getPingTarget());
-            RollerFactory.getRoller().flush();
+            WebloggerFactory.getRoller().flush();
             
             addMessage("pingTarget.saved");
             

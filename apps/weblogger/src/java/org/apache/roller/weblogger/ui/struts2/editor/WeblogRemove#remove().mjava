@@ -4,11 +4,11 @@
     public String remove() {
         
         try {
-            UserManager umgr = RollerFactory.getRoller().getUserManager();
+            UserManager umgr = WebloggerFactory.getRoller().getUserManager();
             
             // remove website
             umgr.removeWebsite(getActionWeblog());
-            RollerFactory.getRoller().flush();
+            WebloggerFactory.getRoller().flush();
             
             CacheManager.invalidate(getActionWeblog());
             

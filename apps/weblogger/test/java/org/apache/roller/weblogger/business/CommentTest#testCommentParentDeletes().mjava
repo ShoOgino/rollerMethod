@@ -9,8 +9,8 @@
         log.info("BEGIN");
         
         try {
-            WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();        
-            UserManager umgr = RollerFactory.getRoller().getUserManager();
+            WeblogManager wmgr = WebloggerFactory.getRoller().getWeblogManager();        
+            UserManager umgr = WebloggerFactory.getRoller().getUserManager();
 
             // first make sure we can delete an entry with comments
             User user = TestUtils.setupUser("commentParentDeleteUser");

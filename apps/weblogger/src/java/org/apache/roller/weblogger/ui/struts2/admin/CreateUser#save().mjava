@@ -8,7 +8,7 @@
         
         if (!hasActionErrors()) try {
             
-            UserManager mgr = RollerFactory.getRoller().getUserManager();
+            UserManager mgr = WebloggerFactory.getRoller().getUserManager();
             
             // copy form data into new user pojo
             User newUser = new User();
@@ -17,7 +17,7 @@
             
             // set username and password
             newUser.setUserName(getBean().getUserName());
-            newUser.resetPassword(RollerFactory.getRoller(),
+            newUser.resetPassword(WebloggerFactory.getRoller(),
                     getBean().getPassword(), getBean().getPassword());
             
             // are we granting the user admin rights?
@@ -27,7 +27,7 @@
             
             // save new user
             mgr.addUser(newUser);
-            RollerFactory.getRoller().flush();
+            WebloggerFactory.getRoller().flush();
             
             // TODO: i18n
             addMessage("New user created");

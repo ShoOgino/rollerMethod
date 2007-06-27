@@ -51,7 +51,7 @@
         // if not from theme then see if resource is in weblog's upload dir
         if(resourceStream == null) {
             try {
-                FileManager fileMgr = RollerFactory.getRoller().getFileManager();
+                FileManager fileMgr = WebloggerFactory.getRoller().getFileManager();
                 ThemeResource resource = fileMgr.getFile(weblog, 
                         resourceRequest.getResourcePath());
                 resourceLastMod = resource.getLastModified();

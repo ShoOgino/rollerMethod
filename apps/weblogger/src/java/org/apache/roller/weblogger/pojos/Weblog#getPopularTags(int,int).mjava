@@ -17,7 +17,7 @@
             startDate = cal.getTime();     
         }        
         try {            
-            Weblogger roller = RollerFactory.getRoller();
+            Weblogger roller = WebloggerFactory.getRoller();
             WeblogManager wmgr = roller.getWeblogManager();
             results = wmgr.getPopularTags(this, startDate, length);
         } catch (Exception e) {

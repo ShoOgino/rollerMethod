@@ -8,7 +8,7 @@
         if(deleteFiles != null) {
             log.debug("Attempting to delete "+deleteFiles.length+" files");
             
-            FileManager fmgr = RollerFactory.getRoller().getFileManager();
+            FileManager fmgr = WebloggerFactory.getRoller().getFileManager();
             for (int i=0; i < deleteFiles.length; i++) {
                 if (deleteFiles[i].trim().startsWith("/") ||
                         deleteFiles[i].trim().startsWith("\\") ||

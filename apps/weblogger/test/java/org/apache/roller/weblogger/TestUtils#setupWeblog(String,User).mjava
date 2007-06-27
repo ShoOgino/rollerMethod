@@ -18,11 +18,11 @@
         testWeblog.setCreator(creator);
         
         // add weblog
-        UserManager mgr = RollerFactory.getRoller().getUserManager();
+        UserManager mgr = WebloggerFactory.getRoller().getUserManager();
         mgr.addWebsite(testWeblog);
         
         // flush to db
-        RollerFactory.getRoller().flush();
+        WebloggerFactory.getRoller().flush();
         
         // query for the new weblog and return it
         Weblog weblog = mgr.getWebsiteByHandle(handle);

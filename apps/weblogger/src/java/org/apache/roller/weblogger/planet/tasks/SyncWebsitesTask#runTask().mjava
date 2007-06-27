@@ -13,7 +13,7 @@
         
         try {
             PlanetManager planet = PlanetFactory.getPlanet().getPlanetManager();
-            UserManager userManager = RollerFactory.getRoller().getUserManager();
+            UserManager userManager = WebloggerFactory.getRoller().getUserManager();
             
             // first, make sure there is an "all" planet group
             PlanetData planetObject = planet.getPlanet("zzz_default_planet_zzz");
@@ -98,7 +98,7 @@
             log.error("ERROR refreshing entries", e);
         } finally {
             // don't forget to release
-            RollerFactory.getRoller().release();
+            WebloggerFactory.getRoller().release();
             PlanetFactory.getPlanet().release();
         }
     }

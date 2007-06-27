@@ -57,10 +57,10 @@
         } else {
             try {
                 // trigger bootstrapping process
-                RollerFactory.bootstrap();
+                WebloggerFactory.bootstrap();
                 
                 // trigger initialization process
-                RollerFactory.getRoller().initialize();
+                WebloggerFactory.getRoller().initialize();
                 
             } catch (BootstrapException ex) {
                 log.fatal("Roller Weblogger bootstrap failed", ex);
@@ -69,7 +69,7 @@
             }
             
             // Initialize Planet if necessary
-            if (RollerFactory.isBootstrapped()) {
+            if (WebloggerFactory.isBootstrapped()) {
                 if (RollerConfig.getBooleanProperty("planet.aggregator.enabled")) {
                     
                     // Now prepare the core services of planet so we can bootstrap it

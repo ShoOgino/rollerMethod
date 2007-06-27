@@ -9,9 +9,9 @@
             // some caches are based on weblog last-modified, so update it
             weblog.setLastModified(new Date());
             
-            UserManager umgr = RollerFactory.getRoller().getUserManager();
+            UserManager umgr = WebloggerFactory.getRoller().getUserManager();
             umgr.saveWebsite(weblog);
-            RollerFactory.getRoller().flush();
+            WebloggerFactory.getRoller().flush();
             
             // also notify cache manager
             CacheManager.invalidate(weblog);

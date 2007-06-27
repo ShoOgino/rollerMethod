@@ -3,7 +3,7 @@
      */
     public String save() {
         
-        BookmarkManager bm = RollerFactory.getRoller().getBookmarkManager();
+        BookmarkManager bm = WebloggerFactory.getRoller().getBookmarkManager();
         
         InputStream stream = null;
         if(getOpmlFile() != null && getOpmlFile().exists()) try {
@@ -28,7 +28,7 @@
                 
                 // Use Roller BookmarkManager to import bookmarks
                 bm.importBookmarks(getActionWeblog(), folderName, data);
-                RollerFactory.getRoller().flush();
+                WebloggerFactory.getRoller().flush();
                 
                 // notify caches
                 CacheManager.invalidate(getActionWeblog());

@@ -13,7 +13,7 @@
         try { length = Integer.parseInt(request.getParameter("length"));
         } catch (Throwable ignored) {}
         
-        Weblogger roller = RollerFactory.getRoller();
+        Weblogger roller = WebloggerFactory.getRoller();
         try {
             UserManager umgr = roller.getUserManager();
             List users =

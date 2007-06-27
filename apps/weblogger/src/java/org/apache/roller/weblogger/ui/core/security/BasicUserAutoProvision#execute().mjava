@@ -9,9 +9,9 @@
     if(ud != null) {
       UserManager mgr;
       try {
-        mgr = RollerFactory.getRoller().getUserManager();
+        mgr = WebloggerFactory.getRoller().getUserManager();
         mgr.addUser(ud);
-        RollerFactory.getRoller().flush();
+        WebloggerFactory.getRoller().flush();
       } catch (WebloggerException e) {
         log.warn("Error while auto-provisioning user from SSO.", e);
       }

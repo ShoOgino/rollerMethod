@@ -11,7 +11,7 @@
         User user = null;
         try {
             
-            UserManager userMgr = RollerFactory.getRoller().getUserManager();
+            UserManager userMgr = WebloggerFactory.getRoller().getUserManager();
             user = userMgr.getUserByUserName(username);
             
             enabled = user.getEnabled().booleanValue();
@@ -27,7 +27,7 @@
                 //System.out.println("is now [" + password + "]");
                 authenticated = user.getPassword().equals(password);
                 if (authenticated) {
-                    //RollerFactory.getRoller().setUser(user);
+                    //WebloggerFactory.getRoller().setUser(user);
                 }
             }
         } catch (Exception e) {

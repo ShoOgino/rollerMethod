@@ -6,7 +6,7 @@
                                          WeblogBookmarkFolder parent)
             throws Exception {
         
-        BookmarkManager mgr = RollerFactory.getRoller().getBookmarkManager();
+        BookmarkManager mgr = WebloggerFactory.getRoller().getBookmarkManager();
         WeblogBookmarkFolder root = mgr.getRootFolder(weblog);
         
         WeblogBookmarkFolder folderParent = root;
@@ -17,7 +17,7 @@
         mgr.saveFolder(testFolder);
         
         // flush to db
-        RollerFactory.getRoller().flush();
+        WebloggerFactory.getRoller().flush();
         
         // query for object
         WeblogBookmarkFolder cat = mgr.getFolder(testFolder.getId());

@@ -17,9 +17,9 @@
             stylesheet.setContents(getContents());
             
             // save template and flush
-            UserManager mgr = RollerFactory.getRoller().getUserManager();
+            UserManager mgr = WebloggerFactory.getRoller().getUserManager();
             mgr.savePage(stylesheet);
-            RollerFactory.getRoller().flush();
+            WebloggerFactory.getRoller().flush();
             
             // notify caches
             CacheManager.invalidate(stylesheet);

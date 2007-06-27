@@ -10,7 +10,7 @@
      */
     public final void run() {
         
-        ThreadManager mgr = RollerFactory.getRoller().getThreadManager();
+        ThreadManager mgr = WebloggerFactory.getRoller().getThreadManager();
         
         boolean lockAcquired = false;
         try {
@@ -45,7 +45,7 @@
             }
             
             // always release Roller session
-            RollerFactory.getRoller().release();
+            WebloggerFactory.getRoller().release();
         }
         
     }

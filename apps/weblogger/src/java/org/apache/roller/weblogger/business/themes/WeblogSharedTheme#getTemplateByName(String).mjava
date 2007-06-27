@@ -21,7 +21,7 @@
         
         // if we didn't get the Template from a theme then look in the db
         if(template == null) {
-            UserManager userMgr = RollerFactory.getRoller().getUserManager();
+            UserManager userMgr = WebloggerFactory.getRoller().getUserManager();
             template = userMgr.getPageByName(this.weblog, name);
         }
         

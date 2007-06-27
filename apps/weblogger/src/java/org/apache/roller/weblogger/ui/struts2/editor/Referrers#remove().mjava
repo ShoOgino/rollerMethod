@@ -5,7 +5,7 @@
         
         String[] removeIds = getRemoveIds();
         if(removeIds != null) {
-            RefererManager refmgr = RollerFactory.getRoller().getRefererManager();
+            RefererManager refmgr = WebloggerFactory.getRoller().getRefererManager();
             
             try {
                 WeblogReferrer referer = null;
@@ -19,7 +19,7 @@
                 }
                 
                 // flush
-                RollerFactory.getRoller().flush();
+                WebloggerFactory.getRoller().flush();
                 
                 // notify caches
                 CacheManager.invalidate(getActionWeblog());

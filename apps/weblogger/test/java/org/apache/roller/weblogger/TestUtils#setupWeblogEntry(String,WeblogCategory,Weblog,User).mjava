@@ -20,11 +20,11 @@
         testEntry.setCategory(cat);
         
         // store entry
-        WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+        WeblogManager mgr = WebloggerFactory.getRoller().getWeblogManager();
         mgr.saveWeblogEntry(testEntry);
         
         // flush to db
-        RollerFactory.getRoller().flush();
+        WebloggerFactory.getRoller().flush();
         
         // query for object
         WeblogEntry entry = mgr.getWeblogEntry(testEntry.getId());

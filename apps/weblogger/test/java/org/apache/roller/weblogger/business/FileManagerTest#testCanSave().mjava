@@ -5,8 +5,8 @@
      */
     public void testCanSave() throws Exception {
         
-        FileManager fmgr = RollerFactory.getRoller().getFileManager();
-        PropertiesManager pmgr = RollerFactory.getRoller().getPropertiesManager();
+        FileManager fmgr = WebloggerFactory.getRoller().getFileManager();
+        PropertiesManager pmgr = WebloggerFactory.getRoller().getPropertiesManager();
         Map config = config = pmgr.getProperties();
         ((RuntimeConfigProperty)config.get("uploads.dir.maxsize")).setValue("1.00");
         ((RuntimeConfigProperty)config.get("uploads.types.forbid")).setValue("");

@@ -6,7 +6,7 @@
                                                          WeblogCategory parent)
             throws Exception {
         
-        WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+        WeblogManager mgr = WebloggerFactory.getRoller().getWeblogManager();
         WeblogCategory root = mgr.getRootWeblogCategory(weblog);
         
         WeblogCategory catParent = root;
@@ -17,7 +17,7 @@
         mgr.saveWeblogCategory(testCat);
         
         // flush to db
-        RollerFactory.getRoller().flush();
+        WebloggerFactory.getRoller().flush();
         
         // query for object
         WeblogCategory cat = mgr.getWeblogCategory(testCat.getId());

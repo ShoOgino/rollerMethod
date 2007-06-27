@@ -27,9 +27,9 @@
         ctx.put("page",ThemeTemplateWrapper.wrap(page));
         ctx.put("utilities",       new OldUtilities() );
         ctx.put("stringUtils",     new OldStringUtils() );
-        ctx.put("rollerVersion",   RollerFactory.getRoller().getVersion() );
-        ctx.put("rollerBuildTime", RollerFactory.getRoller().getBuildTime() );
-        ctx.put("rollerBuildUser", RollerFactory.getRoller().getBuildUser() );
+        ctx.put("rollerVersion",   WebloggerFactory.getRoller().getVersion() );
+        ctx.put("rollerBuildTime", WebloggerFactory.getRoller().getBuildTime() );
+        ctx.put("rollerBuildUser", WebloggerFactory.getRoller().getBuildUser() );
         ctx.put("newsfeedCache",   NewsfeedCache.getInstance() );
         
         ctx.put("requestParameters", request.getParameterMap());

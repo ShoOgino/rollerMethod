@@ -12,7 +12,7 @@
         
         log.debug("Attempting to process weblog invitation");
         
-        UserManager umgr = RollerFactory.getRoller().getUserManager();
+        UserManager umgr = WebloggerFactory.getRoller().getUserManager();
         
         // user being invited
         User user = null;
@@ -52,7 +52,7 @@
         if(!hasActionErrors()) try {
             
             umgr.inviteUser(getActionWeblog(), user, Short.parseShort(getPermissionsMask()));
-            RollerFactory.getRoller().flush();
+            WebloggerFactory.getRoller().flush();
             
             addMessage("inviteMember.userInvited");
             

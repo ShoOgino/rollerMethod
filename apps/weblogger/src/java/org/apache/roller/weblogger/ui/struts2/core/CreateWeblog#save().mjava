@@ -3,7 +3,7 @@
         User user = getAuthenticatedUser();
         try {
             if (!RollerConfig.getBooleanProperty("groupblogging.enabled")) {
-                UserManager mgr = RollerFactory.getRoller().getUserManager();
+                UserManager mgr = WebloggerFactory.getRoller().getUserManager();
                 List permissions = mgr.getAllPermissions(user);
                 if (permissions.size() > 0) {
                     // sneaky user trying to get around 1 blog limit that applies
@@ -39,9 +39,9 @@
             
             try {
                 // add weblog and flush
-                UserManager mgr = RollerFactory.getRoller().getUserManager();
+                UserManager mgr = WebloggerFactory.getRoller().getUserManager();
                 mgr.addWebsite(wd);
-                RollerFactory.getRoller().flush();
+                WebloggerFactory.getRoller().flush();
                 
                 // tell the user their weblog was created
                 addMessage("createWebsite.created", getBean().getHandle());

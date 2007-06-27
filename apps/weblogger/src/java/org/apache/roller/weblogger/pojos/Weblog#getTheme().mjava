@@ -4,7 +4,7 @@
     public WeblogTheme getTheme() {
         try {
             // let the ThemeManager handle it
-            ThemeManager themeMgr = RollerFactory.getRoller().getThemeManager();
+            ThemeManager themeMgr = WebloggerFactory.getRoller().getThemeManager();
             return themeMgr.getTheme(this);
         } catch (WebloggerException ex) {
             log.error("Error getting theme for weblog - "+getHandle(), ex);

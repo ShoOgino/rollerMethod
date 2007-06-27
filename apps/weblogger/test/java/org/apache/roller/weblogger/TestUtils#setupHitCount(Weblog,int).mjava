@@ -4,7 +4,7 @@
     public static WeblogHitCount setupHitCount(Weblog weblog, int amount)
             throws Exception {
         
-        WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+        WeblogManager mgr = WebloggerFactory.getRoller().getWeblogManager();
         
         // store
         WeblogHitCount testCount = new WeblogHitCount();
@@ -13,7 +13,7 @@
         mgr.saveHitCount(testCount);
         
         // flush to db
-        RollerFactory.getRoller().flush();
+        WebloggerFactory.getRoller().flush();
         
         // query for it
         testCount = mgr.getHitCount(testCount.getId());

@@ -1,7 +1,7 @@
     public String render(WeblogEntry entry, String str) {
         String text = str;
         try {
-            BookmarkManager bMgr = RollerFactory.getRoller().getBookmarkManager();
+            BookmarkManager bMgr = WebloggerFactory.getRoller().getBookmarkManager();
             WeblogBookmarkFolder rootFolder = bMgr.getRootFolder(entry.getWebsite());
             text = matchBookmarks(text, rootFolder);
             text = lookInFolders(text, rootFolder.getFolders());

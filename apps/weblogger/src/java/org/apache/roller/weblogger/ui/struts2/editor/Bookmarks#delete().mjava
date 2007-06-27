@@ -3,7 +3,7 @@
      */
     public String delete() {
         
-        BookmarkManager bmgr = RollerFactory.getRoller().getBookmarkManager();
+        BookmarkManager bmgr = WebloggerFactory.getRoller().getBookmarkManager();
         
         log.debug("Deleting selected folders and bookmarks.");
         
@@ -30,7 +30,7 @@
             }
             
             // flush changes
-            RollerFactory.getRoller().flush();
+            WebloggerFactory.getRoller().flush();
             
             // notify caches
             CacheManager.invalidate(getActionWeblog());

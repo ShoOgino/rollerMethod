@@ -6,8 +6,8 @@
      */
     public void execute() {
         
-        UserManager umgr = RollerFactory.getRoller().getUserManager();
-        WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+        UserManager umgr = WebloggerFactory.getRoller().getUserManager();
+        WeblogManager wmgr = WebloggerFactory.getRoller().getWeblogManager();
         
         HitCountQueue hitCounter = HitCountQueue.getInstance();
         
@@ -51,7 +51,7 @@
             }
             
             // flush the results to the db
-            RollerFactory.getRoller().flush();
+            WebloggerFactory.getRoller().flush();
             
             long endTime = System.currentTimeMillis();
             
@@ -61,7 +61,7 @@
             log.error("Error persisting updated hit counts", ex);
         } finally {
             // release session
-            RollerFactory.getRoller().release();
+            WebloggerFactory.getRoller().release();
         }
     }
 

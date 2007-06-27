@@ -1,7 +1,7 @@
     public void myPrepare() {
         if(getBean().getId() != null) {
             try {
-                WeblogManager wmgr = RollerFactory.getRoller().getWeblogManager();
+                WeblogManager wmgr = WebloggerFactory.getRoller().getWeblogManager();
                 setEntry(wmgr.getWeblogEntry(getBean().getId()));
             } catch (WebloggerException ex) {
                 log.error("Error looking up entry by id - "+getBean().getId(), ex);

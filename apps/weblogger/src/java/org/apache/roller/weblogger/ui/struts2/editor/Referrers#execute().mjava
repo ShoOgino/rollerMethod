@@ -3,7 +3,7 @@
      */
     public String execute() {
         
-        RefererManager refmgr = RollerFactory.getRoller().getRefererManager();
+        RefererManager refmgr = WebloggerFactory.getRoller().getRefererManager();
         try {
             setDayHits(refmgr.getDayHits(getActionWeblog()));
             setReferrers(refmgr.getTodaysReferers(getActionWeblog()));

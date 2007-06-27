@@ -44,7 +44,7 @@
             prefix = pathInfo;
         }
                                         
-        Weblogger roller = RollerFactory.getRoller();
+        Weblogger roller = WebloggerFactory.getRoller();
         try {
             response.setContentType("text/html; charset=utf-8");
             
@@ -55,7 +55,7 @@
             // only throw an exception when not found if we have a tag prefix 
             if(handle != null) {
                 try {
-                    UserManager umgr = RollerFactory.getRoller().getUserManager();
+                    UserManager umgr = WebloggerFactory.getRoller().getUserManager();
                     website = umgr.getWebsiteByHandle(handle, Boolean.TRUE);
                     if (website == null)
                         throw new WebloggerException();                

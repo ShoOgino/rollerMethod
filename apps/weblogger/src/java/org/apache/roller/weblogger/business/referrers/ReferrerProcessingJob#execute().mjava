@@ -12,14 +12,14 @@
         
         // process a referrer
         try {
-            RefererManager refMgr = RollerFactory.getRoller().getRefererManager();
+            RefererManager refMgr = WebloggerFactory.getRoller().getRefererManager();
             refMgr.processReferrer(referrer.getRequestUrl(),
                                    referrer.getReferrerUrl(),
                                    referrer.getWeblogHandle(),
                                    referrer.getWeblogAnchor(),
                                    referrer.getWeblogDateString());
             
-            RollerFactory.getRoller().flush();
+            WebloggerFactory.getRoller().flush();
         } catch(WebloggerException re) {
             // trouble
             mLogger.warn("Trouble processing referrer", re);

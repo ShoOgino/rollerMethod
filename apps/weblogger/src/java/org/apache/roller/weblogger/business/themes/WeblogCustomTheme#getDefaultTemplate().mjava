@@ -3,7 +3,7 @@
      * Returns null if the template cannot be found.
      */
     public ThemeTemplate getDefaultTemplate() throws WebloggerException {
-        UserManager userMgr = RollerFactory.getRoller().getUserManager();
+        UserManager userMgr = WebloggerFactory.getRoller().getUserManager();
         return userMgr.getPageByAction(this.weblog, ThemeTemplate.ACTION_WEBLOG);
     }
 

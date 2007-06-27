@@ -8,7 +8,7 @@
     public WeblogBookmarkFolder getBookmarkFolder(String folderName) {
         WeblogBookmarkFolder ret = null;
         try {
-            Weblogger roller = RollerFactory.getRoller();
+            Weblogger roller = WebloggerFactory.getRoller();
             BookmarkManager bmgr = roller.getBookmarkManager();
             if (folderName == null || folderName.equals("nil") || folderName.trim().equals("/")) {
                 return bmgr.getRootFolder(this);

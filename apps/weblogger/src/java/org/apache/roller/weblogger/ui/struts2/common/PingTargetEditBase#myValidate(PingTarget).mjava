@@ -4,7 +4,7 @@
     protected void myValidate(PingTarget pingTarget) {
         
         try {
-            PingTargetManager pingTargetMgr = RollerFactory.getRoller().getPingTargetManager();
+            PingTargetManager pingTargetMgr = WebloggerFactory.getRoller().getPingTargetManager();
             if (!pingTargetMgr.isNameUnique(pingTarget)) {
                 addError("pingTarget.nameNotUnique");
             }

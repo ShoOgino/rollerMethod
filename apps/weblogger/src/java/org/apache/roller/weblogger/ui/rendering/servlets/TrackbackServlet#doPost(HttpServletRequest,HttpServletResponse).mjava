@@ -35,7 +35,7 @@
                 }
                 
                 // lookup weblog specified by comment request
-                UserManager uMgr = RollerFactory.getRoller().getUserManager();
+                UserManager uMgr = WebloggerFactory.getRoller().getUserManager();
                 weblog = uMgr.getWebsiteByHandle(trackbackRequest.getWeblogHandle());
                 
                 if (weblog == null) {
@@ -44,7 +44,7 @@
                 }
                 
                 // lookup entry specified by comment request
-                WeblogManager weblogMgr = RollerFactory.getRoller().getWeblogManager();
+                WeblogManager weblogMgr = WebloggerFactory.getRoller().getWeblogManager();
                 entry = weblogMgr.getWeblogEntryByAnchor(weblog, trackbackRequest.getWeblogAnchor());
                 
                 if (entry == null) {
@@ -98,9 +98,9 @@
                 if(!WeblogEntryComment.SPAM.equals(comment.getStatus()) ||
                         !RollerRuntimeConfig.getBooleanProperty("trackbacks.ignoreSpam.enabled")) {
                     
-                    WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+                    WeblogManager mgr = WebloggerFactory.getRoller().getWeblogManager();
                     mgr.saveComment(comment);
-                    RollerFactory.getRoller().flush();
+                    WebloggerFactory.getRoller().flush();
                     
                     // only invalidate the cache if comment isn't moderated
                     if(!weblog.getCommentModerationRequired()) {

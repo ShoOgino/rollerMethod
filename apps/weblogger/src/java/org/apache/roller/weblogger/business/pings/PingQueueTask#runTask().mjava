@@ -7,7 +7,7 @@
             log.debug("task started");
             
             PingQueueProcessor.getInstance().processQueue();
-            RollerFactory.getRoller().flush();
+            WebloggerFactory.getRoller().flush();
             
             log.debug("task completed");
             
@@ -17,7 +17,7 @@
             log.error("unexpected exception", ee);
         } finally {
             // always release
-            RollerFactory.getRoller().release();
+            WebloggerFactory.getRoller().release();
         }
         
     }

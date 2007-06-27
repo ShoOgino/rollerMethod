@@ -4,13 +4,13 @@
     public static void teardownUser(String id) throws Exception {
         
         // lookup the user
-        UserManager mgr = RollerFactory.getRoller().getUserManager();
+        UserManager mgr = WebloggerFactory.getRoller().getUserManager();
         User user = mgr.getUser(id);
         
         // remove the user
         mgr.removeUser(user);
         
         // flush to db
-        RollerFactory.getRoller().flush();
+        WebloggerFactory.getRoller().flush();
     }
 

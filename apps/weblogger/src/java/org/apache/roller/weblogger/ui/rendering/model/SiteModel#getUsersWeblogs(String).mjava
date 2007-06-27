@@ -4,7 +4,7 @@
     public List getUsersWeblogs(String userName) {
         List results = new ArrayList();
         try {            
-            Weblogger roller = RollerFactory.getRoller();
+            Weblogger roller = WebloggerFactory.getRoller();
             UserManager umgr = roller.getUserManager();
             User user = umgr.getUserByUserName(userName);
             List perms = umgr.getAllPermissions(user);

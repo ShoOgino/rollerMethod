@@ -4,13 +4,13 @@
     public static void teardownWeblogCategory(String id) throws Exception {
         
         // lookup the cat
-        WeblogManager mgr = RollerFactory.getRoller().getWeblogManager();
+        WeblogManager mgr = WebloggerFactory.getRoller().getWeblogManager();
         WeblogCategory cat = mgr.getWeblogCategory(id);
         
         // remove the cat
         mgr.removeWeblogCategory(cat);
         
         // flush to db
-        RollerFactory.getRoller().flush();
+        WebloggerFactory.getRoller().flush();
     }
 

@@ -6,7 +6,7 @@
         
         log.debug("Entered "+request.getRequestURI());
         
-        if (!RollerFactory.isBootstrapped() &&
+        if (!WebloggerFactory.isBootstrapped() &&
                 "auto".equals(RollerConfig.getProperty("installation.type")) &&
                 !isInstallUrl(request.getServletPath())) {
             

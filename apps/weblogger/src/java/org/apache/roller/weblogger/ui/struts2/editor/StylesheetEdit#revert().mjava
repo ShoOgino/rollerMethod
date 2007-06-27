@@ -20,7 +20,7 @@
             WeblogTemplate stylesheet = getTemplate();
             
             // lookup the theme used by this weblog
-            ThemeManager tmgr = RollerFactory.getRoller().getThemeManager();
+            ThemeManager tmgr = WebloggerFactory.getRoller().getThemeManager();
             Theme theme = tmgr.getTheme(getActionWeblog().getEditorTheme());
             
             // lookup 
@@ -28,9 +28,9 @@
             stylesheet.setContents(theme.getStylesheet().getContents());
             
             // save template and flush
-            UserManager mgr = RollerFactory.getRoller().getUserManager();
+            UserManager mgr = WebloggerFactory.getRoller().getUserManager();
             mgr.savePage(stylesheet);
-            RollerFactory.getRoller().flush();
+            WebloggerFactory.getRoller().flush();
             
             // notify caches
             CacheManager.invalidate(stylesheet);

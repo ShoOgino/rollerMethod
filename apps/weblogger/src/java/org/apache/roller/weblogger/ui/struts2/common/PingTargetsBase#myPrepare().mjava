@@ -7,7 +7,7 @@
         // load specified ping target if possible
         if(!StringUtils.isEmpty(getPingTargetId())) {
             try {
-                PingTargetManager pingTargetMgr = RollerFactory.getRoller().getPingTargetManager();
+                PingTargetManager pingTargetMgr = WebloggerFactory.getRoller().getPingTargetManager();
                 setPingTarget(pingTargetMgr.getPingTarget(getPingTargetId()));
             } catch (WebloggerException ex) {
                 getLogger().error("Error looking up ping target - "+getPingTargetId(), ex);

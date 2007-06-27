@@ -4,7 +4,7 @@
     public void testDirectoryCRUD() throws Exception {
         
         // update roller properties to prepare for test
-        PropertiesManager pmgr = RollerFactory.getRoller().getPropertiesManager();
+        PropertiesManager pmgr = WebloggerFactory.getRoller().getPropertiesManager();
         Map config = pmgr.getProperties();
         ((RuntimeConfigProperty)config.get("uploads.enabled")).setValue("true");
         ((RuntimeConfigProperty)config.get("uploads.types.allowed")).setValue("opml");
@@ -12,7 +12,7 @@
         pmgr.saveProperties(config);
         TestUtils.endSession(true);
         
-        FileManager fmgr = RollerFactory.getRoller().getFileManager();
+        FileManager fmgr = WebloggerFactory.getRoller().getFileManager();
         
         // we should be starting with 0 directories
         assertEquals(0, fmgr.getDirectories(testWeblog).length);

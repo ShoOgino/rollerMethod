@@ -6,7 +6,7 @@
         try {
             log.info("task started");
             
-            Weblogger roller = RollerFactory.getRoller();
+            Weblogger roller = WebloggerFactory.getRoller();
             roller.getRefererManager().clearReferrers();
             roller.flush();
             
@@ -18,7 +18,7 @@
             log.error("unexpected exception", ee);
         } finally {
             // always release
-            RollerFactory.getRoller().release();
+            WebloggerFactory.getRoller().release();
         }
         
     }

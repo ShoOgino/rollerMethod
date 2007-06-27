@@ -1,15 +1,15 @@
     public String bootstrap() {
         
-        if(RollerFactory.isBootstrapped()) {
+        if(WebloggerFactory.isBootstrapped()) {
             return SUCCESS;
         }
         
         try {
             // trigger bootstrapping process
-            RollerFactory.bootstrap();
+            WebloggerFactory.bootstrap();
             
             // trigger initialization process
-            RollerFactory.getRoller().initialize();
+            WebloggerFactory.getRoller().initialize();
             
             return SUCCESS;
             

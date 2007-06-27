@@ -4,13 +4,13 @@
     public static void teardownPingTarget(String id) throws Exception {
         
         // query for it
-        PingTargetManager pingMgr = RollerFactory.getRoller().getPingTargetManager();
+        PingTargetManager pingMgr = WebloggerFactory.getRoller().getPingTargetManager();
         PingTarget ping = pingMgr.getPingTarget(id);
         
         // remove the ping
         pingMgr.removePingTarget(ping);
         
         // flush to db
-        RollerFactory.getRoller().flush();
+        WebloggerFactory.getRoller().flush();
     }
 

@@ -2,7 +2,7 @@
      * Trigger reindexing of modified entry.
      */
     protected void reindexEntry(WeblogEntry entry) {
-        IndexManager manager = RollerFactory.getRoller().getIndexManager();
+        IndexManager manager = WebloggerFactory.getRoller().getIndexManager();
         
         // if published, index the entry
         if (entry.isPublished()) {
