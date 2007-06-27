@@ -15,7 +15,7 @@
             session.createQuery(reset)
             .setParameter("site",website).executeUpdate();
             String delete = null;
-            if ( currentDialect instanceof SQLServerDialect || currentDialect instanceof OracleDialect ){
+            if ( currentDialect instanceof SQLServerDialect || currentDialect instanceof Oracle9Dialect ){
                 delete = "delete WeblogReferrer where website=:site and (excerpt is null or excerpt like '')";
             } else {
                 delete = "delete WeblogReferrer where website=:site and (excerpt is null or excerpt='')";

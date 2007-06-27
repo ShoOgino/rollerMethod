@@ -16,7 +16,7 @@
             String delete = null;
             // Some databases can't handle comparing CLOBs, use like as a workaround
             if (   currentDialect instanceof SQLServerDialect 
-                || currentDialect instanceof OracleDialect 
+                || currentDialect instanceof Oracle9Dialect 
                 || currentDialect instanceof DerbyDialect) {
                 delete = "delete WeblogReferrer where excerpt is null or excerpt like ''";
             } else {
