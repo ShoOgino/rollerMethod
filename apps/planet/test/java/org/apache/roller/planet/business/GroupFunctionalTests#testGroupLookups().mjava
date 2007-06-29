@@ -3,7 +3,7 @@
         PlanetManager mgr = PlanetFactory.getPlanet().getPlanetManager();
         
         // lookup group by id
-        PlanetGroupData group = mgr.getGroupById(testGroup1.getId());
+        PlanetGroup group = mgr.getGroupById(testGroup1.getId());
         assertNotNull(group);
         assertEquals("groupFuncTest1", group.getHandle());
         
@@ -14,7 +14,7 @@
         assertEquals("groupFuncTest1", group.getHandle());
         
         // lookup all groups in planet
-        PlanetData planet = mgr.getPlanetById(testPlanet.getId());
+        Planet planet = mgr.getPlanetById(testPlanet.getId());
         Set groups = planet.getGroups();
         assertNotNull(groups);
         assertEquals(2, groups.size());

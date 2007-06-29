@@ -7,14 +7,14 @@
         try {
             if(this.subscription.getId() == null) {
                 // adding a new sub to a group, so make sure we have a group
-                PlanetGroupData group = pMgr.getGroupById(getGroupid());
+                PlanetGroup group = pMgr.getGroupById(getGroupid());
                 if(group == null) {
                     setError("PlanetSubscriptionForm.error.groupNull");
                     return INPUT;
                 }
                 
                 // check if this subscription already exists before adding it
-                PlanetSubscriptionData sub = pMgr.getSubscription(this.subscription.getFeedURL());
+                Subscription sub = pMgr.getSubscription(this.subscription.getFeedURL());
                 if(sub != null) {
                     this.subscription = sub;
                 } else {

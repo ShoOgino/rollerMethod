@@ -1,0 +1,11 @@
+    // save a Subscription
+    public void saveSubscription(Subscription sub) 
+            throws PlanetException {
+        Subscription existing = getSubscription(sub.getFeedURL());
+        if (existing == null || (existing.getId().equals(sub.getId()))) {
+            this.strategy.store(sub);
+        } else {
+            throw new PlanetException("ERROR: duplicate feed URLs not allowed");
+        }
+    }
+

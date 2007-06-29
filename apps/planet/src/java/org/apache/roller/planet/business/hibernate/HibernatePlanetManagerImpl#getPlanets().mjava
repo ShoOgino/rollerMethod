@@ -2,7 +2,7 @@
     public List getPlanets() throws PlanetException {
         try {
             Session session = ((HibernatePersistenceStrategy)strategy).getSession();
-            Criteria criteria = session.createCriteria(PlanetData.class);
+            Criteria criteria = session.createCriteria(Planet.class);
             criteria.addOrder(Order.asc("title"));
             return criteria.list();
         } catch (HibernateException e) {

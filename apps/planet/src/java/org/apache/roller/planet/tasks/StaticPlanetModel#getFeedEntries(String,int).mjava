@@ -1,6 +1,6 @@
     public List getFeedEntries(String feedUrl, int maxEntries) throws Exception {
         try {
-            PlanetSubscriptionData sub = planetManager.getSubscription(feedUrl);
+            Subscription sub = planetManager.getSubscription(feedUrl);
             if(sub != null) {
                 return planetManager.getEntries(sub, 0, maxEntries);
             } else {

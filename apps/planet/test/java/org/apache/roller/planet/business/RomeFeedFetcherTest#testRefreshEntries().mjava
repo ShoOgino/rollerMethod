@@ -7,7 +7,7 @@
         feedFetcher.refreshEntries("." + File.separator + "planet-cache");
         TestUtils.endSession(true);
         
-        PlanetSubscriptionData sub = mgr.getSubscription(feed_url);
+        Subscription sub = mgr.getSubscription(feed_url);
         assertNotNull(sub);
         assertTrue(sub.getEntries().size() > 0);
     }

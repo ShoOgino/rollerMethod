@@ -1,0 +1,20 @@
+    public PlanetEntriesPager(
+            String         feedURL,
+            PlanetGroup group,
+            String         baseUrl,
+            int            sinceDays,
+            int            page,
+            int            length) {
+        
+        super(baseUrl, page);
+        
+        this.feedURL = feedURL;
+        this.group = group;
+        this.locale = locale;
+        this.sinceDays = sinceDays;
+        this.length = length;
+        
+        // initialize the collection
+        getItems();
+    }
+

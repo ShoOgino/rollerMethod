@@ -9,7 +9,7 @@
             
             try {
                 PlanetManager pMgr = PlanetFactory.getPlanet().getPlanetManager();
-                PlanetData planet = pMgr.getPlanetById(getPlanetid());
+                Planet planet = pMgr.getPlanetById(getPlanetid());
                 if(planet != null) {
                     pMgr.deletePlanet(planet);
                     PlanetFactory.getPlanet().flush();

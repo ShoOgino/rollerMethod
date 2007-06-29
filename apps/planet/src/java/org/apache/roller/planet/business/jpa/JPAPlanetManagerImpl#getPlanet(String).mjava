@@ -1,8 +1,8 @@
-    public PlanetData getPlanet(String handle) throws PlanetException {
-        Query q = strategy.getNamedQuery("PlanetData.getByHandle");
+    public Planet getPlanet(String handle) throws PlanetException {
+        Query q = strategy.getNamedQuery("Planet.getByHandle");
         q.setParameter(1, handle);
         try {
-            return (PlanetData)q.getSingleResult();
+            return (Planet)q.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }

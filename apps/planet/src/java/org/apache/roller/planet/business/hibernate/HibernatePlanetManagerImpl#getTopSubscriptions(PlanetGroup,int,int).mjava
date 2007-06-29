@@ -1,0 +1,34 @@
+    // get popular Subscriptions from a specific Group
+    // TODO: test this method
+    public List getTopSubscriptions(PlanetGroup group, int offset, int length) 
+            throws PlanetException {
+        
+        List ret = null;
+        try {
+            Session session = ((HibernatePersistenceStrategy)strategy).getSession();
+            Query query = null;
+            if (group != null) {
+                query = session.createQuery(
+                    "select sub from org.apache.roller.planet.pojos.Subscription sub "
+                    +"join sub.groups group "
+                    +"where group=:group "
+                    +"order by sub.inboundblogs desc");
+                query.setSerializable("group", group);
+            } else {
+                query = session.createQuery(
+                    "select sub from org.apache.roller.planet.pojos.Subscription sub "
+                    +"order by sub.inboundblogs desc");
+            }
+            if (offset != 0) {
+                query.setFirstResult(offset);
+            }
+            if (length != -1) {
+                query.setMaxResults(length);
+            }
+            ret = query.list();
+        } catch (HibernateException e) {
+            throw new PlanetException(e);
+        }
+        return ret;
+    }
+

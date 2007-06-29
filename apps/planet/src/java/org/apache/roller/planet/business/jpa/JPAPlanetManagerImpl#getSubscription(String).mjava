@@ -1,9 +1,9 @@
-    public PlanetSubscriptionData getSubscription(String feedUrl)
+    public Subscription getSubscription(String feedUrl)
     throws PlanetException {
-        Query q = strategy.getNamedQuery("PlanetSubscriptionData.getByFeedURL");
+        Query q = strategy.getNamedQuery("Subscription.getByFeedURL");
         q.setParameter(1, feedUrl);
         try {
-            return (PlanetSubscriptionData)q.getSingleResult();
+            return (Subscription)q.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }

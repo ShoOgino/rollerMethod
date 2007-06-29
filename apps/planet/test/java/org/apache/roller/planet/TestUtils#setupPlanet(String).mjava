@@ -1,9 +1,9 @@
     /**
      * Convenience method that creates a planet and stores it.
      */
-    public static PlanetData setupPlanet(String handle) throws Exception {
+    public static Planet setupPlanet(String handle) throws Exception {
         
-        PlanetData testPlanet = new PlanetData(handle, handle, handle);
+        Planet testPlanet = new Planet(handle, handle, handle);
         
         // store
         PlanetManager mgr = PlanetFactory.getPlanet().getPlanetManager();
@@ -13,7 +13,7 @@
         PlanetFactory.getPlanet().flush();
         
         // query to make sure we return the persisted object
-        PlanetData planet = mgr.getPlanet(handle);
+        Planet planet = mgr.getPlanet(handle);
         
         if(planet == null)
             throw new PlanetException("error inserting new planet");

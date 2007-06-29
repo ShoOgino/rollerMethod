@@ -1,5 +1,5 @@
     /**
-     * Load relevant PlanetData if possible.
+     * Load relevant Planet if possible.
      */
     public void prepare() throws Exception {
         PlanetManager pMgr = PlanetFactory.getPlanet().getPlanetManager();
@@ -10,9 +10,9 @@
             group = pMgr.getGroupById(getGroupid());
         } else {
             // new group, must have a planet to add it to
-            PlanetData planet = pMgr.getPlanetById(getPlanetid());
+            Planet planet = pMgr.getPlanetById(getPlanetid());
             if(planet != null) {
-                group = new PlanetGroupData();
+                group = new PlanetGroup();
                 group.setPlanet(planet);
             } else {
                 throw new PlanetException("could not determine planet "+getPlanetid());

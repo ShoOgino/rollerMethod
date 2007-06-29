@@ -1,0 +1,9 @@
+    public void addEntries(Collection newEntries) {
+        // bi-directional one-to-many
+        for (Iterator it = newEntries.iterator(); it.hasNext();) {
+            SubscriptionEntry entry = (SubscriptionEntry) it.next();
+            entry.setSubscription(this);
+        }
+        this.getEntries().addAll(newEntries);
+    }
+

@@ -5,12 +5,12 @@
         PlanetManager pmgr= PlanetFactory.getPlanet().getPlanetManager();
         try {
             if(getSubid() != null && !"".equals(getSubid())) {
-                PlanetSubscriptionData sub = pmgr.getSubscriptionById(getSubid());
+                Subscription sub = pmgr.getSubscriptionById(getSubid());
                 if(sub == null) {
                     setError("PlanetGroupForm.error.nullSubscription");
                     return INPUT;
                 } else {
-                    PlanetGroupData group = getGroup();
+                    PlanetGroup group = getGroup();
                     group.getSubscriptions().remove(sub);
                     sub.getGroups().remove(group);
                     pmgr.saveGroup(group);

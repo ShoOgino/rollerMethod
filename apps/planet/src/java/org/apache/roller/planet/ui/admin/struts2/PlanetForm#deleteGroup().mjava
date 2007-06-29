@@ -6,7 +6,7 @@
             
             PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
             try {
-                PlanetGroupData group = pmgr.getGroupById(getGroupid());
+                PlanetGroup group = pmgr.getGroupById(getGroupid());
                 this.planet = group.getPlanet();
                 this.planet.getGroups().remove(group);
                 pmgr.savePlanet(this.planet);

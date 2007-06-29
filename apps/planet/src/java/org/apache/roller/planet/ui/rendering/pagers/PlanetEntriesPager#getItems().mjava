@@ -18,7 +18,7 @@
                 
                 List rawEntries = null;
                 if (feedURL != null) {
-                    PlanetSubscriptionData sub = planetManager.getSubscription(feedURL);
+                    Subscription sub = planetManager.getSubscription(feedURL);
                     if(sub != null) {
                         rawEntries = planetManager.getEntries(sub, offset, length+1);
                     }
@@ -37,7 +37,7 @@
                 
                 // wrap 'em
                 for (Iterator it = rawEntries.iterator(); it.hasNext();) {
-                    PlanetEntryData entry = (PlanetEntryData) it.next();
+                    SubscriptionEntry entry = (SubscriptionEntry) it.next();
                     // TODO needs pojo wrapping from planet
                     results.add(entry);
                 }

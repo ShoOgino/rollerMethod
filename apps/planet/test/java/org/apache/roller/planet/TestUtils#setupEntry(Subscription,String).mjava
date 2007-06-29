@@ -1,0 +1,32 @@
+    /**
+     * Convenience method that creates an entry and stores it.
+     */
+    public static SubscriptionEntry setupEntry(Subscription sub, String title) 
+            throws Exception {
+        
+        PlanetManager mgr = PlanetFactory.getPlanet().getPlanetManager();
+        
+        // make sure we are using a persistent object
+        Subscription testSub = mgr.getSubscriptionById(sub.getId());
+        
+        // store
+        SubscriptionEntry testEntry = new SubscriptionEntry();
+        testEntry.setPermalink(title);
+        testEntry.setTitle(title);
+        testEntry.setPubTime(new java.sql.Timestamp(System.currentTimeMillis()));
+        testEntry.setSubscription(testSub);
+        testSub.getEntries().add(testEntry);
+        mgr.saveEntry(testEntry);
+        
+        // flush
+        PlanetFactory.getPlanet().flush();
+        
+        // query to make sure we return the persisted object
+        SubscriptionEntry entry = mgr.getEntryById(testEntry.getId());
+        
+        if(entry == null)
+            throw new PlanetException("error inserting new entry");
+        
+        return entry;
+    }
+

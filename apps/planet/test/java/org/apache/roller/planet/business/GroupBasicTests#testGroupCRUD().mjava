@@ -2,12 +2,12 @@
         
         PlanetManager mgr = PlanetFactory.getPlanet().getPlanetManager();
         
-        PlanetGroupData testGroup = new PlanetGroupData();
+        PlanetGroup testGroup = new PlanetGroup();
         testGroup.setDescription("test_group_desc");
         testGroup.setHandle("test_handle");
         testGroup.setTitle("test_title");
         testGroup.setPlanet(testPlanet);
-        PlanetGroupData group = null;
+        PlanetGroup group = null;
         
         group = mgr.getGroup(testPlanet, "test_handle");
         assertNull(group);
