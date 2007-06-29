@@ -1,0 +1,20 @@
+    public Module parse(Element elem) {
+        boolean foundSomething = false;
+        AppModule m = new AppModuleImpl();
+        Element control = elem.getChild("control", getContentNamespace());
+        if (control != null) {
+            Element draftElem = control.getChild("draft", getContentNamespace());
+            if (draftElem != null) {
+                if ("yes".equals(draftElem.getText())) m.setDraft(true); 
+                if ("no".equals(draftElem.getText())) m.setDraft(false);                
+            }
+        }
+        Element edited = elem.getChild("editied", getContentNamespace());
+        if (edited != null) {
+            try {
+                m.setEdited(DateUtil.parseIso8601(edited.getTextTrim()));
+            } catch (Exception ignored) {}
+        }
+        return m;
+    }
+

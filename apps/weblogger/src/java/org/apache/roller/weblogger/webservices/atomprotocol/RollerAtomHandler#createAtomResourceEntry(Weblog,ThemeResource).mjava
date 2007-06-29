@@ -42,6 +42,13 @@
         contents.add(content);
         entry.setContents(contents);
         
+        List modules = new ArrayList();
+        AppModule app = new AppModuleImpl();
+        app.setDraft(false);
+        app.setEdited(entry.getUpdated());
+        modules.add(app);
+        entry.setModules(modules);
+        
         return entry;
     }
 

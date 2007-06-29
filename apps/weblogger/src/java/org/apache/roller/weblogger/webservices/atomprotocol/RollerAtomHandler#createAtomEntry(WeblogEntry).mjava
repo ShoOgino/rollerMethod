@@ -63,10 +63,10 @@
         atomEntry.setOtherLinks(otherlinks);
         
         List modules = new ArrayList();
-        PubControlModule pubControl = new PubControlModuleImpl();
-        pubControl.setDraft(
-                !WeblogEntry.PUBLISHED.equals(entry.getStatus()));
-        modules.add(pubControl);
+        AppModule app = new AppModuleImpl();
+        app.setDraft(!WeblogEntry.PUBLISHED.equals(entry.getStatus()));
+        app.setEdited(entry.getUpdateTime());
+        modules.add(app);
         atomEntry.setModules(modules);
         
         return atomEntry;

@@ -23,8 +23,8 @@
         rollerEntry.setPubTime(pubTime);
         rollerEntry.setUpdateTime(updateTime);
         
-        PubControlModule control =
-                (PubControlModule)entry.getModule("http://purl.org/atom/app#");
+        AppModule control =
+                (AppModule)entry.getModule("http://purl.org/atom/app#");
         if (control!=null && control.getDraft()) {
             rollerEntry.setStatus(WeblogEntry.DRAFT);
         } else {
