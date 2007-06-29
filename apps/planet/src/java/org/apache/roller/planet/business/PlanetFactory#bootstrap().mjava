@@ -1,5 +1,5 @@
     /**
-     * Bootstrap the Roller Planet business tier.
+     * Bootstrap the Roller Planet business tier, uses default PlanetProvider.
      *
      * Bootstrapping the application effectively instantiates all the necessary
      * pieces of the business tier and wires them together so that the app is 
@@ -15,11 +15,13 @@
             throw new IllegalStateException("Cannot bootstrap until application has been properly prepared");
         }
         
-        log.info("Bootstrapping Roller Planet business tier");
+        // default provider is Guice, so lookup our module from PlanetConfig
+        String guiceModule = PlanetConfig.getProperty("guice.backend.module");
         
-        // bootstrap Roller Weblogger business tier
-        planetInstance =  injector.getInstance(Planet.class);
+        // instantiate guice provider using the configured module
+        PlanetProvider guiceProvider = new GuicePlanetProvider(guiceModule);
         
-        log.info("Roller Planet business tier successfully bootstrapped");
+        // finish things off by calling bootstrap() with our guice provider
+        bootstrap(guiceProvider);
     }
 
