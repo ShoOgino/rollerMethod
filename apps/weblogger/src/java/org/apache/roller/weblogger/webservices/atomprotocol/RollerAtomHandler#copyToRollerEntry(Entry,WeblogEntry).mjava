@@ -24,7 +24,7 @@
         rollerEntry.setUpdateTime(updateTime);
         
         AppModule control =
-                (AppModule)entry.getModule("http://purl.org/atom/app#");
+                (AppModule)entry.getModule(AppModule.URI);
         if (control!=null && control.getDraft()) {
             rollerEntry.setStatus(WeblogEntry.DRAFT);
         } else {

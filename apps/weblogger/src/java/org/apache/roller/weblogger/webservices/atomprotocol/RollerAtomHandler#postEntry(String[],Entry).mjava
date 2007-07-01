@@ -23,11 +23,18 @@
             mgr.saveWeblogEntry(rollerEntry);
             roller.flush();
 
-            // Throttle one entry per second
-            try { Thread.sleep(1000); } catch (Exception ignored) {}
+            // Throttle one entry per second per weblog because time-
+            // stamp in MySQL and other DBs has only 1 sec resolution
+            try { 
+                synchronized (getClass()) { 
+                    Thread.sleep(1000); 
+                }  
+            } catch (Exception ignored) {} 
 
             CacheManager.invalidate(website);
-            reindexEntry(rollerEntry);
+            if (rollerEntry.isPublished()) {
+                roller.getIndexManager().addEntryReIndexOperation(rollerEntry);
+            }
             
             log.debug("Exiting");
             return createAtomEntry(rollerEntry);

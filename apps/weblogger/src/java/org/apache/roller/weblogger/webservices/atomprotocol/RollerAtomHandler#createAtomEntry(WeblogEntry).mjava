@@ -6,23 +6,26 @@
     private Entry createAtomEntry(WeblogEntry entry) {
         Entry atomEntry = new Entry();
         
+        String absUrl = WebloggerRuntimeConfig.getAbsoluteContextURL();
+        atomEntry.setId(        absUrl + entry.getPermaLink());
+        atomEntry.setTitle(     entry.getTitle());
+        atomEntry.setPublished( entry.getPubTime());
+        atomEntry.setUpdated(   entry.getUpdateTime());
+        
         Content content = new Content();
         content.setType(Content.HTML);
         content.setValue(entry.getText());
         List contents = new ArrayList();
         contents.add(content);
         
-        Content summary = new Content();
-        summary.setType(Content.HTML);
-        summary.setValue(entry.getSummary());
+        atomEntry.setContents(contents);
         
-        String absUrl = WebloggerRuntimeConfig.getAbsoluteContextURL();
-        atomEntry.setId(        absUrl + entry.getPermaLink());
-        atomEntry.setTitle(     entry.getTitle());
-        atomEntry.setContents(  contents);
-        atomEntry.setSummary(   summary);
-        atomEntry.setPublished( entry.getPubTime());
-        atomEntry.setUpdated(   entry.getUpdateTime());
+        if (StringUtils.isNotEmpty(entry.getSummary())) {
+            Content summary = new Content();
+            summary.setType(Content.HTML);
+            summary.setValue(entry.getSummary());
+            atomEntry.setSummary(summary);
+        }
         
         User creator = entry.getCreator();
         Person author = new Person();
