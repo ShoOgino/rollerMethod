@@ -14,6 +14,9 @@
             if (!canEdit(website)) {
                 throw new AtomNotAuthorizedException("Not authorized to access website: " + handle);
             }
+            
+            if (throttle) oneSecondThrottle();
+            
             // Save it and commit it
             WeblogManager mgr = roller.getWeblogManager();
             WeblogEntry rollerEntry = new WeblogEntry();
@@ -22,14 +25,6 @@
             copyToRollerEntry(entry, rollerEntry);
             mgr.saveWeblogEntry(rollerEntry);
             roller.flush();
-
-            // Throttle one entry per second per weblog because time-
-            // stamp in MySQL and other DBs has only 1 sec resolution
-            try { 
-                synchronized (getClass()) { 
-                    Thread.sleep(1000); 
-                }  
-            } catch (Exception ignored) {} 
 
             CacheManager.invalidate(website);
             if (rollerEntry.isPublished()) {
