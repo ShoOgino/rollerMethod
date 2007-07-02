@@ -4,7 +4,8 @@
                     RollerSession.getRollerSession(mRequest);
             if ( rses != null && rses.getAuthenticatedUser() != null
                     && mWebsite != null) {
-                return rses.isUserAuthorizedToAdmin(mWebsite);
+                return mWebsite.hasUserPermissions(
+                        rses.getAuthenticatedUser(), WeblogPermission.ADMIN);
             }
         } catch (Exception e) {
             mLogger.warn("PageHelper.isUserAuthorizedToEdit)", e);

@@ -2,7 +2,8 @@
         try {
             RollerSession rses = RollerSession.getRollerSession(request);
             if (rses != null && rses.getAuthenticatedUser() != null) {
-                return rses.isUserAuthorizedToAuthor(weblog.getPojo());
+                return weblog.getPojo().hasUserPermissions(
+                        rses.getAuthenticatedUser(), WeblogPermission.AUTHOR);
             }
         } catch (Exception e) {
             log.warn("ERROR: checking user authorization", e);

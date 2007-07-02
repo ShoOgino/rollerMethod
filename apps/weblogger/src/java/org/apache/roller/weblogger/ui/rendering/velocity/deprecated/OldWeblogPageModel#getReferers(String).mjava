@@ -14,8 +14,8 @@
                 String excerpt = referer.getExcerpt();
                 if (   StringUtils.isNotEmpty(title)
                 && StringUtils.isNotEmpty(excerpt) ) {
-                    if (   referer.getVisible().booleanValue()
-                    || rses.isUserAuthorizedToAdmin(referer.getWebsite()) ) {
+                    if (referer.getVisible().booleanValue() 
+                     || referer.getWebsite().hasUserPermissions(rses.getAuthenticatedUser(), WeblogPermission.ADMIN) ) { 
                         referers.add(WeblogReferrerWrapper.wrap(referer));
                     }
                 }
