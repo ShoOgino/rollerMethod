@@ -2,13 +2,11 @@
         try {            
             // Update all feeds in planet
             log.info("Refreshing Planet entries");
-            Planet planet = PlanetFactory.getPlanet();
-            planet.getFeedFetcher().refreshEntries(
-                PlanetConfig.getProperty("cache.dir"));                        
-            planet.flush();
-            planet.release();
+            FeedUpdater updater = new SingleThreadedFeedUpdater();
+            updater.updateSubscriptions();
+            PlanetFactory.getPlanet().release();
             
-        } catch (PlanetException e) {
+        } catch (Exception e) {
             log.error("ERROR refreshing planet", e);
         }
     }

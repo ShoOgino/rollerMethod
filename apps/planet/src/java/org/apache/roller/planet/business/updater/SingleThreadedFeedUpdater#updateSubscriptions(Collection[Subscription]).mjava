@@ -1,0 +1,25 @@
+    // convenience method which handles updating any arbitrary collection of subs
+    private void updateSubscriptions(Collection<Subscription> subscriptions) {
+        
+        PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
+        
+        Iterator subs = subscriptions.iterator();
+        while (subs.hasNext()) {
+            Subscription sub = (Subscription)subs.next();
+            
+            try {
+                // reattach sub.  sub gets detached as we iterate
+                sub = pmgr.getSubscriptionById(sub.getId());
+            } catch (PlanetException ex) {
+                log.warn("Subscription went missing while doing update: "+ex.getMessage());
+            }
+            
+            // this updates and saves
+            try {
+                updateSubscription(sub);
+            } catch(Exception ex) {
+                log.warn("Error updating subscription - "+sub.getFeedURL(), ex);
+            }
+        }
+    }
+

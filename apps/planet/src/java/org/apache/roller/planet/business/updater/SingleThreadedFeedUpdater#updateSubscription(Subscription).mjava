@@ -1,0 +1,63 @@
+    /**
+     * @inheritDoc
+     */
+    public void updateSubscription(Subscription sub) throws UpdaterException {
+        
+        if(sub == null) {
+            throw new IllegalArgumentException("cannot update null subscription");
+        }
+        
+        updateProxySettings();
+        
+        log.debug("updating feed: "+sub.getFeedURL());
+        
+        long subStartTime = System.currentTimeMillis();
+        
+        Subscription updatedSub;
+        try {
+            // fetch the latest version of the subscription
+            FeedFetcher fetcher = PlanetFactory.getPlanet().getFeedFetcher();
+            updatedSub = fetcher.fetchSubscription(sub.getFeedURL());
+        } catch (FetcherException ex) {
+            throw new UpdaterException("Error fetching updated subscription", ex);
+        }
+        
+        // if this subscription hasn't changed since last update then we're done
+        if(sub.getLastUpdated() != null &&
+                !updatedSub.getLastUpdated().after(sub.getLastUpdated())) {
+            log.debug("Skipping update, feed hasn't changed - "+sub.getFeedURL());
+        }
+        
+        // update subscription attributes
+        sub.setSiteURL(updatedSub.getSiteURL());
+        sub.setTitle(updatedSub.getTitle());
+        sub.setAuthor(updatedSub.getAuthor());
+        sub.setLastUpdated(updatedSub.getLastUpdated());
+        
+        // update subscription entries
+        int entries = 0;
+        Set<SubscriptionEntry> newEntries = updatedSub.getEntries();
+        if(newEntries.size() > 0) try {
+            PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
+            
+            // clear out old entries
+            pmgr.deleteEntries(sub);
+            
+            // add fresh entries
+            sub.getEntries().clear();
+            sub.addEntries(newEntries);
+            
+            // save and flush
+            pmgr.saveSubscription(sub);
+            PlanetFactory.getPlanet().flush();
+            
+        } catch(PlanetException ex) {
+            throw new UpdaterException("Error persisting updated subscription", ex);
+        }
+        
+        long subEndTime = System.currentTimeMillis();
+        log.debug("updated feed -- "+sub.getFeedURL()+" -- in "+
+                ((subEndTime-subStartTime)/1000.0)+" seconds.  "+entries+
+                " entries updated.");
+    }
+
