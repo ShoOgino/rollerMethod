@@ -2,9 +2,9 @@
         // delete a planet subscription
         log.debug("Deleting Planet Subscription ...");
         
-        PlanetManager pmgr= PlanetFactory.getPlanet().getPlanetManager();
+        PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
         try {
-            if(getSubid() != null && !"".equals(getSubid())) {
+            if(!StringUtils.isEmpty(getSubid())) {
                 Subscription sub = pmgr.getSubscriptionById(getSubid());
                 if(sub == null) {
                     setError("PlanetGroupForm.error.nullSubscription");
@@ -18,9 +18,10 @@
                 }
                 
                 setSuccess("PlanetGroupForm.message.subscriptionDeleteSucceeded", sub.getTitle());
+            } else {
+                setError("PlanetGroupForm.error.subscriptionNull");
             }
             
-            setError("PlanetGroupForm.error.subscriptionNull");
             return INPUT;
             
         } catch (PlanetException ex) {
