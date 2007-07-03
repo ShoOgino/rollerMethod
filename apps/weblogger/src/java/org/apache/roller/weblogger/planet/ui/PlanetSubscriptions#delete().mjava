@@ -3,12 +3,19 @@
      */
     public String delete() {
         
-        if(getSubscription() != null) try {
+        if(getSubUrl() != null) try {
             
             PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
-            getGroup().getSubscriptions().remove(getSubscription());
-            pmgr.deleteSubscription(getSubscription());
+            
+            // remove subscription
+            Subscription sub = pmgr.getSubscription(getSubUrl());
+            getGroup().getSubscriptions().remove(sub);
+            sub.getGroups().remove(getGroup());
+            pmgr.saveGroup(getGroup());
             PlanetFactory.getPlanet().flush();
+            
+            // clear field after success
+            setSubUrl(null);
             
             addMessage("planetSubscription.success.deleted");
             

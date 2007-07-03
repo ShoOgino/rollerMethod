@@ -3,16 +3,8 @@
      */
     private void myValidate() {
         
-        if(StringUtils.isEmpty(getBean().getTitle())) {
-            addError("planetSubscription.error.title");
-        }
-        
-        if(StringUtils.isEmpty(getBean().getNewsfeedURL())) {
+        if(StringUtils.isEmpty(getSubUrl())) {
             addError("planetSubscription.error.feedUrl");
-        }
-        
-        if(StringUtils.isEmpty(getBean().getWebsiteURL())) {
-            addError("planetSubscription.error.siteUrl");
         }
     }
 

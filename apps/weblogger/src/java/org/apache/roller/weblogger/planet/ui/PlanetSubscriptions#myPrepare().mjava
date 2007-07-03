@@ -13,12 +13,5 @@
         } catch (RollerException ex) {
             log.error("Error looking up planet group - "+getGroupHandle(), ex);
         }
-                
-        // lookup subscription we are working with
-        if(getBean().getId() != null) try {
-            setSubscription(pmgr.getSubscriptionById(getBean().getId()));
-        } catch(Exception ex) {
-            log.error("Error looking up planet subscription - "+getBean().getId(), ex);
-        }
     }
 

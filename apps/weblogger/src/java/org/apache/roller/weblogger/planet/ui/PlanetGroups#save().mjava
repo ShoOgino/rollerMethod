@@ -7,10 +7,10 @@
         
         if (!hasActionErrors()) try {
             
-            PlanetGroupData group = getGroup();
+            PlanetGroup group = getGroup();
             if(group == null) {
                 log.debug("Adding New Group");
-                group = new PlanetGroupData();
+                group = new PlanetGroup();
                 group.setPlanet(getPlanet());
             } else {
                 log.debug("Updating Existing Group");

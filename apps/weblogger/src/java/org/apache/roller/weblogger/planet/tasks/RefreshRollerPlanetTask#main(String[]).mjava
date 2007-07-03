@@ -1,4 +1,13 @@
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
+        
+        // before we can do anything we need to bootstrap the planet backend
+        PlanetStartup.prepare();
+        
+        // we need to use our own planet provider for integration
+        String guiceModule = WebloggerConfig.getProperty("planet.aggregator.guice.module");
+        PlanetProvider provider = new GuicePlanetProvider(guiceModule);
+        PlanetFactory.bootstrap(provider);
+                        
         RefreshRollerPlanetTask task = new RefreshRollerPlanetTask();
         task.init();
         task.run();

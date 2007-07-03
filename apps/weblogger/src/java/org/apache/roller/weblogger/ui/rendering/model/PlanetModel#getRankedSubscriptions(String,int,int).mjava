@@ -9,11 +9,11 @@
         List list = new ArrayList();
         try {
             PlanetManager planetManager = PlanetFactory.getPlanet().getPlanetManager();
-            PlanetData defaultPlanet = planetManager.getPlanet("zzz_default_planet_zzz");
-            PlanetGroupData planetGroup = planetManager.getGroup(defaultPlanet, groupHandle);
+            Planet defaultPlanet = planetManager.getPlanet("zzz_default_planet_zzz");
+            PlanetGroup planetGroup = planetManager.getGroup(defaultPlanet, groupHandle);
             List subs = planetManager.getTopSubscriptions(planetGroup, 0, length);
             for (Iterator it = subs.iterator(); it.hasNext();) {
-                PlanetSubscriptionData sub = (PlanetSubscriptionData) it.next();
+                Subscription sub = (Subscription) it.next();
                 // TODO needs pojo wrapping from planet
                 list.add(sub); 
             }

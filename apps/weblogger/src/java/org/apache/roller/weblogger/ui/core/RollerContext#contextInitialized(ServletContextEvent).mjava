@@ -82,7 +82,13 @@
         
                     try {
                         // trigger planet bootstrapping process
-                        PlanetFactory.bootstrap();
+                        // we need to use our own planet provider for integration
+                        String guiceModule = WebloggerConfig.getProperty("planet.aggregator.guice.module");
+                        PlanetProvider provider = new GuicePlanetProvider(guiceModule);
+                        PlanetFactory.bootstrap(provider);
+                        
+                        // and now initialize planet
+                        PlanetFactory.getPlanet().initialize();
                         
                     } catch (Throwable t) {
                         log.fatal("Roller Planet initialization failed", t);
