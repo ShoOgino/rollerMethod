@@ -10,8 +10,8 @@
             RefreshRollerPlanetTask refreshTask = new RefreshRollerPlanetTask();
             refreshTask.run();
             
-            PlanetData planetObject = planet.getPlanet("default");
-            PlanetGroupData group = planet.getGroup(planetObject, "all");
+            Planet planetObject = planet.getPlanet("default");
+            PlanetGroup group = planet.getGroup(planetObject, "all");
             List agg = planet.getEntries(group, 0, -1);
             assertEquals(3, agg.size());
         }
