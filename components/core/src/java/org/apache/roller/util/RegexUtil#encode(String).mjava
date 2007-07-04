@@ -1,12 +1,11 @@
-	/**
+    /**
      * Thanks to the folks at Blojsom (http://sf.net/projects/blojsom)
      * for showing me what I was doing wrong with the Hex class.
-     * 
-	 * @param email
-	 * @return
-	 */
-	public static String encode(String email)
-	{
+     *
+     * @param email
+     * @return
+     */
+    public static String encode(String email) {
         StringBuffer result = new StringBuffer();
         try {
             char[] hexString = Hex.encodeHex(email.getBytes("UTF-8"));
@@ -19,7 +18,7 @@
         } catch (UnsupportedEncodingException e) {
             return email;
         }
-
+        
         return result.toString();
-	}
+    }
 
