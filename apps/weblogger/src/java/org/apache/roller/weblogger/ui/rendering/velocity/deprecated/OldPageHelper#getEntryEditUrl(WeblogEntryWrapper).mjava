@@ -1,5 +1,5 @@
     /** Build the URL for editing an WeblogEntry **/
     public String getEntryEditUrl(WeblogEntryWrapper entry) {
-        return URLUtilities.getEntryEditURL(entry.getWebsite().getHandle(), entry.getId(), false);
+        return WebloggerFactory.getWeblogger().getUrlStrategy().getEntryEditURL(entry.getWebsite().getHandle(), entry.getId(), false);
     }
 

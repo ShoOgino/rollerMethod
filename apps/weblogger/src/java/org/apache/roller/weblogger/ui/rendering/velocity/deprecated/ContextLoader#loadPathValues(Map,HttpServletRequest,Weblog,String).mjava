@@ -11,7 +11,7 @@
         
         String url = null;
         if (website != null  && !"zzz_none_zzz".equals(website.getHandle())) {
-            url = URLUtilities.getWeblogURL(website, locale, true);
+            url = WebloggerFactory.getWeblogger().getUrlStrategy().getWeblogURL(website, locale, true);
         } else {
             url= WebloggerRuntimeConfig.getAbsoluteContextURL();
         }

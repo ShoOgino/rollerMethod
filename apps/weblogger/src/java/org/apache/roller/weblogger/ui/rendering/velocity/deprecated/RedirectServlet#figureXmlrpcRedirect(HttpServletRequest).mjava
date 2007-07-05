@@ -1,6 +1,6 @@
     // redirect to new xmlrpc location
     private String figureXmlrpcRedirect(HttpServletRequest request) {
         
-        return URLUtilities.getXmlrpcURL(true);
+        return WebloggerFactory.getWeblogger().getUrlStrategy().getXmlrpcURL(true);
     }
 

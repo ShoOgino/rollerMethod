@@ -28,7 +28,7 @@
             // Try to save file
             fmgr.saveFile(website, name, type, bits.length, new ByteArrayInputStream(bits));
             
-            String fileLink = URLUtilities.getWeblogResourceURL(website, name, true);
+            String fileLink = WebloggerFactory.getWeblogger().getUrlStrategy().getWeblogResourceURL(website, name, true);
             
             Hashtable returnStruct = new Hashtable(1);
             returnStruct.put("url", fileLink);

@@ -1,4 +1,4 @@
     public String getPreviewURL() {
-        return URLUtilities.getPreviewWeblogEntryURL(getEntry().getAnchor(), getActionWeblog(), null, true);
+        return WebloggerFactory.getWeblogger().getUrlStrategy().getPreviewURLStrategy(null).getWeblogEntryURL(getActionWeblog(), null, getEntry().getAnchor(), true);
     }
 

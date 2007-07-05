@@ -1,0 +1,13 @@
+    /**
+     * Get url to rsd file on a given weblog.
+     */
+    public String getWeblogRsdURL(Weblog weblog,
+                                               boolean absolute) {
+        
+        if(weblog == null) {
+            return null;
+        }
+        
+        return getWeblogURL(weblog, null, absolute)+"rsd";
+    }
+

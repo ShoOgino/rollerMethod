@@ -75,7 +75,7 @@
             
             for(String upload : uploaded) {
                 addMessage("uploadFiles.uploadedFile",
-                        URLUtilities.getWeblogResourceURL(getActionWeblog(), upload, true));
+                        WebloggerFactory.getWeblogger().getUrlStrategy().getWeblogResourceURL(getActionWeblog(), upload, true));
             }
         }
         

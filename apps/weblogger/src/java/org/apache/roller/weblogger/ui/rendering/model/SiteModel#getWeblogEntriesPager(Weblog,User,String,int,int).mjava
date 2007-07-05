@@ -11,12 +11,12 @@
         
         String pagerUrl = null;
         if (feedRequest != null) {
-            pagerUrl = URLUtilities.getWeblogFeedURL(weblog, 
+            pagerUrl = urlStrategy.getWeblogFeedURL(weblog, 
                     weblogRequest.getLocale(), feedRequest.getType(),
                     feedRequest.getFormat(), feedRequest.getWeblogCategoryName(), null,
                     feedRequest.getTags(), feedRequest.isExcerpts(), true);
         } else {
-            pagerUrl = URLUtilities.getWeblogPageURL(weblog, 
+            pagerUrl = urlStrategy.getWeblogPageURL(weblog, 
                 weblogRequest.getLocale(), pageLink, 
                 null, null, null, tags, 0, false);
         }

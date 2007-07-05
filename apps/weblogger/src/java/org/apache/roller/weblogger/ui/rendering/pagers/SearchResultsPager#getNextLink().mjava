@@ -1,6 +1,6 @@
     public String getNextLink() {
         if(moreResults) {
-            return URLUtilities.getWeblogSearchURL(weblog, locale, query, category, page + 1, false);
+            return WebloggerFactory.getWeblogger().getUrlStrategy().getWeblogSearchURL(weblog, locale, query, category, page + 1, false);
         }
         return null;
     }

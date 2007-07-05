@@ -39,7 +39,7 @@
                     sub = new Subscription();
                     sub.setTitle(weblog.getName());
                     sub.setFeedURL(feedUrl);
-                    sub.setSiteURL(URLUtilities.getWeblogURL(weblog, null, true));
+                    sub.setSiteURL(WebloggerFactory.getWeblogger().getUrlStrategy().getWeblogURL(weblog, null, true));
                     sub.setAuthor(weblog.getName());
                     sub.setLastUpdated(new Date(0));
                     

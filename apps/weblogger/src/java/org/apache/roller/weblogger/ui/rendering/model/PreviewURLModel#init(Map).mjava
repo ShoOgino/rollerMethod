@@ -18,6 +18,8 @@
         this.weblog = weblogRequest.getWeblog();
         this.locale = weblogRequest.getLocale();
         
+        urlStrategy = WebloggerFactory.getWeblogger().getUrlStrategy().getPreviewURLStrategy(previewRequest.getThemeName());
+        
         super.init(initData);
     }
 

@@ -19,7 +19,7 @@
             params.put("bean.spamString", getBean().getSpamString());
         }
         
-        return URLUtilities.getActionURL("globalCommentManagement", "/roller-ui/admin", 
+        return WebloggerFactory.getWeblogger().getUrlStrategy().getActionURL("globalCommentManagement", "/roller-ui/admin", 
                 null, params, false);
     }
 

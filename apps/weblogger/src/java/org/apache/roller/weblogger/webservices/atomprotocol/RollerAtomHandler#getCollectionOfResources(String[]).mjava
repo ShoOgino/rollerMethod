@@ -32,7 +32,7 @@
             }
                         
             Feed feed = new Feed();
-            feed.setId(URLUtilities.getAtomProtocolURL(true)
+            feed.setId(atomURL
                 +"/"+website.getHandle() + "/resources/" + path + start);                
             feed.setTitle(website.getName());
 
@@ -77,7 +77,7 @@
                 List otherLinks = new ArrayList();
                 if (start + count < files.length) { // add next link
                     int nextOffset = start + max;
-                    String url = URLUtilities.getAtomProtocolURL(true)
+                    String url = atomURL
                         +"/"+ website.getHandle() + "/resources/" + path + nextOffset;
                     Link nextLink = new Link();
                     nextLink.setRel("next");
@@ -86,7 +86,7 @@
                 }
                 if (start > 0) { // add previous link
                     int prevOffset = start > max ? start - max : 0;
-                    String url = URLUtilities.getAtomProtocolURL(true)
+                    String url = atomURL
                         +"/"+website.getHandle() + "/resources/" + path + prevOffset;
                     Link prevLink = new Link();
                     prevLink.setRel("previous");

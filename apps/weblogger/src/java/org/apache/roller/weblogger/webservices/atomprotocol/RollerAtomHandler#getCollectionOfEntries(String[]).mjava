@@ -38,7 +38,7 @@
                     start,             // offset (for range paging)
                     max + 1);          // maxEntries
             Feed feed = new Feed();
-            feed.setId(URLUtilities.getAtomProtocolURL(true)
+            feed.setId(atomURL
                 +"/"+website.getHandle() + "/entries/" + start);
             feed.setTitle(website.getName());
 
@@ -62,7 +62,7 @@
             List links = new ArrayList();
             if (entries.size() > max) { // add next link
                 int nextOffset = start + max;
-                String url = URLUtilities.getAtomProtocolURL(true)+"/"
+                String url = atomURL+"/"
                         + website.getHandle() + "/entries/" + nextOffset;
                 Link nextLink = new Link();
                 nextLink.setRel("next");
@@ -71,7 +71,7 @@
             }
             if (start > 0) { // add previous link
                 int prevOffset = start > max ? start - max : 0;
-                String url = URLUtilities.getAtomProtocolURL(true)+"/"
+                String url = atomURL+"/"
                         +website.getHandle() + "/entries/" + prevOffset;
                 Link prevLink = new Link();
                 prevLink.setRel("previous");

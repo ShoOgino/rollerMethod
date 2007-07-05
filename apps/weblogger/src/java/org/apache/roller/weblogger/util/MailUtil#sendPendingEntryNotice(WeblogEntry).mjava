@@ -39,7 +39,7 @@
             to = (String[])reviewers.toArray(new String[reviewers.size()]);
             
             // Figure URL to entry edit page
-            String editURL = URLUtilities.getEntryEditURL(entry.getWebsite().getHandle(), entry.getId(), true);
+            String editURL = WebloggerFactory.getWeblogger().getUrlStrategy().getEntryEditURL(entry.getWebsite().getHandle(), entry.getId(), true);
             
             ResourceBundle resources = ResourceBundle.getBundle(
                     "ApplicationResources", entry.getWebsite().getLocaleInstance());

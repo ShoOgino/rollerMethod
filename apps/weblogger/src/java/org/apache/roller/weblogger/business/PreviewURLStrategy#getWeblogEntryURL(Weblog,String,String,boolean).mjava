@@ -1,0 +1,36 @@
+    /**
+     * Get url for a given *preview* weblog entry.  
+     * Optionally for a certain locale.
+     */
+    @Override
+    public String getWeblogEntryURL(Weblog weblog,
+                                    String locale,
+                                    String previewAnchor,
+                                    boolean absolute) {
+        
+        if(weblog == null) {
+            return null;
+        }
+        
+        StringBuffer url = new StringBuffer();
+        
+        if(absolute) {
+            url.append(WebloggerRuntimeConfig.getAbsoluteContextURL());
+        } else {
+            url.append(WebloggerRuntimeConfig.getRelativeContextURL());
+        }
+        
+        url.append("/roller-ui/authoring/preview/").append(weblog.getHandle()).append("/");
+        
+        if(locale != null) {
+            url.append(locale).append("/");
+        }
+        
+        Map params = new HashMap();
+        if(previewAnchor != null) {
+            params.put("previewEntry", URLUtilities.encode(previewAnchor));
+        }
+        
+        return url.toString() + URLUtilities.getQueryString(params);
+    }
+

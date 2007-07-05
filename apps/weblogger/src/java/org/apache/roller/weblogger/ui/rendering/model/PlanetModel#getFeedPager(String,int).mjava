@@ -6,7 +6,7 @@
      */
     public Pager getFeedPager(String feedURL, int length) {
         
-        String pagerUrl = URLUtilities.getWeblogPageURL(weblog, 
+        String pagerUrl = WebloggerFactory.getWeblogger().getUrlStrategy().getWeblogPageURL(weblog, 
                 weblogRequest.getLocale(), pageLink, 
                 null, null, null, null, 0, false);
         

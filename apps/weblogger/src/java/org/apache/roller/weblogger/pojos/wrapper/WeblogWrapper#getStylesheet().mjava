@@ -1,7 +1,7 @@
     public String getStylesheet() throws WebloggerException {
         // custom stylesheet comes from the weblog theme
         if(this.pojo.getTheme().getStylesheet() != null) {
-            return URLUtilities.getWeblogPageURL(this.pojo, null, this.pojo.getTheme().getStylesheet().getLink(), null, null, null, null, 0, false);
+            return WebloggerFactory.getWeblogger().getUrlStrategy().getWeblogPageURL(this.pojo, null, this.pojo.getTheme().getStylesheet().getLink(), null, null, null, null, 0, false);
         }
         return null;
     }

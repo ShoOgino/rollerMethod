@@ -1,10 +1,10 @@
     private Entry createAtomResourceEntry(Weblog website, ThemeResource file) {
         String absUrl = WebloggerRuntimeConfig.getAbsoluteContextURL();
         String editURI = 
-                URLUtilities.getAtomProtocolURL(true)+"/"+website.getHandle()
+                atomURL+"/"+website.getHandle()
                 + "/resource/" + file.getPath() + ".media-link";
         String editMediaURI = 
-                URLUtilities.getAtomProtocolURL(true)+"/"+ website.getHandle()
+                atomURL+"/"+ website.getHandle()
                 + "/resource/" + file.getPath();
         String viewURI = absUrl
                 + "/resources/" + website.getHandle()

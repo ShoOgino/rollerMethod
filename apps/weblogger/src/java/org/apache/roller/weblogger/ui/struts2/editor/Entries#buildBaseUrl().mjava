@@ -25,7 +25,7 @@
             params.put("bean.sortBy", getBean().getSortBy());
         }
         
-        return URLUtilities.getActionURL("entries", "/roller-ui/authoring", 
+        return WebloggerFactory.getWeblogger().getUrlStrategy().getActionURL("entries", "/roller-ui/authoring", 
                 getActionWeblog().getHandle(), params, false);
     }
 

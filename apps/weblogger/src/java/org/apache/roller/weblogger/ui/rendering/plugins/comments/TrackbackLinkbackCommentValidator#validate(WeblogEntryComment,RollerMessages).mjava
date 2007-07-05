@@ -11,7 +11,7 @@
         try {
             linkback = new LinkbackExtractor(
                     comment.getUrl(),
-                    URLUtilities.getWeblogEntryURL(
+                    WebloggerFactory.getWeblogger().getUrlStrategy().getWeblogEntryURL(
                     comment.getWeblogEntry().getWebsite(),
                     null,
                     comment.getWeblogEntry().getAnchor(),

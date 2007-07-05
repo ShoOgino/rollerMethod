@@ -12,7 +12,7 @@
                         ((WeblogEntry)entries.get(0)).getPubTime());
                 
                 // append 8 char date string on end of selfurl
-                String dayUrl = URLUtilities.getWeblogCollectionURL(weblog, locale, cat, dateString, null, -1, false);
+                String dayUrl = WebloggerFactory.getWeblogger().getUrlStrategy().getWeblogCollectionURL(weblog, locale, cat, dateString, null, -1, false);
                               
                 sb.append("<div class=\"hCalendarDayTitleBig\">");
                 sb.append("<a href=\"");

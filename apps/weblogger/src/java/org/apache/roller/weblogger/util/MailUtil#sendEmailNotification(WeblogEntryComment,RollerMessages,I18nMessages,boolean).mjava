@@ -103,7 +103,7 @@
         msg.append((escapeHtml) ? "\n" : "<br />");
         
         // Build link back to comment
-        String commentURL = URLUtilities.getWeblogCommentsURL(weblog, null, entry.getAnchor(), true);
+        String commentURL = WebloggerFactory.getWeblogger().getUrlStrategy().getWeblogCommentsURL(weblog, null, entry.getAnchor(), true);
         
         if (escapeHtml) {
             msg.append(commentURL);
@@ -157,7 +157,7 @@
         
         Map<String, String> parameters = new HashMap();
         parameters.put("bean.entryId", entry.getId());
-        String deleteURL = URLUtilities.getActionURL(
+        String deleteURL = WebloggerFactory.getWeblogger().getUrlStrategy().getActionURL(
                 "comments", "/roller-ui/authoring", weblog.getHandle(), parameters, true);
         
         if (escapeHtml) {

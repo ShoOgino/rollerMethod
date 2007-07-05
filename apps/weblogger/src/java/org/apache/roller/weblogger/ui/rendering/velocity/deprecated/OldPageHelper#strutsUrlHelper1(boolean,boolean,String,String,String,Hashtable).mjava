@@ -23,9 +23,9 @@
             // a little hacky, but hopefully nobody is really using this anymore
             return WebloggerRuntimeConfig.getRelativeContextURL()+"/roller-ui/authoring/weblogConfig.rol?weblog="+val1;
         } else if("logout-redirect".equals(path)) {
-            return URLUtilities.getLogoutURL(false);
+            return WebloggerFactory.getWeblogger().getUrlStrategy().getLogoutURL(false);
         } else if("login-redirect".equals(path)) {
-            return URLUtilities.getLoginURL(false);
+            return WebloggerFactory.getWeblogger().getUrlStrategy().getLoginURL(false);
         } else {
             return "<span class=\"error\">ERROR generating link</span>";
         }

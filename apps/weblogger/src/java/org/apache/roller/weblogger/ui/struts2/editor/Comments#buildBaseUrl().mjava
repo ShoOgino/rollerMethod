@@ -22,7 +22,7 @@
             params.put("bean.spamString", getBean().getSpamString());
         }
         
-        return URLUtilities.getActionURL("comments", "/roller-ui/authoring", 
+        return WebloggerFactory.getWeblogger().getUrlStrategy().getActionURL("comments", "/roller-ui/authoring", 
                 getActionWeblog().getHandle(), params, false);
     }
 

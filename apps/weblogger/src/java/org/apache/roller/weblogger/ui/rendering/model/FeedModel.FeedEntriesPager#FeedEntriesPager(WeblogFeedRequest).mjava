@@ -1,5 +1,5 @@
         public FeedEntriesPager(WeblogFeedRequest feedRequest) {
-            super(URLUtilities.getWeblogFeedURL(feedRequest.getWeblog(), 
+            super(WebloggerFactory.getWeblogger().getUrlStrategy().getWeblogFeedURL(feedRequest.getWeblog(), 
                     feedRequest.getLocale(), feedRequest.getType(),
                     feedRequest.getFormat(), null, null, null, false, true), 
                     feedRequest.getWeblog(), null, feedRequest.getWeblogCategoryName(), feedRequest.getTags(),

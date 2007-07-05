@@ -29,7 +29,7 @@
                 
                 // Create collection for entries within that workspace
                 Collection entryCol = new Collection("Weblog Entries", "text", 
-                    URLUtilities.getAtomProtocolURL(true)+"/"+handle+"/entries");
+                    atomURL+"/"+handle+"/entries");
                 entryCol.setAccept("application/atom+xml;type=entry");
                 try {  
                     // Add fixed categories using scheme that points to 
@@ -60,7 +60,7 @@
 
                 // Add media collection for upload dir
                 Collection uploadCol = new Collection("Media Files", "text", 
-                    URLUtilities.getAtomProtocolURL(true)+"/"+handle+"/resources/");
+                    atomURL+"/"+handle+"/resources/");
                 uploadCol.setAccept(accept);
                 workspace.addCollection(uploadCol);
 
@@ -71,7 +71,7 @@
                     for (int i=0; i<dirs.length; i++) {
                         Collection uploadSubCol = new Collection(
                             "Media Files: " + dirs[i].getPath(), "text",
-                            URLUtilities.getAtomProtocolURL(true)+"/"+handle+"/resources/" + dirs[i].getPath());
+                            atomURL+"/"+handle+"/resources/" + dirs[i].getPath());
                         uploadSubCol.setAccept(accept);
                         workspace.addCollection(uploadSubCol);
                     }

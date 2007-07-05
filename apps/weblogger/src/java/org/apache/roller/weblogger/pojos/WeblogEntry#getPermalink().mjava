@@ -1,8 +1,7 @@
     /**
      * Returns absolute entry permalink.
-     * @roller.wrapPojoMethod type="simple"
      */
     public String getPermalink() {
-        return URLUtilities.getWeblogEntryURL(getWebsite(), null, anchor, true);
+        return WebloggerFactory.getWeblogger().getUrlStrategy().getWeblogEntryURL(getWebsite(), null, anchor, true);
     }
 
