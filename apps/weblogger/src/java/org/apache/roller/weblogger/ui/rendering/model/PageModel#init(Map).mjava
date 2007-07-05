@@ -24,6 +24,12 @@
         // custom request parameters
         this.requestParameters = (Map)initData.get("requestParameters");
         
+        // look for url strategy
+        urlStrategy = (URLStrategy) initData.get("urlStrategy");
+        if(urlStrategy == null) {
+            urlStrategy = WebloggerFactory.getWeblogger().getUrlStrategy();
+        }
+        
         // extract weblog object
         weblog = pageRequest.getWeblog();
     }    

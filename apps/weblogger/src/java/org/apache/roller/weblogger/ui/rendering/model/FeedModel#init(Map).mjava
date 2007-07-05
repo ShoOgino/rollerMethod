@@ -15,6 +15,12 @@
                     "  FeedModel only supports feed requests.");
         }
         
+        // look for url strategy
+        urlStrategy = (URLStrategy) initData.get("urlStrategy");
+        if(urlStrategy == null) {
+            urlStrategy = WebloggerFactory.getWeblogger().getUrlStrategy();
+        }
+        
         // extract weblog object
         weblog = feedRequest.getWeblog();
     }

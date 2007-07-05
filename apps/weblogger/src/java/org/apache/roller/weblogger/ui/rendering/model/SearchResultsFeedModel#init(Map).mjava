@@ -12,11 +12,17 @@
             throw new WebloggerException("weblogRequest is not a WeblogFeedRequest."+
                     "  FeedModel only supports feed requests.");
         }
-                
+        
+        // look for url strategy
+        urlStrategy = (URLStrategy) initData.get("urlStrategy");
+        if(urlStrategy == null) {
+            urlStrategy = WebloggerFactory.getWeblogger().getUrlStrategy();
+        }
+        
         // extract weblog object
         weblog = feedRequest.getWeblog();
         
-        String  pagerUrl = WebloggerFactory.getWeblogger().getUrlStrategy().getWeblogFeedURL(weblog, 
+        String  pagerUrl = urlStrategy.getWeblogFeedURL(weblog, 
                 feedRequest.getLocale(), feedRequest.getType(),
                 feedRequest.getFormat(), null, null, /* cat and term are null but added to the url in the pager */
                 null, false, true);

@@ -99,6 +99,9 @@
             initData.put("weblogRequest", previewRequest);
             initData.put("pageContext", pageContext);
             
+            // define url strategy
+            initData.put("urlStrategy", WebloggerFactory.getWeblogger().getUrlStrategy().getPreviewURLStrategy(previewRequest.getThemeName()));
+            
             // Load models for page previewing
             String pageModels = WebloggerConfig.getProperty("rendering.previewModels");
             ModelLoader.loadModels(pageModels, model, initData, true);
