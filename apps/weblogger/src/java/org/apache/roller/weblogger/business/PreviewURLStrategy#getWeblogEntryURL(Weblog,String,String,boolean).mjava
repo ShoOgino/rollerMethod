@@ -27,6 +27,9 @@
         }
         
         Map params = new HashMap();
+        if(previewTheme != null) {
+            params.put("theme", URLUtilities.encode(previewTheme));
+        }
         if(previewAnchor != null) {
             params.put("previewEntry", URLUtilities.encode(previewAnchor));
         }
