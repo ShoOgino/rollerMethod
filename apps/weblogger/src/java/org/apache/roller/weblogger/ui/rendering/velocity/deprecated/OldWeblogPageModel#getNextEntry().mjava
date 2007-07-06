@@ -14,7 +14,7 @@
                         mWeblogMgr.getNextEntry(currentEntry.getPojo(), catName, mLocale);
                 
                 if(nextEntry != null)
-                    mNextEntry = WeblogEntryWrapper.wrap(nextEntry);
+                    mNextEntry = WeblogEntryWrapper.wrap(nextEntry, urlStrategy);
                 
                 // make sure that mNextEntry is not published to future
                 if (mNextEntry != null &&

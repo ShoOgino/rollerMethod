@@ -16,7 +16,7 @@
                 && StringUtils.isNotEmpty(excerpt) ) {
                     if (referer.getVisible().booleanValue() 
                      || referer.getWebsite().hasUserPermissions(rses.getAuthenticatedUser(), WeblogPermission.ADMIN) ) { 
-                        referers.add(WeblogReferrerWrapper.wrap(referer));
+                        referers.add(WeblogReferrerWrapper.wrap(referer, urlStrategy));
                     }
                 }
             }

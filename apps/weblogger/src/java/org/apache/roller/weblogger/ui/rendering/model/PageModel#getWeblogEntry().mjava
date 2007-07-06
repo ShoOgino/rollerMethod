@@ -3,7 +3,7 @@
      */
     public WeblogEntryWrapper getWeblogEntry() {
         if(pageRequest.getWeblogEntry() != null) {
-            return WeblogEntryWrapper.wrap(pageRequest.getWeblogEntry());
+            return WeblogEntryWrapper.wrap(pageRequest.getWeblogEntry(), urlStrategy);
         }
         return null;
     }

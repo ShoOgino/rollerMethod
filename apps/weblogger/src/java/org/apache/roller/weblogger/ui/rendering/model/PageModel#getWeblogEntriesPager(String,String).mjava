@@ -17,6 +17,7 @@
         // determine which mode to use
         if (pageRequest.getWeblogAnchor() != null) {
             return new WeblogEntriesPermalinkPager(
+                    urlStrategy,
                     weblog,
                     pageRequest.getLocale(),
                     pageRequest.getWeblogPageName(),
@@ -27,6 +28,7 @@
                     pageRequest.getPageNum());
         } else if (dateString != null && dateString.length() == 8) {
             return new WeblogEntriesDayPager(
+                    urlStrategy,
                     weblog,
                     pageRequest.getLocale(),
                     pageRequest.getWeblogPageName(),
@@ -37,6 +39,7 @@
                     pageRequest.getPageNum());
         } else if (dateString != null && dateString.length() == 6) {
             return new WeblogEntriesMonthPager(
+                    urlStrategy,
                     weblog,
                     pageRequest.getLocale(),
                     pageRequest.getWeblogPageName(),
@@ -48,6 +51,7 @@
           
         } else {
             return new WeblogEntriesLatestPager(
+                    urlStrategy,
                     weblog,
                     pageRequest.getLocale(),
                     pageRequest.getWeblogPageName(),

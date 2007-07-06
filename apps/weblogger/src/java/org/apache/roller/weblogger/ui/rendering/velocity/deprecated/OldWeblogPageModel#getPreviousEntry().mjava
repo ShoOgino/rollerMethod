@@ -14,7 +14,7 @@
                         mWeblogMgr.getPreviousEntry(currentEntry.getPojo(), catName, mLocale);
                 
                 if(prevEntry != null)
-                    mPreviousEntry = WeblogEntryWrapper.wrap(prevEntry);
+                    mPreviousEntry = WeblogEntryWrapper.wrap(prevEntry, urlStrategy);
             } catch (WebloggerException e) {
                 mLogger.error("PageModel.getPreviousEntry)", e);
             }

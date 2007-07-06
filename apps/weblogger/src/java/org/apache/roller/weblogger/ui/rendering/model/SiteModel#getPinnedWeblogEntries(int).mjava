@@ -11,7 +11,7 @@
             List weblogs = wmgr.getWeblogEntriesPinnedToMain(new Integer(length));
             for (Iterator it = weblogs.iterator(); it.hasNext();) {
                 WeblogEntry entry = (WeblogEntry) it.next();
-                results.add(WeblogEntryWrapper.wrap(entry));
+                results.add(WeblogEntryWrapper.wrap(entry, urlStrategy));
             }
         } catch (Exception e) {
             log.error("ERROR: fetching pinned weblog entries", e);

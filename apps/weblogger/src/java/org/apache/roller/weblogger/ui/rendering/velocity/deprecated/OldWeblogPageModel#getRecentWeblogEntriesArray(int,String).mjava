@@ -55,7 +55,7 @@
             Iterator it = mEntries.iterator();
             int i=0;
             while(it.hasNext()) {
-                ret.add(i,WeblogEntryWrapper.wrap((WeblogEntry) it.next()));
+                ret.add(i,WeblogEntryWrapper.wrap((WeblogEntry) it.next(), urlStrategy));
                 i++;
             }
         } catch (Exception e) {

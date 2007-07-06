@@ -1,6 +1,6 @@
     public WeblogCategoryWrapper getWeblogCategory() {
         if(searchRequest.getWeblogCategory() != null) {
-            return WeblogCategoryWrapper.wrap(searchRequest.getWeblogCategory());
+            return WeblogCategoryWrapper.wrap(searchRequest.getWeblogCategory(), urlStrategy);
         }
         return null;
     }

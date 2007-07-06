@@ -48,7 +48,7 @@
                 // or entry's user is not the requested user.
                 // but don't return future posts
                 if (entry != null && entry.getPubTime().before(now)) {
-                    results.add(WeblogEntryWrapper.wrap(entry));
+                    results.add(WeblogEntryWrapper.wrap(entry, urlStrategy));
                 }
             }
             

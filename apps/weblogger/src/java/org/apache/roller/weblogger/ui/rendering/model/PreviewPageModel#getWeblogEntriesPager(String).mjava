@@ -12,6 +12,7 @@
         
         if (anchor != null) {
             return new WeblogEntriesPreviewPager(
+                    urlStrategy,
                     previewRequest.getWeblog(),
                     previewRequest.getLocale(),
                     previewRequest.getWeblogPageName(),
@@ -22,6 +23,7 @@
                     previewRequest.getPageNum());
         } else {
             return new WeblogEntriesLatestPager(
+                    urlStrategy,
                     previewRequest.getWeblog(),
                     previewRequest.getLocale(),
                     previewRequest.getWeblogPageName(),

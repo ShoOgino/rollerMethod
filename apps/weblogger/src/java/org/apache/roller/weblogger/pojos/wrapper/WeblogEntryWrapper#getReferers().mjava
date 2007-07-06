@@ -8,7 +8,7 @@
         Iterator it = initialCollection.iterator();
         int i = 0;
         while(it.hasNext()) {
-            wrappedCollection.add(i,WeblogReferrerWrapper.wrap((WeblogReferrer) it.next()));
+            wrappedCollection.add(i,WeblogReferrerWrapper.wrap((WeblogReferrer) it.next(), urlStrategy));
             i++;
         }
         

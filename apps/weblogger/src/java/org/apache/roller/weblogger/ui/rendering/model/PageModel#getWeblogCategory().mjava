@@ -4,7 +4,7 @@
      */
     public WeblogCategoryWrapper getWeblogCategory() {
         if(pageRequest.getWeblogCategory() != null) {
-            return WeblogCategoryWrapper.wrap(pageRequest.getWeblogCategory());
+            return WeblogCategoryWrapper.wrap(pageRequest.getWeblogCategory(), urlStrategy);
         }
         return null;
     }

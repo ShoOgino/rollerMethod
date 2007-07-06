@@ -10,7 +10,7 @@
         Iterator it = initialCollection.iterator();
         int i = 0;
         while(it.hasNext()) {
-            wrappedCollection.add(i,WeblogEntryWrapper.wrap((WeblogEntry) it.next()));
+            wrappedCollection.add(i,WeblogEntryWrapper.wrap((WeblogEntry) it.next(), urlStrategy));
             i++;
         }
         

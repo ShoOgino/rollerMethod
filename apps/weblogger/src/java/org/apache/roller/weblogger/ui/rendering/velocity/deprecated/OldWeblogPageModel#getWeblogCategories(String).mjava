@@ -27,7 +27,7 @@
                 Iterator it = mRet.iterator();
                 int i=0;
                 while(it.hasNext()) {
-                    ret.add(WeblogCategoryWrapper.wrap((WeblogCategory)it.next()));
+                    ret.add(WeblogCategoryWrapper.wrap((WeblogCategory)it.next(), urlStrategy));
                     i++;
                 }
                 if (categoryName != null) {

@@ -6,12 +6,18 @@
             throw new WebloggerException("expected searchRequest from init data");
         }
         
+        // look for url strategy
+        urlStrategy = (URLStrategy) initData.get("urlStrategy");
+        if(urlStrategy == null) {
+            urlStrategy = WebloggerFactory.getWeblogger().getUrlStrategy();
+        }
+        
         // let parent initialize
         super.init(initData);
         
         // if there is no query, then we are done
         if(searchRequest.getQuery() == null) {
-            pager = new SearchResultsPager(searchRequest, results, false);
+            pager = new SearchResultsPager(urlStrategy, searchRequest, results, false);
             return;
         }
         
@@ -46,6 +52,6 @@
         }
         
         // search completed, setup pager based on results
-        pager = new SearchResultsPager(searchRequest, results, (hits > (offset+limit)));
+        pager = new SearchResultsPager(urlStrategy, searchRequest, results, (hits > (offset+limit)));
     }
 
