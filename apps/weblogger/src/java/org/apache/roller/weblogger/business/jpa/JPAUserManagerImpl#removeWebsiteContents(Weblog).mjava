@@ -121,5 +121,9 @@
         // flush the changes before returning. This is required as there is a
         // circular dependency between WeblogCategory and Weblog
         this.strategy.flush();
+        
+        // remove uploaded files
+        FileManager fmgr = WebloggerFactory.getWeblogger().getFileManager();
+        fmgr.deleteAllFiles(website);
     }
 
