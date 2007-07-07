@@ -1,9 +1,8 @@
     public boolean isUserAuthorizedToAdmin(WeblogWrapper weblog) {
         try {
-            RollerSession rses = RollerSession.getRollerSession(request);
-            if (rses != null && rses.getAuthenticatedUser() != null) {
+            if (parsedRequest.getAuthenticUser() != null) {
                 return weblog.getPojo().hasUserPermissions(
-                        rses.getAuthenticatedUser(), WeblogPermission.ADMIN);
+                        parsedRequest.getUser(), WeblogPermission.ADMIN);
             }
         } catch (Exception e) {
             log.warn("ERROR: checking user authorization", e);

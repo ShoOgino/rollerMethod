@@ -6,8 +6,8 @@
             return fmt;
         
         SimpleDateFormat format = new SimpleDateFormat(fmt);
-        if (tz != null) {
-            format.setTimeZone(tz);
+        if (weblog != null) {
+            format.setTimeZone(weblog.getTimeZoneInstance());
         }
         return format.format(d);
     }

@@ -1,13 +1,16 @@
     /** Init page model based on request */
-    public void init(Map initData) throws WebloggerException {
+    public void init(Map initData) throws WebloggerException {      
         
-        // extract request object
-        this.request = (HttpServletRequest) initData.get("request");        
-
-        // extract timezone if available
-        WeblogRequest weblogRequest = (WeblogRequest)initData.get("weblogRequest");
-        if (weblogRequest != null && weblogRequest.getWeblog() != null) {
-            tz = weblogRequest.getWeblog().getTimeZoneInstance();
+        // we expect the init data to contain a parsedRequest object
+        parsedRequest = (ParsedRequest) initData.get("parsedRequest");
+        if(parsedRequest == null) {
+            throw new WebloggerException("expected parsedRequest from init data");
+        }
+        
+        // extract weblog object if possible
+        if(parsedRequest instanceof WeblogRequest) {
+            WeblogRequest weblogRequest = (WeblogRequest) parsedRequest;
+            weblog = weblogRequest.getWeblog();
         }
     }
 
