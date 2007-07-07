@@ -2,13 +2,6 @@
      * Format date using SimpleDateFormat format string.
      */
     public String formatDate(Date d, String fmt) {
-        if(d == null || fmt == null)
-            return fmt;
-        
-        SimpleDateFormat format = new SimpleDateFormat(fmt);
-        if (weblog != null) {
-            format.setTimeZone(weblog.getTimeZoneInstance());
-        }
-        return format.format(d);
+        return formatDate(d, fmt, weblog.getTimeZoneInstance());
     }
 
