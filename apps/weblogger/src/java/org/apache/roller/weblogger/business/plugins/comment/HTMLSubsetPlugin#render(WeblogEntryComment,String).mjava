@@ -1,0 +1,12 @@
+    public String render(final WeblogEntryComment comment, String text) {
+        
+        log.debug("starting value:\n"+text);
+        
+        // just use old utilities method
+        String output = Utilities.transformToHTMLSubset(text);
+        
+        log.debug("ending value:\n"+output);
+        
+        return output;
+    }
+

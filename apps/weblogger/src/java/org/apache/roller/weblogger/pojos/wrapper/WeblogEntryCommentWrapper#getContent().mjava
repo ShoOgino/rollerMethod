@@ -1,4 +1,26 @@
+    /**
+     * Get the comment contents.
+     *
+     * Any configured comment plugins are applied first, then the value is 
+     * always html escaped.
+     */
     public String getContent() {
-        return StringEscapeUtils.escapeHtml(this.pojo.getContent());
+        
+        String content = this.pojo.getContent();
+        
+        // encode email
+        content = Utilities.encodeEmail(content);
+        
+        // escape html
+        content = StringEscapeUtils.escapeHtml(content);
+        
+        // apply plugins for transformation
+        PluginManager pmgr = WebloggerFactory.getWeblogger().getPagePluginManager();
+        content = pmgr.applyCommentPlugins(this.pojo);
+        
+        // always add rel=nofollow for links
+        content = Utilities.addNofollow(content);
+        
+        return content;
     }
 

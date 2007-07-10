@@ -87,6 +87,9 @@
         comment.setRemoteHost(request.getRemoteHost());
         comment.setPostTime(new Timestamp(System.currentTimeMillis()));
         
+        // set whatever comment plugins are configured
+        comment.setPlugins(WebloggerRuntimeConfig.getProperty("users.comments.plugins"));
+        
         WeblogEntryCommentForm cf = new WeblogEntryCommentForm();
         cf.setData(comment);
         if (preview) {
@@ -127,11 +130,36 @@
             } else if (validationScore == 100) {
                 // else they're approved
                 comment.setStatus(WeblogEntryComment.APPROVED);
+                message = messageUtils.getString("commentServlet.commentAccepted");
             } else {
                 // Invalid comments are marked as spam
+                log.debug("Comment marked as spam");
                 comment.setStatus(WeblogEntryComment.SPAM);
                 error = messageUtils.getString("commentServlet.commentMarkedAsSpam");
-                log.debug("Comment marked as spam");
+                
+                // add specific error messages if they exist
+                if(messages.getErrorCount() > 0) {
+                    Iterator errors = messages.getErrors();
+                    RollerMessage errorKey = null;
+                    
+                    StringBuffer buf = new StringBuffer();
+                    buf.append("<ul>");
+                    while(errors.hasNext()) {
+                        errorKey = (RollerMessage)errors.next();
+                        
+                        buf.append("<li>");
+                        if(errorKey.getArgs() != null) {
+                            buf.append(messageUtils.getString(errorKey.getKey(), errorKey.getArgs()));
+                        } else {
+                            buf.append(messageUtils.getString(errorKey.getKey()));
+                        }
+                        buf.append("</li>");
+                    }
+                    buf.append("</ul>");
+                    
+                    error += buf.toString();
+                }
+                
             }
             
             try {               
