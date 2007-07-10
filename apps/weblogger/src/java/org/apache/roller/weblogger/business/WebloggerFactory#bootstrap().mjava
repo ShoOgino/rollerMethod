@@ -1,10 +1,10 @@
     /**
-     * Bootstrap the Weblogger Weblogger business tier.
-     * 
+     * Bootstrap the Roller Weblogger business tier, uses default WebloggerProvider.
+     *
      * Bootstrapping the application effectively instantiates all the necessary
      * pieces of the business tier and wires them together so that the app is 
      * ready to run.
-     * 
+     *
      * @throws IllegalStateException If the app has not been properly prepared yet.
      * @throws BootstrapException If an error happens during the bootstrap process.
      */
@@ -15,10 +15,21 @@
             throw new IllegalStateException("Cannot bootstrap until application has been properly prepared");
         }
         
-        log.info("Bootstrapping Roller Weblogger business tier");
-        
-        rollerInstance = injector.getInstance(Weblogger.class);
-            
-        log.info("Roller Weblogger business tier successfully bootstrapped");
+        // lookup our default provider and instantiate it
+        WebloggerProvider defaultProvider;
+        String providerClassname = WebloggerConfig.getProperty("weblogger.provider.class");
+        if(providerClassname != null) {
+            try {
+                Class providerClass = Class.forName(providerClassname);
+                defaultProvider = (WebloggerProvider) providerClass.newInstance();
+            } catch (Exception ex) {
+                throw new BootstrapException("Error instantiating default provider: "+providerClassname, ex);
+            }
+        } else {
+            throw new NullPointerException("No provider specified in config property 'weblogger.provider.class'");
+        }
+
+        // now just bootstrap using our default provider
+        bootstrap(defaultProvider);
     }
 

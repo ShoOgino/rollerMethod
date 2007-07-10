@@ -5,10 +5,10 @@
      * @throws IllegalStateException If the app has not been properly bootstrapped yet.
      */
     public static final Weblogger getWeblogger() {
-        if (rollerInstance == null) {
+        if (webloggerProvider == null) {
             throw new IllegalStateException("Roller Weblogger has not been bootstrapped yet");
         }
         
-        return rollerInstance;
+        return webloggerProvider.getWeblogger();
     }
 
