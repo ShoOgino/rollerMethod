@@ -1,6 +1,7 @@
     /**
      * Prepare action by loading runtime properties map.
      */
+    @Override
     public void myPrepare() {
         try {
             // just grab our properties map and make it available to the action
@@ -20,5 +21,9 @@
                 setGlobalConfigDef(configDef);
             }
         }
+        
+        // load plugins list
+        PluginManager pmgr = WebloggerFactory.getWeblogger().getPluginManager();
+        setPluginsList(pmgr.getCommentPlugins());
     }
 

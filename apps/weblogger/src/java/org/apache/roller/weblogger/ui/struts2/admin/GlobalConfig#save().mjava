@@ -38,6 +38,15 @@
             }
         }
         
+        // special handling for comment plugins
+        String enabledPlugins = "";
+        if(getCommentPlugins().length > 0) {
+            enabledPlugins = StringUtils.join(getCommentPlugins(), ",");
+        }
+        RuntimeConfigProperty prop = 
+                    (RuntimeConfigProperty) getProperties().get("users.comments.plugins");
+        prop.setValue(enabledPlugins);
+            
         try {
             // save 'em and flush
             PropertiesManager mgr = WebloggerFactory.getWeblogger().getPropertiesManager();
