@@ -33,7 +33,7 @@
         InputStream resourceStream = null;
         
         // first, see if we have a preview theme to operate from
-        if(resourceRequest.getThemeName() != null) {
+        if(!StringUtils.isEmpty(resourceRequest.getThemeName())) {
             Theme theme = resourceRequest.getTheme();
             ThemeResource resource = theme.getResource(resourceRequest.getResourcePath());
             if(resource != null) {
