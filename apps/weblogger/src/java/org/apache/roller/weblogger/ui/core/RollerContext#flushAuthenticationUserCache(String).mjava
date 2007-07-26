@@ -1,0 +1,12 @@
+    /**
+     * Flush user from any caches maintained by security system.
+     */
+    public static void flushAuthenticationUserCache(String userName) {                                
+        ApplicationContext ctx = 
+            WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext);
+        UserCache userCache = (UserCache)ctx.getBean("userCache");
+        if (userCache != null) {
+            userCache.removeUserFromCache(userName);
+        }
+    }
+

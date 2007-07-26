@@ -31,19 +31,20 @@
                     getUser().grantRole("admin");
                 }
             
+                RollerContext.flushAuthenticationUserCache(getUser().getUserName());
+
                 // save the updated profile
                 mgr.saveUser(getUser());
                 WebloggerFactory.getWeblogger().flush();
                 
-                // TODO: i18n
-                addMessage("user updated.");
-                
+                addMessage("userAdmin.userSaved");
+                                
                 return INPUT;
                 
             } catch (WebloggerException ex) {
                 log.error("ERROR in action", ex);
                 // TODO: i18n
-                addError("unexpected error doing profile save");
+                addError("userAdmin.error.unexpectedError");
             }
             
         }
