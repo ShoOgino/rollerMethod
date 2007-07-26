@@ -1,5 +1,6 @@
     public List getBookmarks() {
-        Set initialCollection = this.pojo.getBookmarks();
+        TreeSet initialCollection = new TreeSet(new BookmarkComparator());
+        initialCollection.addAll(this.pojo.getBookmarks());
         
         // iterate through and wrap
         // we force the use of an ArrayList because it should be good enough to cover
@@ -13,5 +14,5 @@
         }
         
         return wrappedCollection;
-    }
+    }    
 
