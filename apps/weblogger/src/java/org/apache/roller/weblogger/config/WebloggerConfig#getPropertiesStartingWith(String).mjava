@@ -1,0 +1,12 @@
+    /**
+     * Get properties starting with a specified string.
+     */
+    public static Properties getPropertiesStartingWith(String startingWith) {
+        Properties props = new Properties();
+        for (Enumeration it = mConfig.keys(); it.hasMoreElements();) {
+            String key = (String)it.nextElement();
+            props.put(key, mConfig.get(key));
+        }
+        return props;
+    }
+
