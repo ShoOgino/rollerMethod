@@ -1,7 +1,7 @@
-    protected ThreadManagerImpl() {
+    public ThreadManagerImpl() {
         
         log.info("Instantiating Thread Manager");
         
-        serviceScheduler = Executors.newScheduledThreadPool(10);
+        serviceScheduler = Executors.newCachedThreadPool();
     }
 

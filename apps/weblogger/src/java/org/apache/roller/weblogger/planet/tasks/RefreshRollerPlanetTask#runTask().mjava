@@ -9,6 +9,7 @@
             log.error("ERROR refreshing planet", t);
         } finally {
             // always release
+            WebloggerFactory.getWeblogger().release();
             PlanetFactory.getPlanet().release();
         }
     }

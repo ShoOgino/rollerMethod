@@ -1,8 +1,11 @@
-    private TaskLock getTaskLockByName(String name) throws WebloggerException {
+    /**
+     * @inheritDoc
+     */
+    public TaskLock getTaskLockByName(String name) throws WebloggerException {
         
         // do lookup
         try {
-            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
+            Session session = strategy.getSession();
             Criteria criteria = session.createCriteria(TaskLock.class);
             
             criteria.add(Expression.eq("name", name));

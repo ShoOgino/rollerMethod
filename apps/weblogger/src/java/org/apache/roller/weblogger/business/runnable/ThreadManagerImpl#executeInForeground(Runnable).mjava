@@ -1,6 +1,6 @@
     public void executeInForeground(Runnable runnable)
             throws InterruptedException {
-        ScheduledFuture scheduledTask = serviceScheduler.schedule(runnable, 0, TimeUnit.SECONDS);
+        Future task = serviceScheduler.submit(runnable);
         
         // if this task is really meant to be executed within this calling thread
         // then we can add a little code here to loop until it realizes the task is done

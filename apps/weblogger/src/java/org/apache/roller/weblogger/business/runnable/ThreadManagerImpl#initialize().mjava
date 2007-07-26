@@ -1,7 +1,8 @@
     public void initialize() throws InitializationException {
         
-        Date now = new Date();
-        
+        // create scheduler
+        TaskScheduler scheduler = new TaskScheduler();
+                    
         // okay, first we look for what tasks have been enabled
         String tasksStr = WebloggerConfig.getProperty("tasks.enabled");
         String[] tasks = StringUtils.stripAll(StringUtils.split(tasksStr, ","));
@@ -16,13 +17,8 @@
                     RollerTask task = (RollerTask) taskClass.newInstance();
                     task.init();
                     
-                    Date startTime = task.getStartTime(now);
-                    if(startTime == null || now.after(startTime)) {
-                        startTime = now;
-                    }
-                    
                     // schedule it
-                    scheduleFixedRateTimerTask(task, startTime, task.getInterval());
+                    scheduler.scheduleTask(task);
                     
                 } catch (ClassCastException ex) {
                     log.warn("Task does not extend RollerTask class", ex);
@@ -32,6 +28,13 @@
                     log.error("Error instantiating task", ex);
                 }
             }
-        }        
+        }
+        
+        // only start if we aren't already running
+        if (schedulerThread == null && scheduler != null) {
+            log.debug("Starting scheduler thread");
+            schedulerThread = new Thread(scheduler, "Roller Weblogger Task Scheduler");
+            schedulerThread.start();
+        }
     }
 

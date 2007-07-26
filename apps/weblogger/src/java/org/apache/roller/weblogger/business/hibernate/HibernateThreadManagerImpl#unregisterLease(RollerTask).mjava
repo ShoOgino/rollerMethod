@@ -1,6 +1,7 @@
     /**
      * Try to release the lock for a given RollerTask.
      */
+    @Override
     public boolean unregisterLease(RollerTask task) {
         
         // query for existing lease record first
@@ -19,11 +20,11 @@
         
         // try to release lease, just set lease time to 0
         try {
-            Session session = ((HibernatePersistenceStrategy)this.strategy).getSession();
+            Session session = strategy.getSession();
             String queryHQL = "update TaskLock set timeLeased=:interval "+
                     "where name=:name and client=:client";
             Query query = session.createQuery(queryHQL);
-            query.setInteger("interval", task.getInterval());
+            query.setInteger("interval", 0);
             query.setString("name", task.getName());
             query.setString("client", task.getClientId());
             int result = query.executeUpdate();

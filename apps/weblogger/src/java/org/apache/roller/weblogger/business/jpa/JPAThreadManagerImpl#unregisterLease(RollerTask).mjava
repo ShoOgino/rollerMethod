@@ -1,6 +1,7 @@
     /**
      * Try to release the lock for a given RollerTask.
      */
+    @Override
     public boolean unregisterLease(RollerTask task) {
 
         // query for existing lease record first
@@ -21,7 +22,7 @@
         try {
             Query q = strategy.getNamedUpdate(
                     "TaskLock.updateTimeLeasedByName&Client");
-            q.setParameter(1, Integer.valueOf(task.getInterval()));
+            q.setParameter(1, Integer.valueOf(0));
             q.setParameter(2, task.getName());
             q.setParameter(3, task.getClientId());
             int result = q.executeUpdate();

@@ -1,0 +1,48 @@
+    public void run() {
+        
+        boolean firstRun = true;
+        
+        // run forever, or until we get interrupted
+        while(true) {
+            try {
+                // get current time (from db?)
+                Date now = new Date();
+                log.debug("Current time = "+now);
+                
+                // run tasks, skip run on first pass
+                if(firstRun) {
+                    // add a slight delay to scheduler start
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(now);
+                    cal.add(Calendar.MINUTE, 1);
+                    cal.set(Calendar.SECOND, cal.getMinimum(Calendar.SECOND));
+                    cal.set(Calendar.MILLISECOND, cal.getMinimum(Calendar.MILLISECOND));
+                    now = cal.getTime();
+                    log.debug("Start time = "+now);
+                    
+                    firstRun = false;
+                } else {
+                    try {
+                        runTasks(now);
+                    } finally {
+                        // always release session after each pass
+                        WebloggerFactory.getWeblogger().release();
+                    }
+                }
+                
+                // wait 'til next minute
+                // TODO: make sure we don't get a negative value here
+                Date endOfMinute = DateUtil.getEndOfMinute(now);
+                log.debug("sleeping - "+(endOfMinute.getTime() - System.currentTimeMillis()));
+                Thread.sleep(endOfMinute.getTime() - System.currentTimeMillis());
+                
+            } catch (InterruptedException ex) {
+                // thread interrupted
+                log.debug("Thread interrupted, scheduler is stopping");
+                pool.shutdownNow();
+                break;
+            }
+        }
+        
+    }
+
