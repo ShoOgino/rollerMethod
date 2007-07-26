@@ -28,7 +28,7 @@
         }
         
         // if this subscription hasn't changed since last update then we're done
-        if(sub.getLastUpdated() != null &&
+        if(sub.getLastUpdated() != null && updatedSub.getLastUpdated() != null &&
                 !updatedSub.getLastUpdated().after(sub.getLastUpdated())) {
             log.debug("Skipping update, feed hasn't changed - "+sub.getFeedURL());
         }

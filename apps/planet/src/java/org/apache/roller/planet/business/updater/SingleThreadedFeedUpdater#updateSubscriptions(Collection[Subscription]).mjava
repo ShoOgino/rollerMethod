@@ -17,6 +17,15 @@
             // this updates and saves
             try {
                 updateSubscription(sub);
+            } catch(UpdaterException ex) {
+                // do a little work to get at the source of the problem
+                Throwable cause = ex.getCause();
+                if(cause.getCause() != null) {
+                    cause = cause.getCause();
+                }
+                
+                log.warn("Error updating subscription - "+sub.getFeedURL(), cause);
+                
             } catch(Exception ex) {
                 log.warn("Error updating subscription - "+sub.getFeedURL(), ex);
             }
