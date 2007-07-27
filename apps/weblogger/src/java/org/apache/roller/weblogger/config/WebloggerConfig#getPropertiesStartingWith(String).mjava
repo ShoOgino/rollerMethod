@@ -3,9 +3,9 @@
      */
     public static Properties getPropertiesStartingWith(String startingWith) {
         Properties props = new Properties();
-        for (Enumeration it = mConfig.keys(); it.hasMoreElements();) {
+        for (Enumeration it = config.keys(); it.hasMoreElements();) {
             String key = (String)it.nextElement();
-            props.put(key, mConfig.get(key));
+            props.put(key, config.get(key));
         }
         return props;
     }
