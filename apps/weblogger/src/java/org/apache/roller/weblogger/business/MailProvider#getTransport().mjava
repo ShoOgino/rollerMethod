@@ -12,6 +12,8 @@
                 transport.connect(mailHostname, mailPort, mailUsername, mailPassword); 
             } else if (mailUsername != null && mailPassword != null) {
                 transport.connect(mailHostname, mailUsername, mailPassword); 
+            } else {
+                transport.connect();
             }
         } else {
             // Assume container set things up properly
