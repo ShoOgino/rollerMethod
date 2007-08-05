@@ -52,8 +52,11 @@
                 tmp = (tmp == null) ? s : tmp + "_" + s;
                 count++;
             }
-            fileName = tmp + "." + ext;
-            
+            if (!tmp.endsWith("." + ext)) {
+                fileName = tmp + "." + ext;
+            } else {
+                fileName = tmp;
+            }            
         } else {            
             // No title or text, so instead we'll use the item's date
             // in YYYYMMDD format to form the file name

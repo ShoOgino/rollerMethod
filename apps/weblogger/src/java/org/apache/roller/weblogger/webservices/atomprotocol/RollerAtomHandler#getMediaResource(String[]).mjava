@@ -1,0 +1,33 @@
+    /**
+     * Expects pathInfo of form /blog-name/resource/path/name
+     */
+    public AtomMediaResource getMediaResource(String[] pathInfo) throws AtomException {
+        log.debug("Entering");
+        try {
+            // authenticated client posted a weblog entry
+            File tempFile = null;
+            String handle = pathInfo[0];
+            FileManager fmgr = roller.getFileManager();
+            UserManager umgr = roller.getUserManager();
+            Weblog website = umgr.getWebsiteByHandle(handle);
+            if (!canEdit(website)) {
+                throw new AtomNotAuthorizedException("Not authorized to edit weblog: " + handle);
+            }
+            if (pathInfo.length > 1) {
+                try {                                        
+                    // Parse pathinfo to determine file path
+                    String filePath = filePathFromPathInfo(pathInfo);
+                    ThemeResource resource = fmgr.getFile(website, filePath);                    
+                    return new AtomMediaResource(resource);
+                } catch (Exception e) {
+                    throw new AtomException(
+                        "Unexpected error during file upload", e);
+                }
+            }
+            throw new AtomException("Incorrect path information");
+        
+        } catch (WebloggerException re) {
+            throw new AtomException("Posting media");
+        }
+    }
+

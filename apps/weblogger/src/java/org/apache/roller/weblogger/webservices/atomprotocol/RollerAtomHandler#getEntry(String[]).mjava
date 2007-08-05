@@ -18,13 +18,13 @@
                         return createAtomEntry(entry);
                     }
                 } else if (pathInfo[1].equals("resource") && pathInfo[pathInfo.length - 1].endsWith(".media-link")) {
-                    String path = filePathFromPathInfo(pathInfo);                    
-                    String fileName = path.substring(0, path.length() - ".media-link".length());
+                    String filePath = filePathFromPathInfo(pathInfo);
+                    filePath = filePath.substring(0, filePath.length() - ".media-link".length());
                     String handle = pathInfo[0];
                     Weblog website = 
                         roller.getUserManager().getWebsiteByHandle(handle);                    
                     ThemeResource resource = 
-                        roller.getFileManager().getFile(website, fileName);
+                        roller.getFileManager().getFile(website, filePath);
                     
                     log.debug("Exiting");
                     if (resource != null) return createAtomResourceEntry(website, resource);

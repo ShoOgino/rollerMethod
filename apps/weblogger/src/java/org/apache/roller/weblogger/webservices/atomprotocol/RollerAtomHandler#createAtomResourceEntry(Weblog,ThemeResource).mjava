@@ -1,14 +1,15 @@
     private Entry createAtomResourceEntry(Weblog website, ThemeResource file) {
         String absUrl = WebloggerRuntimeConfig.getAbsoluteContextURL();
+        String filePath = 
+            file.getPath().startsWith("/") ? file.getPath().substring(1) : file.getPath();
         String editURI = 
                 atomURL+"/"+website.getHandle()
-                + "/resource/" + file.getPath() + ".media-link";
+                + "/resource/" + filePath + ".media-link";
         String editMediaURI = 
                 atomURL+"/"+ website.getHandle()
-                + "/resource/" + file.getPath();
-        String viewURI = absUrl
-                + "/resources/" + website.getHandle()
-                + "/" + file.getPath();
+                + "/resource/" + filePath;
+        URLStrategy urlStrategy = WebloggerFactory.getWeblogger().getUrlStrategy();
+        String viewURI = urlStrategy.getWeblogResourceURL(website, filePath, true);
         
         FileTypeMap map = FileTypeMap.getDefaultFileTypeMap();
         // TODO: figure out why PNG is missing from Java MIME types

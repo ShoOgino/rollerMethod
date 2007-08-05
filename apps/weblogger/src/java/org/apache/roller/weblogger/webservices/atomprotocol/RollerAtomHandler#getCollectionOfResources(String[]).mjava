@@ -53,9 +53,6 @@
                     else if (f1.getLastModified() == f2.getLastModified()) return 0;
                     else return -1;
                 }
-                public boolean equals(Object obj) {
-                    return false;
-                }               
             });
                                     
             if (files != null && start < files.length) {  
@@ -63,9 +60,11 @@
                     sortedSet.add(files[j]);
                 }
                 int count = 0;
+                ThemeResource[] sortedResources = 
+                   (ThemeResource[])sortedSet.toArray(new ThemeResource[sortedSet.size()]);
                 List atomEntries = new ArrayList();
-                for (int i=start; i<(start + max) && i<(sortedSet.size()); i++) {
-                    Entry entry = createAtomResourceEntry(website, files[i]);
+                for (int i=start; i<(start + max) && i<(sortedResources.length); i++) {
+                    Entry entry = createAtomResourceEntry(website, sortedResources[i]);
                     atomEntries.add(entry);
                     if (count == 0) {
                         // first entry is most recent
