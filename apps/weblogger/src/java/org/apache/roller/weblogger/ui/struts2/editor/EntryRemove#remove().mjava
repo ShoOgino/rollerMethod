@@ -14,13 +14,16 @@
                 log.warn("Trouble triggering entry indexing", ex);
             }
             
+            // remove from search index
+            removeEntryIndex(entry);
+            
+            // flush caches
+            CacheManager.invalidate(entry);
+            
             // remove entry itself
             WeblogManager wmgr = WebloggerFactory.getWeblogger().getWeblogManager();
             wmgr.removeWeblogEntry(entry);
             WebloggerFactory.getWeblogger().flush();
-            
-            // flush caches
-            CacheManager.invalidate(entry);
             
             // note to user
             addMessage("weblogEdit.entryRemoved");
