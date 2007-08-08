@@ -12,6 +12,9 @@
         setCategoryId(entry.getCategory().getId());
         setTagsAsString(entry.getTagsAsString());
         
+        // set comment count, ignoreSpam=false, approvedOnly=false
+        setCommentCount(entry.getComments(false, false).size());
+        
         // init plugins values
         if(entry.getPlugins() != null) {
             setPlugins(StringUtils.split(entry.getPlugins(), ","));
