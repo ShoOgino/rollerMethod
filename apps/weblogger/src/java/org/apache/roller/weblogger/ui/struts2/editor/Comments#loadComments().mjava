@@ -6,19 +6,17 @@
             WeblogManager wmgr = WebloggerFactory.getWeblogger().getWeblogManager();
             
             // lookup weblog entry if necessary
-            WeblogEntry queryEntry = null;
             if(!StringUtils.isEmpty(getBean().getEntryId())) {
-                queryEntry = wmgr.getWeblogEntry(getBean().getEntryId());
+                setQueryEntry(wmgr.getWeblogEntry(getBean().getEntryId()));
             }
             
             // query for comments
             List rawComments = wmgr.getComments(
                     getActionWeblog(),
-                    queryEntry,
+                    getQueryEntry(),
                     getBean().getSearchString(),
                     getBean().getStartDate(),
-                    getBean().getEndDate(),
-                    getBean().getStatus(),
+                    getBean().getEndDate(),getBean().getStatus(),
                     true, // reverse  chrono order
                     getBean().getPage() * COUNT,
                     COUNT + 1);
