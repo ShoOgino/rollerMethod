@@ -4,8 +4,8 @@
                 weblog.getLocaleInstance());
         
         Calendar cal = (Calendar)calendar.clone();
-        Date startDate = DateUtil.getStartOfMonth(month);
-        Date endDate = DateUtil.getEndOfMonth(month);
+        Date startDate = DateUtil.getStartOfMonth(month,cal);
+        Date endDate = DateUtil.getEndOfMonth(month,cal);
         
         // Determine previous non-empty month
         // Get entries before startDate, using category restriction limit 1
@@ -17,7 +17,8 @@
                     weblog,                    // website
                     null,                      // user
                     null,                      // startDate
-                    startDate,                 // endDate 
+                    // since we need an entry.pubTime<startDate, but the method use <=
+                    new Date(startDate.getTime()-1),                 // endDate 
                     cat,                       // cat
                     null,WeblogEntry.PUBLISHED, // status
                     null,                      // text
@@ -27,7 +28,7 @@
                     0, 1);                     // offset, range
             if (prevEntries.size() > 0) {
                 WeblogEntry prevEntry = (WeblogEntry)prevEntries.get(0);
-                prevMonth = DateUtil.getStartOfMonth(new Date(prevEntry.getPubTime().getTime()));
+                prevMonth = DateUtil.getStartOfMonth(new Date(prevEntry.getPubTime().getTime()),getCalendar());
             }
         } catch (WebloggerException e) {
             log.error("ERROR determining previous non-empty month");
@@ -42,7 +43,8 @@
                     
                     weblog,                    // website
                     null,                      // user
-                    endDate,                   // startDate
+                    // since we need an entry.pubTime>endDate, but the method use >=
+                    new Date(endDate.getTime()+1),                   // startDate
                     null,                      // endDate 
                     cat,                       // cat
                     null,WeblogEntry.PUBLISHED, // status
@@ -53,7 +55,7 @@
                     0, 1);                     // offset, range
             if (nextEntries.size() > 0) {
                 WeblogEntry nextEntry = (WeblogEntry)nextEntries.get(0);
-                nextMonth = DateUtil.getStartOfMonth(new Date(nextEntry.getPubTime().getTime()));
+                nextMonth = DateUtil.getStartOfMonth(new Date(nextEntry.getPubTime().getTime()),getCalendar());
             }
         } catch (WebloggerException e) {
             log.error("ERROR determining next non-empty month");
@@ -61,7 +63,10 @@
         
         // Fix for ROL-840 Don't include future entries
         Date now = new Date();
-        if (endDate.after(now)) endDate = now;
+        if (endDate.after(now)) {
+        	endDate = now;
+        	nextMonth = null;
+        }
         
         loadWeblogEntries(startDate, endDate, cat);
     }

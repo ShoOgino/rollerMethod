@@ -8,7 +8,9 @@
                         pageRequest.getWeblogHandle());
             }
             pageLink = pageRequest.getWeblogPageName();            
-            day = DateUtil.parseWeblogURLDateString(pageRequest.getWeblogDate(),
+//            day = DateUtil.parseWeblogURLDateString(pageRequest.getWeblogDate(),
+//                    weblog.getTimeZoneInstance(), weblog.getLocaleInstance());
+            day = parseWeblogURLDateString(pageRequest.getWeblogDate(),
                   weblog.getTimeZoneInstance(), weblog.getLocaleInstance());
             locale = pageRequest.getLocale();
             

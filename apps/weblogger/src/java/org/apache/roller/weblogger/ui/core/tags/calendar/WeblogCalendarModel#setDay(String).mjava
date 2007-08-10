@@ -1,5 +1,6 @@
     public void setDay(String month) throws Exception {
         SimpleDateFormat fmt = DateUtil.get8charDateFormat();
+        fmt.setCalendar(getCalendar());
         ParsePosition pos = new ParsePosition(0);
         initDay( fmt.parse( month, pos ) );
     }
