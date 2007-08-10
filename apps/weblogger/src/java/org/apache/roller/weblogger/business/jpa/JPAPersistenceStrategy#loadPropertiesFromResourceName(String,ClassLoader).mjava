@@ -8,7 +8,7 @@
     private static Properties loadPropertiesFromResourceName(
             String resourceName, ClassLoader cl) throws WebloggerException {
         Properties props = new Properties();
-        InputStream in = null;
+        InputStream in;
         in = cl.getResourceAsStream(resourceName);
         if (in == null) {
             //TODO: Check how i18n is done in roller
@@ -21,11 +21,9 @@
             throw new WebloggerException(
                     "Could not load properties from " + resourceName);
         } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException ioe) {
-                }
+            try {
+                in.close();
+            } catch (IOException ioe) {
             }
         }
         
