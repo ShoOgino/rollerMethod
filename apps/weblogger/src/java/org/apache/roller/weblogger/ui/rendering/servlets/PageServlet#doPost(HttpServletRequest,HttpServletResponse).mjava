@@ -6,12 +6,11 @@
      * may want to revisit this approach in the future and see if we can do
      * this in a different way, but for now this is the easy way.
      */
-    public void doPost(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
-        
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         // make sure caching is disabled
         request.setAttribute("skipCache", "true");
-        
+
         // handle just like a GET request
         this.doGet(request, response);
     }
