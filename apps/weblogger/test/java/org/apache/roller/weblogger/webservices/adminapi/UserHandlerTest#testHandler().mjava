@@ -26,7 +26,8 @@
             assertNotNull(uesDelete);
             assertNotNull(uesCreate.getEntries());
             assertEquals(uesCreate.getEntries().length, 1);
-            assertEquals(uesDelete, uesUpdate);
+            assertEquals(0, uesDelete.getEntries().length);
+            
         } catch (IOException ioe) {
             ioe.printStackTrace();
             fail(ioe.getMessage());
