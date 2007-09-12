@@ -18,6 +18,7 @@
                     
                     WeblogManager mgr = roller.getWeblogManager();
                     copyToRollerEntry(entry, rollerEntry);
+                    rollerEntry.setUpdateTime(new Timestamp(new Date().getTime()));
                     mgr.saveWeblogEntry(rollerEntry);
                     roller.flush();
                     

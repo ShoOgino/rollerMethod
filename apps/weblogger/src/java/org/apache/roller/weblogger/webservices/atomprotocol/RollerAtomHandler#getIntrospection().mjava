@@ -11,9 +11,9 @@
         } catch (WebloggerException re) {
             throw new AtomException("Getting user's weblogs", re);
         }
-        String accept = null;
-        try {
-            accept = getAcceptedContentTypeRange();
+        List uploadAccepts = new ArrayList();
+        try {           
+            uploadAccepts = getAcceptedContentTypeRange();
         } catch (WebloggerException re) {
             throw new AtomException("Getting site's accept range", re);
         }
@@ -30,7 +30,7 @@
                 // Create collection for entries within that workspace
                 Collection entryCol = new Collection("Weblog Entries", "text", 
                     atomURL+"/"+handle+"/entries");
-                entryCol.setAccept("application/atom+xml;type=entry");
+                entryCol.addAccept("application/atom+xml;type=entry");
                 try {  
                     // Add fixed categories using scheme that points to 
                     // weblog because categories are weblog specific
@@ -61,7 +61,7 @@
                 // Add media collection for upload dir
                 Collection uploadCol = new Collection("Media Files", "text", 
                     atomURL+"/"+handle+"/resources/");
-                uploadCol.setAccept(accept);
+                uploadCol.setAccepts(uploadAccepts);
                 workspace.addCollection(uploadCol);
 
                 // And add one media collection for each of weblog's upload sub-directories
@@ -72,7 +72,7 @@
                         Collection uploadSubCol = new Collection(
                             "Media Files: " + dirs[i].getPath(), "text",
                             atomURL+"/"+handle+"/resources/" + dirs[i].getPath());
-                        uploadSubCol.setAccept(accept);
+                        uploadSubCol.setAccepts(uploadAccepts);
                         workspace.addCollection(uploadSubCol);
                     }
                 } catch (FilePathException fpe) {

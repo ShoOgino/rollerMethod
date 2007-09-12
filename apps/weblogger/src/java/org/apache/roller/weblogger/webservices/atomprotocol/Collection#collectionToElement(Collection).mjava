@@ -36,9 +36,12 @@
             element.addContent(catsElem);
         }
         
-        Element memberType = new Element("accept", AtomService.ATOM_PROTOCOL);
-        memberType.setText(collection.getAccept());
-        element.addContent(memberType);
+        for (Iterator it = collection.getAccepts().iterator(); it.hasNext();) {
+            String range = (String)it.next();
+            Element acceptElem = new Element("accept", AtomService.ATOM_PROTOCOL);
+            acceptElem.setText(range);
+            element.addContent(acceptElem);
+        }
         
         return element;
     }
