@@ -1,16 +1,14 @@
-    public void queueApplicableAutoPings(WeblogEntry changedWeblogEntry)
-            throws WebloggerException {
+    public void queueApplicableAutoPings(WeblogEntry changedWeblogEntry) throws WebloggerException {
         if (PingConfig.getSuspendPingProcessing()) {
-            if (logger.isDebugEnabled())
-                logger.debug("Ping processing is suspended." +
-                    " No auto pings will be queued.");
+            if (logger.isDebugEnabled()) {
+                logger.debug("Ping processing is suspended." + " No auto pings will be queued.");
+            }
             return;
         }
 
-        PingQueueManager pingQueueMgr = roller.
-            getPingQueueManager();
+        PingQueueManager pingQueueMgr = roller.getPingQueueManager();
         List applicableAutopings = getApplicableAutoPings(changedWeblogEntry);
-        for (Iterator i = applicableAutopings.iterator(); i.hasNext(); ) {
+        for (Iterator i = applicableAutopings.iterator(); i.hasNext();) {
             AutoPing autoPing = (AutoPing) i.next();
             pingQueueMgr.addQueueEntry(autoPing);
         }
