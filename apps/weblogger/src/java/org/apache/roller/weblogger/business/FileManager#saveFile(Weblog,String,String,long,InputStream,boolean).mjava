@@ -1,5 +1,5 @@
     /**
-     * Save a file to weblog's uploads area, with can-save check.
+     * Save a file to weblog's uploads area, with optional can-save check.
      * 
      * @param weblog The weblog we are working on.
      * @param path The relative path to the desired location within 
@@ -16,6 +16,7 @@
                          String path, 
                          String contentType, 
                          long size,
-                         InputStream is)
+                         InputStream is,
+                         boolean checkCanSave)
         throws FileNotFoundException, FilePathException, FileIOException;
 
