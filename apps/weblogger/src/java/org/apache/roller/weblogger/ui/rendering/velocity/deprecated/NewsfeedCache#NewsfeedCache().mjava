@@ -12,8 +12,12 @@
             this.aggregator_cache_enabled = true;
         
         try {
-            this.aggregator_cache_timeout = Integer.parseInt(cachetime);
-        } catch(Exception e) { mLogger.warn(e); }
+            if (cachetime != null) {
+                this.aggregator_cache_timeout = Integer.parseInt(cachetime);
+            }
+        } catch(NumberFormatException e) { 
+            log.error("ERROR 'aggregator.cache.timeout'not a valid integer: " + cachetime);
+        }
         
         // finally ... create the cache
         this.mCache = new LRUCache2(100, 1000 * this.aggregator_cache_timeout);

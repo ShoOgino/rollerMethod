@@ -14,14 +14,14 @@
             }
             
             if (aggregator_cache_enabled) {
-                if (mLogger.isDebugEnabled()) {
-                    mLogger.debug("Newsfeed: use Cache for " + feedUrl);
+                if (log.isDebugEnabled()) {
+                    log.debug("Newsfeed: use Cache for " + feedUrl);
                 }
                 
                 // Get pre-parsed feed from the cache
                 feed = (SyndFeed) mCache.get(feedUrl);
-                if (mLogger.isDebugEnabled()) {
-                    mLogger.debug("Newsfeed: got from Cache");
+                if (log.isDebugEnabled()) {
+                    log.debug("Newsfeed: got from Cache");
                 }
                 
                 if (feed == null) {
@@ -31,16 +31,16 @@
                         feed = feedInput.build(new InputStreamReader(
                                 new URL(feedUrl).openStream()));
                     } catch (Exception e1) {
-                        mLogger.info("Error parsing RSS: " + feedUrl);
+                        log.info("Error parsing RSS: " + feedUrl);
                     }
                 }
                 // Store parsed feed in the cache
                 mCache.put(feedUrl, feed);
-                mLogger.debug("Newsfeed: not in Cache");
+                log.debug("Newsfeed: not in Cache");
                 
             } else {
-                if (mLogger.isDebugEnabled()) {
-                    mLogger.debug("Newsfeed: not using Cache for " + feedUrl);
+                if (log.isDebugEnabled()) {
+                    log.debug("Newsfeed: not using Cache for " + feedUrl);
                 }
                 try {
                     // charset fix from Jason Rumney (see ROL-766)
@@ -70,13 +70,13 @@
                     feed = feedInput.build(new InputStreamReader(
                             connection.getInputStream(), charset));
                 } catch (Exception e1) {
-                    mLogger.info("Error parsing RSS: " + feedUrl);
+                    log.info("Error parsing RSS: " + feedUrl);
                 }
             }
             
         } catch (Exception ioe) {
-            if (mLogger.isDebugEnabled()) {
-                mLogger.debug("Newsfeed: Unexpected exception", ioe);
+            if (log.isDebugEnabled()) {
+                log.debug("Newsfeed: Unexpected exception", ioe);
             }
         }
         

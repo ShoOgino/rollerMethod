@@ -1,13 +1,13 @@
     /** static singleton retriever */
     public static NewsfeedCache getInstance() {
         synchronized (NewsfeedCache.class) {
-            if (mInstance == null) {
-                if (mLogger.isDebugEnabled()) {
-                    mLogger.debug("Instantiating new NewsfeedCache");
+            if (instance == null) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Instantiating new NewsfeedCache");
                 }
-                mInstance = new NewsfeedCache();
+                instance = new NewsfeedCache();
             }
         }
-        return mInstance;
+        return instance;
     }
 
