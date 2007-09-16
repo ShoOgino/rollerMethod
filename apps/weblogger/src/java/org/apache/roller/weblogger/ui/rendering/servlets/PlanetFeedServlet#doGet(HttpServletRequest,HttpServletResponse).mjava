@@ -51,7 +51,8 @@
 
 
         // looks like we need to render content
-        HashMap model = new HashMap();
+        @SuppressWarnings("unchecked")
+        HashMap<String, Object> model = new HashMap();
         try {
             // populate the rendering model
             if (request.getParameter("group") != null) {
@@ -61,7 +62,13 @@
             model.put("planet", planet);
             model.put("date", new Date());
             model.put("utils", new UtilitiesModel());
-            model.put("absoluteSite", WebloggerRuntimeConfig.getAbsoluteContextURL());
+            model.put("siteName", PlanetRuntimeConfig.getProperty("site.name"));
+            model.put("siteDescription", PlanetRuntimeConfig.getProperty("site.description"));
+            if (StringUtils.isNotEmpty(PlanetRuntimeConfig.getProperty("site.absoluteurl"))) {
+                model.put("absoluteSite", PlanetRuntimeConfig.getProperty("site.absoluteurl"));
+            } else {
+                model.put("absoluteSite", WebloggerRuntimeConfig.getAbsoluteContextURL());
+            }
             model.put("feedStyle", new Boolean(WebloggerRuntimeConfig.getBooleanProperty("site.newsfeeds.styledFeeds")));
 
             int numEntries = WebloggerRuntimeConfig.getIntProperty("site.newsfeeds.defaultEntries");
