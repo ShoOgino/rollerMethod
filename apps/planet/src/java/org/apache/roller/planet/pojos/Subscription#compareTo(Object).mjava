@@ -1,5 +1,12 @@
+    /**
+     * Compares subscriptions based on concatenation of title and feed URL.
+     * This ensures that feeds are sorted by title, but that identical titles 
+     * don't make feeds equal.
+     */
     public int compareTo(Object o) {
         Subscription other = (Subscription) o;
-        return getTitle().compareTo(other.getTitle());
+        String otherString = other.getTitle() + other.getFeedURL();
+        String thisString = getTitle() + getFeedURL();
+        return thisString.compareTo(otherString);
     }
 
