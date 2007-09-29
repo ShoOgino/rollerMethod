@@ -2,12 +2,13 @@
      * Upgrade database for Roller 2.0.0
      */
     private void upgradeTo200(Connection con, boolean runScripts) throws StartupException {
+        SQLScriptRunner runner = null;
         try {
             if (runScripts) {
                 String handle = getDatabaseHandle(con);
                 String scriptPath = handle + "/130-to-200-migration.sql";
                 successMessage("Running database upgrade script: "+scriptPath);                
-                SQLScriptRunner runner = new SQLScriptRunner(scripts.getDatabaseScript(scriptPath));
+                runner = new SQLScriptRunner(scripts.getDatabaseScript(scriptPath));
                 runner.runScript(con, true);
                 messages.addAll(runner.getMessages());
             }
@@ -74,6 +75,9 @@
             successMessage("Upgrade to 200 complete.");
             
         } catch (Exception e) {
+            log.error("ERROR running 310 database upgrade script", e);
+            if (runner != null) messages.addAll(runner.getMessages());
+            
             errorMessage("Problem upgrading database to version 200", e);
             throw new StartupException("Problem upgrading database to version 200", e);
         }
