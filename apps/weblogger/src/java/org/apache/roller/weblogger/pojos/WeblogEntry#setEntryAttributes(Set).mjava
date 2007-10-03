@@ -1,19 +1,5 @@
     /** @ejb:persistent-field */
-    public void setEntryAttributes(Set attSet) {
-        this.attSet = attSet;
-        
-        // copy set to map
-        if (attSet != null) {
-            this.attSet = attSet;
-            this.attMap = new HashMap();
-            Iterator iter = this.attSet.iterator();
-            while (iter.hasNext()) {
-                WeblogEntryAttribute att = (WeblogEntryAttribute)iter.next();
-                attMap.put(att.getName(), att);
-            }
-        } else {
-            this.attSet = new TreeSet();
-            this.attMap = new HashMap();
-        }
+    public void setEntryAttributes(Set atts) {
+        this.attSet = atts;
     }
 

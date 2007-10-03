@@ -43,6 +43,17 @@
             }
         }
         
+        // remove attributes
+        if (entry.getEntryAttributes() != null) {
+            for (Iterator it = entry.getEntryAttributes().iterator(); it.hasNext(); ) {
+                WeblogEntryAttribute att = (WeblogEntryAttribute) it.next();
+                it.remove();
+                this.strategy.remove(att);
+            }
+        }
+        // TODO: can we eliminate this unnecessary flush with OpenJPA 1.0
+        this.strategy.flush(); 
+        
         // remove entry
         this.strategy.remove(entry);
         
