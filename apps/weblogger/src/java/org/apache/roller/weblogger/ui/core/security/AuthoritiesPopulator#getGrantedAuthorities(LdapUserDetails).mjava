@@ -1,20 +1,39 @@
-  /* (non-Javadoc)
-   * @see org.acegisecurity.providers.ldap.LdapAuthoritiesPopulator#getGrantedAuthorities(org.acegisecurity.userdetails.ldap.LdapUserDetails)
-   */
-  public GrantedAuthority[] getGrantedAuthorities(LdapUserDetails userDetails) throws LdapDataAccessException {
-    
-    List dbAuths = authoritiesByUsernameMapping.execute(userDetails.getUsername());
+    /* (non-Javadoc)
+     * @see org.acegisecurity.providers.ldap.LdapAuthoritiesPopulator#getGrantedAuthorities(org.acegisecurity.userdetails.ldap.LdapUserDetails)
+     */
+    public GrantedAuthority[] getGrantedAuthorities(LdapUserDetails userDetails) throws LdapDataAccessException {
 
-    addCustomAuthorities(userDetails.getUsername(), dbAuths);
-    
-    if (defaultRole != null) {
-      dbAuths.add(defaultRole);
+
+        User userData = null;
+        try {
+            Weblogger roller = WebloggerFactory.getWeblogger();
+            UserManager umgr = roller.getUserManager();
+            userData = umgr.getUserByUserName(userDetails.getUsername(), Boolean.TRUE);
+        } catch (WebloggerException ex) {
+            throw new LdapDataAccessException("ERROR in user lookup", ex);
+        }
+
+        if (userData == null) {
+            throw new LdapDataAccessException("ERROR no user: " + userDetails.getUsername());
+        }
+
+        int roleCount = userData.getRoles().size();
+        if (defaultRole != null) roleCount++;
+        GrantedAuthority[] authorities = new GrantedAuthorityImpl[roleCount];
+        int i = 1;
+        for (Iterator it = userData.getRoles().iterator(); it.hasNext();) {
+            UserRole role = (UserRole) it.next();
+            authorities[i++] = new GrantedAuthorityImpl(role.getRole());
+        }
+        
+        if (defaultRole != null) {
+            authorities[roleCount] = defaultRole;
+        }
+
+        if (authorities.length == 0) {
+            throw new UsernameNotFoundException("User has no GrantedAuthority");
+        }
+
+        return authorities;
     }
-
-    if (dbAuths.size() == 0) {
-        throw new UsernameNotFoundException("User has no GrantedAuthority");
-    }
-
-    return (GrantedAuthority[]) dbAuths.toArray(new GrantedAuthority[dbAuths.size()]); 
-  }
 
