@@ -4,8 +4,8 @@
      * @param pingTarget         the target site to ping
      * @param website            the website that changed (from which the ping originates)
      * @return the result message string sent by the server.
-     * @throws IOException
-     * @throws XmlRpcException
+     * @throws IOException if an IOException occurs during the ping
+     * @throws XmlRpcException if the XML RPC client throws one
      */
     public static PingResult sendPing(PingTarget pingTarget, Weblog website) throws IOException, XmlRpcException {
         String websiteUrl = website.getAbsoluteURL();
@@ -23,7 +23,7 @@
             logger.debug("Executing ping to '" + pingTargetUrl + "' for website '" + websiteUrl + "' (" + website.getName() + ")" + (variantOptions.isEmpty() ? "" : " with variant options " + variantOptions));
         }
 
-        // Send the ping.        
+        // Send the ping.
         XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
         config.setServerURL(new URL(pingTargetUrl));
         XmlRpcClient client = new XmlRpcClient();
