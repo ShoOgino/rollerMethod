@@ -2,9 +2,9 @@
         if(planet == null) {
             try {
                 PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
-                planet = pmgr.getPlanetById(PLANET_HANDLE);
+                planet = pmgr.getPlanet(DEFAULT_PLANET_HANDLE);
             } catch(Exception ex) {
-                log.error("Error loading weblogger planet - "+PLANET_HANDLE, ex);
+                log.error("Error loading weblogger planet - "+DEFAULT_PLANET_HANDLE, ex);
             }
         }
         return planet;
