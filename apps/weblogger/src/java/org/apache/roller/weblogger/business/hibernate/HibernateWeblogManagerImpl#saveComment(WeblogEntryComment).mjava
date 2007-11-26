@@ -1,7 +1,0 @@
-    public void saveComment(WeblogEntryComment comment) throws WebloggerException {
-        this.strategy.store(comment);
-        
-        // update weblog last modified date.  date updated by saveWebsite()
-        roller.getUserManager().saveWebsite(comment.getWeblogEntry().getWebsite());
-    }
-
