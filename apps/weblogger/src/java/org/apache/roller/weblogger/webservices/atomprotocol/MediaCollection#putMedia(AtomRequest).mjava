@@ -1,0 +1,55 @@
+    public void putMedia(AtomRequest areq) throws AtomException {
+       String[] pathInfo = StringUtils.split(areq.getPathInfo(),"/");
+       String contentType = areq.getContentType();
+       try {
+            InputStream is = areq.getInputStream();
+     
+            // authenticated client posted a weblog entry
+            File tempFile = null;
+            String handle = pathInfo[0];
+            FileManager fmgr = roller.getFileManager();
+            WeblogManager wmgr = roller.getWeblogManager();
+            Weblog website = wmgr.getWeblogByHandle(handle);
+            if (!RollerAtomHandler.canEdit(user, website)) {
+                throw new AtomNotAuthorizedException("Not authorized to edit weblog: " + handle);
+            }
+            if (pathInfo.length > 1) {
+                // Save to temp file
+                try {
+                    tempFile = File.createTempFile(UUID.randomUUID().toString(), "tmp");
+                    FileOutputStream fos = new FileOutputStream(tempFile);
+                    Utilities.copyInputToOutput(is, fos);
+                    fos.close();
+                                        
+                    // Parse pathinfo to determine file path
+                    String path = filePathFromPathInfo(pathInfo);
+                    
+                    // Attempt to load file, to ensure it exists
+                    ThemeResource resource = fmgr.getFile(website, path);                    
+                    
+                    FileInputStream fis = new FileInputStream(tempFile);  
+                    fmgr.saveFile(website, path, contentType, tempFile.length(), fis);
+                    fis.close();
+                    
+                    log.debug("Exiting");
+                    return;
+
+                } catch (FileIOException fie) {
+                    throw new AtomException(
+                        "File upload disabled, over-quota or other error", fie);
+                } catch (Exception e) {
+                    throw new AtomException(
+                        "Unexpected error during file upload", e);
+                } finally {
+                    if (tempFile != null) tempFile.delete();
+                }
+            }
+            throw new AtomException("Incorrect path information");
+        
+        } catch (WebloggerException re) {
+            throw new AtomException("Posting media");
+        } catch (IOException ioe) {
+            throw new AtomException("Posting media", ioe);
+        }
+    }
+

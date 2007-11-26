@@ -26,7 +26,7 @@
         
         try {
             Weblogger roller = WebloggerFactory.getWeblogger();
-            WeblogManager weblogMgr = roller.getWeblogManager();
+            WeblogEntryManager weblogMgr = roller.getWeblogEntryManager();
             User user = roller.getUserManager().getUserByUserName(userid);
             Timestamp current = new Timestamp(System.currentTimeMillis());
             
@@ -37,7 +37,7 @@
             entry.setPubTime(new Timestamp(dateCreated.getTime()));
             entry.setUpdateTime(current);
             entry.setWebsite(website);
-            entry.setCreator(user);
+            entry.setCreatorUserName(user.getUserName());
             entry.setCommentDays(new Integer(website.getDefaultCommentDays()));
             entry.setAllowComments(website.getDefaultAllowComments());
         

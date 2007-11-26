@@ -23,7 +23,7 @@
                 User user = umgr.getUserByUserName(userid);
                 
                 // get list of user's enabled websites
-                List websites = umgr.getWebsites(user, Boolean.TRUE, null, null, null, 0, -1);
+                List websites = WebloggerFactory.getWeblogger().getWeblogManager().getUserWeblogs(user, true);
                 Iterator iter = websites.iterator();
                 while (iter.hasNext()) {
                     Weblog website = (Weblog)iter.next();

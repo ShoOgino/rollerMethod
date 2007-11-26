@@ -15,8 +15,7 @@
         
         // check if template by that name already exists
         try {
-            UserManager umgr = WebloggerFactory.getWeblogger().getUserManager();
-            WeblogTemplate existingPage = umgr.getPageByName(getActionWeblog(), getNewTmplName());
+            WeblogTemplate existingPage = WebloggerFactory.getWeblogger().getWeblogManager().getPageByName(getActionWeblog(), getNewTmplName());
             if(existingPage != null) {
                 addError("pagesForm.error.alreadyExists", getNewTmplName());
             }

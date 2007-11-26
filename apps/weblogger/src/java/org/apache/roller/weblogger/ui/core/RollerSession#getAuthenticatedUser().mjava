@@ -4,12 +4,12 @@
     public User getAuthenticatedUser() {
         
         User authenticUser = null;
-        if(userId != null) {
+        if(userName != null) {
             try {
                 UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
-                authenticUser = mgr.getUser(userId);
+                authenticUser = mgr.getUserByUserName(userName);
             } catch (WebloggerException ex) {
-                log.warn("Error looking up authenticated user "+userId, ex);
+                log.warn("Error looking up authenticated user "+userName, ex);
             }
         }
         

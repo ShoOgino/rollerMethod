@@ -3,8 +3,16 @@
      * currently logged in and is an admin.
      */
     public Menu getAdminMenu() {
-        if(pageRequest.isLoggedIn() && pageRequest.getUser().hasRole("admin")) {
-            return MenuHelper.getMenu("admin", "noAction", pageRequest.getUser(), pageRequest.getWeblog());
+        try {
+            GlobalPermission adminPerm = 
+                new GlobalPermission(Collections.singletonList(GlobalPermission.ADMIN));
+            boolean hasAdmin = WebloggerFactory.getWeblogger().getUserManager()
+                    .checkPermission(adminPerm, pageRequest.getUser());            
+            if (pageRequest.isLoggedIn() && hasAdmin) {
+                return MenuHelper.getMenu("admin", "noAction", pageRequest.getUser(), pageRequest.getWeblog());
+            }
+        } catch (WebloggerException ex) {
+            logger.debug("ERROR: fetching user roles");
         }
         return null;
     }

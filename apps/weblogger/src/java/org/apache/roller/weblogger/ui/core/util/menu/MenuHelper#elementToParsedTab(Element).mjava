@@ -3,8 +3,12 @@
         ParsedTab tab = new ParsedTab();
         
         tab.setName(element.getAttributeValue("name"));
-        tab.setPerm(element.getAttributeValue("perms"));
-        tab.setRole(element.getAttributeValue("roles"));
+        if (element.getAttributeValue("weblogPerms") != null) {
+            tab.setWeblogPermissionActions(Utilities.stringToStringList(element.getAttributeValue("weblogPerms"),","));
+        }
+        if (element.getAttributeValue("globalPerms") != null) {
+            tab.setGlobalPermissionActions(Utilities.stringToStringList(element.getAttributeValue("globalPerms"),","));
+        }
         tab.setEnabledProperty(element.getAttributeValue("enabledProperty"));
         tab.setDisabledProperty(element.getAttributeValue("disabledProperty"));
         

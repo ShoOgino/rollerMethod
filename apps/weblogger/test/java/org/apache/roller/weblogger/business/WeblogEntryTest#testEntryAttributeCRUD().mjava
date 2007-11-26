@@ -4,6 +4,7 @@
     public void testEntryAttributeCRUD() throws Exception {
         
         WeblogManager mgr = WebloggerFactory.getWeblogger().getWeblogManager();
+        WeblogEntryManager emgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
         WeblogEntry entry = null;
         
         WeblogEntry testEntry = new WeblogEntry();
@@ -14,22 +15,22 @@
         testEntry.setPubTime(new java.sql.Timestamp(new java.util.Date().getTime()));
         testEntry.setUpdateTime(new java.sql.Timestamp(new java.util.Date().getTime()));
         testEntry.setWebsite(testWeblog);
-        testEntry.setCreator(testUser);
+        testEntry.setCreatorUserName(testUser.getUserName());
         
         testEntry.putEntryAttribute("att_mediacast_url", "http://podcast-schmodcast.com");
         testEntry.putEntryAttribute("att_mediacast_type", "application/drivel");
         testEntry.putEntryAttribute("att_mediacast_length", "3141592654");
                     
-        WeblogCategory cat = mgr.getWeblogCategory(testWeblog.getDefaultCategory().getId());
+        WeblogCategory cat = emgr.getWeblogCategory(testWeblog.getDefaultCategory().getId());
         testEntry.setCategory(cat);
         
         // create a weblog entry
-        mgr.saveWeblogEntry(testEntry);
+        emgr.saveWeblogEntry(testEntry);
         String id = testEntry.getId();
         TestUtils.endSession(true);
         
         // make sure entry was created
-        entry = mgr.getWeblogEntry(id);
+        entry = emgr.getWeblogEntry(id);
         assertNotNull(entry);
         assertEquals(testEntry, entry);
         assertNotNull(entry.getEntryAttributes());
@@ -43,22 +44,22 @@
         
         // update a weblog entry
         entry.setTitle("testtest");
-        mgr.saveWeblogEntry(entry);
+        emgr.saveWeblogEntry(entry);
         TestUtils.endSession(true);
         
         // make sure entry was updated
         entry = null;
-        entry = mgr.getWeblogEntry(id);
+        entry = emgr.getWeblogEntry(id);
         assertNotNull(entry);
         assertEquals("testtest", entry.getTitle());
         
         // delete a weblog entry
-        mgr.removeWeblogEntry(entry);
+        emgr.removeWeblogEntry(entry);
         TestUtils.endSession(true);
         
         // make sure entry was deleted
         entry = null;
-        entry = mgr.getWeblogEntry(id);
+        entry = emgr.getWeblogEntry(id);
         assertNull(entry);
     }
 

@@ -1,7 +1,7 @@
     public void testTagAggregates() throws Exception {
         log.info("BEGIN");
         
-        WeblogManager mgr = WebloggerFactory.getWeblogger().getWeblogManager();
+        WeblogEntryManager mgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
 
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         testUser = TestUtils.getManagedUser(testUser);
@@ -11,15 +11,15 @@
             // let's make sure we are starting from scratch
 
             // site-wide
-            List tags = mgr.getTags(null, null, null, -1);
+            List tags = mgr.getTags(null, null, null, 0, -1);
             assertEquals(0, tags.size());
 
             // first weblog
-            tags = mgr.getTags(testWeblog, null, null, -1);
+            tags = mgr.getTags(testWeblog, null, null, 0, -1);
             assertEquals(0, tags.size());
 
             // second weblog
-            tags = mgr.getTags(testWeblog2, null, null, -1);
+            tags = mgr.getTags(testWeblog2, null, null, 0, -1);
             assertEquals(0, tags.size());
 
             // setup some test entries to use
@@ -39,7 +39,7 @@
             TestUtils.endSession(true);
 
             testWeblog = TestUtils.getManagedWebsite(testWeblog);
-            tags = mgr.getTags(testWeblog, null, null, -1);
+            tags = mgr.getTags(testWeblog, null, null, 0, -1);
             assertEquals(3, tags.size());
 
             HashMap expectedWeblogTags = new HashMap();
@@ -69,7 +69,7 @@
             TestUtils.endSession(true);
 
             // let's fetch "site" tags now
-            tags = mgr.getTags(null, null, null, -1);
+            tags = mgr.getTags(null, null, null, 0, -1);
             assertEquals(4, tags.size());
 
             HashMap expectedSiteTags = new HashMap();
@@ -101,7 +101,7 @@
             TestUtils.endSession(true);
 
             testWeblog = TestUtils.getManagedWebsite(testWeblog);
-            tags = mgr.getTags(testWeblog, null, null, -1);
+            tags = mgr.getTags(testWeblog, null, null, 0, -1);
             assertEquals(4, tags.size());
 
             expectedWeblogTags = new HashMap();
@@ -121,7 +121,7 @@
                         expectedCount.intValue(), stat.getCount());
             }
 
-            tags = mgr.getTags(null, null, null, -1);
+            tags = mgr.getTags(null, null, null, 0, -1);
             assertEquals(5, tags.size());
 
             expectedSiteTags = new HashMap();

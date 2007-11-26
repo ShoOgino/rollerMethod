@@ -16,7 +16,7 @@
             
             try {
                 Weblogger roller = WebloggerFactory.getWeblogger();
-                WeblogManager wmgr = roller.getWeblogManager();
+                WeblogEntryManager wmgr = roller.getWeblogEntryManager();
                 List entries = wmgr.getComments(
                         weblog, null, null, startDate, null, WeblogEntryComment.APPROVED, true, offset, length + 1);
                 

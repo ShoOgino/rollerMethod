@@ -8,8 +8,8 @@
         // first get the pages from the db
         try {
             ThemeTemplate template = null;
-            UserManager userMgr = WebloggerFactory.getWeblogger().getUserManager();
-            Iterator dbPages = userMgr.getPages(this.weblog).iterator();
+            Iterator dbPages = WebloggerFactory.getWeblogger().getWeblogManager()
+                    .getPages(this.weblog).iterator();
             while(dbPages.hasNext()) {
                 template = (ThemeTemplate) dbPages.next();
                 pages.put(template.getName(), template);

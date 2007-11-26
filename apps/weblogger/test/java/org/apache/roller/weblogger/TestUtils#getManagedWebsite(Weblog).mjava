@@ -2,7 +2,6 @@
      * Convenience method that returns managed copy of given website.
      */
     public static Weblog getManagedWebsite(Weblog website) throws WebloggerException {
-        UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
-        return mgr.getWebsite(website.getId());
+        return WebloggerFactory.getWeblogger().getWeblogManager().getWeblog(website.getId());
     }
 

@@ -4,14 +4,14 @@
         String username = muri.getUsername();
         
         try {
-            List perms;
+            List<WeblogPermission> perms;
             if (username == null) {
                 //get all entries for the given website handle
                 Weblog wd = getWebsiteData(handle);
                 if (wd == null) {
                     throw new NotFoundException("ERROR: Unknown weblog handle: " + handle);
                 }
-                perms = getRoller().getUserManager().getAllPermissions(wd);
+                perms = getRoller().getUserManager().getWeblogPermissions(wd);
             } else {
                 //get all entries for the given website handle & username
                 Weblog wd = getWebsiteData(handle);
@@ -22,14 +22,14 @@
                 if (ud == null) {
                     throw new NotFoundException("ERROR: Unknown user name: " + username);
                 }
-                WeblogPermission pd = getRoller().getUserManager().getPermissions(wd, ud);
+                WeblogPermission pd = getRoller().getUserManager().getWeblogPermission(wd, ud);
                 if (pd == null) {
                     throw new NotFoundException("ERROR: Could not get permissions for user name: " + username + ", handle: " + handle);
                 }
                 perms = Collections.singletonList(pd);
             }
             
-            EntrySet es = toMemberEntrySet((WeblogPermission[])perms.toArray(new WeblogPermission[0]));
+            EntrySet es = toMemberEntrySet(perms);
             return es;
         } catch (WebloggerException re) {
             throw new InternalException("ERROR: Could not get entry for handle: " + handle + ", username: " + username, re);

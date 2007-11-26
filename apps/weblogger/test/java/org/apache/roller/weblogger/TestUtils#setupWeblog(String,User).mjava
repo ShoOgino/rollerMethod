@@ -15,17 +15,17 @@
         testWeblog.setLocale("en_US");
         testWeblog.setTimeZone("America/Los_Angeles");
         testWeblog.setDateCreated(new java.util.Date());
-        testWeblog.setCreator(creator);
+        testWeblog.setCreatorUserName(creator.getUserName());
         
         // add weblog
-        UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
-        mgr.addWebsite(testWeblog);
+        WeblogManager mgr = WebloggerFactory.getWeblogger().getWeblogManager();
+        mgr.addWeblog(testWeblog);
         
         // flush to db
         WebloggerFactory.getWeblogger().flush();
         
         // query for the new weblog and return it
-        Weblog weblog = mgr.getWebsiteByHandle(handle);
+        Weblog weblog = mgr.getWeblogByHandle(handle);
         
         if(weblog == null)
             throw new WebloggerException("error setting up weblog");

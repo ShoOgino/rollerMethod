@@ -11,10 +11,8 @@
         cal.add(Calendar.DATE, -1 * sinceDays);
         Date startDate = cal.getTime();
         try {            
-            Weblogger roller = WebloggerFactory.getWeblogger();
-            UserManager umgr = roller.getUserManager();
-            List weblogs = umgr.getWebsites(
-                null, Boolean.TRUE, Boolean.TRUE, startDate, null, 0, length);
+            List weblogs = WebloggerFactory.getWeblogger().getWeblogManager().getWeblogs(
+                Boolean.TRUE, Boolean.TRUE, startDate, null, 0, length);
             for (Iterator it = weblogs.iterator(); it.hasNext();) {
                 Weblog website = (Weblog) it.next();
                 results.add(WeblogWrapper.wrap(website, urlStrategy));

@@ -11,7 +11,7 @@
         // Get entries before startDate, using category restriction limit 1
         // Use entry's date as previous month
         try {
-            WeblogManager mgr = WebloggerFactory.getWeblogger().getWeblogManager();
+            WeblogEntryManager mgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
             List prevEntries = mgr.getWeblogEntries(
                     
                     weblog,                    // website
@@ -23,7 +23,7 @@
                     null,WeblogEntry.PUBLISHED, // status
                     null,                      // text
                     null,                      // sortby (null means pubTime)
-                    WeblogManager.DESCENDING,  // sortorder, null means DESCENDING
+                    WeblogEntryManager.DESCENDING,  // sortorder, null means DESCENDING
                     locale,                    // locale
                     0, 1);                     // offset, range
             if (prevEntries.size() > 0) {
@@ -38,7 +38,7 @@
         // Get entries after endDate, using category restriction limit 1
         // Use entry's date as next month
         try {
-            WeblogManager mgr = WebloggerFactory.getWeblogger().getWeblogManager();
+            WeblogEntryManager mgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
             List nextEntries = mgr.getWeblogEntries(
                     
                     weblog,                    // website
@@ -50,7 +50,7 @@
                     null,WeblogEntry.PUBLISHED, // status
                     null,                      // text
                     null,                      // sortby (null means pubTime)
-                    WeblogManager.ASCENDING,   // sortorder
+                    WeblogEntryManager.ASCENDING,   // sortorder
                     locale,                    // locale
                     0, 1);                     // offset, range
             if (nextEntries.size() > 0) {

@@ -14,7 +14,8 @@
             // and retrieve custom user data to pre-populate form.
             boolean usingSSO = WebloggerConfig.getBooleanProperty("users.sso.enabled");
             if(usingSSO) {
-                User fromSSO = CustomUserRegistry.getUserDetailsFromAuthentication();
+                User fromSSO = CustomUserRegistry.getUserDetailsFromAuthentication(getServletRequest());
+
                 if(fromSSO != null) {
                     getBean().copyFrom(fromSSO);
                     setFromSS0(true);

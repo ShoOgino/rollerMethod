@@ -13,7 +13,7 @@
         }
         
         if(!hasActionErrors()) try {
-            WeblogManager weblogMgr = WebloggerFactory.getWeblogger().getWeblogManager();
+            WeblogEntryManager weblogMgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
             
             WeblogEntry entry = getEntry();
             
@@ -32,17 +32,19 @@
                 }
                 
                 // if user does not have author perms then force PENDING status
-                if(!getActionWeblog().hasUserPermissions(getAuthenticatedUser(),WeblogPermission.AUTHOR)) {
+                if(!getActionWeblog().hasUserPermission(getAuthenticatedUser(), WeblogPermission.POST)) {
                     entry.setStatus(WeblogEntry.PENDING);
                 }
             }
             
             // if user is an admin then apply pinned to main value as well
-            if(getAuthenticatedUser().hasRole("admin")) {
+            GlobalPermission adminPerm = 
+                new GlobalPermission(Collections.singletonList(GlobalPermission.ADMIN));
+            if (WebloggerFactory.getWeblogger().getUserManager().checkPermission(adminPerm, getAuthenticatedUser())) {
                 entry.setPinnedToMain(getBean().getPinnedToMain());
             }
             
-            if(!StringUtils.isEmpty(getBean().getEnclosureURL())) {
+            if (!StringUtils.isEmpty(getBean().getEnclosureURL())) {
                 try {
                     // Fetch MediaCast resource
                     log.debug("Checking MediaCast attributes");

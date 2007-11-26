@@ -19,8 +19,7 @@
         }
         
         try {
-            UserManager mgr = getRoller().getUserManager();
-            mgr.saveWebsite(wd);
+            WebloggerFactory.getWeblogger().getWeblogManager().saveWeblog(wd);
             getRoller().flush();
             CacheManager.invalidate(wd);
         } catch (WebloggerException re) {

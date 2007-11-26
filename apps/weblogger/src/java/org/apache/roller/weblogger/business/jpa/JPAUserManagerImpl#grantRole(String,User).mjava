@@ -1,0 +1,10 @@
+    /**
+     * Grant to user role specified by role name.
+     */
+    public void grantRole(String roleName, User user) throws WebloggerException {
+        if (!hasRole(roleName, user)) {
+            UserRole role = new UserRole(user.getUserName(), roleName);
+            this.strategy.store(role);
+        }
+    }
+

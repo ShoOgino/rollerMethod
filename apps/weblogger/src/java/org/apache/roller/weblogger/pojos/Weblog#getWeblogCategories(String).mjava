@@ -7,7 +7,7 @@
         Set ret = new HashSet();
         try {
             Weblogger roller = WebloggerFactory.getWeblogger();
-            WeblogManager wmgr = roller.getWeblogManager();            
+            WeblogEntryManager wmgr = roller.getWeblogEntryManager();            
             WeblogCategory category = null;
             if (categoryPath != null && !categoryPath.equals("nil")) {
                 category = wmgr.getWeblogCategoryByPath(this, categoryPath);

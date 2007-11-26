@@ -8,6 +8,7 @@
         
         UserManager umgr = WebloggerFactory.getWeblogger().getUserManager();
         WeblogManager wmgr = WebloggerFactory.getWeblogger().getWeblogManager();
+        WeblogEntryManager emgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
         
         HitCountQueue hitCounter = HitCountQueue.getInstance();
         
@@ -43,8 +44,8 @@
                 key = (String) it.next();
                 
                 try {
-                    weblog = umgr.getWebsiteByHandle(key);
-                    wmgr.incrementHitCount(weblog, ((Long)hitsTally.get(key)).intValue());
+                    weblog = wmgr.getWeblogByHandle(key);
+                    emgr.incrementHitCount(weblog, ((Long)hitsTally.get(key)).intValue());
                 } catch (WebloggerException ex) {
                     log.error(ex);
                 }

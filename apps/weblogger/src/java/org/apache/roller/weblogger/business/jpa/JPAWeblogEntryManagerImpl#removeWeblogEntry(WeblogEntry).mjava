@@ -1,0 +1,62 @@
+    /**
+     * @inheritDoc
+     */
+    public void removeWeblogEntry(WeblogEntry entry)
+    throws WebloggerException {
+        Query q = strategy.getNamedQuery("WeblogReferrer.getByWeblogEntry");
+        q.setParameter(1, entry);
+        List referers = q.getResultList();
+        for (Iterator iter = referers.iterator(); iter.hasNext();) {
+            WeblogReferrer referer = (WeblogReferrer) iter.next();
+            this.strategy.remove(referer);
+        }
+        
+        // remove comments
+        List comments = getComments(
+                null,  // website
+                entry,
+                null,  // search String
+                null,  // startDate
+                null,  // endDate
+                null,  // status
+                true,  // reverse chrono order (not that it matters)
+                0,     // offset
+                -1);   // no limit
+        Iterator commentsIT = comments.iterator();
+        while (commentsIT.hasNext()) {
+            this.strategy.remove((WeblogEntryComment) commentsIT.next());
+        }
+        
+        // remove tags aggregates
+        if(entry.getTags() != null) {
+            for(Iterator it = entry.getTags().iterator(); it.hasNext(); ) {
+                WeblogEntryTag tag = (WeblogEntryTag) it.next();
+                updateTagCount(tag.getName(), entry.getWebsite(), -1);
+                it.remove();
+                this.strategy.remove(tag);
+            }
+        }
+        
+        // remove attributes
+        if (entry.getEntryAttributes() != null) {
+            for (Iterator it = entry.getEntryAttributes().iterator(); it.hasNext(); ) {
+                WeblogEntryAttribute att = (WeblogEntryAttribute) it.next();
+                it.remove();
+                this.strategy.remove(att);
+            }
+        }
+        // TODO: can we eliminate this unnecessary flush with OpenJPA 1.0
+        this.strategy.flush();
+        
+        // remove entry
+        this.strategy.remove(entry);
+        
+        // update weblog last modified date.  date updated by saveWebsite()
+        if(entry.isPublished()) {
+            roller.getWeblogManager().saveWeblog(entry.getWebsite());
+        }
+        
+        // remove entry from cache mapping
+        this.entryAnchorToIdMap.remove(entry.getWebsite().getHandle()+":"+entry.getAnchor());
+    }
+

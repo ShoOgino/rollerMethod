@@ -1,10 +1,14 @@
-    private MemberEntry toMemberEntry(WeblogPermission pd) {
-        if (pd == null) {
-            throw new NullPointerException("ERROR: Null permission data not allowed");
+    private MemberEntry toMemberEntry(WeblogPermission pd) throws HandlerException  {
+        try {
+            if (pd == null) {
+                throw new NullPointerException("ERROR: Null permission data not allowed");
+            }
+            MemberEntry me = new MemberEntry(pd.getWeblog().getHandle(), pd.getUser().getUserName(), getUrlPrefix());
+            me.setPermission(actionsToString(pd));
+            return me;
+            
+        } catch (WebloggerException ex) {
+            throw new InternalException("ERROR: getting user or weblog", ex);
         }
-        MemberEntry me = new MemberEntry(pd.getWebsite().getHandle(), pd.getUser().getUserName(), getUrlPrefix());
-        me.setPermission(maskToString(pd.getPermissionMask()));
-        
-        return me;
     }
 

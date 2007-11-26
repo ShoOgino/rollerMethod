@@ -1,5 +1,18 @@
     /** Get number of users associated with website */
     public int getUserCount() {
-        return getPermissions().size();
+        int count = 0;
+        try {
+            UserManager umgr = WebloggerFactory.getWeblogger().getUserManager();
+            Iterator iter = umgr.getWeblogPermissions(this).iterator();
+            while (iter.hasNext()) {
+                WeblogPermission perm = (WeblogPermission) iter.next();
+                count++;
+            }
+            
+        } catch (WebloggerException ex) {
+            // something is seriously wrong, not me we can do here
+            log.error("ERROR error getting admin user count", ex);
+        }
+        return count;
     }
 

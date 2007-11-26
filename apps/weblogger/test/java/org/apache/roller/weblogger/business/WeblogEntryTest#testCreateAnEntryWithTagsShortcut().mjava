@@ -1,6 +1,6 @@
     public void testCreateAnEntryWithTagsShortcut() throws Exception {
         try {
-            WeblogManager mgr = WebloggerFactory.getWeblogger().getWeblogManager();
+            WeblogEntryManager mgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
             WeblogEntry entry = null;
             testWeblog = TestUtils.getManagedWebsite(testWeblog);
             testUser = TestUtils.getManagedUser(testUser);
@@ -15,7 +15,7 @@
             testEntry.setUpdateTime(
                     new java.sql.Timestamp(new java.util.Date().getTime()));
             testEntry.setWebsite(testWeblog);
-            testEntry.setCreator(testUser);
+            testEntry.setCreatorUserName(testUser.getUserName());
             testEntry.setCategory(testWeblog.getDefaultCategory());
 
             // shortcut

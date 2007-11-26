@@ -26,8 +26,8 @@
             log.error("ERROR running database creation script", ioe);
             if (create != null) messages.addAll(create.getMessages());
             errorMessage("ERROR reading/parsing database creation script");
-            throw new StartupException("Error running sql script", ioe);
-            
+            throw new StartupException("Error running SQL script", ioe);
+
         } finally {
             try { if (con != null) con.close(); } catch (Exception ignored) {}
         }

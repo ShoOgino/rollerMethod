@@ -1,7 +1,7 @@
     /** Get number of approved non-spam comments for entry */
     public int getCommentCount(String entryId, boolean noSpam, boolean approvedOnly) {
         try {
-            WeblogEntry entry = mWeblogMgr.getWeblogEntry(entryId);
+            WeblogEntry entry = mWeblogEntryMgr.getWeblogEntry(entryId);
             return entry.getComments(noSpam, approvedOnly).size();
         } catch (WebloggerException alreadyLogged) {}
         return 0;

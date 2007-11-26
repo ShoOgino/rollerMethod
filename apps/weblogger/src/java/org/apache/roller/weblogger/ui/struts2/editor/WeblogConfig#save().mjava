@@ -7,7 +7,7 @@
         myValidate();
         
         if(!hasActionErrors()) try {
-            WeblogManager wmgr = WebloggerFactory.getWeblogger().getWeblogManager();
+            WeblogEntryManager wmgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
             UserManager umgr = WebloggerFactory.getWeblogger().getUserManager();
             
             Weblog weblog = getActionWeblog();
@@ -34,7 +34,7 @@
             }
             
             // save config
-            umgr.saveWebsite(weblog);
+            WebloggerFactory.getWeblogger().getWeblogManager().saveWeblog(weblog);
             
             // ROL-1050: apply comment defaults to existing entries
             if(getBean().getApplyCommentDefaults()) {

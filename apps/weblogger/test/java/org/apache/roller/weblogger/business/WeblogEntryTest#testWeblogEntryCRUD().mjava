@@ -3,7 +3,7 @@
      */
     public void testWeblogEntryCRUD() throws Exception {
         
-        WeblogManager mgr = WebloggerFactory.getWeblogger().getWeblogManager();
+        WeblogEntryManager mgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
         WeblogEntry entry = null;
         
         WeblogEntry testEntry = new WeblogEntry();
@@ -14,7 +14,7 @@
         testEntry.setPubTime(new java.sql.Timestamp(new java.util.Date().getTime()));
         testEntry.setUpdateTime(new java.sql.Timestamp(new java.util.Date().getTime()));
         testEntry.setWebsite(testWeblog);
-        testEntry.setCreator(testUser);
+        testEntry.setCreatorUserName(testUser.getUserName());
         
         WeblogCategory cat = mgr.getWeblogCategory(testWeblog.getDefaultCategory().getId());
         testEntry.setCategory(cat);

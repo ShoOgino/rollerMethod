@@ -22,9 +22,7 @@
         validate(blogid, userid,password);
         
         try {
-            Weblogger roller = WebloggerFactory.getWeblogger();
-            UserManager userMgr = roller.getUserManager();
-            WeblogTemplate page = userMgr.getPage(templateType);
+            WeblogTemplate page = WebloggerFactory.getWeblogger().getWeblogManager().getPage(templateType);
             
             if ( null == page ) {
                 throw new XmlRpcException(UNKNOWN_EXCEPTION,"Template not found");

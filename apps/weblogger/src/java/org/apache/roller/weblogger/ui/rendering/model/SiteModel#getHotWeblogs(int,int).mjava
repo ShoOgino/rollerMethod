@@ -7,7 +7,7 @@
         
         List results = new ArrayList();
         try {
-            WeblogManager mgr = WebloggerFactory.getWeblogger().getWeblogManager();
+            WeblogEntryManager mgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
             List hotBlogs = mgr.getHotWeblogs(sinceDays, 0, length);
             
             Iterator hitCounts = hotBlogs.iterator();

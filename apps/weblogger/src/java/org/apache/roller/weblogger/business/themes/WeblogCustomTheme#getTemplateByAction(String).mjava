@@ -6,7 +6,6 @@
         if(action == null)
             return null;
         
-        UserManager userMgr = WebloggerFactory.getWeblogger().getUserManager();
-        return userMgr.getPageByAction(this.weblog, action);
+        return WebloggerFactory.getWeblogger().getWeblogManager().getPageByAction(this.weblog, action);
     }
 

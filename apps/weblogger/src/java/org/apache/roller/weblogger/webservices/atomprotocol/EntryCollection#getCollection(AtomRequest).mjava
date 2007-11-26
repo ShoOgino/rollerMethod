@@ -1,0 +1,90 @@
+    public Feed getCollection(AtomRequest areq) throws AtomException {
+        log.debug("Entering");
+        String[] pathInfo = StringUtils.split(areq.getPathInfo(),"/");
+        try {
+            int start = 0;
+            int max = maxEntries;
+            if (pathInfo.length > 2) {
+                try {
+                    String s = pathInfo[2].trim();
+                    start = Integer.parseInt(s);
+                } catch (Throwable t) {
+                    log.warn("Unparsable range: " + pathInfo[2]);
+                }
+            }        
+            String handle = pathInfo[0];
+            String absUrl = WebloggerRuntimeConfig.getAbsoluteContextURL();
+            Weblog website = roller.getWeblogManager().getWeblogByHandle(handle);
+            if (website == null) {
+                throw new AtomNotFoundException("Cannot find specified weblog");
+            }
+            if (!RollerAtomHandler.canView(user, website)) {
+                throw new AtomNotAuthorizedException("Not authorized to access website: " + handle);
+            }
+            List entries = entries = roller.getWeblogEntryManager().getWeblogEntries( 
+                    website,           // website
+                    null,              // user
+                    null,              // startDate
+                    null,              // endDate
+                    null,              // catName
+                    null,              // tags
+                    null,              // status
+                    null,              // text
+                    "updateTime",      // sortby
+                    null,
+                    null,              // locale
+                    start,             // offset (for range paging)
+                    max + 1);          // maxEntries
+            Feed feed = new Feed();
+            feed.setId(atomURL
+                +"/"+website.getHandle() + "/entries/" + start);
+            feed.setTitle(website.getName());
+
+            Link link = new Link();
+            link.setHref(absUrl + "/" + website.getHandle());
+            link.setRel("alternate");
+            link.setType("text/html");
+            feed.setAlternateLinks(Collections.singletonList(link));
+
+            List atomEntries = new ArrayList();
+            int count = 0;
+            for (Iterator iter = entries.iterator(); iter.hasNext() && count < maxEntries; count++) {
+                WeblogEntry rollerEntry = (WeblogEntry)iter.next();
+                Entry entry = createAtomEntry(rollerEntry);
+                atomEntries.add(entry);
+                if (count == 0) {
+                    // first entry is most recent
+                    feed.setUpdated(entry.getUpdated());
+                }
+            }
+            List links = new ArrayList();
+            if (entries.size() > max) { // add next link
+                int nextOffset = start + max;
+                String url = atomURL+"/"
+                        + website.getHandle() + "/entries/" + nextOffset;
+                Link nextLink = new Link();
+                nextLink.setRel("next");
+                nextLink.setHref(url);
+                links.add(nextLink);
+            }
+            if (start > 0) { // add previous link
+                int prevOffset = start > max ? start - max : 0;
+                String url = atomURL+"/"
+                        +website.getHandle() + "/entries/" + prevOffset;
+                Link prevLink = new Link();
+                prevLink.setRel("previous");
+                prevLink.setHref(url);
+                links.add(prevLink);
+            }
+            if (links.size() > 0) feed.setOtherLinks(links);
+            // Use collection URI as id
+            feed.setEntries(atomEntries);
+            
+            log.debug("Exiting");
+            return feed;
+        
+        } catch (WebloggerException re) {
+            throw new AtomException("Getting entry collection");
+        }
+    }
+

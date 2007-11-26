@@ -4,7 +4,7 @@
         try {
             if (!WebloggerConfig.getBooleanProperty("groupblogging.enabled")) {
                 UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
-                List permissions = mgr.getAllPermissions(user);
+                List<WeblogPermission> permissions = mgr.getWeblogPermissions(user);
                 if (permissions.size() > 0) {
                     // sneaky user trying to get around 1 blog limit that applies
                     // only when group blogging is disabled
@@ -23,7 +23,7 @@
             
             Weblog wd = new Weblog(
                     getBean().getHandle(),
-                    user,
+                    user.getUserName(),
                     getBean().getName(),
                     getBean().getDescription(),
                     getBean().getEmailAddress(),
@@ -39,8 +39,7 @@
             
             try {
                 // add weblog and flush
-                UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
-                mgr.addWebsite(wd);
+                WebloggerFactory.getWeblogger().getWeblogManager().addWeblog(wd);
                 WebloggerFactory.getWeblogger().flush();
                 
                 // tell the user their weblog was created

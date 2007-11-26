@@ -1,0 +1,7 @@
+    public void removePage(WeblogTemplate page) throws WebloggerException {
+        this.strategy.remove(page);
+        
+        // update weblog last modified date.  date updated by saveWebsite()
+        roller.getWeblogManager().saveWeblog(page.getWebsite());
+    }
+

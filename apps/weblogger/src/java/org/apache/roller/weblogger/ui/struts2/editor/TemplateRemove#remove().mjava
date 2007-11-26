@@ -10,7 +10,7 @@
                 // notify cache
                 CacheManager.invalidate(getTemplate());
 
-                umgr.removePage(getTemplate());
+                WebloggerFactory.getWeblogger().getWeblogManager().removePage(getTemplate());
                 WebloggerFactory.getWeblogger().flush();
                                 
                 return SUCCESS;

@@ -27,8 +27,7 @@
             }
             
             // save template and flush
-            UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
-            mgr.savePage(template);
+            WebloggerFactory.getWeblogger().getWeblogManager().savePage(template);
             WebloggerFactory.getWeblogger().flush();
             
             // notify caches

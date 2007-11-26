@@ -30,12 +30,9 @@
         }
         
         try {
-            Weblogger roller = WebloggerFactory.getWeblogger();
-            UserManager userMgr = roller.getUserManager();
-            
-            WeblogTemplate page = userMgr.getPage(templateType);
+            WeblogTemplate page = WebloggerFactory.getWeblogger().getWeblogManager().getPage(templateType);
             page.setContents(templateData);
-            userMgr.savePage(page);
+            WebloggerFactory.getWeblogger().getWeblogManager().savePage(page);
             flushPageCache(page.getWebsite());
             
             return true;

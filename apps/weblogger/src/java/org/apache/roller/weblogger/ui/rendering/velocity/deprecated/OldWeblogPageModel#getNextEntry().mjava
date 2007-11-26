@@ -11,7 +11,7 @@
             }
             try {
                 WeblogEntry nextEntry =
-                        mWeblogMgr.getNextEntry(currentEntry.getPojo(), catName, mLocale);
+                        mWeblogEntryMgr.getNextEntry(currentEntry.getPojo(), catName, mLocale);
                 
                 if(nextEntry != null)
                     mNextEntry = WeblogEntryWrapper.wrap(nextEntry, urlStrategy);

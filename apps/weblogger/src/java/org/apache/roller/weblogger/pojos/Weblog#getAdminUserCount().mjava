@@ -1,12 +1,18 @@
     public int getAdminUserCount() {
         int count = 0;
-        WeblogPermission userPerms = null;
-        Iterator iter = getPermissions().iterator();
-        while (iter.hasNext()) {
-            WeblogPermission perms = (WeblogPermission) iter.next();
-            if (perms.getPermissionMask() == WeblogPermission.ADMIN) {
-                count++;
+        try {
+            UserManager umgr = WebloggerFactory.getWeblogger().getUserManager();
+            Iterator iter = umgr.getWeblogPermissions(this).iterator();
+            while (iter.hasNext()) {
+                WeblogPermission perm = (WeblogPermission) iter.next();
+                if (perm.hasAction(WeblogPermission.ADMIN)) {
+                    count++;
+                }
             }
+            
+        } catch (WebloggerException ex) {
+            // something is seriously wrong, not me we can do here
+            log.error("ERROR error getting admin user count", ex);
         }
         return count;
     }

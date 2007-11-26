@@ -35,8 +35,8 @@
                 }
                 
                 // lookup weblog specified by comment request
-                UserManager uMgr = WebloggerFactory.getWeblogger().getUserManager();
-                weblog = uMgr.getWebsiteByHandle(trackbackRequest.getWeblogHandle());
+                weblog = WebloggerFactory.getWeblogger().getWeblogManager()
+                        .getWeblogByHandle(trackbackRequest.getWeblogHandle());
                 
                 if (weblog == null) {
                     throw new WebloggerException("unable to lookup weblog: "+
@@ -44,7 +44,7 @@
                 }
                 
                 // lookup entry specified by comment request
-                WeblogManager weblogMgr = WebloggerFactory.getWeblogger().getWeblogManager();
+                WeblogEntryManager weblogMgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
                 entry = weblogMgr.getWeblogEntryByAnchor(weblog, trackbackRequest.getWeblogAnchor());
                 
                 if (entry == null) {
@@ -98,7 +98,7 @@
                 if(!WeblogEntryComment.SPAM.equals(comment.getStatus()) ||
                         !WebloggerRuntimeConfig.getBooleanProperty("trackbacks.ignoreSpam.enabled")) {
                     
-                    WeblogManager mgr = WebloggerFactory.getWeblogger().getWeblogManager();
+                    WeblogEntryManager mgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
                     mgr.saveComment(comment);
                     WebloggerFactory.getWeblogger().flush();
                     

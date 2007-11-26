@@ -1,0 +1,10 @@
+    public void removeWeblog(Weblog weblog) throws WebloggerException {
+        
+        // remove contents first, then remove website
+        this.removeWebsiteContents(weblog);
+        this.strategy.remove(weblog);
+        
+        // remove entry from cache mapping
+        this.weblogHandleToIdMap.remove(weblog.getHandle());
+    }
+

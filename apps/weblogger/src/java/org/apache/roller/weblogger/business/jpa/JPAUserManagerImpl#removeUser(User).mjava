@@ -1,15 +1,11 @@
     public void removeUser(User user) throws WebloggerException {
         //remove permissions
         // make sure that both sides of the relationship are maintained
-        for (Iterator iterator = user.getPermissions().iterator(); iterator.hasNext();) {
-            WeblogPermission perms = (WeblogPermission) iterator.next();
+        List<WeblogPermission> perms = getWeblogPermissions(user);
+        for (WeblogPermission perm : perms) {
+           
             //Remove it from database
             this.strategy.remove(perms);
-            //Remove it from website
-            iterator.remove();
-            //Remove it from corresponding user
-            Weblog website = perms.getWebsite();
-            website.getPermissions().remove(perms);
         }
         
         this.strategy.remove(user);

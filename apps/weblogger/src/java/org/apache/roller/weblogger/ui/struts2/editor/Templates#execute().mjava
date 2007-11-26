@@ -2,14 +2,13 @@
         
         // query for templates list
         try {
-            UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
             
             // get current list of templates, minus custom stylesheet
-            List<WeblogTemplate> raw = mgr.getPages(getActionWeblog()); 
+            List<WeblogTemplate> raw = WebloggerFactory.getWeblogger().getWeblogManager().getPages(getActionWeblog()); 
             List<WeblogTemplate> pages = new ArrayList<WeblogTemplate>();
             pages.addAll(raw);
             if(getActionWeblog().getTheme().getStylesheet() != null) {
-                pages.remove(mgr.getPageByLink(getActionWeblog(), 
+                pages.remove(WebloggerFactory.getWeblogger().getWeblogManager().getPageByLink(getActionWeblog(), 
                         getActionWeblog().getTheme().getStylesheet().getLink()));
             }
             setTemplates(pages);

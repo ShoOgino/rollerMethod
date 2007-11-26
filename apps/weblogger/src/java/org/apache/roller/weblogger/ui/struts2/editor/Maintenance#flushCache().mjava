@@ -9,8 +9,7 @@
             // some caches are based on weblog last-modified, so update it
             weblog.setLastModified(new Date());
             
-            UserManager umgr = WebloggerFactory.getWeblogger().getUserManager();
-            umgr.saveWebsite(weblog);
+            WebloggerFactory.getWeblogger().getWeblogManager().saveWeblog(weblog);
             WebloggerFactory.getWeblogger().flush();
             
             // also notify cache manager

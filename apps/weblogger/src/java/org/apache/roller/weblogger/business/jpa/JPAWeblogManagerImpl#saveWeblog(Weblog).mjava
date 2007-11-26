@@ -1,0 +1,9 @@
+    /**
+     * Update existing website.
+     */
+    public void saveWeblog(Weblog website) throws WebloggerException {
+        
+        website.setLastModified(new java.util.Date());
+        strategy.store(website);
+    }
+

@@ -15,8 +15,8 @@
         
         // make sure handle isn't already taken
         if(!StringUtils.isEmpty(getBean().getHandle())) try {
-            UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
-            if (mgr.getWebsiteByHandle(getBean().getHandle()) != null) {
+            if (WebloggerFactory.getWeblogger().getWeblogManager()
+                    .getWeblogByHandle(getBean().getHandle()) != null) {
                 addError("createWeblog.error.handleExists");
                 // reset handle
                 getBean().setHandle(null);

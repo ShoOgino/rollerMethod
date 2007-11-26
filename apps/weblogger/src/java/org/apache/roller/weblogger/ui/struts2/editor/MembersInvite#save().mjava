@@ -34,11 +34,11 @@
         
         // check for existing permissions or invitation
         try {
-            WeblogPermission perms = umgr.getPermissions(getActionWeblog(), user);
+            WeblogPermission perm = umgr.getWeblogPermission(getActionWeblog(), user);
             
-            if (perms != null && perms.isPending()) {
+            if (perm != null && perm.isPending()) {
                 addError("inviteMember.error.userAlreadyInvited");
-            } else if (perms != null) {
+            } else if (perm != null) {
                 addError("inviteMember.error.userAlreadyMember");
             }
             
@@ -50,8 +50,8 @@
         
         // if no errors then send the invitation
         if(!hasActionErrors()) try {
-            
-            umgr.inviteUser(getActionWeblog(), user, Short.parseShort(getPermissionsMask()));
+            umgr.grantWeblogPermissionPending(getActionWeblog(), user, 
+                    Collections.singletonList(getPermissionString()));
             WebloggerFactory.getWeblogger().flush();
             
             addMessage("inviteMember.userInvited");

@@ -9,7 +9,7 @@
                 User user = mgr.getUserByUserName(entry.getCreatingUser());
                 Weblog wd = new Weblog(
                         entry.getHandle(),
-                        user,
+                        user.getUserName(),
                         entry.getName(),
                         entry.getDescription(),
                         entry.getEmailAddress(),
@@ -37,7 +37,7 @@
                     log.error("ERROR setting default editor page for weblog", ex);
                 }
                 
-                mgr.addWebsite(wd);
+                WebloggerFactory.getWeblogger().getWeblogManager().addWeblog(wd);
                 getRoller().flush();
                 CacheManager.invalidate(wd);
                 websiteDatas.add(wd);

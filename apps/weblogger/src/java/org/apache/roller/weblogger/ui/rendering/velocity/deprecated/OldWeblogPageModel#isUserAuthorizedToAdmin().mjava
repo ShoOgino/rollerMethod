@@ -3,7 +3,7 @@
             RollerSession rses =
                     RollerSession.getRollerSession(mRequest);
             if (rses != null && rses.getAuthenticatedUser() != null && mWebsite != null) {
-                return mWebsite.hasUserPermissions(rses.getAuthenticatedUser(), WeblogPermission.ADMIN);
+                return mWebsite.hasUserPermission(rses.getAuthenticatedUser(), WeblogPermission.POST);
             }
         } catch (Exception e) {
             mLogger.warn("PageModel.isUserAuthorizedToAdmin()", e);

@@ -27,14 +27,13 @@
             }
             
             // save the new Template
-            UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
-            mgr.savePage( newTemplate );
+            WebloggerFactory.getWeblogger().getWeblogManager().savePage( newTemplate );
             
             // if this person happened to create a Weblog template from
             // scratch then make sure and set the defaultPageId
             if(WeblogTemplate.DEFAULT_PAGE.equals(newTemplate.getName())) {
                 getActionWeblog().setDefaultPageId(newTemplate.getId());
-                mgr.saveWebsite(getActionWeblog());
+                WebloggerFactory.getWeblogger().getWeblogManager().saveWeblog(getActionWeblog());
             }
             
             // flush results to db

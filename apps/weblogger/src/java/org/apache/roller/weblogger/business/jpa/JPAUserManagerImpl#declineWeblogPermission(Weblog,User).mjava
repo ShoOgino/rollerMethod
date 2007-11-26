@@ -1,0 +1,16 @@
+    public void declineWeblogPermission(Weblog weblog, User user) throws WebloggerException {
+        
+        // get specified permission
+        Query q = strategy.getNamedQuery("WeblogPermission.getByUserName&WeblogId");
+        q.setParameter(1, user.getUserName());
+        q.setParameter(2, weblog.getHandle());
+        WeblogPermission existingPerm = null;
+        try {
+            existingPerm = (WeblogPermission)q.getSingleResult();           
+        } catch (NoResultException ignored) {
+            throw new WebloggerException("ERROR: permission not found");
+        }
+        // remove permission
+        this.strategy.remove(existingPerm);
+    }
+

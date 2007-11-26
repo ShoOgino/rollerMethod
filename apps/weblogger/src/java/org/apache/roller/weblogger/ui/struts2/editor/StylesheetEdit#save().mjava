@@ -17,8 +17,7 @@
             stylesheet.setContents(getContents());
             
             // save template and flush
-            UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
-            mgr.savePage(stylesheet);
+            WebloggerFactory.getWeblogger().getWeblogManager().savePage(stylesheet);
             WebloggerFactory.getWeblogger().flush();
             
             // notify caches

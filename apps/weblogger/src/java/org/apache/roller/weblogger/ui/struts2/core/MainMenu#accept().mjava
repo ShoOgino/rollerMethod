@@ -1,23 +1,17 @@
     public String accept() {
         
         try {
-            UserManager userMgr = WebloggerFactory.getWeblogger().getUserManager();
-            WeblogPermission perms = userMgr.getPermissions(getInviteId());
-            if (perms != null) {        
-                // TODO ROLLER_2.0: notify inviter that invitee has accepted invitation
-                // TODO EXCEPTIONS: better exception handling
-                perms.setPending(false);
-                userMgr.savePermissions(perms);
-                WebloggerFactory.getWeblogger().flush();
+            UserManager umgr = WebloggerFactory.getWeblogger().getUserManager();
+            WeblogManager wmgr = WebloggerFactory.getWeblogger().getWeblogManager();
+            Weblog weblog = wmgr.getWeblog(getInviteId());      
+            // TODO ROLLER_2.0: notify inviter that invitee has accepted invitation
+            // TODO EXCEPTIONS: better exception handling
+            umgr.confirmWeblogPermission(weblog, getAuthenticatedUser());
+            WebloggerFactory.getWeblogger().flush();
 
-                addMessage("yourWebsites.accepted", perms.getWebsite().getHandle());
-            } else {
-                addError("yourWebsites.permNotFound");
-            }
         } catch (WebloggerException ex) {
-            log.error("Error handling invitation accept - "+getInviteId(), ex);
-            // TODO: i18n
-            addError("invite accept failed.");
+            log.error("Error handling invitation accept weblog id - "+getInviteId(), ex);
+            addError("yourWebsites.permNotFound");
         }
         
         return SUCCESS;

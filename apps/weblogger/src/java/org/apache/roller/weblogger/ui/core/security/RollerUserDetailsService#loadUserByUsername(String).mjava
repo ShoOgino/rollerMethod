@@ -1,28 +1,31 @@
     public UserDetails loadUserByUsername(String userName) 
-        throws UsernameNotFoundException, DataAccessException {
-        
-        User userData = null;
+            throws UsernameNotFoundException, DataAccessException {
         try {
+
             Weblogger roller = WebloggerFactory.getWeblogger();
             UserManager umgr = roller.getUserManager();
-            userData = umgr.getUserByUserName(userName, Boolean.TRUE); 
+            User userData = null;
+            try {
+                userData = umgr.getUserByUserName(userName, Boolean.TRUE);
+            } catch (WebloggerException ex) {
+                throw new DataRetrievalFailureException("ERROR in user lookup", ex);
+            }
+
+            if (userData == null) {
+                throw new UsernameNotFoundException("ERROR no user: " + userName);
+            }
+
+            List<String> roles = umgr.getRoles(userData);
+            GrantedAuthority[] authorities = new GrantedAuthorityImpl[roles.size()];
+            int i = 0;
+            for (String role : roles) {
+                authorities[i++] = new GrantedAuthorityImpl(role);
+            }
+
+            return new org.acegisecurity.userdetails.User(userData.getUserName(), userData.getPassword(), true, authorities);
+            
         } catch (WebloggerException ex) {
-            throw new DataRetrievalFailureException("ERROR in user lookup", ex);
-        } 
-        
-        if (userData == null) {
-            throw new UsernameNotFoundException("ERROR no user: " + userName);
+            throw new DataAccessResourceFailureException("ERROR: fetching roles", ex);
         }
-        
-        GrantedAuthority[] authorities = 
-            new GrantedAuthorityImpl[userData.getRoles().size()];
-        int i = 0;
-        for (Iterator it = userData.getRoles().iterator(); it.hasNext();) {
-            UserRole role = (UserRole)it.next();
-            authorities[i++] = new GrantedAuthorityImpl(role.getRole());
-        }
-        
-        return new org.acegisecurity.userdetails.User(
-            userData.getUserName(), userData.getPassword(), true, authorities);
     }
 

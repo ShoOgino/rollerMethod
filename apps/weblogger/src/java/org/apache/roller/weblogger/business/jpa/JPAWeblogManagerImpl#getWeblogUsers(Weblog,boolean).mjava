@@ -1,0 +1,16 @@
+    public List getWeblogUsers(Weblog weblog, boolean enabledOnly) throws WebloggerException {
+        List users = new ArrayList();
+        List<WeblogPermission> perms = roller.getUserManager().getWeblogPermissions(weblog);
+        for (WeblogPermission perm : perms) {
+            User user = perm.getUser();
+            if (user == null) {
+                log.error("ERROR user is null, userName:" + perm.getUserName());
+                continue;
+            }
+            if (!enabledOnly || user.getEnabled().booleanValue()) {
+                users.add(user);
+            }
+        }
+        return users;
+    }
+

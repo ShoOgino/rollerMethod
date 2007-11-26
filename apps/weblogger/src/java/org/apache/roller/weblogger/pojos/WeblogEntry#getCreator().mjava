@@ -1,9 +1,12 @@
     /**
      * @roller.wrapPojoMethod type="simple"
-     * @ejb:persistent-field
-     * @hibernate.many-to-one column="userid" cascade="none" not-null="true"
      */
     public User getCreator() {
-        return this.creator;
-    }
+        try {
+            return WebloggerFactory.getWeblogger().getUserManager().getUserByUserName(getCreatorUserName());
+        } catch (Exception e) {
+            mLogger.error("ERROR fetching user object for username: " + getCreatorUserName(), e);
+        }
+        return null;
+    }   
 

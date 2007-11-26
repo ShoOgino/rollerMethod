@@ -23,12 +23,12 @@
         
         // add test user
         mgr.addUser(testUser);
-        String id = testUser.getId();
+        String userName = testUser.getUserName();
         TestUtils.endSession(true);
         
         // make sure test user exists
         user = null;
-        user = mgr.getUser(id);
+        user = mgr.getUserByUserName(userName);
         assertNotNull(user);
         assertEquals(testUser, user);
         
@@ -40,7 +40,7 @@
         
         // make sure changes were saved
         user = null;
-        user = mgr.getUser(id);
+        user = mgr.getUserByUserName(userName);
         assertNotNull(user);
         assertEquals("testtesttest", user.getScreenName());
         assertEquals("testtesttest", user.getFullName());
@@ -51,7 +51,7 @@
         
         // make sure user no longer exists
         user = null;
-        user = mgr.getUser(id);
+        user = mgr.getUserByUserName(userName);
         assertNull(user);
     }
 

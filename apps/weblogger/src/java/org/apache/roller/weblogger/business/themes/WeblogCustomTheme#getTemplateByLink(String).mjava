@@ -6,7 +6,6 @@
         if(link == null)
             return null;
         
-        UserManager userMgr = WebloggerFactory.getWeblogger().getUserManager();
-        return userMgr.getPageByLink(this.weblog, link);
+        return WebloggerFactory.getWeblogger().getWeblogManager().getPageByLink(this.weblog, link);
     }
 

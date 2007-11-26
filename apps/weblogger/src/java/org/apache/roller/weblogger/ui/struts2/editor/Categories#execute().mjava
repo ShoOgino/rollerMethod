@@ -5,7 +5,7 @@
         
         try {
             // Build list of all categories, except for current one, sorted by path.
-            WeblogManager wmgr = WebloggerFactory.getWeblogger().getWeblogManager();
+            WeblogEntryManager wmgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
             List<WeblogCategory> cats = wmgr.getWeblogCategories(getActionWeblog(), true);
             for(WeblogCategory cat : cats) {
                 if (!cat.getId().equals(getCategoryId())) {

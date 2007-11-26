@@ -4,7 +4,7 @@
     public String remove() {
         
         if(getCategory() != null) try {
-            WeblogManager wmgr = WebloggerFactory.getWeblogger().getWeblogManager();
+            WeblogEntryManager wmgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
             
             if(getTargetCategoryId() != null) {
                 WeblogCategory target = wmgr.getWeblogCategory(getTargetCategoryId());

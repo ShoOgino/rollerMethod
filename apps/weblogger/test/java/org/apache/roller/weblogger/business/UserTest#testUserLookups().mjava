@@ -16,9 +16,9 @@
         assertEquals(testUser.getUserName(), user.getUserName());
         
         // lookup by id
-        String id = user.getId();
+        String userName = user.getUserName();
         user = null;
-        user = mgr.getUser(id);
+        user = mgr.getUserByUserName(userName);
         assertNotNull(user);
         assertEquals(testUser.getUserName(), user.getUserName());
         
@@ -47,7 +47,7 @@
         assertNull(user);
         
         // remove test user
-        TestUtils.teardownUser(testUser.getId());
+        TestUtils.teardownUser(testUser.getUserName());
         TestUtils.endSession(true);
     }
 

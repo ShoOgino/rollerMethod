@@ -1,8 +1,7 @@
-    /** 
-     * @hibernate.many-to-one column="user_id" cascade="none" not-null="false"
-     */
-    public User getUser() 
-    {
-        return user;
+    public User getUser() throws WebloggerException {
+        if (userName != null) {
+            return WebloggerFactory.getWeblogger().getUserManager().getUserByUserName(userName);
+        }
+        return null;
     }
 

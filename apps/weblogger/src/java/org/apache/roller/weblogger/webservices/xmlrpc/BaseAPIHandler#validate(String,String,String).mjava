@@ -16,10 +16,11 @@
         User user = null;
         try {
             UserManager userMgr = WebloggerFactory.getWeblogger().getUserManager();
+            WeblogManager weblogMgr = WebloggerFactory.getWeblogger().getWeblogManager();
             user = userMgr.getUserByUserName(username);
             userEnabled = user.getEnabled().booleanValue();
             
-            website = userMgr.getWebsiteByHandle(blogid);
+            website = weblogMgr.getWeblogByHandle(blogid);
             if (website != null) {
                 weblogFound = true;
                 weblogEnabled = website.getEnabled().booleanValue();

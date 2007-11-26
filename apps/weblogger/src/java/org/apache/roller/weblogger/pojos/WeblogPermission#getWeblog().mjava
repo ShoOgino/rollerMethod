@@ -1,0 +1,7 @@
+    public Weblog getWeblog() throws WebloggerException {
+        if (objectId != null) {
+            return WebloggerFactory.getWeblogger().getWeblogManager().getWeblogByHandle(objectId, null);
+        }
+        return null;
+    }
+

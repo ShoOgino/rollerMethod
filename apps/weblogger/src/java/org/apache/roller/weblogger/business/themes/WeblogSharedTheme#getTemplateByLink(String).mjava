@@ -21,8 +21,8 @@
         
         // if we didn't get the Template from a theme then look in the db
         if(template == null) {
-            UserManager userMgr = WebloggerFactory.getWeblogger().getUserManager();
-            template = userMgr.getPageByLink(this.weblog, link);
+            template = WebloggerFactory.getWeblogger()
+                    .getWeblogManager().getPageByLink(this.weblog, link);
         }
         
         return template;

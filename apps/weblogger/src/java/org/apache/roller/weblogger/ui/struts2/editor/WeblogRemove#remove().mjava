@@ -2,28 +2,25 @@
      * Remove a weblog.
      */
     public String remove() {
-        
+
         try {
-            UserManager umgr = WebloggerFactory.getWeblogger().getUserManager();
-            
+
             // remove website
-            umgr.removeWebsite(getActionWeblog());
+            WebloggerFactory.getWeblogger().getWeblogManager().removeWeblog(getActionWeblog());
             WebloggerFactory.getWeblogger().flush();
-            
+
             CacheManager.invalidate(getActionWeblog());
-            
+
             // TODO: i18n
-            addMessage("Successfully removed weblog - "+getActionWeblog().getName());
-            
+            addMessage("Successfully removed weblog - " + getActionWeblog().getName());
+
             return SUCCESS;
-            
         } catch (Exception ex) {
-            log.error("Error removing weblog - "+getActionWeblog().getHandle(), ex);
+            log.error("Error removing weblog - " + getActionWeblog().getHandle(), ex);
             // TODO: i18n
             addError("Error removing weblog");
         }
-        
+
         return "confirm";
-        
     }
 

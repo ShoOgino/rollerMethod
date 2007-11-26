@@ -10,6 +10,7 @@
         
         try {
             WeblogManager wmgr = WebloggerFactory.getWeblogger().getWeblogManager();        
+            WeblogEntryManager emgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();        
             UserManager umgr = WebloggerFactory.getWeblogger().getUserManager();
 
             // first make sure we can delete an entry with comments
@@ -28,7 +29,7 @@
             // now deleting the entry should succeed and delete all comments
             Exception ex = null;
             try {
-                wmgr.removeWeblogEntry(TestUtils.getManagedWeblogEntry(entry));
+                emgr.removeWeblogEntry(TestUtils.getManagedWeblogEntry(entry));
                 TestUtils.endSession(true);
             } catch (WebloggerException e) {
                 ex = e;
@@ -52,7 +53,7 @@
             ex = null;
             try {
                 weblog = TestUtils.getManagedWebsite(weblog);
-                umgr.removeWebsite(weblog);
+                wmgr.removeWeblog(weblog);
                 TestUtils.endSession(true);
             } catch (WebloggerException e) {
                 StringWriter sw = new StringWriter();

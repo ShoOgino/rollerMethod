@@ -3,8 +3,7 @@
         // if name changed make sure there isn't a conflict
         if(!getTemplate().getName().equals(getBean().getName())) {
             try {
-                UserManager umgr = WebloggerFactory.getWeblogger().getUserManager();
-                if(umgr.getPageByName(getActionWeblog(), getBean().getName()) != null) {
+                if(WebloggerFactory.getWeblogger().getWeblogManager().getPageByName(getActionWeblog(), getBean().getName()) != null) {
                     addError("pagesForm.error.alreadyExists", getBean().getName());
                 }
             } catch (WebloggerException ex) {
@@ -16,8 +15,7 @@
         if(!StringUtils.isEmpty(getBean().getLink()) &&
                 !getBean().getLink().equals(getTemplate().getLink())) {
             try {
-                UserManager umgr = WebloggerFactory.getWeblogger().getUserManager();
-                if(umgr.getPageByLink(getActionWeblog(), getBean().getLink()) != null) {
+                if(WebloggerFactory.getWeblogger().getWeblogManager().getPageByLink(getActionWeblog(), getBean().getLink()) != null) {
                     addError("pagesForm.error.alreadyExists", getBean().getLink());
                 }
             } catch (WebloggerException ex) {

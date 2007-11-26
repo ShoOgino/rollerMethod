@@ -6,10 +6,11 @@
     public String save() {
         
         if(!hasActionErrors()) try {
-            WeblogManager weblogMgr = WebloggerFactory.getWeblogger().getWeblogManager();
+            UserManager userMgr = WebloggerFactory.getWeblogger().getUserManager();
+            WeblogEntryManager weblogMgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
             
             WeblogEntry entry = new WeblogEntry();
-            entry.setCreator(getAuthenticatedUser());
+            entry.setCreatorUserName(getAuthenticatedUser().getUserName());
             entry.setWebsite(getActionWeblog());
             
             // set updatetime & pubtime if it was specified
@@ -27,13 +28,15 @@
                 }
                 
                 // if user does not have author perms then force PENDING status
-                if(!getActionWeblog().hasUserPermissions(getAuthenticatedUser(),WeblogPermission.AUTHOR)) {
+                if(!getActionWeblog().hasUserPermission(getAuthenticatedUser(),WeblogPermission.POST)) {
                     entry.setStatus(WeblogEntry.PENDING);
                 }
             }
             
             // if user is an admin then apply pinned to main value as well
-            if(getAuthenticatedUser().hasRole("admin")) {
+            GlobalPermission adminPerm = 
+                new GlobalPermission(Collections.singletonList(GlobalPermission.ADMIN));
+            if (userMgr.checkPermission(adminPerm, getAuthenticatedUser())) {
                 entry.setPinnedToMain(getBean().getPinnedToMain());
             }
             

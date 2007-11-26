@@ -2,17 +2,20 @@
         try {
             UserManager mgr = getRoller().getUserManager();
             
-            List permissionsDatas= new ArrayList();
+            List<WeblogPermission> perms= new ArrayList<WeblogPermission>();
             for (int i = 0; i < c.getEntries().length; i++) {
                 MemberEntry entry = (MemberEntry)c.getEntries()[i];
-                WeblogPermission pd = toPermissionsData(entry);
-                mgr.savePermissions(pd);
+                User ud = getUserData(entry.getName());
+                Weblog wd = getWebsiteData(entry.getHandle());
+                mgr.grantWeblogPermission(wd, ud, toActionList(entry.getPermission()));
                 getRoller().flush();
-                CacheManager.invalidate(pd.getUser());
-                CacheManager.invalidate(pd.getWebsite());
-                permissionsDatas.add(pd);
+                CacheManager.invalidate(ud);
+                CacheManager.invalidate(wd);
+                
+                WeblogPermission pd = mgr.getWeblogPermission(wd, ud);
+                perms.add(pd);
             }
-            return toMemberEntrySet((WeblogPermission[])permissionsDatas.toArray(new WeblogPermission[0]));
+            return toMemberEntrySet(perms);
             
         } catch (WebloggerException re) {
             throw new InternalException("ERROR: Could not create members", re);

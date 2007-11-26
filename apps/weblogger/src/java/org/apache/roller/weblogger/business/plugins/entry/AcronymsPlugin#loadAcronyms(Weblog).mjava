@@ -7,8 +7,8 @@
     private Properties loadAcronyms(Weblog website) {
         Properties acronyms = new Properties();
         try {
-            UserManager userMgr = WebloggerFactory.getWeblogger().getUserManager();
-            WeblogTemplate acronymsPage = userMgr.getPageByName(
+            WeblogManager wmgr = WebloggerFactory.getWeblogger().getWeblogManager();
+            WeblogTemplate acronymsPage = wmgr.getPageByName(
                     website, "_acronyms");
             if (acronymsPage != null) {
                 acronyms = parseAcronymPage(acronymsPage, acronyms);

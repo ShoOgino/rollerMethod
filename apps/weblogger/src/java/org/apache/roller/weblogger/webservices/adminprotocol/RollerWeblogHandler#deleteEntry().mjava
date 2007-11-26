@@ -2,13 +2,10 @@
         String handle = getUri().getEntryId();
         
         try {
-            UserManager mgr = getRoller().getUserManager();
-            
             Weblog wd = getWebsiteData(handle);
-            
             CacheManager.invalidate(wd);
 
-            mgr.removeWebsite(wd);
+            WebloggerFactory.getWeblogger().getWeblogManager().removeWeblog(wd);
             getRoller().flush();
 
             // return empty set, object deleted

@@ -7,10 +7,9 @@
             Weblogger roller = WebloggerFactory.getWeblogger();
             UserManager umgr = roller.getUserManager();
             User user = umgr.getUserByUserName(userName);
-            List perms = umgr.getAllPermissions(user);
-            for (Iterator it = perms.iterator(); it.hasNext();) {
-                WeblogPermission perm = (WeblogPermission) it.next();
-                results.add(WeblogWrapper.wrap(perm.getWebsite(), urlStrategy));
+            List<WeblogPermission> perms = umgr.getWeblogPermissions(user);
+            for (WeblogPermission perm : perms) {
+                results.add(WeblogWrapper.wrap(perm.getWeblog(), urlStrategy));
             }
         } catch (Exception e) {
             log.error("ERROR: fetching weblog list", e);

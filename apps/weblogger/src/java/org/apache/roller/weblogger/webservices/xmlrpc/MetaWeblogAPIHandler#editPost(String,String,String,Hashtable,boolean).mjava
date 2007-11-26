@@ -7,7 +7,7 @@
         mLogger.debug("    Publish: " + publish);
         
         Weblogger roller = WebloggerFactory.getWeblogger();
-        WeblogManager weblogMgr = roller.getWeblogManager();
+        WeblogEntryManager weblogMgr = roller.getWeblogEntryManager();
         WeblogEntry entry = weblogMgr.getWeblogEntry(postid);
         
         validate(entry.getWebsite().getHandle(), userid,password);

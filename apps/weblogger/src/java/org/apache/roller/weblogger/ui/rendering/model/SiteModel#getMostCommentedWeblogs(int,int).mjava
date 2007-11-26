@@ -13,8 +13,7 @@
         Date startDate = cal.getTime();
         try {            
             Weblogger roller = WebloggerFactory.getWeblogger();
-            UserManager umgr = roller.getUserManager();
-            results = umgr.getMostCommentedWebsites(
+            results = WebloggerFactory.getWeblogger().getWeblogManager().getMostCommentedWeblogs(
                     startDate, new Date(), 0, length);
         } catch (Exception e) {
             log.error("ERROR: fetching commented weblog list", e);

@@ -1,14 +1,15 @@
     private static Menu buildMenu(ParsedMenu menuConfig, String currentAction, 
-                                  User user, Weblog weblog) {
+                                  User user, Weblog weblog) throws WebloggerException {
         
         log.debug("creating menu for action - "+currentAction);
         
         Menu tabMenu = new Menu();
+        UserManager umgr = WebloggerFactory.getWeblogger().getUserManager();
         
         // iterate over tabs from parsed config
         ParsedTab configTab = null;
         Iterator tabsIter = menuConfig.getTabs().iterator();
-        while(tabsIter.hasNext()) {
+        while (tabsIter.hasNext()) {
             configTab = (ParsedTab) tabsIter.next();
             
             log.debug("config tab = "+configTab.getName());
@@ -21,21 +22,34 @@
                 includeTab = ! WebloggerConfig.getBooleanProperty(configTab.getDisabledProperty());
             }
             
-            if(includeTab) {
+            if (includeTab) {
                 // user roles check
-                if(configTab.getRole() != null) {
-                    if(!user.hasRole(configTab.getRole())) {
+                if (configTab.getGlobalPermissionActions() != null
+                        && !configTab.getGlobalPermissionActions().isEmpty()) {
+                    try {
+                        GlobalPermission perm = 
+                            new GlobalPermission(configTab.getGlobalPermissionActions());
+                        if (!umgr.checkPermission(perm, user)) {
+                            includeTab = false;
+                        }
+                    } catch (WebloggerException ex) {
+                        log.debug("ERROR: fetching user roles", ex);
                         includeTab = false;
                     }
                 }
             }
             
-            if(includeTab) {
+            if (includeTab) {
                 // weblog permissions check
-                includeTab = isPermitted(configTab.getPerm(), user, weblog);
+                if (configTab.getWeblogPermissionActions() != null 
+                        && !configTab.getWeblogPermissionActions().isEmpty()) {
+                    WeblogPermission perm = 
+                        new WeblogPermission(weblog, configTab.getWeblogPermissionActions());
+                    includeTab = umgr.checkPermission(perm, user);
+                }
             }
             
-            if(includeTab) {
+            if (includeTab) {
                 log.debug("tab allowed - "+configTab.getName());
                 
                 // all checks passed, tab should be included
@@ -46,33 +60,40 @@
                 boolean firstItem = true;
                 ParsedTabItem configTabItem = null;
                 Iterator itemsIter = configTab.getTabItems().iterator();
-                while(itemsIter.hasNext()) {
+                while (itemsIter.hasNext()) {
                     configTabItem = (ParsedTabItem) itemsIter.next();
                     
                     log.debug("config tab item = "+configTabItem.getName());
                     
                     boolean includeItem = true;
-                    if(configTabItem.getEnabledProperty() != null) {
+                    if (configTabItem.getEnabledProperty() != null) {
                         includeItem = WebloggerConfig.getBooleanProperty(configTabItem.getEnabledProperty());
-                    } else if(configTabItem.getDisabledProperty() != null) {
+                    } else if (configTabItem.getDisabledProperty() != null) {
                         includeItem = ! WebloggerConfig.getBooleanProperty(configTabItem.getDisabledProperty());
                     }
                     
-                    if(includeItem) {
+                    if (includeItem) {
                         // user roles check
-                        if(configTabItem.getRole() != null) {
-                            if(!user.hasRole(configTabItem.getRole())) {
+                        if (configTabItem.getGlobalPermissionActions() != null
+                                && !configTabItem.getGlobalPermissionActions().isEmpty()) {
+                            GlobalPermission perm = 
+                                new GlobalPermission(configTabItem.getGlobalPermissionActions());
+                            if (!umgr.checkPermission(perm, user)) {
                                 includeItem = false;
                             }
                         }
                     }
                     
-                    if(includeItem) {
+                    if (includeItem) {
                         // weblog permissions check
-                        includeItem = isPermitted(configTabItem.getPerm(), user, weblog);
+                        if (configTab.getWeblogPermissionActions() != null 
+                                && !configTab.getWeblogPermissionActions().isEmpty()) {                        
+                            WeblogPermission perm = new WeblogPermission(weblog, configTab.getWeblogPermissionActions());
+                            includeTab = umgr.checkPermission(perm, user);
+                        }
                     }
                     
-                    if(includeItem) {
+                    if (includeItem) {
                         log.debug("tab item allowed - "+configTabItem.getName());
                         
                         // all checks passed, item should be included
@@ -81,13 +102,13 @@
                         tabItem.setAction(configTabItem.getAction());
                         
                         // is this the selected item?
-                        if(isSelected(currentAction, configTabItem)) {
+                        if (isSelected(currentAction, configTabItem)) {
                             tabItem.setSelected(true);
                             tab.setSelected(true);
                         }
                         
                         // the url for the tab is the url of the first item of the tab
-                        if(firstItem) {
+                        if (firstItem) {
                             tab.setAction(tabItem.getAction());
                             firstItem = false;
                         }
@@ -103,5 +124,5 @@
         }
         
         return tabMenu;
-    }
+    }    
 

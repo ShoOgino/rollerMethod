@@ -5,7 +5,7 @@
     public int getTodaysHits() {
         try {
             Weblogger roller = WebloggerFactory.getWeblogger();
-            WeblogManager mgr = roller.getWeblogManager();
+            WeblogEntryManager mgr = roller.getWeblogEntryManager();
             WeblogHitCount hitCount = mgr.getHitCountByWeblog(this);
             
             return (hitCount != null) ? hitCount.getDailyHits() : 0;

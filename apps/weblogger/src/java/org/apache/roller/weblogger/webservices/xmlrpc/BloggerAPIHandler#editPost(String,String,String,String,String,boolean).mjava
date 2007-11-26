@@ -26,7 +26,7 @@
                 Timestamp current = new Timestamp(System.currentTimeMillis());
                 
                 Weblogger roller = WebloggerFactory.getWeblogger();
-                WeblogManager weblogMgr = roller.getWeblogManager();
+                WeblogEntryManager weblogMgr = roller.getWeblogEntryManager();
                 WeblogEntry entry = weblogMgr.getWeblogEntry(postid);
                 entry.setText(content);
                 entry.setUpdateTime(current);

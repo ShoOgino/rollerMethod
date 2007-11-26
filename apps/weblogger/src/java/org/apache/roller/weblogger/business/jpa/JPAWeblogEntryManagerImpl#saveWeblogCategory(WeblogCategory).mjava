@@ -1,0 +1,22 @@
+    /**
+     * @inheritDoc
+     */
+    public void saveWeblogCategory(WeblogCategory cat) throws WebloggerException {
+        boolean exists = getWeblogCategory(cat.getId()) != null;
+        if (!exists) {
+            if (isDuplicateWeblogCategoryName(cat)) {
+                throw new WebloggerException("Duplicate category name, cannot save category");
+            }
+            // Newly added object. If it has a parent,
+            // maintain relationship from both sides
+            WeblogCategory parent = cat.getParent();
+            if(parent != null) {
+                parent.getWeblogCategories().add(cat);
+            }
+        }
+        
+        // update weblog last modified date.  date updated by saveWebsite()
+        roller.getWeblogManager().saveWeblog(cat.getWebsite());        
+        this.strategy.store(cat);
+    }
+

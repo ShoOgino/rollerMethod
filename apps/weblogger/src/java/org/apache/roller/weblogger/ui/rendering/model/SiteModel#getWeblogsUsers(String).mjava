@@ -6,10 +6,9 @@
         try {            
             Weblogger roller = WebloggerFactory.getWeblogger();
             UserManager umgr = roller.getUserManager();
-            Weblog website = umgr.getWebsiteByHandle(handle);
-            List perms = umgr.getAllPermissions(website);
-            for (Iterator it = perms.iterator(); it.hasNext();) {
-                WeblogPermission perm = (WeblogPermission) it.next();
+            Weblog website = WebloggerFactory.getWeblogger().getWeblogManager().getWeblogByHandle(handle);
+            List<WeblogPermission> perms = umgr.getWeblogPermissions(website);
+            for (WeblogPermission perm : perms) {
                 results.add(UserWrapper.wrap(perm.getUser()));
             }
         } catch (Exception e) {

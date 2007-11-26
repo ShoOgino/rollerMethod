@@ -21,7 +21,7 @@
             CacheManager.invalidate(entry);
             
             // remove entry itself
-            WeblogManager wmgr = WebloggerFactory.getWeblogger().getWeblogManager();
+            WeblogEntryManager wmgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
             wmgr.removeWeblogEntry(entry);
             WebloggerFactory.getWeblogger().flush();
             

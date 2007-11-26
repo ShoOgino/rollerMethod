@@ -1,9 +1,7 @@
     public long getWeblogCount() {
         long count = 0;
         try {
-            Weblogger roller = WebloggerFactory.getWeblogger();
-            UserManager mgr = roller.getUserManager();
-            count = mgr.getWeblogCount();            
+            count = WebloggerFactory.getWeblogger().getWeblogManager().getWeblogCount();            
         } catch (WebloggerException e) {
             log.error("Error getting weblog count for site", e);
         }

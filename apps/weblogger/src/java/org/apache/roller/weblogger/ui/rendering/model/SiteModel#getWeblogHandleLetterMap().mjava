@@ -6,9 +6,7 @@
     public Map getWeblogHandleLetterMap() {
         Map results = new HashMap();
         try {            
-            Weblogger roller = WebloggerFactory.getWeblogger();
-            UserManager umgr = roller.getUserManager();
-            results = umgr.getWeblogHandleLetterMap();
+            results = WebloggerFactory.getWeblogger().getWeblogManager().getWeblogHandleLetterMap();
         } catch (Exception e) {
             log.error("ERROR: fetching weblog handle letter map", e);
         }

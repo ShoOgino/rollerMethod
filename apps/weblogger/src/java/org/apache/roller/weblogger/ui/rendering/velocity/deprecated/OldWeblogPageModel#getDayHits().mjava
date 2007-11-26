@@ -1,7 +1,7 @@
     /** Encapsulates RefererManager */
     public int getDayHits() {
         try {
-            WeblogHitCount hitCount = mWeblogMgr.getHitCountByWeblog(mWebsite);
+            WeblogHitCount hitCount = mWeblogEntryMgr.getHitCountByWeblog(mWebsite);
             
             return (hitCount != null) ? hitCount.getDailyHits() : 0;
             

@@ -20,10 +20,16 @@
             }
             
             try {
+                boolean hasAdmin = false;
                 UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
+                GlobalPermission adminPerm = 
+                    new GlobalPermission(Collections.singletonList(GlobalPermission.ADMIN));
+                if (mgr.checkPermission(adminPerm, getUser())) {
+                    hasAdmin = true;
+                }  
                 
                 // grant/revoke admin role if needed
-                if (getUser().hasRole("admin") && !getBean().isAdministrator()) {
+                if (hasAdmin && !getBean().isAdministrator()) {
                     
                     if (!isUserEditingSelf()) {
                         // revoke role
@@ -32,18 +38,20 @@
                         addError("userAdmin.cantChangeOwnRole");
                     }
                     
-                } else if(!getUser().hasRole("admin") && getBean().isAdministrator()) {
+                } else if(!hasAdmin && getBean().isAdministrator()) {
                     
                     if (!isUserEditingSelf()) {
                         // grant role
-                        getUser().grantRole("admin");
+                        mgr.grantRole("admin", getUser());
                     } else {
                         addError("userAdmin.cantChangeOwnRole"); 
                     }
                     
                 }
             
-                RollerContext.flushAuthenticationUserCache(getUser().getUserName());
+                if (!isCMA) {
+                    RollerContext.flushAuthenticationUserCache(getUser().getUserName());
+                }
 
                 // save the updated profile
                 mgr.saveUser(getUser());

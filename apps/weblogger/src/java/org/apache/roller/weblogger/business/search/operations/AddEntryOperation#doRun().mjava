@@ -5,7 +5,7 @@
         // the weblog object passed in as a detached object which is proned to
         // lazy initialization problems, so requery for the object now
         try {
-            WeblogManager wMgr = roller.getWeblogManager();
+            WeblogEntryManager wMgr = roller.getWeblogEntryManager();
             this.data = wMgr.getWeblogEntry(this.data.getId());
         } catch (WebloggerException ex) {
             mLogger.error("Error getting weblogentry object", ex);

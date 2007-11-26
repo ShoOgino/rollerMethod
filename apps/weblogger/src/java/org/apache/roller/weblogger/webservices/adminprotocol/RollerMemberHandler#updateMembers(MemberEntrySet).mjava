@@ -1,5 +1,5 @@
     private MemberEntrySet updateMembers(MemberEntrySet c) throws HandlerException {
-        List permissionsDatas= new ArrayList();
+        List<WeblogPermission> permissionsDatas= new ArrayList<WeblogPermission>();
         for (int i = 0; i < c.getEntries().length; i++) {
             MemberEntry entry = (MemberEntry)c.getEntries()[i];
             WeblogPermission pd = getPermissionsData(entry);
@@ -9,6 +9,6 @@
             updatePermissionsData(pd, entry);
             permissionsDatas.add(pd);
         }
-        return toMemberEntrySet((WeblogPermission[])permissionsDatas.toArray(new WeblogPermission[0]));
+        return toMemberEntrySet(permissionsDatas);
     }
 

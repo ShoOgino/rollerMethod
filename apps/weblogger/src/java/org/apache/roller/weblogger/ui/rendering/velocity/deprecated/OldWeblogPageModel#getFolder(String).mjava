@@ -3,7 +3,7 @@
         try {
             return WeblogBookmarkFolderWrapper.wrap(
                     mBookmarkMgr.getFolder(
-                    mUserMgr.getWebsiteByHandle(mWebsite.getHandle()), folderPath));
+                    mWeblogMgr.getWeblogByHandle(mWebsite.getHandle()), folderPath));
         } catch (WebloggerException e) {
             mLogger.error("PageModel getFolder()", e);
         }

@@ -1,8 +1,8 @@
-    private void oneSecondThrottle() {
+    public static void oneSecondThrottle() {
         // Throttle one entry per second per weblog because time-
         // stamp in MySQL and other DBs has only 1 sec resolution
-        try { 
-            synchronized (getClass()) { 
+        if (throttle) try { 
+            synchronized (RollerAtomHandler.class) { 
                 Thread.sleep(1000); 
             }  
         } catch (Exception ignored) {} 

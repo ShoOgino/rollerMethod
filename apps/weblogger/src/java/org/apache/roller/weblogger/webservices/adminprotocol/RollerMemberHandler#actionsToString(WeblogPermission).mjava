@@ -1,0 +1,13 @@
+    private static String actionsToString(WeblogPermission perm) {
+        if (perm.hasAction(WeblogPermission.ADMIN)) {
+            return MemberEntry.Permissions.ADMIN;
+        }
+        if (perm.hasAction(WeblogPermission.POST)) {
+            return MemberEntry.Permissions.AUTHOR;
+        }
+        if (perm.hasAction(WeblogPermission.EDIT_DRAFT)) {
+            return MemberEntry.Permissions.LIMITED;
+        }
+        return null;
+    }
+

@@ -2,7 +2,7 @@
         long count = 0;
         try {
             Weblogger roller = WebloggerFactory.getWeblogger();
-            WeblogManager mgr = roller.getWeblogManager();
+            WeblogEntryManager mgr = roller.getWeblogEntryManager();
             count = mgr.getEntryCount();            
         } catch (WebloggerException e) {
             log.error("Error getting entry count for site", e);

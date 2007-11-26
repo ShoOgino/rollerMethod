@@ -1,6 +1,6 @@
     public void myPrepare() {
         try {
-            WeblogManager wmgr = WebloggerFactory.getWeblogger().getWeblogManager();
+            WeblogEntryManager wmgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
             if(!StringUtils.isEmpty(getCategoryId()) && 
                     !"/".equals(getCategoryId())) {
                 setCategory(wmgr.getWeblogCategory(getCategoryId()));

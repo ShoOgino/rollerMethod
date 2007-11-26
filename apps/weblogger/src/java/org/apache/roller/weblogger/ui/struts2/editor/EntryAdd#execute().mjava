@@ -6,25 +6,35 @@
     @SkipValidation
     public String execute() {
         
-        // if user is an author then post status defaults to PUBLISHED, otherwise PENDING
-        if(getActionWeblog().hasUserPermissions(getAuthenticatedUser(),WeblogPermission.AUTHOR)) {
+        WeblogPermission perm = null;
+        try {
+            // if user is an author then post status defaults to PUBLISHED, otherwise PENDING
+            UserManager umgr = WebloggerFactory.getWeblogger().getUserManager();
+            perm = umgr.getWeblogPermission(getActionWeblog(), getAuthenticatedUser());
+            
+        } catch (WebloggerException ex) {
+            // security interceptor should ensure this never happens
+            log.error("ERROR retrieving user's permission", ex);
+        }
+        
+        if (perm != null && perm.hasAction(WeblogPermission.ADMIN) && perm.hasAction(WeblogPermission.POST)) {
             getBean().setStatus(WeblogEntry.PUBLISHED);
         } else {
             getBean().setStatus(WeblogEntry.PENDING);
         }
-        
+
         // set entry locale based on weblog locale
         getBean().setLocale(getActionWeblog().getLocale());
-        
+
         // set comment defaults
         getBean().setAllowComments(getActionWeblog().getDefaultAllowComments());
         getBean().setCommentDays(new Integer(getActionWeblog().getDefaultCommentDays()));
-        
+
         // apply weblog default plugins
-        if(getActionWeblog().getDefaultPlugins() != null) {
+        if (getActionWeblog().getDefaultPlugins() != null) {
             getBean().setPlugins(StringUtils.split(getActionWeblog().getDefaultPlugins(), ","));
         }
-        
+
         return INPUT;
     }
 

@@ -11,8 +11,8 @@
         if(stylesheet != null) {
             log.debug("custom stylesheet path is - "+stylesheet.getLink());
             try {
-                UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
-                setTemplate(mgr.getPageByLink(getActionWeblog(), stylesheet.getLink()));
+                setTemplate(WebloggerFactory.getWeblogger().getWeblogManager()
+                        .getPageByLink(getActionWeblog(), stylesheet.getLink()));
                 
                 if(getTemplate() == null) {
                     log.debug("custom stylesheet not found, creating it");
@@ -30,7 +30,7 @@
                     stylesheetTmpl.setLastModified(new Date());
                     stylesheetTmpl.setTemplateLanguage(stylesheet.getTemplateLanguage());
                     
-                    mgr.savePage(stylesheetTmpl);
+                    WebloggerFactory.getWeblogger().getWeblogManager().savePage(stylesheetTmpl);
                     WebloggerFactory.getWeblogger().flush();
                     
                     setTemplate(stylesheetTmpl);

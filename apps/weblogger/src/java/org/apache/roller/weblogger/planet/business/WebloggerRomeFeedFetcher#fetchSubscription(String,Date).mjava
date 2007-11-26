@@ -24,8 +24,8 @@
         
         Weblog localWeblog;
         try {
-            UserManager usermgr = WebloggerFactory.getWeblogger().getUserManager();
-            localWeblog = usermgr.getWebsiteByHandle(weblogHandle);
+            localWeblog = WebloggerFactory.getWeblogger().getWeblogManager()
+                    .getWeblogByHandle(weblogHandle);
             if (localWeblog == null) {
                 throw new FetcherException("Local feed - "+feedURL+" no longer exists in weblogger");
             }
@@ -58,7 +58,7 @@
             int entryCount = WebloggerRuntimeConfig.getIntProperty("site.newsfeeds.defaultEntries");
             
             // grab recent entries for this weblog
-            WeblogManager wmgr = WebloggerFactory.getWeblogger().getWeblogManager();
+            WeblogEntryManager wmgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
             List<WeblogEntry> entries = wmgr.getWeblogEntries(
                     localWeblog,
                     null,
