@@ -7,7 +7,7 @@
      * @param sinceDays   Limit to past X days in past (or -1 for no limit)
      * @param length      Max number of results to return
      */   
-    public Pager getWeblogEntriesPager(Weblog queryWeblog, User user, String cat, int sinceDays, int length) {
+    public Pager getWeblogEntriesPager(WeblogWrapper queryWeblog, User user, String cat, int sinceDays, int length) {
         
         String pagerUrl = null;
         if (feedRequest != null) {
@@ -23,7 +23,7 @@
        
         return new WeblogEntriesListPager(
             urlStrategy,
-            pagerUrl, queryWeblog, user, cat,
+            pagerUrl, queryWeblog.getPojo(), user, cat,
             tags,
             weblogRequest.getLocale(),
             sinceDays,
