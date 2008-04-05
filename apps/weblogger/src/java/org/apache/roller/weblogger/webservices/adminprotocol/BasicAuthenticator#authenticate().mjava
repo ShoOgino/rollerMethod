@@ -23,5 +23,11 @@
                 }
             }
         }
+
+        // FIX from Nick Lothian, see 
+        if (getUserName() == null) {
+               throw new UnauthorizedException("ERROR: Could not authorize user");
+        }
+
     }
 
