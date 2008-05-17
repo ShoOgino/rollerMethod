@@ -1,26 +1,35 @@
     public void myValidate() {
         
         // if usingSSO, we don't want to error on empty password/username from HTML form.
-        setFromSS0(false);
+        setFromSso(false);
         boolean usingSSO = WebloggerConfig.getBooleanProperty("users.sso.enabled");
-        if(usingSSO) {
+        if (usingSSO) {
             boolean storePassword = WebloggerConfig.getBooleanProperty("users.sso.passwords.saveInRollerDb");
+            String password = WebloggerConfig.getProperty("users.sso.passwords.defaultValue", "<unknown>");
+            
+            // Preserve username and password, Acegi case             
             User fromSSO = CustomUserRegistry.getUserDetailsFromAuthentication(getServletRequest());
-
-            if(fromSSO != null) {
-                String password = WebloggerConfig.getProperty("users.sso.passwords.defaultValue", "<unknown>");
-                if(storePassword) {
+            if (fromSSO != null) {
+                if (storePassword) {
                     password = fromSSO.getPassword();
                 }
                 getBean().setPasswordText(password);
                 getBean().setPasswordConfirm(password);
                 getBean().setUserName(fromSSO.getUserName());
-                setFromSS0(true);
+                setFromSso(true);
+            }
+
+            // Preserve username and password, CMA case             
+            else if (getServletRequest().getUserPrincipal() != null) {
+                getBean().setUserName(getServletRequest().getUserPrincipal().getName());
+                getBean().setPasswordText(password);
+                getBean().setPasswordConfirm(password);
+                setFromSso(true);
             }
         }
         
         String allowed = WebloggerConfig.getProperty("username.allowedChars");
-        if(allowed == null || allowed.trim().length() == 0) {
+        if (allowed == null || allowed.trim().length() == 0) {
             allowed = DEFAULT_ALLOWED_CHARS;
         }
         
@@ -31,12 +40,12 @@
         }
         
         // check that passwords match
-        if(!getBean().getPasswordText().equals(getBean().getPasswordConfirm())) {
+        if (!getBean().getPasswordText().equals(getBean().getPasswordConfirm())) {
             addError("Register.error.passowordMismatch");
         }
         
         // check that username is not taken
-        if(!StringUtils.isEmpty(getBean().getUserName())) try {
+        if (!StringUtils.isEmpty(getBean().getUserName())) try {
             UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
             if(mgr.getUserByUserName(getBean().getUserName(), null) != null) {
                 addError("error.add.user.userNameInUse");

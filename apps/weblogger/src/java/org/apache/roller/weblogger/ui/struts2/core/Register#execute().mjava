@@ -1,7 +1,7 @@
     @SkipValidation
     public String execute() {
         
-        if(!WebloggerRuntimeConfig.getBooleanProperty("users.registration.enabled")) {
+        if (!WebloggerRuntimeConfig.getBooleanProperty("users.registration.enabled")) {
             return "disabled";
         }
         
@@ -10,15 +10,22 @@
         getBean().setTimeZone(TimeZone.getDefault().getID());
             
         try {
-            // Let's see if there's any user-authentication available from Acegi
-            // and retrieve custom user data to pre-populate form.
-            boolean usingSSO = WebloggerConfig.getBooleanProperty("users.sso.enabled");
-            if(usingSSO) {
-                User fromSSO = CustomUserRegistry.getUserDetailsFromAuthentication(getServletRequest());
 
-                if(fromSSO != null) {
+            boolean usingSSO = WebloggerConfig.getBooleanProperty("users.sso.enabled");
+            if (usingSSO) {
+                // See if user is already logged in via Acegi
+                User fromSSO = CustomUserRegistry.getUserDetailsFromAuthentication(getServletRequest());
+                if (fromSSO != null) {
+                    // Copy user details from Acegi, including LDAP attributes
                     getBean().copyFrom(fromSSO);
-                    setFromSS0(true);
+                    setFromSso(true);
+                }
+                // See if user is already logged in via CMA
+                else if (getServletRequest().getUserPrincipal() != null) {
+                    // Only detail we get is username, sadly no LDAP attributes
+                    getBean().setUserName(getServletRequest().getUserPrincipal().getName());
+                    getBean().setScreenName(getServletRequest().getUserPrincipal().getName());
+                    setFromSso(true);
                 }
             }
             
