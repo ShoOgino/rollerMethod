@@ -1,22 +1,22 @@
     /* (non-Javadoc)
-     * @see org.acegisecurity.providers.ldap.LdapAuthoritiesPopulator#getGrantedAuthorities(org.acegisecurity.userdetails.ldap.LdapUserDetails)
+     * @see org.springframework.security.ldap.LdapAuthoritiesPopulator#getGrantedAuthorities(org.springframework.ldap.core.DirContextOperations, String)
      */
-    public GrantedAuthority[] getGrantedAuthorities(LdapUserDetails userDetails) throws LdapDataAccessException {
+    public GrantedAuthority[] getGrantedAuthorities(DirContextOperations userData, String username) throws LdapDataAccessException {
 
-        User userData = null;
+        User user = null;
         List roles = null;
         try {
             Weblogger roller = WebloggerFactory.getWeblogger();
             UserManager umgr = roller.getUserManager();
-            userData = umgr.getUserByUserName(userDetails.getUsername(), Boolean.TRUE);
-            roles = umgr.getRoles(userData);
+            user = umgr.getUserByUserName(username, Boolean.TRUE);
+            roles = umgr.getRoles(user);
             
         } catch (WebloggerException ex) {
             throw new LdapDataAccessException("ERROR in user lookup", ex);
         }
 
         if (userData == null) {
-            throw new LdapDataAccessException("ERROR no user: " + userDetails.getUsername());
+            throw new LdapDataAccessException("ERROR no user: " + username);
         }
 
         

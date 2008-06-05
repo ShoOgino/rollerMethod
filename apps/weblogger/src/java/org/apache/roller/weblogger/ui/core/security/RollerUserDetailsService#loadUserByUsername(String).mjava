@@ -22,7 +22,7 @@
                 authorities[i++] = new GrantedAuthorityImpl(role);
             }
 
-            return new org.acegisecurity.userdetails.User(userData.getUserName(), userData.getPassword(), true, authorities);
+            return new org.springframework.security.userdetails.User(userData.getUserName(), userData.getPassword(), true, authorities);
             
         } catch (WebloggerException ex) {
             throw new DataAccessResourceFailureException("ERROR: fetching roles", ex);
