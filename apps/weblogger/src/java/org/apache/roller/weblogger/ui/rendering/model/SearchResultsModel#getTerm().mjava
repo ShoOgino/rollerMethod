@@ -1,4 +1,5 @@
     public String getTerm() {
-        return (searchRequest.getQuery() == null) ? "" : searchRequest.getQuery();
+        String query = searchRequest.getQuery();
+        return (query == null) ? "" : StringEscapeUtils.escapeXml(Utilities.escapeHTML(query));
     }
 
