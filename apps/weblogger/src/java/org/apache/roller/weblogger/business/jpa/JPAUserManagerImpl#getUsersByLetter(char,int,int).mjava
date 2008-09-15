@@ -1,5 +1,5 @@
     public List getUsersByLetter(char letter, int offset, int length)
-    throws WebloggerException {
+            throws WebloggerException {
         Query query = strategy.getNamedQuery(
                 "User.getByUserNameOrderByUserName");
         query.setParameter(1, letter + "%");

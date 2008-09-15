@@ -4,10 +4,44 @@
         if (!WebloggerRuntimeConfig.getBooleanProperty("users.registration.enabled")) {
             return "disabled";
         }
+                
+        // For new user default to locale set in browser
+        bean.setLocale(getServletRequest().getLocale().toString());
         
-        // set some defaults
-        getBean().setLocale(Locale.getDefault().toString());
-        getBean().setTimeZone(TimeZone.getDefault().getID());
+        // For new user default to timezone of server
+        bean.setTimeZone(TimeZone.getDefault().getID());
+        
+        /* TODO: when Spring Security 2.1 is release comment out this stuff, 
+         * which pre-populates the user bean with info from OpenID provider.
+         * 
+        Collection attrsCollect = (Collection)WebloggerFactory.getWeblogger()
+                .getUserManager().userAttributes.get(UserAttribute.Attributes.openidUrl.toString());
+        
+        if (attrsCollect != null) {
+            ArrayList attrs = new ArrayList(attrsCollect);
+            for (Iterator it = attrs.iterator(); it.hasNext();) {                
+                OpenIDUserAttribute attr = (OpenIDUserAttribute) it.next();    
+                if (attr.getName().equals(OpenIDUserAttribute.Attributes.country.toString())) {                                        
+                    getBean().setLocale(UIUtils.getLocale(attr.getValue()));
+                }                
+               if (attr.getName().equals(OpenIDUserAttribute.Attributes.email.toString())) {
+                    getBean().setEmailAddress(attr.getValue());
+                }
+                if (attr.getName().equals(OpenIDUserAttribute.Attributes.fullname.toString())) {
+                    getBean().setFullName(attr.getValue());
+                }
+                if (attr.getName().equals(OpenIDUserAttribute.Attributes.nickname.toString())) {
+                    getBean().setUserName(attr.getValue());
+                }
+                if (attr.getName().equals(OpenIDUserAttribute.Attributes.timezone.toString())) {
+                    getBean().setTimeZone(UIUtils.getTimeZone(attr.getValue()));
+                }
+                if (attr.getName().equals(OpenIDUserAttribute.Attributes.openidname.toString())) {
+                    getBean().setOpenidUrl(attr.getValue());
+                }
+                
+            }
+        }*/
             
         try {
 

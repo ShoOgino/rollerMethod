@@ -1,6 +1,6 @@
     public boolean checkPermission(RollerPermission perm, User user) throws WebloggerException {
         RollerPermission existingPerm = null;
-        
+
         // if permission a weblog permission
         if (perm instanceof WeblogPermission) {
             // if user has specified permission in weblog return true
@@ -8,7 +8,7 @@
             try {
                 existingPerm = getWeblogPermission(permToCheck.getWeblog(), user);
             } catch (WebloggerException ignored) {}        
-        }
+            }
         if (existingPerm != null && existingPerm.implies(perm)) return true;  
         
         // user has no existing perm in a weblog, so try his global perms

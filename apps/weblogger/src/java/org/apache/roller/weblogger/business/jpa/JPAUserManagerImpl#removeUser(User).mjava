@@ -1,16 +1,20 @@
     public void removeUser(User user) throws WebloggerException {
-        //remove permissions
-        // make sure that both sides of the relationship are maintained
+        String userName = user.getUserName();
+        
+        // remove permissions, maintaining both sides of relationship
         List<WeblogPermission> perms = getWeblogPermissions(user);
         for (WeblogPermission perm : perms) {
-           
-            //Remove it from database
             this.strategy.remove(perms);
         }
-        
         this.strategy.remove(user);
-        
+
         // remove entry from cache mapping
-        this.userNameToIdMap.remove(user.getUserName());
+        this.userNameToIdMap.remove(userName);
+        
+        // remove all associated attributes
+        List<UserAttribute> atts = getUserAttributes(userName);
+        for (UserAttribute att : atts) {
+            this.strategy.remove(att);
+        }
     }
 

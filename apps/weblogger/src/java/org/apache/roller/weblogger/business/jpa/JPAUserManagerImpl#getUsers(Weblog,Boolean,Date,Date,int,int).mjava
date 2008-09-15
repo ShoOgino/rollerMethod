@@ -3,7 +3,7 @@
             throws WebloggerException {
         Query query = null;
         List results = null;
-        
+
         // if we are doing date range then we must have an end date
         if (startDate != null && endDate == null) {
             endDate = new Date();
@@ -13,14 +13,14 @@
         int size = 0;
         StringBuffer queryString = new StringBuffer();
         StringBuffer whereClause = new StringBuffer();
-                            
+
         if (weblog != null) {
             queryString.append("SELECT u FROM User u JOIN u.permissions p ");
             params.add(size++, weblog);
-            whereClause.append(" WHERE p.website = ?" + size);   
+            whereClause.append(" WHERE p.website = ?" + size);
         } else {
             queryString.append("SELECT u FROM User u ");
-        }         
+        }
 
         if (enabled != null) {
             if (whereClause.length() == 0) {
@@ -29,7 +29,7 @@
                 whereClause.append(" AND ");
             }
             params.add(size++, enabled);
-            whereClause.append("u.enabled = ?" + size);  
+            whereClause.append("u.enabled = ?" + size);
         }
 
         if (startDate != null) {

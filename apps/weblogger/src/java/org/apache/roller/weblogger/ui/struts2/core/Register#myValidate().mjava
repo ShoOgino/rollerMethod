@@ -39,7 +39,15 @@
             addError("error.add.user.badUserName");
         }
         
-        // check that passwords match
+        // check password, it is required if OpenID and SSO are disabled
+        if (getOpenIdConfiguration().equals("disabled") && !getFromSso()) {
+            if (StringUtils.isEmpty(getBean().getPasswordText())) {            
+                addError("error.add.user.passwordEmpty");
+                return;
+            }
+        }
+        
+        // check that passwords match 
         if (!getBean().getPasswordText().equals(getBean().getPasswordConfirm())) {
             addError("Register.error.passowordMismatch");
         }
@@ -47,7 +55,7 @@
         // check that username is not taken
         if (!StringUtils.isEmpty(getBean().getUserName())) try {
             UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
-            if(mgr.getUserByUserName(getBean().getUserName(), null) != null) {
+            if (mgr.getUserByUserName(getBean().getUserName(), null) != null) {
                 addError("error.add.user.userNameInUse");
                 // reset user name
                 getBean().setUserName(null);

@@ -56,6 +56,17 @@
             
             // save new user
             mgr.addUser(ud);
+            
+            String openidurl = getBean().getOpenIdUrl();
+            if (openidurl != null) {
+                if (openidurl.endsWith("/")) {
+                    openidurl = openidurl.substring(0, openidurl.length() - 1);
+                }
+                mgr.setUserAttribute(
+                    ud.getUserName(), UserAttribute.Attributes.OPENID_URL.toString(),
+                    openidurl);
+            }
+            
             WebloggerFactory.getWeblogger().flush();
             
             // now send activation email if necessary

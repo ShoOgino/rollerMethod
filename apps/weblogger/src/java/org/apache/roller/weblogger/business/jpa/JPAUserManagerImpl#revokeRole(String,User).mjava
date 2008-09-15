@@ -5,7 +5,7 @@
         try {
             UserRole role = (UserRole)q.getSingleResult();
             this.strategy.remove(role);
-            
+
         } catch (NoResultException e) {
             throw new WebloggerException("ERROR: removing role", e);
         }

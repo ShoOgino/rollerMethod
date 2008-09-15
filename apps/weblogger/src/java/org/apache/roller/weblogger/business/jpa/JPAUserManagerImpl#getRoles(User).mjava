@@ -1,7 +1,7 @@
     /**
      * Get all of user's roles.
      */
-    public List<String> getRoles(User user) throws WebloggerException { 
+    public List<String> getRoles(User user) throws WebloggerException {
         Query q = strategy.getNamedQuery("UserRole.getByUserName");
         q.setParameter(1, user.getUserName());
         List roles = q.getResultList();
@@ -10,6 +10,7 @@
             UserRole userRole = (UserRole)it.next();
             roleNames.add(userRole.getRole());
         }
+
         return roleNames;
     }
 
