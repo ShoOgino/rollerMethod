@@ -10,7 +10,8 @@
         }
             
         FileManager fmgr = WebloggerFactory.getWeblogger().getFileManager();
-        
+
+        RollerMessages errors = new RollerMessages();
         List<String> uploaded = new ArrayList();
         File[] uploads = getUploadedFiles();
         if (uploads != null && uploads.length > 0) {
@@ -42,14 +43,17 @@
                 if(getPath() != null && getPath().trim().length() > 0) {
                     fileName = getPath() + "/" + fileName;
                 }
-                
+
+                if (!fmgr.canSave(getActionWeblog(), fileName, getUploadedFilesContentType()[i], uploads[i].length(), errors)) {
+                    continue;
+                }
                 
                 try {
                     fmgr.saveFile(getActionWeblog(), 
                             fileName,
                             getUploadedFilesContentType()[i],
                             uploads[i].length(),
-                            new FileInputStream(uploads[i]));
+                            new FileInputStream(uploads[i]), true);
                     
                     uploaded.add(fileName);
                     
@@ -70,10 +74,15 @@
             }
         }
         
+        for (Iterator it = errors.getErrors(); it.hasNext();) {
+            RollerMessage msg = (RollerMessage)it.next();
+            addError(msg.getKey(), Arrays.asList(msg.getArgs()));
+        }
+
         if(uploaded.size() > 0) {
             addMessage("uploadFiles.uploadedFiles");
-            
-            for(String upload : uploaded) {
+
+            for (String upload : uploaded) {
                 addMessage("uploadFiles.uploadedFile",
                         WebloggerFactory.getWeblogger().getUrlStrategy().getWeblogResourceURL(getActionWeblog(), upload, true));
             }
