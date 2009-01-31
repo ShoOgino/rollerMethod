@@ -1,0 +1,32 @@
+    /**
+     * Save a media file.
+     * 
+     * @return String The result of the action.
+     */
+    public String save() {
+    	myValidate();
+    	if (!hasActionErrors()) {
+    		MediaFileManager manager = WebloggerFactory.getWeblogger().getMediaFileManager();
+    		try {
+    			MediaFile mediaFile = new MediaFile();
+    			bean.copyTo(mediaFile);
+    			mediaFile.setDirectory(getDirectory());
+    			mediaFile.setLength(this.uploadedFile.length());
+    			mediaFile.setInputStream(new FileInputStream(this.uploadedFile));
+    			mediaFile.setContentType(this.uploadedFileContentType);
+				manager.createMediaFile(getActionWeblog(), mediaFile);
+	            WebloggerFactory.getWeblogger().flush();
+	            bean.setId(mediaFile.getId());
+	    		return SUCCESS;
+            } catch (FileIOException ex) {
+                addError("uploadFiles.error.upload", bean.getName());
+			} catch (Exception e) {
+	            log.error("Error saving new entry", e);
+                // TODO: i18n
+                addError("Error reading uploaded file - " + bean.getName());
+			}
+			
+    	}
+		return INPUT;
+    }
+

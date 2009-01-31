@@ -1,0 +1,43 @@
+    /**
+     * Test directory creation
+     */
+    @Test
+    public void testCreateMediaFileDirectory() throws Exception {
+        User testUser = null;
+        Weblog testWeblog = null;
+        
+    	// TODO: Setup code, to be moved to setUp method.
+    	System.out.println("Before setting up weblogger");
+        // setup weblogger
+        TestUtils.setupWeblogger();
+        try {
+            testUser = TestUtils.setupUser("mediaFileTestUser");
+            testWeblog = TestUtils.setupWeblog("mediaFileTestWeblog", testUser);
+            TestUtils.endSession(true);
+        } catch (Exception ex) {
+            log.error(ex);
+            throw new Exception("Test setup failed", ex);
+        }
+
+        /**
+         * Real test starts here.
+         */
+        MediaFileManager mfMgr = WebloggerFactory.getWeblogger().getMediaFileManager();
+        
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
+        MediaFileDirectory directory = new MediaFileDirectory(null, "root", "root d", testWeblog);
+        mfMgr.createMediaFileDirectory(directory);
+        assertEquals("/", directory.getPath());
+        assertNotNull(directory.getId() != null);
+        System.out.println("The directory id is " + directory.getId());
+        TestUtils.endSession(true);
+        
+        MediaFileDirectory directoryById = mfMgr.getMediaFileDirectory(directory.getId());
+        assertEquals(directory, directoryById);
+        
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
+        MediaFileDirectory rootDirectory = mfMgr.getMediaFileRootDirectory(testWeblog);
+        assertEquals(directory, rootDirectory);
+
+    }
+

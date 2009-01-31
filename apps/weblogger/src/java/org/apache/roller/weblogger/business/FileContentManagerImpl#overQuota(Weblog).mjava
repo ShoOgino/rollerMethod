@@ -1,0 +1,24 @@
+    /**
+     * @see org.apache.roller.weblogger.model.FileContentManager#overQuota(weblog)
+     */
+    public boolean overQuota(Weblog weblog) {
+        
+        String maxDir = WebloggerRuntimeConfig.getProperty("uploads.dir.maxsize");
+        String maxFile = WebloggerRuntimeConfig.getProperty("uploads.file.maxsize");
+        BigDecimal maxDirSize = new BigDecimal(maxDir); // in megabytes
+        BigDecimal maxFileSize = new BigDecimal(maxFile); // in megabytes
+        
+        long maxDirBytes = (long)(1024000 * maxDirSize.doubleValue());
+        
+        try {
+            File uploadsDir = this.getRealFile(weblog, null);
+            long weblogDirSize = this.getDirSize(uploadsDir, true);
+            
+            return weblogDirSize > maxDirBytes;
+        } catch (Exception ex) {
+            // shouldn't ever happen, this means user's uploads dir is bad
+            // rethrow as a runtime exception
+            throw new RuntimeException(ex);
+        }
+    }
+

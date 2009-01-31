@@ -1,0 +1,11 @@
+	/*
+	 * Set of tags for this media file
+	 * 
+     * @hibernate.collection-key column="media_file_id"
+     * @hibernate.collection-one-to-many class="org.apache.roller.weblogger.pojos.MediaFileTag"
+     * @hibernate.set lazy="true" inverse="true" cascade="delete" 
+	 */
+	public Set<MediaFileTag> getTags() {
+		return tags;
+	}
+

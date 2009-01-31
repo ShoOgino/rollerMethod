@@ -1,0 +1,10 @@
+	public MediaFile getMediaFile(String id, boolean includeContent) throws WebloggerException {
+		MediaFile mediaFile = (MediaFile) this.persistenceStrategy.load(MediaFile.class, id);
+		if (includeContent) {
+	        FileContentManager cmgr = WebloggerFactory.getWeblogger().getFileContentManager();
+	        FileContent content = cmgr.getFileContent(mediaFile.getDirectory().getWeblog(), id);
+	        mediaFile.setContent(content);
+		}
+        return mediaFile;
+	}
+

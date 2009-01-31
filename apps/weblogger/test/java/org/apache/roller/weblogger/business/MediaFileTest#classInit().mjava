@@ -1,0 +1,14 @@
+    @BeforeClass
+    public static void classInit() throws Exception {
+    	if ("eclipse".equals(runtimeEnv)) {
+        	startDatabase();
+        	initDatabase();
+    	}
+    	else {
+    		if ("true".equalsIgnoreCase(System.getProperty("debug-enabled"))) {
+        		System.out.println("Sleeping for 5 seconds, you might want to start your debugger");
+        		Thread.sleep(5000);
+    		}
+    	}
+    }
+

@@ -1,0 +1,32 @@
+    public static void initDatabase() throws Exception {
+    	
+    	Properties props = new Properties();
+    	props.load(new FileInputStream("C:/Ganesh/edu/Project/sources/roller-svn/apps/weblogger/build.properties"));
+
+    	SQLExec sqlTask1 = new SQLExec();
+    	sqlTask1.setDriver(props.getProperty("test.db.driver"));
+    	sqlTask1.setUrl(props.getProperty("test.db.url"));
+    	sqlTask1.setUserid(props.getProperty("test.db.username"));
+    	sqlTask1.setPassword(props.getProperty("test.db.password"));
+    	sqlTask1.setSrc(new File("C:/Ganesh/edu/Project/sources/roller-svn/apps/weblogger/build/webapp/WEB-INF/classes/dbscripts/droptables.sql"));
+    	SQLExec.OnError onError1 = new SQLExec.OnError();
+    	onError1.setValue("continue");
+    	sqlTask1.setOnerror(onError1);
+    	//sqlTask1.setClasspath(new Path());
+    	sqlTask1.setProject(new Project());
+    	sqlTask1.execute();
+    	
+    	SQLExec sqlTask2 = new SQLExec();
+    	sqlTask2.setDriver(props.getProperty("test.db.driver"));
+    	sqlTask2.setUrl(props.getProperty("test.db.url"));
+    	sqlTask2.setUserid(props.getProperty("test.db.username"));
+    	sqlTask2.setPassword(props.getProperty("test.db.password"));
+    	sqlTask2.setSrc(new File("C:/Ganesh/edu/Project/sources/roller-svn/apps/weblogger/build/webapp/WEB-INF/classes/dbscripts/derby/createdb.sql"));
+    	SQLExec.OnError onError2 = new SQLExec.OnError();
+    	onError2.setValue("continue");
+    	sqlTask2.setOnerror(onError2);
+    	//sqlTask2.setClasspath(new Path());
+    	sqlTask2.setProject(new Project());
+    	sqlTask2.execute();
+    }
+

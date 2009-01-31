@@ -1,0 +1,14 @@
+    public void myValidate() {
+        if (getDirectory().hasMediaFile(getBean().getName())) {
+            addError("MediaFile.error.duplicateName", getBean().getName());
+        }
+        // make sure uploads are enabled
+        if(!WebloggerRuntimeConfig.getBooleanProperty("uploads.enabled")) {
+            addError("error.upload.disabled");
+        }
+        
+        if (StringUtils.isEmpty(this.uploadedFileFileName)) {
+        	addError("error.upload.file");
+        }
+    }
+
