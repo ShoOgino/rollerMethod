@@ -2,6 +2,7 @@
      * Save global properties.
      */
     public String save() {
+        if (!"POST".equals(httpMethod)) return ERROR;
         
         // only set values for properties that are already defined
         String propName = null;
