@@ -1,0 +1,73 @@
+	public List<MediaFile> searchMediaFiles(Weblog weblog, MediaFileFilter filter) 
+	     throws WebloggerException {
+        
+		List<Object> params = new ArrayList<Object>();
+        int size = 0;
+        StringBuffer queryString = new StringBuffer();
+        StringBuffer whereClause = new StringBuffer();
+        StringBuffer orderBy = new StringBuffer();
+        
+        queryString.append("SELECT m FROM MediaFile m WHERE ");
+        
+        params.add(size ++, weblog);
+        whereClause.append("m.directory.weblog = ?" + size);
+        
+        if (!StringUtils.isEmpty(filter.getName())) {
+        	params.add(size ++, filter.getName());
+        	whereClause.append(" AND m.name = ?" + size);
+        }
+
+        if (filter.getSize() > 0) {
+        	params.add(size ++, filter.getSize());
+        	whereClause.append(" AND m.length ");
+        	switch (filter.getSizeFilterType()) {
+            	case GT: whereClause.append(">");break;
+            	case GTE: whereClause.append(">=");break;
+            	case EQ: whereClause.append("=");break;
+        	    case LT: whereClause.append("<");break;
+        	    case LTE: whereClause.append("<=");break;
+        	    default: whereClause.append("=");break;
+        	}
+        	whereClause.append(" ?" + size);
+        }
+        
+        if (filter.getTags() != null) {
+        	whereClause.append(" AND EXISTS (SELECT t FROM MediaFileTag t WHERE t.mediaFile = m and t.name IN (");
+        	for (String tag: filter.getTags()) {
+        	    params.add(size ++, tag);
+        	    whereClause.append("?").append(size).append(",");
+        	}
+        	whereClause.deleteCharAt(whereClause.lastIndexOf(","));
+        	whereClause.append("))");
+        }
+        
+        if (filter.getType() != null) {
+        	whereClause.append(" AND m.contentType IN (");
+    		for (String contentType: filter.getType().getContentTypes()) {
+        	    params.add(size ++, contentType);
+        	    whereClause.append("?").append(size).append(",");
+    		}
+        	whereClause.deleteCharAt(whereClause.lastIndexOf(","));
+        	whereClause.append(")");
+        }
+        
+        switch(filter.getOrder()) {
+            case NAME: orderBy.append(" order by m.name");break;
+            case DATE_UPLOADED: orderBy.append(" order by m.dateUploaded");break;
+            case TYPE: orderBy.append(" order by m.contentType");break;
+            default:
+        }
+
+        Query query = persistenceStrategy.getDynamicQuery(queryString.toString() + whereClause.toString());
+        for (int i=0; i<params.size(); i++) {
+            query.setParameter(i+1, params.get(i));
+        }
+        
+        if (filter.getStartIndex() >= 0) {
+            query.setFirstResult(filter.getStartIndex());
+            query.setMaxResults(filter.getLength());
+        }
+        
+        return query.getResultList();
+	}
+

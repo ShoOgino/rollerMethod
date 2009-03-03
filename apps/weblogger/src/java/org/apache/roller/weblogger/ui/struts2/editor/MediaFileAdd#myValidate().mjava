@@ -10,5 +10,13 @@
         if (StringUtils.isEmpty(this.uploadedFileFileName)) {
         	addError("error.upload.file");
         }
-    }
+        
+        if (getBean().getCopyrightText().length() > 1023) {
+        	addError("errors.maxlength", Arrays.asList("Copyright text", "1023"));
+        }
+
+        if (getBean().getDescription().length() > 255) {
+        	addError("errors.maxlength", Arrays.asList("File description", "255"));
+        }
+}
 

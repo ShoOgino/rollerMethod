@@ -1,0 +1,31 @@
+    public String createDirByPath() {
+    	boolean dirCreated = false;
+		if (StringUtils.isEmpty(this.newDirectoryPath)) {
+			addError("mediaFile.error.search.dirPathEmpty");
+		}
+		else if (!this.newDirectoryPath.startsWith("/")) {
+			addError("mediaFile.error.search.dirPathInvalid");
+		}
+		else {
+	    	try {
+				log.debug("Creating directory by path - " + this.newDirectoryPath);
+				MediaFileManager manager = WebloggerFactory.getWeblogger().getMediaFileManager();
+				manager.createMediaFileDirectoryByPath(getActionWeblog(), this.newDirectoryPath);
+				// flush changes
+				WebloggerFactory.getWeblogger().flush();
+				addMessage("mediaFile.directoryCreate.success");
+				dirCreated = true;
+			} catch (WebloggerException e) {
+	            log.error("Error creating new directory by path", e);
+	            // TODO: i18n
+	            addError("Error creating new directory by path");
+			}
+		}
+        
+		if (dirCreated) {
+			// Refresh list of directories so the newly created directory is included.
+			refreshAllDirectories();
+		}
+    	return search();
+    }
+

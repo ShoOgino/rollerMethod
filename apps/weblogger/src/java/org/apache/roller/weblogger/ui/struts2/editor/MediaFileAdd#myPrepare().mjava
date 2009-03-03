@@ -1,7 +1,8 @@
     public void myPrepare() {
-        try {
+        System.out.println("Into myprepare");
+    	refreshAllDirectories();
+    	try {
             MediaFileManager mgr = WebloggerFactory.getWeblogger().getMediaFileManager();
-            setAllDirectories(mgr.getMediaFileDirectories(getActionWeblog()));
             if(!StringUtils.isEmpty(getDirectoryId())) {
                 setDirectory(mgr.getMediaFileDirectory(getDirectoryId()));
             }

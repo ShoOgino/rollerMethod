@@ -1,0 +1,7 @@
+    public void myValidate() {
+    	MediaFile fileWithSameName = getDirectory().getMediaFile(getBean().getName());
+        if (fileWithSameName != null && !fileWithSameName.getId().equals(this.mediaFileId)) {
+            addError("MediaFile.error.duplicateName", getBean().getName());
+        }
+    }
+

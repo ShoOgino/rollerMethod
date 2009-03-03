@@ -5,6 +5,14 @@
      */
     public void testCanSave() throws Exception {
         
+        try {
+            testUser = TestUtils.setupUser("FCMTest_userName2");
+            testWeblog = TestUtils.setupWeblog("FCMTest_handle2", testUser);
+            TestUtils.endSession(true);
+        } catch (Exception ex) {
+            log.error(ex);
+        }
+
         FileContentManager fmgr = WebloggerFactory.getWeblogger().getFileContentManager();
         PropertiesManager pmgr = WebloggerFactory.getWeblogger().getPropertiesManager();
         Map config = config = pmgr.getProperties();
