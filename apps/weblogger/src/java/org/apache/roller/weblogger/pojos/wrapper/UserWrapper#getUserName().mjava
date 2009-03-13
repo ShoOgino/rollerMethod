@@ -3,6 +3,9 @@
      * username to be displayed publicly, so screen name is returned instead.
      */
     public String getUserName() {
-        return this.pojo.getScreenName();
+        if (WebloggerConfig.getBooleanProperty("user.privateUserNames")) {
+            return this.pojo.getScreenName();
+        }
+        return this.pojo.getUserName();
     }
 
