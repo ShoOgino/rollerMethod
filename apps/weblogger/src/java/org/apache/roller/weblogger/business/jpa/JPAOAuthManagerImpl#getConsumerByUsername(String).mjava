@@ -1,0 +1,22 @@
+    public OAuthConsumer getConsumerByUsername(String username) throws WebloggerException {
+        OAuthConsumerRecord record = null;
+        try {
+            Query q = strategy.getNamedQuery("OAuthConsumerRecord.getByUsername");
+            q.setParameter(1, username);
+            record = (OAuthConsumerRecord)q.getSingleResult();
+
+        } catch (Throwable ex) {
+            log.debug("ERROR fetching consumer", ex);
+        }
+        if (record != null) {
+            OAuthConsumer consumer = new OAuthConsumer(
+                null,
+                record.getConsumerKey(),
+                record.getConsumerSecret(),
+                getServiceProvider());
+            consumer.setProperty("userName", record.getUserName());
+            return consumer;
+        }
+        return null;
+    }
+

@@ -1,5 +1,11 @@
     /** Absolute URL of Roller, e.g. http://localhost:8080/roller */
     public String getAbsoluteSite() {
-        return WebloggerRuntimeConfig.getAbsoluteContextURL();
+        String weblogAbsoluteURL =
+            WebloggerConfig.getProperty("weblog.absoluteurl." + weblog.getHandle());
+        if (weblogAbsoluteURL != null) {
+            return weblogAbsoluteURL;
+        } else {
+            return WebloggerRuntimeConfig.getAbsoluteContextURL();
+        }
     }
 

@@ -1,0 +1,9 @@
+    public void handleException(Exception e, HttpServletRequest request,
+            HttpServletResponse response, boolean sendBody)
+            throws IOException, ServletException {
+        log.debug("ERROR authorizing token", e);
+        String realm = (request.isSecure())?"https://":"http://";
+        realm += request.getLocalName();
+        OAuthServlet.handleException(response, e, realm, sendBody);
+    }
+

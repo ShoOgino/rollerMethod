@@ -1,10 +1,14 @@
-    /** 
+    /**
      * @roller.wrapPojoMethod type="simple"
      */
     public String getAbsoluteURL() {
-        // TODO: ATLAS reconcile entry.getPermaLink() with new URLs
-        String relPath = WebloggerRuntimeConfig.getAbsoluteContextURL();
-        return relPath + "/" + getHandle();
-        //return URLUtilities.getWeblogURL(this, null, true);
+        String weblogAbsoluteURL =
+            WebloggerConfig.getProperty("weblog.absoluteurl." + getHandle());
+        if (weblogAbsoluteURL != null) {
+            return weblogAbsoluteURL + "/" + getHandle();
+        } else {
+            String relPath = WebloggerRuntimeConfig.getAbsoluteContextURL();
+            return relPath + "/" + getHandle();
+        }
     }
 

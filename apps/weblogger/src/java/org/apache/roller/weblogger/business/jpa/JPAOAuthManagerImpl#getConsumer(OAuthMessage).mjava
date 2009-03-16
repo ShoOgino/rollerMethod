@@ -1,0 +1,18 @@
+    public OAuthConsumer getConsumer(
+            OAuthMessage requestMessage)
+            throws IOException, OAuthProblemException {
+
+        OAuthConsumer consumer = null;
+        // try to load from local cache if not throw exception
+        String consumer_key = requestMessage.getConsumerKey();
+
+        consumer = getConsumerByKey(consumer_key);
+
+        if(consumer == null) {
+            OAuthProblemException problem = new OAuthProblemException("token_rejected");
+            throw problem;
+        }
+
+        return consumer;
+    }
+
