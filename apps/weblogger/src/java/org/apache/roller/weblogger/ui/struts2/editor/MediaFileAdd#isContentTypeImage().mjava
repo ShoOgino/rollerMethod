@@ -1,10 +1,6 @@
     public boolean isContentTypeImage() {
-    	String[] allowedImageContentTypes = MediaFileType.IMAGE.getContentTypes(); 
-    	for (String imageContentType: allowedImageContentTypes) {
-    		if (imageContentType.equals(this.uploadedFileContentType)) {
-    			return true;
-    		}
-    	}
-    	return false;
+		if (this.uploadedFileContentType == null) return false;
+		return (this.uploadedFileContentType.toLowerCase().startsWith(
+				MediaFileType.IMAGE.getContentTypePrefix().toLowerCase()));
     }
 

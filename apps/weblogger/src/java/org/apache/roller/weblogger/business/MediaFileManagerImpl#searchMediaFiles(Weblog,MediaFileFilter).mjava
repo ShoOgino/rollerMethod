@@ -47,13 +47,18 @@
         }
         
         if (filter.getType() != null) {
-        	whereClause.append(" AND m.contentType IN (");
-    		for (String contentType: filter.getType().getContentTypes()) {
-        	    params.add(size ++, contentType);
-        	    whereClause.append("?").append(size).append(",");
-    		}
-        	whereClause.deleteCharAt(whereClause.lastIndexOf(","));
-        	whereClause.append(")");
+        	if (filter.getType() == MediaFileType.OTHERS) {
+        		for (MediaFileType type: MediaFileType.values()) {
+        			if (type != MediaFileType.OTHERS) {
+                    	params.add(size ++, type.getContentTypePrefix() + "%");
+                    	whereClause.append(" AND m.contentType not like ?" + size);
+        			}
+        		}
+        	}
+        	else {
+            	params.add(size ++, filter.getType().getContentTypePrefix() + "%");
+            	whereClause.append(" AND m.contentType like ?" + size);
+        	}
         }
         
         switch(filter.getOrder()) {
