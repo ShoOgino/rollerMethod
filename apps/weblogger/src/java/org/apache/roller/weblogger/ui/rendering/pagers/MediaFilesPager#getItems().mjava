@@ -1,0 +1,33 @@
+    public List<MediaFile> getItems() {
+        
+        if (this.mediaFiles == null) {
+            // calculate offset
+            int offset = getPage() * length;
+            
+            List<MediaFile> results = new ArrayList<MediaFile>();
+            
+            Date startDate = null;
+            if(sinceDays > 0) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(new Date());
+                cal.add(Calendar.DATE, -1 * sinceDays);
+                startDate = cal.getTime();
+            }
+            
+            try {
+                Weblogger roller = WebloggerFactory.getWeblogger();
+                MediaFileManager mgr = roller.getMediaFileManager();
+                MediaFileFilter fileFilter = new MediaFileFilter();
+                fileFilter.setStartIndex(offset);
+                fileFilter.setLength(length + 1);
+                fileFilter.setOrder(MediaFileOrder.DATE_UPLOADED);
+                results = mgr.searchMediaFiles(weblog, fileFilter);
+            } catch (Exception e) {
+                log.error("ERROR: fetching comment list", e);
+            }
+            this.mediaFiles = results;
+        }
+        
+        return this.mediaFiles;
+    }
+
