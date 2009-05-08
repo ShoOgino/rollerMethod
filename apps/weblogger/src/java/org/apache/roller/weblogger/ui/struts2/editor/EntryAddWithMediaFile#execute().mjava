@@ -7,7 +7,7 @@
     public String execute() {
     	MediaFileManager manager = WebloggerFactory.getWeblogger().getMediaFileManager();
 		try {
-			MediaFile mediaFile = manager.getMediaFile(this.mediaFileId);
+			MediaFile mediaFile = manager.getMediaFile(getMediaFileId());
 			String link;
 			if (mediaFile.isImageFile()) {
 				link = "<img src='<url>' alt='<name>' width='<width>' height='<height>' />";

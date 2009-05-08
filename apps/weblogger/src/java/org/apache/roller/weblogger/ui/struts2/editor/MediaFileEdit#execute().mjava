@@ -7,7 +7,7 @@
     public String execute() {
 		MediaFileManager manager = WebloggerFactory.getWeblogger().getMediaFileManager();
 		try {
-			MediaFile mediaFile = manager.getMediaFile(this.mediaFileId);
+			MediaFile mediaFile = manager.getMediaFile(getMediaFileId());
 			this.bean.copyFrom(mediaFile);
         } catch (FileIOException ex) {
             addError("uploadFiles.error.upload", bean.getName());

@@ -8,7 +8,7 @@
     	if (!hasActionErrors()) {
     		MediaFileManager manager = WebloggerFactory.getWeblogger().getMediaFileManager();
     		try {
-    			MediaFile mediaFile = manager.getMediaFile(this.mediaFileId);
+    			MediaFile mediaFile = manager.getMediaFile(getMediaFileId());
     			bean.copyTo(mediaFile);
 				manager.updateMediaFile(getActionWeblog(), mediaFile);
 	            WebloggerFactory.getWeblogger().flush();

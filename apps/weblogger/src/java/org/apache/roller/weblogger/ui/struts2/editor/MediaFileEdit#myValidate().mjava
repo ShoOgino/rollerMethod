@@ -1,6 +1,9 @@
+    /**
+     * Validates media file metadata to be updated.
+     */
     public void myValidate() {
     	MediaFile fileWithSameName = getDirectory().getMediaFile(getBean().getName());
-        if (fileWithSameName != null && !fileWithSameName.getId().equals(this.mediaFileId)) {
+        if (fileWithSameName != null && !fileWithSameName.getId().equals(getMediaFileId())) {
             addError("MediaFile.error.duplicateName", getBean().getName());
         }
     }

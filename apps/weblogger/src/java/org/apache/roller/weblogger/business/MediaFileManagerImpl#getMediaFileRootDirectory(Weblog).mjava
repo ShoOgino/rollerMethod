@@ -1,5 +1,8 @@
+	/**
+	 * {@inheritDoc}
+	 */
 	public MediaFileDirectory getMediaFileRootDirectory(Weblog weblog) 
-    throws WebloggerException {
+      throws WebloggerException {
         Query q = this.persistenceStrategy.getNamedQuery("MediaFileDirectory.getByWeblogAndNoParent");
         q.setParameter(1, weblog);
         try {
