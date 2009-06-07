@@ -1,0 +1,37 @@
+    /**
+     * @see org.apache.roller.weblogger.model.FileContentManager#saveFileContent(weblog, java.lang.String, 
+     * java.lang.String, java.io.InputStream, boolean)
+     */
+    public void saveFileContent(Weblog weblog, 
+                         String fileId, 
+                         InputStream is)
+            throws FileNotFoundException, FilePathException, FileIOException {
+        
+        // make sure uploads area exists for this weblog
+        File dirPath = this.getRealFile(weblog, null);
+        
+        // create File that we are about to save
+        File saveFile = new File(dirPath.getAbsolutePath() + File.separator + fileId);
+        
+        byte[] buffer = new byte[8192];
+        int bytesRead = 0;
+        OutputStream bos = null;
+        try {
+            bos = new FileOutputStream(saveFile);
+            while ((bytesRead = is.read(buffer, 0, 8192)) != -1) {
+                bos.write(buffer, 0, bytesRead);
+            }
+            
+            log.debug("The file has been written to ["+saveFile.getAbsolutePath()+"]");
+        } catch (Exception e) {
+            throw new FileIOException("ERROR uploading file", e);
+        } finally {
+            try {
+                bos.flush();
+                bos.close();
+            } catch (Exception ignored) {}
+        }
+        
+        
+    }
+

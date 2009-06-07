@@ -1,0 +1,22 @@
+    /**
+     * Show form for adding a new media file.
+     * 
+     * @return String The result of the action.
+     */
+    @SkipValidation
+    public String execute() {
+		MediaFileManager manager = WebloggerFactory.getWeblogger().getMediaFileManager();
+		try {
+			MediaFile mediaFile = manager.getMediaFile(getMediaFileId());
+			this.bean.copyFrom(mediaFile);
+        } catch (FileIOException ex) {
+            addError("uploadFiles.error.upload", bean.getName());
+		} catch (Exception e) {
+            log.error("Error saving new entry", e);
+            // TODO: i18n
+            addError("Error reading uploaded file - " + bean.getName());
+		}
+
+		return INPUT;
+    }
+

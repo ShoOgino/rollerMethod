@@ -1,0 +1,74 @@
+    /**
+     * Test moving files across directories.
+     */
+    public void testMoveDirectoryContents() throws Exception {
+        User testUser = null;
+        Weblog testWeblog = null;
+        testUser = TestUtils.setupUser("mediaFileTestUser11");
+        testWeblog = TestUtils.setupWeblog("mediaFileTestUser11", testUser);
+        
+        MediaFileManager mfMgr = WebloggerFactory.getWeblogger().getMediaFileManager();
+
+        MediaFileDirectory rootDirectory = new MediaFileDirectory(null, "root", "root d", testWeblog);
+        mfMgr.createMediaFileDirectory(rootDirectory);
+
+        MediaFileDirectory directory1 = new MediaFileDirectory(rootDirectory, "dir1", "directory 1", testWeblog);
+        mfMgr.createMediaFileDirectory(directory1);
+        String dir1Id = directory1.getId();
+
+        MediaFileDirectory directory2 = new MediaFileDirectory(rootDirectory, "dir2", "directory 2", testWeblog);
+        mfMgr.createMediaFileDirectory(directory2);
+
+        MediaFileDirectory directory3 = new MediaFileDirectory(rootDirectory, "dir3", "directory 3", testWeblog);
+        mfMgr.createMediaFileDirectory(directory3);
+        
+        
+        MediaFile mediaFile = new MediaFile();
+        mediaFile.setDirectory(rootDirectory);
+        mediaFile.setName("test7_1.jpg");
+        mediaFile.setDescription("This is a test image 7.1");
+        mediaFile.setCopyrightText("test 7.1 copyright text");
+        mediaFile.setSharedForGallery(false);
+        mediaFile.setLength(4000);
+        mediaFile.setInputStream(getClass().getResourceAsStream("/test7.jpg"));
+        mediaFile.setContentType("image/jpeg");
+        mfMgr.createMediaFile(testWeblog, mediaFile);
+
+        MediaFile mediaFile2 = new MediaFile();
+        mediaFile2.setDirectory(rootDirectory);
+        mediaFile2.setName("test7_2.jpg");
+        mediaFile2.setDescription("This is a test image 7.2");
+        mediaFile2.setCopyrightText("test 7.2 copyright text");
+        mediaFile2.setSharedForGallery(true);
+        mediaFile2.setLength(4000);
+        mediaFile2.setInputStream(getClass().getResourceAsStream("/test7.jpg"));
+        mediaFile2.setContentType("image/jpeg");
+        mfMgr.createMediaFile(testWeblog, mediaFile2);
+        
+        TestUtils.endSession(true);
+
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
+        rootDirectory = mfMgr.getMediaFileDirectory(rootDirectory.getId());
+        
+        Set<MediaFile> mediaFiles = rootDirectory.getMediaFiles();
+        assertEquals(2, mediaFiles.size());
+        assertTrue(containsFileWithName(mediaFiles, "test7_1.jpg"));
+        assertTrue(containsFileWithName(mediaFiles, "test7_2.jpg"));
+        
+        MediaFileDirectory targetDirectory = mfMgr.getMediaFileDirectory(dir1Id);
+        mfMgr.moveMediaFiles(mediaFiles, targetDirectory);
+        TestUtils.endSession(true);
+        
+        rootDirectory = mfMgr.getMediaFileDirectory(rootDirectory.getId());
+        targetDirectory = mfMgr.getMediaFileDirectory(dir1Id);
+        
+        mediaFiles = targetDirectory.getMediaFiles();
+        assertEquals(2, mediaFiles.size());
+        assertTrue(containsFileWithName(mediaFiles, "test7_1.jpg"));
+        assertTrue(containsFileWithName(mediaFiles, "test7_2.jpg"));
+
+        mediaFiles = rootDirectory.getMediaFiles();
+        assertEquals(0, mediaFiles.size());
+        
+    }
+

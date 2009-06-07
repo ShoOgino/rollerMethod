@@ -1,0 +1,15 @@
+    /**
+     * @see org.apache.roller.weblogger.model.FileContentManager#deleteFile(weblog, java.lang.String)
+     */
+    public void deleteFile(Weblog weblog, String fileId) 
+            throws FileNotFoundException, FilePathException, FileIOException {
+        
+        // get path to delete file, checks that path exists and is readable
+        File delFile = this.getRealFile(weblog, fileId);
+        
+        if(!delFile.delete()) {
+            throw new FileIOException("Delete failed for ["+fileId+"], "+
+                    "possibly a non-empty directory?");
+        }
+    }
+

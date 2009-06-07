@@ -1,0 +1,15 @@
+    /**
+     * Get a reference to the content of a specific file in a weblog's uploads area.
+     * 
+     * This method always returns a valid file content object or will throw an exception
+     * if the specificed path doesn't exist, or can't be read.
+     * 
+     * @param weblog The weblog we are working on.
+     * @param fileId file identifier from database.
+     *
+     * @throws FileNotFoundException If path does not exist.
+     * @throws FilePathException If path is invalid, or can't be read.
+     */
+    public FileContent getFileContent(Weblog weblog, String fileId) 
+    throws FileNotFoundException, FilePathException;
+

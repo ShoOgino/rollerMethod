@@ -1,0 +1,14 @@
+	/**
+	 * Returns input stream for the underlying file in the file system.
+	 * @return
+	 */
+	public InputStream getInputStream() {
+		if (is != null) {
+			return is;
+		}
+		else if (content != null ){
+			return content.getInputStream();
+		}
+		return null;
+	}
+

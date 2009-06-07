@@ -1,0 +1,20 @@
+    /**
+     * Deletes media file
+     */
+    protected void doDeleteMediaFile() {
+        
+    	try {
+			log.debug("Processing delete of file id - " + this.mediaFileId);
+			MediaFileManager manager = WebloggerFactory.getWeblogger().getMediaFileManager();
+			MediaFile mediaFile = manager.getMediaFile(this.mediaFileId);
+			manager.removeMediaFile(getActionWeblog(), mediaFile);
+			// flush changes
+			WebloggerFactory.getWeblogger().flush();
+			addMessage("mediaFile.delete.success");
+		} catch (WebloggerException e) {
+            log.error("Error deleting media file", e);
+            // TODO: i18n
+            addError("Error deleting media file - " + this.mediaFileId);
+		}
+    }
+

@@ -1,0 +1,55 @@
+    /**
+     * Fetches and displays list of media file for the given directory.
+     * The directory could be chosen by ID or path.
+     * 
+     * @return String The result of the action.
+     */
+    @SkipValidation
+    public String execute() {
+		MediaFileManager manager = WebloggerFactory.getWeblogger().getMediaFileManager();
+		try {
+			MediaFileDirectory directory;
+			if (this.directoryId != null) {
+				directory = manager.getMediaFileDirectory(this.directoryId);
+			}
+			else if (this.directoryPath != null){
+				directory = manager.getMediaFileDirectoryByPath(getActionWeblog(), this.directoryPath);
+				this.directoryId = directory.getId();
+			}
+			else {
+				directory = manager.getMediaFileRootDirectory(getActionWeblog());
+				this.directoryId = directory.getId();
+			}
+
+			this.childDirectories = new ArrayList<MediaFileDirectory>();
+			this.childDirectories.addAll(directory.getChildDirectories());
+			
+			this.childFiles = new ArrayList<MediaFile>();
+			this.childFiles.addAll(directory.getMediaFiles());
+			
+			if (!StringUtils.isEmpty(this.sortBy)) {
+				if ("name".equals(sortBy)) {
+					Collections.sort(this.childDirectories, new MediaFileDirectoryComparator(DirectoryComparatorType.NAME));
+					Collections.sort(this.childFiles, new MediaFileComparator(MediaFileComparatorType.NAME));
+				}
+				else if ("type".equals(sortBy)) {
+					Collections.sort(this.childFiles, new MediaFileComparator(MediaFileComparatorType.TYPE));
+				}
+				else if ("date_uploaded".equals(sortBy)) {
+					Collections.sort(this.childFiles, new MediaFileComparator(MediaFileComparatorType.DATE_UPLOADED));
+				}
+			}
+			
+			this.currentDirectory = directory;
+			
+    		return SUCCESS;
+        } catch (FileIOException ex) {
+        	log.error("Error viewing media file directory ", ex);
+            addError("MediaFile.error.view");
+		} catch (Exception e) {
+            log.error("Error viewing media file directory ", e);
+            addError("MediaFile.error.view");
+		}
+		return SUCCESS;
+    }
+

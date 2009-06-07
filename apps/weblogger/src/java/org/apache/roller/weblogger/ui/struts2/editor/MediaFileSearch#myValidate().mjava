@@ -1,0 +1,14 @@
+    /**
+     * Validates search input
+     */
+    public boolean myValidate() {
+        if (StringUtils.isEmpty(bean.getName())
+        	&& StringUtils.isEmpty(bean.getTags())
+        	&& StringUtils.isEmpty(bean.getType())
+        	&& bean.getSize() == 0) {
+        	addError("MediaFile.error.search.empty");
+        	return false;
+        }
+        return true;
+    }
+

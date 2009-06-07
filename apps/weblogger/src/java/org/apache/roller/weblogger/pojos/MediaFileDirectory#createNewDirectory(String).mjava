@@ -1,0 +1,12 @@
+    /**
+     * Creates a new sub-directory
+     * 
+     * @param name new directory name
+     * @return reference to the newly created directory.
+     */
+    public MediaFileDirectory createNewDirectory(String name) {
+    	MediaFileDirectory newDirectory = new MediaFileDirectory(this, name, "", this.getWeblog());
+    	this.getChildDirectories().add(newDirectory);
+    	return newDirectory;
+    }
+
