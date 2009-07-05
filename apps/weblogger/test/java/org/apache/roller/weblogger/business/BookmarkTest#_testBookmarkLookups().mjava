@@ -1,7 +1,7 @@
     /**
      * Test all bookmark lookup methods.
      */
-    public void testBookmarkLookups() throws Exception {
+    public void _testBookmarkLookups() throws Exception {
         
         BookmarkManager bmgr = getRoller().getBookmarkManager();
         
@@ -16,6 +16,11 @@
         WeblogBookmarkFolder f3 = new WeblogBookmarkFolder(root, "f3", null, TestUtils.getManagedWebsite(testWeblog));
         bmgr.saveFolder(f3);
         
+        TestUtils.endSession(true);
+        
+        f1 = bmgr.getFolder(f1.getId());              
+        f2 = bmgr.getFolder(f2.getId());              
+
         // add some bookmarks
         WeblogBookmark b1 = new WeblogBookmark(
                 f1, "b1", "testbookmark",

@@ -49,11 +49,13 @@
         bookmarkb = (WeblogBookmark)testFolder.getBookmarks().iterator().next();
         
         // Remove one bookmark
-        bmgr.removeBookmark(bookmarka);
+        bmgr.removeBookmark(bookmarka);        
+        bmgr.removeBookmark(bookmarkb);        
         bmgr.saveFolder(testFolder);
         TestUtils.endSession(true);
-        
+                
         // Folder should now contain one bookmark
+        assertNull(bmgr.getBookmark(bookmarka.getId()));
         testFolder = bmgr.getFolder(folder.getId());
         assertEquals(1, testFolder.getBookmarks().size());
         

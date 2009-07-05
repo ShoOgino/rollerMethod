@@ -5,7 +5,7 @@
             TestUtils.teardownUser(testUser.getUserName());
             TestUtils.endSession(true);
         } catch (Exception ex) {
-            log.error(ex);
+            log.error("ERROR in test teardown", ex);
             throw new Exception("Test teardown failed", ex);
         }
     }
