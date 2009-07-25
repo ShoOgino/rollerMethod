@@ -5,14 +5,15 @@
      * @return true if the file is present in the directory, false otherwise.
      */
     public boolean hasMediaFile(String name) {
-    	Set<MediaFile> fileSet = this.getMediaFiles();
-    	if (fileSet == null) 
-    		return false;
-    	for (MediaFile mediaFile: fileSet) {
-    		if (mediaFile.getName().equals(name)) {
-    			return true;
-    		}
-    	}
-    	return false;
+        Set<MediaFile> fileSet = this.getMediaFiles();
+        if (fileSet == null) {
+            return false;
+        }
+        for (MediaFile mediaFile : fileSet) {
+            if (mediaFile.getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
     }
 

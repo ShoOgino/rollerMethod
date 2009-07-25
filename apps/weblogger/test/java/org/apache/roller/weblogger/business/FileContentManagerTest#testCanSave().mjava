@@ -4,7 +4,7 @@
      * This should test all conditions where a save should fail.
      */
     public void testCanSave() throws Exception {
-        
+
         try {
             testUser = TestUtils.setupUser("FCMTest_userName2");
             testWeblog = TestUtils.setupWeblog("FCMTest_handle2", testUser);
@@ -16,41 +16,45 @@
         FileContentManager fmgr = WebloggerFactory.getWeblogger().getFileContentManager();
         PropertiesManager pmgr = WebloggerFactory.getWeblogger().getPropertiesManager();
         Map config = config = pmgr.getProperties();
-        ((RuntimeConfigProperty)config.get("uploads.dir.maxsize")).setValue("1.00");
-        ((RuntimeConfigProperty)config.get("uploads.types.forbid")).setValue("");
-        ((RuntimeConfigProperty)config.get("uploads.types.allowed")).setValue("");
-        ((RuntimeConfigProperty)config.get("uploads.enabled")).setValue("true");
+        ((RuntimeConfigProperty) config.get("uploads.dir.maxsize")).setValue("1.00");
+        ((RuntimeConfigProperty) config.get("uploads.types.forbid")).setValue("");
+        ((RuntimeConfigProperty) config.get("uploads.types.allowed")).setValue("");
+        ((RuntimeConfigProperty) config.get("uploads.enabled")).setValue("true");
         pmgr.saveProperties(config);
         TestUtils.endSession(true);
-        
+
         config = pmgr.getProperties();
-        ((RuntimeConfigProperty)config.get("uploads.dir.maxsize")).setValue("1.00");
+        ((RuntimeConfigProperty) config.get("uploads.dir.maxsize")).setValue("1.00");
         pmgr.saveProperties(config);
         TestUtils.endSession(true);
-        
+
         RollerMessages msgs = new RollerMessages();
         boolean canSave = fmgr.canSave(testWeblog, "test.gif", "text/plain", 2500000, msgs);
         assertFalse(canSave);
-        
+
         config = pmgr.getProperties();
-        ((RuntimeConfigProperty)config.get("uploads.types.forbid")).setValue("gif");
+        ((RuntimeConfigProperty) config.get("uploads.types.forbid")).setValue("gif");
         pmgr.saveProperties(config);
         TestUtils.endSession(true);
-        
+
         // forbidden types check should fail
-    	msgs = new RollerMessages();
-    	fmgr.canSave(testWeblog, "test.gif", "text/plain", 10, msgs);
+        msgs = new RollerMessages();
+        fmgr.canSave(testWeblog, "test.gif", "text/plain", 10, msgs);
         assertFalse(canSave);
-        
-        
+
+
         config = pmgr.getProperties();
-        ((RuntimeConfigProperty)config.get("uploads.enabled")).setValue("false");
+        ((RuntimeConfigProperty) config.get("uploads.enabled")).setValue("false");
         pmgr.saveProperties(config);
         TestUtils.endSession(true);
-        
+
         // uploads disabled should fail
-    	msgs = new RollerMessages();
-    	fmgr.canSave(testWeblog, "test.gif", "text/plain", 10, msgs);
+        msgs = new RollerMessages();
+        fmgr.canSave(testWeblog, "test.gif", "text/plain", 10, msgs);
         assertFalse(canSave);
+
+        TestUtils.endSession(true);
+        TestUtils.teardownWeblog(testWeblog.getId());
+        TestUtils.teardownUser(testUser.getUserName());
     }
 

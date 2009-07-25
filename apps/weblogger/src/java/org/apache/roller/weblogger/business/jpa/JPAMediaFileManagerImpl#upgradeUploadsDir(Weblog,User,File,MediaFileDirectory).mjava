@@ -1,0 +1,73 @@
+    private void upgradeUploadsDir(Weblog weblog, User user, File oldDir, MediaFileDirectory newDir) {
+        log.debug("Upgrading dir: " + oldDir.getAbsolutePath());
+        if (newDir == null) {
+            log.error("newDir cannot be null");
+            return;
+        }
+
+        // loop through files and directories
+        File[] files = oldDir.listFiles();
+        for (int i=0; i<files.length; i++) {
+
+            // a directory: go recursive
+            if (files[i].isDirectory()) {
+
+                if (newDir.hasDirectory(files[i].getName())) {
+                    // already have a mediafile directory for that
+                    upgradeUploadsDir(weblog, user, files[i],
+                        newDir.getChildDirectory(files[i].getName()));
+
+                } else {
+                    // need to create a new mediafile directory
+                    MediaFileDirectory subDir = null;
+                    try {
+                        subDir = newDir.createNewDirectory(files[i].getName());
+                        roller.getMediaFileManager().createMediaFileDirectory(subDir);
+                        roller.flush();
+
+                    } catch (WebloggerException ex) {
+                        log.error("ERROR creating directory: "
+                            + newDir.getPath() + "/" + files[i].getName());
+                    }
+                    upgradeUploadsDir(weblog, user, files[i], subDir);
+                }
+
+            } else { // a file: create a database record for it
+
+                log.debug("    Upgrade file: " + files[i].getAbsolutePath());
+                MediaFile mf = new MediaFile();
+                try {
+                    mf.setName(files[i].getName());
+                    mf.setDescription(files[i].getName());
+
+                    mf.setDateUploaded(new Timestamp(files[i].lastModified()));
+                    mf.setLastUpdated(new Timestamp(files[i].lastModified()));
+
+                    mf.setDirectory(newDir);
+                    mf.setCreatorUserName(user.getUserName());
+                    mf.setSharedForGallery(Boolean.FALSE);
+
+                    mf.setLength(files[i].length());
+                    mf.setInputStream(new FileInputStream(files[i]));
+                    mf.setContentType(Utilities.getContentTypeFromFileName(files[i].getName()));
+
+                    this.roller.getMediaFileManager().createMediaFile(weblog, mf);
+
+                } catch (WebloggerException ex) {
+                    log.error("ERROR writing file to new storage system: "
+                            + files[i].getAbsolutePath(), ex);
+                    
+                } catch (java.io.FileNotFoundException ex) {
+                    log.error("ERROR reading file from old storage system: "
+                            + files[i].getAbsolutePath(), ex);
+                }
+            }
+        }
+
+        try { // flush changes to this directory
+            roller.flush();
+        } catch (WebloggerException ex) {
+            log.error("ERROR flushing changes to dir: " + newDir.getPath(), ex);
+        }
+    }
+

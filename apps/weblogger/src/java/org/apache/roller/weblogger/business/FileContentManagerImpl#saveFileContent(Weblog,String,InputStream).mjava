@@ -20,8 +20,7 @@
             bos = new FileOutputStream(saveFile);
             while ((bytesRead = is.read(buffer, 0, 8192)) != -1) {
                 bos.write(buffer, 0, bytesRead);
-            }
-            
+            }            
             log.debug("The file has been written to ["+saveFile.getAbsolutePath()+"]");
         } catch (Exception e) {
             throw new FileIOException("ERROR uploading file", e);

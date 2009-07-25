@@ -96,5 +96,9 @@
         catch (WebloggerException e) {
         	assertTrue(true);
         }
+
+        TestUtils.endSession(true);
+        TestUtils.teardownWeblog(testWeblog.getId());
+        TestUtils.teardownUser(testUser.getUserName());
     }
 

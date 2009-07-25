@@ -1,13 +1,13 @@
-	/**
-	 * {@inheritDoc}
-	 */
-	public MediaFileDirectory getMediaFileDirectoryByPath(Weblog weblog, String path) 
-      throws WebloggerException {
+    /**
+     * {@inheritDoc}
+     */
+    public MediaFileDirectory getMediaFileDirectoryByPath(Weblog weblog, String path)
+            throws WebloggerException {
         Query q = this.persistenceStrategy.getNamedQuery("MediaFileDirectory.getByWeblogAndPath");
         q.setParameter(1, weblog);
         q.setParameter(2, path);
         try {
-            return (MediaFileDirectory)q.getSingleResult();
+            return (MediaFileDirectory) q.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }

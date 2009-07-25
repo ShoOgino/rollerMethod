@@ -25,7 +25,7 @@
         mediaFile.setSharedForGallery(true);
         mediaFile.setLength(2000);
         mediaFile.setDirectory(rootDirectory);
-        mediaFile.setInputStream(getClass().getResourceAsStream("/test.jpg"));
+        mediaFile.setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
         mediaFile.setContentType("image/jpeg");
         
         MediaFileTag tag1 = new MediaFileTag("work", mediaFile);
@@ -47,7 +47,7 @@
         mediaFile1.setSharedForGallery(true);
         mediaFile1.setLength(3000);
         mediaFile1.setDirectory(rootDirectory);
-        mediaFile1.setInputStream(getClass().getResourceAsStream("/test.jpg"));
+        mediaFile1.setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
         mediaFile1.setContentType("image/jpeg");
         
         MediaFileTag tag2 = new MediaFileTag("home", mediaFile1);
@@ -69,7 +69,7 @@
         mediaFile2.setSharedForGallery(true);
         mediaFile2.setLength(4000);
         mediaFile2.setDirectory(rootDirectory);
-        mediaFile2.setInputStream(getClass().getResourceAsStream("/test.jpg"));
+        mediaFile2.setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
         mediaFile2.setContentType("image/jpeg");
         
         MediaFileTag tag3 = new MediaFileTag("home", mediaFile2);
@@ -168,5 +168,9 @@
         searchResults = mfMgr.searchMediaFiles(testWeblog, filter12);
         assertFalse(searchResults.isEmpty());
         assertEquals(2, searchResults.size());
+
+        TestUtils.endSession(true);
+        TestUtils.teardownWeblog(testWeblog.getId());
+        TestUtils.teardownUser(testUser.getUserName());
     }
 

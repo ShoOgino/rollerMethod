@@ -25,7 +25,7 @@
         mediaFile.setLength(3000);
         mediaFile.setDirectory(rootDirectory);
         mediaFile.setContentType("image/jpeg");
-        mediaFile.setInputStream(getClass().getResourceAsStream("/test4.jpg"));
+        mediaFile.setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
         
         MediaFileTag tag1 = new MediaFileTag("tst4work", mediaFile);
         MediaFileTag tag2 = new MediaFileTag("tst4home", mediaFile);
@@ -53,5 +53,9 @@
         MediaFile mediaFile2 = mfMgr.getMediaFile(id);
         assertNull(mediaFile2);
     	
+
+        TestUtils.endSession(true);
+        TestUtils.teardownWeblog(testWeblog.getId());
+        TestUtils.teardownUser(testUser.getUserName());
     }
 

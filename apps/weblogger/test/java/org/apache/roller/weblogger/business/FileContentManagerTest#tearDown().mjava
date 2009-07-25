@@ -1,20 +1,10 @@
     public void tearDown() throws Exception {
-        
-        /*
-    	try {
-            TestUtils.teardownWeblog(testWeblog.getId());
-            TestUtils.teardownUser(testUser.getUserName());
-            TestUtils.endSession(true);
-        } catch (Exception ex) {
-            log.error(ex);
-        }
-        */
         PropertiesManager pmgr = WebloggerFactory.getWeblogger().getPropertiesManager();
         Map config = config = pmgr.getProperties();
-        ((RuntimeConfigProperty)config.get("uploads.dir.maxsize")).setValue("30000");
-        ((RuntimeConfigProperty)config.get("uploads.types.forbid")).setValue("");
-        ((RuntimeConfigProperty)config.get("uploads.types.allowed")).setValue("");
-        ((RuntimeConfigProperty)config.get("uploads.enabled")).setValue("true");
+        ((RuntimeConfigProperty) config.get("uploads.dir.maxsize")).setValue("30000");
+        ((RuntimeConfigProperty) config.get("uploads.types.forbid")).setValue("");
+        ((RuntimeConfigProperty) config.get("uploads.types.allowed")).setValue("");
+        ((RuntimeConfigProperty) config.get("uploads.enabled")).setValue("true");
         pmgr.saveProperties(config);
         TestUtils.endSession(true);
     }

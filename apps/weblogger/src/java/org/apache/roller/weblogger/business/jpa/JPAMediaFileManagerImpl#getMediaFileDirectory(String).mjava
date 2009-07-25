@@ -1,0 +1,8 @@
+    /**
+     * {@inheritDoc}
+     */
+    public MediaFileDirectory getMediaFileDirectory(String id)
+            throws WebloggerException {
+        return (MediaFileDirectory) this.persistenceStrategy.load(MediaFileDirectory.class, id);
+    }
+

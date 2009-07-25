@@ -37,5 +37,8 @@
         MediaFileDirectory rootDirectory = mfMgr.getMediaFileRootDirectory(testWeblog);
         assertEquals(directory, rootDirectory);
 
+        TestUtils.endSession(true);
+        TestUtils.teardownWeblog(testWeblog.getId());
+        TestUtils.teardownUser(testUser.getUserName());
     }
 

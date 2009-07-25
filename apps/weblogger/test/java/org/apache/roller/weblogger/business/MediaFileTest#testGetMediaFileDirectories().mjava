@@ -29,5 +29,9 @@
         assertTrue(containsPath(directories, "/dir2"));
         assertTrue(containsPath(directories, "/dir3"));
         
+
+        TestUtils.endSession(true);
+        TestUtils.teardownWeblog(testWeblog.getId());
+        TestUtils.teardownUser(testUser.getUserName());
     }
 

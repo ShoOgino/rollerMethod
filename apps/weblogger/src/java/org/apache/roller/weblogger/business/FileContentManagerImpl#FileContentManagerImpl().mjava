@@ -2,16 +2,18 @@
      * Create file content manager.
      */
     public FileContentManagerImpl() {
-        String uploaddir = WebloggerConfig.getProperty("uploads.dir");
+        
+        String storagedir = WebloggerConfig.getProperty("mediafiles.storage.dir");
         
         // Note: System property expansion is now handled by WebloggerConfig.
         
-        if(uploaddir == null || uploaddir.trim().length() < 1)
-            uploaddir = System.getProperty("user.home") + File.separator+"roller_data"+File.separator+"uploads";
+        if (storagedir == null || storagedir.trim().length() < 1)
+            storagedir = System.getProperty("user.home")
+                + File.separator+"roller_data"+File.separator+"mediafiles";
         
-        if( ! uploaddir.endsWith(File.separator))
-            uploaddir += File.separator;
+        if (! storagedir.endsWith(File.separator))
+            storagedir += File.separator;
         
-        this.upload_dir = uploaddir.replace('/',File.separatorChar);
+        this.storage_dir = storagedir.replace('/',File.separatorChar);
     }
 

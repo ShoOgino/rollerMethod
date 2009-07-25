@@ -25,7 +25,7 @@
         mediaFile.setSharedForGallery(true);
         mediaFile.setLength(2000);
         mediaFile.setDirectory(rootDirectory);
-        mediaFile.setInputStream(getClass().getResourceAsStream("/test.jpg"));
+        mediaFile.setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
         mediaFile.setContentType("image/jpeg");
         
         MediaFileTag tag1 = new MediaFileTag("work", mediaFile);
@@ -47,5 +47,9 @@
         assertEquals("test copyright text", mediaFile1.getCopyrightText());
         assertTrue(mediaFile1.isSharedForGallery());
         assertEquals(2000, mediaFile1.getLength());
+
+        TestUtils.endSession(true);
+        TestUtils.teardownWeblog(testWeblog.getId());
+        TestUtils.teardownUser(testUser.getUserName());
     }
 

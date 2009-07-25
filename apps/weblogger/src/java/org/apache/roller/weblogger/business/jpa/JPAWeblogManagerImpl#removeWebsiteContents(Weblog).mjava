@@ -9,6 +9,7 @@
         WeblogManager      wmgr = roller.getWeblogManager();
         WeblogEntryManager emgr = roller.getWeblogEntryManager();
         BookmarkManager    bmgr = roller.getBookmarkManager();
+        MediaFileManager   mmgr = roller.getMediaFileManager();
         
         // remove tags
         Query tagQuery = strategy.getNamedQuery("WeblogEntryTag.getByWeblog");
@@ -87,6 +88,13 @@
         WeblogBookmarkFolder rootFolder = bmgr.getRootFolder(website);
         if (null != rootFolder) {
             this.strategy.remove(rootFolder);
+        }
+        this.strategy.flush();
+
+        // remove mediafile metadata
+        List<MediaFileDirectory> dirs = mmgr.getMediaFileDirectories(website);
+        for (MediaFileDirectory dir : dirs) {
+            this.strategy.remove(dir);
         }
         this.strategy.flush();
 

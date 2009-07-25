@@ -11,8 +11,8 @@
         long maxDirBytes = (long)(1024000 * maxDirSize.doubleValue());
         
         try {
-            File uploadsDir = this.getRealFile(weblog, null);
-            long weblogDirSize = this.getDirSize(uploadsDir, true);
+            File storageDir = this.getRealFile(weblog, null);
+            long weblogDirSize = this.getDirSize(storageDir, true);
             
             return weblogDirSize > maxDirBytes;
         } catch (Exception ex) {

@@ -25,7 +25,7 @@
             mediaFile.setSharedForGallery(true);
             mediaFile.setLength(2000);
             mediaFile.setDirectory(rootDirectory);
-            mediaFile.setInputStream(getClass().getResourceAsStream("/test.jpg"));
+            mediaFile.setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
             mediaFile.setContentType(contentTypes[i]);
             mfMgr.createMediaFile(testWeblog, mediaFile);
             assertNotNull(mediaFile.getId());
@@ -66,5 +66,9 @@
         assertEquals("test_file0.jpg", searchResults3.get(0).getName());
         assertEquals("test_file1.jpg", searchResults3.get(1).getName());
         assertEquals("test_file2.jpg", searchResults3.get(2).getName());
+
+        TestUtils.endSession(true);
+        TestUtils.teardownWeblog(testWeblog.getId());
+        TestUtils.teardownUser(testUser.getUserName());
     }
 

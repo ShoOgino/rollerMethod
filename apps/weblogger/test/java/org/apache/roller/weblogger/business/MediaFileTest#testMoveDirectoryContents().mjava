@@ -30,7 +30,7 @@
         mediaFile.setCopyrightText("test 7.1 copyright text");
         mediaFile.setSharedForGallery(false);
         mediaFile.setLength(4000);
-        mediaFile.setInputStream(getClass().getResourceAsStream("/test7.jpg"));
+        mediaFile.setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
         mediaFile.setContentType("image/jpeg");
         mfMgr.createMediaFile(testWeblog, mediaFile);
 
@@ -41,7 +41,7 @@
         mediaFile2.setCopyrightText("test 7.2 copyright text");
         mediaFile2.setSharedForGallery(true);
         mediaFile2.setLength(4000);
-        mediaFile2.setInputStream(getClass().getResourceAsStream("/test7.jpg"));
+        mediaFile2.setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
         mediaFile2.setContentType("image/jpeg");
         mfMgr.createMediaFile(testWeblog, mediaFile2);
         
@@ -70,5 +70,9 @@
         mediaFiles = rootDirectory.getMediaFiles();
         assertEquals(0, mediaFiles.size());
         
+
+        TestUtils.endSession(true);
+        TestUtils.teardownWeblog(testWeblog.getId());
+        TestUtils.teardownUser(testUser.getUserName());
     }
 

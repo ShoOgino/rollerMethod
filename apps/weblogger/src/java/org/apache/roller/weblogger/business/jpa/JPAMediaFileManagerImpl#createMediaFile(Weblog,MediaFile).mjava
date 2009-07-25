@@ -1,8 +1,8 @@
-	/**
-	 * {@inheritDoc}
-	 */
-	public void createMediaFile(Weblog weblog, MediaFile mediaFile) throws WebloggerException {
-		
+    /**
+     * {@inheritDoc}
+     */
+    public void createMediaFile(Weblog weblog, MediaFile mediaFile) throws WebloggerException {
+
         FileContentManager cmgr = WebloggerFactory.getWeblogger().getFileContentManager();
         RollerMessages msgs = new RollerMessages();
         if (!cmgr.canSave(weblog, mediaFile.getName(), mediaFile.getContentType(), mediaFile.getLength(), msgs)) {
@@ -11,10 +11,10 @@
 
         mediaFile.setDateUploaded(new Timestamp(System.currentTimeMillis()));
         mediaFile.setLastUpdated(mediaFile.getDateUploaded());
-		persistenceStrategy.store(mediaFile);
+        persistenceStrategy.store(mediaFile);
         // update weblog last modified date.  date updated by saveWeblog()
         roller.getWeblogManager().saveWeblog(weblog);
-        
+
         cmgr.saveFileContent(weblog, mediaFile.getId(), mediaFile.getInputStream());
-	}
+    }
 

@@ -1,8 +1,8 @@
-	/**
-	 * {@inheritDoc}
-	 */
-	public void removeMediaFile(Weblog weblog, MediaFile mediaFile) 
-	    throws WebloggerException {
+    /**
+     * {@inheritDoc}
+     */
+    public void removeMediaFile(Weblog weblog, MediaFile mediaFile)
+            throws WebloggerException {
         FileContentManager cmgr = WebloggerFactory.getWeblogger().getFileContentManager();
 
         this.persistenceStrategy.remove(mediaFile);
@@ -11,9 +11,8 @@
 
         try {
             cmgr.deleteFile(weblog, mediaFile.getId());
-        }
-        catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             log.debug("File to be deleted already unavailable in the file store");
         }
-	}
+    }
 

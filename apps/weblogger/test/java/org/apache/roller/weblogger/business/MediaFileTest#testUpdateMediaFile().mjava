@@ -24,7 +24,7 @@
         mediaFile.setSharedForGallery(false);
         mediaFile.setLength(3000);
         mediaFile.setDirectory(rootDirectory);
-        mediaFile.setInputStream(getClass().getResourceAsStream("/test5.jpg"));
+        mediaFile.setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
         mediaFile.setContentType("image/jpeg");
         
         
@@ -59,5 +59,9 @@
         assertTrue(mediaFile2.isSharedForGallery());
         assertNotNull(mediaFile2.getTags());
         assertEquals(2, mediaFile2.getTags().size());
+
+        TestUtils.endSession(true);
+        TestUtils.teardownWeblog(testWeblog.getId());
+        TestUtils.teardownUser(testUser.getUserName());
     }
 
