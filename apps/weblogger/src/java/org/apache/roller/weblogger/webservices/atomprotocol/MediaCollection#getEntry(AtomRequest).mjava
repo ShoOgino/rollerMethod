@@ -6,11 +6,13 @@
             filePath = filePath.substring(0, filePath.length() - ".media-link".length());
             String handle = pathInfo[0];
             Weblog website = roller.getWeblogManager().getWeblogByHandle(handle);
-            ThemeResource resource = roller.getFileManager().getFile(website, filePath);
+
+            MediaFileManager fileMgr = roller.getMediaFileManager();
+            MediaFile mf = fileMgr.getMediaFileByPath(website, filePath);
 
             log.debug("Exiting");
-            if (resource != null) {
-                return createAtomResourceEntry(website, resource);
+            if (mf != null) {
+                return createAtomResourceEntry(website, mf);
             }
             
         } catch (WebloggerException ex) {

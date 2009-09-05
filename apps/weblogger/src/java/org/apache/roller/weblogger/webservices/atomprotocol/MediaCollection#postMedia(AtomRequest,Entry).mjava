@@ -14,7 +14,7 @@
             // authenticated client posted a weblog entry
             File tempFile = null;
             String handle = pathInfo[0];
-            FileManager fmgr = roller.getFileManager();
+            MediaFileManager fileMgr = roller.getMediaFileManager();
             Weblog website = WebloggerFactory.getWeblogger().getWeblogManager().getWeblogByHandle(handle);
             if (!RollerAtomHandler.canEdit(user, website)) {
                 throw new AtomNotAuthorizedException("Not authorized to edit weblog: " + handle);
@@ -31,16 +31,33 @@
                                         
                     // Parse pathinfo to determine file path
                     String path = filePathFromPathInfo(pathInfo);
-                    
+                    String justPath = path.substring(path.lastIndexOf("/"));
+                    String justName = path.substring(0, path.lastIndexOf("/"));
+                    MediaFileDirectory mdir =
+                        fileMgr.getMediaFileDirectoryByPath(website, justPath);
+
+                    if (mdir.hasMediaFile(fileName)) {
+                        throw new AtomException("Duplicate file name");
+                    }
+
                     if (path.length() > 0) path = path + File.separator;
-                    FileInputStream fis = new FileInputStream(tempFile);  
-                    fmgr.saveFile(website, path + fileName, contentType, tempFile.length(), fis);
+                    FileInputStream fis = new FileInputStream(tempFile);
+
+                    MediaFile mf = new MediaFile();
+                    mf.setDirectory(mdir);
+                    mf.setName(fileName);
+                    mf.setOriginalPath(justPath);
+                    mf.setContentType(contentType);
+                    mf.setInputStream(fis);
+                    mf.setLength(tempFile.length());
+
+                    fileMgr.createMediaFile(website, mf);
+                    roller.flush();
+                    
                     fis.close();
-                    
-                    ThemeResource resource = fmgr.getFile(website, path + fileName);
-                    
-                    
-                    Entry mediaEntry = createAtomResourceEntry(website, resource);
+                                      
+                    MediaFile stored = fileMgr.getMediaFile(mf.getId());
+                    Entry mediaEntry = createAtomResourceEntry(website, stored);
                     for (Iterator it = mediaEntry.getOtherLinks().iterator(); it.hasNext();) {
                         Link link = (Link)it.next();
                         if ("edit".equals(link.getRel())) {
@@ -53,9 +70,6 @@
                 } catch (FileIOException fie) {
                     throw new AtomException(
                         "File upload disabled, over-quota or other error", fie);
-                } catch (Exception e) {
-                    throw new AtomException(
-                        "Unexpected error during file upload", e);
                 } finally {
                     if (tempFile != null) tempFile.delete();
                 }

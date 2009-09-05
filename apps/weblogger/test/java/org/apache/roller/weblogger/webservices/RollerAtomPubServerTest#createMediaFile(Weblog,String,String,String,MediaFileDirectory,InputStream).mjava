@@ -1,0 +1,14 @@
+    private void createMediaFile(
+            Weblog weblog, String name, String desc, String contentType,
+            MediaFileDirectory parent, InputStream is) throws WebloggerException {
+
+        MediaFile mediaFile = new MediaFile();
+        mediaFile.setName(name);
+        mediaFile.setDescription(desc);
+        mediaFile.setSharedForGallery(false);
+        mediaFile.setDirectory(parent);
+        mediaFile.setContentType(contentType);
+        mediaFile.setInputStream(is);
+        WebloggerFactory.getWeblogger().getMediaFileManager().createMediaFile(weblog, mediaFile);
+    }
+

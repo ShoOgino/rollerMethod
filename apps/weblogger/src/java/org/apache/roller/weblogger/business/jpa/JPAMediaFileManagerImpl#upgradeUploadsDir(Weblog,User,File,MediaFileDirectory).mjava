@@ -45,11 +45,14 @@
                 
                 } else {
 
-                    log.debug("    Upgrade file: " + files[i].getAbsolutePath());
+                    String originalPath = 
+                        ("/".equals(newDir.getPath()) ? "" : newDir.getPath()) + files[i].getName();
+                    log.debug("    Upgrade file with original path: " + originalPath);
                     MediaFile mf = new MediaFile();
                     try {
                         mf.setName(files[i].getName());
                         mf.setDescription(files[i].getName());
+                        mf.setOriginalPath(originalPath);
 
                         mf.setDateUploaded(new Timestamp(files[i].lastModified()));
                         mf.setLastUpdated(new Timestamp(files[i].lastModified()));

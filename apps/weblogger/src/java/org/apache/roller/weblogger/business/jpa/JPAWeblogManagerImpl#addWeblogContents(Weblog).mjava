@@ -68,10 +68,8 @@
         }
         
         // add any auto enabled ping targets
-        PingTargetManager pingTargetMgr = roller
-        .getPingTargetManager();
-        AutoPingManager autoPingMgr = roller
-        .getAutopingManager();
+        PingTargetManager pingTargetMgr = roller.getPingTargetManager();
+        AutoPingManager autoPingMgr = roller.getAutopingManager();
         
         Iterator pingTargets = pingTargetMgr.getCommonPingTargets().iterator();
         PingTarget pingTarget = null;
@@ -84,5 +82,8 @@
                 autoPingMgr.saveAutoPing(autoPing);
             }
         }
+
+        roller.getMediaFileManager().createRootMediaFileDirectory(newWeblog);
+
     }
 

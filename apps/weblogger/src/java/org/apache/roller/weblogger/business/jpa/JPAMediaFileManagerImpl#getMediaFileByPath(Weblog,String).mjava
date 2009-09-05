@@ -1,0 +1,14 @@
+    /**
+     * {@inheritDoc}
+     */
+    public MediaFile getMediaFileByPath(Weblog weblog, String path)
+            throws WebloggerException {
+
+        // get directory
+        MediaFileDirectory mdir = getMediaFileDirectoryByPath(
+            weblog, path.substring(0, path.lastIndexOf("/")));
+        if (mdir == null) return null; // no such path found
+
+        return mdir.getMediaFile(path.substring(path.lastIndexOf("/")));
+    }
+

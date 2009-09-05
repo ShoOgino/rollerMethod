@@ -63,16 +63,19 @@
                 workspace.addCollection(uploadCol);
 
                 // And add one media collection for each of weblog's upload sub-directories
-                ThemeResource[] dirs;
                 try {
-                    dirs = roller.getFileManager().getDirectories(weblog);
-                    for (int i = 0; i < dirs.length; i++) {
-                        Collection uploadSubCol = new Collection("Media Files: " + dirs[i].getPath(), "text", atomURL + "/" + weblog.getHandle() + "/resources/" + dirs[i].getPath());
-                        uploadSubCol.setAccepts(uploadAccepts); 
+                    MediaFileManager mgr = roller.getMediaFileManager();
+                    List<MediaFileDirectory> dirs = mgr.getMediaFileDirectories(weblog);
+                    for (MediaFileDirectory dir : dirs) {
+                        Collection uploadSubCol = new Collection(
+                            "Media Files: " + dir.getPath(), "text",
+                            atomURL + "/" + weblog.getHandle() + "/resources/" + dir.getPath());
+                        uploadSubCol.setAccepts(uploadAccepts);
                         workspace.addCollection(uploadSubCol);
                     }
-                } catch (FilePathException fpe) {
-                    throw new AtomException("Creating weblog entry collection for service doc", fpe);
+
+                } catch (Exception e) {
+                    throw new AtomException("Creating weblog entry collection for service doc", e);
                 }
             }
         }

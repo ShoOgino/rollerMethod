@@ -1,0 +1,16 @@
+    private void removeMediaFileDirectory(MediaFileDirectory dir) 
+            throws WebloggerException {
+
+        if (dir == null) return;
+        
+        Set<MediaFile> files = dir.getMediaFiles();
+        for (MediaFile mf : files) {
+            this.removeMediaFile(dir.getWeblog(), mf);
+        }
+        Set<MediaFileDirectory> dirs = dir.getChildDirectories();
+        for (MediaFileDirectory md : dirs) {
+            removeMediaFileDirectory(md);
+        }
+        this.persistenceStrategy.remove(dir);
+    }
+

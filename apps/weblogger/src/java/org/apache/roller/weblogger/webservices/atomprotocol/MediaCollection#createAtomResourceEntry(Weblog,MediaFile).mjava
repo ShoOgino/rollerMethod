@@ -1,0 +1,48 @@
+    private Entry createAtomResourceEntry(Weblog website, MediaFile file) {
+        String absUrl = WebloggerRuntimeConfig.getAbsoluteContextURL();
+        String filePath = 
+            file.getPath().startsWith("/") ? file.getPath().substring(1) : file.getPath();
+        String editURI = 
+                atomURL+"/"+website.getHandle()
+                + "/resource/" + filePath + ".media-link";
+        String editMediaURI = 
+                atomURL+"/"+ website.getHandle()
+                + "/resource/" + filePath;
+        URLStrategy urlStrategy = WebloggerFactory.getWeblogger().getUrlStrategy();
+        String viewURI = urlStrategy.getWeblogResourceURL(website, filePath, true);
+        
+        String contentType = Utilities.getContentTypeFromFileName(file.getName());
+        
+        Entry entry = new Entry();
+        entry.setId(editMediaURI);
+        entry.setTitle(file.getName());
+        entry.setUpdated(new Date(file.getLastModified()));
+        
+        List otherlinks = new ArrayList();        
+        entry.setOtherLinks(otherlinks);
+        Link editlink = new Link();
+            editlink.setRel("edit");
+            editlink.setHref(editURI);        
+            otherlinks.add(editlink);            
+        Link editMedialink = new Link();
+            editMedialink.setRel("edit-media");
+            editMedialink.setHref(editMediaURI);        
+            otherlinks.add(editMedialink);
+        
+        Content content = new Content();
+        content.setSrc(viewURI);
+        content.setType(contentType);
+        List contents = new ArrayList();
+        contents.add(content);
+        entry.setContents(contents);
+        
+        List modules = new ArrayList();
+        AppModule app = new AppModuleImpl();
+        app.setDraft(false);
+        app.setEdited(entry.getUpdated());
+        modules.add(app);
+        entry.setModules(modules);
+        
+        return entry;
+    }
+

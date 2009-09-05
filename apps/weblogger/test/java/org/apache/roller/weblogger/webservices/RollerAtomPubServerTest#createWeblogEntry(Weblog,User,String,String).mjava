@@ -1,0 +1,14 @@
+    private void createWeblogEntry(Weblog weblog, User user,
+            String title, String text) throws WebloggerException {
+        
+        WeblogEntry testEntry1 = new WeblogEntry();
+        testEntry1.setTitle(title);
+        testEntry1.setText(text);
+        testEntry1.setPubTime(new Timestamp(new Date().getTime()));
+        testEntry1.setUpdateTime(new Timestamp(new Date().getTime()));
+        testEntry1.setWebsite(weblog);
+        testEntry1.setCreatorUserName(user.getUserName());
+        testEntry1.setCategory(weblog.getDefaultCategory());
+        WebloggerFactory.getWeblogger().getWeblogEntryManager().saveWeblogEntry(testEntry1);
+    }
+

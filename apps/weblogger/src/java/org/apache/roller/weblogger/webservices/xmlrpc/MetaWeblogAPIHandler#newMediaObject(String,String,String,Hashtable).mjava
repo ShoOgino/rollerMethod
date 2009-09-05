@@ -21,20 +21,28 @@
             
             byte[] bits = (byte[]) struct.get("bits");
             
-            Weblogger roller = WebloggerFactory.getWeblogger();
-            FileManager fmgr = roller.getFileManager();
             RollerMessages msgs = new RollerMessages();
-            
+
+            Weblogger roller = WebloggerFactory.getWeblogger();
+            MediaFileManager fmgr = roller.getMediaFileManager();
+            MediaFileDirectory root = fmgr.getMediaFileRootDirectory(website);
+ 
             // Try to save file
-            fmgr.saveFile(website, name, type, bits.length, new ByteArrayInputStream(bits));
+            MediaFile mf = new MediaFile();
+            mf.setDirectory(root);
+            mf.setName(name);
+            mf.setContentType(type);
+            mf.setInputStream(new ByteArrayInputStream(bits));
+            mf.setLength(bits.length);
             
-            String fileLink = WebloggerFactory.getWeblogger().getUrlStrategy().getWeblogResourceURL(website, name, true);
+            String fileLink = WebloggerFactory.getWeblogger().getUrlStrategy()
+                    .getWeblogResourceURL(website, name, true);
             
             Hashtable returnStruct = new Hashtable(1);
             returnStruct.put("url", fileLink);
             return returnStruct;
             
-        } catch (WebloggerException e) {
+        } catch (Exception e) {
             String msg = "ERROR in MetaWeblogAPIHandler.newMediaObject";
             mLogger.error(msg,e);
             throw new XmlRpcException(UNKNOWN_EXCEPTION, msg);

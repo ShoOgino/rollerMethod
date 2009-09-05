@@ -5,7 +5,7 @@
             // authenticated client posted a weblog entry
             File tempFile = null;
             String handle = pathInfo[0];
-            FileManager fmgr = roller.getFileManager();
+            MediaFileManager fmgr = roller.getMediaFileManager();
             Weblog website = WebloggerFactory.getWeblogger().getWeblogManager().getWeblogByHandle(handle);
             if (!RollerAtomHandler.canEdit(user, website)) {
                 throw new AtomNotAuthorizedException("Not authorized to edit weblog: " + handle);
@@ -14,12 +14,12 @@
                 try {                                        
                     // Parse pathinfo to determine file path
                     String filePath = filePathFromPathInfo(pathInfo);
-                    ThemeResource resource = fmgr.getFile(website, filePath);                    
+                    MediaFile mf = fmgr.getMediaFileByOriginalPath(website, filePath);
                     return new AtomMediaResource(
-                            resource.getName(), 
-                            resource.getLength(),
-                            new Date(resource.getLastModified()),
-                            resource.getInputStream());
+                            mf.getName(),
+                            mf.getLength(),
+                            new Date(mf.getLastModified()),
+                            mf.getInputStream());
                 } catch (Exception e) {
                     throw new AtomException(
                         "Unexpected error during file upload", e);

@@ -7,8 +7,11 @@
         ThemeResource resource = null;
         
         try {
-            FileManager fileMgr = WebloggerFactory.getWeblogger().getFileManager();
-            resource = fileMgr.getFile(this.weblog, path);
+            MediaFileManager mmgr =
+                WebloggerFactory.getWeblogger().getMediaFileManager();
+            MediaFile mf = mmgr.getMediaFileByOriginalPath(
+                this.weblog, path);
+
         } catch (WebloggerException ex) {
             // ignored, resource considered not found
         }

@@ -88,23 +88,52 @@
             
             
             // now lets import all the theme resources
-            FileManager fileMgr = roller.getFileManager();
+            MediaFileManager fileMgr = roller.getMediaFileManager();
             
             List resources = theme.getResources();
             Iterator iterat = resources.iterator();
             ThemeResource resource = null;
+            MediaFileDirectory root = fileMgr.getMediaFileRootDirectory(website);
             while ( iterat.hasNext() ) {
                 resource = (ThemeResource) iterat.next();
                 
                 log.debug("Importing resource to "+resource.getPath());
-                
+
+                String justPath = resource.getPath()
+                    .substring(resource.getPath().lastIndexOf("/"));
+
+                String justName = resource.getPath()
+                    .substring(0, resource.getPath().lastIndexOf("/"));
+
                 try {
-                    if(resource.isDirectory()) {
-                        fileMgr.createDirectory(website, resource.getPath());
+                    if (resource.isDirectory()) {
+
+                        MediaFileDirectory mdir =
+                            fileMgr.getMediaFileDirectoryByPath(website, resource.getPath());
+                        if (mdir == null) {
+                            mdir = fileMgr.createMediaFileDirectory(root, resource.getPath());
+                            roller.flush();
+                        }
+
                     } else {
+
+                        MediaFileDirectory mdir =
+                            fileMgr.getMediaFileDirectoryByPath(website, justPath);
+                        if (mdir == null) {
+                            mdir = fileMgr.createMediaFileDirectory(root, justPath);
+                        }
+
                         // save file without file-type, quota checks, etc.
-                        fileMgr.saveFile(website, resource.getPath(), "text/plain", 
-                                resource.getLength(), resource.getInputStream(), false);
+                        MediaFile mf = new MediaFile();
+                        mf.setDirectory(mdir);
+                        mf.setName(justName);
+                        mf.setOriginalPath(justPath);
+                        mf.setContentType("text/plain");
+                        mf.setInputStream(resource.getInputStream());
+                        mf.setLength(resource.getLength());
+
+                        fileMgr.createMediaFile(website, mf);
+                        roller.flush();
                     }
                 } catch (Exception ex) {
                     log.info(ex);

@@ -1,0 +1,30 @@
+    /**
+     * Test get recent posts
+     */
+    public void testAtomPubGetRecentMediaFiles() {
+        try {
+            mockRequest.setPathInfo("/entryTestWeblog/resources");
+
+            String creds = testUser.getUserName() +":"+ testUser.getPassword();
+            mockRequest.setHeader("Authorization",
+                "Basic " + new String(new Base64().encode((creds).getBytes())));
+
+            servletTestModule.doGet();
+
+            MockHttpServletResponse response = mockFactory.getMockResponse();
+            WireFeedInput input = new WireFeedInput();
+            WireFeed wireFeed = input.build(
+                    new StringReader(response.getOutputStreamContent()));
+
+            Feed feed = (Feed)wireFeed;
+            assertEquals(2, feed.getEntries().size());
+
+    } catch (IllegalArgumentException ex) {
+            log.debug("error fetching or parsing feed", ex);
+            fail();
+        } catch (FeedException ex) {
+            log.debug("error fetching or parsing feed", ex);
+            fail();
+        }
+    }
+

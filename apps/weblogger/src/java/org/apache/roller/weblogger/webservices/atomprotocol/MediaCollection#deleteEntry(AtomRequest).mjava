@@ -10,8 +10,9 @@
                 try {
                     String path = filePathFromPathInfo(pathInfo);
                     String fileName = path.substring(0, path.length() - ".media-link".length());
-                    FileManager fmgr = roller.getFileManager();
-                    fmgr.deleteFile(website, fileName);
+                    MediaFileManager fmgr = roller.getMediaFileManager();
+                    MediaFile mf = fmgr.getMediaFileByPath(website, path);
+                    fmgr.removeMediaFile(website, mf);
                     log.debug("Deleted media entry: " + fileName);
                     return;
                     

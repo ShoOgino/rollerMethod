@@ -1,0 +1,16 @@
+    /**
+     * {@inheritDoc}
+     */
+    public MediaFile getMediaFileByOriginalPath(Weblog weblog, String origpath) 
+            throws WebloggerException {
+        Query q = this.persistenceStrategy.getNamedQuery(
+                "MediaFile.getByWeblogAndOrigpath");
+        q.setParameter(1, weblog);
+        q.setParameter(2, origpath);
+        try {
+            return (MediaFile) q.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+

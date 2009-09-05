@@ -7,7 +7,7 @@
             // authenticated client posted a weblog entry
             File tempFile = null;
             String handle = pathInfo[0];
-            FileManager fmgr = roller.getFileManager();
+            MediaFileManager fmgr = roller.getMediaFileManager();
             WeblogManager wmgr = roller.getWeblogManager();
             Weblog website = wmgr.getWeblogByHandle(handle);
             if (!RollerAtomHandler.canEdit(user, website)) {
@@ -21,14 +21,21 @@
                     Utilities.copyInputToOutput(is, fos);
                     fos.close();
                                         
+                    FileInputStream fis = new FileInputStream(tempFile);
+
                     // Parse pathinfo to determine file path
                     String path = filePathFromPathInfo(pathInfo);
                     
                     // Attempt to load file, to ensure it exists
-                    ThemeResource resource = fmgr.getFile(website, path);                    
-                    
-                    FileInputStream fis = new FileInputStream(tempFile);  
-                    fmgr.saveFile(website, path, contentType, tempFile.length(), fis);
+                    MediaFile mf = fmgr.getMediaFileByPath(website, path);
+                    mf.setContentType(contentType);
+                    mf.setInputStream(fis);
+                    mf.setLength(tempFile.length());
+
+                    fmgr.updateMediaFile(website, mf, fis);
+
+                    roller.flush();
+
                     fis.close();
                     
                     log.debug("Exiting");
