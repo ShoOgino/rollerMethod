@@ -6,18 +6,21 @@
         Weblog testWeblog = null;
         testUser = TestUtils.setupUser("mediaFileTestUser9");
         testWeblog = TestUtils.setupWeblog("mediaFileTestWeblog9", testUser);
-    	
+
         MediaFileManager mfMgr = WebloggerFactory.getWeblogger().getMediaFileManager();
 
-        MediaFileDirectory rootDirectory = new MediaFileDirectory(null, "root", "root d", testWeblog);
-        mfMgr.createMediaFileDirectory(rootDirectory);
+        // no need to create root directory, that is done automatically now
+        MediaFileDirectory rootDirectory = mfMgr.getMediaFileRootDirectory(testWeblog);
+
+        //MediaFileDirectory rootDirectory = new MediaFileDirectory(null, "root", "root d", testWeblog);
+        //mfMgr.createMediaFileDirectory(rootDirectory);
 
         TestUtils.endSession(true);
 
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         rootDirectory = mfMgr.getMediaFileDirectory(rootDirectory.getId());
 
-        for (int i = 0; i < 15; i ++) {
+        for (int i = 0; i < 15; i++) {
             MediaFile mediaFile = new MediaFile();
             mediaFile.setName("test_file<index>.jpg".replace("<index>", i + ""));
             mediaFile.setDescription("This is a test image");
@@ -25,6 +28,7 @@
             mediaFile.setSharedForGallery(true);
             mediaFile.setLength(2000);
             mediaFile.setDirectory(rootDirectory);
+            mediaFile.setWeblog(testWeblog);
             mediaFile.setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
             mediaFile.setContentType("image/jpeg");
             mfMgr.createMediaFile(testWeblog, mediaFile);
@@ -33,14 +37,14 @@
         }
         TestUtils.endSession(true);
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
-        
+
         MediaFileFilter filter1 = new MediaFileFilter();
         filter1.setSize(1000);
         filter1.setSizeFilterType(SizeFilterType.GT);
         List<MediaFile> searchResults1 = mfMgr.searchMediaFiles(testWeblog, filter1);
         assertFalse(searchResults1.isEmpty());
         assertEquals(15, searchResults1.size());
-        
+
         MediaFileFilter filter2 = new MediaFileFilter();
         filter2.setSize(1000);
         filter2.setSizeFilterType(SizeFilterType.GT);

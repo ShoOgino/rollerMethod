@@ -3,6 +3,9 @@
      */
     public MediaFileDirectory getMediaFileDirectoryByPath(Weblog weblog, String path)
             throws WebloggerException {
+
+        log.debug("Looking up weblog|path: " + weblog.getHandle() + "|" + path);
+
         Query q = this.persistenceStrategy.getNamedQuery(
                 "MediaFileDirectory.getByWeblogAndPath");
         q.setParameter(1, weblog);

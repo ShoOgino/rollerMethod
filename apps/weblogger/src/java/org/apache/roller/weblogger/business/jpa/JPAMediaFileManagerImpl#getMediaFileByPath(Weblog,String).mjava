@@ -5,10 +5,17 @@
             throws WebloggerException {
 
         // get directory
-        MediaFileDirectory mdir = getMediaFileDirectoryByPath(
-            weblog, path.substring(0, path.lastIndexOf("/")));
-        if (mdir == null) return null; // no such path found
-
-        return mdir.getMediaFile(path.substring(path.lastIndexOf("/")));
+        String fileName = path;
+        MediaFileDirectory mdir = null;
+        int slash = path.lastIndexOf("/");
+        if (slash > 0) {
+            mdir = getMediaFileDirectoryByPath(weblog, path.substring(0, slash));
+        } else {
+            mdir = getMediaFileRootDirectory(weblog);
+        }
+        if (slash != -1) {
+            fileName = fileName.substring(slash + 1);
+        }
+        return mdir.getMediaFile(fileName);
     }
 

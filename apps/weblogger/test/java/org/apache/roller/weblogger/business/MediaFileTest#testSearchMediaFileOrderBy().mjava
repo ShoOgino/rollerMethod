@@ -6,18 +6,21 @@
         Weblog testWeblog = null;
         testUser = TestUtils.setupUser("mediaFileTestUser10");
         testWeblog = TestUtils.setupWeblog("mediaFileTestWeblog10", testUser);
-    	
+
         MediaFileManager mfMgr = WebloggerFactory.getWeblogger().getMediaFileManager();
 
-        MediaFileDirectory rootDirectory = new MediaFileDirectory(null, "root", "root d", testWeblog);
-        mfMgr.createMediaFileDirectory(rootDirectory);
+        // no need to create root directory, that is done automatically now
+        MediaFileDirectory rootDirectory = mfMgr.getMediaFileRootDirectory(testWeblog);
+
+        //MediaFileDirectory rootDirectory = new MediaFileDirectory(null, "root", "root d", testWeblog);
+        //mfMgr.createMediaFileDirectory(rootDirectory);
 
         TestUtils.endSession(true);
 
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         rootDirectory = mfMgr.getMediaFileDirectory(rootDirectory.getId());
         String[] contentTypes = {"image/gif", "image/jpeg", "image/bmp"};
-        for (int i = 0; i < 3; i ++) {
+        for (int i = 0; i < 3; i++) {
             MediaFile mediaFile = new MediaFile();
             mediaFile.setName("test_file<index>.jpg".replace("<index>", i + ""));
             mediaFile.setDescription("This is a test image");
@@ -25,6 +28,7 @@
             mediaFile.setSharedForGallery(true);
             mediaFile.setLength(2000);
             mediaFile.setDirectory(rootDirectory);
+            mediaFile.setWeblog(testWeblog);
             mediaFile.setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
             mediaFile.setContentType(contentTypes[i]);
             mfMgr.createMediaFile(testWeblog, mediaFile);
@@ -33,7 +37,7 @@
         }
         TestUtils.endSession(true);
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
-        
+
         MediaFileFilter filter1 = new MediaFileFilter();
         filter1.setSize(1000);
         filter1.setSizeFilterType(SizeFilterType.GT);
