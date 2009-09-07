@@ -4,25 +4,24 @@
     protected void doDeleteSelected() {
         String[] fileIds = getSelectedMediaFiles();
         if (fileIds != null && fileIds.length > 0) {
-        	try {
-				log.debug("Processing delete of " + fileIds.length + " media files.");
-				MediaFileManager manager = WebloggerFactory.getWeblogger().getMediaFileManager();
-				for (int index = 0; index < fileIds.length; index++) {
-				    log.debug("Deleting media file - " + fileIds[index]);
-				    MediaFile mediaFile = manager.getMediaFile(fileIds[index]);
-				    manager.removeMediaFile(getActionWeblog(), mediaFile);
-				}
-				// flush changes
-				WebloggerFactory.getWeblogger().flush();
-				addMessage("mediaFile.delete.success");
-			} catch (WebloggerException e) {
-	            log.error("Error deleting selected media files", e);
+            try {
+                log.debug("Processing delete of " + fileIds.length + " media files.");
+                MediaFileManager manager = WebloggerFactory.getWeblogger().getMediaFileManager();
+                for (int index = 0; index < fileIds.length; index++) {
+                    log.debug("Deleting media file - " + fileIds[index]);
+                    MediaFile mediaFile = manager.getMediaFile(fileIds[index]);
+                    manager.removeMediaFile(getActionWeblog(), mediaFile);
+                }
+                // flush changes
+                WebloggerFactory.getWeblogger().flush();
+                addMessage("mediaFile.delete.success");
+            } catch (WebloggerException e) {
+                log.error("Error deleting selected media files", e);
                 // TODO: i18n
                 addError("Error deleting selected media files");
-			}
-        }
-        else {
-        	addError("mediaFile.error.noneSelectedForDelete");
+            }
+        } else {
+            addError("mediaFile.error.noneSelectedForDelete");
         }
     }
 
