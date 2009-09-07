@@ -104,7 +104,7 @@
                 
                 // requests handled by ResourceServlet
             } else if(context.equals("resource")) {
-                
+
                 forwardUrl.append(RESOURCE_SERVLET);
                 forwardUrl.append("/");
                 forwardUrl.append(handle);
@@ -112,7 +112,18 @@
                     forwardUrl.append("/");
                     forwardUrl.append(data);
                 }
-                
+
+                // requests handled by MediaResourceServlet
+            } else if(context.equals("mediaresource")) {
+
+                forwardUrl.append(MEDIA_SERVLET);
+                forwardUrl.append("/");
+                forwardUrl.append(handle);
+                if(data != null) {
+                    forwardUrl.append("/");
+                    forwardUrl.append(data);
+                }
+
                 // requests handled by SearchServlet
             } else if(context.equals("search")) {
                 
