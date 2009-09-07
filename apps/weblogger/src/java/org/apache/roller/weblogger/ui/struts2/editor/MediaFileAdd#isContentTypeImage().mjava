@@ -1,6 +1,8 @@
     public boolean isContentTypeImage() {
-		if (this.uploadedFileContentType == null) return false;
-		return (this.uploadedFileContentType.toLowerCase().startsWith(
-				MediaFileType.IMAGE.getContentTypePrefix().toLowerCase()));
+        if (this.uploadedFileContentType == null) {
+            return false;
+        }
+        return (this.uploadedFileContentType.toLowerCase().startsWith(
+                MediaFileType.IMAGE.getContentTypePrefix().toLowerCase()));
     }
 

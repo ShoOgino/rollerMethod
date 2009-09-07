@@ -3,13 +3,12 @@
      */
     public void myPrepare() {
         System.out.println("Into myprepare");
-    	refreshAllDirectories();
-    	try {
+        refreshAllDirectories();
+        try {
             MediaFileManager mgr = WebloggerFactory.getWeblogger().getMediaFileManager();
-            if(!StringUtils.isEmpty(bean.getDirectoryId())) {
+            if (!StringUtils.isEmpty(bean.getDirectoryId())) {
                 setDirectory(mgr.getMediaFileDirectory(bean.getDirectoryId()));
-            }
-            else {
+            } else {
                 setDirectory(mgr.createRootMediaFileDirectory(getActionWeblog()));
             }
         } catch (WebloggerException ex) {
