@@ -1,0 +1,10 @@
+    /**
+     * @return the thumbnailHeight
+     */
+    public int getThumbnailHeight() {
+        if (isImageFile() && (thumbnailWidth == -1 || thumbnailHeight == -1)) {
+            figureThumbnailSize();
+        }
+        return thumbnailHeight;
+    }
+

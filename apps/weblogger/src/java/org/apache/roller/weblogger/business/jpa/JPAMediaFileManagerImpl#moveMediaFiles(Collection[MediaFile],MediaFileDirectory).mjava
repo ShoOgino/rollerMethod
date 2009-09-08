@@ -5,7 +5,7 @@
             throws WebloggerException {
         for (MediaFile mediaFile : mediaFiles) {
             mediaFile.setDirectory(targetDirectory);
-            this.persistenceStrategy.store(mediaFile);
+            this.strategy.store(mediaFile);
         }
         // update weblog last modified date.  date updated by saveWebsite()
         roller.getWeblogManager().saveWeblog(targetDirectory.getWeblog());

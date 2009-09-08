@@ -6,7 +6,7 @@
 
         if (!origpath.startsWith("/")) origpath = "/" + origpath;
         
-        Query q = this.persistenceStrategy.getNamedQuery(
+        Query q = this.strategy.getNamedQuery(
                 "MediaFile.getByWeblogAndOrigpath");
         q.setParameter(1, weblog);
         q.setParameter(2, origpath);

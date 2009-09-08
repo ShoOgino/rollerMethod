@@ -4,7 +4,7 @@
     public List<MediaFileDirectory> getMediaFileDirectories(Weblog weblog)
             throws WebloggerException {
 
-        Query q = this.persistenceStrategy.getNamedQuery("MediaFileDirectory.getByWeblog");
+        Query q = this.strategy.getNamedQuery("MediaFileDirectory.getByWeblog");
         q.setParameter(1, weblog);
         return q.getResultList();
     }

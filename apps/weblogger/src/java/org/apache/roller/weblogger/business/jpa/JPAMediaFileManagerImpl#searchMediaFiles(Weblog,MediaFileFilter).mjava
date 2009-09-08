@@ -90,7 +90,7 @@
             }
         }
 
-        Query query = persistenceStrategy.getDynamicQuery(queryString.toString() + whereClause.toString() + orderBy.toString());
+        Query query = strategy.getDynamicQuery(queryString.toString() + whereClause.toString() + orderBy.toString());
         for (int i = 0; i < params.size(); i++) {
             query.setParameter(i + 1, params.get(i));
         }
