@@ -10,6 +10,7 @@
             try {
                 MediaFile mediaFile = new MediaFile();
                 bean.copyTo(mediaFile);
+                
                 mediaFile.setDirectory(getDirectory());
                 mediaFile.setWeblog(getActionWeblog());
                 mediaFile.setLength(this.uploadedFile.length());
@@ -19,6 +20,7 @@
                 WebloggerFactory.getWeblogger().flush();
                 bean.setId(mediaFile.getId());
                 return SUCCESS;
+
             } catch (FileIOException ex) {
                 addError("uploadFiles.error.upload", bean.getName());
             } catch (Exception e) {
