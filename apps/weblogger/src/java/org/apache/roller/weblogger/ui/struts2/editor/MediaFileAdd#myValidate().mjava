@@ -2,16 +2,14 @@
      * Validates media file to be added.
      */
     public void myValidate() {
-        if (getDirectory().hasMediaFile(getBean().getName())) {
-            addError("MediaFile.error.duplicateName", getBean().getName());
-        }
+
+        //
+        // TODO: don't allow upload if user is over quota
+        //
+
         // make sure uploads are enabled
         if (!WebloggerRuntimeConfig.getBooleanProperty("uploads.enabled")) {
             addError("error.upload.disabled");
-        }
-
-        if (StringUtils.isEmpty(this.uploadedFileFileName)) {
-            addError("error.upload.file");
         }
     }
 

@@ -4,22 +4,34 @@
      */
     @SkipValidation
     public String execute() {
-        MediaFileManager manager = WebloggerFactory.getWeblogger().getMediaFileManager();
+        MediaFileManager manager =
+             WebloggerFactory.getWeblogger().getMediaFileManager();
         try {
-            MediaFile mediaFile = manager.getMediaFile(getMediaFileId());
-            String link;
-            if (mediaFile.isImageFile()) {
-                link = "<img src='<url>' alt='<name>' width='<width>' height='<height>' />";
-                link = link.replace("<url>", getMediaFileURL(mediaFile))
-                           .replace("<name>", mediaFile.getName())
-                           .replace("<width>", "")
-                           .replace("<height>", "");
-            } else {
-                link = "<a href='<url>'><name></a>";
-                link = link.replace("<url>", getMediaFileURL(mediaFile))
-                           .replace("<name>", mediaFile.getName());
+
+            if (selectedImages != null) {
+                for (int i=0; i<selectedImages.length; i++) {
+                    MediaFile mediaFile = manager.getMediaFile(selectedImages[i]);
+                    String link = "";
+
+                    if (mediaFile.isImageFile()) {
+                        link = "<p>" + mediaFile.getName() + "</p>";
+                        link += "<a href='<url>'><img src='<url>?t=true' alt='<name>' width='<width>' height='<height>'></img></a>";
+                        link = link.replace("<url>", getMediaFileURL(mediaFile))
+                                   .replace("<name>", mediaFile.getName())
+                                   .replace("<width>", ""+mediaFile.getThumbnailWidth())
+                                   .replace("<height>", ""+mediaFile.getThumbnailHeight());
+                    } else {
+                        link = "<a href='<url>'><name></a>";
+                        link = link.replace("<url>", getMediaFileURL(mediaFile))
+                                   .replace("<name>", mediaFile.getName());
+                    }
+                    bean.setText(link);
+                }
             }
-            bean.setText(link);
+
+            if (StringUtils.isNotEmpty(enclosureUrl)) {
+                bean.setEnclosureURL(enclosureUrl);
+            }
 
         } catch (Exception e) {
             log.error("Error while constructing media file link for new entry", e);
