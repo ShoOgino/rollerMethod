@@ -9,8 +9,10 @@
         try {
             MediaFile mediaFile = manager.getMediaFile(getMediaFileId());
             this.bean.copyFrom(mediaFile);
+
         } catch (FileIOException ex) {
             addError("uploadFiles.error.upload", bean.getName());
+
         } catch (Exception e) {
             log.error("Error saving new entry", e);
             // TODO: i18n

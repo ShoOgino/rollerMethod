@@ -14,8 +14,10 @@
                 WebloggerFactory.getWeblogger().flush();
                 addMessage("mediaFile.update.success");
                 return SUCCESS;
+
             } catch (FileIOException ex) {
                 addError("uploadFiles.error.upload", bean.getName());
+
             } catch (Exception e) {
                 log.error("Error saving new entry", e);
                 // TODO: i18n
