@@ -9,17 +9,16 @@
         MediaFileManager manager = WebloggerFactory.getWeblogger().getMediaFileManager();
         try {
             MediaFileDirectory directory;
-            if (this.directoryId != null) {
+            if (StringUtils.isNotEmpty(this.directoryId)) {
                 directory = manager.getMediaFileDirectory(this.directoryId);
 
-            } else if (this.directoryPath != null) {
+            } else if (StringUtils.isNotEmpty(this.directoryPath)) {
                 directory = manager.getMediaFileDirectoryByPath(getActionWeblog(), this.directoryPath);
-                this.directoryId = directory.getId();
 
             } else {
                 directory = manager.getMediaFileRootDirectory(getActionWeblog());
-                this.directoryId = directory.getId();
             }
+            this.directoryId = directory.getId();
             this.directoryPath = directory.getPath();
 
             this.childDirectories = new ArrayList<MediaFileDirectory>();
@@ -30,18 +29,18 @@
 
             if ("type".equals(sortBy)) {
                 Collections.sort(this.childFiles,
-                        new MediaFileComparator(MediaFileComparatorType.TYPE));
+                    new MediaFileComparator(MediaFileComparatorType.TYPE));
 
             } else if ("date_uploaded".equals(sortBy)) {
                 Collections.sort(this.childFiles,
-                        new MediaFileComparator(MediaFileComparatorType.DATE_UPLOADED));
+                    new MediaFileComparator(MediaFileComparatorType.DATE_UPLOADED));
 
             } else { // default to sort by name
                 sortBy = "name";
                 Collections.sort(this.childDirectories,
-                        new MediaFileDirectoryComparator(DirectoryComparatorType.NAME));
+                    new MediaFileDirectoryComparator(DirectoryComparatorType.NAME));
                 Collections.sort(this.childFiles,
-                        new MediaFileComparator(MediaFileComparatorType.NAME));
+                    new MediaFileComparator(MediaFileComparatorType.NAME));
             }
 
             this.currentDirectory = directory;
