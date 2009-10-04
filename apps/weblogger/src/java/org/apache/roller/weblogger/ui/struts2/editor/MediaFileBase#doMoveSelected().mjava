@@ -3,26 +3,40 @@
      */
     protected void doMoveSelected() {
         String[] fileIds = getSelectedMediaFiles();
-        if (fileIds != null && fileIds.length > 0) {
-            try {
+        String[] dirIds = getSelectedMediaFileDirectories();
+        try {
+            MediaFileManager manager = WebloggerFactory.getWeblogger().getMediaFileManager();
+
+            if (fileIds != null && fileIds.length > 0) {
                 log.debug("Processing move of " + fileIds.length + " media files.");
-                MediaFileManager manager = WebloggerFactory.getWeblogger().getMediaFileManager();
-                MediaFileDirectory targetDirectory = manager.getMediaFileDirectory(this.selectedDirectory);
+                MediaFileDirectory targetDirectory =
+                        manager.getMediaFileDirectory(this.selectedDirectory);
                 for (int index = 0; index < fileIds.length; index++) {
                     log.debug("Moving media file - " + fileIds[index] + " to directory - " + this.selectedDirectory);
                     MediaFile mediaFile = manager.getMediaFile(fileIds[index]);
                     manager.moveMediaFile(mediaFile, targetDirectory);
                 }
-                // flush changes
-                WebloggerFactory.getWeblogger().flush();
-                addMessage("mediaFile.move.success");
-            } catch (WebloggerException e) {
-                log.error("Error moving selected media files", e);
-                // TODO: i18n
-                addError("Error moving selected media files");
             }
-        } else {
-            addError("mediaFile.error.noneSelectedForMove");
+
+            if (dirIds != null && dirIds.length > 0) {
+                log.debug("Processing move of " + dirIds.length + " media files directories.");
+                MediaFileDirectory targetDirectory =
+                        manager.getMediaFileDirectory(this.selectedDirectory);
+                for (int index = 0; index < dirIds.length; index++) {
+                    log.debug("Moving media file - " + dirIds[index] + " to directory - " + this.selectedDirectory);
+                    MediaFileDirectory mediaFileDir = manager.getMediaFileDirectory(dirIds[index]);
+                    manager.moveMediaFileDirectory(mediaFileDir, targetDirectory);
+                }
+            }
+
+            // flush changes
+            WebloggerFactory.getWeblogger().flush();
+            addMessage("mediaFile.move.success");
+
+        } catch (WebloggerException e) {
+            log.error("Error moving selected media files", e);
+            // TODO: i18n
+            addError("Error moving selected media files");
         }
     }
 
