@@ -9,34 +9,40 @@
         try {
             IndexReader reader = manager.getSharedIndexReader();
             searcher = new IndexSearcher(reader);
-            
-            Query query =
-                    MultiFieldQueryParser.parse(
-                    term, SEARCH_FIELDS, new StandardAnalyzer());
+
+            String[] terms = new String[1];
+            terms[0] = term;
+
+            BooleanClause.Occur[] flags = new BooleanClause.Occur[1];
+            flags[1] = BooleanClause.Occur.MUST;
+            Query query = MultiFieldQueryParser.parse(terms,
+                SEARCH_FIELDS, flags, new StandardAnalyzer(Version.LUCENE_CURRENT));
             
             Term tUsername =
-                    IndexUtil.getTerm(FieldConstants.WEBSITE_HANDLE, websiteHandle);
+                IndexUtil.getTerm(FieldConstants.WEBSITE_HANDLE, websiteHandle);
             
             if (tUsername != null) {
                 BooleanQuery bQuery = new BooleanQuery();
-                bQuery.add(query, true, false);
-                bQuery.add(new TermQuery(tUsername), true, false);
+                bQuery.add(query, BooleanClause.Occur.MUST);
+                bQuery.add(new TermQuery(tUsername), BooleanClause.Occur.MUST);
                 query = bQuery;
             }
             
             Term tCategory =
-                    IndexUtil.getTerm(FieldConstants.CATEGORY, category);
+                IndexUtil.getTerm(FieldConstants.CATEGORY, category);
             
             if (tCategory != null) {
                 BooleanQuery bQuery = new BooleanQuery();
-                bQuery.add(query, true, false);
-                bQuery.add(new TermQuery(tCategory), true, false);
+                bQuery.add(query, BooleanClause.Occur.MUST);
+                bQuery.add(new TermQuery(tCategory), BooleanClause.Occur.MUST);
                 query = bQuery;
             }
             searchresults = searcher.search(query, null/*Filter*/, SORTER);
+
         } catch (IOException e) {
             mLogger.error("Error searching index", e);
             parseError = e.getMessage();
+
         } catch (ParseException e) {
             // who cares?
             parseError = e.getMessage();
