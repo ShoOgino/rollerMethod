@@ -10,13 +10,9 @@
             IndexReader reader = manager.getSharedIndexReader();
             searcher = new IndexSearcher(reader);
 
-            String[] terms = new String[1];
-            terms[0] = term;
-
-            BooleanClause.Occur[] flags = new BooleanClause.Occur[1];
-            flags[1] = BooleanClause.Occur.MUST;
-            Query query = MultiFieldQueryParser.parse(terms,
-                SEARCH_FIELDS, flags, new StandardAnalyzer(Version.LUCENE_CURRENT));
+            Query query = MultiFieldQueryParser.parse(term,
+                SEARCH_FIELDS, SEARCH_FLAGS,
+                new StandardAnalyzer(Version.LUCENE_CURRENT));
             
             Term tUsername =
                 IndexUtil.getTerm(FieldConstants.WEBSITE_HANDLE, websiteHandle);
