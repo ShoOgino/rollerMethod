@@ -11,16 +11,8 @@
         }
         
         StringBuffer url = new StringBuffer();
-        
-        if(absolute) {
-            url.append(WebloggerRuntimeConfig.getAbsoluteContextURL());
-        } else {
-            url.append(WebloggerRuntimeConfig.getRelativeContextURL());
-        }
-        
-        url.append("/");
-        url.append(weblog.getHandle());
-        url.append("/mediaresource/");
+        url.append(getWeblogURL(weblog, null, absolute));
+        url.append("mediaresource");
         url.append("/");
         url.append(URLUtilities.encode(fileAnchor));
         

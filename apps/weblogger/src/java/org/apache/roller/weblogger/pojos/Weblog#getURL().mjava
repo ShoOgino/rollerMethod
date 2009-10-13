@@ -2,9 +2,6 @@
      * @roller.wrapPojoMethod type="simple"
      */
     public String getURL() {
-        // TODO: ATLAS reconcile entry.getPermaLink() with new URLs
-        String relPath = WebloggerRuntimeConfig.getRelativeContextURL();
-        return relPath + "/" + getHandle();
-        //return URLUtilities.getWeblogURL(this, null, false);
+        return WebloggerFactory.getWeblogger().getUrlStrategy().getWeblogURL(this, null, false);
     }
 

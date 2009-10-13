@@ -2,13 +2,6 @@
      * @roller.wrapPojoMethod type="simple"
      */
     public String getAbsoluteURL() {
-        String weblogAbsoluteURL =
-            WebloggerConfig.getProperty("weblog.absoluteurl." + getHandle());
-        if (weblogAbsoluteURL != null) {
-            return weblogAbsoluteURL + "/" + getHandle();
-        } else {
-            String relPath = WebloggerRuntimeConfig.getAbsoluteContextURL();
-            return relPath + "/" + getHandle();
-        }
+        return WebloggerFactory.getWeblogger().getUrlStrategy().getWeblogURL(this, null, true);
     }
 
