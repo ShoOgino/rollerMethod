@@ -13,6 +13,10 @@
         if (!cmgr.canSave(weblog, mediaFile.getName(), mediaFile.getContentType(), mediaFile.getLength(), msgs)) {
             throw new FileIOException(msgs.toString());
         }
-        cmgr.saveFileContent(weblog, mediaFile.getId(), mediaFile.getInputStream());
+        cmgr.saveFileContent(weblog, mediaFile.getId(), is);
+
+        if (mediaFile.isImageFile()) {
+            updateThumbnail(mediaFile);
+        }
     }
 

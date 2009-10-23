@@ -10,8 +10,18 @@
             try {
                 MediaFile mediaFile = manager.getMediaFile(getMediaFileId());
                 bean.copyTo(mediaFile);
-                manager.updateMediaFile(getActionWeblog(), mediaFile);
+
+                if (uploadedFile != null) {
+                    mediaFile.setLength(this.uploadedFile.length());
+                    mediaFile.setContentType(this.uploadedFileContentType);
+                    manager.updateMediaFile(getActionWeblog(),
+                        mediaFile, new FileInputStream(this.uploadedFile));
+                } else {
+                   manager.updateMediaFile(getActionWeblog(), mediaFile);
+                }
+
                 WebloggerFactory.getWeblogger().flush();
+
                 addMessage("mediaFile.update.success");
                 return SUCCESS;
 
