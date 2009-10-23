@@ -1,0 +1,34 @@
+    /**
+     * Performs some pre-processing of entry text. It fixes a problem when
+     * WordPress imports a self-closing HTML tag that does not have a space
+     * preceding the "/>" characters. It also provides a replacment base URL
+     * for all referenced resource files if requested.
+     *
+     * @param text The entry text to process.
+     * @return The resulting String after processing has taken place.
+     */
+    private String processEntry(String text) {
+        String result;
+
+        // Fix self closing tags that are missing a space
+        Matcher badSelfClosingTagMatcher;
+        badSelfClosingTagMatcher = BAD_SELF_CLOSING_TAG.matcher(text);
+
+        result = badSelfClosingTagMatcher.replaceAll("$2 />");
+
+        // Replace all /weblog-handle/resource/ links with a specified base URL
+        if (baseUrl != null && !baseUrl.equals("")) {
+            Matcher baseUrlMatcher;
+            baseUrlMatcher = baseUrlPattern.matcher(result);
+
+            try {
+                result = baseUrlMatcher.replaceAll("$1" + baseUrl);
+            } catch (IllegalArgumentException e) {
+                log.error("Invalid base URL submitted: " + baseUrl + ": " +
+                        e.getMessage());
+            }
+        }
+
+        return result;
+    }
+
