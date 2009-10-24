@@ -1,12 +1,11 @@
     /**
      * {@inheritDoc}
      */
-    public void createMediaFile(Weblog weblog, MediaFile mediaFile) throws WebloggerException {
+    public void createMediaFile(Weblog weblog, MediaFile mediaFile, RollerMessages errors) throws WebloggerException {
 
         FileContentManager cmgr = WebloggerFactory.getWeblogger().getFileContentManager();
-        RollerMessages msgs = new RollerMessages();
-        if (!cmgr.canSave(weblog, mediaFile.getName(), mediaFile.getContentType(), mediaFile.getLength(), msgs)) {
-            throw new FileIOException(msgs.toString());
+        if (!cmgr.canSave(weblog, mediaFile.getName(), mediaFile.getContentType(), mediaFile.getLength(), errors)) {
+            return;
         }
 
         mediaFile.setDateUploaded(new Timestamp(System.currentTimeMillis()));

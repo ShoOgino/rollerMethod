@@ -52,7 +52,12 @@
                     mf.setInputStream(fis);
                     mf.setLength(tempFile.length());
 
-                    fileMgr.createMediaFile(website, mf);
+                    RollerMessages errors = new RollerMessages();
+                    fileMgr.createMediaFile(website, mf, errors);
+                    if (errors.getErrorCount() > 0) {
+                        throw new AtomException(errors.toString());
+                    }
+
                     roller.flush();
                     
                     fis.close();

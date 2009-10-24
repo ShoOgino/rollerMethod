@@ -4,7 +4,12 @@
      *
      * Currently the only file format supported is mtimport.
      */
-    public void exportEntries() {
+    public void exportEntries() throws WebloggerException {
+
+        if (!WebloggerConfig.getBooleanProperty("weblog.export.enabled")) {
+            throw new WebloggerException("ERROR: export is disabled");
+        }
+        
         try {
             WeblogEntryManager wmgr =
                     WebloggerFactory.getWeblogger().getWeblogEntryManager();
