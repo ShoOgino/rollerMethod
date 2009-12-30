@@ -1,0 +1,79 @@
+    /**
+     * Test media file and directory gets
+     */
+    public void testGetDirectoryContents() throws Exception {
+        User testUser = null;
+        Weblog testWeblog = null;
+        testUser = TestUtils.setupUser("mediaFileTestUser6");
+        testWeblog = TestUtils.setupWeblog("mediaFileTestWeblog6", testUser);
+
+        MediaFileManager mfMgr = WebloggerFactory.getWeblogger().getMediaFileManager();
+
+        // no need to create root directory, that is done automatically now
+        MediaFileDirectory rootDirectory = mfMgr.getMediaFileRootDirectory(testWeblog);
+
+        //MediaFileDirectory rootDirectory = new MediaFileDirectory(null, "root", "root d", testWeblog);
+        //mfMgr.createMediaFileDirectory(rootDirectory);
+
+        MediaFileDirectory directory1 = new MediaFileDirectory(rootDirectory, "dir1", "directory 1", testWeblog);
+        mfMgr.createMediaFileDirectory(directory1);
+
+        MediaFileDirectory directory2 = new MediaFileDirectory(rootDirectory, "dir2", "directory 2", testWeblog);
+        mfMgr.createMediaFileDirectory(directory2);
+
+        MediaFileDirectory directory3 = new MediaFileDirectory(rootDirectory, "dir3", "directory 3", testWeblog);
+        mfMgr.createMediaFileDirectory(directory3);
+
+
+        MediaFile mediaFile = new MediaFile();
+        mediaFile.setDirectory(rootDirectory);
+        mediaFile.setWeblog(testWeblog);
+        mediaFile.setName("test6_1.jpg");
+        mediaFile.setDescription("This is a test image 6.1");
+        mediaFile.setCopyrightText("test 6.1 copyright text");
+        mediaFile.setSharedForGallery(false);
+        mediaFile.setLength(4000);
+        mediaFile.setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
+        mediaFile.setContentType("image/jpeg");
+        mfMgr.createMediaFile(testWeblog, mediaFile, new RollerMessages());
+
+        MediaFile mediaFile2 = new MediaFile();
+        mediaFile2.setDirectory(rootDirectory);
+        mediaFile2.setWeblog(testWeblog);
+        mediaFile2.setName("test6_2.jpg");
+        mediaFile2.setDescription("This is a test image 6.2");
+        mediaFile2.setCopyrightText("test 6.2 copyright text");
+        mediaFile2.setSharedForGallery(true);
+        mediaFile2.setLength(4000);
+        mediaFile2.setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
+        mediaFile2.setContentType("image/jpeg");
+        mfMgr.createMediaFile(testWeblog, mediaFile2, new RollerMessages());
+
+        TestUtils.endSession(true);
+
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
+        rootDirectory = mfMgr.getMediaFileDirectory(rootDirectory.getId());
+
+        Set<MediaFileDirectory> childDirectories = rootDirectory.getChildDirectories();
+        assertEquals(3, childDirectories.size());
+        assertTrue(containsPath(childDirectories, "/dir1"));
+        assertTrue(containsPath(childDirectories, "/dir2"));
+        assertTrue(containsPath(childDirectories, "/dir3"));
+
+        Set<MediaFile> mediaFiles = rootDirectory.getMediaFiles();
+        assertEquals(2, mediaFiles.size());
+        assertTrue(containsFileWithName(mediaFiles, "test6_1.jpg"));
+        assertTrue(containsFileWithName(mediaFiles, "test6_2.jpg"));
+        TestUtils.endSession(true);
+
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
+        rootDirectory = mfMgr.getMediaFileDirectory(rootDirectory.getId());
+        assertTrue(rootDirectory.hasMediaFile("test6_1.jpg"));
+        assertTrue(rootDirectory.hasMediaFile("test6_2.jpg"));
+
+
+        TestUtils.endSession(true);
+        TestUtils.teardownWeblog(testWeblog.getId());
+        TestUtils.teardownUser(testUser.getUserName());
+    }
+
