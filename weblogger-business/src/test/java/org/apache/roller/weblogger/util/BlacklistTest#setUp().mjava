@@ -1,0 +1,12 @@
+    /**
+     * @see TestCase#setUp()
+     */
+    protected void setUp() throws Exception {
+        super.setUp();
+        blacklist = Blacklist.getBlacklist();
+        String FS = File.separator;
+        String blacklistName = System.getProperty("project.build.directory") + FS + "classes" + "blacklist.txt";
+        log.info("Processing Blacklist file: " + blacklistName);
+        blacklist.loadBlacklistFromFile(blacklistName);
+    }
+
