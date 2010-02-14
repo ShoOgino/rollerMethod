@@ -1,0 +1,14 @@
+    public void main(String[] args) {
+        try {
+            System.setProperty("derby.system.home", args[0]);
+            System.setProperty("derby.drda.portNumber", args[1]);
+            System.setProperty("derby.drda.host", "localhost");
+            System.setProperty("derby.drda.maxThreads", "10");
+            System.setProperty("derby.drda.logConnections", "true");
+            NetworkServerControl server = new NetworkServerControl();
+            server.start(new PrintWriter(System.out));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
