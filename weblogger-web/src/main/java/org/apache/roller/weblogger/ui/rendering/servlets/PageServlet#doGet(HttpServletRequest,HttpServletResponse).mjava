@@ -71,6 +71,25 @@
         } else {
             cacheKey = weblogPageCache.generateKey(pageRequest);
         }
+        
+        // Development only. Reload if theme has been modified
+		if (themeReload) {
+			try {
+				ThemeManager manager = WebloggerFactory.getWeblogger().getThemeManager();
+				boolean reloaded = manager.reLoadThemeFromDisk(weblog.getEditorTheme());
+				if (reloaded) {
+					if (isSiteWide) {
+						siteWideCache.clear();
+					} else {
+						weblogPageCache.clear();
+					}
+					I18nMessages.reloadBundle(weblog.getLocaleInstance()); 
+				}
+
+			} catch (Exception ex) {
+				log.error("ERROR - reloading theme " + ex);
+			}
+		}
 
         // cached content checking
         if ((!this.excludeOwnerPages || !pageRequest.isLoggedIn()) && request.getAttribute("skipCache") == null) {

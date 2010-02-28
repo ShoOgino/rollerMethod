@@ -107,7 +107,25 @@
             return;
         }
 
-        
+        // Development only. Reload if theme has been modified
+		if (themeReload) {
+			try {
+				ThemeManager manager = WebloggerFactory.getWeblogger().getThemeManager();
+				boolean reloaded = manager.reLoadThemeFromDisk(weblog.getEditorTheme());
+				if (reloaded) {
+					if (WebloggerRuntimeConfig.isSiteWideWeblog(searchRequest.getWeblogHandle())) {
+						SiteWideCache.getInstance().clear();
+					} else {
+						WeblogPageCache.getInstance().clear();
+					}
+					I18nMessages.reloadBundle(weblog.getLocaleInstance()); 
+				}
+
+			} catch (Exception ex) {
+				log.error("ERROR - reloading theme " + ex);
+			}
+		}
+		
         // lookup Renderer we are going to use
         Renderer renderer = null;
         try {
