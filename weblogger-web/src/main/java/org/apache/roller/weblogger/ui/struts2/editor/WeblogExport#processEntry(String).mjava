@@ -9,12 +9,45 @@
      */
     private String processEntry(String text) {
         String result;
+        result = text;
 
-        // Fix self closing tags that are missing a space
-        Matcher badSelfClosingTagMatcher;
-        badSelfClosingTagMatcher = BAD_SELF_CLOSING_TAG.matcher(text);
+        // Some special processing is needed for mtimport
+        if (format.startsWith(MT_FORMAT)) {
+            // Fix self closing tags that are missing a space,
+            // replaceing <foo bar="foobar"/> with <foo bar="foobar" />
+            Matcher badSelfClosingTagMatcher;
+            badSelfClosingTagMatcher = SC_TAG_PATTERN.matcher(result);
 
-        result = badSelfClosingTagMatcher.replaceAll("$2 />");
+            result = badSelfClosingTagMatcher.replaceAll("$2 />");
+
+            if (format.equals(MT_PLUS_FORMAT)) {
+                // Replace all newlines with spaces leaving "<pre>" blocks
+                // alone. WordPress will automatically convert newlines to
+                // "<br />" which alters the intended formatting.
+                Matcher preTagMatcher;
+                preTagMatcher = PRE_TAG_PATTERN.matcher(result);
+
+                StringBuilder replacedNewLines;
+                replacedNewLines = new StringBuilder();
+
+                int index;
+                index = 0;
+
+                while (preTagMatcher.find()) {
+                    replacedNewLines.append(NEWLINE_PATTERN.matcher(
+                            result.substring(index, preTagMatcher.start())).
+                            replaceAll(" "));
+                    replacedNewLines.append(preTagMatcher.group());
+                    index = preTagMatcher.end();
+                }
+
+                replacedNewLines.append(NEWLINE_PATTERN.matcher(
+                            result.substring(index, result.length())).
+                            replaceAll(" "));
+
+                result = replacedNewLines.toString();
+            }
+        }
 
         // Replace all /weblog-handle/resource/ links with a specified base URL
         if (baseUrl != null && !baseUrl.equals("")) {

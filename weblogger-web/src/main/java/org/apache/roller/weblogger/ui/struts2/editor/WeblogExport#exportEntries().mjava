@@ -9,7 +9,7 @@
         if (!WebloggerConfig.getBooleanProperty("weblog.export.enabled")) {
             throw new WebloggerException("ERROR: export is disabled");
         }
-        
+
         try {
             WeblogEntryManager wmgr =
                     WebloggerFactory.getWeblogger().getWeblogEntryManager();
@@ -21,6 +21,9 @@
             rawEntries = wmgr.getWeblogEntries(getActionWeblog(), null, null,
                     null, null, null, null, null, null, null, null, 0, -1);
 
+            List<WeblogEntryWrapper> entries;
+            entries = new ArrayList<WeblogEntryWrapper>();
+
             for (Object entry : rawEntries) {
                 entries.add(WeblogEntryWrapper.wrap((WeblogEntry) entry,
                         urlStrategy));
@@ -28,12 +31,21 @@
 
             // Compile the resource URL pattern using the weblog handle
             baseUrlPattern = Pattern.compile(
-                    "(<[ \\S]+=[\"'])(http[s]*://[\\S]+/" +
-                    getActionWeblog().getHandle() + "/resource/|/" +
-                    getActionWeblog().getHandle() + "/resource/)");
+                    "(<[\\s\\S]+?=[\"'])(http[s]*?://[\\S]+/" +
+                            getActionWeblog().getHandle() + "/resource/|/" +
+                            getActionWeblog().getHandle() + "/resource/)");
 
+            // Produce the selected output format
             String output;
             output = formatAsMoveableType(entries);
+            /*
+            if (format.equals(ATOM_FORMAT)) {
+                output = formatAsAtom(entries);
+            }
+            else {
+                output = formatAsMoveableType(entries);
+            }
+            */
 
             if (!response.isCommitted()) {
                 response.reset();
@@ -46,11 +58,22 @@
                 fileName.append(getActionWeblog().getHandle());
                 fileName.append("-entries-");
                 fileName.append(dateFormat.format(System.currentTimeMillis()));
-                fileName.append(".txt");
 
-                response.setContentType("text/plain; charset=utf-8");
-                response.setHeader("Content-Disposition",
-                        "attachment; filename=\"" + fileName.toString() + "\"");
+                if (format.equals(ATOM_FORMAT)) {
+                    fileName.append(".xml");
+                }
+                else {
+                    fileName.append(".txt");
+                }
+
+                // Force the browser to download the export file
+                response.setContentType(
+                        "application/octet-stream; charset=utf-8");
+                response.setContentLength(
+                        output.getBytes("UTF-8").length);
+                response.setHeader(
+                        "Content-Disposition", "attachment; filename=\"" +
+                                fileName.toString() + "\"");
 
                 ServletOutputStream outputStream;
                 outputStream = response.getOutputStream();

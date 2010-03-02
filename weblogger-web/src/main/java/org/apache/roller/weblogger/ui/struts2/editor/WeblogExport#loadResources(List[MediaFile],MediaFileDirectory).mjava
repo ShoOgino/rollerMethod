@@ -2,15 +2,15 @@
      * Adds all the non-directory files for the specified path to the provided
      * List.
      *
-     * @param resources The List in which to add the resource objects.
-     * @param path The path from which to load. If null, the root path is used.
+     * @param mfiles The List in which to add the resource objects.
+     * @param mdir The path from which to load. If null, the root path is used.
      */
     private void loadResources(List<MediaFile> mfiles, MediaFileDirectory mdir) {
         try {
             // Load the non-directory files
             mfiles.addAll(mdir.getMediaFiles());
         } catch (Exception e) {
-            log.error("Error load resources: " + e.getMessage());
+            log.error("Error loading resources: " + e.getMessage());
         }
     }
 
