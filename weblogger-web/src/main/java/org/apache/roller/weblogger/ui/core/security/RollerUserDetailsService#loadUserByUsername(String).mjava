@@ -1,7 +1,15 @@
     public UserDetails loadUserByUsername(String userName) 
             throws UsernameNotFoundException, DataAccessException {
+        Weblogger roller = null;
         try {
-            Weblogger roller = WebloggerFactory.getWeblogger();
+            roller = WebloggerFactory.getWeblogger();
+        } catch (Exception e) {
+            // Should only happen in case of 1st time startup, setup required
+            log.debug("Ignorabale error getting Roller instance", e);
+            // Thowing a "soft" exception here allows setup to procede
+            throw new UsernameNotFoundException("User info not available yet.");
+        }
+        try {
             UserManager umgr = roller.getUserManager();
             User userData = null;  
             if (userName.startsWith("http://")) {
