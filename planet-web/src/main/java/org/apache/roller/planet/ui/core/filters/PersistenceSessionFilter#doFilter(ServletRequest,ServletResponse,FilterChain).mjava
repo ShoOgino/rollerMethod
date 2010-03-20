@@ -1,0 +1,24 @@
+    /**
+     * Release Roller persistence session at end of request processing.
+     */
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+            throws IOException, ServletException {
+        
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) res;
+        
+        log.debug("Entered PersistenceSessionFilter");
+        
+        Planet planet = PlanetFactory.getPlanet();
+        try {
+            chain.doFilter(request, response);
+        } finally {
+            log.debug("Releasing Planet Session");
+            if (PlanetFactory.isBootstrapped()) {
+                PlanetFactory.getPlanet().release();
+            }
+        }
+        
+        log.debug("Exiting PersistenceSessionFilter");
+    }
+

@@ -1,0 +1,106 @@
+    /**
+     * Handle GET requests for weblog feeds.
+     */
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        log.debug("Entering");
+        
+        Planet planet = null;
+        PlanetGroup group = null;
+
+        PlanetGroupPageRequest pageRequest = null;
+        try {
+            // parse the incoming request and extract the relevant data
+            pageRequest = new PlanetGroupPageRequest(request);
+
+            planet = pageRequest.getPlanet();
+            if(planet == null) {
+                throw new PlanetException("unable to lookup planet: "+
+                        pageRequest.getPlanetHandle());
+            }
+            
+            group = pageRequest.getGroup();
+
+        } catch(Exception e) {
+            // invalid feed request format or weblog doesn't exist
+            log.debug("error creating planet page request", e);
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+
+        // set content type
+        response.setContentType("text/html; charset=utf-8");
+        
+        
+        // looks like we need to render content
+        HashMap model = new HashMap();
+        try {
+            // populate the rendering model
+            Map initData = new HashMap();
+            initData.put("planetRequest", pageRequest);
+            
+            // Load models for pages
+            String pageModels = PlanetConfig.getProperty("rendering.pageModels");
+            ModelLoader.loadModels(pageModels, model, initData, true);
+
+        } catch (PlanetException ex) {
+            log.error("ERROR loading model for page", ex);
+
+            if(!response.isCommitted()) response.reset();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return;
+        }
+
+
+        // lookup Renderer we are going to use
+        Renderer renderer = null;
+        try {
+            log.debug("Looking up renderer");
+            
+            // what template are we going to render?
+            Template template = null;
+            if(group == null) {
+                // planet homepage
+                template = new StaticTemplate("planet.vm", null, "velocity");
+            } else {
+                // group homepage
+                template = new StaticTemplate("group.vm", null, "velocity");
+            }
+            
+            // get the Renderer
+            renderer = RendererManager.getRenderer(template);
+            
+        } catch(Exception e) {
+            // nobody wants to render my content :(
+
+            if(!response.isCommitted()) response.reset();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        
+        
+        // render content
+        try {
+            log.debug("Doing rendering");
+            renderer.render(model, response.getWriter());
+        } catch(Exception e) {
+            // bummer, error during rendering
+            log.error("Error during rendering", e);
+
+            if(!response.isCommitted()) response.reset();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+
+
+        // post rendering process
+
+        // flush rendered content to response
+        log.debug("Flushing response output");
+        //response.setContentLength(rendererOutput.getContent().length);
+        //response.getOutputStream().write(rendererOutput.getContent());
+
+        log.debug("Exiting");
+    }
+

@@ -1,0 +1,14 @@
+    public Planet getPlanet() {
+        
+        if(planet == null && planetHandle != null) {
+            try {
+                PlanetManager mgr = PlanetFactory.getPlanet().getPlanetManager();
+                planet = mgr.getPlanet(planetHandle);
+            } catch (PlanetException ex) {
+                log.error("Error looking up planet "+planetHandle, ex);
+            }
+        }
+        
+        return planet;
+    }
+

@@ -1,0 +1,44 @@
+    public PlanetRequest(HttpServletRequest request) 
+            throws InvalidRequestException {
+        
+        // let our parent take care of their business first
+        super(request);
+        
+        String path = request.getPathInfo();
+        
+        log.debug("parsing path "+path);
+        
+        // first, cleanup extra slashes and extract the planet handle
+        if(path != null && path.trim().length() > 1) {
+            
+            // strip off the leading slash
+            path = path.substring(1);
+            
+            // strip off trailing slash if needed
+            if(path.endsWith("/")) {
+                path = path.substring(0, path.length() - 1);
+            }
+            
+            String[] pathElements = path.split("/", 2);
+            if(pathElements[0].trim().length() > 0) {
+                this.planetHandle = pathElements[0];
+            } else {
+                // no planetHandle in path info
+                throw new InvalidRequestException("not a planet request, "+
+                        request.getRequestURL());
+            }
+            
+            // if there is more left of the path info then hold onto it
+            if(pathElements.length == 2) {
+                pathInfo = pathElements[1];
+            } else {
+                pathInfo = null;
+            }
+        }
+        
+        if(log.isDebugEnabled()) {
+            log.debug("planetHandle = "+this.planetHandle);
+            log.debug("pathInfo = "+this.pathInfo);
+        }
+    }
+

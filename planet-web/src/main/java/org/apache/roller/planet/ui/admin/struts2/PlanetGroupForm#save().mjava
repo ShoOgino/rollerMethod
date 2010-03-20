@@ -1,0 +1,24 @@
+    // TODO: Validation - check that group handle is unique within planet
+    // TODO: Validation - make sure that html is not allowed in handle or title
+    // TODO: Validation - make sure maxXXXEntries have a proper value range
+    public String save() {
+        // save a group group
+        log.debug("Saving Planet Group ...");
+        
+        try {
+            PlanetManager pMgr = PlanetFactory.getPlanet().getPlanetManager();
+            pMgr.saveGroup(this.group);
+            PlanetFactory.getPlanet().flush();
+            
+            // call setGroupid() just in case this was a new group with no id yet
+            setGroupid(this.group.getId());
+        } catch (PlanetException ex) {
+            log.error("Error saving planet group", ex);
+            setError("PlanetGroupForm.error.saveFailed");
+            return INPUT;
+        }
+        
+        setSuccess("PlanetGroupForm.message.saveSucceeded");
+        return INPUT;
+    }
+

@@ -1,0 +1,48 @@
+    // TODO: Validation - make sure that html is not allowed in title
+    public String save() {
+        // save a subscription
+        log.debug("Saving Planet Subscription ...");
+        
+        PlanetManager pMgr = PlanetFactory.getPlanet().getPlanetManager();
+        try {
+            if(this.subscription.getId() == null) {
+                // adding a new sub to a group, so make sure we have a group
+                PlanetGroup group = pMgr.getGroupById(getGroupid());
+                if(group == null) {
+                    setError("PlanetSubscriptionForm.error.groupNull");
+                    return INPUT;
+                }
+                
+                // check if this subscription already exists before adding it
+                Subscription sub = pMgr.getSubscription(this.subscription.getFeedURL());
+                if(sub != null) {
+                    this.subscription = sub;
+                } else {
+                    pMgr.saveSubscription(this.subscription);
+                    
+                    // set subid now that we have one
+                    setSubid(this.subscription.getId());
+                }
+                
+                // add the sub to the group
+                group.getSubscriptions().add(this.subscription);
+                this.subscription.getGroups().add(group);
+                pMgr.saveGroup(group);
+                
+            } else {
+                // updating and existing subscription, so just save it
+                pMgr.saveSubscription(this.subscription);
+            }
+            
+            // flush changes
+            PlanetFactory.getPlanet().flush();
+        } catch (PlanetException ex) {
+            log.error("Error saving subscription", ex);
+            setError("PlanetSubscriptionForm.error.saveFailed");
+            return INPUT;
+        }
+        
+        setSuccess("PlanetSubscriptionForm.message.saveSucceeded");
+        return INPUT;
+    }
+

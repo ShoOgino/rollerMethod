@@ -1,0 +1,14 @@
+    public String execute() {
+        try {
+            PlanetManager pMgr = PlanetFactory.getPlanet().getPlanetManager();
+            List planets = pMgr.getPlanets();
+            //Collections.sort(planets);
+            setPlanets(planets);
+        } catch(Exception e) {
+            log.error("PlanetsList.error.general", e);
+            return LIST;
+        }
+        
+        return LIST;
+    }
+

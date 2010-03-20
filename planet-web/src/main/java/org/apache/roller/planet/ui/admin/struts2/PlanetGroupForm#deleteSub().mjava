@@ -1,0 +1,33 @@
+    public String deleteSub() {
+        // delete a planet subscription
+        log.debug("Deleting Planet Subscription ...");
+        
+        PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
+        try {
+            if(!StringUtils.isEmpty(getSubid())) {
+                Subscription sub = pmgr.getSubscriptionById(getSubid());
+                if(sub == null) {
+                    setError("PlanetGroupForm.error.nullSubscription");
+                    return INPUT;
+                } else {
+                    PlanetGroup group = getGroup();
+                    group.getSubscriptions().remove(sub);
+                    sub.getGroups().remove(group);
+                    pmgr.saveGroup(group);
+                    PlanetFactory.getPlanet().flush();
+                }
+                
+                setSuccess("PlanetGroupForm.message.subscriptionDeleteSucceeded", sub.getTitle());
+            } else {
+                setError("PlanetGroupForm.error.subscriptionNull");
+            }
+            
+            return INPUT;
+            
+        } catch (PlanetException ex) {
+            log.error("Unable to lookup planet group", ex);
+            setError("PlanetGroupForm.error.subscriptionDeleteFailed", getSubid());
+            return INPUT;
+        }
+    }
+

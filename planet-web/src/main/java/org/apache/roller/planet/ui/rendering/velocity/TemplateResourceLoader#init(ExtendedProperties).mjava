@@ -1,0 +1,17 @@
+    /**
+     * @see org.apache.velocity.runtime.resource.loader.ResourceLoader#init(org.apache.commons.collections.ExtendedProperties)
+     */
+    public void init(ExtendedProperties config) {
+        
+        log.debug("TemplateResourceLoader : initialization starting.");
+        
+        if (templateDir == null) {
+            templateDir = PlanetConfig.getProperty("template.dir");
+            log.debug("Templates dir = "+templateDir);
+        }
+        
+        log.debug(config);
+        
+        log.debug("TemplateResourceLoader : initialization complete.");
+    }
+

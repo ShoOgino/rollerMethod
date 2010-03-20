@@ -1,0 +1,39 @@
+    /**
+     * Inspect incoming urls and see if they should be routed.
+     */
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+            throws IOException, ServletException {
+        
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) res;
+        
+        log.info("entering");
+        
+        // print out session details
+        HttpSession session = request.getSession(false);
+        if(session != null) {
+            log.info("inbound session contains:");
+            Enumeration foo = session.getAttributeNames();
+            while(foo.hasMoreElements()) {
+                String attr = (String) foo.nextElement();
+                log.info(attr+" = "+session.getAttribute("attr"));
+            }
+        }
+        
+        // keep going
+        chain.doFilter(request, response);
+        
+        // print out session details
+        session = request.getSession(false);
+        if(session != null) {
+            log.info("outbound session contains:");
+            Enumeration bar = session.getAttributeNames();
+            while(bar.hasMoreElements()) {
+                String attr = (String) bar.nextElement();
+                log.info(attr+" = "+session.getAttribute("attr"));
+            }
+        }
+        
+        log.info("exiting");
+    }
+

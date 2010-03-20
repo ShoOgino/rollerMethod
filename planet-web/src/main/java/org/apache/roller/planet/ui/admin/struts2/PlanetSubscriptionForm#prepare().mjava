@@ -1,0 +1,15 @@
+    /**
+     * Load relevant Subscription if possible.
+     */
+    public void prepare() throws Exception {
+        PlanetManager pMgr = PlanetFactory.getPlanet().getPlanetManager();
+        if(getSubid() != null && !"".equals(getSubid())) {
+            // load a planet subscription
+            log.debug("Loading Planet Subscription ...");
+            
+            subscription = pMgr.getSubscriptionById(getSubid());
+        } else {
+            subscription = new Subscription();
+        }
+    }
+
