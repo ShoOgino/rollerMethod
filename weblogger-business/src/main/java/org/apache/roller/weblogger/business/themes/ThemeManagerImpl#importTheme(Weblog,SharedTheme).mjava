@@ -3,27 +3,27 @@
      */
     public void importTheme(Weblog website, SharedTheme theme)
             throws WebloggerException {
-        
-        log.debug("Importing theme ["+theme.getName()+"] to weblog ["+website.getName()+"]");
-        
+
+        log.debug("Importing theme [" + theme.getName() + "] to weblog [" + website.getName() + "]");
+
         WeblogManager wmgr = roller.getWeblogManager();
 
         Set importedActionTemplates = new HashSet();
         ThemeTemplate themeTemplate = null;
         ThemeTemplate stylesheetTemplate = theme.getStylesheet();
         Iterator iter = theme.getTemplates().iterator();
-        while ( iter.hasNext() ) {
+        while (iter.hasNext()) {
             themeTemplate = (ThemeTemplate) iter.next();
 
             WeblogTemplate template = null;
 
             // if template is an action, lookup by action
-            if(themeTemplate.getAction() != null &&
-                    !themeTemplate.getAction().equals(WeblogTemplate.ACTION_CUSTOM)) {
+            if (themeTemplate.getAction() != null
+                    && !themeTemplate.getAction().equals(WeblogTemplate.ACTION_CUSTOM)) {
                 importedActionTemplates.add(themeTemplate.getAction());
                 template = wmgr.getPageByAction(website, themeTemplate.getAction());
 
-            // otherwise, lookup by name
+                // otherwise, lookup by name
             } else {
                 template = wmgr.getPageByName(website, themeTemplate.getName());
             }
@@ -42,7 +42,7 @@
 
             // update template attributes
             // NOTE: we don't want to copy the template data for an existing stylesheet
-            if(newTmpl || !themeTemplate.equals(stylesheetTemplate)) {
+            if (newTmpl || !themeTemplate.equals(stylesheetTemplate)) {
                 template.setAction(themeTemplate.getAction());
                 template.setName(themeTemplate.getName());
                 template.setDescription(themeTemplate.getDescription());
@@ -56,20 +56,20 @@
                 template.setLastModified(new Date());
 
                 // save it
-                wmgr.savePage( template );
+                wmgr.savePage(template);
             }
         }
 
         // now, see if the weblog has left over action templates that
         // need to be deleted because they aren't in their new theme
-        for(int i=0; i < WeblogTemplate.ACTIONS.length; i++) {
+        for (int i = 0; i < WeblogTemplate.ACTIONS.length; i++) {
             String action = WeblogTemplate.ACTIONS[i];
 
             // if we didn't import this action then see if it should be deleted
-            if(!importedActionTemplates.contains(action)) {
+            if (!importedActionTemplates.contains(action)) {
                 WeblogTemplate toDelete = wmgr.getPageByAction(website, action);
-                if(toDelete != null) {
-                    log.debug("Removing stale action template "+toDelete.getId());
+                if (toDelete != null) {
+                    log.debug("Removing stale action template " + toDelete.getId());
                     wmgr.removePage(toDelete);
                 }
             }
@@ -78,7 +78,7 @@
 
         // always update this weblog's theme and customStylesheet, then save
         website.setEditorTheme(WeblogTheme.CUSTOM);
-        if(theme.getStylesheet() != null) {
+        if (theme.getStylesheet() != null) {
             website.setCustomStylesheetPath(theme.getStylesheet().getLink());
         }
         wmgr.saveWeblog(website);
@@ -91,46 +91,69 @@
         Iterator iterat = resources.iterator();
         ThemeResource resource = null;
         MediaFileDirectory root = fileMgr.getMediaFileRootDirectory(website);
-        while ( iterat.hasNext() ) {
+        while (iterat.hasNext()) {
             resource = (ThemeResource) iterat.next();
 
-            log.debug("Importing resource to "+resource.getPath());
-
-            String justPath = resource.getPath()
-                .substring(resource.getPath().lastIndexOf("/"));
-
-            String justName = resource.getPath()
-                .substring(0, resource.getPath().lastIndexOf("/"));
+            log.debug("Importing resource " + resource.getPath());
 
             if (resource.isDirectory()) {
-
                 MediaFileDirectory mdir =
                     fileMgr.getMediaFileDirectoryByPath(website, resource.getPath());
                 if (mdir == null) {
+                    log.debug("    Creating directory: " + resource.getPath());
                     mdir = fileMgr.createMediaFileDirectory(root, resource.getPath());
                     roller.flush();
+                } else {
+                    log.debug("    No action: directory already exists");
                 }
 
             } else {
+                String resourcePath = resource.getPath();
 
-                MediaFileDirectory mdir =
-                    fileMgr.getMediaFileDirectoryByPath(website, justPath);
-                if (mdir == null) {
-                    mdir = fileMgr.createMediaFileDirectory(root, justPath);
+                MediaFileDirectory mdir = null;
+                String justName = null;
+                String justPath = null;
+
+                if (resourcePath.indexOf("/") == -1) {
+                    mdir = root;
+
+                } else {
+                    justPath = resourcePath.substring(0, resourcePath.lastIndexOf("/"));
+                    if (!justPath.startsWith("/")) justPath = "/" + justPath;
+                    justName = resourcePath.substring(resourcePath.lastIndexOf("/") + 1);
+                    mdir = fileMgr.getMediaFileDirectoryByPath(website, justPath);
+                    if (mdir == null) {
+                        log.debug("    Creating directory: " + justPath);
+                        mdir = fileMgr.createMediaFileDirectoryByPath(website, justPath);
+                        roller.flush();
+                    }
+                }
+
+                MediaFile oldmf = fileMgr.getMediaFileByOriginalPath(website, justPath + "/" + justName);
+                if (oldmf != null) {
+                    fileMgr.removeMediaFile(website, oldmf); 
                 }
 
                 // save file without file-type, quota checks, etc.
+                InputStream is = resource.getInputStream();
                 MediaFile mf = new MediaFile();
                 mf.setDirectory(mdir);
                 mf.setWeblog(website);
                 mf.setName(justName);
-                mf.setOriginalPath(justPath);
-                mf.setContentType("text/plain");
-                mf.setInputStream(resource.getInputStream());
+                mf.setOriginalPath(justPath + "/" + justName);
+                mf.setContentType(map.getContentType(justName)); 
+                mf.setInputStream(is);
                 mf.setLength(resource.getLength());
 
+                log.debug("    Saving file: " + justName);
                 RollerMessages errors = new RollerMessages();
                 fileMgr.createMediaFile(website, mf, errors);
+                try {
+                    resource.getInputStream().close();
+                } catch (IOException ex) {
+                    errors.addError("error.closingStream");
+                    log.debug("ERROR closing inputstream");
+                }
                 if (errors.getErrorCount() > 0) {
                     throw new WebloggerException(errors.toString());
                 }

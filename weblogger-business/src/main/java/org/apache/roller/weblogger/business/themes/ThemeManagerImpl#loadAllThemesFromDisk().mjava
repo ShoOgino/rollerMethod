@@ -3,12 +3,13 @@
      * themes stored on the filesystem in the roller webapp /themes/ directory.
      */
     private Map loadAllThemesFromDisk() {
-        
-        Map themes = new HashMap();
-        
+
+        Map themeMap = new HashMap();
+
         // first, get a list of the themes available
         File themesdir = new File(this.themeDir);
         FilenameFilter filter = new FilenameFilter() {
+
             public boolean accept(File dir, String name) {
                 File file =
                         new File(dir.getAbsolutePath() + File.separator + name);
@@ -16,25 +17,25 @@
             }
         };
         String[] themenames = themesdir.list(filter);
-        
-        if(themenames == null) {
-            log.warn("No themes loaded!  Perhaps you specified the wrong "+
-                    "location for your themes directory?");
+
+        if (themenames == null) {
+            log.warn("No themes loaded!  Perhaps you specified the wrong "
+                    + "location for your themes directory?");
         }
-        
+
         // now go through each theme and load it into a Theme object
-        for(int i=0; i < themenames.length; i++) {
+        for (int i = 0; i < themenames.length; i++) {
             try {
                 Theme theme = new SharedThemeFromDir(this.themeDir + File.separator + themenames[i]);
-                if(theme != null) {
-                    themes.put(theme.getId(), theme);
+                if (theme != null) {
+                    themeMap.put(theme.getId(), theme);
                 }
             } catch (Throwable unexpected) {
                 // shouldn't happen, so let's learn why it did
                 log.error("Problem reading theme " + themenames[i], unexpected);
             }
         }
-        
-        return themes;
+
+        return themeMap;
     }
 
