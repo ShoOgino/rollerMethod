@@ -4,7 +4,8 @@
      * This LRU cache supports timeouts, so if the cached object has expired
      * then we return null, just as if the entry wasn't found.
      */
-    public Object get(String key) {
+    @Override
+    public synchronized Object get(String key) {
         
         Object value = null;
         ExpiringCacheEntry entry = null;

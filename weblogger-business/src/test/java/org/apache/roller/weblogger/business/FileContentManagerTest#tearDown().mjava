@@ -1,6 +1,7 @@
+    @Override
     public void tearDown() throws Exception {
         PropertiesManager pmgr = WebloggerFactory.getWeblogger().getPropertiesManager();
-        Map config = config = pmgr.getProperties();
+        Map config = pmgr.getProperties();
         ((RuntimeConfigProperty) config.get("uploads.dir.maxsize")).setValue("30000");
         ((RuntimeConfigProperty) config.get("uploads.types.forbid")).setValue("");
         ((RuntimeConfigProperty) config.get("uploads.types.allowed")).setValue("");
