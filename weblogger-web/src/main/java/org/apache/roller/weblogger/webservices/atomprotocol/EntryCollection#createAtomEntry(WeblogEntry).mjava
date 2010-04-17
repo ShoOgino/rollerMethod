@@ -7,7 +7,7 @@
         Entry atomEntry = new Entry();
         
         String absUrl = WebloggerRuntimeConfig.getAbsoluteContextURL();
-        atomEntry.setId(        absUrl + entry.getPermaLink());
+        atomEntry.setId(        entry.getPermalink());
         atomEntry.setTitle(     entry.getTitle());
         atomEntry.setPublished( entry.getPubTime());
         atomEntry.setUpdated(   entry.getUpdateTime());
@@ -51,7 +51,7 @@
         
         Link altlink = new Link();
         altlink.setRel("alternate");
-        altlink.setHref(absUrl + entry.getPermaLink());
+        altlink.setHref(entry.getPermalink());
         List altlinks = new ArrayList();
         altlinks.add(altlink);
         atomEntry.setAlternateLinks(altlinks);

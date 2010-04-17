@@ -1,4 +1,4 @@
-    public String postMedia(AtomRequest areq, Entry entry) throws AtomException {
+    public Entry postMedia(AtomRequest areq, Entry entry) throws AtomException {
         log.debug("Entering");
         String[] pathInfo = StringUtils.split(areq.getPathInfo(),"/");
 
@@ -31,8 +31,12 @@
                                         
                     // Parse pathinfo to determine file path
                     String path = filePathFromPathInfo(pathInfo);
-                    String justPath = path.substring(path.lastIndexOf("/"));
-                    String justName = path.substring(0, path.lastIndexOf("/"));
+                    String justPath = path;
+                    int lastSlash = path.lastIndexOf("/");
+                    if (lastSlash > -1) {
+                        justPath = path.substring(lastSlash);
+                    }
+
                     MediaFileDirectory mdir =
                         fileMgr.getMediaFileDirectoryByPath(website, justPath);
 
@@ -68,7 +72,7 @@
                         Link link = (Link)it.next();
                         if ("edit".equals(link.getRel())) {
                             log.debug("Exiting");
-                            return link.getHrefResolved();
+                            return mediaEntry;
                         }
                     }
                     log.error("ERROR: no edit link found in saved media entry");

@@ -1,4 +1,4 @@
-    public String postEntry(AtomRequest areq, Entry entry) throws AtomException {
+    public Entry postEntry(AtomRequest areq, Entry entry) throws AtomException {
         log.debug("Entering");
         String[] pathInfo = StringUtils.split(areq.getPathInfo(),"/");
         try {
@@ -29,13 +29,14 @@
             if (rollerEntry.isPublished()) {
                 roller.getIndexManager().addEntryReIndexOperation(rollerEntry);
             }
-            
+
+            rollerEntry = mgr.getWeblogEntry(rollerEntry.getId());
             Entry newEntry = createAtomEntry(rollerEntry);
             for (Iterator it = newEntry.getOtherLinks().iterator(); it.hasNext();) {
                 Link link = (Link)it.next();
                 if ("edit".equals(link.getRel())) {
                     log.debug("Exiting");
-                    return link.getHrefResolved();
+                    return createAtomEntry(rollerEntry);
                 }
             }
             log.error("ERROR: no edit link found in saved media entry");

@@ -4,7 +4,7 @@
      * TODO: do we need to handle mutli-part MIME uploads?
      * TODO: use Jakarta Commons File-upload?
      */
-    public String postMedia(AtomRequest areq, Entry entry)
+    public Entry postMedia(AtomRequest areq, Entry entry)
             throws AtomException {
         MediaCollection mcol = new MediaCollection(user, atomURL);
         return mcol.postMedia(areq, entry);

@@ -1,7 +1,7 @@
     private Entry createAtomResourceEntry(Weblog website, MediaFile file) {
-        String absUrl = WebloggerRuntimeConfig.getAbsoluteContextURL();
-        String filePath = 
-            file.getPath().startsWith("/") ? file.getPath().substring(1) : file.getPath();
+        String filePath = file.getPath().endsWith("/")
+                ? file.getPath() + file.getName()
+                : file.getPath() + "/" + file.getName();
         String editURI = 
                 atomURL+"/"+website.getHandle()
                 + "/resource/" + filePath + ".media-link";
@@ -9,7 +9,6 @@
                 atomURL+"/"+ website.getHandle()
                 + "/resource/" + filePath;
         URLStrategy urlStrategy = WebloggerFactory.getWeblogger().getUrlStrategy();
-        String viewURI = urlStrategy.getWeblogResourceURL(website, filePath, true);
         
         String contentType = Utilities.getContentTypeFromFileName(file.getName());
         
@@ -18,7 +17,14 @@
         entry.setTitle(file.getName());
         entry.setUpdated(new Date(file.getLastModified()));
         
-        List otherlinks = new ArrayList();        
+        Link altlink = new Link();
+        altlink.setRel("alternate");
+        altlink.setHref(file.getPermalink());
+        List altlinks = new ArrayList();
+        altlinks.add(altlink);
+        entry.setAlternateLinks(altlinks);
+
+        List otherlinks = new ArrayList();
         entry.setOtherLinks(otherlinks);
         Link editlink = new Link();
             editlink.setRel("edit");
@@ -30,7 +36,7 @@
             otherlinks.add(editMedialink);
         
         Content content = new Content();
-        content.setSrc(viewURI);
+        content.setSrc(file.getPermalink());
         content.setType(contentType);
         List contents = new ArrayList();
         contents.add(content);
