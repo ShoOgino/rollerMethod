@@ -3,6 +3,7 @@
      *
      * Here we handle incoming comment postings.
      */
+    @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
         
@@ -82,7 +83,7 @@
         comment.setEmail(commentRequest.getEmail());
         comment.setUrl(commentRequest.getUrl());
         comment.setContent(commentRequest.getContent());
-        comment.setNotify(new Boolean(commentRequest.isNotify()));
+        comment.setNotify(Boolean.valueOf(commentRequest.isNotify()));
         comment.setWeblogEntry(entry);
         comment.setRemoteHost(request.getRemoteHost());
         comment.setPostTime(new Timestamp(System.currentTimeMillis()));
@@ -149,7 +150,7 @@
                     Iterator errors = messages.getErrors();
                     RollerMessage errorKey = null;
                     
-                    StringBuffer buf = new StringBuffer();
+                    StringBuilder buf = new StringBuilder();
                     buf.append("<ul>");
                     while(errors.hasNext()) {
                         errorKey = (RollerMessage)errors.next();
