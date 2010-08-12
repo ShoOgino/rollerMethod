@@ -1,4 +1,7 @@
     public void setRefererUrl(String refererUrl) {
         this.refererUrl = refererUrl;
+        if (this.refererUrl != null && this.refererUrl.length() > 255) {
+            this.refererUrl = this.refererUrl.substring(0, 255);
+        }
     }
 

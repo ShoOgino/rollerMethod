@@ -6,6 +6,7 @@
             String excerpt, Boolean visible,
             Boolean duplicate, Integer dayHits,
             Integer totalHits) {
+        
         //this.id = id;
         this.website = website;
         this.weblogEntry = weblogEntry;
@@ -19,5 +20,9 @@
         this.duplicate = duplicate;
         this.dayHits = dayHits;
         this.totalHits = totalHits;
+
+        if (this.refererUrl != null && this.refererUrl.length() > 255) {
+            this.refererUrl = this.refererUrl.substring(0, 254);
+        }
     }
 
