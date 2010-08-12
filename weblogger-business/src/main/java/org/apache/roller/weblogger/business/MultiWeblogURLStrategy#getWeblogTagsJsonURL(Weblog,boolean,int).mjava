@@ -5,7 +5,7 @@
                                                     boolean absolute,
                                                     int pageNum) {
         
-        StringBuffer url = new StringBuffer();
+        StringBuilder url = new StringBuilder();
         
         if (absolute) {
             url.append(WebloggerRuntimeConfig.getAbsoluteContextURL());
@@ -24,7 +24,7 @@
         }
         
         if (pageNum > 0) {
-            url.append("?page=" + pageNum);
+            url.append("?page=").append(pageNum);
         }
         
         return url.toString();

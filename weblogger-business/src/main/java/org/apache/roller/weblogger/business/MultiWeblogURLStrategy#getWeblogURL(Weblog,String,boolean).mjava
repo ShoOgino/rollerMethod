@@ -5,7 +5,7 @@
                                             String locale,
                                             boolean absolute) {
 
-        StringBuffer url = new StringBuffer();
+        StringBuilder url = new StringBuilder();
         if (absolute) {
             String weblogAbsoluteURL =
                 WebloggerConfig.getProperty("weblog.absoluteurl." + weblog.getHandle());
@@ -20,7 +20,7 @@
 
         url.append("/").append(weblog.getHandle()).append("/");
 
-        if(locale != null) {
+        if (locale != null) {
             url.append(locale).append("/");
         }
 
