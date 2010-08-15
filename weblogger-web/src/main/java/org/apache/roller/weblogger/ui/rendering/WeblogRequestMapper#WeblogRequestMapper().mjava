@@ -7,9 +7,7 @@
                 WebloggerConfig.getProperty("rendering.weblogMapper.rollerProtectedUrls");
         if(restrictList != null && restrictList.trim().length() > 0) {
             String[] restrict = restrictList.split(",");
-            for(int i=0; i < restrict.length; i++) {
-                this.restricted.add(restrict[i]);
-            }
+            this.restricted.addAll(Arrays.asList(restrict));
         }
         
         // add user restricted list
@@ -17,9 +15,7 @@
                 WebloggerConfig.getProperty("rendering.weblogMapper.userProtectedUrls");
         if(restrictList != null && restrictList.trim().length() > 0) {
             String[] restrict = restrictList.split(",");
-            for(int i=0; i < restrict.length; i++) {
-                this.restricted.add(restrict[i]);
-            }
+            this.restricted.addAll(Arrays.asList(restrict));
         }
     }
 
