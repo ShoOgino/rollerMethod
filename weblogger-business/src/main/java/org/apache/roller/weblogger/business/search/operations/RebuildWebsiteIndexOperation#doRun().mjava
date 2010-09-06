@@ -1,18 +1,22 @@
     public void doRun() {
+
         Date start = new Date();
         
         // since this operation can be run on a separate thread we must treat
         // the weblog object passed in as a detached object which is proned to
         // lazy initialization problems, so requery for the object now
-        if(this.website != null) {
+        if ( this.website != null) {
+            mLogger.debug("Reindexining weblog " + website.getHandle());
             try {
                 this.website = roller.getWeblogManager().getWeblog(this.website.getId());
             } catch (WebloggerException ex) {
                 mLogger.error("Error getting website object", ex);
                 return;
             }
+        } else {
+            mLogger.debug("Reindexining entire site");
         }
-        
+
         IndexReader reader = beginDeleting();
         
         try {
@@ -42,10 +46,7 @@
         try {
             if (writer != null) {
                 WeblogEntryManager weblogManager = roller.getWeblogEntryManager();
-                
-                
-                List entries = weblogManager .getWeblogEntries(
-                        
+                List entries = weblogManager .getWeblogEntries(                        
                         website,                   // website            
                         null,
                         null,                      // startDate
@@ -57,6 +58,7 @@
                         null, 
                         null,
                         0, -1);     // offset, length, locale
+                mLogger.debug("Entries to index: " + entries.size());
                 for (Iterator wbItr = entries.iterator(); wbItr.hasNext();) {
                     WeblogEntry entry = (WeblogEntry) wbItr.next();
                     writer.addDocument(getDocument(entry));
