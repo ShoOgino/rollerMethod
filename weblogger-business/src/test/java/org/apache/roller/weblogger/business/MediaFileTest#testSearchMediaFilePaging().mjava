@@ -32,6 +32,7 @@
             mediaFile.setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
             mediaFile.setContentType("image/jpeg");
             mfMgr.createMediaFile(testWeblog, mediaFile, new RollerMessages());
+            rootDirectory.getMediaFiles().add(mediaFile);
             assertNotNull(mediaFile.getId());
             assertNotNull(mediaFile.getId().length() > 0);
         }
@@ -53,7 +54,7 @@
         List<MediaFile> searchResults2 = mfMgr.searchMediaFiles(testWeblog, filter2);
         assertFalse(searchResults2.isEmpty());
         assertEquals(3, searchResults2.size());
-        assertEquals("test_file5.jpg", searchResults2.get(0).getName());
+        assertEquals("test_file13.jpg", searchResults2.get(0).getName());
 
         MediaFileFilter filter3 = new MediaFileFilter();
         filter3.setSize(1000);
@@ -63,7 +64,7 @@
         List<MediaFile> searchResults3 = mfMgr.searchMediaFiles(testWeblog, filter3);
         assertFalse(searchResults3.isEmpty());
         assertEquals(2, searchResults3.size());
-        assertEquals("test_file13.jpg", searchResults3.get(0).getName());
+        assertEquals("test_file8.jpg", searchResults3.get(0).getName());
 
         MediaFileFilter filter4 = new MediaFileFilter();
         filter4.setSize(1000);
@@ -73,7 +74,7 @@
         List<MediaFile> searchResults4 = mfMgr.searchMediaFiles(testWeblog, filter4);
         assertFalse(searchResults4.isEmpty());
         assertEquals(1, searchResults4.size());
-        assertEquals("test_file14.jpg", searchResults4.get(0).getName());
+        assertEquals("test_file9.jpg", searchResults4.get(0).getName());
 
         TestUtils.endSession(true);
         TestUtils.teardownWeblog(testWeblog.getId());

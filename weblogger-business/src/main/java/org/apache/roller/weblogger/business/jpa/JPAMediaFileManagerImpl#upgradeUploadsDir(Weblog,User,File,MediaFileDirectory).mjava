@@ -11,7 +11,7 @@
         int dirCount = 0;
         int fileCount = 0;
         File[] files = oldDir.listFiles();
-        for (int i=0; i<files.length; i++) {
+        for (int i = 0; i < files.length; i++) {
 
             // a directory: go recursive
             if (files[i].isDirectory()) {
@@ -19,7 +19,7 @@
                 if (newDir.hasDirectory(files[i].getName())) {
                     // already have a mediafile directory for that
                     upgradeUploadsDir(weblog, user, files[i],
-                        newDir.getChildDirectory(files[i].getName()));
+                            newDir.getChildDirectory(files[i].getName()));
 
                 } else {
                     // need to create a new mediafile directory
@@ -27,13 +27,13 @@
                     try {
                         subDir = newDir.createNewDirectory(files[i].getName());
                         roller.getMediaFileManager().createMediaFileDirectory(subDir);
+                        newDir.getChildDirectories().add(subDir);
                         roller.flush();
-
                         dirCount++;
 
                     } catch (WebloggerException ex) {
                         log.error("ERROR creating directory: "
-                            + newDir.getPath() + "/" + files[i].getName());
+                                + newDir.getPath() + "/" + files[i].getName());
                     }
                     upgradeUploadsDir(weblog, user, files[i], subDir);
                 }
@@ -43,12 +43,12 @@
                 // check to make sure that file does not already exist
                 if (newDir.hasMediaFile(files[i].getName())) {
                     log.debug("    Skipping file that already exists: "
-                        + files[i].getName());
-                
+                            + files[i].getName());
+
                 } else {
 
-                    String originalPath = 
-                        ("/".equals(newDir.getPath()) ? "" : newDir.getPath()) + "/" + files[i].getName();
+                    String originalPath =
+                            ("/".equals(newDir.getPath()) ? "" : newDir.getPath()) + "/" + files[i].getName();
                     log.debug("    Upgrade file with original path: " + originalPath);
                     MediaFile mf = new MediaFile();
                     try {
@@ -67,7 +67,7 @@
                         mf.setLength(files[i].length());
                         mf.setInputStream(new FileInputStream(files[i]));
                         mf.setContentType(Utilities.getContentTypeFromFileName(files[i].getName()));
-
+                        newDir.getMediaFiles().add(mf);
 
                         this.roller.getMediaFileManager().createMediaFile(weblog, mf, messages);
                         log.info(messages.toString());

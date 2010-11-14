@@ -4,6 +4,7 @@
     public void testAutoPingCRUD() throws Exception {
         
         AutoPingManager mgr = WebloggerFactory.getWeblogger().getAutopingManager();
+        PingTargetManager pingMgr = WebloggerFactory.getWeblogger().getPingTargetManager();
         AutoPing autoPing = null;
         
         // create ping target to use for tests
@@ -24,7 +25,7 @@
         assertEquals(pingTarget, autoPing.getPingTarget());
         
         // update autoPing
-        autoPing.setPingTarget(pingTarget2);
+        autoPing.setPingTarget(pingMgr.getPingTarget(pingTarget2.getId()));
         mgr.saveAutoPing(autoPing);
         TestUtils.endSession(true);
         

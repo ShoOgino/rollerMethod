@@ -3,7 +3,7 @@
             FileContentManager cmgr = WebloggerFactory.getWeblogger().getFileContentManager();
             FileContent fc = cmgr.getFileContent(mediaFile.getWeblog(), mediaFile.getId());
             BufferedImage img = null;
-            
+
             img = ImageIO.read(fc.getInputStream());
 
             // determine and save width and height
@@ -27,7 +27,7 @@
             ImageIO.write(tmp, "png", baos);
 
             cmgr.saveFileContent(mediaFile.getWeblog(), mediaFile.getId() + "_sm",
-                new ByteArrayInputStream(baos.toByteArray()));
+                    new ByteArrayInputStream(baos.toByteArray()));
 
         } catch (Exception e) {
             log.debug("ERROR creating thumbnail", e);

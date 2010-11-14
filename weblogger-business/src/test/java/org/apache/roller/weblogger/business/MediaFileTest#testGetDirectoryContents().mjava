@@ -17,12 +17,15 @@
 
         MediaFileDirectory directory1 = new MediaFileDirectory(rootDirectory, "dir1", "directory 1", testWeblog);
         mfMgr.createMediaFileDirectory(directory1);
+        rootDirectory.getChildDirectories().add(directory1);
 
         MediaFileDirectory directory2 = new MediaFileDirectory(rootDirectory, "dir2", "directory 2", testWeblog);
         mfMgr.createMediaFileDirectory(directory2);
+        rootDirectory.getChildDirectories().add(directory2);
 
         MediaFileDirectory directory3 = new MediaFileDirectory(rootDirectory, "dir3", "directory 3", testWeblog);
         mfMgr.createMediaFileDirectory(directory3);
+        rootDirectory.getChildDirectories().add(directory3);
 
 
         MediaFile mediaFile = new MediaFile();
@@ -35,6 +38,7 @@
         mediaFile.setLength(4000);
         mediaFile.setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
         mediaFile.setContentType("image/jpeg");
+        rootDirectory.getMediaFiles().add(mediaFile);
         mfMgr.createMediaFile(testWeblog, mediaFile, new RollerMessages());
 
         MediaFile mediaFile2 = new MediaFile();
@@ -47,6 +51,7 @@
         mediaFile2.setLength(4000);
         mediaFile2.setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
         mediaFile2.setContentType("image/jpeg");
+        rootDirectory.getMediaFiles().add(mediaFile2);
         mfMgr.createMediaFile(testWeblog, mediaFile2, new RollerMessages());
 
         TestUtils.endSession(true);

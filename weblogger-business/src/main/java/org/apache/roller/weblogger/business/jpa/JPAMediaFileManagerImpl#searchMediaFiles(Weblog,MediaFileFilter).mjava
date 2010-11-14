@@ -91,6 +91,8 @@
                     break;
                 default:
             }
+        } else {
+            orderBy.append(" order by m.name");
         }
 
         Query query = strategy.getDynamicQuery(queryString.toString() + whereClause.toString() + orderBy.toString());

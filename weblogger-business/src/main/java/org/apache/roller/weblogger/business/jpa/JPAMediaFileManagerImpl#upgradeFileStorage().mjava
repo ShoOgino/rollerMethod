@@ -13,41 +13,43 @@
                 // loop through weblogs found in uploads directory
                 File uploadsDir = new File(oldDirName);
                 File[] dirs = uploadsDir.listFiles();
-                for (int i=0; i<dirs.length; i++) {
+                if (null != dirs) {
+                    for (int i = 0; i < dirs.length; i++) {
 
-                    if (dirs[i].isDirectory()) {
-                        WeblogManager wmgr = this.roller.getWeblogManager(); 
-                        Weblog weblog = wmgr.getWeblogByHandle(dirs[i].getName(), null);
-                        if (weblog != null) {
+                        if (dirs[i].isDirectory()) {
+                            WeblogManager wmgr = this.roller.getWeblogManager();
+                            Weblog weblog = wmgr.getWeblogByHandle(dirs[i].getName(), null);
+                            if (weblog != null) {
 
-                            log.info("Migrating weblog: " + weblog.getHandle());
-                            
-                            // use 1st admin user found as file creator
-                            List<User> users = wmgr.getWeblogUsers(weblog, true);
-                            User chosenUser = users.get(0);
-                            for (User user: users) {
-                                chosenUser = user;
-                                if (user.hasGlobalPermission("admin")) {
-                                    break;
-                                }
-                            }
+                                log.info("Migrating weblog: " + weblog.getHandle());
 
-                            try {
-                                // create weblog's mediafile directory if needed
-                                MediaFileDirectory root =
-                                    this.getMediaFileRootDirectory(weblog);
-                                if (root == null) {
-                                    root = this.createRootMediaFileDirectory(weblog);
-                                    roller.flush();
+                                // use 1st admin user found as file creator
+                                List<User> users = wmgr.getWeblogUsers(weblog, true);
+                                User chosenUser = users.get(0);
+                                for (User user : users) {
+                                    chosenUser = user;
+                                    if (user.hasGlobalPermission("admin")) {
+                                        break;
+                                    }
                                 }
 
-                                // upgrade!
-                                upgradeUploadsDir(weblog, chosenUser,
-                                  new File(oldDirName + FS + dirs[i].getName()),
-                                  root);
+                                try {
+                                    // create weblog's mediafile directory if needed
+                                    MediaFileDirectory root =
+                                            this.getMediaFileRootDirectory(weblog);
+                                    if (root == null) {
+                                        root = this.createRootMediaFileDirectory(weblog);
+                                        roller.flush();
+                                    }
 
-                            } catch (Throwable t) {
-                                log.error("ERROR upgading weblog", t);
+                                    // upgrade!
+                                    upgradeUploadsDir(weblog, chosenUser,
+                                            new File(oldDirName + FS + dirs[i].getName()),
+                                            root);
+
+                                } catch (Throwable t) {
+                                    log.error("ERROR upgading weblog", t);
+                                }
                             }
                         }
                     }
@@ -56,12 +58,12 @@
                 Properties props = new Properties();
                 props.setProperty("complete", "true");
                 props.store(new FileOutputStream(oldDirName
-                    + File.separator + MIGRATION_STATUS_FILENAME),
-                    "Migration is complete!");
+                        + File.separator + MIGRATION_STATUS_FILENAME),
+                        "Migration is complete!");
 
             } catch (Exception ioex) {
-		    log.error("ERROR upgrading", ioex);
-	    }
+                log.error("ERROR upgrading", ioex);
+            }
         }
         msgs.add("Migration complete!");
         return msgs;

@@ -25,6 +25,8 @@
             mf.setWeblog(testWeblog);
             mf.setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
             mf.setContentType("image/jpeg");
+            rootDirectory = mfMgr.getMediaFileDirectory(rootDirectory.getId());
+            rootDirectory.getMediaFiles().add(mf);
 
             MediaFileTag tag = new MediaFileTag("work", mf);
             Set<MediaFileTag> tags = new HashSet<MediaFileTag>();
@@ -52,6 +54,8 @@
             mf.setWeblog(testWeblog);
             mf.setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
             mf.setContentType("image/jpeg");
+            rootDirectory = mfMgr.getMediaFileDirectory(rootDirectory.getId());
+            rootDirectory.getMediaFiles().add(mf);
 
             MediaFileTag tag = new MediaFileTag("home", mf);
             Set<MediaFileTag> tags = new HashSet<MediaFileTag>();
@@ -79,6 +83,8 @@
             mf.setDirectory(rootDirectory);
             mf.setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
             mf.setContentType("image/jpeg");
+            rootDirectory = mfMgr.getMediaFileDirectory(rootDirectory.getId());
+            rootDirectory.getMediaFiles().add(mf);
 
             MediaFileTag tag = new MediaFileTag("home", mf);
             Set<MediaFileTag> tags = new HashSet<MediaFileTag>();

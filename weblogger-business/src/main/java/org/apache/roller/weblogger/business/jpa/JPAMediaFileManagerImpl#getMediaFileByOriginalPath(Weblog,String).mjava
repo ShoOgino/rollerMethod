@@ -1,11 +1,13 @@
     /**
      * {@inheritDoc}
      */
-    public MediaFile getMediaFileByOriginalPath(Weblog weblog, String origpath) 
+    public MediaFile getMediaFileByOriginalPath(Weblog weblog, String origpath)
             throws WebloggerException {
 
-        if (!origpath.startsWith("/")) origpath = "/" + origpath;
-        
+        if (!origpath.startsWith("/")) {
+            origpath = "/" + origpath;
+        }
+
         Query q = this.strategy.getNamedQuery(
                 "MediaFile.getByWeblogAndOrigpath");
         q.setParameter(1, weblog);

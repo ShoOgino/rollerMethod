@@ -18,6 +18,9 @@
         
         for(Iterator iter = results.iterator(); iter.hasNext();) {
             WeblogEntryTag tagData = (WeblogEntryTag) iter.next();
+            if (tagData.getWeblogEntry() != null) {
+                tagData.getWeblogEntry().getTags().remove(tagData);
+            }
             this.strategy.remove(tagData);
         }
         
@@ -92,10 +95,13 @@
         this.strategy.flush();
 
         // remove mediafile metadata
-        List<MediaFileDirectory> dirs = mmgr.getMediaFileDirectories(website);
-        for (MediaFileDirectory dir : dirs) {
-            this.strategy.remove(dir);
-        }
+        // remove uploaded files
+        MediaFileManager mfmgr = WebloggerFactory.getWeblogger().getMediaFileManager();
+        mfmgr.removeAllFiles(website);
+        //List<MediaFileDirectory> dirs = mmgr.getMediaFileDirectories(website);
+        //for (MediaFileDirectory dir : dirs) {
+            //this.strategy.remove(dir);
+        //}
         this.strategy.flush();
 
         // remove entries
@@ -122,10 +128,6 @@
         
         // flush the changes before returning. This is required as there is a
         // circular dependency between WeblogCategory and Weblog
-        this.strategy.flush();
-        
-        // remove uploaded files
-        MediaFileManager mfmgr = WebloggerFactory.getWeblogger().getMediaFileManager();
-        mfmgr.removeAllFiles(website);
+        this.strategy.flush();        
     }
 

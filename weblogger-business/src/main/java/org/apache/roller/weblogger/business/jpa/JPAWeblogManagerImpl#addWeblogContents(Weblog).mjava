@@ -28,6 +28,7 @@
                         splitcats[i],    // description
                         null );          // image
                 if (i == 0) firstCat = c;
+                rootCat.getWeblogCategories().add(c);
                 this.strategy.store(c);
             }
         }
@@ -62,6 +63,7 @@
                             zero,                // priority
                             null);               // image
                     this.strategy.store(b);
+                    root.getBookmarks().add(b);
                 }
             }
         }

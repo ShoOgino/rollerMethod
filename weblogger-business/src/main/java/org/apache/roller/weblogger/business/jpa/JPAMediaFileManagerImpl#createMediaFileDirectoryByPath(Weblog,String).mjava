@@ -20,7 +20,7 @@
             // Use createRootMediaFileDirectory instead
             throw new WebloggerException("Invalid path!");
         }
-        
+
         int lastPathIndex = path.lastIndexOf("/");
 
         MediaFileDirectory newDirectory = null;
@@ -60,7 +60,7 @@
                 } else {
                     base = possibleBase;
                 }
-            }           
+            }
             if (!created || !requestedPath.equals(base.getPath())) {
                 throw new WebloggerException("ERROR directory not created");
             }

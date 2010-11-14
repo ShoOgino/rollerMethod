@@ -1,11 +1,17 @@
-    public void removeMediaFileDirectory(MediaFileDirectory dir) 
+    public void removeMediaFileDirectory(MediaFileDirectory dir)
             throws WebloggerException {
-
-        if (dir == null) return;
-        
+        if (dir == null) {
+            return;
+        }
+        FileContentManager cmgr = WebloggerFactory.getWeblogger().getFileContentManager();
         Set<MediaFile> files = dir.getMediaFiles();
         for (MediaFile mf : files) {
-            this.removeMediaFile(dir.getWeblog(), mf);
+            try {
+                cmgr.deleteFile(dir.getWeblog(), mf.getId());
+            } catch (FileNotFoundException e) {
+                log.debug("File to be deleted already unavailable in the file store");
+            }
+            this.strategy.remove(mf);
         }
         Set<MediaFileDirectory> dirs = dir.getChildDirectories();
         for (MediaFileDirectory md : dirs) {

@@ -31,6 +31,7 @@
             mediaFile.setWeblog(testWeblog);
             mediaFile.setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
             mediaFile.setContentType(contentTypes[i]);
+            rootDirectory.getMediaFiles().add(mediaFile);
             mfMgr.createMediaFile(testWeblog, mediaFile, new RollerMessages());
             assertNotNull(mediaFile.getId());
             assertNotNull(mediaFile.getId().length() > 0);

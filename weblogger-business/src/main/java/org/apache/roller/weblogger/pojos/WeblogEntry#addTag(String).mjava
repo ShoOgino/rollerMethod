@@ -5,8 +5,8 @@
      * @throws WebloggerException
      */
     public void addTag(String name) throws WebloggerException {
-        Locale locale = getWebsite() != null ? getWebsite().getLocaleInstance() : Locale.getDefault();
-        name = Utilities.normalizeTag(name, locale);
+        Locale localeObject = getWebsite() != null ? getWebsite().getLocaleInstance() : Locale.getDefault();
+        name = Utilities.normalizeTag(name, localeObject);
         if(name.length() == 0)
             return;
         
