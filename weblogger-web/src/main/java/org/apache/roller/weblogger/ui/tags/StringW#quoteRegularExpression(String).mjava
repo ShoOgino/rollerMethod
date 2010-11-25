@@ -1,0 +1,30 @@
+    /**
+     * Quote a string so that it may be used in a regular expression 
+     * without any parts of the string being considered as a 
+     * part of the regular expression's control characters.
+     */
+    static public String quoteRegularExpression(String str) {
+        // replace ? + * / . ^ $ as long as they're not in character 
+        // class. so must be done by hand
+        char[] chrs = str.toCharArray();
+        int sz = chrs.length;
+        StringBuffer buffer = new StringBuffer(2*sz);
+        for(int i=0; i<sz; i++) {
+            switch(chrs[i]) {
+              case '[' :
+              case ']' :
+              case '?' :
+              case '+' :
+              case '*' :
+              case '/' :
+              case '.' :
+              case '^' :
+              case '$' :
+                buffer.append("\\");
+              default : 
+                buffer.append(chrs[i]);
+            }
+        }
+        return buffer.toString();
+    }
+

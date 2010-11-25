@@ -1,0 +1,25 @@
+    /**
+     * Remove any xml tags from a String.
+     * Same as HtmlW's method.
+     */
+    static public String removeXml(String str) {
+        int sz = str.length();
+        StringBuffer buffer = new StringBuffer(sz);
+        boolean inString = false;
+        boolean inTag = false;
+        for(int i=0; i<sz; i++) {
+            char ch = str.charAt(i);
+            if(ch == '<') {
+                inTag = true;
+            } else
+            if(ch == '>') {
+                inTag = false;
+                continue;
+            }
+            if(!inTag) {
+                buffer.append(ch);
+            }
+        }
+        return buffer.toString();
+    }
+
