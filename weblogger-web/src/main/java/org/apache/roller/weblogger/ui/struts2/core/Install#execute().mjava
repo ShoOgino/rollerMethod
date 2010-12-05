@@ -28,7 +28,10 @@
             setPageTitle("installer.database.upgrade.pageTitle");
             return UPGRADE_DATABASE;
         }
+        
         setPageTitle("installer.error.unknown.pageTitle");        
+        rootCauseException = new Exception("UNKNOWN ERROR");
+        rootCauseException.fillInStackTrace();
         return BOOTSTRAP;
     }
 

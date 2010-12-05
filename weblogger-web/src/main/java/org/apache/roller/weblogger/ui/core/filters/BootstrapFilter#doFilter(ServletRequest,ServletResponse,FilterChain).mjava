@@ -6,9 +6,11 @@
         
         log.debug("Entered "+request.getRequestURI());
         
-        if (!WebloggerFactory.isBootstrapped() &&
-                "auto".equals(WebloggerConfig.getProperty("installation.type")) &&
-                !isInstallUrl(request.getServletPath())) {
+        if ("auto".equals(WebloggerConfig.getProperty("installation.type"))
+                && !WebloggerFactory.isBootstrapped() 
+                && !isInstallUrl(request.getRequestURI())) {
+                    
+            log.debug("Forwarding to install page");
             
             // we doing an install, so forward to installer
             RequestDispatcher rd = context.getRequestDispatcher(
