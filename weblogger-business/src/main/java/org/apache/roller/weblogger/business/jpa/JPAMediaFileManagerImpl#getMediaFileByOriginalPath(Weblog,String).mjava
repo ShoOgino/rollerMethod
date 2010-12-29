@@ -3,6 +3,8 @@
      */
     public MediaFile getMediaFileByOriginalPath(Weblog weblog, String origpath)
             throws WebloggerException {
+                
+        if (null == origpath) return null;
 
         if (!origpath.startsWith("/")) {
             origpath = "/" + origpath;
