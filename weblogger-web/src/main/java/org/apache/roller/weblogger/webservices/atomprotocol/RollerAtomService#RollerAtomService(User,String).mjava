@@ -4,6 +4,11 @@
     public RollerAtomService(User user, String atomURL) throws WebloggerException, AtomException {
         Weblogger roller = WebloggerFactory.getWeblogger();
         List perms = null;
+        
+        if (!WebloggerRuntimeConfig.getBooleanProperty("webservices.enableAtomPub")) {
+        	throw new AtomException("AtomPub not enabled for this Roller installation");
+        }
+        
         try {
             perms = roller.getUserManager().getWeblogPermissions(user);
         } catch (WebloggerException re) {

@@ -8,6 +8,7 @@
     throws Exception {
         boolean authenticated = false;
         boolean enabled = false;
+        boolean apiEnabled = false;
         User user = null;
         try {
             
@@ -26,9 +27,8 @@
                 }
                 //System.out.println("is now [" + password + "]");
                 authenticated = user.getPassword().equals(password);
-                if (authenticated) {
-                    //WebloggerFactory.getWeblogger().setUser(user);
-                }
+                
+                apiEnabled = WebloggerRuntimeConfig.getBooleanProperty("webservices.enableXmlRpc");
             }
         } catch (Exception e) {
             mLogger.error("ERROR internal error validating user", e);
@@ -41,6 +41,11 @@
         if ( !authenticated ) {
             throw new XmlRpcNotAuthorizedException(AUTHORIZATION_EXCEPTION_MSG);
         }
+        
+        if ( !apiEnabled ) {
+            throw new XmlRpcNotAuthorizedException(BLOGGERAPI_DISABLED_MSG);
+        }        
+        
         return authenticated;
     }
 

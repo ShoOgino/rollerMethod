@@ -24,7 +24,8 @@
             if (website != null) {
                 weblogFound = true;
                 weblogEnabled = website.getEnabled().booleanValue();
-                apiEnabled = website.getEnableBloggerApi().booleanValue();
+                apiEnabled = website.getEnableBloggerApi().booleanValue() 
+                	&& WebloggerRuntimeConfig.getBooleanProperty("webservices.enableXmlRpc");
             }
             
             if (user != null) {
