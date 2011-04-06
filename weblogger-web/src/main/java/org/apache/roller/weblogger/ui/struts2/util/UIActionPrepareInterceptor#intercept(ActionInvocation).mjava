@@ -19,6 +19,10 @@
                     EntryEdit editAction = (EntryEdit)action0;
                     EntryAdd addAction = (EntryAdd)action1;
                     editAction.getBean().setId(addAction.getBean().getId());
+                } else if (action0 instanceof EntryAdd && action1 instanceof EntryAddWithMediaFile) {
+                    EntryAdd addAction = (EntryAdd)action0;
+                	EntryAddWithMediaFile mediaAction = (EntryAddWithMediaFile)action1;
+                	addAction.setBean(mediaAction.getBean());
                 }
             }            
             
