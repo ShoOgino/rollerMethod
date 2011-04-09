@@ -23,7 +23,9 @@
         String cat = null;
         if ( postcontent.get("categories") != null ) {
             Object[] cats = (Object[])postcontent.get("categories");
-            cat = (String)cats[0];
+            if (cats.length > 0) {
+            	cat = (String)cats[0];
+            }
         }
         mLogger.debug("      Title: " + title);
         mLogger.debug("   Category: " + cat);

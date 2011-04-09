@@ -35,8 +35,16 @@
             mf.setContentType(type);
             mf.setInputStream(new ByteArrayInputStream(bits));
             mf.setLength(bits.length);
-            
             String fileLink = mf.getPermalink();
+            
+            RollerMessages errors = new RollerMessages();
+            fmgr.createMediaFile(website, mf, errors);
+            
+            if (errors.getErrorCount() > 0) {
+                throw new Exception(errors.toString());
+            }
+
+            roller.flush();
             
             Hashtable returnStruct = new Hashtable(1);
             returnStruct.put("url", fileLink);

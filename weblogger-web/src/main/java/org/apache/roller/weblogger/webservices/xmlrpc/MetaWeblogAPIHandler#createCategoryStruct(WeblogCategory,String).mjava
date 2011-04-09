@@ -1,16 +1,18 @@
     private Hashtable createCategoryStruct(WeblogCategory category, String userid) {
         
-        String contextUrl = WebloggerRuntimeConfig.getAbsoluteContextURL();
-        
         Hashtable struct = new Hashtable();
+        struct.put("title", category.getPath());
         struct.put("description", category.getPath());
         
-        String catUrl = contextUrl+"/page/"+userid+"?catname="+category.getPath();
-        catUrl = StringUtils.replace(catUrl," ","%20");
+        Weblogger roller = WebloggerFactory.getWeblogger();
+        URLStrategy strategy = roller.getUrlStrategy();
+        
+        String catUrl = strategy.getWeblogCollectionURL(category.getWebsite(),
+        		null, category.getPath(), null, null, 0, true);
         struct.put("htmlUrl", catUrl);
         
-        String rssUrl = contextUrl+"/rss/"+userid+"?catname="+category.getPath();
-        rssUrl = StringUtils.replace(catUrl," ","%20");
+        String rssUrl = strategy.getWeblogFeedURL(category.getWebsite(),
+               null, "entries", "rss", category.getPath(), null, null, false, true);
         struct.put("rssUrl",rssUrl);
         
         return struct;
