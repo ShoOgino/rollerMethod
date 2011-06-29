@@ -10,17 +10,18 @@
                 log.error("Error checking page name uniqueness", ex);
             }
         }
-        
+         //TODO handle validation for link with combining type and link together
         // if link changed make sure there isn't a conflict
-        if(!StringUtils.isEmpty(getBean().getLink()) &&
+      /*  if(!StringUtils.isEmpty(getBean().getLink()) &&
                 !getBean().getLink().equals(getTemplate().getLink())) {
             try {
-                if(WebloggerFactory.getWeblogger().getWeblogManager().getPageByLink(getActionWeblog(), getBean().getLink()) != null) {
+                if(WebloggerFactory.getWeblogger().getWeblogManager().getPagesByLink(getActionWeblog(), getBean().getLink()) != null &&
+                        ) {
                     addError("pagesForm.error.alreadyExists", getBean().getLink());
                 }
             } catch (WebloggerException ex) {
                 log.error("Error checking page link uniqueness", ex);
             }
-        }
+        }*/
     }
 

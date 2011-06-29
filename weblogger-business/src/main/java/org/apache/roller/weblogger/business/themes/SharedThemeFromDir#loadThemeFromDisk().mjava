@@ -21,6 +21,7 @@
         setId(themeMetadata.getId());
         setName(themeMetadata.getName());
         setDescription(themeMetadata.getName());
+        setType(themeMetadata.getType());
         setAuthor(themeMetadata.getAuthor());
         setLastModified(null);
         setEnabled(true);
@@ -61,7 +62,7 @@
                         new Date(templateFile.lastModified()),
                         stylesheetTmpl.getTemplateLanguage(),
                         false,
-                        false);
+                        false,stylesheetTmpl.getType());
                 
                 // store it
                 this.stylesheet = theme_template;
@@ -131,7 +132,9 @@
                     new Date(templateFile.lastModified()),
                     templateMetadata.getTemplateLanguage(),
                     templateMetadata.isHidden(),
-                    templateMetadata.isNavbar());
+                    templateMetadata.isNavbar(),
+                    templateMetadata.getType());
+                ;
 
             // add it to the theme
             addTemplate(theme_template);

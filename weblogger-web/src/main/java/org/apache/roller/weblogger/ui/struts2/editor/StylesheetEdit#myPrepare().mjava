@@ -11,9 +11,14 @@
         if(stylesheet != null) {
             log.debug("custom stylesheet path is - "+stylesheet.getLink());
             try {
-                setTemplate(WebloggerFactory.getWeblogger().getWeblogManager()
-                        .getPageByLink(getActionWeblog(), stylesheet.getLink()));
-                
+                 List styleSheets =  WebloggerFactory.getWeblogger().getWeblogManager()
+                        .getPagesByLink(getActionWeblog(), stylesheet.getLink());
+
+                // Setting the template from the result set. We will be having only one style sheet.so get 0 index
+                if (stylesheet != null && !styleSheets.isEmpty()) {
+                    setTemplate((WeblogTemplate) styleSheets.get(0));
+                }
+
                 if(getTemplate() == null) {
                     log.debug("custom stylesheet not found, creating it");
                     
@@ -29,6 +34,8 @@
                     stylesheetTmpl.setNavbar(false);
                     stylesheetTmpl.setLastModified(new Date());
                     stylesheetTmpl.setTemplateLanguage(stylesheet.getTemplateLanguage());
+                    // setting the type for stylesheet as standard
+                    stylesheetTmpl.setType("standard");
                     
                     WebloggerFactory.getWeblogger().getWeblogManager().savePage(stylesheetTmpl);
                     WebloggerFactory.getWeblogger().flush();

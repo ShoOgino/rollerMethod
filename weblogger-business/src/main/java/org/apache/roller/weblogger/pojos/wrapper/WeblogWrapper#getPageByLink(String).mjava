@@ -1,5 +1,5 @@
-    public ThemeTemplateWrapper getPageByLink(String link)
+    public List <ThemeTemplateWrapper> getPageByLink(String link)
             throws WebloggerException {
-        return ThemeTemplateWrapper.wrap(this.pojo.getTheme().getTemplateByLink(link));
+        return (List<ThemeTemplateWrapper>) ThemeTemplateWrapper.wrap((ThemeTemplate) this.pojo.getTheme().getTemplatesByLink(link));
     }
 

@@ -1,0 +1,17 @@
+    public List getEnabledStandardThemeList() {
+       List all_themes = new ArrayList(this.themes.values());
+        List standardThemes = new ArrayList();
+
+        for(int i = 0 ; i<all_themes.size(); i++){
+            Theme theme = (Theme) all_themes.get(i);
+
+           if("standard".equals(theme.getType())){
+               standardThemes.add(theme);
+           }
+        }
+        // sort 'em ... default ordering for themes is by name
+        Collections.sort(standardThemes);
+
+        return standardThemes;
+    }
+

@@ -11,8 +11,18 @@
         ThemeTemplate stylesheet = this.theme.getStylesheet();
         if(stylesheet != null) {
             // now try getting custom version from weblog
-            ThemeTemplate override = WebloggerFactory.getWeblogger()
-                    .getWeblogManager().getPageByLink(this.weblog, stylesheet.getLink());
+
+            // Get the style sheet for link. We do not have duplicates for same link as we have
+            //in other template pages for a theme.
+
+            List  styleSheetList = WebloggerFactory.getWeblogger()
+                    .getWeblogManager().getPagesByLink(this.weblog, stylesheet.getLink());
+
+            ThemeTemplate override = null;
+
+             if(styleSheetList != null && !styleSheetList.isEmpty()) {
+             override = (ThemeTemplate) styleSheetList.get(0);
+             }
             if(override != null) {
                 stylesheet = override;
             }

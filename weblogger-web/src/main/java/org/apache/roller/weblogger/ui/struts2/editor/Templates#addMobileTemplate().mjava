@@ -1,0 +1,56 @@
+    public void addMobileTemplate(){
+
+         // validation
+       // myValidate();
+
+        if(!hasActionErrors()) try {
+
+            WeblogTemplate newMobileTemplate = new WeblogTemplate();
+            newMobileTemplate.setWebsite(getActionWeblog());
+            newMobileTemplate.setAction(getNewTmplAction());
+            newMobileTemplate.setName(getNewTmplName()+".Mobile");
+            newMobileTemplate.setDescription(newMobileTemplate.getName());
+            newMobileTemplate.setContents(getText("pageForm.newTemplateContent"));
+            newMobileTemplate.setHidden(false);
+            newMobileTemplate.setNavbar(false);
+            newMobileTemplate.setLastModified( new Date() );
+            newMobileTemplate.setType("mobile");
+
+             if(WeblogTemplate.ACTION_CUSTOM.equals(getNewTmplAction())){
+                newMobileTemplate.setLink(getNewTmplName());
+            }
+
+            // all templates start out as velocity templates
+            newMobileTemplate.setTemplateLanguage("velocity");
+
+            // for now, all templates just use _decorator
+            if(!"_decorator".equals(newMobileTemplate.getName())) {
+                newMobileTemplate.setDecoratorName("_decorator");
+            }
+
+            // save the new Template
+            WebloggerFactory.getWeblogger().getWeblogManager().savePage( newMobileTemplate );
+
+            // if this person happened to create a Weblog template from
+            // scratch then make sure and set the defaultPageId
+            if(WeblogTemplate.DEFAULT_PAGE.equals(newMobileTemplate.getName())) {
+                getActionWeblog().setDefaultPageId(newMobileTemplate.getId());
+                WebloggerFactory.getWeblogger().getWeblogManager().saveWeblog(getActionWeblog());
+            }
+
+            // flush results to db
+            WebloggerFactory.getWeblogger().flush();
+
+            // reset form fields
+            setNewTmplName(null);
+            setNewTmplAction(null);
+            setType(null);
+
+        } catch (WebloggerException ex) {
+            log.error("Error adding new mobile template for weblog - "+getActionWeblog().getHandle(), ex);
+            // TODO: i18n
+            addError("Error adding new mobile template");
+        }
+
+    }
+

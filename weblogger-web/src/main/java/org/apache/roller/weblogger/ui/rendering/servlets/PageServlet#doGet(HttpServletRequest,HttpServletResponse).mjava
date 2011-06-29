@@ -5,6 +5,8 @@
 
         log.debug("Entering");
 
+
+
         // do referrer processing, if it's enabled
         // NOTE: this *must* be done first because it triggers a hibernate flush
         // which will close the active session and cause lazy init exceptions otherwise
@@ -19,6 +21,7 @@
                 return;
             }
         }
+
 
 
         Weblog weblog = null;
@@ -122,6 +125,12 @@
 
         // figure out what template to use
         ThemeTemplate page = null;
+
+        if(MobileDeviceRepository.isMobileDevice(request)){
+           // setting the editor theme as mobile theme to render for mobile device
+            weblog.setEditorTheme(weblog.getMobileThemeName()) ;
+
+        }
 
         // If this is a popup request, then deal with it specially
         // TODO: do we really need to keep supporting this?

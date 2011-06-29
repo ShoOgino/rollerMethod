@@ -17,6 +17,11 @@
             newTemplate.setHidden(false);
             newTemplate.setNavbar(false);
             newTemplate.setLastModified( new Date() );
+            newTemplate.setType("standard");
+
+            if(WeblogTemplate.ACTION_CUSTOM.equals(getNewTmplAction())){
+                newTemplate.setLink(getNewTmplName());
+            }
             
             // all templates start out as velocity templates
             newTemplate.setTemplateLanguage("velocity");
@@ -38,10 +43,9 @@
             
             // flush results to db
             WebloggerFactory.getWeblogger().flush();
-            
-            // reset form fields
-            setNewTmplName(null);
-            setNewTmplAction(null);
+
+            // add roller generated mobile template
+            addMobileTemplate();
             
         } catch (WebloggerException ex) {
             log.error("Error adding new template for weblog - "+getActionWeblog().getHandle(), ex);

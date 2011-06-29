@@ -1,0 +1,19 @@
+    public boolean hasManyTemplates() {
+
+        List<WeblogTemplate> templates = null;
+        try {
+            templates = WebloggerFactory.getWeblogger().getWeblogManager().
+                    getPagesByLink(getActionWeblog(), template.getLink());
+        } catch (WebloggerException e) {
+            log.error("error while getting template list.", e);
+        }
+        // we do not support editing mobile template pages for custom themes.
+        if( "custom".equals(getActionWeblog().getEditorTheme())){
+            return false;
+        }
+        else if (templates != null && templates.size() > 1) {
+            return true;
+        }
+        return false;
+    }
+

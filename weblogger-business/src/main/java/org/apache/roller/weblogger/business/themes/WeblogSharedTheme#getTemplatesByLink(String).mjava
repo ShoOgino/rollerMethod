@@ -1,0 +1,34 @@
+    /**
+     * Lookup the specified template by link.
+     * Returns null if the template cannot be found.
+     */
+    public List<ThemeTemplate> getTemplatesByLink(String link) throws WebloggerException {
+
+        List templatesList = null;
+        if(link == null)
+            return null;
+        
+        ThemeTemplate template = null;
+        
+        // if name refers to the stylesheet then return result of getStylesheet()
+        ThemeTemplate stylesheet = getStylesheet();
+        if(stylesheet != null && (link.equals(stylesheet.getLink()))) {
+            //we cannot return single Style sheet so we need to return a list with one single Style Sheet
+            List<ThemeTemplate> styleSheetList = new ArrayList<ThemeTemplate>();
+            styleSheetList.add(stylesheet);
+            return styleSheetList;
+        }
+        
+        // first check if this user has selected a theme
+        // if so then return the proper theme template
+        templatesList = this.theme.getTemplatesByLink(link);
+        
+        // if we didn't get the Template from a theme then look in the db
+        if(templatesList == null || templatesList.isEmpty()) {
+            templatesList = WebloggerFactory.getWeblogger()
+                    .getWeblogManager().getPagesByLink(this.weblog, link);
+        }
+        
+        return templatesList;
+    }
+

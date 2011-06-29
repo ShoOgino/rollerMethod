@@ -1,0 +1,17 @@
+    public List getEnabledMobileThemeList() {
+        List all_themes = new ArrayList(this.themes.values());
+        List mobileThemes = new ArrayList();
+
+        for(int i = 0 ; i<all_themes.size(); i++){
+            Theme theme = (Theme) all_themes.get(i);
+
+           if("mobile".equals(theme.getType())){
+               mobileThemes.add(theme);
+           }
+        }
+        // sort 'em ... default ordering for themes is by name
+        Collections.sort(mobileThemes);
+
+        return mobileThemes;
+    }
+

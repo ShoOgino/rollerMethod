@@ -12,7 +12,8 @@
         
         WeblogTemplate page = getTemplate();
         getBean().copyFrom(template);
-        
+
+
         // empty content-type indicates that page uses auto content-type detection
         if (StringUtils.isEmpty(page.getOutputContentType())) {
             getBean().setAutoContentType(Boolean.TRUE);

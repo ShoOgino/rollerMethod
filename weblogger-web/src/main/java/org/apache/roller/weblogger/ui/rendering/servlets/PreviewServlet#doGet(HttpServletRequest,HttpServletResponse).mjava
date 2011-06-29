@@ -41,6 +41,9 @@
             tmpWebsite.setData(weblog);
             if(previewTheme != null && previewTheme.isEnabled()) {
                 tmpWebsite.setEditorTheme(previewTheme.getId());
+                //set mobile theme to the preview theme so it will not return null in velocity.
+                //This is bit hacky
+                tmpWebsite.setMobileThemeName(previewTheme.getId());
             } else if(WeblogTheme.CUSTOM.equals(previewRequest.getThemeName())) {
                 tmpWebsite.setEditorTheme(WeblogTheme.CUSTOM);
             }
