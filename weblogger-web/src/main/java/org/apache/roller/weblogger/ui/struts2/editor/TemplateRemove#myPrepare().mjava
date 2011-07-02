@@ -1,6 +1,8 @@
     public void myPrepare() {
         if(getRemoveId() != null) try {
             setTemplate(WebloggerFactory.getWeblogger().getWeblogManager().getPage(getRemoveId()));
+            setRemoveMobileId(getMobileID());
+            setMobileTemplate(WebloggerFactory.getWeblogger().getWeblogManager().getPage(getRemoveMobileId()));
         } catch (WebloggerException ex) {
             log.error("Error looking up template by id - "+getRemoveId(), ex);
             // TODO: i18n

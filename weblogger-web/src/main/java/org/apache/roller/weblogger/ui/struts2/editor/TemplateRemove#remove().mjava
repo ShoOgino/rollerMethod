@@ -11,6 +11,13 @@
                 CacheManager.invalidate(getTemplate());
 
                 WebloggerFactory.getWeblogger().getWeblogManager().removePage(getTemplate());
+
+                if (getMobileTemplate() != null) {
+                    CacheManager.invalidate(getMobileTemplate());
+
+                    WebloggerFactory.getWeblogger().getWeblogManager().removePage(getMobileTemplate());
+                }
+
                 WebloggerFactory.getWeblogger().flush();
                                 
                 return SUCCESS;
