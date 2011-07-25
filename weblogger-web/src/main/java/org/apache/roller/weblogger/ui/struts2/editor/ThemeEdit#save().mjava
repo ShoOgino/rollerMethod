@@ -80,11 +80,17 @@
             }
             
             if(!hasActionErrors()) try {
+                WeblogThemeAssoc themeAssoc = WebloggerFactory.getWeblogger().getWeblogManager().
+                        getThemeAssoc(getActionWeblog(),"standard");
+                themeAssoc.setName(getThemeId());
+                //TODO remove this setting editor theme
                 weblog.setEditorTheme(getThemeId());
+
                 log.debug("Saving theme "+getThemeId()+" for weblog "+weblog.getHandle());
                 
                 // save updated weblog and flush
                 WebloggerFactory.getWeblogger().getWeblogManager().saveWeblog(weblog);
+                WebloggerFactory.getWeblogger().getWeblogManager().saveThemeAssoc(themeAssoc);
                 WebloggerFactory.getWeblogger().flush();
                 
                 // make sure to flush the page cache so ppl can see the change

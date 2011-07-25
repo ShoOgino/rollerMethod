@@ -1,0 +1,10 @@
+    public boolean equals(Object other) {
+        if (other == this) return true;
+        if (other instanceof WeblogTemplateCode != true) return false;
+        WeblogTemplateCode o = (WeblogTemplateCode)other;
+        return new EqualsBuilder()
+            .append(templateId, o.getTemplateId())
+            .append(template, o.getTemplate())
+            .isEquals();
+    }
+

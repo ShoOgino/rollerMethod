@@ -26,10 +26,15 @@
             
             if(!hasActionErrors()) try {
                 weblog.setMobileThemeName(getMobileThemeId());
+                WeblogThemeAssoc themeAssoc = WebloggerFactory.getWeblogger().getWeblogManager().
+                        getThemeAssoc(getActionWeblog(),"mobile");
+                themeAssoc.setName(getMobileThemeId());
+
                 log.debug("Saving theme "+getMobileThemeId()+" for weblog "+weblog.getHandle());
                 
                 // save updated weblog and flush
                 WebloggerFactory.getWeblogger().getWeblogManager().saveWeblog(weblog);
+                WebloggerFactory.getWeblogger().getWeblogManager().saveThemeAssoc(themeAssoc);
                 WebloggerFactory.getWeblogger().flush();
                 
                 // make sure to flush the page cache so ppl can see the change
