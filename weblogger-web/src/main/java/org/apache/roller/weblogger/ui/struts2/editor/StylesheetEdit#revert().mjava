@@ -22,11 +22,19 @@
             // lookup the theme used by this weblog
             ThemeManager tmgr = WebloggerFactory.getWeblogger().getThemeManager();
             Theme theme = tmgr.getTheme(getActionWeblog().getEditorTheme());
+
+            //get weblogTemplateCode
+            WeblogTemplateCode templateCode = theme.getStylesheet().getTemplateCode(type);
+            stylesheet.setContents(templateCode.getTemplate());
             
             // lookup 
             stylesheet.setLastModified(new Date());
-            stylesheet.setContents(theme.getStylesheet().getContents());
-            
+            //stylesheet.setContents(theme.getStylesheet().getContents());
+
+            //save template code which was persisted in DB
+            WeblogTemplateCode existingTemplateCode = stylesheet.getTemplateCode(getType());
+            existingTemplateCode.setTemplate(templateCode.getTemplate());
+            WebloggerFactory.getWeblogger().getWeblogManager().saveTemplateCode(existingTemplateCode);
             // save template and flush
             WebloggerFactory.getWeblogger().getWeblogManager().savePage(stylesheet);
             WebloggerFactory.getWeblogger().flush();

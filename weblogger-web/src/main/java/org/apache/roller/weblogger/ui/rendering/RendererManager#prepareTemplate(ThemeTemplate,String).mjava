@@ -1,0 +1,19 @@
+    public static ThemeTemplate prepareTemplate(ThemeTemplate page, String type)throws RenderingException{
+        try {
+            WeblogTemplateCode templateCode = page.getTemplateCode(type);
+
+            if(templateCode != null){
+            page.setContents(templateCode.getTemplate());
+            page.setTemplateLanguage(templateCode.getTemplateLanguage());
+            }
+            else{
+                // if there is no template code present we fall back to default template
+                return page;
+            }
+        } catch (WebloggerException e) {
+            throw new RenderingException("Error while loading template code for template :"+page.getId(),e);
+        }
+         return page;
+
+    }
+

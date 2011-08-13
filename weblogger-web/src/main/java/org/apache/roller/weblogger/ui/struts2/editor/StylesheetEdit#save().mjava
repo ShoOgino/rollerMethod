@@ -14,10 +14,14 @@
             WeblogTemplate stylesheet = getTemplate();
             
             stylesheet.setLastModified(new Date());
-            stylesheet.setContents(getContents());
+            WeblogTemplateCode templateCode = stylesheet.getTemplateCode(getType());
+            templateCode.setTemplate(getContents());
+
+            //  stylesheet.setContents(getContents());
             
             // save template and flush
             WebloggerFactory.getWeblogger().getWeblogManager().savePage(stylesheet);
+            WebloggerFactory.getWeblogger().getWeblogManager().saveTemplateCode(templateCode);
             WebloggerFactory.getWeblogger().flush();
             
             // notify caches

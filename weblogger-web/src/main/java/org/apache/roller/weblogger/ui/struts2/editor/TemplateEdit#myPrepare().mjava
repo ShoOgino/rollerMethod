@@ -1,9 +1,6 @@
     public void myPrepare() {
         try {
             setTemplate(WebloggerFactory.getWeblogger().getWeblogManager().getPage(getBean().getId()));
-            getBean().setStandardTemplateId(getStandardID());
-            getBean().setMobileTemplateId(getMobileID());
-            setMobileTemplateAvailable(hasManyTemplates());
         } catch (WebloggerException ex) {
             log.error("Error looking up template - "+getBean().getId(), ex);
         }

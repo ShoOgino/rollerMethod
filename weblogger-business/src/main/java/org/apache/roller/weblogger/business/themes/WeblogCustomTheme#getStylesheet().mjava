@@ -3,12 +3,6 @@
      * Returns null if no stylesheet can be found.
      */
     public ThemeTemplate getStylesheet() throws WebloggerException {
-        List styleSheetsList = getTemplatesByLink(this.weblog.getCustomStylesheetPath());
-
-        if(styleSheetsList != null && !styleSheetsList.isEmpty()){
-           return (ThemeTemplate) styleSheetsList.get(0);
-        }
-
-        return null;
+       return getTemplateByLink(this.weblog.getCustomStylesheetPath());
     }
 

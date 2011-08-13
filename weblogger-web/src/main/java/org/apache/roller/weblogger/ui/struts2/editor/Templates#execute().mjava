@@ -3,24 +3,13 @@
         // query for templates list
         try {
             
-            // get current list of templates, minus custom stylesheet and auto generated mobile templates
-            List<WeblogTemplate> raw = WebloggerFactory.getWeblogger().getWeblogManager().getPages(getActionWeblog()); 
+             // get current list of templates, minus custom stylesheet
+            List<WeblogTemplate> raw = WebloggerFactory.getWeblogger().getWeblogManager().getPages(getActionWeblog());
             List<WeblogTemplate> pages = new ArrayList<WeblogTemplate>();
-
             pages.addAll(raw);
-
-            for(WeblogTemplate template : raw){
-                if("mobile".equals(template.getType())&&template.getName().endsWith(".Mobile")){
-                    pages.remove(template);
-                }
-            }
-
-            if (getActionWeblog().getTheme().getStylesheet() != null) {
-                List<WeblogTemplate> stylesheets = WebloggerFactory.getWeblogger().getWeblogManager().getPagesByLink(getActionWeblog(),
-                        getActionWeblog().getTheme().getStylesheet().getLink());
-                if (stylesheets != null && !stylesheets.isEmpty()) {
-                    pages.remove(stylesheets.get(0));
-                }
+            if(getActionWeblog().getTheme().getStylesheet() != null) {
+                pages.remove(WebloggerFactory.getWeblogger().getWeblogManager().getPageByLink(getActionWeblog(),
+                        getActionWeblog().getTheme().getStylesheet().getLink()));
             }
             setTemplates(pages);
             

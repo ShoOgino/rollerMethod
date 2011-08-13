@@ -6,8 +6,20 @@
         if(getTemplate() == null) {
             return ERROR;
         }
-        
-        setContents(getTemplate().getContents());
+        WeblogTemplateCode templateCode = null;
+        try {
+            templateCode = getTemplate().getTemplateCode(getType());
+        } catch (WebloggerException e) {
+            log.error("Error loading Weblog template code for stylesheet", e);
+        }
+         // if there is a template code load that template
+        if(templateCode != null) {
+            setContents(templateCode.getTemplate());
+        }
+        // if not fall back for default template code
+        else{
+           setContents(getTemplate().getContents());
+        }
         
         return INPUT;
     }

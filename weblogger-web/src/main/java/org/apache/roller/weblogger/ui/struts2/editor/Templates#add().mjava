@@ -17,7 +17,6 @@
             newTemplate.setHidden(false);
             newTemplate.setNavbar(false);
             newTemplate.setLastModified( new Date() );
-            newTemplate.setType("standard");
 
             if(WeblogTemplate.ACTION_CUSTOM.equals(getNewTmplAction())){
                 newTemplate.setLink(getNewTmplName());
@@ -33,7 +32,20 @@
             
             // save the new Template
             WebloggerFactory.getWeblogger().getWeblogManager().savePage( newTemplate );
-            
+
+            //Create weblog template codes for available types.
+            WeblogTemplateCode standardTemplCode = new WeblogTemplateCode(newTemplate.getId(),"standard");
+            WeblogTemplateCode mobileTemplCode = new WeblogTemplateCode(newTemplate.getId(),"mobile");
+
+            standardTemplCode.setTemplate(newTemplate.getContents());
+            standardTemplCode.setTemplateLanguage("velocity");
+
+            mobileTemplCode.setTemplate(newTemplate.getContents());
+            mobileTemplCode.setTemplateLanguage("velocity");
+
+            WebloggerFactory.getWeblogger().getWeblogManager().saveTemplateCode(standardTemplCode);
+            WebloggerFactory.getWeblogger().getWeblogManager().saveTemplateCode(mobileTemplCode);
+
             // if this person happened to create a Weblog template from
             // scratch then make sure and set the defaultPageId
             if(WeblogTemplate.DEFAULT_PAGE.equals(newTemplate.getName())) {
@@ -45,7 +57,7 @@
             WebloggerFactory.getWeblogger().flush();
 
             // add roller generated mobile template
-            addMobileTemplate();
+            //addMobileTemplate();
             
         } catch (WebloggerException ex) {
             log.error("Error adding new template for weblog - "+getActionWeblog().getHandle(), ex);

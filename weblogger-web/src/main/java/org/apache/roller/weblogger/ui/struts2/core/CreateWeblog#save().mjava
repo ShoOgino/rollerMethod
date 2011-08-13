@@ -29,7 +29,6 @@
                     getBean().getEmailAddress(),
                     getBean().getEmailAddress(),
                     getBean().getTheme(),
-                    getBean().getMobileTheme(),
                     getBean().getLocale(),
                     getBean().getTimeZone());
             
@@ -38,16 +37,9 @@
             String[] defs = Utilities.stringToStringArray(def,",");
             wd.setEditorPage(defs[0]);
 
-            //Create Theme associativity objects for theme types.
-            WeblogThemeAssoc themeAssocStandard = new WeblogThemeAssoc(wd,getBean().getTheme() , false ,"standard");
-            WeblogThemeAssoc themeAssocMobile= new WeblogThemeAssoc(wd,getBean().getTheme() , false ,"mobile");
-
-
             try {
                 // add weblog and flush
                 WebloggerFactory.getWeblogger().getWeblogManager().addWeblog(wd);
-                WebloggerFactory.getWeblogger().getWeblogManager().saveThemeAssoc(themeAssocStandard);
-                WebloggerFactory.getWeblogger().getWeblogManager().saveThemeAssoc(themeAssocMobile);
                 WebloggerFactory.getWeblogger().flush();
                 
                 // tell the user their weblog was created

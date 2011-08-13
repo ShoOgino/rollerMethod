@@ -11,13 +11,8 @@
         if(stylesheet != null) {
             log.debug("custom stylesheet path is - "+stylesheet.getLink());
             try {
-                 List styleSheets =  WebloggerFactory.getWeblogger().getWeblogManager()
-                        .getPagesByLink(getActionWeblog(), stylesheet.getLink());
-
-                // Setting the template from the result set. We will be having only one style sheet.so get 0 index
-                if (stylesheet != null && !styleSheets.isEmpty()) {
-                    setTemplate((WeblogTemplate) styleSheets.get(0));
-                }
+                 setTemplate(WebloggerFactory.getWeblogger().getWeblogManager()
+                        .getPageByLink(getActionWeblog(), stylesheet.getLink()));
 
                 if(getTemplate() == null) {
                     log.debug("custom stylesheet not found, creating it");
@@ -34,9 +29,19 @@
                     stylesheetTmpl.setNavbar(false);
                     stylesheetTmpl.setLastModified(new Date());
                     stylesheetTmpl.setTemplateLanguage(stylesheet.getTemplateLanguage());
-                    // setting the type for stylesheet as standard
-                    stylesheetTmpl.setType("standard");
-                    
+
+                    // create template codes for available template code Types
+                    WeblogTemplateCode standardTemplateCode = new WeblogTemplateCode(stylesheetTmpl.getId(),"standard");
+                    standardTemplateCode.setTemplate(stylesheetTmpl.getContents());
+                    standardTemplateCode.setTemplateLanguage(stylesheetTmpl.getTemplateLanguage());
+
+                    WeblogTemplateCode mobileTemplateCode = new WeblogTemplateCode(stylesheetTmpl.getId(),"mobile");
+                    mobileTemplateCode.setTemplate(stylesheetTmpl.getContents());
+                    mobileTemplateCode.setTemplateLanguage(stylesheetTmpl.getTemplateLanguage());
+
+                    WebloggerFactory.getWeblogger().getWeblogManager().saveTemplateCode(standardTemplateCode);
+                    WebloggerFactory.getWeblogger().getWeblogManager().saveTemplateCode(mobileTemplateCode);
+
                     WebloggerFactory.getWeblogger().getWeblogManager().savePage(stylesheetTmpl);
                     WebloggerFactory.getWeblogger().flush();
                     
