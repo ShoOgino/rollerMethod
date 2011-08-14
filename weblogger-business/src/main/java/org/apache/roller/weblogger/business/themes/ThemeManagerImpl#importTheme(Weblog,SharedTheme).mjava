@@ -8,19 +8,9 @@
 
         WeblogManager wmgr = roller.getWeblogManager();
         MediaFileManager fileMgr = roller.getMediaFileManager();
-        
+
         MediaFileDirectory root = fileMgr.getMediaFileRootDirectory(website);
         log.warn("Weblog " + website.getHandle() + " does not have a root MediaFile directory");
-
-        theme.setId("custom."+theme.getType());
-        WeblogSharedTheme customTheme = new WeblogSharedTheme(website,theme);
-        WeblogThemeAssoc themeAssoc = roller.getWeblogManager().getThemeAssoc(website,customTheme.getType());
-        themeAssoc.setCustom(true);
-        themeAssoc.setName(customTheme.getName());
-        //save theme assoc
-        roller.getWeblogManager().saveThemeAssoc(themeAssoc);
-
-
 
         Set importedActionTemplates = new HashSet();
         ThemeTemplate themeTemplate = null;
@@ -68,15 +58,29 @@
                 // NOTE: decorators are deprecated starting in 4.0
                 template.setDecoratorName(null);
                 template.setLastModified(new Date());
-                template.setType(themeTemplate.getType());
 
                 // save it
                 wmgr.savePage(template);
-
-                WeblogTemplateCode templateCode = new WeblogTemplateCode(template.getId(),theme.getType());
-                templateCode.setTemplate(template.getContents());
-                wmgr.saveTemplateCode(templateCode);
             }
+             // creating template codes
+            for (String type : ThemeManagerImpl.getTypesList()) {
+                WeblogTemplateCode templateCode = template.getTemplateCode(type);
+                // if there are no template codes create it
+                if (templateCode == null) {
+                    WeblogTemplateCode themeTemplateCode = themeTemplate.getTemplateCode(type);
+
+                    if(themeTemplateCode== null){
+                        throw new WebloggerException("No templateCode found for template :"+themeTemplate.getId()+
+                                " of type :" +type);
+                    }
+                    templateCode = new WeblogTemplateCode(template.getId(), type);
+                    templateCode.setTemplate(themeTemplateCode.getTemplate());
+                    templateCode.setTemplateLanguage(themeTemplateCode.getTemplateLanguage());
+
+                    WebloggerFactory.getWeblogger().getWeblogManager().saveTemplateCode(templateCode);
+                }
+            }
+
         }
 
         // now, see if the weblog has left over action templates that
@@ -134,7 +138,7 @@
                     mdir = fileMgr.getMediaFileRootDirectory(website);
                     justPath = "";
                     justName = resourcePath;
-                    
+
                 } else {
                     justPath = resourcePath.substring(0, resourcePath.lastIndexOf("/"));
                     if (!justPath.startsWith("/")) justPath = "/" + justPath;
@@ -149,7 +153,7 @@
 
                 MediaFile oldmf = fileMgr.getMediaFileByOriginalPath(website, justPath + "/" + justName);
                 if (oldmf != null) {
-                    fileMgr.removeMediaFile(website, oldmf); 
+                    fileMgr.removeMediaFile(website, oldmf);
                 }
 
                 // save file without file-type, quota checks, etc.
@@ -159,7 +163,7 @@
                 mf.setWeblog(website);
                 mf.setName(justName);
                 mf.setOriginalPath(justPath + "/" + justName);
-                mf.setContentType(map.getContentType(justName)); 
+                mf.setContentType(map.getContentType(justName));
                 mf.setInputStream(is);
                 mf.setLength(resource.getLength());
 
