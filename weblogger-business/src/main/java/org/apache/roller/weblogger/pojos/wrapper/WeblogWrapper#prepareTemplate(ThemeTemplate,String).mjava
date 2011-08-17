@@ -1,0 +1,22 @@
+    /**
+     * @param page
+     * @param type
+     * @return
+     *
+     * Prepare template to add the correct template content
+     */
+    private ThemeTemplate prepareTemplate(ThemeTemplate page, String type) throws WebloggerException {
+
+        WeblogTemplateCode templateCode = page.getTemplateCode(type);
+
+        if (templateCode != null) {
+            page.setContents(templateCode.getTemplate());
+            page.setTemplateLanguage(templateCode.getTemplateLanguage());
+            return page;
+        } else {
+            // if there is no template code present we fall back to default template
+            return page;
+        }
+
+    }
+

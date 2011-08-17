@@ -26,7 +26,7 @@
 
         //is a mobile request
 
-        boolean isMobileRequest = MobileDeviceRepository.isMobileDevice(request);
+       String  type = MobileDeviceRepository.getRequestType(request);
         
         // do we need to force a specific locale for the request?
         if(searchRequest.getLocale() == null && !weblog.isShowAllLangs()) {
@@ -130,7 +130,14 @@
 				log.error("ERROR - reloading theme " + ex);
 			}
 		}
-		
+
+        //prepare template for detected type
+        try {
+            page = RendererManager.prepareTemplate(page ,type);
+        } catch (RenderingException e) {
+            log.debug("Error while preparing page template");
+        }
+
         // lookup Renderer we are going to use
         Renderer renderer = null;
         try {
