@@ -47,6 +47,13 @@
             }
         }
         
+        // User.password does not allow null, so generate one
+        if (getOpenIdConfiguration().equals("only")) {
+            String randomString = RandomStringUtils.randomAlphanumeric(255);
+            getBean().setPasswordText(randomString);
+            getBean().setPasswordConfirm(randomString);
+        }
+        
         // check that passwords match 
         if (!getBean().getPasswordText().equals(getBean().getPasswordConfirm())) {
             addError("Register.error.passowordMismatch");
