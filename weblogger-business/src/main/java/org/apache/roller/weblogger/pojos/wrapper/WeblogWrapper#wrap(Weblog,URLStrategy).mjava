@@ -1,8 +1,8 @@
-    // wrap the given pojo if it is not null
-    public static WeblogWrapper wrap(Weblog toWrap, URLStrategy strat) {
+      //wrap the given pojo if it is not null without changing type. (i.e using default)
+     public static WeblogWrapper wrap(Weblog toWrap, URLStrategy strat) {
         if(toWrap != null)
-            return new WeblogWrapper(toWrap, strat);
-        
+            return new WeblogWrapper(toWrap, strat , "standard");
+
         return null;
     }
 

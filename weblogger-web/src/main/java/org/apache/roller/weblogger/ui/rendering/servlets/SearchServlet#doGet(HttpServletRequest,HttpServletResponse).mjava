@@ -23,6 +23,10 @@
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
+
+        //is a mobile request
+
+       String  type = MobileDeviceRepository.getRequestType(request);
         
         // do we need to force a specific locale for the request?
         if(searchRequest.getLocale() == null && !weblog.isShowAllLangs()) {
@@ -32,9 +36,10 @@
         // lookup template to use for rendering
         ThemeTemplate page = null;
         try {
-            // first try looking for a specific search page
+
+            // try looking for a specific search page
             page = weblog.getTheme().getTemplateByAction(ThemeTemplate.ACTION_SEARCH);
-            
+
             // if not found then fall back on default page
             if(page == null) {
                 page = weblog.getTheme().getDefaultTemplate();
@@ -125,7 +130,14 @@
 				log.error("ERROR - reloading theme " + ex);
 			}
 		}
-		
+
+        //prepare template for detected type
+        try {
+            page = RendererManager.prepareTemplate(page ,type);
+        } catch (RenderingException e) {
+            log.debug("Error while preparing page template");
+        }
+
         // lookup Renderer we are going to use
         Renderer renderer = null;
         try {

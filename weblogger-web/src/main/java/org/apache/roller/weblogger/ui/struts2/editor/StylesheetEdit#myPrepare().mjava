@@ -11,9 +11,9 @@
         if(stylesheet != null) {
             log.debug("custom stylesheet path is - "+stylesheet.getLink());
             try {
-                setTemplate(WebloggerFactory.getWeblogger().getWeblogManager()
+                 setTemplate(WebloggerFactory.getWeblogger().getWeblogManager()
                         .getPageByLink(getActionWeblog(), stylesheet.getLink()));
-                
+
                 if(getTemplate() == null) {
                     log.debug("custom stylesheet not found, creating it");
                     
@@ -29,7 +29,19 @@
                     stylesheetTmpl.setNavbar(false);
                     stylesheetTmpl.setLastModified(new Date());
                     stylesheetTmpl.setTemplateLanguage(stylesheet.getTemplateLanguage());
-                    
+
+                    // create template codes for available template code Types
+                    WeblogTemplateCode standardTemplateCode = new WeblogTemplateCode(stylesheetTmpl.getId(),"standard");
+                    standardTemplateCode.setTemplate(stylesheetTmpl.getContents());
+                    standardTemplateCode.setTemplateLanguage(stylesheetTmpl.getTemplateLanguage());
+
+                    WeblogTemplateCode mobileTemplateCode = new WeblogTemplateCode(stylesheetTmpl.getId(),"mobile");
+                    mobileTemplateCode.setTemplate(stylesheetTmpl.getContents());
+                    mobileTemplateCode.setTemplateLanguage(stylesheetTmpl.getTemplateLanguage());
+
+                    WebloggerFactory.getWeblogger().getWeblogManager().saveTemplateCode(standardTemplateCode);
+                    WebloggerFactory.getWeblogger().getWeblogManager().saveTemplateCode(mobileTemplateCode);
+
                     WebloggerFactory.getWeblogger().getWeblogManager().savePage(stylesheetTmpl);
                     WebloggerFactory.getWeblogger().flush();
                     

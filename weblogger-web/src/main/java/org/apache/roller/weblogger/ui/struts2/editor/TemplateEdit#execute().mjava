@@ -12,7 +12,21 @@
         
         WeblogTemplate page = getTemplate();
         getBean().copyFrom(template);
-        
+
+        WeblogTemplateCode templateCode = null;
+
+        // look for the template code
+        try {
+           templateCode = WebloggerFactory.getWeblogger().getWeblogManager().
+                   getTemplateCodeByType(template.getId(), getBean().getType());
+        } catch (WebloggerException e) {
+            log.error("Unable to look weblog code for template "+template.getName() +"of type "+getBean().getType());
+        }
+         //set the content for the type.
+        if(templateCode != null){
+            getBean().setContents(templateCode.getTemplate());
+        }
+
         // empty content-type indicates that page uses auto content-type detection
         if (StringUtils.isEmpty(page.getOutputContentType())) {
             getBean().setAutoContentType(Boolean.TRUE);

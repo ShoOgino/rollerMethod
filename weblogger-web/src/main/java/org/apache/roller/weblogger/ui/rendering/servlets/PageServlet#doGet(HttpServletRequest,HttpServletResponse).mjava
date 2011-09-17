@@ -5,6 +5,8 @@
 
         log.debug("Entering");
 
+
+
         // do referrer processing, if it's enabled
         // NOTE: this *must* be done first because it triggers a hibernate flush
         // which will close the active session and cause lazy init exceptions otherwise
@@ -19,6 +21,7 @@
                 return;
             }
         }
+
 
 
         Weblog weblog = null;
@@ -120,6 +123,14 @@
 
         log.debug("Looking for template to use for rendering");
 
+        // Get the type from user agent
+        String type = MobileDeviceRepository.getRequestType(request);
+
+        // for previews we explicitly set the type attribute
+        if(request.getParameter("type") != null){
+            type = request.getParameter("type");
+        }
+
         // figure out what template to use
         ThemeTemplate page = null;
 
@@ -198,6 +209,13 @@
         }
 
         log.debug("page found, dealing with it");
+
+        // load the correct template using template codes.
+        try {
+            page = RendererManager.prepareTemplate(page, type);
+        } catch (RenderingException e) {
+            log.error("error while preparing template ", e);
+        }
 
         // validation.  make sure that request input makes sense.
         boolean invalid = false;
@@ -305,7 +323,6 @@
             // Load models for pages
             String pageModels = WebloggerConfig.getProperty("rendering.pageModels");
             ModelLoader.loadModels(pageModels, model, initData, true);
-
             // Load special models for site-wide blog
             if (WebloggerRuntimeConfig.isSiteWideWeblog(weblog.getHandle())) {
                 String siteModels = WebloggerConfig.getProperty("rendering.siteModels");

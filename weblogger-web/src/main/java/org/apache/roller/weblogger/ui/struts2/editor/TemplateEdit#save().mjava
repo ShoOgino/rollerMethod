@@ -26,12 +26,24 @@
                 template.setOutputContentType(null);
             }
             
-            // save template and flush
+            // save template
             WebloggerFactory.getWeblogger().getWeblogManager().savePage(template);
-            WebloggerFactory.getWeblogger().flush();
-            
+
+
+            //save template code
+            WeblogTemplateCode templateCode = WebloggerFactory.getWeblogger().getWeblogManager().
+                    getTemplateCodeByType(template.getId(),getBean().getType());
+            templateCode.setTemplate(getBean().getContents());
+
+            WebloggerFactory.getWeblogger().getWeblogManager().saveTemplateCode(templateCode);
+
+            //flush
+             WebloggerFactory.getWeblogger().flush();
+
             // notify caches
             CacheManager.invalidate(template);
+
+           // synchronizeThemes();
             
             // success message
             addMessage("pageForm.save.success", template.getName());

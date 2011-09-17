@@ -10,6 +10,17 @@
         WeblogEntryManager emgr = roller.getWeblogEntryManager();
         BookmarkManager    bmgr = roller.getBookmarkManager();
         MediaFileManager   mmgr = roller.getMediaFileManager();
+
+        //remove theme Assocs
+
+        Query themeAssocQuery = strategy.getNamedQuery("WeblogThemeAssoc.getThemeAssocsByWeblog");
+        themeAssocQuery.setParameter(1,website);
+         List assocResults = themeAssocQuery.getResultList();
+
+        for(Iterator iter = assocResults.iterator(); iter.hasNext();) {
+            WeblogThemeAssoc themeAssoc = (WeblogThemeAssoc) iter.next();
+            this.strategy.remove(themeAssoc);
+        }
         
         // remove tags
         Query tagQuery = strategy.getNamedQuery("WeblogEntryTag.getByWeblog");
@@ -84,6 +95,10 @@
         List pages = pageQuery.getResultList();
         for (Iterator iter = pages.iterator(); iter.hasNext();) {
             WeblogTemplate page = (WeblogTemplate) iter.next();
+
+            //remove associated templateCode objects
+            this.removeTemplateCodeObjs(page);
+
             this.strategy.remove(page);
         }
         

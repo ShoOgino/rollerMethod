@@ -1,0 +1,34 @@
+    public String loadMobileTheme(){
+         if(getTemplate() == null) {
+            // TODO: i18n
+            addError("Unable to locate specified template");
+            return LIST;
+        }
+
+             WeblogTemplate mobile = null;
+
+        try {
+                mobile = WebloggerFactory.getWeblogger().getWeblogManager().getPageByName(getActionWeblog(),
+                    template.getName()+".mobile");
+        } catch (WebloggerException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+         if(mobile == null){
+            addError("Unable to locate specified template");
+            return LIST;
+         }
+        getBean().copyFrom(mobile);
+
+
+        // empty content-type indicates that page uses auto content-type detection
+        if (StringUtils.isEmpty(mobile.getOutputContentType())) {
+            getBean().setAutoContentType(Boolean.TRUE);
+        } else {
+            getBean().setAutoContentType(Boolean.FALSE);
+            getBean().setManualContentType(mobile.getOutputContentType());
+        }
+
+        return INPUT;
+    }
+

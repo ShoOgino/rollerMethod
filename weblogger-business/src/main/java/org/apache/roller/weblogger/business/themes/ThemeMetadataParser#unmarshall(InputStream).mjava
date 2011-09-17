@@ -2,7 +2,7 @@
      * Unmarshall the given input stream into our defined
      * set of Java objects.
      **/
-    public ThemeMetadata unmarshall(InputStream instream) 
+    public ThemeMetadata unmarshall(InputStream instream)
         throws ThemeParsingException, IOException, JDOMException {
         
         if(instream == null)
@@ -18,6 +18,7 @@
         theme.setId(root.getChildText("id"));
         theme.setName(root.getChildText("name"));
         theme.setAuthor(root.getChildText("author"));
+        theme.setType(root.getChildText("type"));
         
         // if either id or name is null then throw a parsing exception
         if(StringUtils.isEmpty(theme.getId()) || StringUtils.isEmpty(theme.getName())) {
@@ -36,6 +37,7 @@
         Element stylesheet = root.getChild("stylesheet");
         if(stylesheet != null) {
             theme.setStylesheet(elementToStylesheet(stylesheet));
+
         }
         
         // now grab the static resources
@@ -53,6 +55,7 @@
         while (templatesIter.hasNext()) {
             Element template = (Element) templatesIter.next();
             ThemeMetadataTemplate tmpl = elementToTemplateMetadata(template);
+
             theme.addTemplate(tmpl);
             
             if(WeblogTemplate.ACTION_WEBLOG.equals(tmpl.getAction())) {

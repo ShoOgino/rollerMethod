@@ -2,11 +2,11 @@
      * Lookup the stylesheet template for this theme.
      * Returns null if no stylesheet can be found.
      */
-    public ThemeTemplate getStylesheet() throws WebloggerException {
+     public ThemeTemplate getStylesheet() throws WebloggerException {
         // stylesheet is handled differently than other templates because with
         // the stylesheet we want to return the weblog custom version if it
         // exists, otherwise we return the shared theme version
-        
+
         // load from theme first to see if we even support a stylesheet
         ThemeTemplate stylesheet = this.theme.getStylesheet();
         if(stylesheet != null) {

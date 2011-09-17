@@ -1,5 +1,7 @@
     public void copyTo(WeblogTemplate dataHolder) {
-        
+
+        // change the default content of template if we are changing standard type code
+        if("standard".equals(getType()))
         dataHolder.setContents(getContents());
         
         // the rest of the template properties can only be modified when

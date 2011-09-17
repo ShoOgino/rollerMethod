@@ -8,7 +8,7 @@
 
         WeblogManager wmgr = roller.getWeblogManager();
         MediaFileManager fileMgr = roller.getMediaFileManager();
-        
+
         MediaFileDirectory root = fileMgr.getMediaFileRootDirectory(website);
         log.warn("Weblog " + website.getHandle() + " does not have a root MediaFile directory");
 
@@ -62,6 +62,25 @@
                 // save it
                 wmgr.savePage(template);
             }
+             // creating template codes
+            for (String type : ThemeManagerImpl.getTypesList()) {
+                WeblogTemplateCode templateCode = template.getTemplateCode(type);
+                // if there are no template codes create it
+                if (templateCode == null) {
+                    WeblogTemplateCode themeTemplateCode = themeTemplate.getTemplateCode(type);
+
+                    if(themeTemplateCode== null){
+                        throw new WebloggerException("No templateCode found for template :"+themeTemplate.getId()+
+                                " of type :" +type);
+                    }
+                    templateCode = new WeblogTemplateCode(template.getId(), type);
+                    templateCode.setTemplate(themeTemplateCode.getTemplate());
+                    templateCode.setTemplateLanguage(themeTemplateCode.getTemplateLanguage());
+
+                    WebloggerFactory.getWeblogger().getWeblogManager().saveTemplateCode(templateCode);
+                }
+            }
+
         }
 
         // now, see if the weblog has left over action templates that
@@ -119,7 +138,7 @@
                     mdir = fileMgr.getMediaFileRootDirectory(website);
                     justPath = "";
                     justName = resourcePath;
-                    
+
                 } else {
                     justPath = resourcePath.substring(0, resourcePath.lastIndexOf("/"));
                     if (!justPath.startsWith("/")) justPath = "/" + justPath;
@@ -134,7 +153,7 @@
 
                 MediaFile oldmf = fileMgr.getMediaFileByOriginalPath(website, justPath + "/" + justName);
                 if (oldmf != null) {
-                    fileMgr.removeMediaFile(website, oldmf); 
+                    fileMgr.removeMediaFile(website, oldmf);
                 }
 
                 // save file without file-type, quota checks, etc.
@@ -144,7 +163,7 @@
                 mf.setWeblog(website);
                 mf.setName(justName);
                 mf.setOriginalPath(justPath + "/" + justName);
-                mf.setContentType(map.getContentType(justName)); 
+                mf.setContentType(map.getContentType(justName));
                 mf.setInputStream(is);
                 mf.setLength(resource.getLength());
 
