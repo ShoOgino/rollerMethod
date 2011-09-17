@@ -1,0 +1,14 @@
+    public static String getRequestType(HttpServletRequest request) {
+        String type = "standard";
+        String cookie =getCookieValue(request.getCookies(), USER_REQUEST_TYPE,null);
+
+        if(cookie != null){
+            return cookie;
+        }
+
+        if (isMobileDevice(request)) {
+            type = "mobile";
+        }
+        return type;
+    }
+
