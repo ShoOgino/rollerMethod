@@ -1,13 +1,15 @@
-    public VelocityRenderer(Template template) throws Exception {
+    public VelocityRenderer(Template template, 
+			MobileDeviceRepository.DeviceType deviceType) throws Exception {
         
         // the Template we are supposed to render
         this.renderTemplate = template;
+		this.deviceType = deviceType;
         
         try {
             // make sure that we can locate the template
             // if we can't then this will throw an exception
-            velocityTemplate = RollerVelocity.getTemplate(template.getId(), "UTF-8");
-            
+            velocityTemplate = RollerVelocity.getTemplate(template.getId(), deviceType, "UTF-8");
+           
             // if this is a ThemeTemplate than look for a decorator too
             if(template instanceof ThemeTemplate) {
                 ThemeTemplate templ = (ThemeTemplate) template;
@@ -32,7 +34,7 @@
             parseException = ex;
             
             // need to lookup error page template
-            velocityTemplate = RollerVelocity.getTemplate("templates/error-page.vm");
+            velocityTemplate = RollerVelocity.getTemplate("templates/error-page.vm", deviceType);
             
         } catch(Exception ex) {
             // some kind of generic/unknown exception, dump it to the logs

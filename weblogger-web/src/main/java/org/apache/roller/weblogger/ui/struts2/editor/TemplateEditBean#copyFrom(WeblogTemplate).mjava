@@ -1,11 +1,20 @@
-    public void copyFrom(WeblogTemplate dataHolder) {
-        
+    public void copyFrom(WeblogTemplate dataHolder) throws WebloggerException {
         this.id = dataHolder.getId();
         this.name = dataHolder.getName();
         this.action = dataHolder.getAction();
         this.description = dataHolder.getDescription();
         this.link = dataHolder.getLink();
-        this.contents = dataHolder.getContents();
+
+        if (dataHolder.getTemplateCode("standard") != null) {
+            this.contentsStandard = dataHolder.getTemplateCode("standard").getTemplate();
+        } else {
+            this.contentsStandard = dataHolder.getContents();
+        }
+        if (dataHolder.getTemplateCode("mobile") != null) {
+            this.contentsMobile = dataHolder.getTemplateCode("mobile").getTemplate();
+        }
+		log.debug("Standard: " + this.contentsStandard + " Mobile: " + this.contentsMobile); 
+
         this.navbar = dataHolder.isNavbar();
         this.hidden = dataHolder.isHidden();
         this.templateLanguage = dataHolder.getTemplateLanguage();

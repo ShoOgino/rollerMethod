@@ -1,9 +1,10 @@
     private void myValidate() {
-        
+
         // if name changed make sure there isn't a conflict
-        if(!getTemplate().getName().equals(getBean().getName())) {
+        if (!getTemplate().getName().equals(getBean().getName())) {
             try {
-                if(WebloggerFactory.getWeblogger().getWeblogManager().getPageByName(getActionWeblog(), getBean().getName()) != null) {
+                if (WebloggerFactory.getWeblogger().getWeblogManager()
+                    .getPageByName(getActionWeblog(), getBean().getName()) != null) {
                     addError("pagesForm.error.alreadyExists", getBean().getName());
                 }
             } catch (WebloggerException ex) {
@@ -11,11 +12,12 @@
             }
         }
 
-      // if link changed make sure there isn't a conflict
-        if(!StringUtils.isEmpty(getBean().getLink()) &&
+        // if link changed make sure there isn't a conflict
+        if (!StringUtils.isEmpty(getBean().getLink()) &&
                 !getBean().getLink().equals(getTemplate().getLink())) {
             try {
-                if(WebloggerFactory.getWeblogger().getWeblogManager().getPageByLink(getActionWeblog(), getBean().getLink()) != null) {
+                if (WebloggerFactory.getWeblogger().getWeblogManager()
+                        .getPageByLink(getActionWeblog(), getBean().getLink()) != null) {
                     addError("pagesForm.error.alreadyExists", getBean().getLink());
                 }
             } catch (WebloggerException ex) {

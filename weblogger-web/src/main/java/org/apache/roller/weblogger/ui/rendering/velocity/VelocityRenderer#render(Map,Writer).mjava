@@ -1,6 +1,7 @@
     public void render(Map model, Writer out) throws RenderingException {
         
         try {
+
             if(parseException != null) {
                 
                 Context ctx = new VelocityContext(model);
@@ -20,7 +21,7 @@
             // convert model to Velocity Context
             Context ctx = new VelocityContext(model);
             
-            if(velocityDecorator != null) {
+            if (velocityDecorator != null) {
                 
                 /**
                  * We only allow decorating once, so the process isn't

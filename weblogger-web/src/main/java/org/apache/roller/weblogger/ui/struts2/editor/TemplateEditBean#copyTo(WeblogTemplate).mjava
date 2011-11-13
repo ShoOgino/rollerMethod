@@ -1,9 +1,26 @@
-    public void copyTo(WeblogTemplate dataHolder) {
+    public void copyTo(WeblogTemplate dataHolder) throws WebloggerException {
 
-        // change the default content of template if we are changing standard type code
-        if("standard".equals(getType()))
-        dataHolder.setContents(getContents());
-        
+        if (dataHolder.getTemplateCode("standard") != null) {
+            // if we have a template, then set it
+            WeblogTemplateCode tc = dataHolder.getTemplateCode("standard");
+            tc.setTemplate(contentsStandard);
+            WebloggerFactory.getWeblogger().getWeblogManager().saveTemplateCode(tc);
+        } else { 
+            // otherwise create it, then set it
+            WeblogTemplateCode tc = new WeblogTemplateCode(dataHolder.getId(), "standard");
+			tc.setTemplate(dataHolder.getContents());
+            WebloggerFactory.getWeblogger().getWeblogManager().saveTemplateCode(tc);
+        }
+
+        if (dataHolder.getTemplateCode("mobile") != null) {
+            WeblogTemplateCode tc = dataHolder.getTemplateCode("mobile");
+            tc.setTemplate(contentsMobile);
+        } else {
+            WeblogTemplateCode tc = new WeblogTemplateCode(dataHolder.getId(), "mobile");
+			tc.setTemplate(""); // empty, we've got no default mobile template 
+            WebloggerFactory.getWeblogger().getWeblogManager().saveTemplateCode(tc);
+        }
+
         // the rest of the template properties can only be modified when
         // dealing with a CUSTOM weblog template
         if(dataHolder.isCustom()) {

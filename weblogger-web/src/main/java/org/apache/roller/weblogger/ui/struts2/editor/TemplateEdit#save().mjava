@@ -2,22 +2,23 @@
      * Save an existing template.
      */
     public String save() {
-        
-        if(getTemplate() == null) {
+        log.debug("Entering save()");
+
+        if (getTemplate() == null) {
             // TODO: i18n
             addError("Unable to locate specified template");
             return LIST;
         }
-        
+
         // validation
         myValidate();
-        
-        if(!hasActionErrors()) try {
-            
+
+        if (!hasActionErrors()) try {
+
             WeblogTemplate template = getTemplate();
             getBean().copyTo(template);
             template.setLastModified(new Date());
-            
+
             if (getBean().getAutoContentType() == null ||
                     !getBean().getAutoContentType().booleanValue()) {
                 template.setOutputContentType(getBean().getManualContentType());
@@ -25,35 +26,29 @@
                 // empty content-type indicates that template uses auto content-type detection
                 template.setOutputContentType(null);
             }
-            
+
             // save template
             WebloggerFactory.getWeblogger().getWeblogManager().savePage(template);
-
-
-            //save template code
-            WeblogTemplateCode templateCode = WebloggerFactory.getWeblogger().getWeblogManager().
-                    getTemplateCodeByType(template.getId(),getBean().getType());
-            templateCode.setTemplate(getBean().getContents());
-
-            WebloggerFactory.getWeblogger().getWeblogManager().saveTemplateCode(templateCode);
+            log.debug("Saved template: " + template.getId());
 
             //flush
-             WebloggerFactory.getWeblogger().flush();
+            WebloggerFactory.getWeblogger().flush();
 
             // notify caches
             CacheManager.invalidate(template);
 
-           // synchronizeThemes();
-            
+            // synchronizeThemes();
+
             // success message
             addMessage("pageForm.save.success", template.getName());
-            
-        } catch (WebloggerException ex) {
-            log.error("Error updating page - "+getBean().getId(), ex);
+
+        } catch (Exception ex) {
+            log.error("Error updating page - " + getBean().getId(), ex);
             // TODO: i18n
             addError("Error saving template");
         }
-        
+
+        log.debug("Leaving save()");
         return INPUT;
     }
 

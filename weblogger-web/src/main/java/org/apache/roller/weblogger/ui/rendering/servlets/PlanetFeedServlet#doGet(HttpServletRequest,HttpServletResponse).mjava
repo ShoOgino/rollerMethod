@@ -105,7 +105,7 @@
         try {
             log.debug("Looking up renderer");
             Template template = new StaticTemplate("templates/planet/planetrss.vm", "velocity");
-            renderer = RendererManager.getRenderer(template);
+            renderer = RendererManager.getRenderer(template, DeviceType.mobile);
         } catch (Exception e) {
             // nobody wants to render my content :(
             log.error("Couldn't find renderer for planet rss", e);

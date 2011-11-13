@@ -3,15 +3,15 @@
      */
     public void init(ExtendedProperties config) {
         
-        log.debug("WebappResourceLoader : initialization starting.");
+        logger.debug("WebappResourceLoader : initialization starting.");
         
         if (mContext == null) {
             mContext = RollerContext.getServletContext();
-            log.debug("Servlet Context = "+mContext.getRealPath("/WEB-INF/velocity/"));
+            logger.debug("Servlet Context = "+mContext.getRealPath("/WEB-INF/velocity/"));
         }
         
-        log.debug(config);
+        logger.debug(config);
         
-        log.debug("WebappResourceLoader : initialization complete.");
+        logger.debug("WebappResourceLoader : initialization complete.");
     }
 

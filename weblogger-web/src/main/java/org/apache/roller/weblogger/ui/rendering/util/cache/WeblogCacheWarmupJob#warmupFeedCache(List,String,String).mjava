@@ -41,8 +41,9 @@
                 
                 // lookup Renderer we are going to use
                 Renderer renderer = null;
-                Template template = new StaticTemplate("templates/feeds/weblog-"+type+"-"+format+".vm", "velocity");
-                renderer = RendererManager.getRenderer(template);
+                Template template = new StaticTemplate(
+					"templates/feeds/weblog-"+type+"-"+format+".vm", "velocity");
+                renderer = RendererManager.getRenderer(template, DeviceType.standard);
                 
                 
                 // render content.  use default size of about 24K for a standard page
