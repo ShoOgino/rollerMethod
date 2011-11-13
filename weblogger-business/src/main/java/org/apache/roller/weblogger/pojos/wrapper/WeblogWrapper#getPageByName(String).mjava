@@ -1,7 +1,6 @@
     public ThemeTemplateWrapper getPageByName(String name)
             throws WebloggerException {
        ThemeTemplate templateToWrap = this.pojo.getTheme().getTemplateByName(name);
-        prepareTemplate(templateToWrap, type);
         return ThemeTemplateWrapper.wrap(templateToWrap);
     }
 
