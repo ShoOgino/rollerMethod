@@ -32,7 +32,7 @@
             //stylesheet.setContents(theme.getStylesheet().getContents());
 
             //save template code which was persisted in DB
-            WeblogTemplateCode existingTemplateCode = stylesheet.getTemplateCode(getType());
+            WeblogThemeTemplateCode existingTemplateCode = stylesheet.getTemplateCode(getType());
             existingTemplateCode.setTemplate(templateCode.getTemplate());
             WebloggerFactory.getWeblogger().getWeblogManager().saveTemplateCode(existingTemplateCode);
             // save template and flush

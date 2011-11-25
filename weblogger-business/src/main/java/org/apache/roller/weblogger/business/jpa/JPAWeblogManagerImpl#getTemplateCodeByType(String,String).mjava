@@ -1,4 +1,4 @@
-    public WeblogTemplateCode getTemplateCodeByType(String templateId, String type) throws WebloggerException{
+    public WeblogThemeTemplateCode getTemplateCodeByType(String templateId, String type) throws WebloggerException{
          if(templateId == null)
              throw new WebloggerException("Template Name is null");
 
@@ -10,7 +10,7 @@
         query.setParameter(1, templateId);
         query.setParameter(2, type);
         try {
-            return (WeblogTemplateCode)query.getSingleResult();
+            return (WeblogThemeTemplateCode)query.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
