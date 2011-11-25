@@ -91,7 +91,7 @@
 
 
 				for (String type : availableTypesList) {
-					WeblogTemplateCode templateCode = createTemplateCode(theme_template.getId(), stylesheetTmpl.getTemplateCode(type));
+					TemplateCode templateCode = createTemplateCode(theme_template.getId(), stylesheetTmpl.getTemplateCode(type));
 
 					theme_template.addTemplateCode(type, templateCode);
 				}
@@ -183,7 +183,7 @@
 					templateMetadata.isNavbar());
 
 			for (String type : availableTypesList) {
-				WeblogTemplateCode templateCode = createTemplateCode(theme_template.getId(),
+				TemplateCode templateCode = createTemplateCode(theme_template.getId(),
 						templateMetadata.getTemplateCode(type));
 
 				theme_template.addTemplateCode(type, templateCode);
