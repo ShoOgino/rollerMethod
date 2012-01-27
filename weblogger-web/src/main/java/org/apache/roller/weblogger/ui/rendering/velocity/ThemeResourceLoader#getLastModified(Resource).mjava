@@ -1,34 +1,7 @@
-    public long getLastModified(Resource resource) {
-        long last_mod = 0;
-        String name = resource.getName();
-        
-        logger.debug("Checking last modified time for resource named ... "+name);
-        
-        if (name == null || name.length() < 1)
-            return last_mod;
-        
-        try {
-            // parse the name ... theme templates name are <theme>:<template>
-            String[] split = name.split(":", 2);
-            if(split.length < 2)
-                return last_mod;
-            
-            // lookup the template from the proper theme
-            ThemeManager themeMgr = WebloggerFactory.getWeblogger().getThemeManager();
-            Theme theme = themeMgr.getTheme(split[0]);
-            ThemeTemplate template = theme.getTemplateByName(split[1]);
-            
-            if(template == null)
-                return last_mod;
-            
-            last_mod = template.getLastModified().getTime();
-            
-        } catch (ThemeNotFoundException tnfe) {
-            // ignore
-        } catch (WebloggerException re) {
-            // we don't like to see this happen, but oh well
-        }
-        
-        return last_mod;
-    }
+	/**
+	 * @see org.apache.velocity.runtime.resource.loader.ResourceLoader#getLastModified(org.apache.velocity.runtime.resource.Resource)
+	 */
+	public long getLastModified(Resource resource) {
+		return 0;
+	}
 

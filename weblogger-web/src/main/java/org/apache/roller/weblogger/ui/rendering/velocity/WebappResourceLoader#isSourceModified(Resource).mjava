@@ -1,10 +1,54 @@
-    /**
-     * Files loaded by this resource loader are considered static, so they are
-     * never reloaded by velocity.
-     *
-     * @see org.apache.velocity.runtime.resource.loader.ResourceLoader#isSourceModified(org.apache.velocity.runtime.resource.Resource)
-     */
-    public boolean isSourceModified(Resource arg0) {
-        return false;
-    }
+	/**
+	 * Checks to see if a resource has been deleted, moved or modified. When
+	 * using the resource.loader.cache=true option
+	 * 
+	 * @param resource
+	 *            Resource The resource to check for modification
+	 * 
+	 * @return boolean True if the resource has been modified
+	 */
+	public boolean isSourceModified(Resource resource) {
+
+		String rootPath = servletContext.getRealPath("/");
+		if (rootPath == null) {
+			// RootPath is null if the servlet container cannot translate the
+			// virtual path to a real path for any reason (such as when the
+			// content is being made available from a .war archive)
+			return false;
+		}
+
+		// first, try getting the previously found file
+		String fileName = resource.getName();
+		File cachedFile = getCachedFile(rootPath, fileName);
+		if (!cachedFile.exists()) {
+			// then the source has been moved and/or deleted
+			return true;
+		}
+
+		/*
+		 * Check to see if the file can now be found elsewhere before it is
+		 * found in the previously saved path
+		 */
+		File currentFile = null;
+		for (int i = 0; i < paths.length; i++) {
+			currentFile = new File(rootPath + paths[i], fileName);
+			if (currentFile.canRead()) {
+				/*
+				 * stop at the first resource found (just like in
+				 * getResourceStream())
+				 */
+				break;
+			}
+		}
+
+		// If the current is the cached and it is readable
+		if (cachedFile.equals(currentFile) && cachedFile.canRead()) {
+			// then (and only then) do we compare the last modified values
+			return (cachedFile.lastModified() != resource.getLastModified());
+		} else {
+			// We found a new file for the resource or the resource is no longer
+			// readable.
+			return true;
+		}
+	}
 
