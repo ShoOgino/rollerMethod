@@ -119,7 +119,13 @@
         }
 
         // Development only. Reload if theme has been modified
-		if (themeReload) {
+        if (themeReload
+        		&& !weblog.getEditorTheme().equals(
+        				WeblogTemplate.ACTION_CUSTOM)
+        				&& (searchRequest.getPathInfo() == null || searchRequest
+        				.getPathInfo() != null
+        				&& !searchRequest.getPathInfo().endsWith(".css"))) {
+			
 			try {
 				ThemeManager manager = WebloggerFactory.getWeblogger().getThemeManager();
 				boolean reloaded = manager.reLoadThemeFromDisk(weblog.getEditorTheme());
