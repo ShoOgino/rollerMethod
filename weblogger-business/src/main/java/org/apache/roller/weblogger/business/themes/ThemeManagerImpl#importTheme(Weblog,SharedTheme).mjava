@@ -65,15 +65,19 @@
 
             // create weblog template code objects and save them 
             for (String type : ThemeManagerImpl.getTypesList()) {
-                TemplateCode templateCode = template.getTemplateCode(type);
-                if (templateCode != null) {
-                    WeblogThemeTemplateCode weblogTemplateCode = new WeblogThemeTemplateCode(template.getId(), type);
-					weblogTemplateCode.setType(type);
-                    weblogTemplateCode.setTemplate(templateCode.getTemplate());
-					weblogTemplateCode.setTemplateLanguage(templateCode.getTemplateLanguage());
-					weblogTemplateCode.setContentType(templateCode.getContentType());
-                    WebloggerFactory.getWeblogger().getWeblogManager().saveTemplateCode(weblogTemplateCode);
-                }
+            	WeblogThemeTemplateCode weblogTemplateCode = (WeblogThemeTemplateCode) template
+            			.getTemplateCode(type);
+            	if (weblogTemplateCode == null) {
+            		TemplateCode templateCode = themeTemplate.getTemplateCode(type);
+            		if (templateCode != null) {
+            			weblogTemplateCode = new WeblogThemeTemplateCode(template.getId(), type);
+            			weblogTemplateCode.setType(type);
+            			weblogTemplateCode.setTemplate(templateCode.getTemplate());
+            			weblogTemplateCode.setTemplateLanguage(templateCode.getTemplateLanguage());
+            			weblogTemplateCode.setContentType(templateCode.getContentType());
+            			WebloggerFactory.getWeblogger().getWeblogManager().saveTemplateCode(weblogTemplateCode);
+            		}
+            	}
             }
         }
 
