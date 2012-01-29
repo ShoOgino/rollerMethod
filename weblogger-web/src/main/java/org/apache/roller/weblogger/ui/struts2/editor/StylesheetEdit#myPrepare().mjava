@@ -58,6 +58,18 @@
 
 					setTemplate(stylesheetTmpl);
 				}
+				
+				if (!WeblogTheme.CUSTOM.equals(getActionWeblog()
+	    				.getEditorTheme())) {
+
+	    			ThemeTemplate override =WebloggerFactory.getWeblogger()
+	    					.getWeblogManager().getPageByLink(getActionWeblog(), getActionWeblog().getTheme().getStylesheet().getLink());
+
+	    			if(override != null) {
+	    				customStylesheet = true;
+	    			}
+				}
+				
 			} catch (WebloggerException ex) {
 				log.error(
 						"Error finding/adding stylesheet tempalate from weblog - "

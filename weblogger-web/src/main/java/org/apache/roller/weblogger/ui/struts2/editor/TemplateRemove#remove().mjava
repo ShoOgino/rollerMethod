@@ -4,15 +4,14 @@
     public String remove() {
         
         if(getTemplate() != null) try {
-            if(!getTemplate().isRequired()) {
-                UserManager umgr = WebloggerFactory.getWeblogger().getUserManager();
+            if(!getTemplate().isRequired() || !WeblogTheme.CUSTOM.equals(getActionWeblog().getEditorTheme())) {
 
                 // notify cache
                 CacheManager.invalidate(getTemplate());
-
+                
                 WebloggerFactory.getWeblogger().getWeblogManager().removePage(getTemplate());
                 WebloggerFactory.getWeblogger().flush();
-                                
+                
                 return SUCCESS;
             } else {
                 // TODO: i18n
