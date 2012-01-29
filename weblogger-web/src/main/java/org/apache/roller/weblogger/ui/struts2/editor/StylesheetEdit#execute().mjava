@@ -1,26 +1,33 @@
-    /**
-     * Show stylesheet edit page.
-     */
-    public String execute() {
-        
-        if(getTemplate() == null) {
-            return ERROR;
-        }
-        WeblogThemeTemplateCode templateCode = null;
-        try {
-            templateCode = getTemplate().getTemplateCode(getType());
-        } catch (WebloggerException e) {
-            log.error("Error loading Weblog template code for stylesheet", e);
-        }
-         // if there is a template code load that template
-        if(templateCode != null) {
-            setContents(templateCode.getTemplate());
-        }
-        // if not fall back for default template code
-        else{
-           setContents(getTemplate().getContents());
-        }
-        
-        return INPUT;
-    }
+	/**
+	 * Show stylesheet edit page.
+	 */
+	public String execute() {
+
+		if (getTemplate() == null) {
+			return ERROR;
+		}
+
+		try {
+
+			if (getTemplate().getTemplateCode("standard") != null) {
+				setContentsStandard(getTemplate().getTemplateCode("standard")
+						.getTemplate());
+			} else {
+				setContentsStandard(getTemplate().getContents());
+			}
+			if (getTemplate().getTemplateCode("mobile") != null) {
+				setContentsMobile(getTemplate().getTemplateCode("mobile")
+						.getTemplate());
+			}
+
+			if (log.isDebugEnabled())
+				log.debug("Standard: " + getContentsStandard() + " Mobile: "
+						+ getContentsMobile());
+
+		} catch (WebloggerException e) {
+			log.error("Error loading Weblog template codes for stylesheet", e);
+		}
+
+		return INPUT;
+	}
 
