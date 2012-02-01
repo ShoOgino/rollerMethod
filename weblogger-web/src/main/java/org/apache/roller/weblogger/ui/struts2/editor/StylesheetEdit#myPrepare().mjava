@@ -59,8 +59,10 @@
 					setTemplate(stylesheetTmpl);
 				}
 
+				// See if we have a custom style sheet from a custom theme.
 				if (!WeblogTheme.CUSTOM.equals(getActionWeblog()
-						.getEditorTheme())) {
+						.getEditorTheme())
+						&& getActionWeblog().getTheme().getStylesheet() != null) {
 
 					ThemeTemplate override = WebloggerFactory
 							.getWeblogger()
