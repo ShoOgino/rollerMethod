@@ -56,6 +56,10 @@
             // flush results to db
             WebloggerFactory.getWeblogger().flush();
             
+            // reset form fields
+            setNewTmplName(null);
+            setNewTmplAction(null);
+            
         } catch (WebloggerException ex) {
             log.error("Error adding new template for weblog - "+getActionWeblog().getHandle(), ex);
             // TODO: i18n
