@@ -1,29 +1,64 @@
-    /**
-     * Remove a new template.
-     */
-    public String remove() {
-        
-        if(getTemplate() != null) try {
-            if(!getTemplate().isRequired() || !WeblogTheme.CUSTOM.equals(getActionWeblog().getEditorTheme())) {
+	/**
+	 * Remove a new template.
+	 */
+	public String remove() {
 
-                // notify cache
-                CacheManager.invalidate(getTemplate());
-                
-                WebloggerFactory.getWeblogger().getWeblogManager().removePage(getTemplate());
-                WebloggerFactory.getWeblogger().flush();
-                
-                return SUCCESS;
-            } else {
-                // TODO: i18n
-                addError("Cannot remove required template");
-            }
-            
-        } catch(Exception ex) {
-            log.error("Error removing page - "+getRemoveId(), ex);
-            // TODO: i18n
-            addError("Error removing page");
-        }
-        
-        return "confirm";
-    }
+		if (getTemplate() != null)
+			try {
+				if (!getTemplate().isRequired()
+						|| !WeblogTheme.CUSTOM.equals(getActionWeblog()
+								.getEditorTheme())) {
+
+					WeblogManager mgr = WebloggerFactory.getWeblogger()
+							.getWeblogManager();
+
+					// if weblog template remove custom style sheet also
+					if (getTemplate().getName().equals(
+							WeblogTemplate.DEFAULT_PAGE)) {
+
+						Weblog weblog = getActionWeblog();
+
+						ThemeTemplate stylesheet = getActionWeblog().getTheme()
+								.getStylesheet();
+
+						// Delete style sheet if the same name
+						if (stylesheet != null
+								&& getActionWeblog().getTheme().getStylesheet() != null
+								&& stylesheet.getLink().equals(
+										getActionWeblog().getTheme()
+												.getStylesheet().getLink())) {
+							// Same so OK to delete
+							WeblogTemplate css = mgr.getPageByLink(
+									getActionWeblog(), stylesheet.getLink());
+
+							if (css != null) {
+								mgr.removePage(css);
+							}
+						}
+
+						// Clear for next custom theme
+						weblog.setCustomStylesheetPath(null);
+						weblog.setDefaultPageId(null);
+
+					}
+
+					// notify cache
+					CacheManager.invalidate(getTemplate());
+					mgr.removePage(getTemplate());
+					WebloggerFactory.getWeblogger().flush();
+
+					return SUCCESS;
+				} else {
+					// TODO: i18n
+					addError("Cannot remove required template");
+				}
+
+			} catch (Exception ex) {
+				log.error("Error removing page - " + getRemoveId(), ex);
+				// TODO: i18n
+				addError("Error removing page");
+			}
+
+		return "confirm";
+	}
 

@@ -1,34 +1,35 @@
-    /**
-     * @see ThemeManager#reLoadThemeFromDisk(String)
-     */
-    public boolean reLoadThemeFromDisk(String reloadTheme) {
+	/**
+	 * @see ThemeManager#reLoadThemeFromDisk(String)
+	 */
+	public boolean reLoadThemeFromDisk(String reloadTheme) {
 
-        boolean reloaded = false;
+		boolean reloaded = false;
 
-        try {
+		try {
 
-            Theme theme = new SharedThemeFromDir(this.themeDir + File.separator
-                    + reloadTheme);
+			Theme theme = new SharedThemeFromDir(this.themeDir + File.separator
+					+ reloadTheme);
 
-            if (theme != null) {
+			if (theme != null) {
 
-                Theme loadedTheme = (Theme) themes.get(theme.getId());
+				Theme loadedTheme = (Theme) themes.get(theme.getId());
 
-                if (loadedTheme != null
-                        && theme.getLastModified().after(loadedTheme.getLastModified())) {
-                    themes.remove(theme.getId());
-                    themes.put(theme.getId(), theme);
-                    reloaded = true;
-                }
+				if (loadedTheme != null
+						&& theme.getLastModified().after(
+								loadedTheme.getLastModified())) {
+					themes.remove(theme.getId());
+					themes.put(theme.getId(), theme);
+					reloaded = true;
+				}
 
-            }
+			}
 
-        } catch (Throwable unexpected) {
-            // shouldn't happen, so let's learn why it did
-            log.error("Problem reloading theme " + reloadTheme, unexpected);
-        }
+		} catch (Throwable unexpected) {
+			// shouldn't happen, so let's learn why it did
+			log.error("Problem reloading theme " + reloadTheme, unexpected);
+		}
 
-        return reloaded;
+		return reloaded;
 
-    }
+	}
 
