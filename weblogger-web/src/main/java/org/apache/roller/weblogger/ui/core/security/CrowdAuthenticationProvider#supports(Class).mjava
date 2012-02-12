@@ -1,0 +1,8 @@
+	/* (non-Javadoc)
+	 * @see org.springframework.security.providers.AuthenticationProvider#supports(java.lang.Class)
+	 */
+	@SuppressWarnings("rawtypes")
+	public boolean supports(Class authentication) {
+		return (UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication));
+	}
+

@@ -1,0 +1,23 @@
+	private List<String> getPermissions(User user)	throws OperationFailedException, InvalidAuthenticationException,
+															ApplicationPermissionException, UserNotFoundException {
+		List<String> authorities = new ArrayList<String>();
+		// not sure why this is needed??
+		authorities.add("ROLE_USER");
+
+		// Optional: Define granted authorities based on
+		// groups to which the user is a member.
+		List<Group> groups = crowdClient.getGroupsForUser(user.getName(), 0, -1);
+		for(Group group: groups) {
+			if(group.isActive()){
+				if (group.getName().contains("admin") || group.getName().contains("ADMIN")){
+					// setup admin here
+					authorities.add("admin");
+				}else if(group.getName().contains("editor") || group.getName().contains("EDITOR")){
+					// setup editor
+					authorities.add("editor");
+				}
+			}
+		}
+		return authorities;
+	}
+
