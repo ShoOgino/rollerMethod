@@ -1,0 +1,16 @@
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+        throws IOException, ServletException {
+        HttpServletRequest httpReq = (HttpServletRequest) request;
+ 
+        String salt = (String) httpReq.getParameter("salt");
+		LRUCache2 saltCache = (LRUCache2)
+            httpReq.getSession().getAttribute("saltCache");
+
+        if (saltCache != null && salt != null && saltCache.get(salt) != null){
+            chain.doFilter(request, response);
+        } else {
+            throw new ServletException("Security Violation");
+        }
+    }
+
