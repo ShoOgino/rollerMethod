@@ -3,14 +3,13 @@
         throws IOException, ServletException {
         HttpServletRequest httpReq = (HttpServletRequest) request;
  
-        String salt = (String) httpReq.getParameter("salt");
-		LRUCache2 saltCache = (LRUCache2)
-            httpReq.getSession().getAttribute("saltCache");
-
-        if (saltCache != null && salt != null && saltCache.get(salt) != null){
-            chain.doFilter(request, response);
-        } else {
-            throw new ServletException("Security Violation");
-        }
+		if (httpReq.getMethod().equals("POST")) {
+        	String salt = (String) httpReq.getParameter("salt");
+			SaltCache saltCache = SaltCache.getInstance();
+			if (salt == null || saltCache.get(salt) == null || saltCache.get(salt).equals(false)) {
+            	throw new ServletException("Security Violation");
+			}
+		}
+        chain.doFilter(request, response);
     }
 
