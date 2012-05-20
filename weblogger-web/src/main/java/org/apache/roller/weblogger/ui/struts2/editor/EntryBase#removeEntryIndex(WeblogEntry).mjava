@@ -1,16 +1,14 @@
 	/**
 	 * Trigger reindexing of modified entry.
-	 * 
-	 * @param entry
-	 *            the entry
 	 */
-	protected void reindexEntry(WeblogEntry entry) {
+	protected void removeEntryIndex(WeblogEntry entry) {
 		IndexManager manager = WebloggerFactory.getWeblogger()
 				.getIndexManager();
 		try {
-			manager.addEntryReIndexOperation(entry);
+			manager.removeEntryIndexOperation(entry);
 		} catch (WebloggerException ex) {
 			log.warn("Trouble triggering entry indexing", ex);
 		}
+
 	}
 
