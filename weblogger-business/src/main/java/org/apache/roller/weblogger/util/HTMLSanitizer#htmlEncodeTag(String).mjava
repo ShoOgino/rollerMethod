@@ -1,0 +1,9 @@
+	public static final String htmlEncodeTag(String source) {
+		if (source != null) {
+			String result = replaceAllNoRegex(source, new String[]{"<", ">"}, new String[]{"&lt;", "&gt;"});
+			return result;
+		} else {
+			return null;
+		}
+	}
+
