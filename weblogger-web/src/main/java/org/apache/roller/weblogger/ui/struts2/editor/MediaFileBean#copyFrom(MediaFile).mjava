@@ -10,13 +10,17 @@
 
         Set<MediaFileTag> tags = dataHolder.getTags();
         if (tags != null && !tags.isEmpty()) {
-            StringBuffer tagDisplayBuffer = new StringBuffer();
+            StringBuilder tagDisplayBuilder = new StringBuilder();
             for (MediaFileTag tag : dataHolder.getTags()) {
-                tagDisplayBuffer.append(tag.getName());
-                tagDisplayBuffer.append(" ");
+            	if (StringUtils.isNotEmpty(tag.getName())) {
+            		tagDisplayBuilder.append(tag.getName());
+                    tagDisplayBuilder.append(" ");
+				}
             }
-            tagDisplayBuffer.deleteCharAt(tagDisplayBuffer.length() - 1);
-            this.setTags(tagDisplayBuffer.toString());
+			if (tagDisplayBuilder.length() > 0) {
+				tagDisplayBuilder.deleteCharAt(tagDisplayBuilder.length() - 1);
+			}
+            this.setTags(tagDisplayBuilder.toString());
         }
 
         this.setSharedForGallery(dataHolder.isSharedForGallery());

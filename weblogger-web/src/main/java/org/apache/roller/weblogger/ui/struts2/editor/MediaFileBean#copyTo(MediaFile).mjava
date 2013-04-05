@@ -8,11 +8,15 @@
         dataHolder.setDescription(this.description);
         dataHolder.setCopyrightText(this.copyrightText);
 
-        Set<MediaFileTag> tagsSet = new HashSet<MediaFileTag>();
-        for (String tag : this.tags.split(" ")) {
-            tagsSet.add(new MediaFileTag(tag, dataHolder));
-        }
-        dataHolder.setTags(tagsSet);
+		if (StringUtils.isNotEmpty(tags)) {
+			Set<MediaFileTag> tagsSet = new HashSet<MediaFileTag>();
+			for (String tag : this.tags.split(" ")) {
+				tagsSet.add(new MediaFileTag(tag, dataHolder));
+			}
+			dataHolder.setTags(tagsSet);
+		} else {
+			dataHolder.setTags(null);
+		}
         dataHolder.setSharedForGallery(this.isSharedForGallery);
         dataHolder.setOriginalPath(this.originalPath);
     }
