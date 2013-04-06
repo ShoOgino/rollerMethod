@@ -33,7 +33,8 @@
         StringBuffer msg = new StringBuffer();
         msg.append(resources.getString("email.comment.commentApproved"));
         msg.append("\n\n");
-        msg.append(WebloggerFactory.getWeblogger().getUrlStrategy().getWeblogCommentsURL(weblog, null, entry.getAnchor(), true));
+        msg.append(WebloggerFactory.getWeblogger().getUrlStrategy()
+			.getWeblogCommentsURL(weblog, null, entry.getAnchor(), true));
         
         // send message to author of approved comment
         try {
