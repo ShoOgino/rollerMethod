@@ -1,14 +1,15 @@
     /**
      * {@inheritDoc}
      */
-    public void moveMediaFileDirectories(Collection<MediaFileDirectory> mediaFileDirs, MediaFileDirectory targetDir)
-            throws WebloggerException {
+    public void moveMediaFileDirectories(
+            Collection<MediaFileDirectory> mediaFileDirs,
+            MediaFileDirectory targetDir) throws WebloggerException {
 
         for (MediaFileDirectory mediaFileDir : mediaFileDirs) {
             mediaFileDir.setParent(targetDir);
             this.strategy.store(mediaFileDir);
         }
-        // update weblog last modified date.  date updated by saveWebsite()
+        // update weblog last modified date. date updated by saveWebsite()
         roller.getWeblogManager().saveWeblog(targetDir.getWeblog());
     }
 
