@@ -33,7 +33,8 @@
                 if (useRAMIndex) {
                     Directory filesystem = getFSDirectory(false);
                     try {
-                        fRAMindex = new RAMDirectory(filesystem);
+                        fRAMindex = new RAMDirectory(filesystem,
+                                new IOContext());
                     } catch (IOException e) {
                         mLogger.error("Error creating in-memory index", e);
                     }

@@ -1,7 +1,8 @@
     public synchronized IndexReader getSharedIndexReader() {
         if (reader == null) {
             try {
-                reader = IndexReader.open(getIndexDirectory());
+                //reader = IndexReader.open(getIndexDirectory());
+                reader = DirectoryReader.open(getIndexDirectory());
             } catch (IOException e) {
             }
         }

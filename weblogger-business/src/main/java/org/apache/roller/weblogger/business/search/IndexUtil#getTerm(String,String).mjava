@@ -13,17 +13,16 @@
         if (input == null || field == null)
             return null;
 
-        Analyzer analyer = IndexManagerImpl.getAnalyzer();
-
-        TokenStream tokens = analyer
-                .tokenStream(field, new StringReader(input));
-
-        CharTermAttribute termAtt = (CharTermAttribute) tokens
-                .addAttribute(CharTermAttribute.class);
-
+        Analyzer analyser = IndexManagerImpl.getAnalyzer();
         Term term = null;
 
         try {
+
+            TokenStream tokens = analyser.tokenStream(field, new StringReader(
+                    input));
+
+            CharTermAttribute termAtt = (CharTermAttribute) tokens
+                    .addAttribute(CharTermAttribute.class);
 
             tokens.reset();
 
@@ -33,7 +32,7 @@
             }
 
         } catch (IOException e) {
-            // ignored
+            log.error("ERROR creating term", e);
         }
 
         return term;
