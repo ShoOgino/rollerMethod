@@ -29,11 +29,9 @@
 	            rootDirectory.getMediaFiles().add(mf);
 	
 	            mfMgr.createMediaFile(testWeblog, mf, new RollerMessages());
-
-	            MediaFileTag tag = new MediaFileTag("work", mf);
-	            Set<MediaFileTag> tags = new HashSet<MediaFileTag>();
-	            tags.add(tag);
-	            mf.setTags(tags);
+	            
+	            // Add tags
+	            mf.setTagsAsString("work");
 	            mfMgr.updateMediaFile(testWeblog, mf);
 	            
 	            mfMgr.createMediaFile(testWeblog, mf, new RollerMessages());
@@ -63,10 +61,8 @@
 	
 	            mfMgr.createMediaFile(testWeblog, mf, new RollerMessages());
 
-	            MediaFileTag tag = new MediaFileTag("home", mf);
-	            Set<MediaFileTag> tags = new HashSet<MediaFileTag>();
-	            tags.add(tag);
-	            mf.setTags(tags);
+	            // Add tags
+	            mf.setTagsAsString("home");
 	            mfMgr.updateMediaFile(testWeblog, mf);
 	
 	            TestUtils.endSession(true);
@@ -95,10 +91,8 @@
 	
 	            mfMgr.createMediaFile(testWeblog, mf, new RollerMessages());
 
-	            MediaFileTag tag = new MediaFileTag("home", mf);
-	            Set<MediaFileTag> tags = new HashSet<MediaFileTag>();
-	            tags.add(tag);
-	            mf.setTags(tags);
+	            // Add tags
+	            mf.setTagsAsString("home");
 	            mfMgr.updateMediaFile(testWeblog, mf);
 	
 	            TestUtils.endSession(true);
