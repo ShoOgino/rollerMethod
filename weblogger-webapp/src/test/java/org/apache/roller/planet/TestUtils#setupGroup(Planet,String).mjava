@@ -4,10 +4,10 @@
     public static PlanetGroup setupGroup(Planet planet, String handle) 
             throws Exception {
         
-        PlanetManager mgr = PlanetFactory.getPlanet().getPlanetManager();
+        PlanetManager mgr = WebloggerFactory.getWeblogger().getWebloggerManager();
         
         // make sure we are using a persistent object
-        Planet testPlanet = mgr.getPlanetById(planet.getId());
+        Planet testPlanet = mgr.getWebloggerById(planet.getId());
         
         // store
         PlanetGroup testGroup = new PlanetGroup(testPlanet, handle, handle, handle);
@@ -15,13 +15,13 @@
         mgr.saveGroup(testGroup);
         
         // flush
-        PlanetFactory.getPlanet().flush();
+        WebloggerFactory.getWeblogger().flush();
         
         // query to make sure we return the persisted object
         PlanetGroup group = mgr.getGroupById(testGroup.getId());
         
         if(group == null)
-            throw new PlanetException("error inserting new group");
+            throw new WebloggerException("error inserting new group");
         
         return group;
     }

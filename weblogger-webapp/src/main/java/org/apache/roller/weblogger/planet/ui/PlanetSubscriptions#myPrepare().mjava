@@ -1,7 +1,7 @@
     @Override
     public void myPrepare() {
         
-        PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
+        PlanetManager pmgr = WebloggerFactory.getWeblogger().getWebloggerManager();
         
         // lookup group we are operating on, if none specified then use default
         if (getGroupHandle() == null) {
@@ -9,7 +9,7 @@
         }
         
         try {
-            setGroup(pmgr.getGroup(getPlanet(), getGroupHandle()));
+            setGroup(pmgr.getGroup(getWeblogger(), getGroupHandle()));
         } catch (RollerException ex) {
             log.error("Error looking up planet group - "+getGroupHandle(), ex);
         }

@@ -3,11 +3,11 @@
         TestUtils.setupPlanet();
         
         // add test subscription
-        PlanetManager mgr = PlanetFactory.getPlanet().getPlanetManager();
+        PlanetManager mgr = WebloggerFactory.getWeblogger().getWebloggerManager();
         testSub = new Subscription();
         testSub.setTitle(feed_url);
         testSub.setFeedURL(feed_url);
         mgr.saveSubscription(testSub);
-        PlanetFactory.getPlanet().flush();
+        WebloggerFactory.getWeblogger().flush();
     }
 

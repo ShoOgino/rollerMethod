@@ -5,14 +5,14 @@
         
         if(getSubUrl() != null) try {
             
-            PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
+            PlanetManager pmgr = WebloggerFactory.getWeblogger().getWebloggerManager();
             
             // remove subscription
             Subscription sub = pmgr.getSubscription(getSubUrl());
             getGroup().getSubscriptions().remove(sub);
             sub.getGroups().remove(getGroup());
             pmgr.saveGroup(getGroup());
-            PlanetFactory.getPlanet().flush();
+            WebloggerFactory.getWeblogger().flush();
             
             // clear field after success
             setSubUrl(null);

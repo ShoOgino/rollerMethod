@@ -1,6 +1,6 @@
     public void testGroupCRUD() throws Exception {
         
-        PlanetManager mgr = PlanetFactory.getPlanet().getPlanetManager();
+        PlanetManager mgr = WebloggerFactory.getWeblogger().getWebloggerManager();
         
         PlanetGroup testGroup = new PlanetGroup();
         testGroup.setDescription("test_group_desc");
@@ -21,7 +21,7 @@
         group = mgr.getGroupById(testGroup.getId());
         assertNotNull(group);
         assertEquals("test_handle", group.getHandle());
-        assertEquals(testPlanet.getId(), group.getPlanet().getId());
+        assertEquals(testPlanet.getId(), group.getWeblogger().getId());
         
         // modify
         group.setTitle("foo");

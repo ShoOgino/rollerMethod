@@ -9,9 +9,9 @@
     public static void endSession(boolean flush) throws Exception {
         
         if(flush) {
-            PlanetFactory.getPlanet().flush();
+            WebloggerFactory.getWeblogger().flush();
         }
         
-        PlanetFactory.getPlanet().release();
+        WebloggerFactory.getWeblogger().release();
     }
 

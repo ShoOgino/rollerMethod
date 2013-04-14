@@ -1,7 +1,7 @@
     public void run() {
         try {            
-            Planet planet = PlanetFactory.getPlanet();
-            PlanetManager planetManager = planet.getPlanetManager();
+            Weblogger weblogger = WebloggerFactory.getWeblogger();
+            PlanetManager planetManager = weblogger.getWebloggerManager();
                         
             // Ignore values from database
             //String mainPage = planetManager.getConfiguration().getMainPage();
@@ -10,11 +10,11 @@
             
             // Use values from PlanetConfig instead
             String mainPage =    
-                PlanetConfig.getProperty("planet.aggregator.mainPage");
+                WebloggerConfig.getProperty("planet.aggregator.mainPage");
             String templateDir = 
-                PlanetConfig.getProperty("planet.aggregator.template.dir"); 
+                WebloggerConfig.getProperty("planet.aggregator.template.dir"); 
             String outputDir =   
-                PlanetConfig.getProperty("planet.aggregator.output.dir");
+                WebloggerConfig.getProperty("planet.aggregator.output.dir");
             
             log.info("Calling Velocity Texen to generate Planet files");
             log.info("   Control file       ["+mainPage+"]");

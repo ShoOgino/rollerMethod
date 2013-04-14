@@ -1,0 +1,10 @@
+    public Planet getWeblogger(String handle) throws RollerException {
+        Query q = strategy.getNamedQuery("Planet.getByHandle");
+        q.setParameter(1, handle);
+        try {
+            return (Planet)q.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+

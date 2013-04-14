@@ -6,7 +6,7 @@
         myValidate();
         
         if(!hasActionErrors()) try {
-            PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
+            PlanetManager pmgr = WebloggerFactory.getWeblogger().getWebloggerManager();
             
             // check if this subscription already exists before adding it
             Subscription sub = pmgr.getSubscription(getSubUrl());
@@ -14,7 +14,7 @@
                 log.debug("Adding New Subscription - "+getSubUrl());
                 
                 // sub doesn't exist yet, so we need to fetch it
-                FeedFetcher fetcher = PlanetFactory.getPlanet().getFeedFetcher();
+                FeedFetcher fetcher = WebloggerFactory.getWeblogger().getFeedFetcher();
                 sub = fetcher.fetchSubscription(getSubUrl());
                 
                 // save new sub
@@ -32,7 +32,7 @@
             pmgr.saveGroup(group);
             
             // flush changes
-            PlanetFactory.getPlanet().flush();
+            WebloggerFactory.getWeblogger().flush();
             
             // clear field after success
             setSubUrl(null);

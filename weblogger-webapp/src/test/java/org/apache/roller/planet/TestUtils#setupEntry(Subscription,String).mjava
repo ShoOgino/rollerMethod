@@ -4,7 +4,7 @@
     public static SubscriptionEntry setupEntry(Subscription sub, String title) 
             throws Exception {
         
-        PlanetManager mgr = PlanetFactory.getPlanet().getPlanetManager();
+        PlanetManager mgr = WebloggerFactory.getWeblogger().getWebloggerManager();
         
         // make sure we are using a persistent object
         Subscription testSub = mgr.getSubscriptionById(sub.getId());
@@ -19,13 +19,13 @@
         mgr.saveEntry(testEntry);
         
         // flush
-        PlanetFactory.getPlanet().flush();
+        WebloggerFactory.getWeblogger().flush();
         
         // query to make sure we return the persisted object
         SubscriptionEntry entry = mgr.getEntryById(testEntry.getId());
         
         if(entry == null)
-            throw new PlanetException("error inserting new entry");
+            throw new WebloggerException("error inserting new entry");
         
         return entry;
     }

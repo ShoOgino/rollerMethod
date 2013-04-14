@@ -1,6 +1,6 @@
     public void testGroupLookups() throws Exception {
         
-        PlanetManager mgr = PlanetFactory.getPlanet().getPlanetManager();
+        PlanetManager mgr = WebloggerFactory.getWeblogger().getWebloggerManager();
         
         // lookup group by id
         PlanetGroup group = mgr.getGroupById(testGroup1.getId());
@@ -14,7 +14,7 @@
         assertEquals("groupFuncTest1", group.getHandle());
         
         // lookup all groups in planet
-        Planet planet = mgr.getPlanetById(testPlanet.getId());
+        Planet planet = mgr.getWebloggerById(testPlanet.getId());
         Set groups = planet.getGroups();
         assertNotNull(groups);
         assertEquals(2, groups.size());

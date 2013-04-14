@@ -5,8 +5,8 @@
     public List<PlanetGroup> getGroups() {
         List list = new ArrayList<PlanetGroup>();
         try {
-            PlanetManager planetManager = PlanetFactory.getPlanet().getPlanetManager();
-            Planet defaultPlanet = planetManager.getPlanet(DEFAULT_PLANET_HANDLE);
+            PlanetManager planetManager = WebloggerFactory.getWeblogger().getWebloggerManager();
+            Planet defaultPlanet = planetManager.getWeblogger(DEFAULT_PLANET_HANDLE);
             Set<PlanetGroup> groups = (Set<PlanetGroup>)defaultPlanet.getGroups();
             for (PlanetGroup group : groups) {
                 // TODO needs pojo wrapping from planet

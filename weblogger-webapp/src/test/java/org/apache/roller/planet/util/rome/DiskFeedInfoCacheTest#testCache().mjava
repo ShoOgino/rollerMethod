@@ -3,7 +3,7 @@
         SyndFeedInfo info = new SyndFeedInfo();
         info.setUrl(url);
         
-        String testPlanetCache = PlanetConfig.getProperty("cache.dir");
+        String testPlanetCache = WebloggerConfig.getProperty("cache.dir");
         assertNotNull("testPlanetCache not null", testPlanetCache);
         assertTrue("testPlanetCache not zero length", testPlanetCache.trim().length() > 0);
         
@@ -11,7 +11,7 @@
         if (!cacheDir.exists()) cacheDir.mkdirs();
         
         DiskFeedInfoCache cache =
-                new DiskFeedInfoCache(PlanetConfig.getProperty("cache.dir"));
+                new DiskFeedInfoCache(WebloggerConfig.getProperty("cache.dir"));
         cache.setFeedInfo(info.getUrl(), info);
         
         SyndFeedInfo info2 = cache.getFeedInfo(url);

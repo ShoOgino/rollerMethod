@@ -6,10 +6,10 @@
         log.info("Syncing local weblogs with planet subscriptions list");
         
         try {
-            PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
+            PlanetManager pmgr = WebloggerFactory.getWeblogger().getWebloggerManager();
             
             // first, make sure there is an "all" pmgr group
-            Planet planetObject = pmgr.getPlanetById("zzz_default_planet_zzz");
+            Planet planetObject = pmgr.getWebloggerById("zzz_default_planet_zzz");
             PlanetGroup group = pmgr.getGroup(planetObject, "all");
             if (group == null) {
                 group = new PlanetGroup();
@@ -17,7 +17,7 @@
                 group.setHandle("all");
                 group.setTitle("all");
                 pmgr.saveGroup(group);
-                PlanetFactory.getPlanet().flush();
+                WebloggerFactory.getWeblogger().flush();
             }
             
             // walk through all enable weblogs and add/update subs as needed
@@ -61,7 +61,7 @@
                 }
                 
                 // save as we go
-                PlanetFactory.getPlanet().flush();
+                WebloggerFactory.getWeblogger().flush();
             }
             
             // new subs added, existing subs updated, now delete old subs
@@ -91,14 +91,13 @@
             
             // all done, lets save
             pmgr.saveGroup(group);
-            PlanetFactory.getPlanet().flush();
+            WebloggerFactory.getWeblogger().flush();
             
         } catch (RollerException e) {
             log.error("ERROR refreshing entries", e);
         } finally {
             // don't forget to release
             WebloggerFactory.getWeblogger().release();
-            PlanetFactory.getPlanet().release();
         }
     }
 

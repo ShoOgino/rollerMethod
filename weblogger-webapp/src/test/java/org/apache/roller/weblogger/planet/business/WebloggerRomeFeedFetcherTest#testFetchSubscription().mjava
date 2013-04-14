@@ -1,6 +1,6 @@
     public void testFetchSubscription() throws Exception {
         try {
-            FeedFetcher feedFetcher = PlanetFactory.getPlanet().getFeedFetcher();
+            FeedFetcher feedFetcher = WebloggerFactory.getWeblogger().getFeedFetcher();
 
             // first fetch non-conditionally so we know we should get a Sub
             Subscription sub = feedFetcher.fetchSubscription(feed_url);

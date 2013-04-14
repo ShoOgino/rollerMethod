@@ -3,12 +3,12 @@
         // setup planet
         TestUtils.setupPlanet();
 
-        PlanetManager mgr = PlanetFactory.getPlanet().getPlanetManager();
+        PlanetManager mgr = WebloggerFactory.getWeblogger().getWebloggerManager();
         
         Planet testPlanet = new Planet("testPlanet", "testPlanet", "testPlanet");
         Planet planet = null;
         
-        planet = mgr.getPlanet("testPlanet");
+        planet = mgr.getWeblogger("testPlanet");
         assertNull(planet);
         
         // add
@@ -17,7 +17,7 @@
         
         // verify
         planet = null;
-        planet = mgr.getPlanetById(testPlanet.getId());
+        planet = mgr.getWebloggerById(testPlanet.getId());
         assertNotNull(planet);
         assertEquals("testPlanet", planet.getHandle());
         
@@ -28,7 +28,7 @@
         
         // verify
         planet = null;
-        planet = mgr.getPlanetById(testPlanet.getId());
+        planet = mgr.getWebloggerById(testPlanet.getId());
         assertNotNull(planet);
         assertEquals("foo", planet.getTitle());
         
@@ -38,7 +38,7 @@
         
         // verify
         planet = null;
-        planet = mgr.getPlanet(testPlanet.getId());
+        planet = mgr.getWeblogger(testPlanet.getId());
         assertNull(planet);
     }
 

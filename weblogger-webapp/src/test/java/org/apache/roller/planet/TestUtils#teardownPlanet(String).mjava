@@ -4,13 +4,13 @@
     public static void teardownPlanet(String id) throws Exception {
         
         // lookup
-        PlanetManager mgr = PlanetFactory.getPlanet().getPlanetManager();
-        Planet planet = mgr.getPlanetById(id);
+        PlanetManager mgr = WebloggerFactory.getWeblogger().getWebloggerManager();
+        Planet planet = mgr.getWebloggerById(id);
         
         // remove
         mgr.deletePlanet(planet);
         
         // flush
-        PlanetFactory.getPlanet().flush();
+        WebloggerFactory.getWeblogger().flush();
     }
 

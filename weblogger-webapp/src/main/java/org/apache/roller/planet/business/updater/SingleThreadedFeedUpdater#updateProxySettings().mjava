@@ -1,7 +1,7 @@
     // upate proxy settings for jvm based on planet configuration
     private void updateProxySettings() {
-        String proxyHost = PlanetRuntimeConfig.getProperty("site.proxyhost");
-        int proxyPort = PlanetRuntimeConfig.getIntProperty("site.proxyport");
+        String proxyHost = WebloggerRuntimeConfig.getProperty("site.proxyhost");
+        int proxyPort = WebloggerRuntimeConfig.getIntProperty("site.proxyport");
         if (proxyHost != null && proxyPort > 0) {
             System.setProperty("proxySet", "true");
             System.setProperty("http.proxyHost", proxyHost);

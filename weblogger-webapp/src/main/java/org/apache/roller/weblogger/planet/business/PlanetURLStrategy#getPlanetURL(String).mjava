@@ -6,9 +6,9 @@
         
         StringBuffer url = new StringBuffer();
         
-        PlanetManager mgr = PlanetFactory.getPlanet().getPlanetManager();
+        PlanetManager mgr = WebloggerFactory.getWeblogger().getPlanetManager();
         
-        url.append(PlanetRuntimeConfig.getProperty("site.absoluteurl"));
+        url.append(WebloggerRuntimeConfig.getProperty("site.absoluteurl"));
         
         return url.toString();
     }

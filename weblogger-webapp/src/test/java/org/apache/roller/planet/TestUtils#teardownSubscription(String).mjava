@@ -4,13 +4,13 @@
     public static void teardownSubscription(String id) throws Exception {
         
         // lookup
-        PlanetManager mgr = PlanetFactory.getPlanet().getPlanetManager();
+        PlanetManager mgr = WebloggerFactory.getWeblogger().getWebloggerManager();
         Subscription sub = mgr.getSubscriptionById(id);
         
         // remove
         mgr.deleteSubscription(sub);
         
         // flush
-        PlanetFactory.getPlanet().flush();
+        WebloggerFactory.getWeblogger().flush();
     }
 

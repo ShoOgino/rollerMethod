@@ -3,7 +3,6 @@
         binder.bind(Weblogger.class).to(JPAWebloggerImpl.class);
         
         binder.bind(JPAPersistenceStrategy.class);       
-        binder.bind(org.apache.roller.weblogger.planet.business.jpa.JPARollerPlanetPersistenceStrategy.class);
         
         binder.bind(AutoPingManager.class).to(     JPAAutoPingManagerImpl.class);   
         binder.bind(BookmarkManager.class).to(     JPABookmarkManagerImpl.class);  
@@ -27,5 +26,12 @@
         binder.bind(ThemeManager.class).to(        ThemeManagerImpl.class);
         
         binder.bind(URLStrategy.class).to(         MultiWeblogURLStrategy.class);
+
+		binder.bind(Planet.class).to(JPAPlanetImpl.class);
+        
+        binder.bind(PlanetManager.class).to(     JPAPlanetManagerImpl.class);   
+        binder.bind(PropertiesManager.class).to( JPAPropertiesManagerImpl.class);   
+        //binder.bind(URLStrategy.class).to(       MultiPlanetURLStrategy.class);
+        binder.bind(FeedFetcher.class).to(       RomeFeedFetcher.class);
     }
 

@@ -14,8 +14,8 @@
             
             List results = new ArrayList();
             try {
-                PlanetManager planetManager = PlanetFactory.getPlanet().getPlanetManager();
-                Planet planet = planetManager.getPlanet("default");
+                PlanetManager planetManager = WebloggerFactory.getWeblogger().getWebloggerManager();
+                Planet planet = planetManager.getWeblogger("default");
                 
                 List entries = null;
                 if (feedURL != null) {

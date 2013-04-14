@@ -6,17 +6,17 @@
         Planet testPlanet = new Planet(handle, handle, handle);
         
         // store
-        PlanetManager mgr = PlanetFactory.getPlanet().getPlanetManager();
+        PlanetManager mgr = WebloggerFactory.getWeblogger().getWebloggerManager();
         mgr.savePlanet(testPlanet);
         
         // flush
-        PlanetFactory.getPlanet().flush();
+        WebloggerFactory.getWeblogger().flush();
         
         // query to make sure we return the persisted object
-        Planet planet = mgr.getPlanet(handle);
+        Planet planet = mgr.getWeblogger(handle);
         
         if(planet == null)
-            throw new PlanetException("error inserting new planet");
+            throw new WebloggerException("error inserting new planet");
         
         return planet;
     }

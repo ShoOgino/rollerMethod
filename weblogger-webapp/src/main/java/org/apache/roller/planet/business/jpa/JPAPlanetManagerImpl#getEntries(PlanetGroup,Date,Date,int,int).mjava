@@ -1,8 +1,8 @@
-    public List getEntries(PlanetGroup group, Date startDate, Date endDate, int offset, int len) throws PlanetException {
+    public List getEntries(PlanetGroup group, Date startDate, Date endDate, int offset, int len) throws RollerException {
         StringBuffer queryString = new StringBuffer();
                 
         if (group == null) {
-            throw new PlanetException("group cannot be null or empty");
+            throw new WebloggerException("group cannot be null or empty");
         }
         
         List ret = null;
@@ -46,7 +46,7 @@
             log.debug("Generated aggregation of " + ret.size() + " in " + ((endTime-startTime)/1000.0) + " seconds");
             
         } catch (Throwable e) {
-            throw new PlanetException(e);
+            throw new WebloggerException(e);
         }
         
         return ret;

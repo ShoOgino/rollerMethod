@@ -5,9 +5,9 @@
         
         if(getGroup() != null) {
             try {
-                PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
+                PlanetManager pmgr = WebloggerFactory.getWeblogger().getWebloggerManager();
                 pmgr.deleteGroup(getGroup());
-                PlanetFactory.getPlanet().flush();
+                WebloggerFactory.getWeblogger().flush();
                 
                 addMessage("planetSubscription.success.deleted");
             } catch(Exception ex) {

@@ -4,7 +4,7 @@
     public static Subscription setupSubscription(String feedUrl) 
             throws Exception {
         
-        PlanetManager mgr = PlanetFactory.getPlanet().getPlanetManager();
+        PlanetManager mgr = WebloggerFactory.getWeblogger().getWebloggerManager();
         
         // store
         Subscription testSub = new Subscription();
@@ -13,13 +13,13 @@
         mgr.saveSubscription(testSub);
         
         // flush
-        PlanetFactory.getPlanet().flush();
+        WebloggerFactory.getWeblogger().flush();
         
         // query to make sure we return the persisted object
         Subscription sub = mgr.getSubscriptionById(testSub.getId());
         
         if(sub == null)
-            throw new PlanetException("error inserting new subscription");
+            throw new WebloggerException("error inserting new subscription");
         
         return sub;
     }

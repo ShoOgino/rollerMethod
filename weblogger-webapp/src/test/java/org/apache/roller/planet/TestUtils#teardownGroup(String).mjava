@@ -4,14 +4,14 @@
     public static void teardownGroup(String id) throws Exception {
         
         // lookup
-        PlanetManager mgr = PlanetFactory.getPlanet().getPlanetManager();
+        PlanetManager mgr = WebloggerFactory.getWeblogger().getWebloggerManager();
         PlanetGroup group = mgr.getGroupById(id);
         
         // remove
         mgr.deleteGroup(group);
-        group.getPlanet().getGroups().remove(group);
+        group.getWeblogger().getGroups().remove(group);
         
         // flush
-        PlanetFactory.getPlanet().flush();
+        WebloggerFactory.getWeblogger().flush();
     }
 

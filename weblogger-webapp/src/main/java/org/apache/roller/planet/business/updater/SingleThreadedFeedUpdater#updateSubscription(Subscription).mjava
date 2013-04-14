@@ -17,7 +17,7 @@
         try {
             // fetch the latest version of the subscription
             log.debug("Getting fetcher");
-            FeedFetcher fetcher = PlanetFactory.getPlanet().getFeedFetcher();
+            FeedFetcher fetcher = WebloggerFactory.getWeblogger().getFeedFetcher();
             log.debug("Using fetcher class: " + fetcher.getClass().getName());
             updatedSub = fetcher.fetchSubscription(sub.getFeedURL(), sub.getLastUpdated());
             
@@ -49,7 +49,7 @@
         Set<SubscriptionEntry> newEntries = updatedSub.getEntries();
         log.debug("newEntries.size() = " + newEntries.size());
         if (newEntries.size() > 0) try {
-            PlanetManager pmgr = PlanetFactory.getPlanet().getPlanetManager();
+            PlanetManager pmgr = WebloggerFactory.getWeblogger().getWebloggerManager();
             
             // clear out old entries
             pmgr.deleteEntries(sub);
@@ -60,12 +60,12 @@
             
             // save and flush
             pmgr.saveSubscription(sub);
-            PlanetFactory.getPlanet().flush();
+            WebloggerFactory.getWeblogger().flush();
 
             log.debug("Added entries");
             entries += newEntries.size();            
 
-        } catch(PlanetException ex) {
+        } catch(RollerException ex) {
             throw new UpdaterException("Error persisting updated subscription", ex);
         }
         

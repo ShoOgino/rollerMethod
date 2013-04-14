@@ -40,9 +40,9 @@
             }
             
             // save it
-            PropertiesManager pMgr = PlanetFactory.getPlanet().getPropertiesManager();
+            PropertiesManager pMgr = WebloggerFactory.getWeblogger().getPropertiesManager();
             pMgr.saveProperties(this.properties);
-            PlanetFactory.getPlanet().flush();
+            WebloggerFactory.getWeblogger().flush();
             
             addMessage("ConfigForm.message.saveSucceeded");
             
