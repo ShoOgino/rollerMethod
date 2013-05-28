@@ -3,10 +3,10 @@
      * 
      */
     public boolean isImageFile() {
-        if (this.contentType == null) {
+        if (getContentType() == null) {
             return false;
         }
-        return (this.contentType.toLowerCase().startsWith(MediaFileType.IMAGE
+        return (getContentType().toLowerCase().startsWith(MediaFileType.IMAGE
                 .getContentTypePrefix().toLowerCase()));
     }
 
