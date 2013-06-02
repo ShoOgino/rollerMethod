@@ -11,7 +11,7 @@
             if(group == null) {
                 log.debug("Adding New Group");
                 group = new PlanetGroup();
-                group.setPlanet(getWeblogger());
+                group.setPlanet(getPlanet());
             } else {
                 log.debug("Updating Existing Group");
             }
@@ -20,7 +20,7 @@
             getBean().copyTo(group);
             
             // save and flush
-            PlanetManager pmgr = WebloggerFactory.getWeblogger().getWebloggerManager();
+            PlanetManager pmgr = WebloggerFactory.getWeblogger().getPlanetManager();
             pmgr.saveGroup(group);
             WebloggerFactory.getWeblogger().flush();
             

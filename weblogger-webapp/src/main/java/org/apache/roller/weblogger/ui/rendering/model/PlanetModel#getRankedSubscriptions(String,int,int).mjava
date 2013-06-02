@@ -8,7 +8,7 @@
     public List getRankedSubscriptions(String groupHandle, int sinceDays, int length) {
         List list = new ArrayList();
         try {
-            PlanetManager planetManager = WebloggerFactory.getWeblogger().getWebloggerManager();
+            PlanetManager planetManager = WebloggerFactory.getWeblogger().getPlanetManager();
             Planet defaultPlanet = planetManager.getWeblogger(DEFAULT_PLANET_HANDLE);
             PlanetGroup planetGroup = planetManager.getGroup(defaultPlanet, groupHandle);
             List subs = planetManager.getTopSubscriptions(planetGroup, 0, length);

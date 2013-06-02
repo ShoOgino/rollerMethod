@@ -49,7 +49,7 @@
         Set<SubscriptionEntry> newEntries = updatedSub.getEntries();
         log.debug("newEntries.size() = " + newEntries.size());
         if (newEntries.size() > 0) try {
-            PlanetManager pmgr = WebloggerFactory.getWeblogger().getWebloggerManager();
+            PlanetManager pmgr = WebloggerFactory.getWeblogger().getPlanetManager();
             
             // clear out old entries
             pmgr.deleteEntries(sub);

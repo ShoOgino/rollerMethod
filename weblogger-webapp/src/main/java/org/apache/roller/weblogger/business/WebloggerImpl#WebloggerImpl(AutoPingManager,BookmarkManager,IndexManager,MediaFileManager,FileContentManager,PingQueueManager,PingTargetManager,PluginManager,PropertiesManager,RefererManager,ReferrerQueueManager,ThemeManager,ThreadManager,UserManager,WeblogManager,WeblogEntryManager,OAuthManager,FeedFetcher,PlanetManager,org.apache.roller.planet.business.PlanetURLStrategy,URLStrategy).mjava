@@ -16,6 +16,9 @@
         WeblogManager        weblogManager,
         WeblogEntryManager   weblogEntryManager,
         OAuthManager         oauthManager,
+        FeedFetcher          feedFetcher,
+        PlanetManager        planetManager,
+        org.apache.roller.planet.business.PlanetURLStrategy planetUrlStrategy,
         URLStrategy          urlStrategy) throws WebloggerException { 
                 
         this.autoPingManager     = autoPingManager;
@@ -36,7 +39,10 @@
         this.weblogEntryManager  = weblogEntryManager;
         this.oauthManager        = oauthManager;
         this.urlStrategy         = urlStrategy;
-        
+        this.feedFetcher         = feedFetcher;
+        this.planetManager       = planetManager;
+        this.planetUrlStrategy   = planetUrlStrategy;
+
         Properties props = new Properties();
         try {
             props.load(getClass().getResourceAsStream("/roller-version.properties"));

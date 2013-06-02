@@ -11,7 +11,7 @@
         
         try {
             // update all subscriptions in the system
-            PlanetManager pmgr = WebloggerFactory.getWeblogger().getWebloggerManager();
+            PlanetManager pmgr = WebloggerFactory.getWeblogger().getPlanetManager();
             updateSubscriptions(pmgr.getSubscriptions());
         } catch (RollerException ex) {
             throw new UpdaterException("Error getting subscriptions list", ex);

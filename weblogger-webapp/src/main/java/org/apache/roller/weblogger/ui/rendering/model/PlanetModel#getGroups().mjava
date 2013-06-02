@@ -5,7 +5,7 @@
     public List<PlanetGroup> getGroups() {
         List list = new ArrayList<PlanetGroup>();
         try {
-            PlanetManager planetManager = WebloggerFactory.getWeblogger().getWebloggerManager();
+            PlanetManager planetManager = WebloggerFactory.getWeblogger().getPlanetManager();
             Planet defaultPlanet = planetManager.getWeblogger(DEFAULT_PLANET_HANDLE);
             Set<PlanetGroup> groups = (Set<PlanetGroup>)defaultPlanet.getGroups();
             for (PlanetGroup group : groups) {
