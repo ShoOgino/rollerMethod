@@ -1,9 +1,0 @@
-    public void testExpansion() throws Exception {
-        String expanded =
-                PropertyExpander.expandProperties("String with ${defined.property.one} and ${defined.property.two} and ${defined.property.with.dollar.sign.in.value} and ${undefined.property} and some stuff.", props);
-        
-        assertEquals("Expanded string doesn't match expected",
-                "String with value one and value two and $2 and ${undefined.property} and some stuff.",
-                expanded);
-    }
-
