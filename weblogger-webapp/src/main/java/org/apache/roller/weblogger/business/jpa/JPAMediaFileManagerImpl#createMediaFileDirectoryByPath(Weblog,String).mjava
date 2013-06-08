@@ -1,0 +1,75 @@
+    /**
+     * {@inheritDoc}
+     */
+    public MediaFileDirectory createMediaFileDirectoryByPath(Weblog weblog, String requestedPath)
+            throws WebloggerException {
+
+        String path = requestedPath;
+        log.debug("Creating dir: " + path);
+
+        if (path.startsWith("/")) {
+            path = path.substring(1);
+        }
+
+        if (path.endsWith("/")) {
+            path = path.substring(0, path.length() - 1);
+        }
+
+        if (path.equals("")) {
+            // Root cannot be created using this method.
+            // Use createRootMediaFileDirectory instead
+            throw new WebloggerException("Invalid path!");
+        }
+
+        int lastPathIndex = path.lastIndexOf("/");
+
+        MediaFileDirectory newDirectory = null;
+        if (lastPathIndex == -1) {
+
+            // Directory needs to be created under root
+            MediaFileDirectory root = getMediaFileRootDirectory(weblog);
+
+            if (root.hasDirectory(path)) {
+                throw new WebloggerException("Directory exists");
+            } else {
+                log.debug("    Created dir under ROOT");
+                newDirectory = root.createNewDirectory(path);
+            }
+
+        } else {
+
+            boolean created = false;
+
+            MediaFileDirectory base = getMediaFileRootDirectory(weblog);
+            String token = null;
+            String pathpart = "";
+            StringTokenizer toker = new StringTokenizer(path, "/");
+            while (toker.hasMoreTokens()) {
+                token = toker.nextToken();
+                if (!pathpart.endsWith("/")) {
+                    pathpart += "/" + token;
+                } else {
+                    pathpart += token;
+                }
+                MediaFileDirectory possibleBase = getMediaFileDirectoryByPath(weblog, pathpart);
+                if (possibleBase == null) {
+                    base = base.createNewDirectory(token);
+                    log.debug("   Created new directory: " + base.getPath());
+                    created = true;
+                    roller.flush();
+                } else {
+                    base = possibleBase;
+                }
+            }
+            if (!created || !requestedPath.equals(base.getPath())) {
+                throw new WebloggerException("ERROR directory not created");
+            }
+            newDirectory = base;
+        }
+
+        // update weblog last modified date.  date updated by saveWeblog()
+        roller.getWeblogManager().saveWeblog(weblog);
+
+        return newDirectory;
+    }
+

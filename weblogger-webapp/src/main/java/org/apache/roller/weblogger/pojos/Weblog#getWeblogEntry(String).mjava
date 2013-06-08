@@ -1,0 +1,18 @@
+    /** 
+     * Get weblog entry specified by anchor or null if no such entry exists.
+     * @param anchor Weblog entry anchor
+     * @return Weblog entry specified by anchor
+     * @roller.wrapPojoMethod type="simple"
+     */
+    public WeblogEntry getWeblogEntry(String anchor) {
+        WeblogEntry entry = null;
+        try {
+            Weblogger roller = WebloggerFactory.getWeblogger();
+            WeblogEntryManager wmgr = roller.getWeblogEntryManager();
+            entry = wmgr.getWeblogEntryByAnchor(this, anchor);
+        } catch (WebloggerException e) {
+            this.log.error("ERROR: getting entry by anchor");
+        }
+        return entry;
+    }
+

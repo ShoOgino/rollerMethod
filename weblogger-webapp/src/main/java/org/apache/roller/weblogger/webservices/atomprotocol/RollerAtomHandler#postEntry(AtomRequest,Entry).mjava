@@ -1,0 +1,8 @@
+    /**
+     * Create entry in the entry collection (a Weblogger blog has only one).
+     */
+    public Entry postEntry(AtomRequest areq, Entry entry) throws AtomException {
+        EntryCollection ecol = new EntryCollection(user, atomURL);
+        return ecol.postEntry(areq, entry);
+    }
+

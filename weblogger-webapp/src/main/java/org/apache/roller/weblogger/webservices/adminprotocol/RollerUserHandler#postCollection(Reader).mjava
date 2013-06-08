@@ -1,0 +1,10 @@
+    private EntrySet postCollection(Reader r) throws HandlerException {
+        EntrySet c = getEntrySet(r);
+        if (c.isEmpty()) {
+            throw new BadRequestException("ERROR: No entries");
+        }
+        c = createUsers((UserEntrySet)c);
+        
+        return c;
+    }
+

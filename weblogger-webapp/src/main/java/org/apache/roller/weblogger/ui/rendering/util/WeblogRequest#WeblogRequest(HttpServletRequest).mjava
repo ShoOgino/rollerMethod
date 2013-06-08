@@ -1,0 +1,62 @@
+    public WeblogRequest(HttpServletRequest request) 
+            throws InvalidRequestException {
+        
+        // let our parent take care of their business first
+        super(request);
+        
+        String path = request.getPathInfo();
+        
+        log.debug("parsing path "+path);
+        
+        // first, cleanup extra slashes and extract the weblog weblogHandle
+        if(path != null && path.trim().length() > 1) {
+            
+            // strip off the leading slash
+            path = path.substring(1);
+            
+            // strip off trailing slash if needed
+            if(path.endsWith("/")) {
+                path = path.substring(0, path.length() - 1);
+            }
+            
+            String[] pathElements = path.split("/", 2);
+            if(pathElements[0].trim().length() > 0) {
+                this.weblogHandle = pathElements[0];
+            } else {
+                // no weblogHandle in path info
+                throw new InvalidRequestException("not a weblog request, "+
+                        request.getRequestURL());
+            }
+            
+            // if there is more left of the path info then hold onto it
+            if(pathElements.length == 2) {
+                path = pathElements[1];
+            } else {
+                path = null;
+            }
+        }
+        
+        // second, check if we have a locale, everything else is extra path info
+        if(path != null && path.trim().length() > 0) {
+            
+            String[] pathElements = path.split("/", 2);
+            if(this.isLocale(pathElements[0])) {
+                this.locale = pathElements[0];
+                
+                // everything else is path info
+                if(pathElements.length == 2) {
+                    this.pathInfo = pathElements[1];
+                }
+            } else {
+                // no locale, just extra path info
+                this.pathInfo = path;
+            }
+        }
+        
+        if(log.isDebugEnabled()) {
+            log.debug("handle = "+this.weblogHandle);
+            log.debug("locale = "+this.locale);
+            log.debug("pathInfo = "+this.pathInfo);
+        }
+    }
+

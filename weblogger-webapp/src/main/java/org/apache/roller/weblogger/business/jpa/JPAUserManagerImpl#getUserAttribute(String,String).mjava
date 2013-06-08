@@ -1,0 +1,11 @@
+    public UserAttribute getUserAttribute(String userName, String attribute) throws WebloggerException {
+        Query q = strategy.getNamedQuery("UserAttribute.getByUserNameAndAttrName");
+        q.setParameter(1, userName);
+        q.setParameter(2, attribute);
+        try {
+            return (UserAttribute) q.getSingleResult();
+        } catch (NoResultException e) {            
+            return null;
+        }
+    }
+

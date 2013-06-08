@@ -1,0 +1,14 @@
+    public WeblogBookmarkFolder getRootFolder(Weblog website)
+            throws WebloggerException {
+        if (website == null)
+            throw new WebloggerException("website is null");
+        
+        Query q = strategy.getNamedQuery("WeblogBookmarkFolder.getByWebsite&ParentNull");
+        q.setParameter(1, website);
+        try {
+            return (WeblogBookmarkFolder)q.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+

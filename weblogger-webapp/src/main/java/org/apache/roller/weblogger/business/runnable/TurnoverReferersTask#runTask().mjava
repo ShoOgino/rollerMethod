@@ -1,0 +1,25 @@
+    /**
+     * Execute the task.
+     */
+    public void runTask() {
+        
+        try {
+            log.info("task started");
+            
+            Weblogger roller = WebloggerFactory.getWeblogger();
+            roller.getRefererManager().clearReferrers();
+            roller.flush();
+            
+            log.info("task completed");
+            
+        } catch (WebloggerException e) {
+            log.error("Error while checking for referer turnover", e);
+        } catch (Exception ee) {
+            log.error("unexpected exception", ee);
+        } finally {
+            // always release
+            WebloggerFactory.getWeblogger().release();
+        }
+        
+    }
+

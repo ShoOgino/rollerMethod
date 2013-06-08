@@ -1,0 +1,23 @@
+    /**
+     * Compile stats from all registered caches.
+     *
+     * This is basically a hacky version of instrumentation which is being
+     * thrown in because we don't have a full instrumentation strategy yet.
+     * This is here with the full expectation that it will be replaced by
+     * something a bit more elaborate, like JMX.
+     */
+    public static Map getStats() {
+        
+        Map allStats = new HashMap();
+        
+        Cache cache = null;
+        Iterator cachesIT = caches.values().iterator();
+        while(cachesIT.hasNext()) {
+            cache = (Cache) cachesIT.next();
+            
+            allStats.put(cache.getId(), cache.getStats());
+        }
+        
+        return allStats;
+    }
+

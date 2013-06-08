@@ -1,0 +1,11 @@
+    public void setCategoriesString(List categories) {
+        StringBuffer sb = new StringBuffer();
+        Iterator cats = categories.iterator();
+        while (cats.hasNext()) {
+            String cat = (String)cats.next();
+            sb.append(cat);
+            if (cats.hasNext()) sb.append(",");
+        }
+        categoriesString = sb.toString();
+    }
+

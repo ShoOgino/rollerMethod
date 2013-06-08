@@ -1,0 +1,18 @@
+    /**
+     * Constructor.
+     *
+     * @param id      the id (primary key) of this target
+     * @param name    the descriptive name of this target
+     * @param pingUrl the URL to which to send the ping
+     * @param website the website (on this server) for which this is a custom ping target (may be null)
+     */
+    public PingTarget(String id, String name, String pingUrl, Weblog website, boolean autoEnable) {
+        //this.id = id;
+        this.name = name;
+        this.pingUrl = pingUrl;
+        this.website = website;
+        this.conditionCode = CONDITION_OK;
+        this.lastSuccess = null;
+        this.autoEnabled = autoEnable;
+    }
+

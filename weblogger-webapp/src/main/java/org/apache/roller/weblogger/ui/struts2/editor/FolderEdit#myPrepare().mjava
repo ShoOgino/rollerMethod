@@ -1,0 +1,12 @@
+    // load folder to edit
+    public void myPrepare() {
+        try {
+            BookmarkManager bmgr = WebloggerFactory.getWeblogger().getBookmarkManager();
+            if(!StringUtils.isEmpty(getBean().getId())) {
+                setFolder(bmgr.getFolder(getBean().getId()));
+            }
+        } catch (WebloggerException ex) {
+            log.error("Error looking up folder", ex);
+        }
+    }
+

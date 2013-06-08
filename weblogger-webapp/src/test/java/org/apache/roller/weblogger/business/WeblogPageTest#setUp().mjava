@@ -1,0 +1,29 @@
+    /**
+     * All tests in this suite require a user and a weblog.
+     */
+    public void setUp() throws Exception {
+        
+        // setup weblogger
+        TestUtils.setupWeblogger();
+        
+        try {
+            testUser = TestUtils.setupUser("wtTestUser");
+            testWeblog = TestUtils.setupWeblog("wtTestWeblog", testUser);
+            TestUtils.endSession(true);
+        } catch (Exception ex) {
+            log.error(ex);
+            throw new Exception("Test setup failed", ex);
+        }
+        
+        testPage = new WeblogTemplate();
+        testPage.setAction(WeblogTemplate.ACTION_WEBLOG);
+        testPage.setName("testTemplate");
+        testPage.setDescription("Test Weblog Template");
+        testPage.setLink("testTemp");
+        testPage.setContents("a test weblog template.");
+        testPage.setLastModified(new java.util.Date());
+        testPage.setWebsite(TestUtils.getManagedWebsite(testWeblog));
+        testPage.setTemplateLanguage("velocity");
+        testPage.setType("standard");
+    }
+

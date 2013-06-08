@@ -1,0 +1,76 @@
+    public void myValidate() {
+        
+        // if usingSSO, we don't want to error on empty password/username from HTML form.
+        setFromSso(false);
+        boolean usingSSO = WebloggerConfig.getBooleanProperty("users.sso.enabled");
+        if (usingSSO) {
+            boolean storePassword = WebloggerConfig.getBooleanProperty("users.sso.passwords.saveInRollerDb");
+            String password = WebloggerConfig.getProperty("users.sso.passwords.defaultValue", "<unknown>");
+            
+            // Preserve username and password, Acegi case             
+            User fromSSO = CustomUserRegistry.getUserDetailsFromAuthentication(getServletRequest());
+            if (fromSSO != null) {
+                if (storePassword) {
+                    password = fromSSO.getPassword();
+                }
+                getBean().setPasswordText(password);
+                getBean().setPasswordConfirm(password);
+                getBean().setUserName(fromSSO.getUserName());
+                setFromSso(true);
+            }
+
+            // Preserve username and password, CMA case             
+            else if (getServletRequest().getUserPrincipal() != null) {
+                getBean().setUserName(getServletRequest().getUserPrincipal().getName());
+                getBean().setPasswordText(password);
+                getBean().setPasswordConfirm(password);
+                setFromSso(true);
+            }
+        }
+        
+        String allowed = WebloggerConfig.getProperty("username.allowedChars");
+        if (allowed == null || allowed.trim().length() == 0) {
+            allowed = DEFAULT_ALLOWED_CHARS;
+        }
+        
+        // check that username only contains safe characters
+        String safe = CharSetUtils.keep(getBean().getUserName(), allowed);
+        if (!safe.equals(getBean().getUserName()) ) {
+            addError("error.add.user.badUserName");
+        }
+        
+        // check password, it is required if OpenID and SSO are disabled
+        if (getOpenIdConfiguration().equals("disabled") && !getFromSso()) {
+            if (StringUtils.isEmpty(getBean().getPasswordText())) {            
+                addError("error.add.user.passwordEmpty");
+                return;
+            }
+        }
+        
+        // User.password does not allow null, so generate one
+        if (getOpenIdConfiguration().equals("only")) {
+            String randomString = RandomStringUtils.randomAlphanumeric(255);
+            getBean().setPasswordText(randomString);
+            getBean().setPasswordConfirm(randomString);
+        }
+        
+        // check that passwords match 
+        if (!getBean().getPasswordText().equals(getBean().getPasswordConfirm())) {
+            addError("Register.error.passowordMismatch");
+        }
+        
+        // check that username is not taken
+        if (!StringUtils.isEmpty(getBean().getUserName())) try {
+            UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
+            if (mgr.getUserByUserName(getBean().getUserName(), null) != null) {
+                addError("error.add.user.userNameInUse");
+                // reset user name
+                getBean().setUserName(null);
+            }
+        } catch (WebloggerException ex) {
+            log.error("error checking for user", ex);
+            // TODO: i18n
+            addError("unexpected error");
+        }
+    }
+

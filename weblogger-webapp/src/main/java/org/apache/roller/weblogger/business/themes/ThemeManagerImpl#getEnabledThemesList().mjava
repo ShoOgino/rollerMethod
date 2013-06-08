@@ -1,0 +1,15 @@
+	/**
+	 * @see org.apache.roller.weblogger.model.ThemeManager#getEnabledThemesList()
+	 * 
+	 *      TODO: reimplement enabled vs. disabled logic once we support it
+	 */
+	public List getEnabledThemesList() {
+
+		List all_themes = new ArrayList(this.themes.values());
+
+		// sort 'em ... default ordering for themes is by name
+		Collections.sort(all_themes);
+
+		return all_themes;
+	}
+

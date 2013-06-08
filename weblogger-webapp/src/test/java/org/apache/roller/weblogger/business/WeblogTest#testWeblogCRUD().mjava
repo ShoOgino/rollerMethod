@@ -1,0 +1,70 @@
+    /**
+     * Test basic persistence operations ... Create, Update, Delete.
+     */
+    public void testWeblogCRUD() throws Exception {
+        
+        log.info("BEGIN");
+        
+        try {
+        
+            WeblogManager mgr = WebloggerFactory.getWeblogger().getWeblogManager();
+
+            Weblog weblog = null;
+
+            Weblog testWeblog = new Weblog();
+            testUser = TestUtils.getManagedUser(testUser);
+            testWeblog.setName("Test Weblog");
+            testWeblog.setDescription("Test Weblog");
+            testWeblog.setHandle("testweblog");
+            testWeblog.setEmailAddress("testweblog@dev.null");
+            testWeblog.setEditorPage("editor-text.jsp");
+            testWeblog.setBlacklist("");
+            testWeblog.setEmailFromAddress("");
+            testWeblog.setEditorTheme("basic");
+            testWeblog.setLocale("en_US");
+            testWeblog.setTimeZone("America/Los_Angeles");
+            testWeblog.setDateCreated(new java.util.Date());
+            testWeblog.setCreatorUserName(testUser.getUserName());
+
+            // make sure test weblog does not exist
+            weblog = mgr.getWeblogByHandle(testWeblog.getHandle());
+            assertNull(weblog);
+
+            // add test weblog
+            mgr.addWeblog(testWeblog);
+            String id = testWeblog.getId();
+            TestUtils.endSession(true);
+
+            // make sure test weblog exists
+            weblog = null;
+            weblog = mgr.getWeblog(id);
+            assertNotNull(weblog);
+            assertEquals(testWeblog, weblog);
+
+            // modify weblog and save
+            weblog.setName("testtesttest");
+            mgr.saveWeblog(weblog);
+            TestUtils.endSession(true);
+
+            // make sure changes were saved
+            weblog = null;
+            weblog = mgr.getWeblog(id);
+            assertNotNull(weblog);
+            assertEquals("testtesttest", weblog.getName());
+
+            // remove test weblog
+            mgr.removeWeblog(weblog);
+            TestUtils.endSession(true);
+
+            // make sure weblog no longer exists
+            weblog = null;
+            weblog = mgr.getWeblog(id);
+            assertNull(weblog);
+        
+        } catch(Throwable t) {
+            log.error("Exception running test", t);
+            throw (Exception) t;
+        }
+        log.info("END");
+    }
+

@@ -1,0 +1,23 @@
+    private UserEntrySet createUsers(UserEntrySet c) throws HandlerException {
+        try {
+            UserManager mgr = getRoller().getUserManager();
+            
+            List userDatas = new ArrayList();
+            for (int i = 0; i < c.getEntries().length; i++) {
+                UserEntry entry = (UserEntry)c.getEntries()[i];
+                if (entry.getDateCreated() == null) {
+                    // if no creation date supplied, add it
+                    entry.setDateCreated(new Date());
+                }
+                User ud = toUserData(entry);
+                mgr.addUser(ud);
+                getRoller().flush();
+                CacheManager.invalidate(ud);
+                userDatas.add(ud);
+            }
+            return toUserEntrySet((User[])userDatas.toArray(new User[0]));
+        } catch (WebloggerException re) {
+            throw new InternalException("ERROR: Could not create users: " + c, re);
+        }
+    }
+

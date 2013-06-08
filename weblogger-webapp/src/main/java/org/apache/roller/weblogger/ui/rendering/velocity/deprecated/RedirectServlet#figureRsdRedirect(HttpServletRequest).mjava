@@ -1,0 +1,16 @@
+    // redirect to new weblog rsd location
+    private String figureRsdRedirect(HttpServletRequest request) {
+        
+        String newUrl = WebloggerRuntimeConfig.getRelativeContextURL();
+        
+        String pathInfo = request.getPathInfo();
+        if(pathInfo == null) {
+            return null;
+        } else {
+            pathInfo = pathInfo.substring(1);
+        }
+        
+        String[] pathElements = pathInfo.split("/", 2);
+        return newUrl+"/"+pathElements[0]+"/rsd";
+    }
+

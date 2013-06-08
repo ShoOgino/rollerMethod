@@ -1,0 +1,17 @@
+    /**
+     * Makes a new post to a designated blog. Optionally, will publish the blog after making the post
+     *
+     * @param blogid Unique identifier of the blog the post will be added to
+     * @param userid Login for a MetaWeblog user who has permission to post to the blog
+     * @param password Password for said username
+     * @param struct Contents of the post
+     * @param publish If true, the blog will be published immediately after the post is made
+     * @throws org.apache.xmlrpc.XmlRpcException
+     * @return
+     */
+    public String newPost(String blogid, String userid, String password,
+            Hashtable struct, int publish) throws Exception {
+        
+        return newPost(blogid, userid, password, struct, publish > 0);
+    }
+

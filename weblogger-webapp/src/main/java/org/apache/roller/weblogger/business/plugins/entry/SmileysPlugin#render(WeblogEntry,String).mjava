@@ -1,0 +1,12 @@
+    /**
+     * Find occurences of ascii emoticons and turn them into HTML image pointers.
+     */
+    public String render(WeblogEntry entry, String text) {
+        Matcher matcher = null;
+        for (int i=0; i<smileyPatterns.length; i++) {
+            matcher = smileyPatterns[i].matcher(text);
+            text = matcher.replaceAll(imageTags[i]);
+        }
+        return text;
+    }
+

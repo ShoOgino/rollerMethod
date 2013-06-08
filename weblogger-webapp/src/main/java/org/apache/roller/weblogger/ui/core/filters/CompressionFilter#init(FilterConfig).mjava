@@ -1,0 +1,12 @@
+    public void init(FilterConfig config) throws ServletException {
+        
+        // is compression enabled?
+        if(WebloggerConfig.getBooleanProperty("compression.gzipResponse.enabled")) {
+            this.enabled = true;
+            log.info("Compressed Output ENABLED");
+        } else {
+            this.enabled = false;
+            log.info("Compressed Output DISABLED");
+        }
+    }
+

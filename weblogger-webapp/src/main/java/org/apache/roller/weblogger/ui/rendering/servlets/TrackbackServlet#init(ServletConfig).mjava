@@ -1,0 +1,7 @@
+    public void init(ServletConfig config) throws ServletException {
+        commentValidationManager = new CommentValidationManager();
+        
+        // add trackback verification validator just for trackbacks
+        commentValidationManager.addCommentValidator(new TrackbackLinkbackCommentValidator());
+    }
+

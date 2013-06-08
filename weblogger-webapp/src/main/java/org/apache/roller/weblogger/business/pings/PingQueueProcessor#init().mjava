@@ -1,0 +1,14 @@
+    /**
+     * Initialize the singleton.  This is called during <code>RollerContext</code> initialization.
+     *
+     * @throws WebloggerException
+     */
+    public static synchronized void init() throws WebloggerException {
+        if (theInstance != null) {
+            logger.warn("Ignoring duplicate initialization of PingQueueProcessor!");
+            return;
+        }
+        theInstance = new PingQueueProcessor();
+        if (logger.isDebugEnabled()) logger.debug("Ping queue processor initialized.");
+    }
+

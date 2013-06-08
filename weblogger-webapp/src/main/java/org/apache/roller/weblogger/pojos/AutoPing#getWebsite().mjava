@@ -1,0 +1,11 @@
+    /**
+     * Get the website.  Get the website whose changes should result in a ping 
+     * to the ping target specified by this object.
+     * @return the website.
+     */
+    @ManyToOne
+    @JoinColumn(name="websiteid",insertable=true,nullable=true,updatable=true)
+    public Weblog getWebsite() {
+        return website;
+    }
+

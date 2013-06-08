@@ -1,0 +1,9 @@
+    // some extra error messaging
+    private void addSpecificMessages(Exception ex) {
+        if (ex instanceof UnknownHostException) {
+            addError("ping.unknownHost");
+        } else if (ex instanceof SocketException) {
+            addError("ping.networkConnectionFailed");
+        }
+    }
+

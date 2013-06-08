@@ -1,0 +1,12 @@
+    //--------------------------------------------------------------------------
+    /** Convert string with delimeters to string list. */
+    public static List<String> stringToStringList(String instr, String delim)
+    throws NoSuchElementException, NumberFormatException {
+        StringTokenizer toker = new StringTokenizer(instr, delim);
+        List<String> stringList = new ArrayList<String>();
+        while (toker.hasMoreTokens()) {
+            stringList.add(toker.nextToken());
+        }
+        return stringList;
+    }
+

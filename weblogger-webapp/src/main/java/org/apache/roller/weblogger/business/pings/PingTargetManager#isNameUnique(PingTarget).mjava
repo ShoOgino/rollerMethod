@@ -1,0 +1,12 @@
+    /**
+     * Check if the ping target has a name that is unique in the appropriate set.  If the ping target has no website id
+     * (is common), then this checks if the name is unique amongst common targets, and if custom then unique amongst
+     * custom targets. If the target has a non-null id, then it is allowed to have the same name as tha existing stored
+     * target with the same id.
+     *
+     * @param pingTarget
+     * @return true if the name is unique in the appropriate set (custom or common) ping targets.
+     * @throws WebloggerException
+     */
+    public boolean isNameUnique(PingTarget pingTarget) throws WebloggerException;
+

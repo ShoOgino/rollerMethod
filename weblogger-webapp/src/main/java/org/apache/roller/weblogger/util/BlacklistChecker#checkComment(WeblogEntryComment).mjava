@@ -1,0 +1,11 @@
+    /** 
+     * Test comment, applying all blacklists, if configured 
+     * @return True if comment matches blacklist term
+     */
+    public static boolean checkComment(WeblogEntryComment comment) {
+        if (WebloggerConfig.getBooleanProperty("site.blacklist.enable.comments")) {
+            return testComment(comment);
+        }
+        return false;
+    }
+

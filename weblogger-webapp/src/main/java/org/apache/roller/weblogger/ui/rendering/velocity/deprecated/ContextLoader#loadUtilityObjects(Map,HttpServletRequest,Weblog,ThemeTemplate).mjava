@@ -1,0 +1,37 @@
+    /**
+     * Load useful utility objects for string and date formatting.
+     */
+    private static void loadUtilityObjects(
+            Map ctx,
+            HttpServletRequest request,
+            Weblog website,
+            ThemeTemplate page) throws WebloggerException {
+        
+        mLogger.debug("Loading utility objects");
+        
+        // date formatter for macro's set this up with the Locale to make
+        // sure we can reuse it with other patterns in the macro's
+        Locale viewLocale = (Locale) ctx.get("viewLocale");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", viewLocale);
+        if (website != null) {
+            sdf.setTimeZone(website.getTimeZoneInstance());
+        }
+        // add formatter to context
+        ctx.put("dateFormatter", sdf );
+        
+        // Note: in the macro's, the formats are taken from the ResourceBundles.
+        // Only the plainFormat is specified here, because it is used to render
+        // the Entry Day link.
+        ctx.put("plainFormat", "yyyyMMdd");
+        
+        ctx.put("page",ThemeTemplateWrapper.wrap(page));
+        ctx.put("utilities",       new OldUtilities() );
+        ctx.put("stringUtils",     new OldStringUtils() );
+        ctx.put("rollerVersion",   WebloggerFactory.getWeblogger().getVersion() );
+        ctx.put("rollerBuildTime", WebloggerFactory.getWeblogger().getBuildTime() );
+        ctx.put("rollerBuildUser", WebloggerFactory.getWeblogger().getBuildUser() );
+        ctx.put("newsfeedCache",   NewsfeedCache.getInstance() );
+        
+        ctx.put("requestParameters", request.getParameterMap());
+    }
+

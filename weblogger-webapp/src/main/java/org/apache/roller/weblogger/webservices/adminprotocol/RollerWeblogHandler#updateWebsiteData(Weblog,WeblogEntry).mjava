@@ -1,0 +1,29 @@
+    private void updateWebsiteData(Weblog wd, WeblogEntry entry) throws HandlerException {
+        if (entry.getName() != null) {
+            wd.setName(entry.getName());
+        }
+        if (entry.getDescription() != null) {
+            wd.setDescription(entry.getDescription());
+        }
+        if (entry.getLocale() != null) {
+            wd.setLocale(entry.getLocale().toString());
+        }
+        if (entry.getTimezone() != null) {
+            wd.setTimeZone(entry.getTimezone().getID());
+        }
+        if (entry.getEmailAddress() != null) {
+            wd.setEmailAddress(entry.getEmailAddress());
+        }
+        if (entry.getEnabled() != null) {
+            wd.setEnabled(entry.getEnabled());
+        }
+        
+        try {
+            WebloggerFactory.getWeblogger().getWeblogManager().saveWeblog(wd);
+            getRoller().flush();
+            CacheManager.invalidate(wd);
+        } catch (WebloggerException re) {
+            throw new InternalException("ERROR: Could not update website data", re);
+        }
+    }
+

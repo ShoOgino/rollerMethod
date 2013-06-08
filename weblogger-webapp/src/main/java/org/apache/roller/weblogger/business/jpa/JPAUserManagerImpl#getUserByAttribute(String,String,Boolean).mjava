@@ -1,0 +1,42 @@
+    public User getUserByAttribute(String name, String value, Boolean enabled) throws WebloggerException {
+        
+        if (value == null) {
+            throw new WebloggerException("user attribute cannot be null!");
+        }
+
+        String[] parts = value.split("&");
+        value = parts[0];
+
+        Query query;
+        query = strategy.getNamedQuery("UserAttribute.getByAttrNameAndAttrValue");
+        query.setParameter(1, name);
+        query.setParameter(2, value);
+        UserAttribute attribute = null;
+
+        try {
+            attribute = (UserAttribute) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+
+        Object[] params;
+        if (enabled != null) {
+            query = strategy.getNamedQuery("User.getByUserName&Enabled");
+            params = new Object[]{attribute.getUserName(), enabled};
+        } else {
+            query = strategy.getNamedQuery("User.getByUserName");
+            params = new Object[]{attribute.getUserName()};
+        }
+        for (int i = 0; i < params.length; i++) {
+            query.setParameter(i + 1, params[i]);
+        }
+        User user = null;
+        try {
+            user = (User) query.getSingleResult();
+        } catch (NoResultException e) {
+            user = null;
+        }
+
+        return user;
+    }
+

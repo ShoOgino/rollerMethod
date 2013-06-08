@@ -1,0 +1,13 @@
+    /**
+     * @inheritDoc
+     */
+    public WeblogEntry getPreviousEntry(WeblogEntry current,
+            String catName, String locale) throws WebloggerException {
+        WeblogEntry entry = null;
+        List entryList = getNextPrevEntries(current, catName, locale, 1, false);
+        if (entryList != null && entryList.size() > 0) {
+            entry = (WeblogEntry)entryList.get(0);
+        }
+        return entry;
+    }
+

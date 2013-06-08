@@ -1,0 +1,13 @@
+    /**
+     * Retrieve object, no transaction needed.
+     * @param clazz the class of object to retrieve
+     * @param id the id of the object to retrieve
+     * @return the object retrieved
+     * @throws WebloggerException on any error retrieving object
+     */
+    public Object load(Class clazz, String id)
+    throws WebloggerException {
+        EntityManager em = getEntityManager(false);
+        return em.find(clazz, id);
+    }
+

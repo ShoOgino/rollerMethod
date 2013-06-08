@@ -1,0 +1,33 @@
+    /**
+     * Very contrived helper method for Velocimacros generating Struts links.
+     * This is really only of use to the showNavBar macro.
+     * @param useIds
+     * @param isAction
+     * @param path
+     * @param val1
+     * @param val2
+     * @return String
+     */
+    public String strutsUrlHelper1( boolean useIds, boolean isAction,
+            String path, String val1, String val2, Hashtable params) {
+        
+        // NOTE: this method is now official defunct since Weblogger 4.0
+        // when we EOLed struts1 and had no real equivalent for this
+        
+        if(path == null) {
+            return null;
+        } else if("weblogCreate".equals(path)) {
+            // a little hacky, but hopefully nobody is really using this anymore
+            return WebloggerRuntimeConfig.getRelativeContextURL()+"/roller-ui/authoring/entryAdd.rol?weblog="+val1;
+        } else if("editWebsite".equals(path)) {
+            // a little hacky, but hopefully nobody is really using this anymore
+            return WebloggerRuntimeConfig.getRelativeContextURL()+"/roller-ui/authoring/weblogConfig.rol?weblog="+val1;
+        } else if("logout-redirect".equals(path)) {
+            return WebloggerFactory.getWeblogger().getUrlStrategy().getLogoutURL(false);
+        } else if("login-redirect".equals(path)) {
+            return WebloggerFactory.getWeblogger().getUrlStrategy().getLoginURL(false);
+        } else {
+            return "<span class=\"error\">ERROR generating link</span>";
+        }
+    }
+

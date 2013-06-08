@@ -1,0 +1,27 @@
+    /**
+     * @inheritDoc
+     */
+    public List getHotWeblogs(int sinceDays, int offset, int length)
+    throws WebloggerException {
+        
+        // figure out start date
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.DATE, -1 * sinceDays);
+        Date startDate = cal.getTime();
+        
+        Query query = strategy.getNamedQuery(
+                "WeblogHitCount.getByWeblogEnabledTrueAndActiveTrue&DailyHitsGreaterThenZero&WeblogLastModifiedGreaterOrderByDailyHitsDesc");
+        query.setParameter(1, startDate);
+        
+        // Was commented out due to https://glassfish.dev.java.net/issues/show_bug.cgi?id=2084
+        // TODO: determine if this is still an issue. Is it a problem with other JPA implementations?
+        if (offset != 0) {
+            query.setFirstResult(offset);
+        }
+        if (length != -1) {
+            query.setMaxResults(length);
+        }        
+        return query.getResultList();
+    }
+

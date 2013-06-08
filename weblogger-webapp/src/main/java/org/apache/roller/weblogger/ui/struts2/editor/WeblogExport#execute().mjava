@@ -1,0 +1,14 @@
+    /**
+     * Simply triggers the display of the export options UI.
+     */
+    @Override
+    public String execute() throws WebloggerException {
+
+        if (!WebloggerConfig.getBooleanProperty("weblog.export.enabled")) {
+            throw new WebloggerException("ERROR: export is disabled");
+        }
+
+        // We need to gather some more info before we can attempt an export
+        return INPUT;
+    }
+

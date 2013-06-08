@@ -1,0 +1,60 @@
+    public void run() {
+        
+        boolean firstRun = true;
+        
+        // run forever, or until we get interrupted
+        while(true) {
+            try {
+                // get current time
+                Date now = new Date();
+                log.debug("Current time = "+now);
+                
+                // run tasks, skip run on first pass
+                if(firstRun) {
+                    // add a slight delay to scheduler start
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(now);
+                    cal.add(Calendar.MINUTE, 1);
+                    cal.set(Calendar.SECOND, cal.getMinimum(Calendar.SECOND));
+                    cal.set(Calendar.MILLISECOND, cal.getMinimum(Calendar.MILLISECOND));
+                    now = cal.getTime();
+                    log.debug("Start time = "+now);
+                    
+                    firstRun = false;
+                } else {
+                    try {
+                        runTasks(now);
+                    } finally {
+                        // always release session after each pass
+                        WebloggerFactory.getWeblogger().release();
+                    }
+                }
+                
+                // wait 'til next minute
+                // NOTE: we add 50ms of adjustment time to make sure we awaken
+                //       during the next minute, and not before.  awakening at
+                //       exactly the .000ms is not of any concern to us
+                Date endOfMinute = DateUtil.getEndOfMinute(now);
+                long sleepTime = (endOfMinute.getTime() + 50) - System.currentTimeMillis();
+                if(sleepTime > 0) {
+                    log.debug("sleeping - "+sleepTime);
+                    Thread.sleep(sleepTime);
+                } else {
+                    // it's taken us more than 1 minute for the last loop
+                    // so recalculate to sleep 'til the end of the current minute
+                    endOfMinute = DateUtil.getEndOfMinute(new Date());
+                    sleepTime = (endOfMinute.getTime() + 50) - System.currentTimeMillis();
+                    log.debug("sleeping - "+sleepTime);
+                    Thread.sleep(sleepTime);
+                }
+                
+            } catch (InterruptedException ex) {
+                // thread interrupted
+                log.debug("Thread interrupted, scheduler is stopping");
+                pool.shutdownNow();
+                break;
+            }
+        }
+        
+    }
+

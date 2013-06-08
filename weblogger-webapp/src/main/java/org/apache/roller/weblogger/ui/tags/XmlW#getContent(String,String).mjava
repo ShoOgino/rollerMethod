@@ -1,0 +1,14 @@
+    static public String getContent(String tag, String text) {
+        int idx = XmlW.getIndexOpeningTag(tag, text);
+        if(idx == -1) {
+            return "";
+        }
+        text = text.substring(idx);
+        int end = XmlW.getIndexClosingTag(tag, text);
+        idx = text.indexOf('>');
+        if(idx == -1) {
+            return "";
+        }
+        return text.substring(idx+1, end);
+    }
+

@@ -1,0 +1,18 @@
+    /**
+     * Show list of weblog referrers.
+     */
+    public String execute() {
+        
+        RefererManager refmgr = WebloggerFactory.getWeblogger().getRefererManager();
+        try {
+            setDayHits(refmgr.getDayHits(getActionWeblog()));
+            setReferrers(refmgr.getTodaysReferers(getActionWeblog()));
+        } catch (Exception ex) {
+            log.error("Error getting referrer data for weblog - "+getActionWeblog().getHandle(), ex);
+            // TODO: i18n
+            addError("Error loading referrer data");
+        }
+        
+        return LIST;
+    }
+

@@ -1,0 +1,11 @@
+    // convenience for accessing a single parameter with a single value
+    public String getParameter(String key) {
+        if(key != null) {
+            String[] value = (String[]) getParameters().get(key);
+            if(value != null && value.length > 0) {
+                return value[0];
+            }
+        }
+        return null;
+    }
+

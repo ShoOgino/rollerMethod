@@ -1,0 +1,19 @@
+    /**
+     * Rebuild search index for weblog.
+     */
+    public String index() {
+        
+        try {
+            IndexManager manager = WebloggerFactory.getWeblogger().getIndexManager();
+            manager.rebuildWebsiteIndex(getActionWeblog());
+            
+            addMessage("maintenance.message.indexed");
+        } catch (Exception ex) {
+            log.error("Error doing index rebuild", ex);
+            // TODO: i18n
+            addError("Error rebuilding search index");
+        }
+        
+        return SUCCESS;
+    }
+

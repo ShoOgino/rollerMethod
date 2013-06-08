@@ -1,0 +1,21 @@
+	/**
+	 * This constructor will build all the needed data needed to correctly authenticate
+	 * and persist a roller user. This is needed because of the need to control the 
+	 * actions based on roller_user_permissions table.  Authentication will still 
+	 * happen on Crowd side.
+	 * @param user
+	 * @param password
+	 * @param timeZone
+	 * @param locale
+	 * @param grantedAuthorities
+	 */
+	public CrowdRollerUserDetails(User user, String password, String timeZone,
+			String locale, GrantedAuthority[] grantedAuthorities) {
+		super();
+		this.user = user;
+		this.password = password;
+		this.timeZone = timeZone;
+		this.locale = locale;
+		this.grantedAuthorities = grantedAuthorities;
+	}
+

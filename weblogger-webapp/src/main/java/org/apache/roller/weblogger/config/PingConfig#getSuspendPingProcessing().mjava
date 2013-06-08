@@ -1,0 +1,11 @@
+    /**
+     * Determine whether ping processing is suspended.  If this is true, new auto ping requests are not
+     * queued, any existing queued requests are not processed, and sending a manual ping results in a message saying
+     * pings have been disabled.
+     *
+     * @return the configured (or default) value of the suspend ping processing setting.
+     */
+    public static boolean getSuspendPingProcessing() {
+        return WebloggerRuntimeConfig.getBooleanProperty(PINGS_SUSPEND_PING_PROCESSING_PROP);
+    }
+

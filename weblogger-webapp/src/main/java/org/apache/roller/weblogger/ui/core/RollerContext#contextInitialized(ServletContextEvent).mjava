@@ -1,0 +1,88 @@
+    /**
+     * Responds to app-init event and triggers startup procedures.
+     */
+    public void contextInitialized(ServletContextEvent sce) {
+
+        // First, initialize everything that requires no database
+
+        // Keep a reverence to ServletContext object
+        this.servletContext = sce.getServletContext();
+        
+        // Call Spring's context ContextLoaderListener to initialize all the
+        // context files specified in web.xml. This is necessary because
+        // listeners don't initialize in the order specified in 2.3 containers
+        super.contextInitialized(sce);
+        
+        // get the *real* path to <context>/resources
+        String ctxPath = servletContext.getRealPath("/");
+        if(!ctxPath.endsWith(File.separator))
+            ctxPath += File.separator + "resources";
+        else
+            ctxPath += "resources";
+        
+        // try setting the uploads path to <context>/resources
+        // NOTE: this should go away at some point
+        // we leave it here for now to allow users to keep writing
+        // uploads into their webapp context, but this is a bad idea
+        //
+        // also, the WebloggerConfig.setUploadsDir() method is smart
+        // enough to disregard this call unless the uploads.path
+        // is set to ${webapp.context}
+        WebloggerConfig.setUploadsDir(ctxPath);
+        
+        // try setting the themes path to <context>/themes
+        // NOTE: this should go away at some point
+        // we leave it here for now to allow users to keep using
+        // themes in their webapp context, but this is a bad idea
+        //
+        // also, the WebloggerConfig.setThemesDir() method is smart
+        // enough to disregard this call unless the themes.dir
+        // is set to ${webapp.context}
+        WebloggerConfig.setThemesDir(servletContext.getRealPath("/")+File.separator+"themes");
+        
+        
+        // Now prepare the core services of the app so we can bootstrap
+        try {
+            WebloggerStartup.prepare();
+        } catch (StartupException ex) {
+            log.fatal("Roller Weblogger startup failed during app preparation", ex);
+            return;
+        }
+        
+        
+        // if preparation failed or is incomplete then we are done,
+        // otherwise try to bootstrap the business tier
+        if (!WebloggerStartup.isPrepared()) {
+            StringBuffer buf = new StringBuffer();
+            buf.append("\n--------------------------------------------------------------");
+            buf.append("\nRoller Weblogger startup INCOMPLETE, user interaction required");
+            buf.append("\n--------------------------------------------------------------");
+            log.info(buf.toString());
+        } else {
+            try {
+                // trigger bootstrapping process
+                WebloggerFactory.bootstrap();
+                
+                // trigger initialization process
+                WebloggerFactory.getWeblogger().initialize();
+                
+            } catch (BootstrapException ex) {
+                log.fatal("Roller Weblogger bootstrap failed", ex);
+            } catch (WebloggerException ex) {
+                log.fatal("Roller Weblogger initialization failed", ex);
+            }
+		}
+            
+        // do a small amount of work to initialize the web tier
+        try {
+            // Initialize Acegi based on Roller configuration
+            initializeSecurityFeatures(servletContext);
+            
+            // Setup Velocity template engine
+            setupVelocity();
+        } catch (WebloggerException ex) {
+            log.fatal("Error initializing Roller Weblogger web tier", ex);
+        }
+        
+    }
+

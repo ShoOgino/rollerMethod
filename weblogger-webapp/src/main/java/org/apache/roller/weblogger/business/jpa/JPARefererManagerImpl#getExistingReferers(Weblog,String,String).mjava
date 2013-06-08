@@ -1,0 +1,11 @@
+    protected List getExistingReferers(Weblog website, String dateString,
+            String permalink) throws WebloggerException {
+
+        Query q = strategy.getNamedQuery( 
+            "WeblogReferrer.getByWebsite&DateString&RefererPermalink");
+        q.setParameter(1, website);
+        q.setParameter(2, dateString);
+        q.setParameter(3, permalink);
+        return q.getResultList();
+    }
+

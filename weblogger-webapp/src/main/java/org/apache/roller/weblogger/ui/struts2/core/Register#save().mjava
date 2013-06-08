@@ -1,0 +1,110 @@
+    public String save() {
+        
+        // if registation is disabled, then don't allow registration
+        try {
+            if (!WebloggerRuntimeConfig.getBooleanProperty("users.registration.enabled")
+                // unless there are 0 users (need to allow creation of first user)
+                && WebloggerFactory.getWeblogger().getUserManager().getUserCount() != 0) {
+                return "disabled";
+            }
+        } catch (Exception e) {
+            log.error("Error checking user count", e);
+            return "disabled";
+        }
+                
+        myValidate();
+        
+        if (!hasActionErrors()) try {
+            
+            UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
+            
+            // copy form data into new user pojo
+            User ud = new User();
+            getBean().copyTo(ud); // doesn't copy password
+            ud.setUserName(getBean().getUserName());
+            ud.setDateCreated(new java.util.Date());
+            ud.setEnabled(Boolean.TRUE);
+            
+            // If user set both password and passwordConfirm then reset password
+            if (!StringUtils.isEmpty(getBean().getPasswordText()) && 
+                    !StringUtils.isEmpty(getBean().getPasswordConfirm())) {
+                ud.resetPassword(getBean().getPasswordText());
+            }
+            
+            // are we using email activation?
+            boolean activationEnabled = WebloggerRuntimeConfig.getBooleanProperty(
+                    "user.account.activation.enabled");
+            if (activationEnabled) {
+                // User account will be enabled after the activation process
+                ud.setEnabled(Boolean.FALSE);
+                
+                // Create & save the activation data
+                String activationCode = UUID.randomUUID().toString();
+                
+                if (mgr.getUserByActivationCode(activationCode) != null) {
+                    // In the *extremely* unlikely event that we generate an
+                    // activation code that is already use, we'll retry 3 times.
+                    int numOfRetries = 3;
+                    if (numOfRetries < 1) numOfRetries = 1;
+                    for (int i = 0; i < numOfRetries; i++) {
+                        activationCode = UUID.randomUUID().toString();
+                        if (mgr.getUserByActivationCode(activationCode) == null) {
+                            break;
+                        } else {
+                            activationCode = null;
+                        }
+                    }
+                    // In more unlikely event that three retries isn't enough
+                    if (activationCode == null){
+                        throw new WebloggerException("error.add.user.activationCodeInUse");
+                    }
+                }
+                ud.setActivationCode(activationCode);
+            }
+            
+            // save new user
+            mgr.addUser(ud);
+            
+            String openidurl = getBean().getOpenIdUrl();
+            if (openidurl != null) {
+                if (openidurl.endsWith("/")) {
+                    openidurl = openidurl.substring(0, openidurl.length() - 1);
+                }
+                mgr.setUserAttribute(
+                    ud.getUserName(), UserAttribute.Attributes.OPENID_URL.toString(),
+                    openidurl);
+            }
+            
+            WebloggerFactory.getWeblogger().flush();
+            
+            // now send activation email if necessary
+            if (activationEnabled && ud.getActivationCode() != null) {
+                try {
+                    // send activation mail to the user
+                    MailUtil.sendUserActivationEmail(ud);
+                } catch (WebloggerException ex) {
+                    log.error("Error sending activation email to - "+ud.getEmailAddress(), ex);
+                }
+                
+                setActivationStatus("pending");
+            }
+             
+            // Invalidate session, otherwise new user who was originally
+            // authenticated via LDAP/SSO will remain logged in with
+            // a but without a valid Roller role.
+            getServletRequest().getSession().invalidate();
+            
+            // set a special page title
+            setPageTitle("welcome.title");
+            
+            return SUCCESS;
+            
+        } catch (WebloggerException ex) {
+            log.error("Error adding new user", ex);
+            // TODO: i18n
+            addError("Error adding new user");
+        }
+        
+        return INPUT;
+    }
+

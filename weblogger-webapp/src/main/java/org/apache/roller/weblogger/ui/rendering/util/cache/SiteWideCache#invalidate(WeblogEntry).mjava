@@ -1,0 +1,12 @@
+    /**
+     * A weblog entry has changed.
+     */
+    public void invalidate(WeblogEntry entry) {
+        
+        if(!cacheEnabled)
+            return;
+        
+        this.contentCache.clear();
+        this.lastUpdateTime = null;
+    }
+

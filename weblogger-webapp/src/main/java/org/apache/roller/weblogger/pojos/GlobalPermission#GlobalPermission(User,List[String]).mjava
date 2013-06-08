@@ -1,0 +1,11 @@
+    /** 
+     * Create global permission for one specific user initialized with the 
+     * actions specified by array.
+     * @param user User of permission.
+     * @throws org.apache.roller.weblogger.WebloggerException
+     */
+    public GlobalPermission(User user, List<String> actions) throws WebloggerException {
+        super("GlobalPermission user: " + user.getUserName());
+        setActionsAsList(actions);
+    }
+

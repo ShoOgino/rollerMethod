@@ -1,0 +1,21 @@
+    public void saveFolder(WeblogBookmarkFolder folder) throws WebloggerException {
+        
+        if (folder.getId() == null || this.getFolder(folder.getId()) == null) {
+            // New folder, so make sure name is unique
+            if (isDuplicateFolderName(folder)) {
+                throw new WebloggerException("Duplicate folder name");
+            }
+
+            // And If it has a parent, maintain relationship from both sides
+            WeblogBookmarkFolder parent = folder.getParent();
+            if(parent != null) {
+                parent.getFolders().add(folder);
+            }
+        }
+
+        this.strategy.store(folder);
+
+        // update weblog last modified date.  date updated by saveWebsite()
+        roller.getWeblogManager().saveWeblog(folder.getWebsite());
+    }
+

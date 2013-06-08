@@ -1,0 +1,18 @@
+    protected void loadWeblogEntries(Date startDate, Date endDate, String catName) {
+        try {
+            WeblogEntryManager mgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
+            monthMap = mgr.getWeblogEntryStringMap(
+                    
+                    weblog,                  // website
+                    startDate,                 // startDate
+                    endDate,                   // endDate
+                    catName,                   // cat
+                    null,WeblogEntry.PUBLISHED, // status
+                    locale,
+                    0, -1);
+        } catch (WebloggerException e) {
+            log.error(e);
+            monthMap = new HashMap();
+        }
+    }
+

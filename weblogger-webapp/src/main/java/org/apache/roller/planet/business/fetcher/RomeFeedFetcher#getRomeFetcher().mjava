@@ -1,0 +1,19 @@
+    // get a feed fetcher
+    private FeedFetcher getRomeFetcher() {
+        
+        FeedFetcherCache feedCache = getRomeFetcherCache();
+        
+        FeedFetcher feedFetcher = null;
+        if(feedCache != null) {
+            feedFetcher = new HttpURLFeedFetcher(feedCache);
+        } else {
+            feedFetcher = new HttpURLFeedFetcher();
+        }
+        
+        // set options
+        feedFetcher.setUsingDeltaEncoding(false);
+        feedFetcher.setUserAgent("RollerPlanetAggregator");
+        
+        return feedFetcher;
+    }
+

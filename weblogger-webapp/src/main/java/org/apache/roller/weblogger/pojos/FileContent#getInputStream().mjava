@@ -1,0 +1,12 @@
+    /**
+     * Returns the input stream for the underlying file.
+     */
+    public InputStream getInputStream() {
+        try {
+            return new FileInputStream(resourceFile);
+        } catch (java.io.FileNotFoundException ex) {
+            // should never happen, rethrow as runtime exception
+            throw new RuntimeException("Error constructing input stream", ex);
+        }
+    }
+

@@ -1,0 +1,15 @@
+    /**
+     * Get map with 26 entries, one for each letter A-Z and
+     * containing integers reflecting the number of weblogs whose
+     * names start with each letter.
+     */
+    public Map getWeblogHandleLetterMap() {
+        Map results = new HashMap();
+        try {            
+            results = WebloggerFactory.getWeblogger().getWeblogManager().getWeblogHandleLetterMap();
+        } catch (Exception e) {
+            log.error("ERROR: fetching weblog handle letter map", e);
+        }
+        return results;
+    }
+

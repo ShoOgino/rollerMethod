@@ -1,0 +1,77 @@
+    /**
+     * Copies data from this bean to media file filter object.
+     *
+     */
+    public void copyTo(MediaFileFilter dataHolder) {
+        dataHolder.setName(this.name);
+
+        if (!StringUtils.isEmpty(this.type)) {
+            MediaFileType filterType = null;
+            if ("mediaFileView.audio".equals(this.type)) {
+                filterType = MediaFileType.AUDIO;
+            } else if ("mediaFileView.video".equals(this.type)) {
+                filterType = MediaFileType.VIDEO;
+            } else if ("mediaFileView.image".equals(this.type)) {
+                filterType = MediaFileType.IMAGE;
+            } else if ("mediaFileView.others".equals(this.type)) {
+                filterType = MediaFileType.OTHERS;
+            } 
+
+            dataHolder.setType(filterType);
+        }
+
+        if (this.size > 0) {
+            SizeFilterType sftype = SizeFilterType.EQ;
+            if ("mediaFileView.gt".equals(this.sizeFilterType)) {
+                sftype = SizeFilterType.GT;
+            } else if ("mediaFileView.ge".equals(this.sizeFilterType)) {
+                sftype = SizeFilterType.GTE;
+            } else if ("mediaFileView.eq".equals(this.sizeFilterType)) {
+                sftype = SizeFilterType.EQ;
+            } else if ("mediaFileView.le".equals(this.sizeFilterType)) {
+                sftype = SizeFilterType.LTE;
+            } else if ("mediaFileView.lt".equals(this.sizeFilterType)) {
+                sftype = SizeFilterType.LT;
+            }
+            dataHolder.setSizeFilterType(sftype);
+
+            long filterSize = this.size ;
+            if ("mediaFileView.kb".equals(this.sizeUnit)) {
+                filterSize = this.size * 1024;
+            } else if ("mediaFileView.mb".equals(this.sizeUnit)) {
+                    filterSize = this.size * 1024 * 1024;
+            }
+            dataHolder.setSize(filterSize);
+        }
+
+        if (!StringUtils.isEmpty(this.tags)) {
+            List<String> tagsSet = new ArrayList<String>();
+            for (String tag : this.tags.split(" ")) {
+                tagsSet.add(tag);
+            }
+            dataHolder.setTags(tagsSet);
+        }
+
+        dataHolder.setStartIndex(pageNum * PAGE_SIZE);
+
+        // set length to fetch to one more than what is required.
+        // this would help us determine whether there are more pages
+        dataHolder.setLength(PAGE_SIZE + 1);
+
+        MediaFileOrder order;
+        switch (this.sortOption) {
+            case 0:
+                order = MediaFileOrder.NAME;
+                break;
+            case 1:
+                order = MediaFileOrder.DATE_UPLOADED;
+                break;
+            case 2:
+                order = MediaFileOrder.TYPE;
+                break;
+            default:
+                order = null;
+        }
+        dataHolder.setOrder(order);
+    }
+

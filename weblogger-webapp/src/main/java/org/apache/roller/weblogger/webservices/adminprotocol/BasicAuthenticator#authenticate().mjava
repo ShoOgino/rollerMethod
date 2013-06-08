@@ -1,0 +1,33 @@
+    public void authenticate() throws HandlerException {
+        setUserName(null);
+        
+        String authHeader = getRequest().getHeader("Authorization");
+        if (authHeader == null) {
+            throw new UnauthorizedException("ERROR: Authorization header was not set");
+        }
+        
+        StringTokenizer st = new StringTokenizer(authHeader);
+        if (st.hasMoreTokens()) {
+            String basic = st.nextToken();
+            if (basic.equalsIgnoreCase("Basic")) {
+                String credentials = st.nextToken();
+                String userPass = new String(Base64.decodeBase64(credentials.getBytes()));
+                int p = userPass.indexOf(":");
+                if (p != -1) {
+                    String userName = userPass.substring(0, p);
+                    String password = userPass.substring(p+1);
+                    verifyUser(userName, password);
+                    
+                    //success
+                    setUserName(userName);
+                }
+            }
+        }
+
+        // FIX from Nick Lothian, see 
+        if (getUserName() == null) {
+               throw new UnauthorizedException("ERROR: Could not authorize user");
+        }
+
+    }
+

@@ -1,0 +1,22 @@
+    /**
+     * {@inheritDoc}
+     */
+    public void moveMediaFiles(Collection<MediaFile> mediaFiles, MediaFileDirectory targetDirectory)
+            throws WebloggerException {
+
+        List<MediaFile> moved = new ArrayList<MediaFile>();
+        moved.addAll(mediaFiles);
+        
+        for (MediaFile mediaFile : moved) {
+            mediaFile.getDirectory().getMediaFiles().remove(mediaFile);
+
+            mediaFile.setDirectory(targetDirectory);
+            this.strategy.store(mediaFile);
+
+            targetDirectory.getMediaFiles().add(mediaFile);
+            this.strategy.store(targetDirectory);
+        }
+        // update weblog last modified date.  date updated by saveWebsite()
+        roller.getWeblogManager().saveWeblog(targetDirectory.getWeblog());
+    }
+

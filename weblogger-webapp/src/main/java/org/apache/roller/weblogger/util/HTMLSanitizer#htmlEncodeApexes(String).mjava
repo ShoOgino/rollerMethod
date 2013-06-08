@@ -1,0 +1,9 @@
+	public static final String htmlEncodeApexes(String source) {
+		if (source != null) {
+			String result = replaceAllNoRegex(source, new String[]{"\"", "'"}, new String[]{"&quot;", "&#39;"});
+			return result;
+		} else {
+			return null;
+		}
+	}
+

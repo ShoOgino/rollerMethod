@@ -1,0 +1,44 @@
+    /* (non-Javadoc)
+     * @see org.springframework.security.ldap.LdapAuthoritiesPopulator#getGrantedAuthorities(org.springframework.ldap.core.DirContextOperations, String)
+     */
+    public GrantedAuthority[] getGrantedAuthorities(DirContextOperations userData, String username) {
+
+        // This check is probably unnecessary.
+        if (userData == null) {
+            throw new IllegalArgumentException("The userData argument should not be null at this point.");
+        }
+
+        User user = null;
+        List<String> roles = null;
+        try {
+            Weblogger roller = WebloggerFactory.getWeblogger();
+            UserManager umgr = roller.getUserManager();
+            user = umgr.getUserByUserName(username, Boolean.TRUE);
+            roles = umgr.getRoles(user);
+        } catch (WebloggerException ex) {
+            throw new DataRetrievalFailureException("ERROR in user lookup", ex);
+        }
+
+        if (user == null) {
+            throw new UsernameNotFoundException("ERROR user: " + username + " not found while granting authorities");
+        }
+
+        int roleCount = roles.size() + (defaultRole != null ? 1 : 0);
+        GrantedAuthority[] authorities = new GrantedAuthorityImpl[roleCount];
+        int i = 0;
+        for(String role : roles) {
+            authorities[i++] = new GrantedAuthorityImpl(role);
+        }
+        
+        if (defaultRole != null) {
+            authorities[roleCount-1] = defaultRole;
+        }
+
+        if (authorities.length == 0) {
+            // TODO: This doesn't seem like the right type of exception to throw here, but retained it, fixed the message
+            throw new UsernameNotFoundException("User " + username + " has no roles granted and there is no default role set.");
+        }
+
+        return authorities;
+    }
+

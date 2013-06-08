@@ -1,0 +1,19 @@
+    private EntrySet putEntry(Reader r) throws HandlerException {
+        EntrySet c = getEntrySet(r);
+        if (c.isEmpty()) {
+            throw new BadRequestException("ERROR: No entries");
+        }
+        if (c.getEntries().length > 1) {
+            throw new BadRequestException("ERROR: Cannot put >1 entries per request");
+        }
+        
+        UserEntry entry = (UserEntry)c.getEntries()[0];
+        if (entry.getName() != null && !entry.getName().equals(getUri().getEntryId())) {
+            throw new BadRequestException("ERROR: Content name does not match URI name");
+        }
+        entry.setName(getUri().getEntryId());
+        c = updateUsers((UserEntrySet)c);
+        
+        return c;
+    }
+

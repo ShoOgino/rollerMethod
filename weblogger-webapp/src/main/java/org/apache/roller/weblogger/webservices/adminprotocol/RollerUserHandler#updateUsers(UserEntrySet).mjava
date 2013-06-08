@@ -1,0 +1,11 @@
+    private UserEntrySet updateUsers(UserEntrySet c) throws HandlerException {
+        List userDatas = new ArrayList();
+        for (int i = 0; i < c.getEntries().length; i++) {
+            UserEntry entry = (UserEntry)c.getEntries()[i];
+            User ud = getUserData(entry.getName());
+            updateUserData(ud, entry);
+            userDatas.add(ud);
+        }
+        return toUserEntrySet((User[])userDatas.toArray(new User[0]));
+    }
+

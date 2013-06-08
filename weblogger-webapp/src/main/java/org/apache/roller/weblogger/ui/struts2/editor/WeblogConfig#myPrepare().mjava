@@ -1,0 +1,31 @@
+    public void myPrepare() {
+        
+        try {
+            WeblogEntryManager wmgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
+            
+            // set categories list
+            setWeblogCategories(wmgr.getWeblogCategories(getActionWeblog(), false));
+            
+            // set the Editor Page list
+            UIPluginManager pmgr = RollerContext.getUIPluginManager();
+            List editorsList = pmgr.getWeblogEntryEditors();
+            if(editorsList != null) {
+                setEditorsList(editorsList);
+            }
+            
+            // set plugins list
+            PluginManager ppmgr = WebloggerFactory.getWeblogger().getPluginManager();
+            Map pluginsMap = ppmgr.getWeblogEntryPlugins(getActionWeblog());
+            List plugins = new ArrayList();
+            Iterator iter = pluginsMap.values().iterator();
+            while(iter.hasNext()) {
+                plugins.add(iter.next());
+            }
+            // sort
+            setPluginsList(plugins);
+
+        } catch (Exception ex) {
+            log.error("Error preparing weblog config action", ex);
+        }
+    }
+

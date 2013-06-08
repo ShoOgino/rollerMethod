@@ -1,0 +1,8 @@
+    void removeConsumer(OAuthConsumer consumer) throws OAuthException {
+        try {
+            strategy.remove(OAuthConsumerRecord.class, consumer.consumerKey);
+        } catch (WebloggerException ex) {
+            throw new OAuthException("ERROR removing consumer", ex);
+        }
+    }
+

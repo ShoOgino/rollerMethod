@@ -1,0 +1,42 @@
+    /**
+     * This object, as a Roller User object.
+     */
+    public User toUserData(UserEntry ue) {
+        if (ue == null) {
+            throw new NullPointerException("ERROR: Null user entry not allowed");
+        }
+        
+        //
+        // if any of the entry fields are null, the set below amounts
+        // to a no-op.
+        //
+        User ud = new User();
+        ud.setUserName(ue.getName());
+
+        if (ue.getScreenName() != null) {
+            ud.setScreenName(ue.getScreenName());
+        }
+        if (ue.getFullName() != null) {
+            ud.setFullName(ue.getFullName());
+        }
+        if (ue.getPassword() != null) {
+            ud.setPassword(ue.getPassword());
+        }
+        if (ue.getEmailAddress() != null) {
+            ud.setEmailAddress(ue.getEmailAddress());
+        }
+        if (ue.getLocale() != null) {
+            ud.setLocale(ue.getLocale().toString());
+        }
+        if (ue.getTimezone() != null) {
+            ud.setTimeZone(ue.getTimezone().getID());
+        }
+        if (ue.getDateCreated() != null) {
+            ud.setDateCreated(ue.getDateCreated());
+        }
+        if (ue.getEnabled() != null) {
+            ud.setEnabled(ue.getEnabled());
+        }
+        return ud;
+    }
+

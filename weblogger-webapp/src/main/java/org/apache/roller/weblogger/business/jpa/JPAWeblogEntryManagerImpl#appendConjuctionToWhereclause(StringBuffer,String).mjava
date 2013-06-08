@@ -1,0 +1,16 @@
+    /**
+     * Appends given expression to given whereClause. If whereClause already
+     * has other conditions, an " AND " is also appended before appending
+     * the expression
+     * @param whereClause The given where Clauuse
+     * @param expression The given expression
+     * @return the whereClause.
+     */
+    private static StringBuffer appendConjuctionToWhereclause(StringBuffer whereClause,
+            String expression) {
+        if(whereClause.length() != 0 && expression.length() != 0) {
+            whereClause.append(" AND ");
+        }
+        return whereClause.append(expression);
+    }
+

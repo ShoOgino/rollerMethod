@@ -1,0 +1,30 @@
+    /**
+     * Initialize VelocityHelper, setting the variables it will be hiding from
+     * the Velocimacros.
+     */
+    public OldPageHelper(HttpServletRequest request,
+                      HttpServletResponse response,
+                      Map ctx,
+                      Weblog website,
+                      Date date,WeblogBookmarkFolder folder,
+                      String pageName,
+                      PageContext pageContext,
+                      WeblogPageRequest pageRequest) throws WebloggerException {
+        
+        // general request objects
+        mRequest = request;
+        mResponse = response;
+        mPageContext = pageContext;
+        mPageRequest = pageRequest;
+        
+        // data that we'll be reusing
+        mWebsite = website;
+        mDate = date;
+        mFolder = folder;
+        
+        // init plugins
+        Weblogger roller = WebloggerFactory.getWeblogger();
+        PluginManager ppmgr = roller.getPluginManager();
+        mPagePlugins = ppmgr.getWeblogEntryPlugins(mWebsite);
+    }
+

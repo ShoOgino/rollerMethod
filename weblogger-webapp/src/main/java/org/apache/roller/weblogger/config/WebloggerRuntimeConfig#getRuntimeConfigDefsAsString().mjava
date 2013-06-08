@@ -1,0 +1,32 @@
+    /**
+     * Get the runtime configuration definitions XML file as a string.
+     *
+     * This is basically a convenience method for accessing this file.
+     * The file itself contains meta-data about what configuration
+     * properties we change at runtime via the UI and how to setup
+     * the display for editing those properties.
+     */
+    public static String getRuntimeConfigDefsAsString() {
+        
+        log.debug("Trying to load runtime config defs file");
+        
+        try {
+            InputStreamReader reader =
+                    new InputStreamReader(WebloggerConfig.class.getResourceAsStream(runtime_config));
+            StringWriter configString = new StringWriter();
+            
+            char[] buf = new char[8196];
+            int length = 0;
+            while((length = reader.read(buf)) > 0)
+                configString.write(buf, 0, length);
+            
+            reader.close();
+            
+            return configString.toString();
+        } catch(Exception e) {
+            log.error("Error loading runtime config defs file", e);
+        }
+        
+        return "";
+    }
+

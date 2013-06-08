@@ -1,0 +1,93 @@
+    /**
+     * Generate a cache key from a parsed weblog page request.
+     * This generates a key of the form ...
+     *
+     * <handle>/<ctx>[/anchor][/language][/user]
+     *   or
+     * <handle>/<ctx>[/weblogPage][/date][/category][/tags][/language][/user]
+     *
+     *
+     * examples ...
+     *
+     * foo/en
+     * foo/entry_anchor
+     * foo/20051110/en
+     * foo/MyCategory/en/user=myname
+     *
+     */
+    public String generateKey(WeblogPageRequest pageRequest) {
+        
+        StringBuffer key = new StringBuffer();
+        
+        key.append(this.CACHE_ID).append(":");
+        key.append("page/");
+        key.append(pageRequest.getWeblogHandle());
+        
+        if(pageRequest.getWeblogAnchor() != null) {
+            String anchor = null;
+            try {
+                // may contain spaces or other bad chars
+                anchor = URLEncoder.encode(pageRequest.getWeblogAnchor(), "UTF-8");
+            } catch(UnsupportedEncodingException ex) {
+                // ignored
+            }
+            
+            key.append("/entry/").append(anchor);
+        } else {
+            
+            if(pageRequest.getWeblogPageName() != null) {
+                key.append("/page/").append(pageRequest.getWeblogPageName());
+            }
+            
+            if(pageRequest.getWeblogDate() != null) {
+                key.append("/").append(pageRequest.getWeblogDate());
+            }
+            
+            if(pageRequest.getWeblogCategoryName() != null) {
+                String cat = null;
+                try {
+                    // may contain spaces or other bad chars
+                    cat = URLEncoder.encode(pageRequest.getWeblogCategoryName(), "UTF-8");
+                } catch(UnsupportedEncodingException ex) {
+                    // ignored
+                }
+                
+                key.append("/").append(cat);
+            }
+            
+            if("tags".equals(pageRequest.getContext())) {
+                key.append("/tags/");
+                if(pageRequest.getTags() != null && pageRequest.getTags().size() > 0) {
+                    Set ordered = new TreeSet(pageRequest.getTags());
+                    String[] tags = (String[]) ordered.toArray(new String[ordered.size()]);
+                    key.append(Utilities.stringArrayToString(tags,"+"));
+                }
+            }
+        }
+        
+        if(pageRequest.getLocale() != null) {
+            key.append("/").append(pageRequest.getLocale());
+        }
+        
+        // add page number when applicable
+        if(pageRequest.getWeblogAnchor() == null) {
+            key.append("/page=").append(pageRequest.getPageNum());
+        }
+        
+        // add login state
+        if(pageRequest.getAuthenticUser() != null) {
+            key.append("/user=").append(pageRequest.getAuthenticUser());
+        }
+      
+        key.append("/deviceType=").append(pageRequest.getDeviceType().toString());
+
+        // we allow for arbitrary query params for custom pages
+        if(pageRequest.getCustomParams().size() > 0) {
+            String queryString = paramsToString(pageRequest.getCustomParams());
+            
+            key.append("/qp=").append(queryString);
+        }
+
+        return key.toString();
+    }
+

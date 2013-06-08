@@ -1,0 +1,25 @@
+    /**
+     * Generates a JPQL query of form
+     * SELECT r FROM WeblogReferrer r WHERE
+     *     ( refererUrl like %blacklist[1] ..... OR refererUrl like %blacklist[n])
+     * @param blacklist
+     * @return
+     */
+    private StringBuffer getQueryStringForBlackList(String[] blacklist) {
+        assert blacklist.length > 0;
+        StringBuffer queryString = new StringBuffer("SELECT r FROM WeblogReferrer r WHERE (");
+        //Search for any matching entry from blacklist[]
+        final String OR = " OR ";
+        for (int i = 0; i < blacklist.length; i++) {
+            String ignoreWord = blacklist[i];
+            //TODO: DataMapper port: original code use "like ignore case" as follows
+            // or.add(Expression.ilike("refererUrl","%"+ignoreWord+"%"));
+            // There is no equivalent for it in JPA
+            queryString.append("r.refererUrl like '%").append(ignoreWord.trim()).append("%'").append(OR);
+        }
+        // Get rid of last OR
+        queryString.delete(queryString.length() - OR.length(), queryString.length());
+        queryString.append(" ) ");
+        return queryString;
+    }
+

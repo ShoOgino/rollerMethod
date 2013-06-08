@@ -1,0 +1,8 @@
+    /** Check enabled property, prefers runtime properties */
+    private static boolean getBooleanProperty(String propertyName) {
+        if (WebloggerRuntimeConfig.getProperty(propertyName) != null) {
+            return WebloggerRuntimeConfig.getBooleanProperty(propertyName);
+        }
+        return WebloggerConfig.getBooleanProperty(propertyName);
+    }
+

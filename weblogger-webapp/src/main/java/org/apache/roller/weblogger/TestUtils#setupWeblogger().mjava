@@ -1,0 +1,14 @@
+    public static void setupWeblogger() throws Exception {
+        
+        if(!WebloggerFactory.isBootstrapped()) {
+            // do core services preparation
+            WebloggerStartup.prepare();
+            
+            // do application bootstrapping
+            WebloggerFactory.bootstrap();
+            
+            // always initialize the properties manager and flush
+            WebloggerFactory.getWeblogger().initialize();
+        }
+    }
+

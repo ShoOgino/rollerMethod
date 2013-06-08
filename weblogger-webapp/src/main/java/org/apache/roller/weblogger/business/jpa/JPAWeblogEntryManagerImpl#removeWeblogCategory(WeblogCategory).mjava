@@ -1,0 +1,35 @@
+    /**
+     * @inheritDoc
+     */
+    public void removeWeblogCategory(WeblogCategory cat)
+    throws WebloggerException {
+        if(cat.retrieveWeblogEntries(true).size() > 0) {
+            throw new WebloggerException("Cannot remove category with entries");
+        }
+        
+        // remove cat
+        this.strategy.remove(cat);
+        //relationship management for the other side
+        WeblogCategory parent = cat.getParent();
+        if(parent != null) {
+            parent.getWeblogCategories().remove(cat);
+        }
+        
+        // update website default cats if needed
+        if(cat.getWebsite().getBloggerCategory().equals(cat)) {
+            WeblogCategory rootCat = this.getRootWeblogCategory(cat.getWebsite());
+            cat.getWebsite().setBloggerCategory(rootCat);
+            this.strategy.store(cat.getWebsite());
+        }
+        
+        if(cat.getWebsite().getDefaultCategory().equals(cat)) {
+            WeblogCategory rootCat = this.getRootWeblogCategory(cat.getWebsite());
+            cat.getWebsite().setDefaultCategory(rootCat);
+            this.strategy.store(cat.getWebsite());
+        }
+        
+        // update weblog last modified date.  date updated by saveWebsite()
+        roller.getWeblogManager().saveWeblog(
+                cat.getWebsite());
+    }
+

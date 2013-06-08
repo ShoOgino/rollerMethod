@@ -1,0 +1,130 @@
+    /**
+     * Update a list of comments.
+     */
+    public String update() {
+        
+        try {
+            WeblogEntryManager wmgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
+            
+            List<WeblogEntryComment> flushList = new ArrayList();
+
+            // if search is enabled, we will need to re-index all entries with
+            // comments that have been approved, so build a list of those entries
+            Set<WeblogEntry> reindexList = new HashSet<WeblogEntry>();
+            
+            // delete all comments with delete box checked
+            List<String> deletes = Arrays.asList(getBean().getDeleteComments());
+            if(deletes != null && deletes.size() > 0) {
+                log.debug("Processing deletes - "+deletes.size());
+                
+                WeblogEntryComment deleteComment = null;
+                for(String deleteId : deletes) {
+                    deleteComment = wmgr.getComment(deleteId);
+                    
+                    // make sure comment is tied to action weblog
+                    if(getActionWeblog().equals(deleteComment.getWeblogEntry().getWebsite())) {
+                        flushList.add(deleteComment);
+                        reindexList.add(deleteComment.getWeblogEntry());
+                        wmgr.removeComment(deleteComment);
+                    }
+                }
+            }
+            
+            // loop through IDs of all comments displayed on page
+            List<String> approvedIds = Arrays.asList(getBean().getApprovedComments());
+            List<String> spamIds = Arrays.asList(getBean().getSpamComments());
+            log.debug(spamIds.size()+" comments marked as spam");
+            
+            // track comments approved via moderation
+            List<WeblogEntryComment> approvedComments = new ArrayList();
+            
+            String[] ids = Utilities.stringToStringArray(getBean().getIds(),",");
+            for (int i=0; i < ids.length; i++) {
+                log.debug("processing id - "+ ids[i]);
+                
+                // if we already deleted it then skip forward
+                if(deletes.contains(ids[i])) {
+                    log.debug("Already deleted, skipping - "+ids[i]);
+                    continue;
+                }
+                
+                WeblogEntryComment comment = wmgr.getComment(ids[i]);
+                
+                // make sure comment is tied to action weblog
+                if(getActionWeblog().equals(comment.getWeblogEntry().getWebsite())) {
+                    // comment approvals and mark/unmark spam
+                    if(approvedIds.contains(ids[i])) {
+                        // if a comment was previously PENDING then this is
+                        // it's first approval, so track it for notification
+                        if(WeblogEntryComment.PENDING.equals(comment.getStatus())) {
+                            approvedComments.add(comment);
+                        }
+                        
+                        log.debug("Marking as approved - "+comment.getId());
+                        comment.setStatus(WeblogEntryComment.APPROVED);
+                        wmgr.saveComment(comment);
+                        
+                        flushList.add(comment);
+                        reindexList.add(comment.getWeblogEntry());
+                        
+                    } else if(spamIds.contains(ids[i])) {
+                        log.debug("Marking as spam - "+comment.getId());
+                        comment.setStatus(WeblogEntryComment.SPAM);
+                        wmgr.saveComment(comment);
+                        
+                        flushList.add(comment);
+                        reindexList.add(comment.getWeblogEntry());
+
+                    } else if(!WeblogEntryComment.DISAPPROVED.equals(comment.getStatus())) {
+                        log.debug("Marking as disapproved - "+comment.getId());
+                        comment.setStatus(WeblogEntryComment.DISAPPROVED);
+                        wmgr.saveComment(comment);
+                        
+                        flushList.add(comment);
+                        reindexList.add(comment.getWeblogEntry());
+                    }
+                }
+            }
+            
+            WebloggerFactory.getWeblogger().flush();
+            
+            // notify caches of changes by flushing whole site because we can't
+            // invalidate deleted comment objects (JPA nulls the fields out).
+            CacheManager.invalidate(getActionWeblog());
+            
+            // send notification for all comments changed
+            if (MailUtil.isMailConfigured()) {
+                I18nMessages resources = 
+                    I18nMessages.getMessages(getActionWeblog().getLocaleInstance());
+                MailUtil.sendEmailApprovalNotifications(approvedComments, resources);
+            }
+            
+            // if we've got entries to reindex then do so
+            if (!reindexList.isEmpty()) {
+                IndexManager imgr = WebloggerFactory.getWeblogger().getIndexManager();
+                for (WeblogEntry entry : reindexList) {
+                    imgr.addEntryReIndexOperation(entry);
+                }
+            }            
+            
+            addMessage("commentManagement.updateSuccess");
+            
+            // reset form and load fresh comments list
+            CommentsBean freshBean = new CommentsBean();
+            
+            // but if we're editing an entry's comments stick with that entry
+            if (bean.getEntryId() != null) {
+                freshBean.setEntryId(bean.getEntryId());
+            }
+            setBean(freshBean);
+                        
+            return execute();
+            
+        } catch (Exception ex) {
+            log.error("ERROR updating comments", ex);
+            addError("commentManagement.updateError", ex.toString());
+        }
+        
+        return LIST;
+    }
+

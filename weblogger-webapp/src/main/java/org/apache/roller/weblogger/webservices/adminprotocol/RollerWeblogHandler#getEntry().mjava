@@ -1,0 +1,9 @@
+    private EntrySet getEntry() throws HandlerException {
+        String handle = getUri().getEntryId();
+        Weblog wd = getWebsiteData(handle);
+        Weblog[] wds = new Weblog[] { wd };
+        EntrySet c = toWeblogEntrySet(wds);
+        
+        return c;
+    }
+

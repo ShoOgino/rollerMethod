@@ -1,0 +1,87 @@
+	@Override
+	public void myPrepare() {
+
+		ThemeTemplate stylesheet = null;
+		try {
+			stylesheet = getActionWeblog().getTheme().getStylesheet();
+		} catch (WebloggerException ex) {
+			log.error("Error looking up stylesheet on weblog - "
+					+ getActionWeblog().getHandle(), ex);
+		}
+
+		if (stylesheet != null) {
+			log.debug("custom stylesheet path is - " + stylesheet.getLink());
+			try {
+				setTemplate(WebloggerFactory.getWeblogger().getWeblogManager()
+						.getPageByLink(getActionWeblog(), stylesheet.getLink()));
+
+				if (getTemplate() == null) {
+					log.debug("custom stylesheet not found, creating it");
+
+					// template doesn't exist yet, so create it
+					WeblogTemplate stylesheetTmpl = new WeblogTemplate();
+					stylesheetTmpl.setWebsite(getActionWeblog());
+					stylesheetTmpl.setAction(ThemeTemplate.ACTION_CUSTOM);
+					stylesheetTmpl.setName(stylesheet.getName());
+					stylesheetTmpl.setDescription(stylesheet.getDescription());
+					stylesheetTmpl.setLink(stylesheet.getLink());
+					stylesheetTmpl.setContents(stylesheet.getContents());
+					stylesheetTmpl.setHidden(false);
+					stylesheetTmpl.setNavbar(false);
+					stylesheetTmpl.setLastModified(new Date());
+					stylesheetTmpl.setTemplateLanguage(stylesheet
+							.getTemplateLanguage());
+
+					// create template codes for available template code Types
+					WeblogThemeTemplateCode standardTemplateCode = new WeblogThemeTemplateCode(
+							stylesheetTmpl.getId(), "standard");
+					standardTemplateCode.setTemplate(stylesheetTmpl
+							.getContents());
+					standardTemplateCode.setTemplateLanguage(stylesheetTmpl
+							.getTemplateLanguage());
+
+					WeblogThemeTemplateCode mobileTemplateCode = new WeblogThemeTemplateCode(
+							stylesheetTmpl.getId(), "mobile");
+					mobileTemplateCode
+							.setTemplate(stylesheetTmpl.getContents());
+					mobileTemplateCode.setTemplateLanguage(stylesheetTmpl
+							.getTemplateLanguage());
+
+					WebloggerFactory.getWeblogger().getWeblogManager()
+							.saveTemplateCode(standardTemplateCode);
+					WebloggerFactory.getWeblogger().getWeblogManager()
+							.saveTemplateCode(mobileTemplateCode);
+
+					WebloggerFactory.getWeblogger().getWeblogManager()
+							.savePage(stylesheetTmpl);
+					WebloggerFactory.getWeblogger().flush();
+
+					setTemplate(stylesheetTmpl);
+				}
+
+				// See if we have a custom style sheet from a custom theme.
+				if (!WeblogTheme.CUSTOM.equals(getActionWeblog()
+						.getEditorTheme())
+						&& getActionWeblog().getTheme().getStylesheet() != null) {
+
+					ThemeTemplate override = WebloggerFactory
+							.getWeblogger()
+							.getWeblogManager()
+							.getPageByLink(
+									getActionWeblog(),
+									getActionWeblog().getTheme()
+											.getStylesheet().getLink());
+
+					if (override != null) {
+						customStylesheet = true;
+					}
+				}
+
+			} catch (WebloggerException ex) {
+				log.error(
+						"Error finding/adding stylesheet tempalate from weblog - "
+								+ getActionWeblog().getHandle(), ex);
+			}
+		}
+	}
+

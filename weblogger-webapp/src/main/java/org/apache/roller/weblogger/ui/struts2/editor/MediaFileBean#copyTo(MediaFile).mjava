@@ -1,0 +1,23 @@
+    /**
+     * Copies the contents of this bean to a media file object
+     * 
+     */
+    public void copyTo(MediaFile dataHolder) throws WebloggerException {
+
+        dataHolder.setName(this.name);
+        dataHolder.setDescription(this.description);
+        dataHolder.setCopyrightText(this.copyrightText);
+
+		if (StringUtils.isNotEmpty(tags)) {
+			Set<MediaFileTag> tagsSet = new HashSet<MediaFileTag>();
+			for (String tag : this.tags.split(" ")) {
+				tagsSet.add(new MediaFileTag(tag, dataHolder));
+			}
+			dataHolder.setTags(tagsSet);
+		} else {
+			dataHolder.setTags(null);
+		}
+        dataHolder.setSharedForGallery(this.isSharedForGallery);
+        dataHolder.setOriginalPath(this.originalPath);
+    }
+

@@ -1,0 +1,12 @@
+    /**
+     * Get database connection from data-source or driver manager, depending 
+     * on which is configured.
+     */
+    public Connection getConnection() throws SQLException {
+        if (getType() == ConfigurationType.JDBC_PROPERTIES) {
+            return DriverManager.getConnection(getJdbcConnectionURL(), props);
+        } else {
+            return dataSource.getConnection();
+        }
+    } 
+

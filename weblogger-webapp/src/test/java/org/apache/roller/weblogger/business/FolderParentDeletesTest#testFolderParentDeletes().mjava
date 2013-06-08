@@ -1,0 +1,37 @@
+    /**
+     * Test that deleting a folders parent object deletes all folders.
+     */
+    public void testFolderParentDeletes() throws Exception {
+        
+        log.info("BEGIN");
+        
+        BookmarkManager bmgr = WebloggerFactory.getWeblogger().getBookmarkManager();
+        
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
+        WeblogBookmarkFolder root = bmgr.getRootFolder(testWeblog);
+        
+        // add a small tree /parentDelete-fold1/parentDelete-fold2
+        WeblogBookmarkFolder fold1 = new WeblogBookmarkFolder(
+                root, "parentDelete-fold1", null, TestUtils.getManagedWebsite(testWeblog));
+        root.addFolder(fold1);
+        bmgr.saveFolder(fold1);
+        
+        WeblogBookmarkFolder fold2 = new WeblogBookmarkFolder(
+                fold1, "parentDelete-fold2", null, TestUtils.getManagedWebsite(testWeblog));
+        fold1.addFolder(fold2);
+        bmgr.saveFolder(fold2);
+        TestUtils.endSession(true);
+        
+        // now delete the weblog owning these categories
+        Exception ex = null;
+        try {
+            WebloggerFactory.getWeblogger().getWeblogManager().removeWeblog(TestUtils.getManagedWebsite(testWeblog));
+            TestUtils.endSession(true);
+        } catch (WebloggerException e) {
+            ex = e;
+        }
+        assertNull(ex);
+        
+        log.info("END");
+    }
+

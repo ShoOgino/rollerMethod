@@ -1,0 +1,13 @@
+    /**
+     * Get count of weblogs, active and inactive
+     */
+    public long getWeblogCount() throws WebloggerException {
+        long ret = 0;
+        List results = strategy.getNamedQuery(
+                "Weblog.getCountAllDistinct").getResultList();
+        
+        ret = ((Long)results.get(0)).longValue();
+        
+        return ret;
+    }
+

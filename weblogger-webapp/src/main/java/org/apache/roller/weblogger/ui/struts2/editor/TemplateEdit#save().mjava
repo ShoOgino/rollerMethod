@@ -1,0 +1,52 @@
+    /**
+     * Save an existing template.
+     */
+    public String save() {
+        log.debug("Entering save()");
+
+        if (getTemplate() == null) {
+            // TODO: i18n
+            addError("Unable to locate specified template");
+            return LIST;
+        }
+
+        // validation
+        myValidate();
+
+        if (!hasActionErrors()) try {
+
+            WeblogTemplate template = getTemplate();
+            getBean().copyTo(template);
+            template.setLastModified(new Date());
+
+            if (getBean().getAutoContentType() == null ||
+                    !getBean().getAutoContentType().booleanValue()) {
+                template.setOutputContentType(getBean().getManualContentType());
+            } else {
+                // empty content-type indicates that template uses auto content-type detection
+                template.setOutputContentType(null);
+            }
+
+            // save template
+            WebloggerFactory.getWeblogger().getWeblogManager().savePage(template);
+            log.debug("Saved template: " + template.getId());
+
+            //flush
+            WebloggerFactory.getWeblogger().flush();
+
+            // notify caches
+            CacheManager.invalidate(template);
+
+            // success message
+            addMessage("pageForm.save.success", template.getName());
+
+        } catch (Exception ex) {
+            log.error("Error updating page - " + getBean().getId(), ex);
+            // TODO: i18n
+            addError("Error saving template");
+        }
+
+        log.debug("Leaving save()");
+        return INPUT;
+    }
+

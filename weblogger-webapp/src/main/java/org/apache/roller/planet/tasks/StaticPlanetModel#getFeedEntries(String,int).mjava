@@ -1,0 +1,14 @@
+    public List getFeedEntries(String feedUrl, int maxEntries) throws Exception {
+        try {
+            Subscription sub = planetManager.getSubscription(feedUrl);
+            if(sub != null) {
+                return planetManager.getEntries(sub, 0, maxEntries);
+            } else {
+                return Collections.EMPTY_LIST;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+

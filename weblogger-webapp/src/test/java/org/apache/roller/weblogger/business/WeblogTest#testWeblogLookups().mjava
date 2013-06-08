@@ -1,0 +1,78 @@
+    /**
+     * Test lookup mechanisms.
+     */
+    public void testWeblogLookups() throws Exception {
+        
+        log.info("BEGIN");
+        Weblog testWeblog1 = null;
+        Weblog testWeblog2 = null;
+        try {
+            WeblogManager mgr = WebloggerFactory.getWeblogger().getWeblogManager();
+
+            Weblog weblog = null;
+            
+            // add test weblogs
+            testWeblog1 = TestUtils.setupWeblog("testWeblog1", testUser);
+            testWeblog2 = TestUtils.setupWeblog("testWeblog2", testUser);
+            TestUtils.endSession(true);
+            
+            // lookup by id
+            weblog = mgr.getWeblog(testWeblog1.getId());
+            assertNotNull(weblog);
+            assertEquals(testWeblog1.getHandle(), weblog.getHandle());
+            
+            // lookup by weblog handle
+            weblog = null;
+            weblog = mgr.getWeblogByHandle(testWeblog1.getHandle());
+            assertNotNull(weblog);
+            assertEquals(testWeblog1.getHandle(), weblog.getHandle());
+            
+            // make sure disable weblogs are not returned
+            weblog.setEnabled(Boolean.FALSE);
+            mgr.saveWeblog(weblog);
+            TestUtils.endSession(true);
+            weblog = null;
+            weblog = mgr.getWeblogByHandle(testWeblog1.getHandle());
+            assertNull(weblog);
+            
+            // restore enabled state
+            weblog = mgr.getWeblogByHandle(testWeblog1.getHandle(), Boolean.FALSE);
+            weblog.setEnabled(Boolean.TRUE);
+            mgr.saveWeblog(weblog);
+            TestUtils.endSession(true);
+            weblog = null;
+            weblog = mgr.getWeblogByHandle(testWeblog1.getHandle());
+            assertNotNull(weblog);
+            
+            // get all weblogs for user
+            weblog = null;
+            List weblogs1 = mgr.getUserWeblogs(TestUtils.getManagedUser(testUser), true);
+            assertEquals(2, weblogs1.size());
+            weblog = (Weblog) weblogs1.get(0);
+            assertNotNull(weblog);           
+            
+            // make sure disabled weblogs are not returned
+            weblog.setEnabled(Boolean.FALSE);
+            mgr.saveWeblog(weblog);
+            TestUtils.endSession(true);
+            List weblogs2 = mgr.getUserWeblogs(TestUtils.getManagedUser(testUser), true);
+            assertEquals(1, weblogs2.size());
+            weblog = (Weblog) weblogs2.get(0);
+            assertNotNull(weblog);
+            
+            // make sure inactive weblogs are not returned
+            weblog.setActive(Boolean.FALSE);
+            mgr.saveWeblog(weblog);
+            TestUtils.endSession(true);
+            List weblogs3 = mgr.getUserWeblogs(TestUtils.getManagedUser(testUser), true);
+            assertEquals(0, weblogs3.size());
+            
+        } finally {
+            TestUtils.teardownWeblog(testWeblog1.getId());
+            TestUtils.teardownWeblog(testWeblog2.getId());
+            TestUtils.endSession(true);
+        }
+        
+        log.info("END");
+    }
+

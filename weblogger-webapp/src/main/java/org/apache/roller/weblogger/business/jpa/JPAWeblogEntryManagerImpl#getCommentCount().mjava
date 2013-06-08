@@ -1,0 +1,11 @@
+    /**
+     * @inheritDoc
+     */
+    public long getCommentCount() throws WebloggerException {
+        Query q = strategy.getNamedQuery(
+                "WeblogEntryComment.getCountAllDistinctByStatus");
+        q.setParameter(1, WeblogEntryComment.APPROVED);
+        List results = q.getResultList();
+        return ((Long)results.get(0)).longValue();
+    }
+

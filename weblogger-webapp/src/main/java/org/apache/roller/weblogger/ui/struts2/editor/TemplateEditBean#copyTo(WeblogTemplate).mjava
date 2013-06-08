@@ -1,0 +1,36 @@
+    public void copyTo(WeblogTemplate dataHolder) throws WebloggerException {
+
+        if (dataHolder.getTemplateCode("standard") != null) {
+            // if we have a template, then set it
+            WeblogThemeTemplateCode tc = dataHolder.getTemplateCode("standard");
+            tc.setTemplate(contentsStandard);
+            WebloggerFactory.getWeblogger().getWeblogManager().saveTemplateCode(tc);
+        } else { 
+            // otherwise create it, then set it
+            WeblogThemeTemplateCode tc = new WeblogThemeTemplateCode(dataHolder.getId(), "standard");
+			tc.setTemplate(dataHolder.getContents());
+            WebloggerFactory.getWeblogger().getWeblogManager().saveTemplateCode(tc);
+        }
+
+        if (dataHolder.getTemplateCode("mobile") != null) {
+            WeblogThemeTemplateCode tc = dataHolder.getTemplateCode("mobile");
+            tc.setTemplate(contentsMobile);
+        } else {
+            WeblogThemeTemplateCode tc = new WeblogThemeTemplateCode(dataHolder.getId(), "mobile");
+			tc.setTemplate(""); // empty, we've got no default mobile template 
+            WebloggerFactory.getWeblogger().getWeblogManager().saveTemplateCode(tc);
+        }
+
+        // the rest of the template properties can only be modified when
+        // dealing with a CUSTOM weblog template
+        if(dataHolder.isCustom()) {
+            dataHolder.setName(getName());
+            dataHolder.setAction(getAction());
+            dataHolder.setDescription(getDescription());
+            dataHolder.setLink(getLink());
+            dataHolder.setNavbar(isNavbar());
+            dataHolder.setHidden(isHidden());
+            dataHolder.setTemplateLanguage(getTemplateLanguage());
+        }
+    }
+

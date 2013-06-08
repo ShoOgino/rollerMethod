@@ -1,0 +1,61 @@
+    /**
+     * Initialization.
+     */
+    @Override
+    public void init(ServletConfig servletConfig) throws ServletException {
+        
+        super.init(servletConfig);
+        
+        log.info("Initializing CommentServlet");
+        
+        // lookup the authenticator we are going to use and instantiate it
+        try {
+            String name = WebloggerConfig.getProperty("comment.authenticator.classname");
+            Class clazz = Class.forName(name);
+            this.authenticator = (CommentAuthenticator) clazz.newInstance();
+        } catch(Exception e) {
+            log.error(e);
+            this.authenticator = new DefaultCommentAuthenticator();
+        }
+        
+        // instantiate a comment validation manager for comment spam checking
+        commentValidationManager = new CommentValidationManager();
+        
+        // instantiate a comment format manager for comment formatting
+        String fmtrs = WebloggerConfig.getProperty("comment.formatter.classnames");
+        String[] formatters = Utilities.stringToStringArray(fmtrs, ",");
+        
+        // are we doing throttling?
+        if(WebloggerConfig.getBooleanProperty("comment.throttle.enabled")) {
+            
+            int threshold = 25;
+            try {
+                threshold = Integer.parseInt(WebloggerConfig.getProperty("comment.throttle.threshold"));
+            } catch(Exception e) {
+                log.warn("bad input for config property comment.throttle.threshold", e);
+            }
+            
+            int interval = 60000;
+            try {
+                interval = Integer.parseInt(WebloggerConfig.getProperty("comment.throttle.interval"));
+                // convert from seconds to milliseconds
+                interval = interval * 1000;
+            } catch(Exception e) {
+                log.warn("bad input for config property comment.throttle.interval", e);
+            }
+            
+            int maxEntries = 250;
+            try {
+                maxEntries = Integer.parseInt(WebloggerConfig.getProperty("comment.throttle.maxentries"));
+            } catch(Exception e) {
+                log.warn("bad input for config property comment.throttle.maxentries", e);
+            }
+            
+            commentThrottle = new GenericThrottle(threshold, interval, maxEntries);
+            
+            log.info("Comment Throttling ENABLED");
+        } else {
+            log.info("Comment Throttling DISABLED");
+        }
+    }
+

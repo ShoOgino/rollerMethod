@@ -1,0 +1,28 @@
+    /** Encapsulates RefererManager **/
+    public List getEntryReferers(WeblogEntryWrapper entry) {
+        ArrayList referers = new ArrayList();
+        try {
+            List refs = mRefererMgr.getReferersToEntry(entry.getId());
+            RollerSession rses =
+               RollerSession.getRollerSession(mRequest);
+            
+            for (Iterator rdItr = refs.iterator(); rdItr.hasNext();) {
+                WeblogReferrer referer = (WeblogReferrer) rdItr.next();
+                String title =referer.getTitle();
+                String excerpt = referer.getExcerpt();
+                if (   StringUtils.isNotEmpty(title)
+                && StringUtils.isNotEmpty(excerpt) ) {
+                    if (referer.getVisible().booleanValue()
+                    ||  referer.getWebsite().hasUserPermission(rses.getAuthenticatedUser(), WeblogPermission.ADMIN) ) {
+                        referers.add(WeblogReferrerWrapper.wrap(referer, urlStrategy));
+                    }
+                }
+            }
+            
+        } catch (Exception e) {
+            mLogger.error("PageModel getReferersToDate() fails with URL"
+                    + mRequest.getRequestURL(), e);
+        }
+        return referers;
+    }
+

@@ -1,0 +1,9 @@
+    public boolean validURL(String url) {
+        boolean valid = false;
+        try {
+            URL test = new URL(url);
+            valid = true;
+        } catch (MalformedURLException intentionallyIgnored) {}
+        return valid;
+    }
+

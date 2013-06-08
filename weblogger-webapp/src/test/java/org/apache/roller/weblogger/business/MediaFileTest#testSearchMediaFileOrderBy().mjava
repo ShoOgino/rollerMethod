@@ -1,0 +1,79 @@
+    /**
+     * Test searching media file with paging logic.
+     */
+    public void testSearchMediaFileOrderBy() throws Exception {
+        User testUser = null;
+        Weblog testWeblog = null;
+        testUser = TestUtils.setupUser("mediaFileTestUser10");
+        testWeblog = TestUtils.setupWeblog("mediaFileTestWeblog10", testUser);
+
+        MediaFileManager mfMgr = WebloggerFactory.getWeblogger().getMediaFileManager();
+
+        // no need to create root directory, that is done automatically now
+        MediaFileDirectory rootDirectory = mfMgr.getMediaFileRootDirectory(testWeblog);
+
+        //MediaFileDirectory rootDirectory = new MediaFileDirectory(null, "root", "root d", testWeblog);
+        //mfMgr.createMediaFileDirectory(rootDirectory);
+
+        TestUtils.endSession(true);
+
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
+        rootDirectory = mfMgr.getMediaFileDirectory(rootDirectory.getId());
+        String[] contentTypes = {"image/gif", "image/jpeg", "image/bmp"};
+        for (int i = 0; i < 3; i++) {
+            MediaFile mediaFile = new MediaFile();
+            mediaFile.setName("test_file<index>.jpg".replace("<index>", i + ""));
+            mediaFile.setDescription("This is a test image");
+            mediaFile.setCopyrightText("test copyright text");
+            mediaFile.setSharedForGallery(true);
+            mediaFile.setLength(2000);
+            mediaFile.setDirectory(rootDirectory);
+            mediaFile.setWeblog(testWeblog);
+            mediaFile.setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
+            mediaFile.setContentType(contentTypes[i]);
+            rootDirectory.getMediaFiles().add(mediaFile);
+            mfMgr.createMediaFile(testWeblog, mediaFile, new RollerMessages());
+            assertNotNull(mediaFile.getId());
+            assertNotNull(mediaFile.getId().length() > 0);
+        }
+        TestUtils.endSession(true);
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
+
+        MediaFileFilter filter1 = new MediaFileFilter();
+        filter1.setSize(1000);
+        filter1.setSizeFilterType(SizeFilterType.GT);
+        filter1.setOrder(MediaFileOrder.NAME);
+        List<MediaFile> searchResults1 = mfMgr.searchMediaFiles(testWeblog, filter1);
+        assertFalse(searchResults1.isEmpty());
+        assertEquals(3, searchResults1.size());
+        assertEquals("test_file0.jpg", searchResults1.get(0).getName());
+        assertEquals("test_file1.jpg", searchResults1.get(1).getName());
+        assertEquals("test_file2.jpg", searchResults1.get(2).getName());
+
+        MediaFileFilter filter2 = new MediaFileFilter();
+        filter2.setSize(1000);
+        filter2.setSizeFilterType(SizeFilterType.GT);
+        filter2.setOrder(MediaFileOrder.TYPE);
+        List<MediaFile> searchResults2 = mfMgr.searchMediaFiles(testWeblog, filter2);
+        assertFalse(searchResults2.isEmpty());
+        assertEquals(3, searchResults2.size());
+        assertEquals("test_file2.jpg", searchResults2.get(0).getName());
+        assertEquals("test_file0.jpg", searchResults2.get(1).getName());
+        assertEquals("test_file1.jpg", searchResults2.get(2).getName());
+
+        MediaFileFilter filter3 = new MediaFileFilter();
+        filter3.setSize(1000);
+        filter3.setSizeFilterType(SizeFilterType.GT);
+        filter3.setOrder(MediaFileOrder.DATE_UPLOADED);
+        List<MediaFile> searchResults3 = mfMgr.searchMediaFiles(testWeblog, filter3);
+        assertFalse(searchResults3.isEmpty());
+        assertEquals(3, searchResults3.size());
+        assertEquals("test_file0.jpg", searchResults3.get(0).getName());
+        assertEquals("test_file1.jpg", searchResults3.get(1).getName());
+        assertEquals("test_file2.jpg", searchResults3.get(2).getName());
+
+        TestUtils.endSession(true);
+        TestUtils.teardownWeblog(testWeblog.getId());
+        TestUtils.teardownUser(testUser.getUserName());
+    }
+

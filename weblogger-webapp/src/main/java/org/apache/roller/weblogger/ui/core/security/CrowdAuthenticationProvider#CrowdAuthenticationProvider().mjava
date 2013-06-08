@@ -1,0 +1,29 @@
+	public CrowdAuthenticationProvider() {
+		String appName = WebloggerConfig.getProperty("crowd.application.name");
+		String appPass = WebloggerConfig.getProperty("crowd.application.password");
+		String crowdHost = WebloggerConfig.getProperty("crowd.host");
+		String crowdPort = WebloggerConfig.getProperty("crowd.port");
+		crowdTimezone = WebloggerConfig.getProperty("crowd.default.timezone");
+		crowdLocale = WebloggerConfig.getProperty("crowd.default.locale");
+		String crowdUrlContext = WebloggerConfig.getProperty("crowd.context");
+		boolean useSecureLogin = WebloggerConfig.getBooleanProperty("crowd.useSecureConnection", false);
+
+		if(!appName.isEmpty() 
+				&& !appPass.isEmpty() 
+				&& !crowdHost.isEmpty()
+				&& !crowdPort.isEmpty() 
+				&& !crowdUrlContext.isEmpty()){
+
+			String url = "";
+			if(useSecureLogin){
+				url = "https://";
+			} else {
+				url = "http://";
+			}
+			url += crowdHost + ":" + crowdPort + "/" + crowdUrlContext;
+			crowdClient = new RestCrowdClientFactory().newInstance(url, appName, appPass);
+		}else{
+			LOG.warn("Required Crowd Properties Not Found! - Crowd Authentication Not Attempted!");
+		}
+	}
+

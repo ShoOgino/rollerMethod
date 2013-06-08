@@ -1,0 +1,20 @@
+    public String toString() 
+    {
+        StringBuffer sb = new StringBuffer();
+        Iterator msgs = mMessages.iterator();
+        while (msgs.hasNext())
+        {
+            RollerMessage msg = (RollerMessage) msgs.next();
+            sb.append(msg.getKey());
+            sb.append(" : ");
+        }
+        Iterator errs = mErrors.iterator();
+        while (errs.hasNext())
+        {
+            RollerMessage msg = (RollerMessage) errs.next();
+            sb.append(msg.getKey());
+            sb.append(" : ");
+        }
+        return sb.toString();
+    }
+

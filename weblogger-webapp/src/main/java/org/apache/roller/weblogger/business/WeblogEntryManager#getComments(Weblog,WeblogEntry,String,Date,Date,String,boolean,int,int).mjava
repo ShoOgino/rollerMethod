@@ -1,0 +1,25 @@
+    /**
+     * Generic comments query method.
+     * @param website    Website or null for all comments on site
+     * @param entry      Entry or null to include all comments
+     * @param startDate  Start date or null for no restriction
+     * @param endDate    End date or null for no restriction
+     * @param status     The status of the comment, or null for any
+     * @param reverseChrono True for results in reverse chrono order
+     * @param offset     Offset into results for paging
+     * @param length     Max comments to return (or -1 for no limit)
+     */
+    public List getComments(
+            
+            Weblog          website,
+            WeblogEntry     entry,
+            String          searchString,
+            Date            startDate,
+            Date            endDate,
+            String          status,
+            boolean         reverseChrono,
+            int             offset,
+            int             length
+            
+            ) throws WebloggerException;
+

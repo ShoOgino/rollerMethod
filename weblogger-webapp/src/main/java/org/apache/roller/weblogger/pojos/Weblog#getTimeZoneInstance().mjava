@@ -1,0 +1,18 @@
+    /**
+     * Return TimeZone instance for value of timeZone,
+     * otherwise return system default instance.
+     *
+     * @roller.wrapPojoMethod type="simple"
+     * @return TimeZone
+     */
+    public TimeZone getTimeZoneInstance() {
+        if (timeZone == null) {
+            if (TimeZone.getDefault() != null) {
+                this.setTimeZone( TimeZone.getDefault().getID() );
+            } else {
+                this.setTimeZone("America/New_York");
+            }
+        }
+        return TimeZone.getTimeZone(timeZone);
+    }
+

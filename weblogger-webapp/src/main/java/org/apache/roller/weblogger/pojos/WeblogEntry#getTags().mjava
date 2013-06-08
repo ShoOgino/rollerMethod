@@ -1,0 +1,12 @@
+    /**
+     * @ejb:persistent-field 
+     * 
+     * @hibernate.set lazy="true" order-by="name" inverse="true" cascade="all"
+     * @hibernate.collection-key column="entryid"
+     * @hibernate.collection-one-to-many class="org.apache.roller.weblogger.pojos.WeblogEntryTag"
+     */
+     public Set getTags()
+     {
+         return tagSet;
+     }
+

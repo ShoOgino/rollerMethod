@@ -1,0 +1,14 @@
+    /**
+     * Reads an inputstream into a string
+     */
+    public static String streamToString(InputStream is) throws IOException {
+        StringBuffer sb = new StringBuffer();
+        BufferedReader in = new BufferedReader(new InputStreamReader(is));
+        String line;
+        while ((line = in.readLine()) != null) {
+            sb.append(line);
+            sb.append(System.getProperty("line.separator"));
+        }
+        return sb.toString();
+    }
+

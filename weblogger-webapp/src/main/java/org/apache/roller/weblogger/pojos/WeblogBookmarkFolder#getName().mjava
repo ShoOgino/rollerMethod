@@ -1,0 +1,16 @@
+    /**
+     * The short name for this folder.
+     *
+     * @roller.wrapPojoMethod type="simple"
+     *
+     * @struts.validator type="required" msgkey="errors.required"
+     * @struts.validator type="mask" msgkey="errors.noslashes"
+     * @struts.validator-var name="mask" value="${noslashes}"
+     * @struts.validator-args arg0resource="folderForm.name"
+     *
+     * @hibernate.property column="name" non-null="true" unique="false"
+     */
+    public String getName() {
+        return this.name;
+    }
+

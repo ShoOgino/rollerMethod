@@ -1,0 +1,18 @@
+    /**
+     * Show folder edit page.
+     */
+    @SkipValidation
+    public String execute() {
+        
+        if(getFolder() == null) {
+            // TODO: i18n
+            addError("Cannot edit null folder");
+            return ERROR;
+        }
+        
+        // make sure bean is properly loaded from pojo data
+        getBean().copyFrom(getFolder());
+        
+        return INPUT;
+    }
+

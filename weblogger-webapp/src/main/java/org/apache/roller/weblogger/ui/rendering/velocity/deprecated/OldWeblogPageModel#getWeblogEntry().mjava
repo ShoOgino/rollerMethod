@@ -1,0 +1,9 @@
+    /** Encapsulates RollerRequest.getWeblogEntry() */
+    public WeblogEntryWrapper getWeblogEntry() {
+        
+        if(mEntry != null && mEntry.getStatus().equals(WeblogEntry.PUBLISHED))
+            return WeblogEntryWrapper.wrap(mEntry, urlStrategy);
+        else
+            return null;
+    }
+

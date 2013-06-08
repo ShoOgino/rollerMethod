@@ -1,0 +1,14 @@
+    /**
+     * When should this task be started?  The task is given the current time
+     * so that it may determine a start time relative to the current time, 
+     * such as the end of the day or hour.
+     *
+     * It is acceptable to return the currentTime object passed in or any other
+     * time after it.  If the return value is before currentTime then it will
+     * be ignored and the task will be started at currentTime.
+     *
+     * @param currentTime The current time.
+     * @return The Date when this task should be started.
+     */
+    public abstract Date getStartTime(Date currentTime);
+

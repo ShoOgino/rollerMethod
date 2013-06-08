@@ -1,0 +1,10 @@
+    public void saveSubscription(Subscription sub)
+    throws RollerException {
+        Subscription existing = getSubscription(sub.getFeedURL());
+        if (existing == null || (existing.getId().equals(sub.getId()))) {
+            strategy.store(sub);
+        } else {
+            throw new WebloggerException("ERROR: duplicate feed URLs not allowed");
+        }
+    }
+

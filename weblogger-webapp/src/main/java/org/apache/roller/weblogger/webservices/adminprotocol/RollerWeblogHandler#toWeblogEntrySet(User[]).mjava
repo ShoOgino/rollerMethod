@@ -1,0 +1,25 @@
+    private WeblogEntrySet toWeblogEntrySet(User[] uds) throws HandlerException {
+        if (uds == null) {
+            throw new NullPointerException("ERROR: Null user data not allowed");
+        }
+        try {
+            UserManager umgr = WebloggerFactory.getWeblogger().getUserManager();
+            WeblogEntrySet wes = new WeblogEntrySet(getUrlPrefix());
+            List entries = new ArrayList();
+            for (int i = 0; i < uds.length; i++) {
+                User ud = uds[i];
+                List<WeblogPermission> perms = umgr.getWeblogPermissions(ud);
+                for (WeblogPermission perm : perms) {
+                    Weblog wd = perm.getWeblog();
+                    WeblogEntry we = toWeblogEntry(wd);
+                    entries.add(we);
+                }
+            }
+            wes.setEntries((Entry[])entries.toArray(new Entry[0]));
+            return wes;
+            
+        } catch (WebloggerException ex) {
+            throw new InternalException("ERROR retrieving users weblogs", ex);
+        }
+    }
+

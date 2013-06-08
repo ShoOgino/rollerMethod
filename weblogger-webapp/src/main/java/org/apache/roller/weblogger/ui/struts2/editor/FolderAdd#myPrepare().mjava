@@ -1,0 +1,11 @@
+    public void myPrepare() {
+        try {
+            BookmarkManager bmgr = WebloggerFactory.getWeblogger().getBookmarkManager();
+            if(!StringUtils.isEmpty(getFolderId())) {
+                setFolder(bmgr.getFolder(getFolderId()));
+            }
+        } catch (WebloggerException ex) {
+            log.error("Error looking up folder - "+getFolderId(), ex);
+        }
+    }
+

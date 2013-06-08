@@ -1,0 +1,7 @@
+    public void removeAllCustomPingTargets()
+            throws WebloggerException {
+        Query q = strategy.getNamedUpdate(
+            "PingTarget.removeByWebsiteNotNull");
+        q.executeUpdate();
+    }
+

@@ -1,0 +1,23 @@
+    public MediaFileDirectory(
+            MediaFileDirectory parent,
+            String name,
+            String desc,
+            Weblog weblog) {
+
+        this.id = UUIDGenerator.generateUUID();
+        this.name = name;
+        this.description = desc;
+
+        this.weblog = weblog;
+        this.parent = parent;
+
+        // calculate path
+        if (parent == null) {
+            this.path = "/";
+        } else if ("/".equals(parent.getPath())) {
+            this.path = "/" + name;
+        } else {
+            this.path = parent.getPath() + "/" + name;
+        }
+    }
+

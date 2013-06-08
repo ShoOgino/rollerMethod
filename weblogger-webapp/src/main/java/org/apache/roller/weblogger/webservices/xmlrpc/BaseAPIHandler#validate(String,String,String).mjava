@@ -1,0 +1,63 @@
+    //------------------------------------------------------------------------
+    /**
+     * Returns website, but only if user authenticates and is authorized to edit.
+     * @param blogid   Blogid sent in request (used as website's hanldle)
+     * @param username Username sent in request
+     * @param password Password sent in requeset
+     */
+    protected Weblog validate(String blogid, String username, String password)
+    throws Exception {
+        boolean authenticated = false;
+        boolean userEnabled = false;
+        boolean weblogEnabled = false;
+        boolean apiEnabled = false;
+        boolean weblogFound = false;
+        Weblog website = null;
+        User user = null;
+        try {
+            UserManager userMgr = WebloggerFactory.getWeblogger().getUserManager();
+            WeblogManager weblogMgr = WebloggerFactory.getWeblogger().getWeblogManager();
+            user = userMgr.getUserByUserName(username);
+            userEnabled = user.getEnabled().booleanValue();
+            
+            website = weblogMgr.getWeblogByHandle(blogid);
+            if (website != null) {
+                weblogFound = true;
+                weblogEnabled = website.getEnabled().booleanValue();
+                apiEnabled = website.getEnableBloggerApi().booleanValue() 
+                	&& WebloggerRuntimeConfig.getBooleanProperty("webservices.enableXmlRpc");
+            }
+            
+            if (user != null) {
+                // are passwords encrypted
+                String encrypted =
+                        WebloggerConfig.getProperty("passwds.encryption.enabled");
+                //System.out.print("password was [" + password + "] ");
+                if ("true".equalsIgnoreCase(encrypted)) {
+                    password = Utilities.encodePassword(password,
+                            WebloggerConfig.getProperty("passwds.encryption.algorithm"));
+                }
+                authenticated = password.equals(user.getPassword());
+            }
+        } catch (Exception e) {
+            mLogger.error("ERROR internal error validating user", e);
+        }
+        
+        if ( !authenticated ) {
+            throw new XmlRpcNotAuthorizedException(AUTHORIZATION_EXCEPTION_MSG);
+        }
+        if ( !userEnabled ) {
+            throw new XmlRpcNotAuthorizedException(USER_DISABLED_MSG);
+        }
+        if ( !weblogEnabled ) {
+            throw new XmlRpcNotAuthorizedException(WEBLOG_DISABLED_MSG);
+        }
+        if ( !weblogFound ) {
+            throw new XmlRpcException(WEBLOG_NOT_FOUND, WEBLOG_NOT_FOUND_MSG);
+        }
+        if ( !apiEnabled ) {
+            throw new XmlRpcNotAuthorizedException(BLOGGERAPI_DISABLED_MSG);
+        }
+        return website;
+    }
+

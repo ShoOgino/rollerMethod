@@ -1,0 +1,12 @@
+    /**
+     * Get all referers for specified user that were made today.
+     * @param website Web site.
+     * @return List of type WeblogReferrer
+     */
+    public List getTodaysReferers(Weblog website) throws WebloggerException {
+        Query q = strategy.getNamedQuery(
+            "WeblogReferrer.getByWebsite&DayHitsGreaterZeroOrderByDayHitsDesc");
+        q.setParameter(1, website);
+        return q.getResultList();
+    }
+

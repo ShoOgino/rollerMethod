@@ -1,0 +1,15 @@
+    /**
+     * Flush the entire cache system.
+     */
+    public static void clear() {
+        
+        // loop through all caches and trigger a clear
+        Cache cache = null;
+        Iterator cachesIT = caches.values().iterator();
+        while(cachesIT.hasNext()) {
+            cache = (Cache) cachesIT.next();
+            
+            cache.clear();
+        }
+    }
+

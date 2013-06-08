@@ -1,0 +1,103 @@
+    /**
+     * Ensure there's a subscription in the "all" group for every Roller weblog.
+     */
+    public void runTask() {
+        
+        log.info("Syncing local weblogs with planet subscriptions list");
+        
+        try {
+            PlanetManager pmgr = WebloggerFactory.getWeblogger().getPlanetManager();
+            
+            // first, make sure there is an "all" pmgr group
+            Planet planetObject = pmgr.getWebloggerById("zzz_default_planet_zzz");
+            PlanetGroup group = pmgr.getGroup(planetObject, "all");
+            if (group == null) {
+                group = new PlanetGroup();
+                group.setPlanet(planetObject);
+                group.setHandle("all");
+                group.setTitle("all");
+                pmgr.saveGroup(group);
+                WebloggerFactory.getWeblogger().flush();
+            }
+            
+            // walk through all enable weblogs and add/update subs as needed
+            List liveUserFeeds = new ArrayList();
+            List<Weblog> websites = WebloggerFactory.getWeblogger()
+                    .getWeblogManager().getWeblogs(Boolean.TRUE, Boolean.TRUE, null, null, 0, -1);
+            for ( Weblog weblog : websites ) {
+                
+                log.debug("processing weblog - "+weblog.getHandle());
+                String feedUrl = "weblogger:"+weblog.getHandle();
+                
+                // add feed url to the "live" list
+                liveUserFeeds.add(feedUrl);
+                
+                // if sub already exists then update it, otherwise add it
+                Subscription sub = pmgr.getSubscription(feedUrl);
+                if (sub == null) {
+                    log.debug("ADDING feed: "+feedUrl);
+                    
+                    sub = new Subscription();
+                    sub.setTitle(weblog.getName());
+                    sub.setFeedURL(feedUrl);
+                    sub.setSiteURL(
+                        WebloggerFactory.getWeblogger().getUrlStrategy().getWeblogURL(weblog, null, true));
+                    sub.setAuthor(weblog.getName());
+                    sub.setLastUpdated(new Date(0));
+                    pmgr.saveSubscription(sub);
+                    
+                    sub.getGroups().add(group);
+                    group.getSubscriptions().add(sub);
+
+                    pmgr.saveGroup(group);
+
+                } else {
+                    log.debug("UPDATING feed: "+feedUrl);
+                    
+                    sub.setTitle(weblog.getName());
+                    sub.setAuthor(weblog.getName());
+                    
+                    pmgr.saveSubscription(sub);
+                }
+                
+                // save as we go
+                WebloggerFactory.getWeblogger().flush();
+            }
+            
+            // new subs added, existing subs updated, now delete old subs
+            Set<Subscription> deleteSubs = new HashSet();
+            Set<Subscription> subs = group.getSubscriptions();
+            for( Subscription sub : subs ) {
+                
+                // only delete subs from the group if ...
+                // 1. they are local
+                // 2. they are no longer listed as a weblog 
+                if (sub.getFeedURL().startsWith("weblogger:") && 
+                        !liveUserFeeds.contains(sub.getFeedURL())) {
+                    deleteSubs.add(sub);
+                }
+            }
+            
+            // now go back through deleteSubs and do actual delete
+            // this is required because deleting a sub in the loop above
+            // causes a ConcurrentModificationException because we can't
+            // modify a collection while we iterate over it
+            for( Subscription deleteSub : deleteSubs ) {
+                
+                log.debug("DELETING feed: "+deleteSub.getFeedURL());
+                pmgr.deleteSubscription(deleteSub);
+                group.getSubscriptions().remove(deleteSub);
+            }
+            
+            // all done, lets save
+            pmgr.saveGroup(group);
+            WebloggerFactory.getWeblogger().flush();
+            
+        } catch (RollerException e) {
+            log.error("ERROR refreshing entries", e);
+        } finally {
+            // don't forget to release
+            WebloggerFactory.getWeblogger().release();
+        }
+    }
+

@@ -1,0 +1,12 @@
+    /**
+     * Convenience method for Roller classes trying to determine if a given
+     * weblog handle represents the front page blog configured to render
+     * site-wide data.
+     */
+    public static boolean isSiteWideWeblog(String weblogHandle) {
+        
+        boolean siteWide = getBooleanProperty("site.frontpage.weblog.aggregated");
+        
+        return (isFrontPageWeblog(weblogHandle) && siteWide);
+    }
+

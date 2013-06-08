@@ -1,0 +1,14 @@
+    /**
+     * Get the EntityManager associated with the current thread of control.
+     * @param isTransactionRequired true if a transaction is begun if not
+     * already active
+     * @return the EntityManager
+     */
+    public EntityManager getEntityManager(boolean isTransactionRequired) {
+        EntityManager em = getThreadLocalEntityManager();
+        if (isTransactionRequired && !em.getTransaction().isActive()) {
+            em.getTransaction().begin();
+        }
+        return em;
+    }
+

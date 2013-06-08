@@ -1,0 +1,14 @@
+    public String execute() {
+        
+        // if group blogging is disabled then you can't change permissions
+        if (!WebloggerConfig.getBooleanProperty("groupblogging.enabled")) {
+            // TODO: i18n
+            addError("invitations disabled");
+            return SUCCESS;
+        }
+        
+        log.debug("Showing weblog inivitation form");
+        
+        return INPUT;
+    }
+

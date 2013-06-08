@@ -1,0 +1,8 @@
+    public String getPrevCollectionLink() {
+        if (prevMonth != null) {
+            String prev = DateUtil.format6chars(prevMonth);
+            return createURL(0, 0, weblog, locale, pageLink, null, prev, catPath, tags);
+        }
+        return null;
+    }
+

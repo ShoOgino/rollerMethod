@@ -1,0 +1,11 @@
+    // convenient way to tell if user being dealt with is an admin
+    public boolean isUserIsAdmin() {
+        try {
+            GlobalPermission adminPerm = new GlobalPermission( 
+                Collections.singletonList(GlobalPermission.ADMIN));
+            UserManager umgr = WebloggerFactory.getWeblogger().getUserManager();
+            return umgr.checkPermission(adminPerm, getAuthenticatedUser());
+        } catch (Exception e) {}
+        return false;
+    }
+

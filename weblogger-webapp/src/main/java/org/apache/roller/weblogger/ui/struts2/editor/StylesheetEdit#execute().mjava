@@ -1,0 +1,33 @@
+	/**
+	 * Show stylesheet edit page.
+	 */
+	public String execute() {
+
+		if (getTemplate() == null) {
+			return ERROR;
+		}
+
+		try {
+
+			if (getTemplate().getTemplateCode("standard") != null) {
+				setContentsStandard(getTemplate().getTemplateCode("standard")
+						.getTemplate());
+			} else {
+				setContentsStandard(getTemplate().getContents());
+			}
+			if (getTemplate().getTemplateCode("mobile") != null) {
+				setContentsMobile(getTemplate().getTemplateCode("mobile")
+						.getTemplate());
+			}
+
+			if (log.isDebugEnabled())
+				log.debug("Standard: " + getContentsStandard() + " Mobile: "
+						+ getContentsMobile());
+
+		} catch (WebloggerException e) {
+			log.error("Error loading Weblog template codes for stylesheet", e);
+		}
+
+		return INPUT;
+	}
+

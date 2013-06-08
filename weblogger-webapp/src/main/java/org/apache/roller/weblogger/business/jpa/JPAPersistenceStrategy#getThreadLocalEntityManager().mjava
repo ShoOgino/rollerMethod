@@ -1,0 +1,12 @@
+    /**
+     * Get the current ThreadLocal EntityManager
+     */
+    private EntityManager getThreadLocalEntityManager() {
+        EntityManager em = (EntityManager) threadLocalEntityManager.get();
+        if (em == null) {
+            em = emf.createEntityManager();
+            threadLocalEntityManager.set(em);
+        }
+        return em;
+    }
+

@@ -1,0 +1,7 @@
+    // convenience method returns 8 char day stamp YYYYMMDD
+    public static String format8chars(Date date, Calendar cal) {
+    	SimpleDateFormat format = DateUtil.get8charDateFormat();
+    	format.setCalendar(cal);
+    	return DateUtil.format(date,format);
+    }
+

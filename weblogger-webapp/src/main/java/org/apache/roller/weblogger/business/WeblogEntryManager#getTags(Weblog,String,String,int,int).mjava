@@ -1,0 +1,12 @@
+    /**
+     * Get list of TagStat. There's no offset/length params just a limit.
+     * @param website       Weblog or null to get for all weblogs.
+     * @param sortBy        Sort by either 'name' or 'count' (null for name) 
+     * @param startsWith    Prefix for tags to be returned (null or a string of length > 0)
+     * @param limit         Max TagStats to return (or -1 for no limit)
+     * @return
+     * @throws WebloggerException
+     */
+    public List getTags(Weblog website, String sortBy, String startsWith, int offset, int limit)
+            throws WebloggerException;    
+

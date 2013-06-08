@@ -1,0 +1,20 @@
+    private void updatePermissionsData(WeblogPermission pd, MemberEntry entry) throws HandlerException {
+        // only permission can be updated
+        
+        try {
+            User ud = getUserData(entry.getName());
+            Weblog wd = getWebsiteData(entry.getHandle());
+            
+            UserManager mgr = getRoller().getUserManager();
+            mgr.revokeWeblogPermission(wd, ud, WeblogPermission.ALL_ACTIONS);
+            mgr.grantWeblogPermission(wd, ud, stringToActionList(entry.getPermission()));
+            
+            getRoller().flush();
+            
+            CacheManager.invalidate(ud);
+            CacheManager.invalidate(wd);
+        } catch (WebloggerException re) {
+            throw new InternalException("ERROR: Could not update permissions data", re);
+        }
+    }
+

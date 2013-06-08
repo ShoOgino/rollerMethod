@@ -1,0 +1,49 @@
+    public List getUsers(Boolean enabled, Date startDate, Date endDate,
+            int offset, int length)
+            throws WebloggerException {
+        Query query = null;
+        List results = null;
+        boolean setRange = offset != 0 || length != -1;
+
+        if (endDate == null) endDate = new Date();
+        
+        if (enabled != null) {
+            if (startDate != null) {
+                Timestamp start = new Timestamp(startDate.getTime());
+                Timestamp end = new Timestamp(endDate.getTime());
+                query = strategy.getNamedQuery(
+                        "User.getByEnabled&EndDate&StartDateOrderByStartDateDesc");
+                query.setParameter(1, enabled);
+                query.setParameter(2, end);
+                query.setParameter(3, start);
+            } else {
+                Timestamp end = new Timestamp(endDate.getTime());
+                query = strategy.getNamedQuery(
+                        "User.getByEnabled&EndDateOrderByStartDateDesc");
+                query.setParameter(1, enabled);
+                query.setParameter(2, end);
+            }
+        } else {
+            if (startDate != null) {
+                Timestamp start = new Timestamp(startDate.getTime());
+                Timestamp end = new Timestamp(endDate.getTime());
+                query = strategy.getNamedQuery(
+                        "User.getByEndDate&StartDateOrderByStartDateDesc");
+                query.setParameter(1, end);
+                query.setParameter(2, start);
+            } else {
+                Timestamp end = new Timestamp(endDate.getTime());
+                query = strategy.getNamedQuery(
+                        "User.getByEndDateOrderByStartDateDesc");
+                query.setParameter(1, end);
+            }
+        }
+        if (offset != 0) {
+            query.setFirstResult(offset);
+        }
+        if (length != -1) {
+            query.setMaxResults(length);
+        }
+        return query.getResultList();
+    }
+

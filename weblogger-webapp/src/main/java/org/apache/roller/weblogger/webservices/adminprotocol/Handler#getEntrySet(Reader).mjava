@@ -1,0 +1,16 @@
+    protected EntrySet getEntrySet(Reader r) throws HandlerException {
+        try {
+            SAXBuilder builder = new SAXBuilder();
+            Document d = builder.build(r);
+            EntrySet c = getEntrySet(d);
+            
+            return c;
+        } catch (UnexpectedRootElementException ure) {
+            throw new BadRequestException("ERROR: Failed to parse content", ure);            
+        } catch (JDOMException jde) {
+            throw new BadRequestException("ERROR: Failed to parse content", jde);
+        } catch (IOException ioe) {
+            throw new InternalException("ERROR: Failed to parse content", ioe);
+        }
+    }
+

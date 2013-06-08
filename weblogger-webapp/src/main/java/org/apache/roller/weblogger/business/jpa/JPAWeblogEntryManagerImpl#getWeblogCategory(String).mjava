@@ -1,0 +1,9 @@
+    /**
+     * @inheritDoc
+     */
+    public WeblogCategory getWeblogCategory(String id)
+    throws WebloggerException {
+        return (WeblogCategory) this.strategy.load(
+                WeblogCategory.class, id);
+    }
+

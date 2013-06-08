@@ -1,0 +1,20 @@
+	/**
+	 * Checks if this is an ignored url.
+	 * 
+	 * @param theUrl
+	 *            the the url
+	 * 
+	 * @return true, if is ignored resource
+	 */
+	private boolean isIgnoredURL(String theUrl) {
+
+		int i = theUrl.lastIndexOf("/");
+
+		// If its not a resource then do not ignore it
+		if (i <= 0 || i == theUrl.length() - 1)
+			return false;
+
+		return ignored.contains(theUrl.substring(i + 1));
+
+	}
+

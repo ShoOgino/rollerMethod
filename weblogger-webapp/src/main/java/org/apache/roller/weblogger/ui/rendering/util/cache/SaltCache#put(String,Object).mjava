@@ -1,0 +1,6 @@
+    public void put(String key, Object value) {
+		// expire after 60 minutes
+        contentCache.put(key, new ExpiringCacheEntry(value, 60 * 60 * 1000));
+        log.debug("PUT "+key);
+    }
+

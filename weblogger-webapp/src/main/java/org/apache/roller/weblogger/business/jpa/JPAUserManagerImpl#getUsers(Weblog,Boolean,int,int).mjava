@@ -1,0 +1,38 @@
+    /**
+     * Get users of a website
+     */
+    public List getUsers(Weblog website, Boolean enabled, int offset, int length) throws WebloggerException {
+        Query query = null;
+        List results = null;
+        boolean setRange = offset != 0 || length != -1;
+
+        if (length == -1) {
+            length = Integer.MAX_VALUE - offset;
+        }
+
+        if (enabled != null) {
+            if (website != null) {
+                query = strategy.getNamedQuery("User.getByEnabled&Permissions.website");
+                query.setParameter(1, enabled);
+                query.setParameter(2, website);
+            } else {
+                query = strategy.getNamedQuery("User.getByEnabled");
+                query.setParameter(1, enabled);
+            }
+        } else {
+            if (website != null) {
+                query = strategy.getNamedQuery("User.getByPermissions.website");
+                query.setParameter(1, website);
+            } else {
+                query = strategy.getNamedQuery("User.getAll");
+            }
+        }
+        if (offset != 0) {
+            query.setFirstResult(offset);
+        }
+        if (length != -1) {
+            query.setMaxResults(length);
+        }
+        return query.getResultList();
+    }
+

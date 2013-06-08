@@ -1,0 +1,42 @@
+    /**
+     * Test getting list of all directories for a given user.
+     */
+    public void testGetMediaFileDirectories() throws Exception {
+
+        User testUser = null;
+        Weblog testWeblog = null;
+        testUser = TestUtils.setupUser("mediaFileTestUser2");
+        testWeblog = TestUtils.setupWeblog("mediaFileTestWeblog2", testUser);
+
+        MediaFileManager mfMgr = WebloggerFactory.getWeblogger().getMediaFileManager();
+
+        // no need to create root directory, that is done automatically now
+        MediaFileDirectory rootDirectory = mfMgr.getMediaFileRootDirectory(testWeblog);
+
+        //MediaFileDirectory rootDirectory = new MediaFileDirectory(null, "root", "root d", testWeblog);
+        //mfMgr.createMediaFileDirectory(rootDirectory);
+
+        MediaFileDirectory directory2 = new MediaFileDirectory(rootDirectory, "dir2", "directory 2", testWeblog);
+        mfMgr.createMediaFileDirectory(directory2);
+        rootDirectory.getChildDirectories().add(directory2);
+
+        MediaFileDirectory directory3 = new MediaFileDirectory(rootDirectory, "dir3", "directory 3", testWeblog);
+        mfMgr.createMediaFileDirectory(directory3);
+        rootDirectory.getChildDirectories().add(directory3);
+
+        TestUtils.endSession(true);
+
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
+        List<MediaFileDirectory> directories = mfMgr.getMediaFileDirectories(testWeblog);
+        assertNotNull(directories);
+        assertEquals(3, directories.size());
+        assertTrue(containsPath(directories, "/"));
+        assertTrue(containsPath(directories, "/dir2"));
+        assertTrue(containsPath(directories, "/dir3"));
+
+
+        TestUtils.endSession(true);
+        TestUtils.teardownWeblog(testWeblog.getId());
+        TestUtils.teardownUser(testUser.getUserName());
+    }
+

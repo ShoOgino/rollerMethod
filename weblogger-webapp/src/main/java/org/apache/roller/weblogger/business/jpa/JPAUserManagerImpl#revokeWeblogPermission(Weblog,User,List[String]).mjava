@@ -1,0 +1,25 @@
+    public void revokeWeblogPermission(Weblog weblog, User user, List<String> actions) throws WebloggerException {
+
+        // get specified permission
+        Query q = strategy.getNamedQuery("WeblogPermission.getByUserName&WeblogId");
+        q.setParameter(1, user.getUserName());
+        q.setParameter(2, weblog.getHandle());
+        WeblogPermission oldperm = null;
+        try {
+            oldperm = (WeblogPermission)q.getSingleResult();
+        } catch (NoResultException ignored) {
+            throw new WebloggerException("ERROR: permission not found");
+        }
+
+// remove actions specified in perm agument
+        oldperm.removeActions(actions);
+
+        if (oldperm.isEmpty()) {
+            // no actions left in permission so remove it
+            this.strategy.remove(oldperm);
+        } else {
+            // otherwise save it
+            this.strategy.store(oldperm);
+        }
+    }
+

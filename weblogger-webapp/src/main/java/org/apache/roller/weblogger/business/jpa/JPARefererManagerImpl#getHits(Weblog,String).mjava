@@ -1,0 +1,32 @@
+    protected int getHits(Weblog website, String type) 
+            throws WebloggerException {
+        int hits = -1;
+        if (log.isDebugEnabled()) {
+            log.debug("getHits: " + website.getName());
+        }
+        //TODO: JPAPort. This query retrieves both SUM(r.dayHits), SUM(r.totalHits)
+        //The method only comsumes one of them. We can optimize the logic to retrieve only the 
+        //requied SUM
+        Query query = strategy.getNamedQuery(
+            "WeblogReferrer.getHitsByWebsite.enabled&Website.id");
+        query.setParameter(1, Boolean.TRUE);
+        query.setParameter(2, website.getId());
+        List results = query.getResultList();
+
+        Object[] resultsArray = (Object[]) results.get(0);
+        
+        if (resultsArray.length > 0 && type.equals(DAYHITS)) {
+            if ( resultsArray[0] != null ) {
+                hits = ((Long) resultsArray[0]).intValue();
+            }
+        } else if ( resultsArray.length > 0 ) {
+            if ( resultsArray[0] != null ) {
+                hits = ((Long) resultsArray[1]).intValue();
+            }
+        } else {
+            hits = 0;
+        }
+        
+        return hits;
+    }
+

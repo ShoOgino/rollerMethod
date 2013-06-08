@@ -1,0 +1,12 @@
+    /**
+     * Return true if user is allowed to edit an entry.
+     */
+    public static boolean canEdit(User u, WeblogEntry entry) {
+        try {
+            return entry.hasWritePermissions(u);
+        } catch (Exception e) {
+            log.error("Checking website.canSave()");
+        }
+        return false;
+    }
+

@@ -1,0 +1,26 @@
+    /**
+     * Create URL that encodes pager state using most appropriate forms of URL.
+     * @param pageAdd To be added to page number, or 0 for no page number
+     */
+    protected String createURL(
+            int                page,
+            int                pageAdd,
+            Weblog        website,
+            String             locale,
+            String             pageLink,
+            String             entryAnchor,
+            String             dateString,
+            String             catPath,
+            List               tags) {
+        
+        int pageNum = page + pageAdd;
+        
+        if (pageLink != null) {
+            return urlStrategy.getWeblogPageURL(website, locale, pageLink, entryAnchor, catPath, dateString, tags, pageNum, false);
+        } else if (entryAnchor != null) {
+            return urlStrategy.getWeblogEntryURL(website, locale, entryAnchor, true);
+        }
+        
+        return urlStrategy.getWeblogCollectionURL(website, locale, catPath, dateString, tags, pageNum, false);
+    }
+

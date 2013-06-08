@@ -1,0 +1,13 @@
+    /**
+     * Store an entry in the cache.
+     *
+     * We wrap the cached object in our ExpiringCacheEntry object so that we
+     * can track when the entry has expired.
+     */
+    @Override
+    public synchronized void put(String key, Object value) {
+        
+        ExpiringCacheEntry entry = new ExpiringCacheEntry(value, this.timeout);
+        super.put(key, entry);
+    }
+

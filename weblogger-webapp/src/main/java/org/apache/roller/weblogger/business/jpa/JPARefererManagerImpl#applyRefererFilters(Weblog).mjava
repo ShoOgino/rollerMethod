@@ -1,0 +1,18 @@
+    /**
+     * Apply ignoreWord/spam filters to all referers in website.
+     */
+    public void applyRefererFilters(Weblog website)
+            throws WebloggerException {
+        if (null == website) throw new WebloggerException("website is null");
+        if (null == website.getBlacklist()) return;
+        
+        String[] blacklist = StringUtils.split(
+                StringUtils.deleteWhitespace(website.getBlacklist()),",");
+        if (blacklist.length == 0) return;
+        List referers = getBlackListedReferer(website, blacklist);
+        for (Iterator iterator = referers.iterator(); iterator.hasNext();) {
+            WeblogReferrer referer= (WeblogReferrer) iterator.next();
+            this.strategy.remove(referer);
+        }
+    }
+

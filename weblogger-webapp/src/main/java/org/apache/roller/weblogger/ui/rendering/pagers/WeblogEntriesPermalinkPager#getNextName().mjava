@@ -1,0 +1,8 @@
+    public String getNextName() {
+        if (getNextEntry() != null) {
+            String title = Utilities.truncateNicely(getNextEntry().getTitle(), 15, 20, "...");
+            return messageUtils.getString("weblogEntriesPager.single.next", new Object[] {title});
+        }
+        return null;
+    }
+

@@ -1,0 +1,26 @@
+    public void testApplyRefererFiltersWebsite() throws Exception {
+        
+        log.info("Test apply referers (weblog)");
+        
+        RefererManager rmgr = WebloggerFactory.getWeblogger().getRefererManager();
+        
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
+        List refs = rmgr.getReferers(testWeblog);
+        assertEquals(count, refs.size());
+        String origWords = null;
+        
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
+        origWords = testWeblog.getBlacklist();
+        testWeblog.setBlacklist("test");
+        WebloggerFactory.getWeblogger().getWeblogManager().saveWeblog(testWeblog);
+        TestUtils.endSession(true);
+        
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
+        rmgr.applyRefererFilters(testWeblog);
+        TestUtils.endSession(true);
+        
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
+        refs = rmgr.getReferers(testWeblog);
+        assertEquals(0, refs.size());
+    }
+

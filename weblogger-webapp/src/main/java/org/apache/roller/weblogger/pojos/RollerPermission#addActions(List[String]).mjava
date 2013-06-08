@@ -1,0 +1,13 @@
+    /**
+     * Merge actions into this permission.
+     */
+    public void addActions(List<String> newActions) {
+        List<String> updatedActions = getActionsAsList();
+        for (String newAction : newActions) {
+            if (!updatedActions.contains(newAction)) {
+                updatedActions.add(newAction);
+            }
+        }
+        setActionsAsList(updatedActions);
+    }
+

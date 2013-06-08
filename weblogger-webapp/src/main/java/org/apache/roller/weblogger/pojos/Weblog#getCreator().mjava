@@ -1,0 +1,13 @@
+    /**
+     * Original creator of website.
+     * @roller.wrapPojoMethod type="pojo"
+     */
+    public org.apache.roller.weblogger.pojos.User getCreator() {
+        try {
+            return WebloggerFactory.getWeblogger().getUserManager().getUserByUserName(creator);
+        } catch (Exception e) {
+            log.error("ERROR fetching user object for username: " + creator, e);
+        }
+        return null;
+    }
+

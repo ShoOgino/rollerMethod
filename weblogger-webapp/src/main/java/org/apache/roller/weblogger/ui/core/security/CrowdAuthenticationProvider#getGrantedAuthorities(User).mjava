@@ -1,0 +1,11 @@
+	private GrantedAuthority[] getGrantedAuthorities(User user) throws UserNotFoundException, OperationFailedException, 
+																		InvalidAuthenticationException, ApplicationPermissionException {
+		List<String> roles = getPermissions(user);
+		GrantedAuthority[] authorities = new GrantedAuthorityImpl[roles.size()];
+		int i = 0;
+		for (String role : roles) {
+			authorities[i++] = new GrantedAuthorityImpl(role);
+		}
+		return authorities;
+	}
+

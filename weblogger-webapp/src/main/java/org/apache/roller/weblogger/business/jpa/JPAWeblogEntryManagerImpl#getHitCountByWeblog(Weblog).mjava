@@ -1,0 +1,14 @@
+    /**
+     * @inheritDoc
+     */
+    public WeblogHitCount getHitCountByWeblog(Weblog weblog)
+    throws WebloggerException {
+        Query q = strategy.getNamedQuery("WeblogHitCount.getByWeblog");
+        q.setParameter(1, weblog);
+        try {
+            return (WeblogHitCount)q.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+

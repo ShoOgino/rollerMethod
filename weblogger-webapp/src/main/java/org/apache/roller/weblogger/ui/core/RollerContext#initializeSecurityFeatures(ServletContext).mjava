@@ -1,0 +1,81 @@
+    /**
+     * Setup Spring Security security features.
+     */
+    protected void initializeSecurityFeatures(ServletContext context) { 
+
+        ApplicationContext ctx =
+                WebApplicationContextUtils.getRequiredWebApplicationContext(context);
+
+        /*String[] beanNames = ctx.getBeanDefinitionNames();
+        for (String name : beanNames)
+            System.out.println(name);*/
+        
+        String rememberMe = WebloggerConfig.getProperty("rememberme.enabled");
+        boolean rememberMeEnabled = Boolean.valueOf(rememberMe).booleanValue();
+        
+        log.info("Remember Me enabled: " + rememberMeEnabled);
+        
+        context.setAttribute("rememberMeEnabled", rememberMe);
+        
+        if (!rememberMeEnabled) {
+            ProviderManager provider = (ProviderManager) ctx.getBean("_authenticationManager");
+            for (Iterator it = provider.getProviders().iterator(); it.hasNext();) {
+                AuthenticationProvider authProvider = (AuthenticationProvider) it.next();
+                if (authProvider instanceof RememberMeAuthenticationProvider) {
+                    provider.getProviders().remove(authProvider);
+                }
+            }
+        }
+        
+        String encryptPasswords = WebloggerConfig.getProperty("passwds.encryption.enabled");
+        boolean doEncrypt = Boolean.valueOf(encryptPasswords).booleanValue();
+        
+        if (doEncrypt) {
+            DaoAuthenticationProvider provider = (DaoAuthenticationProvider) ctx.getBean("org.springframework.security.providers.dao.DaoAuthenticationProvider#0");
+            String algorithm = WebloggerConfig.getProperty("passwds.encryption.algorithm");
+            PasswordEncoder encoder = null;
+            if (algorithm.equalsIgnoreCase("SHA")) {
+                encoder = new ShaPasswordEncoder();
+            } else if (algorithm.equalsIgnoreCase("MD5")) {
+                encoder = new Md5PasswordEncoder();
+            } else {
+                log.error("Encryption algorithm '" + algorithm + "' not supported, disabling encryption.");
+            }
+            if (encoder != null) {
+                provider.setPasswordEncoder(encoder);
+                log.info("Password Encryption Algorithm set to '" + algorithm + "'");
+            }
+        }
+
+        if (WebloggerConfig.getBooleanProperty("securelogin.enabled")) {
+            AuthenticationProcessingFilterEntryPoint entryPoint =
+                (AuthenticationProcessingFilterEntryPoint) ctx.getBean("_formLoginEntryPoint");
+            entryPoint.setForceHttps(true);
+        }
+   
+        /*
+        if (WebloggerConfig.getBooleanProperty("schemeenforcement.enabled")) {
+            
+            ChannelProcessingFilter procfilter =
+                    (ChannelProcessingFilter)ctx.getBean("channelProcessingFilter");
+            ConfigAttributeDefinition secureDef = new ConfigAttributeDefinition();
+            secureDef.addConfigAttribute(new SecurityConfig("REQUIRES_SECURE_CHANNEL"));
+            ConfigAttributeDefinition insecureDef = new ConfigAttributeDefinition();
+            insecureDef.addConfigAttribute(new SecurityConfig("REQUIRES_INSECURE_CHANNEL"));
+            PathBasedFilterInvocationDefinitionMap defmap =
+                    (PathBasedFilterInvocationDefinitionMap)procfilter.getFilterInvocationDefinitionSource();
+            
+            // add HTTPS URL path patterns to Acegi config
+            String httpsUrlsProp = WebloggerConfig.getProperty("schemeenforcement.https.urls");
+            if (httpsUrlsProp != null) {
+                String[] httpsUrls = StringUtils.stripAll(StringUtils.split(httpsUrlsProp, ",") );
+                for (int i=0; i<httpsUrls.length; i++) {
+                    defmap.addSecureUrl(httpsUrls[i], secureDef);
+                }
+            }
+            // all other action URLs are non-HTTPS
+            defmap.addSecureUrl("/**<!-- need to remove this when uncommenting -->/*.do*", insecureDef);
+        }
+        */
+    }
+

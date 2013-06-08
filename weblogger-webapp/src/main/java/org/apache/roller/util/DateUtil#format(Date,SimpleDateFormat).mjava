@@ -1,0 +1,12 @@
+    /**
+     * Returns a string the represents the passed-in date parsed
+     * according to the passed-in format.  Returns an empty string
+     * if the date or the format is null.
+     **/
+    public static String format(Date aDate, SimpleDateFormat aFormat) {
+        if (aDate == null || aFormat == null ) { return ""; }
+        synchronized (aFormat) {
+            return aFormat.format(aDate);
+        }
+    }
+

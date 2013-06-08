@@ -1,0 +1,29 @@
+	/**
+	 * This method overrides the sendHTMLMessage to specify
+	 * one receiver and mulitple cc recipients.
+	 * 
+	 * @param from e-mail address of sender
+	 * @param to e-mail address of recipient
+	 * @param cc e-mail addresses of recipients
+	 * @param subject subject of e-mail
+	 * @param content the body of the e-mail
+	 * @throws MessagingException the exception to indicate failure
+	 */
+	public static void sendHTMLMessage
+	(
+		Session session,
+		String from,
+		String to,
+		String[] cc,
+		String[] bcc,
+		String subject,
+		String content
+	) 
+	throws MessagingException
+	{
+        String[] recipient = null;
+		if (to!=null) recipient = new String[] {to};
+
+		sendMessage(session, from, recipient, cc, bcc, subject, content, "text/html; charset=utf-8");
+	}
+

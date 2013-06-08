@@ -1,0 +1,13 @@
+    /**
+     * Get request parameter by name.
+     */
+    public String getRequestParameter(String paramName) {
+        if (requestParameters != null) {
+            String[] values = (String[])requestParameters.get(paramName);
+            if (values != null && values.length > 0) {
+                return values[0];
+            }
+        }
+        return null;
+    }
+

@@ -1,0 +1,12 @@
+    /**
+     * Determine if category is in use. Returns true if any weblog entries
+     * use this category or any of it's subcategories.
+     */
+    public boolean isInUse() {
+        try {
+            return WebloggerFactory.getWeblogger().getWeblogEntryManager().isWeblogCategoryInUse(this);
+        } catch (WebloggerException e) {
+            throw new RuntimeException(e);
+        }
+    }
+

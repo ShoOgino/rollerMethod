@@ -1,0 +1,8 @@
+    public WeblogPermission(Weblog weblog, User user, List<String> actions) {
+        super("WeblogPermission user: " + user.getUserName());
+        setActionsAsList(actions); 
+        objectType = "Weblog";
+        objectId = weblog.getHandle();
+        userName = user.getUserName();
+    }
+

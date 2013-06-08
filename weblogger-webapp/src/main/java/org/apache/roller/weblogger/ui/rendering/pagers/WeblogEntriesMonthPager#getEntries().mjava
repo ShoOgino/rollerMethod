@@ -1,0 +1,53 @@
+    public Map getEntries() {
+        Date date = parseDate(dateString);
+        Calendar cal = Calendar.getInstance(weblog.getTimeZoneInstance());
+        cal.setTime(date);
+        cal.add(Calendar.DATE, 1);
+        date = cal.getTime();
+        Date startDate = DateUtil.getStartOfMonth(date, cal);
+        Date endDate = DateUtil.getEndOfMonth(date, cal);
+        
+        if (entries == null) {
+            entries = new TreeMap(new ReverseComparator());
+            try {
+                Map mmap = WebloggerFactory.getWeblogger().getWeblogEntryManager().getWeblogEntryObjectMap(
+                        
+                        weblog,
+                        startDate,
+                        endDate,
+                        catPath,
+                        tags,WeblogEntry.PUBLISHED, 
+                        locale,
+                        offset,  
+                        length + 1);
+                              
+                // need to wrap pojos
+                int count = 0;
+                java.util.Date key = null;
+                Iterator days = mmap.keySet().iterator();
+                while(days.hasNext()) {
+                    key = (java.util.Date)days.next();
+
+                    // now we need to go through each entry in a day and wrap
+                    List wrapped = new ArrayList();
+                    List unwrapped= (List) mmap.get(key);
+                    for(int i=0; i < unwrapped.size(); i++) {
+                        if (count++ < length) {
+                            wrapped.add(i,WeblogEntryWrapper.wrap((WeblogEntry)unwrapped.get(i), urlStrategy));
+                        } else {
+                            more = true;
+                        }
+                    }
+                    
+                    // done with that day, put it in the map
+                    if(wrapped.size() > 0) {
+                        entries.put(key, wrapped);
+                    }
+                }
+            } catch (Exception e) {
+                log.error("ERROR: getting entry month map", e);
+            }
+        }
+        return entries;
+    }
+

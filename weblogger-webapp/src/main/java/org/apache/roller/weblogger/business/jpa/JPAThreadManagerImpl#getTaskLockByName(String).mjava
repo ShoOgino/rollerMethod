@@ -1,0 +1,14 @@
+    /**
+     * @inheritDoc
+     */
+    public TaskLock getTaskLockByName(String name) throws WebloggerException {
+        // do lookup
+        Query q = strategy.getNamedQuery("TaskLock.getByName");
+        q.setParameter(1, name);
+        try {
+            return (TaskLock)q.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+

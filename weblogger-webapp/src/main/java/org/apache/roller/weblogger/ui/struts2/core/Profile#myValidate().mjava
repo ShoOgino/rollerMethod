@@ -1,0 +1,10 @@
+    public void myValidate() {
+
+        // check that passwords match if they were specified
+        if (!StringUtils.isEmpty(getBean().getPasswordText())) {
+            if (!getBean().getPasswordText().equals(getBean().getPasswordConfirm())) {
+                addError("Register.error.passowordMismatch");
+            }
+        }
+    }
+

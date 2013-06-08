@@ -1,0 +1,76 @@
+    /**
+     * Test that when deleting parent objects of a comment that everything
+     * down the chain is properly deleted as well.  i.e. deleting an entry
+     * should delete all comments on that entry, and deleting a weblog should
+     * delete all comments, etc.
+     */
+    public void testCommentParentDeletes() throws Exception {
+        
+        log.info("BEGIN");
+        
+        try {
+            WeblogManager wmgr = WebloggerFactory.getWeblogger().getWeblogManager();        
+            WeblogEntryManager emgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();        
+            UserManager umgr = WebloggerFactory.getWeblogger().getUserManager();
+
+            // first make sure we can delete an entry with comments
+            User user = TestUtils.setupUser("commentParentDeleteUser");
+            Weblog weblog = TestUtils.setupWeblog("commentParentDelete", user);
+            WeblogEntry entry = TestUtils.setupWeblogEntry("CommentParentDeletes1", 
+                    weblog.getDefaultCategory(), weblog, user);
+            TestUtils.endSession(true);
+
+            entry = TestUtils.getManagedWeblogEntry(entry);
+            TestUtils.setupComment("comment1", entry);
+            TestUtils.setupComment("comment2", entry);
+            TestUtils.setupComment("comment3", entry);
+            TestUtils.endSession(true);
+
+            // now deleting the entry should succeed and delete all comments
+            Exception ex = null;
+            try {
+                emgr.removeWeblogEntry(TestUtils.getManagedWeblogEntry(entry));
+                TestUtils.endSession(true);
+            } catch (WebloggerException e) {
+                ex = e;
+            }
+            assertNull(ex);
+
+            // now make sure we can delete a weblog with comments
+            weblog = TestUtils.getManagedWebsite(weblog);
+            user = TestUtils.getManagedUser(user);
+            entry = TestUtils.setupWeblogEntry("CommentParentDeletes2", 
+                    weblog.getDefaultCategory(), weblog, user);
+            TestUtils.endSession(true);
+
+            entry = TestUtils.getManagedWeblogEntry(entry);
+            TestUtils.setupComment("comment1", entry);
+            TestUtils.setupComment("comment2", entry);
+            TestUtils.setupComment("comment3", entry);
+            TestUtils.endSession(true);
+
+            // now deleting the website should succeed 
+            ex = null;
+            try {
+                weblog = TestUtils.getManagedWebsite(weblog);
+                wmgr.removeWeblog(weblog);
+                TestUtils.endSession(true);
+            } catch (WebloggerException e) {
+                StringWriter sw = new StringWriter();
+                PrintWriter pw = new PrintWriter(sw); 
+                e.printStackTrace(pw);
+                log.info(sw.toString());
+                ex = e;
+            }
+            assertNull(ex);
+
+            // and delete test user as well
+            umgr.removeUser(TestUtils.getManagedUser(user));
+            
+        } finally {
+            TestUtils.endSession(true);
+        }
+        
+        log.info("END");
+    }
+

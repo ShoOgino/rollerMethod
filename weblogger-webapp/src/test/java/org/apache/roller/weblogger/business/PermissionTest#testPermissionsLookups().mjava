@@ -1,0 +1,65 @@
+    /**
+     * Test lookup mechanisms.
+     */
+    public void testPermissionsLookups() throws Exception {
+        
+        log.info("BEGIN");
+        
+        // we need a second user for this test
+        User user = TestUtils.setupUser("testPermissionsLookups");
+        TestUtils.endSession(true);
+
+        UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
+        WeblogPermission perm = null;
+        List<WeblogPermission> perms = null;
+
+        // get all permissions for a user
+        perms = mgr.getWeblogPermissions(TestUtils.getManagedUser(user));
+        assertEquals(0, perms.size());
+        perms = mgr.getWeblogPermissions(TestUtils.getManagedUser(testUser));
+        assertEquals(1, perms.size());
+
+        // get all permissions for a weblog
+        perms = mgr.getWeblogPermissions(TestUtils.getManagedWebsite(testWeblog));
+        assertEquals(1, perms.size());
+
+        List<String> actions = new ArrayList<String>();
+        actions.add(WeblogPermission.POST);
+        mgr.grantWeblogPermissionPending(testWeblog, user, actions);
+        TestUtils.endSession(true);
+
+        // get pending permissions for a user
+        perms = mgr.getWeblogPermissionsPending(TestUtils.getManagedUser(testUser));
+        assertEquals(0, perms.size());
+        perms = mgr.getWeblogPermissionsPending(TestUtils.getManagedUser(user));
+        assertEquals(1, perms.size());
+
+        // get pending permissions for a weblog
+        perms = mgr.getWeblogPermissionsPending(TestUtils.getManagedWebsite(testWeblog));
+        assertEquals(1, perms.size());            
+
+        // get permissions for a specific user/weblog
+        perm = null;
+        perm = mgr.getWeblogPermission(
+                TestUtils.getManagedWebsite(testWeblog), 
+                TestUtils.getManagedUser(testUser));
+        assertNotNull(perm);
+        assertTrue(perm.hasAction(WeblogPermission.ADMIN));
+
+        // pending permissions should not be visible
+        perm = null;
+        perm = mgr.getWeblogPermission(
+                TestUtils.getManagedWebsite(testWeblog), 
+                TestUtils.getManagedUser(user));
+        assertNull(perm);
+        
+        List<WeblogPermission> pendings = mgr.getWeblogPermissionsPending(user);
+
+        // cleanup
+        TestUtils.teardownPermissions(pendings.get(0));
+        TestUtils.teardownUser(user.getUserName());
+        TestUtils.endSession(true);
+        
+        log.info("END");
+    }
+

@@ -1,0 +1,16 @@
+    @SkipValidation
+    @Override
+    public String execute() {
+        boolean flush = false;
+        
+        try {
+            User ud = getAuthenticatedUser();
+
+
+        } catch (Exception ex) {
+            log.error("ERROR fetching user information", ex);
+        }
+
+        return SUCCESS;
+    }
+

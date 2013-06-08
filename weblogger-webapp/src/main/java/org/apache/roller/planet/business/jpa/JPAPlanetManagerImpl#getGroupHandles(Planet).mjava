@@ -1,0 +1,10 @@
+    public List getGroupHandles(Planet planet) throws RollerException {
+        List handles = new ArrayList();
+        Iterator list = getGroups(planet).iterator();
+        while (list.hasNext()) {
+            PlanetGroup group = (PlanetGroup) list.next();
+            handles.add(group.getHandle());
+        }
+        return handles;
+    }
+

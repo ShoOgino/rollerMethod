@@ -1,0 +1,10 @@
+    private EntrySet putCollection(Reader r) throws HandlerException {
+        EntrySet c = getEntrySet(r);
+        if (c.isEmpty()) {
+            throw new BadRequestException("ERROR: No entries");
+        }
+        c = updateMembers((MemberEntrySet)c);
+        
+        return c;
+    }
+

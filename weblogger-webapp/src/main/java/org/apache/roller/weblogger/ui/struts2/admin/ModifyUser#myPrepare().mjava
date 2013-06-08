@@ -1,0 +1,24 @@
+    // prepare for action by loading user object we are modifying
+    public void myPrepare() {
+        
+        // load the user object we are modifying
+        if (getUserName() != null) {
+            try {
+                UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
+                
+                // use enabled = 'null' to get both enabled and disabled users
+                setUser(mgr.getUserByUserName(getUserName(), null));
+                
+            } catch(Exception e) {
+                log.error("Error looking up user - "+getUserName(), e);
+            }
+        } else if (getBean().getId() != null) {
+            try {
+                UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
+                setUser(mgr.getUserByUserName(getBean().getUserName(), null));
+            } catch (Exception e) {
+                log.error("Error looking up user - " + getBean().getId(), e);
+            }
+        }
+    }
+

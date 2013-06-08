@@ -1,0 +1,14 @@
+    /**
+     * Is this category a descendent of the other category?
+     */
+    public boolean descendentOf(WeblogCategory ancestor) {
+        
+        // if this is a root node then we can't be a descendent
+        if(getParent() == null) {
+            return false;
+        } else {
+            // if our path starts with our parents path then we are a descendent
+            return this.path.startsWith(ancestor.getPath());
+        }
+    }
+

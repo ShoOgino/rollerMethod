@@ -1,0 +1,50 @@
+    /**
+     * @roller.wrapPojoMethod type="simple"
+     */
+    public String getDisplayUrl(int maxWidth, boolean includeHits) {
+        StringBuffer sb = new StringBuffer();
+        
+        String url = StringEscapeUtils.escapeHtml(getUrl());
+        String displayUrl = url.trim();
+        String restOfUrl = null;
+        
+        if (displayUrl.startsWith("http://")) {
+            displayUrl = displayUrl.substring(7);
+        }
+        
+        if (displayUrl.length() > maxWidth) {
+            restOfUrl = "..." +
+                    displayUrl.substring(maxWidth, displayUrl.length());
+            displayUrl = displayUrl.substring(0, maxWidth) + "...";
+        }
+        
+        if (url.startsWith("http://")) {
+            sb.append("<a href=\"");
+            sb.append(url);
+        }
+        
+        // add a title with the rest of the url if it exists
+        if (restOfUrl != null) {
+            sb.append("\" title=\"");
+            sb.append(restOfUrl);
+        }
+        
+        if (sb.length() > 0) {
+            sb.append("\">");
+        }
+        
+        sb.append(displayUrl);
+        
+        if (includeHits) {
+            sb.append(" (");
+            sb.append(getDayHits());
+            sb.append(")");
+        }
+        
+        if (url.startsWith("http://")) {
+            sb.append("</a>");
+        }
+        
+        return sb.toString();
+    }
+

@@ -1,0 +1,23 @@
+    /**
+     * Get top X subscriptions, restricted by group.
+     */
+    public List getTopSubscriptions(
+            PlanetGroup group, int offset, int len) throws RollerException {
+        List result = null;
+        if (group != null) {
+            Query q = strategy.getNamedQuery(
+                    "Subscription.getByGroupOrderByInboundBlogsDesc");
+            q.setParameter(1, group);
+            if (offset != 0) q.setFirstResult(offset);
+            if (len != -1) q.setMaxResults(len);
+            result = q.getResultList();
+        } else {
+            Query q = strategy.getNamedQuery(
+                    "Subscription.getAllOrderByInboundBlogsDesc");
+            if (offset != 0) q.setFirstResult(offset);
+            if (len != -1) q.setMaxResults(len);
+            result = q.getResultList();
+        }
+        return result;
+    }
+

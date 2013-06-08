@@ -1,0 +1,18 @@
+    /**
+     * Test the hasFolder() method on WeblogBookmarkFolder.
+     */
+    public void testHasFolder() throws Exception {
+        
+        log.info("BEGIN");
+        
+        BookmarkManager bmgr = WebloggerFactory.getWeblogger().getBookmarkManager();
+        
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
+        WeblogBookmarkFolder root = bmgr.getRootFolder(testWeblog);
+        
+        // check that root has folder
+        assertTrue(root.hasFolder(testFolder.getName()));
+        
+        log.info("END");
+    }
+

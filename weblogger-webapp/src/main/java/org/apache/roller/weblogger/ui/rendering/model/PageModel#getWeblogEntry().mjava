@@ -1,0 +1,10 @@
+    /**
+     * Get weblog entry being displayed or null if none specified by request.
+     */
+    public WeblogEntryWrapper getWeblogEntry() {
+        if(pageRequest.getWeblogEntry() != null) {
+            return WeblogEntryWrapper.wrap(pageRequest.getWeblogEntry(), urlStrategy);
+        }
+        return null;
+    }
+

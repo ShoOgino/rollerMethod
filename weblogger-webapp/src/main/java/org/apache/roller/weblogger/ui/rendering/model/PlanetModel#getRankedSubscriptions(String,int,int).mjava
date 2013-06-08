@@ -1,0 +1,25 @@
+    /**
+     * Get PlanetSubscription objects in descending order by Planet ranking.
+     * @param groupHandle Only consider weblogs updated in the last sinceDays
+     * @param sinceDays   Only consider weblogs updated in the last sinceDays
+     * @param offset      Offset into results (for paging)
+     * @param len         Max number of results to return
+     */
+    public List getRankedSubscriptions(String groupHandle, int sinceDays, int length) {
+        List list = new ArrayList();
+        try {
+            PlanetManager planetManager = WebloggerFactory.getWeblogger().getPlanetManager();
+            Planet defaultPlanet = planetManager.getWeblogger(DEFAULT_PLANET_HANDLE);
+            PlanetGroup planetGroup = planetManager.getGroup(defaultPlanet, groupHandle);
+            List subs = planetManager.getTopSubscriptions(planetGroup, 0, length);
+            for (Iterator it = subs.iterator(); it.hasNext();) {
+                Subscription sub = (Subscription) it.next();
+                // TODO needs pojo wrapping from planet
+                list.add(sub); 
+            }
+        } catch (Exception e) {
+            log.error("ERROR: get ranked blogs", e);
+        }
+        return list;
+    }
+

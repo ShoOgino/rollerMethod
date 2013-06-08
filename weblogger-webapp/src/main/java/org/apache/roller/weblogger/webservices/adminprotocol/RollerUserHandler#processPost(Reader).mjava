@@ -1,0 +1,8 @@
+    public EntrySet processPost(Reader r) throws HandlerException {
+        if (getUri().isCollection()) {
+            return postCollection(r);
+        } else {
+            throw new BadRequestException("ERROR: Unknown POST URI type");
+        }
+    }
+

@@ -1,0 +1,14 @@
+    public Handler(HttpServletRequest request) throws HandlerException {
+        this.request = request;
+        this.uri = new URI(request);
+        this.roller = WebloggerFactory.getWeblogger();
+        //TODO: is this the right thing to do? hardcode roller-services?
+        this.urlPrefix = WebloggerRuntimeConfig.getAbsoluteContextURL() + "/roller-services" + ENDPOINT;
+        
+        // TODO: decide what to do about authentication, is WSSE going to fly?
+        //Authenticator auth = new WSSEAuthenticator(request);
+        Authenticator auth = new BasicAuthenticator(request);
+        auth.authenticate();
+        setUserName(auth.getUserName());
+    }
+

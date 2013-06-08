@@ -1,0 +1,61 @@
+    /**
+     * Tests weblog invitation process.
+     */
+    public void testInvitations() throws Exception {
+        
+        log.info("BEGIN");
+        
+        // we need a second user for this test
+        User user = TestUtils.setupUser("testInvitations");
+        TestUtils.endSession(true);
+
+        WeblogManager wmgr = WebloggerFactory.getWeblogger().getWeblogManager();
+        UserManager umgr = WebloggerFactory.getWeblogger().getUserManager();
+        WeblogPermission perm = null;
+        List perms = null;
+
+        // invite user to weblog
+        List<String> actions = new ArrayList<String>();
+        actions.add(WeblogPermission.EDIT_DRAFT);
+        umgr.grantWeblogPermissionPending(testWeblog, user, actions);
+        TestUtils.endSession(true);
+
+        // accept invitation
+        umgr.confirmWeblogPermission(testWeblog, user);
+        TestUtils.endSession(true);
+
+        // re-query now that we have changed things
+        user = umgr.getUserByUserName(user.getUserName());
+        testWeblog = wmgr.getWeblogByHandle(testWeblog.getHandle());
+
+        // assert that invitation list is empty
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
+        user = TestUtils.getManagedUser(user);
+        assertTrue(umgr.getWeblogPermissionsPending(user).isEmpty());
+        assertTrue(umgr.getWeblogPermissionsPending(testWeblog).isEmpty());
+
+        // assert that user is member of weblog
+        assertNotNull(umgr.getWeblogPermission(testWeblog, user));
+        List weblogs = wmgr.getUserWeblogs(TestUtils.getManagedUser(user), true);
+        assertEquals(1, weblogs.size());
+        assertEquals(testWeblog.getId(), ((Weblog)weblogs.get(0)).getId());
+
+        // assert that website has user
+        List users = wmgr.getWeblogUsers(testWeblog, true);
+        assertEquals(2, users.size());
+
+        // test user can be retired from website
+        umgr.revokeWeblogPermission(testWeblog, user, WeblogPermission.ALL_ACTIONS);
+        TestUtils.endSession(true);
+
+        //user = umgr.getUser(user.getId());
+        weblogs = wmgr.getUserWeblogs(user, true);
+        assertEquals(0, weblogs.size());
+
+        // cleanup the extra test user
+        TestUtils.teardownUser(user.getUserName());
+        TestUtils.endSession(true);
+        
+        log.info("END");
+    }
+

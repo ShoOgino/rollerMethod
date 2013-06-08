@@ -1,0 +1,11 @@
+    /**
+     * Get weblog category specified by request, or null if the category path
+     * found in the request does not exist in the current weblog.
+     */
+    public WeblogCategoryWrapper getWeblogCategory() {
+        if(pageRequest.getWeblogCategory() != null) {
+            return WeblogCategoryWrapper.wrap(pageRequest.getWeblogCategory(), urlStrategy);
+        }
+        return null;
+    }
+

@@ -1,0 +1,19 @@
+    private EntrySet putEntry(Reader r) throws HandlerException {
+        EntrySet c = getEntrySet(r);
+        if (c.isEmpty()) {
+            throw new BadRequestException("ERROR: No entries");
+        }
+        if (c.getEntries().length > 1) {
+            throw new BadRequestException("ERROR: Cannot put >1 entries per request");
+        }
+        
+        WeblogEntry entry = (WeblogEntry)c.getEntries()[0];
+        if (entry.getHandle() != null && !entry.getHandle().equals(getUri().getEntryId())) {
+            throw new BadRequestException("ERROR: Content handle does not match URI handle");
+        }
+        entry.setHandle(getUri().getEntryId());
+        c = updateWeblogs((WeblogEntrySet)c);
+        
+        return c;
+    }
+

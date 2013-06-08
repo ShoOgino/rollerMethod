@@ -1,0 +1,9 @@
+    /**
+     * Set the value for a given resource path.
+     */
+    private void setResource(String path, SharedThemeResourceFromDir resource) {
+        // normalize to use web-style separators
+        String normalizedPath = StringUtils.replace(path, "\\", "/");
+        this.resources.put(normalizedPath, resource);
+    }
+

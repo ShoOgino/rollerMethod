@@ -1,0 +1,55 @@
+    /**
+     * Get a list of recent posts for a category
+     *
+     * @param blogid Unique identifier of the blog the post will be added to
+     * @param userid Login for a Blogger user who has permission to post to the blog
+     * @param password Password for said username
+     * @param numposts Number of Posts to Retrieve
+     * @throws XmlRpcException
+     * @return
+     */
+    public Object getRecentPosts(String blogid, String userid, String password,
+            int numposts) throws Exception {
+        
+        mLogger.debug("getRecentPosts() Called ===========[ SUPPORTED ]=====");
+        mLogger.debug("     BlogId: " + blogid);
+        mLogger.debug("     UserId: " + userid);
+        mLogger.debug("     Number: " + numposts);
+        
+        Weblog website = validate(blogid, userid,password);
+        
+        try {
+            Vector results = new Vector();
+            
+            Weblogger roller = WebloggerFactory.getWeblogger();
+            WeblogEntryManager weblogMgr = roller.getWeblogEntryManager();
+            if (website != null) {
+                List entries = weblogMgr.getWeblogEntries(
+                        website,           // website
+                        null,
+                        null,              // startDate
+                        null,              // endDate
+                        null,              // catName
+                        null,              // tags
+                        null,              // status
+                        null,              // text
+                        "updateTime",      // sortby
+                        null,
+                        null,
+                        0, numposts);
+                
+                Iterator iter = entries.iterator();
+                while (iter.hasNext()) {
+                    WeblogEntry entry = (WeblogEntry)iter.next();
+                    results.addElement(createPostStruct(entry, userid));
+                }
+            }
+            return results;
+            
+        } catch (Exception e) {
+            String msg = "ERROR in MetaWeblogAPIHandler.getRecentPosts";
+            mLogger.error(msg,e);
+            throw new XmlRpcException(UNKNOWN_EXCEPTION, msg);
+        }
+    }
+

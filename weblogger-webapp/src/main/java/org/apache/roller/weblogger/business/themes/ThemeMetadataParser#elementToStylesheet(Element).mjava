@@ -1,0 +1,60 @@
+    private ThemeMetadataTemplate elementToStylesheet(Element element) 
+            throws ThemeParsingException {
+        
+        ThemeMetadataTemplate template = new ThemeMetadataTemplate();
+        
+        template.setName(element.getChildText("name"));
+        template.setDescription(element.getChildText("description"));
+        template.setLink(element.getChildText("link"));
+
+        // parsing templatecode segment
+         List templateCodeList = element.getChildren("templateCode");
+        Iterator templCodeitr = templateCodeList.iterator();
+
+		boolean roller50format = false;
+        while (templCodeitr.hasNext()){
+            Element templateCodeElement = (Element) templCodeitr.next();
+
+            ThemeMetadataTemplateCode templateCode = new ThemeMetadataTemplateCode();
+            templateCode.setTemplateLang(templateCodeElement.getChildText("templateLanguage"));
+            templateCode.setContentsFile(templateCodeElement.getChildText("contentsFile"));
+            templateCode.setContentType(templateCodeElement.getChildText("contentType"));
+            templateCode.setType(templateCodeElement.getChildText("type"));
+
+            //validating stylesheet template code.
+            if (StringUtils.isEmpty(templateCode.getContentsFile())) {
+                throw new ThemeParsingException("stylesheet must contain a 'contentsFile' element");
+            }
+            if (StringUtils.isEmpty(templateCode.getTemplateLang())) {
+                throw new ThemeParsingException("stylesheet must contain a 'templateLanguage' element");
+            }
+            if (StringUtils.isEmpty(templateCode.getType())) {
+				throw new ThemeParsingException("templateCode must contain a 'type' element");
+            }
+            template.addTemplateCode(templateCode.getType(), templateCode);
+
+			// if theme has type, then it's roller50format
+			roller50format = true;
+        }
+        
+		// hack to ensure old format themes still work
+   		if (!roller50format) {
+			ThemeMetadataTemplateCode templateCode = new ThemeMetadataTemplateCode();
+			templateCode.setTemplateLang(template.getTemplateLanguage());
+			templateCode.setContentsFile(template.getContentsFile());
+			templateCode.setContentType(template.getContentType());
+			templateCode.setType("standard");
+			template.addTemplateCode("standard", templateCode);
+		}
+
+        // validate template
+        if(StringUtils.isEmpty(template.getName())) {
+            throw new ThemeParsingException("stylesheet must contain a 'name' element");
+        }
+        if(StringUtils.isEmpty(template.getLink())) {
+            throw new ThemeParsingException("stylesheet must contain a 'link' element");
+        }
+
+        return template;
+    }
+

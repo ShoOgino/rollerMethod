@@ -1,0 +1,7 @@
+    public List getCommonPingTargets()
+            throws WebloggerException {
+        Query q = strategy.getNamedQuery(
+                "PingTarget.getByWebsiteNullOrderByName");
+        return q.getResultList();
+    }
+

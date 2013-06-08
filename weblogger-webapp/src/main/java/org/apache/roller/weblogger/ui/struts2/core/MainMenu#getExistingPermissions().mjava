@@ -1,0 +1,9 @@
+    public List getExistingPermissions() {
+        try {
+            UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
+            return mgr.getWeblogPermissions(getAuthenticatedUser());
+        } catch(Exception e) {
+            return Collections.EMPTY_LIST;
+        }
+    }
+

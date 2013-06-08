@@ -1,0 +1,12 @@
+    /**
+     * Remove object from persistence storage.
+     * @param clazz the class of object to remove
+     * @param id the id of the object to remove
+     * @throws WebloggerException on any error deleting object
+     */
+    public void remove(Class clazz, String id) throws WebloggerException {
+        EntityManager em = getEntityManager(true);
+        Object po = em.find(clazz, id);
+        em.remove(po);
+    }
+

@@ -1,0 +1,12 @@
+    public void testRefererProcessing() throws WebloggerException {
+        
+        RefererManager rmgr = WebloggerFactory.getWeblogger().getRefererManager();
+        
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
+        List refs = rmgr.getReferers(testWeblog);
+        assertEquals("number of referers should equal count", count, refs.size());
+        
+        int hits = rmgr.getDayHits(testWeblog);
+        assertEquals("There should be one fewer hits than referers", count, hits);
+    }
+

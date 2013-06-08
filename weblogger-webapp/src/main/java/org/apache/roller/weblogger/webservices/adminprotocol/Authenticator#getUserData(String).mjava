@@ -1,0 +1,17 @@
+    protected User getUserData(String name) throws NotFoundException, InternalException {
+        try {
+            UserManager mgr = getRoller().getUserManager();
+            User ud = mgr.getUserByUserName(name, Boolean.TRUE);
+            if (ud == null) {
+                ud = mgr.getUserByUserName(name, Boolean.FALSE);
+            }
+            if (ud == null) {
+                throw new NotFoundException("ERROR: Unknown user: " + name);
+            }
+            
+            return ud;
+        } catch (WebloggerException re) {
+            throw new InternalException("ERROR: Could not get user: " + name, re);
+        }
+    }
+

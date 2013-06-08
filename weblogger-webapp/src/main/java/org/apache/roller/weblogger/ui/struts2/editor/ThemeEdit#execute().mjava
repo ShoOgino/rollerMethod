@@ -1,0 +1,39 @@
+	public String execute() {
+
+		// set theme to current value
+		if (WeblogTheme.CUSTOM.equals(getActionWeblog().getEditorTheme())) {
+			setThemeId(null);
+		} else {
+			setThemeId(getActionWeblog().getTheme().getId());
+			setImportThemeId(getActionWeblog().getTheme().getId());
+		}
+
+		// See if we have a custom style sheet from a custom theme.
+		try {
+			if (!WeblogTheme.CUSTOM.equals(getActionWeblog().getEditorTheme())
+					&& getActionWeblog().getTheme().getStylesheet() != null) {
+
+				ThemeTemplate override = WebloggerFactory
+						.getWeblogger()
+						.getWeblogManager()
+						.getPageByLink(
+								getActionWeblog(),
+								getActionWeblog().getTheme().getStylesheet()
+										.getLink());
+				if (override != null) {
+					customStylesheet = true;
+				}
+			}
+		} catch (WebloggerException ex) {
+			log.error("Error looking up stylesheet on weblog - "
+					+ getActionWeblog().getHandle(), ex);
+		}
+
+		if (!WebloggerRuntimeConfig
+				.getBooleanProperty("themes.customtheme.allowed")) {
+			return "input-sharedonly";
+		} else {
+			return INPUT;
+		}
+	}
+

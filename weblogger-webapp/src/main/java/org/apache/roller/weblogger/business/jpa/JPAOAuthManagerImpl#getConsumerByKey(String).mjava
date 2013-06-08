@@ -1,0 +1,13 @@
+    OAuthConsumer getConsumerByKey(String consumerKey) {
+        OAuthConsumerRecord record = null;
+        try {
+            Query q = strategy.getNamedQuery("OAuthConsumerRecord.getByConsumerKey");
+            q.setParameter(1, consumerKey);
+            record = (OAuthConsumerRecord)q.getSingleResult();
+
+        } catch (Throwable ex) {
+            log.debug("ERROR fetching consumer", ex);
+        }
+        return consumerFromRecord(record);
+    }
+
