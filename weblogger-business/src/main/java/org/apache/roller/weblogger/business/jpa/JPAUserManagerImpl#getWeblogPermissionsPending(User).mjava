@@ -1,6 +1,0 @@
-    public List<WeblogPermission> getWeblogPermissionsPending(User user) throws WebloggerException {
-        Query q = strategy.getNamedQuery("WeblogPermission.getByUserName&Pending");
-        q.setParameter(1, user.getUserName());
-        return (List<WeblogPermission>)q.getResultList();
-    }
-

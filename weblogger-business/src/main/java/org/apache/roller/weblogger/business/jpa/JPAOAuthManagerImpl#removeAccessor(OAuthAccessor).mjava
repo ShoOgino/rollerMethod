@@ -1,8 +1,0 @@
-    void removeAccessor(OAuthAccessor accessor) throws OAuthException {
-        try {
-            strategy.remove(OAuthAccessorRecord.class, accessor.consumer.consumerKey);
-        } catch (WebloggerException ex) {
-            throw new OAuthException("ERROR removing accessor", ex);
-        }
-    }
-
