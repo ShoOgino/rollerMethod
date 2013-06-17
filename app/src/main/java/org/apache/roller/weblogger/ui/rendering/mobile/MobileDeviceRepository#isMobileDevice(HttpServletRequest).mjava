@@ -1,14 +1,24 @@
-	/**
-	 *
-	 * ToCheck if a request is mobile.
-	 * @param request
-	 * @return   boolean
-	 */
-	public static boolean isMobileDevice(HttpServletRequest request) {
+    /**
+     * 
+     * ToCheck if a request is mobile.
+     * 
+     * @param request
+     * @return boolean
+     */
+    public static boolean isMobileDevice(HttpServletRequest request) {
         String userAgent = request.getHeader("User-Agent");
         if (userAgent != null) {
             userAgent = request.getHeader("User-Agent").toLowerCase();
-            return (userAgent.matches(possibleDevices1) || userAgent.substring(0, 4).matches(possibleDevices2));
+
+            try {
+                return (userAgent.matches(possibleDevices1) || userAgent
+                        .substring(0, 4).matches(possibleDevices2));
+            } catch (StringIndexOutOfBoundsException e) {
+                // invalid device
+                log.error("ERROR invalid userAgent type : " + userAgent);
+                return false;
+            }
+
         }
         return false;
     }
