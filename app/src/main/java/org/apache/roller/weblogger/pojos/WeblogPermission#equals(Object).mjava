@@ -1,4 +1,11 @@
-    public boolean equals(Object arg0) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public boolean equals(Object other) {
+        if (other == this) return true;
+        if (other instanceof WeblogPermission != true) return false;
+        WeblogPermission o = (WeblogPermission)other;
+        return new EqualsBuilder()
+                .append(getUserName(), o.getUserName())
+                .append(getObjectId(), o.getObjectId())
+                .append(getActions(), o.getActions())
+                .isEquals();
     }
 
