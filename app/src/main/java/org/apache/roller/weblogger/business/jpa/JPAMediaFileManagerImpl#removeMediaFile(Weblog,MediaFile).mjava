@@ -3,10 +3,11 @@
      */
     public void removeMediaFile(Weblog weblog, MediaFile mediaFile)
             throws WebloggerException {
-        FileContentManager cmgr = WebloggerFactory.getWeblogger().getFileContentManager();
+        FileContentManager cmgr = WebloggerFactory.getWeblogger()
+                .getFileContentManager();
 
         this.strategy.remove(mediaFile);
-        // update weblog last modified date.  date updated by saveWeblog()
+        // update weblog last modified date. date updated by saveWeblog()
         roller.getWeblogManager().saveWeblog(weblog);
 
         try {

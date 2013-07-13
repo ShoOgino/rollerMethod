@@ -32,12 +32,8 @@
         mediaFile.setContentType("image/jpeg");
         rootDirectory.getMediaFiles().add(mediaFile);
 
-        MediaFileTag tag1 = new MediaFileTag("tst5work", mediaFile);
-        MediaFileTag tag2 = new MediaFileTag("tst5home", mediaFile);
-        Set<MediaFileTag> tags = new HashSet<MediaFileTag>();
-        tags.add(tag1);
-        tags.add(tag2);
-        mediaFile.setTags(tags);
+        // Add tags
+        mediaFile.setTagsAsString("tst5work tst5home");
 
         mfMgr.createMediaFile(testWeblog, mediaFile, new RollerMessages());
         String id = mediaFile.getId();

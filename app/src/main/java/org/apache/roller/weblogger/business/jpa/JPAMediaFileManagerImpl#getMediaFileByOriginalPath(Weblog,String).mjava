@@ -3,15 +3,16 @@
      */
     public MediaFile getMediaFileByOriginalPath(Weblog weblog, String origpath)
             throws WebloggerException {
-                
-        if (null == origpath) return null;
+
+        if (null == origpath)
+            return null;
 
         if (!origpath.startsWith("/")) {
             origpath = "/" + origpath;
         }
 
-        Query q = this.strategy.getNamedQuery(
-                "MediaFile.getByWeblogAndOrigpath");
+        Query q = this.strategy
+                .getNamedQuery("MediaFile.getByWeblogAndOrigpath");
         q.setParameter(1, weblog);
         q.setParameter(2, origpath);
         MediaFile mf = null;
@@ -20,8 +21,10 @@
         } catch (NoResultException e) {
             return null;
         }
-        FileContentManager cmgr = WebloggerFactory.getWeblogger().getFileContentManager();
-        FileContent content = cmgr.getFileContent(mf.getDirectory().getWeblog(), mf.getId());
+        FileContentManager cmgr = WebloggerFactory.getWeblogger()
+                .getFileContentManager();
+        FileContent content = cmgr.getFileContent(
+                mf.getDirectory().getWeblog(), mf.getId());
         mf.setContent(content);
         return mf;
     }

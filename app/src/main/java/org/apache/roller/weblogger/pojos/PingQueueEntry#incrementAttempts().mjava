@@ -4,6 +4,8 @@
      * @return the new value.
      */
     public int incrementAttempts() {
-        return ++attempts;
+        int newAttempts = getAttempts() + 1;
+        setAttempts(newAttempts);
+        return newAttempts;
     }
 

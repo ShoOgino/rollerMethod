@@ -4,7 +4,7 @@
     private String render(String str) {
         String ret = str;
         mLogger.debug("Applying page plugins to string");
-        Map plugins = this.website.getInitializedPlugins();
+        Map plugins = getWebsite().getInitializedPlugins();
         if (str != null && plugins != null) {
             List entryPlugins = getPluginsList();
             

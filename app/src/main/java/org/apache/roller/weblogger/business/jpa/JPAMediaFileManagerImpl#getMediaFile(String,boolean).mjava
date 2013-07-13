@@ -1,16 +1,21 @@
     /**
      * {@inheritDoc}
      */
-    public MediaFile getMediaFile(String id, boolean includeContent) throws WebloggerException {
-        MediaFile mediaFile = (MediaFile) this.strategy.load(MediaFile.class, id);
+    public MediaFile getMediaFile(String id, boolean includeContent)
+            throws WebloggerException {
+        MediaFile mediaFile = (MediaFile) this.strategy.load(MediaFile.class,
+                id);
         if (includeContent) {
-            FileContentManager cmgr = WebloggerFactory.getWeblogger().getFileContentManager();
+            FileContentManager cmgr = WebloggerFactory.getWeblogger()
+                    .getFileContentManager();
 
-            FileContent content = cmgr.getFileContent(mediaFile.getDirectory().getWeblog(), id);
+            FileContent content = cmgr.getFileContent(mediaFile.getDirectory()
+                    .getWeblog(), id);
             mediaFile.setContent(content);
 
             try {
-                FileContent thumbnail = cmgr.getFileContent(mediaFile.getDirectory().getWeblog(), id + "_sm");
+                FileContent thumbnail = cmgr.getFileContent(mediaFile
+                        .getDirectory().getWeblog(), id + "_sm");
                 mediaFile.setThumbnailContent(thumbnail);
 
             } catch (Exception e) {

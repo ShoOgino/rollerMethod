@@ -1,8 +1,8 @@
     /**
      * {@inheritDoc}
      */
-    public MediaFileDirectory createMediaFileDirectoryByPath(Weblog weblog, String requestedPath)
-            throws WebloggerException {
+    public MediaFileDirectory createMediaFileDirectoryByPath(Weblog weblog,
+            String requestedPath) throws WebloggerException {
 
         String path = requestedPath;
         log.debug("Creating dir: " + path);
@@ -51,7 +51,8 @@
                 } else {
                     pathpart += token;
                 }
-                MediaFileDirectory possibleBase = getMediaFileDirectoryByPath(weblog, pathpart);
+                MediaFileDirectory possibleBase = getMediaFileDirectoryByPath(
+                        weblog, pathpart);
                 if (possibleBase == null) {
                     base = base.createNewDirectory(token);
                     log.debug("   Created new directory: " + base.getPath());
@@ -67,7 +68,7 @@
             newDirectory = base;
         }
 
-        // update weblog last modified date.  date updated by saveWeblog()
+        // update weblog last modified date. date updated by saveWeblog()
         roller.getWeblogManager().saveWeblog(weblog);
 
         return newDirectory;

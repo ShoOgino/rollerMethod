@@ -33,12 +33,8 @@
         mediaFile.setContentType("image/jpeg");
         rootDirectory.getMediaFiles().add(mediaFile);
 
-        MediaFileTag tag1 = new MediaFileTag("work", mediaFile);
-        MediaFileTag tag2 = new MediaFileTag("home", mediaFile);
-        Set<MediaFileTag> tags = new HashSet<MediaFileTag>();
-        tags.add(tag1);
-        tags.add(tag2);
-        mediaFile.setTags(tags);
+        // Add tags
+        mediaFile.setTagsAsString("work home");
 
         mfMgr.createMediaFile(testWeblog, mediaFile, new RollerMessages());
         TestUtils.endSession(true);

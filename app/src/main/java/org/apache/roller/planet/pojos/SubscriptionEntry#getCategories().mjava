@@ -3,8 +3,8 @@
      */
     public List getCategories() {
         List list = new ArrayList();
-        if (categoriesString != null) {
-            String[] catArray = Utilities.stringToStringArray(categoriesString,",");
+        if (getCategoriesString() != null) {
+            String[] catArray = Utilities.stringToStringArray(getCategoriesString(),",");
             for (int i=0; i<catArray.length; i++) {
                 Category cat = new Category();
                 cat.setName(catArray[i]);

@@ -1,5 +1,5 @@
     /**
-     * Populates this bean from a media file object. 
+     * Populates this bean from a media file object.
      * 
      */
     public void copyFrom(MediaFile dataHolder) {
@@ -7,22 +7,7 @@
         this.setName(dataHolder.getName());
         this.setDescription(dataHolder.getDescription());
         this.setCopyrightText(dataHolder.getCopyrightText());
-
-        Set<MediaFileTag> tags = dataHolder.getTags();
-        if (tags != null && !tags.isEmpty()) {
-            StringBuilder tagDisplayBuilder = new StringBuilder();
-            for (MediaFileTag tag : dataHolder.getTags()) {
-            	if (StringUtils.isNotEmpty(tag.getName())) {
-            		tagDisplayBuilder.append(tag.getName());
-                    tagDisplayBuilder.append(" ");
-				}
-            }
-			if (tagDisplayBuilder.length() > 0) {
-				tagDisplayBuilder.deleteCharAt(tagDisplayBuilder.length() - 1);
-			}
-            this.setTags(tagDisplayBuilder.toString());
-        }
-
+        this.setTagsAsString(dataHolder.getTagsAsString());
         this.setSharedForGallery(dataHolder.isSharedForGallery());
         this.setDirectoryId(dataHolder.getDirectory().getId());
         this.setPermalink(dataHolder.getPermalink());

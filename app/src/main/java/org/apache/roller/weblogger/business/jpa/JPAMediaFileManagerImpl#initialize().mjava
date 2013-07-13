@@ -1,8 +1,10 @@
     /**
-     * Initialize manager; deal with upgrade/migration if 'uploads.migrate.auto' is true.
+     * Initialize manager; deal with upgrade/migration if 'uploads.migrate.auto'
+     * is true.
      */
     public void initialize() {
-        boolean autoUpgrade = WebloggerConfig.getBooleanProperty("uploads.migrate.auto");
+        boolean autoUpgrade = WebloggerConfig
+                .getBooleanProperty("uploads.migrate.auto");
         if (autoUpgrade && this.isFileStorageUpgradeRequired()) {
             this.upgradeFileStorage();
         }

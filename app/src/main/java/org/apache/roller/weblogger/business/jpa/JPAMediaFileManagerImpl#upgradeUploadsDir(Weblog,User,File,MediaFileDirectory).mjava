@@ -1,4 +1,5 @@
-    private void upgradeUploadsDir(Weblog weblog, User user, File oldDir, MediaFileDirectory newDir) {
+    private void upgradeUploadsDir(Weblog weblog, User user, File oldDir,
+            MediaFileDirectory newDir) {
         RollerMessages messages = new RollerMessages();
 
         log.debug("Upgrading dir: " + oldDir.getAbsolutePath());
@@ -26,7 +27,8 @@
                     MediaFileDirectory subDir = null;
                     try {
                         subDir = newDir.createNewDirectory(files[i].getName());
-                        roller.getMediaFileManager().createMediaFileDirectory(subDir);
+                        roller.getMediaFileManager().createMediaFileDirectory(
+                                subDir);
                         newDir.getChildDirectories().add(subDir);
                         roller.flush();
                         dirCount++;
@@ -47,16 +49,18 @@
 
                 } else {
 
-                    String originalPath =
-                            ("/".equals(newDir.getPath()) ? "" : newDir.getPath()) + "/" + files[i].getName();
-                    log.debug("    Upgrade file with original path: " + originalPath);
+                    String originalPath = ("/".equals(newDir.getPath()) ? ""
+                            : newDir.getPath()) + "/" + files[i].getName();
+                    log.debug("    Upgrade file with original path: "
+                            + originalPath);
                     MediaFile mf = new MediaFile();
                     try {
                         mf.setName(files[i].getName());
                         mf.setDescription(files[i].getName());
                         mf.setOriginalPath(originalPath);
 
-                        mf.setDateUploaded(new Timestamp(files[i].lastModified()));
+                        mf.setDateUploaded(new Timestamp(files[i]
+                                .lastModified()));
                         mf.setLastUpdated(new Timestamp(files[i].lastModified()));
 
                         mf.setDirectory(newDir);
@@ -66,10 +70,12 @@
 
                         mf.setLength(files[i].length());
                         mf.setInputStream(new FileInputStream(files[i]));
-                        mf.setContentType(Utilities.getContentTypeFromFileName(files[i].getName()));
+                        mf.setContentType(Utilities
+                                .getContentTypeFromFileName(files[i].getName()));
                         newDir.getMediaFiles().add(mf);
 
-                        this.roller.getMediaFileManager().createMediaFile(weblog, mf, messages);
+                        this.roller.getMediaFileManager().createMediaFile(
+                                weblog, mf, messages);
                         log.info(messages.toString());
 
                         fileCount++;
@@ -79,14 +85,15 @@
                                 + files[i].getAbsolutePath(), ex);
 
                     } catch (java.io.FileNotFoundException ex) {
-                        log.error("ERROR reading file from old storage system: "
-                                + files[i].getAbsolutePath(), ex);
+                        log.error(
+                                "ERROR reading file from old storage system: "
+                                        + files[i].getAbsolutePath(), ex);
                     }
                 }
             }
         }
 
-        try { // flush changes to this directory 
+        try { // flush changes to this directory
             roller.flush();
 
             log.debug("Count of dirs  created: " + dirCount);

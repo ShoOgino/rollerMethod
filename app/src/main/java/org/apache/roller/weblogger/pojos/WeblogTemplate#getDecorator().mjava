@@ -1,10 +1,10 @@
     public ThemeTemplate getDecorator() {
-        if(decoratorName != null && !id.equals(decoratorName)) {
+        if(getDecoratorName() != null && !getId().equals(getDecoratorName())) {
             try {
-                return weblog.getTheme().getTemplateByName(decoratorName);
+                return weblog.getTheme().getTemplateByName(getDecoratorName());
             } catch (WebloggerException ex) {
-                log.error("Error getting decorator["+decoratorName+"] "+
-                        "for template "+id);
+                log.error("Error getting decorator["+getDecoratorName()+"] "+
+                        "for template "+getId());
             }
         }
         return null;

@@ -4,7 +4,7 @@
      * @roller.wrapPojoMethod type="simple"
      */
     public String getRss09xDescription(int maxLength) {
-        String ret = StringEscapeUtils.escapeHtml(text);
+        String ret = StringEscapeUtils.escapeHtml(getText());
         if (maxLength != -1 && ret.length() > maxLength) {
             ret = ret.substring(0,maxLength-3)+"...";
         }
