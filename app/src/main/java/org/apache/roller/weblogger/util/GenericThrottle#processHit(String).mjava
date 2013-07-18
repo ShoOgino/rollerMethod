@@ -5,7 +5,7 @@
      * then returns a boolean value indicating if the hit has pushed the client
      * over the threshold.
      *
-     * @retuns true if client is abusive, false otherwise
+     * @return true if client is abusive, false otherwise
      */
     public boolean processHit(String clientId) {
         
@@ -45,8 +45,7 @@
             // first timer
             ClientInfo newClient = new ClientInfo();
             newClient.hits = 1;
-            newClient.id = clientId;
-            
+
             ExpiringCacheEntry newEntry = new ExpiringCacheEntry(newClient, this.interval);
             this.clientHistoryCache.put(clientId, newEntry);
         }
