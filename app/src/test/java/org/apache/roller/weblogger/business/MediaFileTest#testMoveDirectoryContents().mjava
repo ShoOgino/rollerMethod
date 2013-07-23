@@ -33,7 +33,6 @@
 
             MediaFile mediaFile = new MediaFile();
             mediaFile.setDirectory(rootDirectory);
-            rootDirectory.getMediaFiles().add(mediaFile);
             mediaFile.setWeblog(testWeblog);
             mediaFile.setName("test7_1.jpg");
             mediaFile.setDescription("This is a test image 7.1");
@@ -43,10 +42,10 @@
             mediaFile.setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
             mediaFile.setContentType("image/jpeg");
             mfMgr.createMediaFile(testWeblog, mediaFile, new RollerMessages());
+            rootDirectory.getMediaFiles().add(mediaFile);
 
             MediaFile mediaFile2 = new MediaFile();
             mediaFile2.setDirectory(rootDirectory);
-            rootDirectory.getMediaFiles().add(mediaFile2);
             mediaFile2.setWeblog(testWeblog);
             mediaFile2.setName("test7_2.jpg");
             mediaFile2.setDescription("This is a test image 7.2");
@@ -56,6 +55,7 @@
             mediaFile2.setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
             mediaFile2.setContentType("image/jpeg");
             mfMgr.createMediaFile(testWeblog, mediaFile2, new RollerMessages());
+            rootDirectory.getMediaFiles().add(mediaFile2);
 
             TestUtils.endSession(true);
 
