@@ -38,8 +38,8 @@
         mediaFile.setLength(4000);
         mediaFile.setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
         mediaFile.setContentType("image/jpeg");
-        mfMgr.createMediaFile(testWeblog, mediaFile, new RollerMessages());
         rootDirectory.getMediaFiles().add(mediaFile);
+        mfMgr.createMediaFile(testWeblog, mediaFile, new RollerMessages());
 
         MediaFile mediaFile2 = new MediaFile();
         mediaFile2.setDirectory(rootDirectory);
@@ -51,8 +51,8 @@
         mediaFile2.setLength(4000);
         mediaFile2.setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
         mediaFile2.setContentType("image/jpeg");
-        mfMgr.createMediaFile(testWeblog, mediaFile2, new RollerMessages());
         rootDirectory.getMediaFiles().add(mediaFile2);
+        mfMgr.createMediaFile(testWeblog, mediaFile2, new RollerMessages());
 
         TestUtils.endSession(true);
 

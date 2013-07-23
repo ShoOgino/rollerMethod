@@ -30,12 +30,12 @@
         mediaFile.setWeblog(testWeblog);
         mediaFile.setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
         mediaFile.setContentType("image/jpeg");
+        rootDirectory.getMediaFiles().add(mediaFile);
 
         // Add tags
         mediaFile.setTagsAsString("tst5work tst5home");
 
         mfMgr.createMediaFile(testWeblog, mediaFile, new RollerMessages());
-        rootDirectory.getMediaFiles().add(mediaFile);
         String id = mediaFile.getId();
         TestUtils.endSession(true);
         assertNotNull(id);
