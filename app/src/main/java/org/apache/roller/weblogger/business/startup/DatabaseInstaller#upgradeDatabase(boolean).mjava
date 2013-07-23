@@ -16,6 +16,11 @@
                 String msg = "Cannot upgrade database tables, Roller database version cannot be determined";
                 errorMessage(msg);
                 throw new StartupException(msg);
+            } else if (dbversion < 310) {
+                String msg = "Roller " + myVersion + " cannot upgrade from versions older than 3.10; " +
+                        "try first upgrading to an earlier version of Roller.";
+                errorMessage(msg);
+                throw new StartupException(msg);
             } else if(dbversion >= myVersion) {
                 log.info("Database is current, no upgrade needed");
                 return;
@@ -26,34 +31,7 @@
             // iterate through each upgrade as needed
             // to add to the upgrade sequence simply add a new "if" statement
             // for whatever version needed and then define a new method upgradeXXX()
-            if(dbversion < 130) {
-                upgradeTo130(con, runScripts);
-                dbversion = 130;
-            }
-            if (dbversion < 200) {
-                upgradeTo200(con, runScripts);
-                dbversion = 200;
-            }
-            if(dbversion < 210) {
-                upgradeTo210(con, runScripts);
-                dbversion = 210;
-            }
-            if(dbversion < 230) {
-                upgradeTo230(con, runScripts);
-                dbversion = 230;
-            }
-            if(dbversion < 240) {
-                upgradeTo240(con, runScripts);
-                dbversion = 240;
-            }
-            if(dbversion < 300) {
-                upgradeTo300(con, runScripts);
-                dbversion = 300;
-            }
-            if(dbversion < 310) {
-                upgradeTo310(con, runScripts);
-                dbversion = 310;
-            }
+
             if(dbversion < 400) {
                 upgradeTo400(con, runScripts);
                 dbversion = 400;
