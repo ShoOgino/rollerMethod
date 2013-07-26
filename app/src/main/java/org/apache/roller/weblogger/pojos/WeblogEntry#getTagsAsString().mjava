@@ -3,7 +3,10 @@
      */
     public String getTagsAsString() {
         StringBuffer sb = new StringBuffer();
-        for (Iterator it = getTags().iterator(); it.hasNext();) {
+        // Sort by name
+        Set<WeblogEntryTag> tmp = new TreeSet<WeblogEntryTag>(new WeblogEntryTagComparator());
+        tmp.addAll(getTags());
+        for (Iterator it = tmp.iterator(); it.hasNext();) {
             sb.append(((WeblogEntryTag) it.next()).getName()).append(" ");
         }
         if (sb.length() > 0) {

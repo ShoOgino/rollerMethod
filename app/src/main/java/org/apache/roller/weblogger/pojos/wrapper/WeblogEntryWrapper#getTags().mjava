@@ -1,5 +1,7 @@
     public List getTags() {
-        Set initialCollection = this.pojo.getTags();
+        // Sort by name
+        Set<WeblogEntryTag> initialCollection = new TreeSet<WeblogEntryTag>(new WeblogEntryTagComparator());
+        initialCollection.addAll(this.pojo.getTags());
         
         // iterate through and wrap
         // we force the use of an ArrayList because it should be good enough to cover
