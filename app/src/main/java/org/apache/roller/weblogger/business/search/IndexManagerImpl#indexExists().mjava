@@ -1,6 +1,6 @@
     private boolean indexExists() {
         try {
-            return IndexReader.indexExists(getIndexDirectory());
+            return DirectoryReader.indexExists(getIndexDirectory());
         } catch (IOException e) {
             mLogger.error("Problem accessing index directory", e);
         }
