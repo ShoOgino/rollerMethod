@@ -1,56 +1,56 @@
-	/**
-	 * Send trackback to a specific url.
-	 */
-	@SkipValidation
-	public String trackback() {
+    /**
+     * Send trackback to a specific url.
+     */
+    @SkipValidation
+    public String trackback() {
 
-		// make sure we have an entry to edit and it belongs to the action
-		// weblog
-		if (getEntry() == null) {
-			return ERROR;
-		} else if (!getEntry().getWebsite().equals(getActionWeblog())) {
-			return DENIED;
-		}
+        // make sure we have an entry to edit and it belongs to the action
+        // weblog
+        if (getEntry() == null) {
+            return ERROR;
+        } else if (!getEntry().getWebsite().equals(getActionWeblog())) {
+            return DENIED;
+        }
 
-		if (!StringUtils.isEmpty(getTrackbackUrl())) {
-			RollerMessages results = null;
-			try {
-				Trackback trackback = new Trackback(getEntry(),
-						getTrackbackUrl());
-				results = trackback.send();
-			} catch (TrackbackNotAllowedException ex) {
-				addError("error.trackbackNotAllowed");
-			} catch (Throwable t) {
-				log.error("Error sending trackback", t);
-				// TODO: error handling
-				addError("error.general", t.getMessage());
-			}
+        if (!StringUtils.isEmpty(getTrackbackUrl())) {
+            RollerMessages results = null;
+            try {
+                Trackback trackback = new Trackback(getEntry(),
+                        getTrackbackUrl());
+                results = trackback.send();
+            } catch (TrackbackNotAllowedException ex) {
+                addError("error.trackbackNotAllowed");
+            } catch (Throwable t) {
+                log.error("Error sending trackback", t);
+                // TODO: error handling
+                addError("error.general", t.getMessage());
+            }
 
-			if (results != null) {
-				for (Iterator mit = results.getMessages(); mit.hasNext();) {
-					RollerMessage msg = (RollerMessage) mit.next();
-					if (msg.getArgs() == null) {
-						addMessage(msg.getKey());
-					} else {
-						addMessage(msg.getKey(), Arrays.asList(msg.getArgs()));
-					}
-				}
+            if (results != null) {
+                for (Iterator mit = results.getMessages(); mit.hasNext();) {
+                    RollerMessage msg = (RollerMessage) mit.next();
+                    if (msg.getArgs() == null) {
+                        addMessage(msg.getKey());
+                    } else {
+                        addMessage(msg.getKey(), Arrays.asList(msg.getArgs()));
+                    }
+                }
 
-				for (Iterator eit = results.getErrors(); eit.hasNext();) {
-					RollerMessage err = (RollerMessage) eit.next();
-					if (err.getArgs() == null) {
-						addError(err.getKey());
-					} else {
-						addError(err.getKey(), Arrays.asList(err.getArgs()));
-					}
-				}
-			}
+                for (Iterator eit = results.getErrors(); eit.hasNext();) {
+                    RollerMessage err = (RollerMessage) eit.next();
+                    if (err.getArgs() == null) {
+                        addError(err.getKey());
+                    } else {
+                        addError(err.getKey(), Arrays.asList(err.getArgs()));
+                    }
+                }
+            }
 
-			// reset trackback url
-			setTrackbackUrl(null);
+            // reset trackback url
+            setTrackbackUrl(null);
 
-		}
+        }
 
-		return INPUT;
-	}
+        return INPUT;
+    }
 

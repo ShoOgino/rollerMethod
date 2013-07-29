@@ -1,22 +1,22 @@
-	/**
-	 * Show form for editing an existing entry.
-	 * 
-	 * @return String The result of the action.
-	 */
-	@SkipValidation
-	public String execute() {
+    /**
+     * Show form for editing an existing entry.
+     * 
+     * @return String The result of the action.
+     */
+    @SkipValidation
+    public String execute() {
 
-		// make sure we have an entry to edit and it belongs to the action
-		// weblog
-		if (getEntry() == null) {
-			return ERROR;
-		} else if (!getEntry().getWebsite().equals(getActionWeblog())) {
-			return DENIED;
-		}
+        // make sure we have an entry to edit and it belongs to the action
+        // weblog
+        if (getEntry() == null) {
+            return ERROR;
+        } else if (!getEntry().getWebsite().equals(getActionWeblog())) {
+            return DENIED;
+        }
 
-		// load bean with pojo data
-		getBean().copyFrom(getEntry(), getLocale());
+        // load bean with pojo data
+        getBean().copyFrom(getEntry(), getLocale());
 
-		return INPUT;
-	}
+        return INPUT;
+    }
 
