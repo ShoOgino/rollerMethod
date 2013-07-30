@@ -46,6 +46,16 @@
                 query = bQuery;
             }
 
+            Term tLocale = IndexUtil.getTerm(FieldConstants.LOCALE,
+                    locale);
+
+            if (tLocale != null) {
+                BooleanQuery bQuery = new BooleanQuery();
+                bQuery.add(query, BooleanClause.Occur.MUST);
+                bQuery.add(new TermQuery(tLocale), BooleanClause.Occur.MUST);
+                query = bQuery;
+            }
+
             searchresults = searcher.search(query, null/* Filter */, nMax,
                     SORTER);
 
