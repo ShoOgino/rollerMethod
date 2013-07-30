@@ -1,0 +1,32 @@
+    /**
+     * Validate the form of an email address.
+     * 
+     * <P>
+     * Return <tt>true</tt> only if
+     * <ul>
+     * <li> <tt>aEmailAddress</tt> can successfully construct an
+     * {@link javax.mail.internet.InternetAddress}
+     * <li>when parsed with "@" as delimiter, <tt>aEmailAddress</tt> contains
+     * two tokens which satisfy
+     * </ul>
+     * <P>
+     * The second condition arises since local email addresses, simply of the
+     * form "<tt>albert</tt>", for example, are valid for
+     * {@link javax.mail.internet.InternetAddress}, but almost always undesired.
+     */
+    public static boolean isValidEmailAddress(String aEmailAddress) {
+        if (aEmailAddress == null)
+            return false;
+        boolean result = true;
+        try {
+            // See if its valid
+            new InternetAddress(aEmailAddress);
+            if (!hasNameAndDomain(aEmailAddress)) {
+                result = false;
+            }
+        } catch (AddressException ex) {
+            result = false;
+        }
+        return result;
+    }
+

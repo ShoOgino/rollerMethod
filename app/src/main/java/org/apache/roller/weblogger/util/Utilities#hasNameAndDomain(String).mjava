@@ -1,0 +1,13 @@
+    /**
+     * Checks for name and domain.
+     * 
+     * @param aEmailAddress
+     *            the a email address
+     * @return true, if successful
+     */
+    private static boolean hasNameAndDomain(String aEmailAddress) {
+        String[] tokens = aEmailAddress.split("@");
+        return tokens.length == 2 && StringUtils.isNotEmpty(tokens[0])
+                && StringUtils.isNotEmpty(tokens[1]);
+    }
+
