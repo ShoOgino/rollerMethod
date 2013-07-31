@@ -1,17 +1,18 @@
     /**
      * Convenience method that simulates the end of a typical session.
-     *
+     * 
      * Normally this would be triggered by the end of the response in the webapp
      * but for unit tests we need to do this explicitly.
-     *
-     * @param flush true if you want to flush changes to db before releasing
+     * 
+     * @param flush
+     *            true if you want to flush changes to db before releasing
      */
     public static void endSession(boolean flush) throws Exception {
-        
-        if(flush) {
+
+        if (flush) {
             WebloggerFactory.getWeblogger().flush();
         }
-        
+
         WebloggerFactory.getWeblogger().release();
     }
 

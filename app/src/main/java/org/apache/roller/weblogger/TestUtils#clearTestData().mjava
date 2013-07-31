@@ -1,0 +1,52 @@
+    /**
+     * Clear test data.
+     * 
+     * @throws Exception
+     *             the exception
+     */
+    private static void clearTestData() throws Exception {
+
+        DatabaseProvider dbp = WebloggerStartup.getDatabaseProvider();
+        Connection con = dbp.getConnection();
+
+        // normally local tests run against mysql
+        String databaseProductName = con.getMetaData().getDatabaseProductName();
+        String dbname = "mysql";
+        if (databaseProductName.toLowerCase().indexOf("derby") > 0) {
+            // tests against Derby
+            dbname = "derby";
+        }
+
+        // Somewhere on classpath
+        ClasspathDatabaseScriptProvider scriptProvider = new ClasspathDatabaseScriptProvider();
+
+        InputStream script = scriptProvider
+                .getAbsoluteDatabaseScript("junit-cleartables-" + dbname
+                        + ".sql");
+
+        try {
+
+            if (script != null) {
+
+                // run script to reset tables
+                SQLScriptRunner create = new SQLScriptRunner(script);
+                create.runScript(con, true);
+
+            } else {
+
+                throw new RuntimeException(
+                        "Reseting tables script unsupported database or not found :"
+                                + dbname);
+
+            }
+
+        } finally {
+            try {
+                script.close();
+            } catch (Exception e) {
+                // ignored
+            }
+        }
+
+    }
+
