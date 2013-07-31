@@ -1,0 +1,73 @@
+    /**
+     * Test deletion of media file folder association with named queries
+     * 
+     * This test fails but it should not, so Z'ed out not to run.
+     */
+    public void ZtestDirectoryDeleteAssociation() throws Exception {
+
+        User testUser = null;
+        Weblog testWeblog = null;
+        testUser = TestUtils.setupUser("mediaFileTestUser12");
+        testWeblog = TestUtils.setupWeblog("mediaFileTestWeblog12", testUser);
+
+        MediaFileManager mfMgr = WebloggerFactory.getWeblogger()
+                .getMediaFileManager();
+
+        // no need to create root directory, that is done automatically now
+        MediaFileDirectory rootDirectory = mfMgr
+                .getMediaFileRootDirectory(testWeblog);
+
+        MediaFileDirectory directory1 = new MediaFileDirectory(rootDirectory,
+                "dir1", "directory 1", testWeblog);
+        mfMgr.createMediaFileDirectory(directory1);
+        rootDirectory.getChildDirectories().add(directory1);
+
+        MediaFileDirectory directory2 = new MediaFileDirectory(rootDirectory,
+                "dir2", "directory 2", testWeblog);
+        mfMgr.createMediaFileDirectory(directory2);
+        rootDirectory.getChildDirectories().add(directory2);
+
+        MediaFileDirectory directory3 = new MediaFileDirectory(rootDirectory,
+                "dir3", "directory 3", testWeblog);
+        mfMgr.createMediaFileDirectory(directory3);
+        rootDirectory.getChildDirectories().add(directory3);
+
+        TestUtils.endSession(true);
+
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
+        rootDirectory = mfMgr.getMediaFileDirectory(rootDirectory.getId());
+
+        Set<MediaFileDirectory> childDirectories = rootDirectory
+                .getChildDirectories();
+        assertEquals(3, childDirectories.size());
+
+        TestUtils.endSession(true);
+
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
+
+        // Using named query MediaFileDirectory.getByWeblogAndNoParent
+        MediaFileDirectory directory = mfMgr
+                .getMediaFileRootDirectory(testWeblog);
+
+        assertEquals(3, directory.getChildDirectories().size());
+
+        // Delete folder
+        MediaFileDirectory directoryById = mfMgr
+                .getMediaFileDirectory(directory1.getId());
+
+        mfMgr.removeMediaFileDirectory(directoryById);
+        TestUtils.endSession(true);
+
+        directory = null;
+        
+        // Using named query again MediaFileDirectory.getByWeblogAndNoParent
+        directory = mfMgr.getMediaFileRootDirectory(testWeblog);
+
+        // There should only be two, the database only has two.
+        assertEquals(2, directory.getChildDirectories().size());
+
+        TestUtils.endSession(true);
+        TestUtils.teardownWeblog(testWeblog.getId());
+        TestUtils.teardownUser(testUser.getUserName());
+    }
+

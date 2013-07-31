@@ -3,10 +3,12 @@
         Weblog testWeblog1 = null;
         Weblog testWeblog2 = null;
         String oldmax = "4";
-        PropertiesManager pmgr = WebloggerFactory.getWeblogger().getPropertiesManager();
+        PropertiesManager pmgr = WebloggerFactory.getWeblogger()
+                .getPropertiesManager();
         try {
             // set dir max limit high so we won't bump into it
-            RuntimeConfigProperty prop = pmgr.getProperty("uploads.dir.maxsize");
+            RuntimeConfigProperty prop = pmgr
+                    .getProperty("uploads.dir.maxsize");
             oldmax = prop.getValue();
             prop.setValue("20");
             pmgr.saveProperty(prop);
@@ -16,7 +18,8 @@
             testWeblog1 = TestUtils.setupWeblog("testblog1", testUser);
             testWeblog2 = TestUtils.setupWeblog("testblog2", testUser);
 
-            MediaFileManager mgr = WebloggerFactory.getWeblogger().getMediaFileManager();
+            MediaFileManager mgr = WebloggerFactory.getWeblogger()
+                    .getMediaFileManager();
             JPAMediaFileManagerImpl mmgr = (JPAMediaFileManagerImpl) mgr;
 
             assertTrue("Upgrade required", mmgr.isFileStorageUpgradeRequired());
@@ -28,15 +31,20 @@
 
             // now, let's check to see if migration was sucessful
 
-            MediaFileDirectory root1 = mgr.getMediaFileRootDirectory(testWeblog1);
+            MediaFileDirectory root1 = mgr
+                    .getMediaFileRootDirectory(testWeblog1);
             assertNotNull("testblog1's mediafile dir exists", root1);
             assertNotNull(mgr.getMediaFileByPath(testWeblog1, "/sub1/hawk.jpg"));
-            assertNotNull(mgr.getMediaFileByPath(testWeblog1, "/sub1/sub2/nasa.jpg"));
-            assertNotNull(mgr.getMediaFileByPath(testWeblog1, "/roller50-prop.png"));
+            assertNotNull(mgr.getMediaFileByPath(testWeblog1,
+                    "/sub1/sub2/nasa.jpg"));
+            assertNotNull(mgr.getMediaFileByPath(testWeblog1,
+                    "/roller50-prop.png"));
 
-            assertNotNull(mgr.getMediaFileByOriginalPath(testWeblog1, "/sub1/hawk.jpg"));
+            assertNotNull(mgr.getMediaFileByOriginalPath(testWeblog1,
+                    "/sub1/hawk.jpg"));
 
-            MediaFileDirectory root2 = mgr.getMediaFileRootDirectory(testWeblog2);
+            MediaFileDirectory root2 = mgr
+                    .getMediaFileRootDirectory(testWeblog2);
             assertNotNull("testblog2's mediafile dir exists", root2);
             assertNotNull(root2.getMediaFile("amsterdam.jpg"));
             assertNotNull(root2.getMediaFile("p47-thunderbolt.jpg"));
@@ -44,12 +52,14 @@
 
         } finally {
 
-            File statusFile = new File(WebloggerConfig.getProperty("uploads.dir")
-                    + File.separator + JPAMediaFileManagerImpl.MIGRATION_STATUS_FILENAME);
+            File statusFile = new File(
+                    WebloggerConfig.getProperty("uploads.dir") + File.separator
+                            + JPAMediaFileManagerImpl.MIGRATION_STATUS_FILENAME);
             statusFile.delete();
 
             // reset dir max to old value
-            RuntimeConfigProperty prop = pmgr.getProperty("uploads.dir.maxsize");
+            RuntimeConfigProperty prop = pmgr
+                    .getProperty("uploads.dir.maxsize");
             prop.setValue(oldmax);
             pmgr.saveProperty(prop);
 
