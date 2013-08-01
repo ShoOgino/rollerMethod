@@ -2,8 +2,6 @@
 
         if (!WebloggerFactory.isBootstrapped()) {
 
-            System.out.println("Bootstrapping system, please wait....");
-
             // do core services preparation
             WebloggerStartup.prepare();
 
@@ -12,29 +10,6 @@
 
             // always initialize the properties manager and flush
             WebloggerFactory.getWeblogger().initialize();
-
-            // Reset for local tests
-            // On junit test jvm argument -Droller.tests.reset=true/false
-            String local = System.getProperty("roller.tests.reset");
-            if (StringUtils.isNotEmpty(local) && local.equals("true")) {
-
-                System.out
-                        .println("Resetting tables for local tests: roller.tests.reset="
-                                + local);
-
-                try {
-                    clearTestData();
-                } catch (Exception e) {
-                    System.out.println("Error resetting tables : "
-                            + e.getMessage());
-                } finally {
-                    // flush
-                    endSession(true);
-                }
-            }
-
-            System.out
-                    .println("Bootstrapping successful, running tests please wait....");
 
         }
     }
