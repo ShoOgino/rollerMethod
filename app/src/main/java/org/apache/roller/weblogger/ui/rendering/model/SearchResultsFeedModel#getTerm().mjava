@@ -1,4 +1,6 @@
 	public String getTerm() {
-		return (feedRequest.getTerm() == null) ? "" : feedRequest.getTerm();
+		String query =feedRequest.getTerm() ;
+		return (query == null) 
+			? "" : StringEscapeUtils.escapeXml(Utilities.escapeHTML(query));
 	}
 
