@@ -1,5 +1,6 @@
     protected void setFieldValue(String fieldId, String value) {
-        driver.findElement(By.id(fieldId)).clear();
-        driver.findElement(By.id(fieldId)).sendKeys(value);
+        WebElement field = driver.findElement(By.id(fieldId));
+        field.clear();
+        field.sendKeys(value);
     }
 
