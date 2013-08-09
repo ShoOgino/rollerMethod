@@ -4,7 +4,7 @@
         // Strip off jsessionid found in referer URL
         int startPos = url.indexOf(";jsessionid=");
         if ( startPos != -1 ) {
-            int endPos = url.indexOf("?",startPos);
+            int endPos = url.indexOf('?',startPos);
             if ( endPos == -1 ) {
                 url = url.substring(0,startPos);
             } else {

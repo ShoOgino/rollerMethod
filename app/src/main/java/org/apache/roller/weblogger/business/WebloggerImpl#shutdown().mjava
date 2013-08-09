@@ -7,7 +7,7 @@
             if (getReferrerQueueManager() != null) getReferrerQueueManager().shutdown();
             if (indexManager != null) indexManager.shutdown();
             if (threadManager != null) threadManager.shutdown();
-        } catch(Throwable e) {
+        } catch(Exception e) {
             log.error("Error calling Roller.shutdown()", e);
         }
     }

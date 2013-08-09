@@ -4,7 +4,7 @@
             Query q = strategy.getNamedQuery("OAuthConsumerRecord.getSiteWideConsumer");
             record = (OAuthConsumerRecord)q.getSingleResult();
 
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             log.debug("ERROR fetching site-wide consumer", ex);
         }
         if (record != null) {

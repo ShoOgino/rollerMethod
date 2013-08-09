@@ -61,12 +61,12 @@
         try { 
             Connection testcon = getConnection();
             testcon.close();
-        } catch (Throwable t) {
+        } catch (Exception e) {
             String errorMsg = 
                 "ERROR: unable to obtain database connection. "
                +"Likely problem: bad connection parameters or database unavailable.";
             errorMessage(errorMsg);
-            throw new StartupException(errorMsg, t, startupLog);
+            throw new StartupException(errorMsg, e, startupLog);
         }
     }
 

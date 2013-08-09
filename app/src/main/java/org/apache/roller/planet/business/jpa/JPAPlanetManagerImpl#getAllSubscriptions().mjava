@@ -2,7 +2,7 @@
         try {
             return ((List)strategy.getNamedQuery(
                     "Subscription.getAll").getResultList()).iterator();
-        } catch (Throwable e) {
+        } catch (Exception e) {
             throw new RuntimeException(
                     "ERROR fetching subscription collection", e);
         }

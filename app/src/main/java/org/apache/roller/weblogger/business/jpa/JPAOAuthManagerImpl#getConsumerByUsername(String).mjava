@@ -5,7 +5,7 @@
             q.setParameter(1, username);
             record = (OAuthConsumerRecord)q.getSingleResult();
 
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             log.debug("ERROR fetching consumer", ex);
         }
         if (record != null) {

@@ -152,18 +152,18 @@
 				String justName = null;
 				String justPath = null;
 
-				if (resourcePath.indexOf("/") == -1) {
+				if (resourcePath.indexOf('/') == -1) {
 					mdir = fileMgr.getMediaFileRootDirectory(website);
 					justPath = "";
 					justName = resourcePath;
 
 				} else {
 					justPath = resourcePath.substring(0,
-							resourcePath.lastIndexOf("/"));
+							resourcePath.lastIndexOf('/'));
 					if (!justPath.startsWith("/"))
 						justPath = "/" + justPath;
 					justName = resourcePath.substring(resourcePath
-							.lastIndexOf("/") + 1);
+							.lastIndexOf('/') + 1);
 					mdir = fileMgr.getMediaFileDirectoryByPath(website,
 							justPath);
 					if (mdir == null) {

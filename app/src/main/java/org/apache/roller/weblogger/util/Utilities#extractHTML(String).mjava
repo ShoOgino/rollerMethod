@@ -7,13 +7,13 @@
         if (str == null) return "";
         StringBuffer ret = new StringBuffer(str.length());
         int start = 0;
-        int beginTag = str.indexOf("<");
+        int beginTag = str.indexOf('<');
         int endTag = 0;
         if (beginTag == -1)
             return str;
         
         while (beginTag >= start) {
-            endTag = str.indexOf(">", beginTag);
+            endTag = str.indexOf('>', beginTag);
             
             // if endTag found, keep tag
             if (endTag > -1) {
@@ -21,7 +21,7 @@
                 
                 // move start forward and find another tag
                 start = endTag + 1;
-                beginTag = str.indexOf("<", start);
+                beginTag = str.indexOf('<', start);
             }
             // if no endTag found, break
             else {
