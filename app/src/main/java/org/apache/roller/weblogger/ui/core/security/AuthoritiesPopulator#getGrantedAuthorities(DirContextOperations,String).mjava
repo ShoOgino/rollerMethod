@@ -1,7 +1,7 @@
     /* (non-Javadoc)
      * @see org.springframework.security.ldap.LdapAuthoritiesPopulator#getGrantedAuthorities(org.springframework.ldap.core.DirContextOperations, String)
      */
-    public GrantedAuthority[] getGrantedAuthorities(DirContextOperations userData, String username) {
+    public Collection<GrantedAuthority> getGrantedAuthorities(DirContextOperations userData, String username) {
 
         // This check is probably unnecessary.
         if (userData == null) {
@@ -24,17 +24,17 @@
         }
 
         int roleCount = roles.size() + (defaultRole != null ? 1 : 0);
-        GrantedAuthority[] authorities = new GrantedAuthorityImpl[roleCount];
+        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>(roleCount); // SimpleGrantedAuthority[roleCount];
         int i = 0;
         for(String role : roles) {
-            authorities[i++] = new GrantedAuthorityImpl(role);
+            authorities.add(new SimpleGrantedAuthority(role));
         }
         
         if (defaultRole != null) {
-            authorities[roleCount-1] = defaultRole;
+            authorities.add(defaultRole);
         }
 
-        if (authorities.length == 0) {
+        if (authorities.size() == 0) {
             // TODO: This doesn't seem like the right type of exception to throw here, but retained it, fixed the message
             throw new UsernameNotFoundException("User " + username + " has no roles granted and there is no default role set.");
         }

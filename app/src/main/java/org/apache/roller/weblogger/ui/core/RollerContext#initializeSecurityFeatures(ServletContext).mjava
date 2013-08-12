@@ -31,7 +31,7 @@
         boolean doEncrypt = Boolean.valueOf(encryptPasswords).booleanValue();
         
         if (doEncrypt) {
-            DaoAuthenticationProvider provider = (DaoAuthenticationProvider) ctx.getBean("org.springframework.security.providers.dao.DaoAuthenticationProvider#0");
+            DaoAuthenticationProvider provider = (DaoAuthenticationProvider) ctx.getBean("org.springframework.security.authentication.dao.DaoAuthenticationProvider#0");
             String algorithm = WebloggerConfig.getProperty("passwds.encryption.algorithm");
             PasswordEncoder encoder = null;
             if (algorithm.equalsIgnoreCase("SHA")) {
@@ -48,8 +48,8 @@
         }
 
         if (WebloggerConfig.getBooleanProperty("securelogin.enabled")) {
-            AuthenticationProcessingFilterEntryPoint entryPoint =
-                (AuthenticationProcessingFilterEntryPoint) ctx.getBean("_formLoginEntryPoint");
+            LoginUrlAuthenticationEntryPoint entryPoint =
+                (LoginUrlAuthenticationEntryPoint) ctx.getBean("_formLoginEntryPoint");
             entryPoint.setForceHttps(true);
         }
    

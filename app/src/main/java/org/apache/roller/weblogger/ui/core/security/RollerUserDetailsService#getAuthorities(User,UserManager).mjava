@@ -1,10 +1,10 @@
-     private GrantedAuthority[] getAuthorities(User userData, UserManager umgr) throws WebloggerException {
-             List<String> roles = umgr.getRoles(userData);
-            GrantedAuthority[] authorities = new GrantedAuthorityImpl[roles.size()];
-            int i = 0;
-            for (String role : roles) {
-                authorities[i++] = new GrantedAuthorityImpl(role);
-            }
-            return authorities;
-        }
+     private ArrayList<SimpleGrantedAuthority> getAuthorities(User userData, UserManager umgr) throws WebloggerException {
+         List<String> roles = umgr.getRoles(userData);
+         ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>(roles.size());
+         int i = 0;
+         for (String role : roles) {
+             authorities.add(new SimpleGrantedAuthority(role));
+         }
+         return authorities;
+     }
 

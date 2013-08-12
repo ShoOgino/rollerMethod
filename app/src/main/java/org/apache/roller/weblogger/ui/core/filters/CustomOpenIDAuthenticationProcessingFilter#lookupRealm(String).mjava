@@ -4,7 +4,7 @@
     @Override
     protected String lookupRealm(String returnToUrl) {
 
-        String mapping = (String) getRealmMapping().get(returnToUrl);
+        String mapping = super.lookupRealm(returnToUrl);
 
         if (mapping == null) {
             try {

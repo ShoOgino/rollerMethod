@@ -5,6 +5,6 @@
      */
     public void setDefaultRole(String defaultRole) {
         Assert.notNull(defaultRole, "The defaultRole property cannot be set to null");
-        this.defaultRole = new GrantedAuthorityImpl(defaultRole);
+        this.defaultRole = new SimpleGrantedAuthority(defaultRole);
     }
 
