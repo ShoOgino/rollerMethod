@@ -1,0 +1,14 @@
+    /*
+    * Alternative method of identifying a page, by an HTML ID uniquely on it.
+    * Use when multiple views share the same page title.  This method will require
+    * adding an id to an element specific to that page if one not already available.
+    */
+    protected void verifyIdOnPage(String idOnPage) {
+        try {
+            WebElement div = driver.findElement(By.id(idOnPage));
+        } catch (NoSuchElementException e) {
+            throw new IllegalStateException("This is not the " + pageName + ", HTML ID: "
+                    + idOnPage + " not found.");
+        }
+    }
+
