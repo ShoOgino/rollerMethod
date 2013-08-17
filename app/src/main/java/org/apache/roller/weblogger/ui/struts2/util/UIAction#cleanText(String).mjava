@@ -1,0 +1,6 @@
+    public static String cleanText(String s) {
+        if (s == null || s.isEmpty()) return s;
+        // escape HTML
+        return StringEscapeUtils.escapeHtml(cleanDollarExpressions(s));
+    }
+

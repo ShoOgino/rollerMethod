@@ -1,0 +1,9 @@
+    @Override
+    public String getText(String key, String defaultValue, String[] args) {
+        String[] cleanedArgs = new String[args.length];
+        for (int i = 0; i < args.length; ++i) {
+            cleanedArgs[i] = cleanText(args[i]);
+        }
+        return super.getText(cleanText(key), cleanText(defaultValue), cleanedArgs);
+    }
+

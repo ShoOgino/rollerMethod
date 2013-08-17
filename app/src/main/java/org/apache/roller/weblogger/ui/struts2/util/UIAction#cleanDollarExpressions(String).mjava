@@ -1,0 +1,31 @@
+    private static String cleanDollarExpressions(String s) {
+        // Remove ${ } expressions; handcoded automaton
+        StringBuilder cleaned = new StringBuilder(s.length());
+        boolean skipping = false;
+        int braceDepth = 0;
+        int p = 0;
+        char prior = ' ';
+        while (p < s.length()) {
+            char c = s.charAt(p);
+            switch (c) {
+                case '{':
+                    ++braceDepth;
+                    skipping = skipping || (prior == '$');
+                    break;
+                case '}':
+                    if (braceDepth > 0) --braceDepth;
+                    break;
+                default:
+            }
+            if (!skipping) {
+                if (prior == '$') cleaned.append(prior);
+                if (c != '$')  cleaned.append(c);
+            }
+            skipping = skipping && (braceDepth > 0);
+            prior = c;
+            ++p;
+        }
+        if (prior == '$') cleaned.append(prior);  // string had final $ held in prior
+        return cleaned.toString();
+    }
+
