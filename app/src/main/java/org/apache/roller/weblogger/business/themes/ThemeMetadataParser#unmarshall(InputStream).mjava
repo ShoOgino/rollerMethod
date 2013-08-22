@@ -5,8 +5,9 @@
     public ThemeMetadata unmarshall(InputStream instream)
         throws ThemeParsingException, IOException, JDOMException {
         
-        if(instream == null)
+        if(instream == null) {
             throw new IOException("InputStream is null!");
+        }
         
         ThemeMetadata theme = new ThemeMetadata();
         
@@ -27,7 +28,7 @@
         
         // now grab the preview image path
         Element previewImage = root.getChild("preview-image");
-        if(previewImage != null) {
+        if (previewImage != null) {
             theme.setPreviewImage(previewImage.getAttributeValue("path"));
         } else {
             throw new ThemeParsingException("No preview image specified");
@@ -35,7 +36,7 @@
         
         // grab the stylesheet if it exists
         Element stylesheet = root.getChild("stylesheet");
-        if(stylesheet != null) {
+        if (stylesheet != null) {
             theme.setStylesheet(elementToStylesheet(stylesheet));
 
         }

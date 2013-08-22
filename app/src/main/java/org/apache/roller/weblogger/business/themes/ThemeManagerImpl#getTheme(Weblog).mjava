@@ -1,5 +1,5 @@
 	/**
-	 * @see org.apache.roller.weblogger.model.ThemeManager#getTheme(weblog)
+	 * @see org.apache.roller.weblogger.business.themes.ThemeManager#getTheme(Weblog)
 	 */
 	public WeblogTheme getTheme(Weblog weblog) throws WebloggerException {
 
@@ -16,7 +16,6 @@
 
 			// otherwise we are returning a WeblogSharedTheme
 		} else {
-			ThemeManager themeMgr = roller.getThemeManager();
 			SharedTheme staticTheme = (SharedTheme) this.themes.get(weblog
 					.getEditorTheme());
 			if (staticTheme != null) {

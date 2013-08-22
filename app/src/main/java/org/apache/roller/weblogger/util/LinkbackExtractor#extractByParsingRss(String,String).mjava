@@ -1,6 +1,6 @@
     //------------------------------------------------------------------------
     private void extractByParsingRss(String rssLink, String requestURL)
-            throws IllegalArgumentException, MalformedURLException, FeedException, IOException
+            throws IllegalArgumentException, FeedException, IOException
     {
         SyndFeedInput feedInput = new SyndFeedInput();       
         SyndFeed feed = feedInput.build(
@@ -33,9 +33,9 @@
                 }
                 mExcerpt = item.getDescription().getValue();
                 mExcerpt = Utilities.removeHTML(mExcerpt);
-                if (mExcerpt.length() > mMaxExcerpt)
+                if (mExcerpt.length() > MAX_EXCERPT_CHARS)
                 {
-                    mExcerpt = mExcerpt.substring(0, mMaxExcerpt) + "...";
+                    mExcerpt = mExcerpt.substring(0, MAX_EXCERPT_CHARS) + "...";
                 }
                 break;
             }

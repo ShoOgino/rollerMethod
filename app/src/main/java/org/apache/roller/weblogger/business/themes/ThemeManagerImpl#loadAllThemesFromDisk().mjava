@@ -21,21 +21,19 @@
 		if (themenames == null) {
 			log.warn("No themes loaded!  Perhaps you specified the wrong "
 					+ "location for your themes directory?");
-		}
-
-		// now go through each theme and load it into a Theme object
-		for (int i = 0; i < themenames.length; i++) {
-			try {
-				Theme theme = new SharedThemeFromDir(this.themeDir
-						+ File.separator + themenames[i]);
-				if (theme != null) {
-					themeMap.put(theme.getId(), theme);
-				}
-			} catch (Exception unexpected) {
-				// shouldn't happen, so let's learn why it did
-				log.error("Problem reading theme " + themenames[i], unexpected);
-			}
-		}
+		} else {
+            // now go through each theme and load it into a Theme object
+            for (String themeName : themenames) {
+                try {
+                    Theme theme = new SharedThemeFromDir(this.themeDir
+                            + File.separator + themeName);
+                    themeMap.put(theme.getId(), theme);
+                } catch (Exception unexpected) {
+                    // shouldn't happen, so let's learn why it did
+                    log.error("Problem reading theme " + themeName, unexpected);
+                }
+            }
+        }
 
 		return themeMap;
 	}

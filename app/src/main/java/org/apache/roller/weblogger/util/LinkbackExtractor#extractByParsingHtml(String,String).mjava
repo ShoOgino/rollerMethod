@@ -1,6 +1,6 @@
     //------------------------------------------------------------------------
     private void extractByParsingHtml(String refererURL, String requestURL)
-            throws MalformedURLException, IOException
+            throws IOException
     {
         URL url = new URL(refererURL);
         InputStream is = url.openStream();
@@ -53,9 +53,9 @@
             mExcerpt = sb.toString().substring(mStart, mEnd);
             mExcerpt = Utilities.removeHTML(mExcerpt);
 
-            if (mExcerpt.length() > mMaxExcerpt)
+            if (mExcerpt.length() > MAX_EXCERPT_CHARS)
             {
-                mExcerpt = mExcerpt.substring(0, mMaxExcerpt) + "...";
+                mExcerpt = mExcerpt.substring(0, MAX_EXCERPT_CHARS) + "...";
             }
         }
 

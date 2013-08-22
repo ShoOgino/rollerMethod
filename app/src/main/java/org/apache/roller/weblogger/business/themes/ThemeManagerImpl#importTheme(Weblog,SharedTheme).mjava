@@ -1,6 +1,6 @@
 	/**
-	 * @see org.apache.roller.weblogger.model.ThemeManager#importTheme(website,
-	 *      theme)
+	 * @see org.apache.roller.weblogger.business.themes.ThemeManager#importTheme(Weblog,
+	 *      SharedTheme)
 	 */
 	public void importTheme(Weblog website, SharedTheme theme)
 			throws WebloggerException {
@@ -12,8 +12,10 @@
 		MediaFileManager fileMgr = roller.getMediaFileManager();
 
 		MediaFileDirectory root = fileMgr.getMediaFileRootDirectory(website);
-		log.warn("Weblog " + website.getHandle()
-				+ " does not have a root MediaFile directory");
+        if (root == null) {
+            log.warn("Weblog " + website.getHandle()
+                    + " does not have a root MediaFile directory");
+        }
 
 		Set importedActionTemplates = new HashSet();
 		ThemeTemplate themeTemplate = null;
@@ -160,8 +162,9 @@
 				} else {
 					justPath = resourcePath.substring(0,
 							resourcePath.lastIndexOf('/'));
-					if (!justPath.startsWith("/"))
-						justPath = "/" + justPath;
+					if (!justPath.startsWith("/")) {
+                        justPath = "/" + justPath;
+                    }
 					justName = resourcePath.substring(resourcePath
 							.lastIndexOf('/') + 1);
 					mdir = fileMgr.getMediaFileDirectoryByPath(website,

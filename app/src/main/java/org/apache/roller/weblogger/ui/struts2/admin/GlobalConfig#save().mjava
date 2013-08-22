@@ -2,14 +2,16 @@
      * Save global properties.
      */
     public String save() {
-        if (!"POST".equals(httpMethod)) return ERROR;
+        if (!"POST".equals(httpMethod)) {
+            return ERROR;
+        }
         
         // only set values for properties that are already defined
         String propName = null;
         RuntimeConfigProperty updProp = null;
         String incomingProp = null;
         Iterator propsIT = getProperties().keySet().iterator();
-        while(propsIT.hasNext()) {
+        while (propsIT.hasNext()) {
             propName = (String) propsIT.next();
             updProp = (RuntimeConfigProperty) getProperties().get(propName);
             incomingProp = this.getParameter(updProp.getName());
@@ -24,10 +26,12 @@
             if( updProp.getValue() != null // null check needed w/Oracle
                     && (updProp.getValue().equals("true") || updProp.getValue().equals("false"))) {
                 
-                if(incomingProp == null || !incomingProp.equals("on"))
+                if(incomingProp == null || !incomingProp.equals("on")) {
                     incomingProp = "false";
-                else
+                }
+                else {
                     incomingProp = "true";
+                }
             }
             
             // only work on props that were submitted with the request
