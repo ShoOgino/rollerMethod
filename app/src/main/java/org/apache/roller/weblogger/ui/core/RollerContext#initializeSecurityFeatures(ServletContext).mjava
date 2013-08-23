@@ -11,7 +11,7 @@
             System.out.println(name);*/
         
         String rememberMe = WebloggerConfig.getProperty("rememberme.enabled");
-        boolean rememberMeEnabled = Boolean.valueOf(rememberMe).booleanValue();
+        boolean rememberMeEnabled = Boolean.valueOf(rememberMe);
         
         log.info("Remember Me enabled: " + rememberMeEnabled);
         
@@ -28,7 +28,7 @@
         }
         
         String encryptPasswords = WebloggerConfig.getProperty("passwds.encryption.enabled");
-        boolean doEncrypt = Boolean.valueOf(encryptPasswords).booleanValue();
+        boolean doEncrypt = Boolean.valueOf(encryptPasswords);
         
         if (doEncrypt) {
             DaoAuthenticationProvider provider = (DaoAuthenticationProvider) ctx.getBean("org.springframework.security.authentication.dao.DaoAuthenticationProvider#0");
@@ -65,7 +65,7 @@
             PathBasedFilterInvocationDefinitionMap defmap =
                     (PathBasedFilterInvocationDefinitionMap)procfilter.getFilterInvocationDefinitionSource();
             
-            // add HTTPS URL path patterns to Acegi config
+            // add HTTPS URL path patterns to Spring Security config
             String httpsUrlsProp = WebloggerConfig.getProperty("schemeenforcement.https.urls");
             if (httpsUrlsProp != null) {
                 String[] httpsUrls = StringUtils.stripAll(StringUtils.split(httpsUrlsProp, ",") );
