@@ -1,0 +1,9 @@
+    public List<WeblogPermission> getPermissions() {
+        try {
+            return WebloggerFactory.getWeblogger().getUserManager().getWeblogPermissions(user);
+        } catch (WebloggerException ex) {
+            log.error("ERROR getting permissions for user " + user.getUserName(), ex);
+        }
+        return new ArrayList<WeblogPermission>();
+    }
+
