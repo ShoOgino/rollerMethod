@@ -1,6 +1,6 @@
     public List<WeblogPermission> getWeblogPermissions() {
         try {
-            return WebloggerFactory.getWeblogger().getUserManager().getWeblogPermissions(getActionWeblog());
+            return WebloggerFactory.getWeblogger().getUserManager().getWeblogPermissionsIncludingPending(getActionWeblog());
         } catch (WebloggerException ex) {
             // serious problem, but not much we can do here
             log.error("ERROR getting weblog permissions", ex);

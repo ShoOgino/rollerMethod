@@ -31,8 +31,8 @@
         // assert that invitation list is empty
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         user = TestUtils.getManagedUser(user);
-        assertTrue(umgr.getWeblogPermissionsPending(user).isEmpty());
-        assertTrue(umgr.getWeblogPermissionsPending(testWeblog).isEmpty());
+        assertTrue(umgr.getPendingWeblogPermissions(user).isEmpty());
+        assertTrue(umgr.getPendingWeblogPermissions(testWeblog).isEmpty());
 
         // assert that user is member of weblog
         assertNotNull(umgr.getWeblogPermission(testWeblog, user));

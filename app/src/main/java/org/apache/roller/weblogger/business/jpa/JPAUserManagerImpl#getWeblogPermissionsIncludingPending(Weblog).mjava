@@ -1,0 +1,6 @@
+    public List<WeblogPermission> getWeblogPermissionsIncludingPending(Weblog weblog) throws WebloggerException {
+        Query q = strategy.getNamedQuery("WeblogPermission.getByWeblogIdIncludingPending");
+        q.setParameter(1, weblog.getHandle());
+        return (List<WeblogPermission>)q.getResultList();
+    }
+

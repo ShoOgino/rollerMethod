@@ -34,8 +34,8 @@
         
         // check for existing permissions or invitation
         try {
-            WeblogPermission perm = umgr.getWeblogPermission(getActionWeblog(), user);
-            
+            WeblogPermission perm = umgr.getWeblogPermissionIncludingPending(getActionWeblog(), user);
+
             if (perm != null && perm.isPending()) {
                 addError("inviteMember.error.userAlreadyInvited");
             } else if (perm != null) {
