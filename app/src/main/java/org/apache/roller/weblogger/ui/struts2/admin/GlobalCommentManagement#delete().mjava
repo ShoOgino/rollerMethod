@@ -13,8 +13,7 @@
                     getBean().getEndDate(),
                     getBean().getStatus());
             
-            // TODO: i18n
-            addMessage("Successfully deleted "+deleted+" comments");
+            addMessage("commentManagement.deleteSuccess",Integer.toString(deleted));
             
             // reset form and load fresh comments list
             setBean(new GlobalCommentManagementBean());
@@ -23,8 +22,7 @@
             
         } catch (WebloggerException ex) {
             log.error("Error doing bulk delete", ex);
-            // TODO: i18n
-            addError("Bulk delete failed due to unexpected error");
+            addError("commentManagement.deleteError");
         }
         
         return LIST;

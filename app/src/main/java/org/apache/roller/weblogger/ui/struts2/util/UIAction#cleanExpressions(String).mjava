@@ -1,16 +1,16 @@
-    private static String cleanDollarExpressions(String s) {
-        // Remove ${ } expressions; handcoded automaton
+    private static String cleanExpressions(String s) {
         StringBuilder cleaned = new StringBuilder(s.length());
         boolean skipping = false;
         int braceDepth = 0;
         int p = 0;
-        char prior = ' ';
+        Character prior = ' ';
         while (p < s.length()) {
+            boolean priorIsOpenChar = OPEN_CHARS.contains(prior);
             char c = s.charAt(p);
             switch (c) {
                 case '{':
                     ++braceDepth;
-                    skipping = skipping || (prior == '$');
+                    skipping = skipping || priorIsOpenChar;
                     break;
                 case '}':
                     if (braceDepth > 0) --braceDepth;
@@ -18,14 +18,14 @@
                 default:
             }
             if (!skipping) {
-                if (prior == '$') cleaned.append(prior);
-                if (c != '$')  cleaned.append(c);
+                if (priorIsOpenChar) cleaned.append(prior);
+                if (!OPEN_CHARS.contains(c))  cleaned.append(c);
             }
             skipping = skipping && (braceDepth > 0);
             prior = c;
             ++p;
         }
-        if (prior == '$') cleaned.append(prior);  // string had final $ held in prior
+        if (OPEN_CHARS.contains(prior)) cleaned.append(prior);  // string had final open character held in prior
         return cleaned.toString();
     }
 

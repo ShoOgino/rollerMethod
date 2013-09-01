@@ -13,8 +13,7 @@
             addMessage("mediaFile.delete.success");
         } catch (WebloggerException e) {
             log.error("Error deleting media file", e);
-            // TODO: i18n
-            addError("Error deleting media file - " + this.mediaFileId);
+            addError("mediaFile.delete.error",this.mediaFileId);
         }
     }
 

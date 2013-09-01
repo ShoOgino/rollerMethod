@@ -49,14 +49,12 @@
 
 					return SUCCESS;
 				} else {
-					// TODO: i18n
-					addError("Cannot remove required template");
+					addError("editPages.remove.requiredTemplate");
 				}
 
 			} catch (Exception ex) {
 				log.error("Error removing page - " + getRemoveId(), ex);
-				// TODO: i18n
-				addError("Error removing page");
+				addError("editPages.remove.error");
 			}
 
 		return "confirm";

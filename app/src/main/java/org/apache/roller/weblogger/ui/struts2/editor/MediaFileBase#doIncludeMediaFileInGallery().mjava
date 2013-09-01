@@ -14,8 +14,7 @@
             addMessage("mediaFile.includeInGallery.success");
         } catch (WebloggerException e) {
             log.error("Error including media file in gallery", e);
-            // TODO: i18n
-            addError("Error including media file in gallery - " + this.mediaFileId);
+            addError("mediaFile.includeInGallery.error",this.mediaFileId);
         }
     }
 

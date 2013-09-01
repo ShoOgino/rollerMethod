@@ -12,12 +12,10 @@
                 WebloggerFactory.getWeblogger().flush();
             } catch (Exception ex) {
                 getLogger().error("Error saving ping target", ex);
-                // TODO: i18n
-                addError("Error saving ping target.");
+                addError("commonPingTargets.error.saving");
             }
         } else {
-            // TODO: i18n
-            addError("Cannot disable ping target - "+getPingTargetId());
+            addError("commonPingTargets.error.disabling");
         }
         
         return LIST;
