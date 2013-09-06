@@ -4,7 +4,7 @@
     public String execute() {
         
         // build list of categories for display
-        TreeSet allCategories = new TreeSet(new WeblogCategoryPathComparator());
+        TreeSet allCategoriesSet = new TreeSet(new WeblogCategoryPathComparator());
         
         try {
             // Build list of all categories, except for current one, sorted by path.
@@ -12,7 +12,7 @@
             List<WeblogCategory> cats = wmgr.getWeblogCategories(getActionWeblog(), true);
             for(WeblogCategory cat : cats) {
                 if (!cat.getId().equals(getRemoveId())) {
-                    allCategories.add(cat);
+                    allCategoriesSet.add(cat);
                 }
             }
         } catch (WebloggerException ex) {
@@ -21,8 +21,8 @@
             addError("Error building categories list");
         }
         
-        if (allCategories.size() > 0) {
-            setAllCategories(allCategories);
+        if (allCategoriesSet.size() > 0) {
+            setAllCategories(allCategoriesSet);
         }
         
         return INPUT;

@@ -1,15 +1,13 @@
     /**
      * Initialize the plugin instance.   This sets up the configurable properties and default topic site.
      * 
-     * @param rreq Plugins may need to access RollerRequest.
-     * @param ctx  Plugins may place objects into the Velocity Context.
-     * @see PagWeblogEntryPluginit(org.apache.roller.weblogger.presentation.RollerRequest, org.apache.velocity.context.Context)
+     * @param website Website plugin is attached to.
+     * @see WeblogEntryPlugin#init(Weblog)
      */
     public void init(Weblog website) throws WebloggerException
     {
-        if (mLogger.isDebugEnabled())
-        {
-            mLogger.debug("TopicTagPlugin v. " + version);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("TopicTagPlugin v. " + VERSION);
         }
 
         // Initialize property settings
@@ -20,11 +18,12 @@
 
         // Determine default topic site from bookmark if present
         WeblogBookmark defaultTopicBookmark = (WeblogBookmark) userBookmarks.get(defaultTopicBookmarkName);
-        if (defaultTopicBookmark != null) defaultTopicSite = defaultTopicBookmark.getUrl();
+        if (defaultTopicBookmark != null) {
+            defaultTopicSite = defaultTopicBookmark.getUrl();
+        }
 
         // Append / to defaultTopicSite if it doesn't have it
-        if (!defaultTopicSite.endsWith("/"))
-        {
+        if (!defaultTopicSite.endsWith("/")) {
             defaultTopicSite += "/";
         }
 

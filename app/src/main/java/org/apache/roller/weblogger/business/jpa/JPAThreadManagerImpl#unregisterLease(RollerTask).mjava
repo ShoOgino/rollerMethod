@@ -14,10 +14,10 @@
             }
 
         } catch (WebloggerException ex) {
-            if (log.isDebugEnabled()) {
-                log.debug("Error getting TaskLock", ex);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Error getting TaskLock", ex);
             } else {
-                log.warn("Error getting TaskLock, enable debug for more info");
+                LOG.warn("Error getting TaskLock, enable debug for more info");
             }
             return false;
         }
@@ -37,10 +37,10 @@
             }
 
         } catch (Exception e) {
-            if (log.isDebugEnabled()) {
-                log.debug("Error releasing lease", e);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Error releasing lease", e);
             } else {
-                log.warn("Error releasing lease, enable debug for more info");
+                LOG.warn("Error releasing lease, enable debug for more info");
             }
             return false;
         }
