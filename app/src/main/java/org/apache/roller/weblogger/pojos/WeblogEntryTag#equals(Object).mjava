@@ -1,6 +1,10 @@
     public boolean equals(Object other) {
-        if (other == this) return true;
-        if (other instanceof WeblogEntryTag != true) return false;
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof WeblogEntryTag)) {
+            return false;
+        }
         WeblogEntryTag o = (WeblogEntryTag)other;
         return new EqualsBuilder()
         .append(getName(), o.getName())

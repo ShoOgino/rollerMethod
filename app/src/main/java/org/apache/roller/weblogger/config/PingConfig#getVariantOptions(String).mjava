@@ -6,7 +6,7 @@
      *         the empty set if there are no variants configured.
      */
     public static Set getVariantOptions(String pingTargetUrl) {
-        Set variantOptions = (Set) configuredVariants.get(pingTargetUrl);
+        Set variantOptions = (Set) CONFIGURED_VARIANTS.get(pingTargetUrl);
         if (variantOptions == null) {
             variantOptions = Collections.EMPTY_SET;
         }

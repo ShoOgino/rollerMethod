@@ -1,8 +1,10 @@
 	public boolean equals(Object other) {
-		if (other == this)
-			return true;
-		if (other instanceof SharedThemeTemplateCode != true)
-			return false;
+		if (other == this) {
+            return true;
+        }
+		if (!(other instanceof SharedThemeTemplateCode)) {
+            return false;
+        }
 		SharedThemeTemplateCode o = (SharedThemeTemplateCode) other;
 		return new EqualsBuilder().append(templateId, o.getTemplateId())
 				.append(template, o.getTemplate()).isEquals();

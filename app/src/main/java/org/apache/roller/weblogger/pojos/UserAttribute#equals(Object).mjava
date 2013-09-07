@@ -1,6 +1,10 @@
     public boolean equals(Object other) {
-        if (other == this) return true;
-        if (other instanceof UserRole != true) return false;
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof UserRole)) {
+            return false;
+        }
         UserAttribute o = (UserAttribute)other;
         return new EqualsBuilder()
             .append(getUserName(), o.getUserName())

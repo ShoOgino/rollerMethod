@@ -6,9 +6,10 @@
         // get the value first, then convert
         String value = WebloggerRuntimeConfig.getProperty(name);
         
-        if(value == null)
+        if (value == null) {
             return false;
-        
-        return (new Boolean(value)).booleanValue();
+        }
+
+        return Boolean.valueOf(value);
     }
 

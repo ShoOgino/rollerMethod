@@ -1,6 +1,10 @@
     public boolean equals(Object other) {
-        if (other == this) return true;
-        if (other instanceof WeblogReferrer != true) return false;
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof WeblogReferrer)) {
+            return false;
+        }
         WeblogReferrer o = (WeblogReferrer)other;
         return new EqualsBuilder()
         .append(getRefererUrl(), o.getRefererUrl())

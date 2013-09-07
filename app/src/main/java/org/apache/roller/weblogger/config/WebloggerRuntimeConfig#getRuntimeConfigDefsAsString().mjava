@@ -12,13 +12,14 @@
         
         try {
             InputStreamReader reader =
-                    new InputStreamReader(WebloggerConfig.class.getResourceAsStream(runtime_config));
+                    new InputStreamReader(WebloggerConfig.class.getResourceAsStream(RUNTIME_CONFIG));
             StringWriter configString = new StringWriter();
             
             char[] buf = new char[8196];
             int length = 0;
-            while((length = reader.read(buf)) > 0)
+            while((length = reader.read(buf)) > 0) {
                 configString.write(buf, 0, length);
+            }
             
             reader.close();
             

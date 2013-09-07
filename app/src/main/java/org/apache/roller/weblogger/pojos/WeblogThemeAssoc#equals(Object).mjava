@@ -1,6 +1,10 @@
     public boolean equals(Object other) {
-        if (other == this) return true;
-        if (other instanceof WeblogThemeAssoc != true) return false;
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof WeblogThemeAssoc)) {
+            return false;
+        }
         WeblogThemeAssoc o = (WeblogThemeAssoc) other;
         return new EqualsBuilder()
             .append(getId(), o.getId())

@@ -7,16 +7,18 @@
      **/
     private Map initializeMissingProps(Map props) {
 
-        if(props == null)
+        if(props == null) {
             props = new HashMap();
+        }
 
         // start by getting our runtimeConfigDefs
         RuntimeConfigDefs runtimeConfigDefs =
                 WebloggerRuntimeConfig.getRuntimeConfigDefs();
 
         // can't do initialization without our config defs
-        if(runtimeConfigDefs == null)
+        if(runtimeConfigDefs == null) {
             return props;
+        }
 
         // iterator through all the definitions and add properties
         // that are not already in our props map

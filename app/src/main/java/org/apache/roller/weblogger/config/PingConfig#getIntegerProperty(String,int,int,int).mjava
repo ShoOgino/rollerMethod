@@ -11,8 +11,8 @@
     private static int getIntegerProperty(String propName, int defaultValue, int min, int max) {
         String configuredVal = WebloggerConfig.getProperty(propName);
         if (configuredVal == null) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("PingConfig property '" + propName + "' is not present in the configuration.  Using default value: " + defaultValue);
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("PingConfig property '" + propName + "' is not present in the configuration.  Using default value: " + defaultValue);
             }
             return defaultValue;
         }
@@ -21,12 +21,12 @@
         try {
             val = Integer.parseInt(configuredVal);
         } catch (NumberFormatException ex) {
-            logger.error("ERROR: PingConfig property '" + propName + "' is not an integer value.  Using default value: " + defaultValue);
+            LOGGER.error("ERROR: PingConfig property '" + propName + "' is not an integer value.  Using default value: " + defaultValue);
             return defaultValue;
         }
 
         if (val < min || val > max) {
-            logger.error("ERROR: PingConfig property '" + propName + "' is outside the required range (" + min + ", " + max + ").  Using default value: " + defaultValue);
+            LOGGER.error("ERROR: PingConfig property '" + propName + "' is outside the required range (" + min + ", " + max + ").  Using default value: " + defaultValue);
             return defaultValue;
         }
 
