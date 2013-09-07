@@ -40,11 +40,10 @@
         }
         
         // check password, it is required if OpenID and SSO are disabled
-        if (getOpenIdConfiguration().equals("disabled") && !getFromSso()) {
-            if (StringUtils.isEmpty(getBean().getPasswordText())) {            
+        if (getOpenIdConfiguration().equals("disabled") && !getFromSso()
+                && StringUtils.isEmpty(getBean().getPasswordText())) {
                 addError("error.add.user.passwordEmpty");
                 return;
-            }
         }
         
         // User.password does not allow null, so generate one
@@ -60,17 +59,19 @@
         }
         
         // check that username is not taken
-        if (!StringUtils.isEmpty(getBean().getUserName())) try {
-            UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
-            if (mgr.getUserByUserName(getBean().getUserName(), null) != null) {
-                addError("error.add.user.userNameInUse");
-                // reset user name
-                getBean().setUserName(null);
+        if (!StringUtils.isEmpty(getBean().getUserName())) {
+            try {
+                UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
+                if (mgr.getUserByUserName(getBean().getUserName(), null) != null) {
+                    addError("error.add.user.userNameInUse");
+                    // reset user name
+                    getBean().setUserName(null);
+                }
+            } catch (WebloggerException ex) {
+                log.error("error checking for user", ex);
+                // TODO: i18n
+                addError("unexpected error");
             }
-        } catch (WebloggerException ex) {
-            log.error("error checking for user", ex);
-            // TODO: i18n
-            addError("unexpected error");
         }
     }
 

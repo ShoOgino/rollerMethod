@@ -3,8 +3,9 @@
      * Returns null if the template cannot be found.
      */
     public ThemeTemplate getTemplateByName(String name) throws WebloggerException {
-        if(name == null)
+        if (name == null) {
             return null;
+        }
         
         return WebloggerFactory.getWeblogger().getWeblogManager().getPageByName(this.weblog, name);
     }

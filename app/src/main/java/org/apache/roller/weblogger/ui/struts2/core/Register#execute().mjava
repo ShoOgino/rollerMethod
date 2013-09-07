@@ -6,11 +6,11 @@
             if (!WebloggerRuntimeConfig.getBooleanProperty("users.registration.enabled")
                 // unless there are 0 users (need to allow creation of first user)
                 && WebloggerFactory.getWeblogger().getUserManager().getUserCount() != 0) {
-                return "disabled";
+                return DISABLED_RETURN_CODE;
             }
         } catch (Exception e) {
             log.error("Error checking user count", e);
-            return "disabled";
+            return DISABLED_RETURN_CODE;
         }
                 
         // For new user default to locale set in browser

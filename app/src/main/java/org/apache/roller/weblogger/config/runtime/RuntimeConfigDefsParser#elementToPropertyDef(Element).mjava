@@ -8,11 +8,13 @@
         prop.setDefaultValue(element.getChildText("default-value"));
         
         // optional elements
-        if(element.getChild("rows") != null)
+        if (element.getChild("rows") != null) {
             prop.setRows(element.getChildText("rows"));
+        }
         
-        if(element.getChild("cols") != null)
+        if (element.getChild("cols") != null) {
             prop.setCols(element.getChildText("cols"));
+        }
         
         return prop;
     }

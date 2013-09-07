@@ -19,8 +19,8 @@
             params.add(website.getName());
         }
         params.add(websiteUrl);
-        if (logger.isDebugEnabled()) {
-            logger.debug("Executing ping to '" + pingTargetUrl + "' for website '" + websiteUrl + "' (" + website.getName() + ")" + (variantOptions.isEmpty() ? "" : " with variant options " + variantOptions));
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Executing ping to '" + pingTargetUrl + "' for website '" + websiteUrl + "' (" + website.getName() + ")" + (variantOptions.isEmpty() ? "" : " with variant options " + variantOptions));
         }
 
         // Send the ping.
@@ -30,7 +30,9 @@
         client.setConfig(config);
         PingResult pingResult = parseResult(client.execute("weblogUpdates.ping", params.toArray()));
 
-        if (logger.isDebugEnabled()) logger.debug("Ping result is: " + pingResult);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Ping result is: " + pingResult);
+        }
         return pingResult;
     }
 

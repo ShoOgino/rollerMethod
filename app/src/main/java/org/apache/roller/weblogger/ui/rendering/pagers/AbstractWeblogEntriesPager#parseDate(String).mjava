@@ -16,7 +16,9 @@
             
             // make sure the requested date is not in the future
             Date today = getToday();
-            if (ret.after(today)) ret = today;
+            if (ret.after(today)) {
+                ret = today;
+            }
         }
         if (   dateString!=null
                 && dateString.length()==6
@@ -27,7 +29,9 @@
             
             // make sure the requested date is not in the future
             Date today = getToday();
-            if (ret.after(today)) ret = today;
+            if (ret.after(today)) {
+                ret = today;
+            }
         }
         return ret;
     }
