@@ -27,10 +27,14 @@
      *    content-type  = "image/jpg"
      * Might result in daveblog-200608201034.jpg
      */
-    private String createFileName(Weblog weblog, String slug, String contentType) {
+    private String createFileName(Weblog weblog, String title, String contentType) {
         
-        if (weblog == null) throw new IllegalArgumentException("weblog cannot be null");
-        if (contentType == null) throw new IllegalArgumentException("contentType cannot be null");
+        if (weblog == null) {
+            throw new IllegalArgumentException("weblog cannot be null");
+        }
+        if (contentType == null) {
+            throw new IllegalArgumentException("contentType cannot be null");
+        }
         
         String fileName = null;
         
@@ -41,9 +45,9 @@
         String[] typeTokens = contentType.split("/");
         String ext = typeTokens[1];
         
-        if (slug != null && !slug.trim().equals("")) {              
+        if (title != null && !title.trim().equals("")) {
             // We've got a title, so use it to build file name
-            StringTokenizer toker = new StringTokenizer(slug);
+            StringTokenizer toker = new StringTokenizer(title);
             String tmp = null;
             int count = 0;
             while (toker.hasMoreTokens() && count < 5) {

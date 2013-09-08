@@ -7,7 +7,9 @@
         if (getEntryAttributes() != null) {
             for (Iterator it = getEntryAttributes().iterator(); it.hasNext(); ) {
                 WeblogEntryAttribute att = (WeblogEntryAttribute) it.next();
-                if (name.equals(att.getName())) return att.getValue();
+                if (name.equals(att.getName())) {
+                    return att.getValue();
+                }
             }
         }
         return null;

@@ -44,7 +44,9 @@
                         throw new AtomException("Duplicate file name");
                     }
 
-                    if (path.length() > 0) path = path + File.separator;
+                    if (path.length() > 0) {
+                        path = path + File.separator;
+                    }
                     FileInputStream fis = new FileInputStream(tempFile);
 
                     MediaFile mf = new MediaFile();
@@ -81,7 +83,9 @@
                     throw new AtomException(
                         "File upload disabled, over-quota or other error", fie);
                 } finally {
-                    if (tempFile != null) tempFile.delete();
+                    if (tempFile != null) {
+                        tempFile.delete();
+                    }
                 }
             }
             throw new AtomException("Error saving media entry");

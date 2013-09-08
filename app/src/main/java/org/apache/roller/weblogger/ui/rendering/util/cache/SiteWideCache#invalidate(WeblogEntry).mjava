@@ -3,8 +3,9 @@
      */
     public void invalidate(WeblogEntry entry) {
         
-        if(!cacheEnabled)
+        if (!cacheEnabled) {
             return;
+        }
         
         this.contentCache.clear();
         this.lastUpdateTime = null;

@@ -1,7 +1,7 @@
     /** Download the MT blacklist from the web to our uploads directory. */
     private boolean downloadBlacklist() {
         
-        boolean blacklist_updated = false;
+        boolean blacklistUpdated = false;
         try {
             mLogger.debug("Attempting to download MT blacklist");
             
@@ -38,14 +38,15 @@
                     (this.lastModified == null ||
                     this.lastModified.getTime() < lastModifiedLong)) {
 
-                mLogger.debug("my last modified = "+this.lastModified.getTime());
-                mLogger.debug("MT last modified = "+lastModifiedLong);
+                mLogger.debug("my last modified = " + (this.lastModified == null ? "(null)" :
+                        this.lastModified.getTime()));
+                mLogger.debug("MT last modified = " + lastModifiedLong);
                 
                 // save the new blacklist
                 InputStream instream = connection.getInputStream();
                 
                 String uploadDir = WebloggerConfig.getProperty("uploads.dir");
-                String path = uploadDir + File.separator + blacklistFile;
+                String path = uploadDir + File.separator + BLACKLIST_FILE;
                 FileOutputStream outstream = new FileOutputStream(path);
                 
                 mLogger.debug("writing updated MT blacklist to "+path);
@@ -53,13 +54,14 @@
                 // read from url and write to file
                 byte[] buf = new byte[4096];
                 int length = 0;
-                while((length = instream.read(buf)) > 0)
+                while((length = instream.read(buf)) > 0) {
                     outstream.write(buf, 0, length);
+                }
                 
                 outstream.close();
                 instream.close();
                 
-                blacklist_updated = true;
+                blacklistUpdated = true;
                 
                 mLogger.debug("MT blacklist download completed.");
                 
@@ -71,6 +73,6 @@
             mLogger.error("error downloading blacklist", e);
         }
         
-        return blacklist_updated;
+        return blacklistUpdated;
     }
 

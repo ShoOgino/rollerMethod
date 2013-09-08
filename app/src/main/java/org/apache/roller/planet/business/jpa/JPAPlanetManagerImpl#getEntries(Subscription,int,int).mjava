@@ -4,8 +4,12 @@
         }
         Query q = strategy.getNamedQuery("SubscriptionEntry.getBySubscription");
         q.setParameter(1, sub);
-        if (offset != 0) q.setFirstResult(offset);
-        if (len != -1) q.setMaxResults(len);
+        if (offset != 0) {
+            q.setFirstResult(offset);
+        }
+        if (len != -1) {
+            q.setMaxResults(len);
+        }
         return q.getResultList();
     }
 

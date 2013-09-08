@@ -21,14 +21,14 @@
         } else {
             // we want to use pubtime for calculating when comments expire, but
             // if pubtime isn't set (like for drafts) then just use updatetime
-            Date pubTime = getPubTime();
-            if(pubTime == null) {
-                pubTime = getUpdateTime();
+            Date inPubTime = getPubTime();
+            if (inPubTime == null) {
+                inPubTime = getUpdateTime();
             }
             
             Calendar expireCal = Calendar.getInstance(
                     getWebsite().getLocaleInstance());
-            expireCal.setTime(pubTime);
+            expireCal.setTime(inPubTime);
             expireCal.add(Calendar.DATE, getCommentDays().intValue());
             Date expireDay = expireCal.getTime();
             Date today = new Date();

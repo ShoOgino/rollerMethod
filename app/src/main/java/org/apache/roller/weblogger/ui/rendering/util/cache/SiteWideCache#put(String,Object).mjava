@@ -1,7 +1,8 @@
     public void put(String key, Object value) {
         
-        if(!cacheEnabled)
+        if (!cacheEnabled) {
             return;
+        }
         
         contentCache.put(key, value);
         log.debug("PUT "+key);

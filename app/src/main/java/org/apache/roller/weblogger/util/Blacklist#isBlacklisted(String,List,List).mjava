@@ -7,7 +7,9 @@
      */
     public boolean isBlacklisted(
          String str, List moreStringRules, List moreRegexRules) {
-        if (str == null || StringUtils.isEmpty(str)) return false;
+        if (str == null || StringUtils.isEmpty(str)) {
+            return false;
+        }
 
         // First iterate over blacklist, doing indexOf.
         // Then iterate over blacklistRegex and test.
@@ -20,7 +22,9 @@
             stringRules.addAll(moreStringRules);
             stringRules.addAll(blacklistStr);
         }
-        if (testStringRules(str, stringRules)) return true;
+        if (testStringRules(str, stringRules)) {
+            return true;
+        }
         
         // test regex blacklisted
         List regexRules = blacklistRegex;

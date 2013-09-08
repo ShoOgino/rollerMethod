@@ -1,8 +1,8 @@
     /** Read comment and try to parse out "Last update" value */
     private void readComment(String str) {
-        int lastUpdatePos = str.indexOf(lastUpdateStr);
+        int lastUpdatePos = str.indexOf(LAST_UPDATE_STR);
         if (lastUpdatePos > -1) {
-            str = str.substring(lastUpdatePos + lastUpdateStr.length());
+            str = str.substring(lastUpdatePos + LAST_UPDATE_STR.length());
             str = str.trim();
             try {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");

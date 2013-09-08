@@ -21,12 +21,13 @@
         } catch (WebloggerException ex) {
             // security interceptor should ensure this never happens
             mLogger.error("ERROR retrieving user's permission", ex);
+            return false;
         }
 
         boolean author = perm.hasAction(WeblogPermission.POST) || perm.hasAction(WeblogPermission.ADMIN);
         boolean limited = !author && perm.hasAction(WeblogPermission.EDIT_DRAFT);
         
-        if (author || (limited && isDraft()) || (limited && isPending())) {
+        if (author || (limited && (isDraft() || isPending()))) {
             return true;
         }
         

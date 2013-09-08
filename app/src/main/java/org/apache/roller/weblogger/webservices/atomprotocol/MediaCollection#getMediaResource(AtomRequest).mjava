@@ -3,7 +3,6 @@
         String[] pathInfo = StringUtils.split(areq.getPathInfo(),"/");
         try {
             // authenticated client posted a weblog entry
-            File tempFile = null;
             String handle = pathInfo[0];
             MediaFileManager fmgr = roller.getMediaFileManager();
             Weblog website = WebloggerFactory.getWeblogger().getWeblogManager().getWeblogByHandle(handle);
