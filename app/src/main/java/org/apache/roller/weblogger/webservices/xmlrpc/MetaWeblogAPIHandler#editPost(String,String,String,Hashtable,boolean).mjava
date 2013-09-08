@@ -15,10 +15,14 @@
         Hashtable postcontent = struct;
         String description = (String)postcontent.get("description");
         String title = (String)postcontent.get("title");
-        if (title == null) title = "";
+        if (title == null) {
+            title = "";
+        }
         
         Date dateCreated = (Date)postcontent.get("dateCreated");
-        if (dateCreated == null) dateCreated = (Date)postcontent.get("pubDate");
+        if (dateCreated == null) {
+            dateCreated = (Date)postcontent.get("pubDate");
+        }
         
         String cat = null;
         if ( postcontent.get("categories") != null ) {
@@ -35,7 +39,9 @@
             Timestamp current =
                     new Timestamp(System.currentTimeMillis());
             
-            if ( !title.equals("") ) entry.setTitle(title);
+            if ( !title.equals("") ) {
+                entry.setTitle(title);
+            }
             entry.setText(description);
             entry.setUpdateTime(current);
             if (Boolean.valueOf(publish).booleanValue()) {

@@ -6,14 +6,16 @@
      *                         handled, not thrown.
      */
     private void processQueueEntry(PingQueueEntry pingQueueEntry) throws WebloggerException {
-        if (logger.isDebugEnabled()) logger.debug("Processing ping queue entry: " + pingQueueEntry);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Processing ping queue entry: " + pingQueueEntry);
+        }
         
         PingTarget pingTarget = pingQueueEntry.getPingTarget();
         Weblog website = pingQueueEntry.getWebsite();
         boolean pingSucceeded = false;
         if (PingConfig.getLogPingsOnly()) {
             // Just log the ping and pretend it succeeded.
-            logger.info("Logging simulated ping for ping queue entry " + pingQueueEntry);
+            LOGGER.info("Logging simulated ping for ping queue entry " + pingQueueEntry);
             pingSucceeded = true;
         } else {
             // Actually process the ping
@@ -30,7 +32,9 @@
         }
         // We do this outside of the previous try-catch because we don't want an exception here to be considered a ping error.
         if (pingSucceeded) {
-            if (logger.isDebugEnabled()) logger.debug("Processed ping: " + pingQueueEntry);
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Processed ping: " + pingQueueEntry);
+            }
             pingQueueMgr.removeQueueEntry(pingQueueEntry);
         }
     }

@@ -9,7 +9,8 @@
      */
     public static void setThemesDir(String path) {
         // only do this if the user wants to use the webapp context
-        if("${webapp.context}".equals(config.getProperty("themes.dir")))
+        if("${webapp.context}".equals(config.getProperty("themes.dir"))) {
             config.setProperty("themes.dir", path);
+        }
     }
 

@@ -1,7 +1,8 @@
     public void addUser(User newUser) throws WebloggerException {
 
-        if(newUser == null)
+        if(newUser == null) {
             throw new WebloggerException("cannot add null user");
+        }
         
         // TODO BACKEND: we must do this in a better fashion, like getUserCnt()?
         boolean adminUser = false;

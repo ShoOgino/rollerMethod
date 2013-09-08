@@ -5,10 +5,12 @@
      */
     public static synchronized void init() throws WebloggerException {
         if (theInstance != null) {
-            logger.warn("Ignoring duplicate initialization of PingQueueProcessor!");
+            LOGGER.warn("Ignoring duplicate initialization of PingQueueProcessor!");
             return;
         }
         theInstance = new PingQueueProcessor();
-        if (logger.isDebugEnabled()) logger.debug("Ping queue processor initialized.");
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Ping queue processor initialized.");
+        }
     }
 

@@ -1,8 +1,9 @@
     public User getUserByUserName(String userName, Boolean enabled)
             throws WebloggerException {
 
-        if (userName==null )
+        if (userName==null) {
             throw new WebloggerException("userName cannot be null");
+        }
         
         // check cache first
         // NOTE: if we ever allow changing usernames then this needs updating

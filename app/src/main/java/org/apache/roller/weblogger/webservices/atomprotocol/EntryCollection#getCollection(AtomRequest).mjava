@@ -78,7 +78,9 @@
                 prevLink.setHref(url);
                 links.add(prevLink);
             }
-            if (links.size() > 0) feed.setOtherLinks(links);
+            if (links.size() > 0) {
+                feed.setOtherLinks(links);
+            }
             // Use collection URI as id
             feed.setEntries(atomEntries);
             

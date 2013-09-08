@@ -7,8 +7,9 @@
     public static String getProperty(String key, String defaultValue) {
         log.debug("Fetching property ["+key+"="+config.getProperty(key)+",defaultValue="+defaultValue+"]");
         String value = config.getProperty(key);
-        if(value == null)
-          return defaultValue;
+        if (value == null) {
+            return defaultValue;
+        }
         
         return value.trim();
     }

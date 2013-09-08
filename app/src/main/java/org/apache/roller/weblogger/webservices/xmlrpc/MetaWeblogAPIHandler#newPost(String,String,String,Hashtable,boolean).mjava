@@ -20,8 +20,12 @@
         }
         
         Date dateCreated = (Date)postcontent.get("dateCreated");
-        if (dateCreated == null) dateCreated = (Date)postcontent.get("pubDate");
-        if (dateCreated == null) dateCreated = new Date();
+        if (dateCreated == null) {
+            dateCreated = (Date)postcontent.get("pubDate");
+        }
+        if (dateCreated == null) {
+            dateCreated = new Date();
+        }
         mLogger.debug("      Title: " + title);
         
         try {

@@ -2,8 +2,9 @@
         log.debug("Entering");
         String[] pathInfo = StringUtils.split(areq.getPathInfo(),"/");
         try {
-            if (pathInfo.length == 3) // URI is /blogname/entries/entryid
+            if (pathInfo.length == 3)
             {
+                // URI is /blogname/entries/entryid
                 WeblogEntry rollerEntry =
                     roller.getWeblogEntryManager().getWeblogEntry(pathInfo[2]);
                 if (rollerEntry == null) {

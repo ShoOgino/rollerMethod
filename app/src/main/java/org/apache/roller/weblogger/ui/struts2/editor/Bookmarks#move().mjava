@@ -7,9 +7,10 @@
 			BookmarkManager bmgr = WebloggerFactory.getWeblogger()
 					.getBookmarkManager();
 
-			if (log.isDebugEnabled())
-				log.debug("Moving folders and bookmarks to folder - "
-						+ getTargetFolderId());
+			if (log.isDebugEnabled()) {
+                log.debug("Moving folders and bookmarks to folder - "
+                        + getTargetFolderId());
+            }
 
 			// Move folders to new parent folder.
 			String folders[] = getSelectedFolders();

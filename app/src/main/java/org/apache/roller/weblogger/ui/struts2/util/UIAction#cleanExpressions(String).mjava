@@ -13,19 +13,28 @@
                     skipping = skipping || priorIsOpenChar;
                     break;
                 case '}':
-                    if (braceDepth > 0) --braceDepth;
+                    if (braceDepth > 0) {
+                        --braceDepth;
+                    }
                     break;
                 default:
             }
             if (!skipping) {
-                if (priorIsOpenChar) cleaned.append(prior);
-                if (!OPEN_CHARS.contains(c))  cleaned.append(c);
+                if (priorIsOpenChar) {
+                    cleaned.append(prior);
+                }
+                if (!OPEN_CHARS.contains(c)) {
+                    cleaned.append(c);
+                }
             }
             skipping = skipping && (braceDepth > 0);
             prior = c;
             ++p;
         }
-        if (OPEN_CHARS.contains(prior)) cleaned.append(prior);  // string had final open character held in prior
+        if (OPEN_CHARS.contains(prior)) {
+            // string had final open character held in prior
+            cleaned.append(prior);
+        }
         return cleaned.toString();
     }
 

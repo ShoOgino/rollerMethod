@@ -5,13 +5,13 @@
      */
     public synchronized void processQueue() {
         if (PingConfig.getSuspendPingProcessing()) {
-            logger.info("Ping processing has been suspended.  Skipping current round of ping queue processing.");
+            LOGGER.info("Ping processing has been suspended.  Skipping current round of ping queue processing.");
             return;
         }
         
         String absoluteContextUrl = WebloggerRuntimeConfig.getAbsoluteContextURL();
         if (absoluteContextUrl == null) {
-            logger.warn("WARNING: Skipping current ping queue processing round because we cannot yet determine the site's absolute context url.");
+            LOGGER.warn("WARNING: Skipping current ping queue processing round because we cannot yet determine the site's absolute context url.");
             return;
         }
         
@@ -21,7 +21,9 @@
         // that.
         
         try {
-            if (logger.isDebugEnabled()) logger.debug("Started processing ping queue.");
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Started processing ping queue.");
+            }
             // Get all of the entries
             List entries = pingQueueMgr.getAllQueueEntries();
             
@@ -30,9 +32,11 @@
                 PingQueueEntry pingQueueEntry = (PingQueueEntry) i.next();
                 processQueueEntry(pingQueueEntry);
             }
-            if (logger.isDebugEnabled()) logger.debug("Finished processing ping queue.");
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Finished processing ping queue.");
+            }
         } catch (Exception ex) {
-            logger.error("Unexpected exception processing ping queue!  Aborting this pass of ping queue processing.", ex);
+            LOGGER.error("Unexpected exception processing ping queue!  Aborting this pass of ping queue processing.", ex);
         }
     }
 
