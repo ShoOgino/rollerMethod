@@ -9,20 +9,21 @@
 
 		try {
 
-			if (getTemplate().getTemplateCode("standard") != null) {
-				setContentsStandard(getTemplate().getTemplateCode("standard")
+			if (getTemplate().getTemplateCode(STANDARD_THEME_TYPE) != null) {
+				setContentsStandard(getTemplate().getTemplateCode(STANDARD_THEME_TYPE)
 						.getTemplate());
 			} else {
 				setContentsStandard(getTemplate().getContents());
 			}
-			if (getTemplate().getTemplateCode("mobile") != null) {
-				setContentsMobile(getTemplate().getTemplateCode("mobile")
+			if (getTemplate().getTemplateCode(MOBILE_THEME_TYPE) != null) {
+				setContentsMobile(getTemplate().getTemplateCode(MOBILE_THEME_TYPE)
 						.getTemplate());
 			}
 
-			if (log.isDebugEnabled())
-				log.debug("Standard: " + getContentsStandard() + " Mobile: "
-						+ getContentsMobile());
+			if (log.isDebugEnabled()) {
+                log.debug("Standard: " + getContentsStandard() + " Mobile: "
+                        + getContentsMobile());
+            }
 
 		} catch (WebloggerException e) {
 			log.error("Error loading Weblog template codes for stylesheet", e);

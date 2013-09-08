@@ -1,7 +1,9 @@
     public boolean isNameUnique(PingTarget pingTarget) 
             throws WebloggerException {
         String name = pingTarget.getName();
-        if (name == null || name.trim().length() == 0) return false;
+        if (name == null || name.trim().length() == 0) {
+            return false;
+        }
         
         String id = pingTarget.getId();
         

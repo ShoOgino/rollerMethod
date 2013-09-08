@@ -16,42 +16,43 @@
 			addError("stylesheetEdit.error.customTheme");
 		}
 
-		if (!hasActionErrors())
-			try {
+		if (!hasActionErrors()) {
+            try {
 
-				WeblogTemplate stylesheet = getTemplate();
+                WeblogTemplate stylesheet = getTemplate();
 
-				// Delete template and flush
-				WeblogManager mgr = WebloggerFactory.getWeblogger()
-						.getWeblogManager();
+                // Delete template and flush
+                WeblogManager mgr = WebloggerFactory.getWeblogger()
+                        .getWeblogManager();
 
-				// Remove template and page codes
-				mgr.removePage(stylesheet);
+                // Remove template and page codes
+                mgr.removePage(stylesheet);
 
-				Weblog weblog = getActionWeblog();
+                Weblog weblog = getActionWeblog();
 
-				// Clear for next custom theme
-				weblog.setCustomStylesheetPath(null);
+                // Clear for next custom theme
+                weblog.setCustomStylesheetPath(null);
 
-				// save updated weblog and flush
-				mgr.saveWeblog(weblog);
+                // save updated weblog and flush
+                mgr.saveWeblog(weblog);
 
-				// notify caches
-				CacheManager.invalidate(stylesheet);
+                // notify caches
+                CacheManager.invalidate(stylesheet);
 
-				// Flush for operation
-				WebloggerFactory.getWeblogger().flush();
+                // Flush for operation
+                WebloggerFactory.getWeblogger().flush();
 
-				// success message
-				addMessage("stylesheetEdit.default.success",
-						stylesheet.getName());
+                // success message
+                addMessage("stylesheetEdit.default.success",
+                        stylesheet.getName());
 
-			} catch (Exception e) {
-				log.error("Error deleting stylesheet template for weblog - "
-						+ getActionWeblog().getHandle(), e);
+            } catch (Exception e) {
+                log.error("Error deleting stylesheet template for weblog - "
+                        + getActionWeblog().getHandle(), e);
 
-				return ERROR;
-			}
+                return ERROR;
+            }
+        }
 
 		return "delete";
 

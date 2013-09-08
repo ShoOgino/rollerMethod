@@ -4,14 +4,15 @@
      */
     public ThemeTemplate getTemplateByName(String name) throws WebloggerException {
         
-        if(name == null)
+        if (name == null) {
             return null;
+        }
         
         ThemeTemplate template = null;
         
         // if name refers to the stylesheet then return result of getStylesheet()
         ThemeTemplate stylesheet = getStylesheet();
-        if(stylesheet != null && name.equals(stylesheet.getName())) {
+        if (stylesheet != null && name.equals(stylesheet.getName())) {
             return stylesheet;
         }
         
@@ -20,7 +21,7 @@
         template = this.theme.getTemplateByName(name);
         
         // if we didn't get the Template from a theme then look in the db
-        if(template == null) {
+        if (template == null) {
             template = WebloggerFactory.getWeblogger().getWeblogManager().getPageByName(this.weblog, name);
         }
         

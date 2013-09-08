@@ -9,8 +9,8 @@
                 .getLocaleInstance() : Locale.getDefault();
 
         for (Iterator<String> it = updatedTags.iterator(); it.hasNext();) {
-            String name = it.next();
-            newTags.add(Utilities.normalizeTag(name, localeObject));
+            String inName = it.next();
+            newTags.add(Utilities.normalizeTag(inName, localeObject));
         }
 
         HashSet removeTags = new HashSet();

@@ -12,8 +12,9 @@
 
         // check config to see if the internal search is enabled
         String enabled = WebloggerConfig.getProperty("search.enabled");
-        if ("false".equalsIgnoreCase(enabled))
+        if ("false".equalsIgnoreCase(enabled)) {
             this.searchEnabled = false;
+        }
 
         // we also need to know what our index directory is
         // Note: system property expansion is now handled by WebloggerConfig

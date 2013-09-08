@@ -29,8 +29,9 @@
                     getFSDirectory(true);
                 } finally {
                     try {
-                        if (writer != null)
+                        if (writer != null) {
                             writer.close();
+                        }
                     } catch (IOException e1) {
                         mLogger.warn("Unable to close IndexWriter.");
                     }

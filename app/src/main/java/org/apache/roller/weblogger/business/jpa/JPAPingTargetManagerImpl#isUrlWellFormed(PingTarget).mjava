@@ -1,7 +1,9 @@
     public boolean isUrlWellFormed(PingTarget pingTarget) 
             throws WebloggerException {
         String url = pingTarget.getPingUrl();
-        if (url == null || url.trim().length() == 0) return false;
+        if (url == null || url.trim().length() == 0) {
+            return false;
+        }
         try {
             URL parsedUrl = new URL(url);
             // OK.  If we get here, it parses ok.  Now just check 
