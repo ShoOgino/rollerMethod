@@ -43,7 +43,7 @@
             // could this be better done with a regular expression?
             String closeTag = "</"+openCloseTags[j]+">";
             int lastStringIndex = 0;
-            while ( (stringIndex = lcresult.indexOf( "<"+openCloseTags[j], lastStringIndex)) > -1) {
+            while ((stringIndex = lcresult.indexOf( "<"+openCloseTags[j], lastStringIndex)) > -1) {
                 lastStringIndex = stringIndex;
                 // Try to find the matching closing tag  (ignores possible nesting!)
                 int endIndex = lcresult.indexOf(closeTag, stringIndex);
@@ -59,7 +59,6 @@
                         // Looks like it, so remove it.
                         result.delete(stringIndex, endIndex + 1);
                         lcresult.delete(stringIndex, endIndex + 1);
-                        
                     }
                 }
             }

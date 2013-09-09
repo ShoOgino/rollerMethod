@@ -6,10 +6,8 @@
     throws  WebloggerException {
         
         UserManager        umgr = roller.getUserManager();
-        WeblogManager      wmgr = roller.getWeblogManager();
         WeblogEntryManager emgr = roller.getWeblogEntryManager();
         BookmarkManager    bmgr = roller.getBookmarkManager();
-        MediaFileManager   mmgr = roller.getMediaFileManager();
 
         //remove theme Assocs
 
@@ -48,9 +46,8 @@
         // delete all bad counts
         Query removeCounts = strategy.getNamedUpdate(
                 "WeblogEntryTagAggregate.removeByTotalLessEqual");
-        removeCounts.setParameter(1, new Integer(0));
+        removeCounts.setParameter(1, 0);
         removeCounts.executeUpdate();
-        
         
         // Remove the website's ping queue entries
         Query q = strategy.getNamedQuery("PingQueueEntry.getByWebsite");

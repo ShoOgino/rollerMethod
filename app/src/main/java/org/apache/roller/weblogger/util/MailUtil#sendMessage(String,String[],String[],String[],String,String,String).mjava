@@ -33,7 +33,9 @@
         if (! StringUtils.isEmpty(from)) {
             InternetAddress sentFrom = new InternetAddress(from);
             message.setFrom(sentFrom);
-            if (log.isDebugEnabled()) log.debug("e-mail from: " + sentFrom);
+            if (log.isDebugEnabled()) {
+                log.debug("e-mail from: " + sentFrom);
+            }
         }
         
         if (to!=null) {
@@ -41,7 +43,9 @@
             
             for (int i = 0; i < to.length; i++) {
                 sendTo[i] = new InternetAddress(to[i]);
-                if (log.isDebugEnabled()) log.debug("sending e-mail to: " + to[i]);
+                if (log.isDebugEnabled()) {
+                    log.debug("sending e-mail to: " + to[i]);
+                }
             }
             message.setRecipients(Message.RecipientType.TO, sendTo);
         }
@@ -51,7 +55,9 @@
             
             for (int i = 0; i < cc.length; i++) {
                 copyTo[i] = new InternetAddress(cc[i]);
-                if (log.isDebugEnabled()) log.debug("copying e-mail to: " + cc[i]);
+                if (log.isDebugEnabled()) {
+                    log.debug("copying e-mail to: " + cc[i]);
+                }
             }
             message.setRecipients(Message.RecipientType.CC, copyTo);
         }
@@ -61,7 +67,9 @@
             
             for (int i = 0; i < bcc.length; i++) {
                 copyTo[i] = new InternetAddress(bcc[i]);
-                if (log.isDebugEnabled()) log.debug("blind copying e-mail to: " + bcc[i]);
+                if (log.isDebugEnabled()) {
+                    log.debug("blind copying e-mail to: " + bcc[i]);
+                }
             }
             message.setRecipients(Message.RecipientType.BCC, copyTo);
         }
@@ -101,6 +109,8 @@
             transport.close();
         }
         
-        if (bFailedToSome) throw sendex;
+        if (bFailedToSome) {
+            throw sendex;
+        }
     }
 

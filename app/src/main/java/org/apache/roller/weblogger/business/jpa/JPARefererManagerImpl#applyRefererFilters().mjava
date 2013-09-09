@@ -5,7 +5,9 @@
         String spamwords = WebloggerRuntimeConfig.getProperty("spam.blacklist");
         String[] blacklist = StringUtils.split(
                 StringUtils.deleteWhitespace(spamwords),",");
-        if (blacklist.length == 0) return;
+        if (blacklist.length == 0) {
+            return;
+        }
         List referers = getBlackListedReferer(blacklist);
         for (Iterator iterator = referers.iterator(); iterator.hasNext();) {
             WeblogReferrer referer= (WeblogReferrer) iterator.next();

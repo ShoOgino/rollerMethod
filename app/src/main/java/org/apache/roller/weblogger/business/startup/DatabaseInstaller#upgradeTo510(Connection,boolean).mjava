@@ -13,7 +13,9 @@
             }
         } catch(Exception ex) {
             log.error("ERROR running 510 database upgrade script", ex);
-            if (runner != null) messages.addAll(runner.getMessages());
+            if (runner != null) {
+                messages.addAll(runner.getMessages());
+            }
             
             errorMessage("Problem upgrading database to version 510", ex);
             throw new StartupException("Problem upgrading database to version 510", ex);

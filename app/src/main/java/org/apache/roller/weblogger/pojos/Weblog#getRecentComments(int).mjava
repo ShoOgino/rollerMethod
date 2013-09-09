@@ -6,9 +6,13 @@
      * @roller.wrapPojoMethod type="pojo-collection" class="org.apache.roller.weblogger.pojos.WeblogEntryComment"
      */
     public List getRecentComments(int length) {   
-        if (length > 100) length = 100;
+        if (length > 100) {
+            length = 100;
+        }
         List recentComments = new ArrayList();
-        if (length < 1) return recentComments;
+        if (length < 1) {
+            return recentComments;
+        }
         try {
             WeblogEntryManager wmgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
             recentComments = wmgr.getComments(

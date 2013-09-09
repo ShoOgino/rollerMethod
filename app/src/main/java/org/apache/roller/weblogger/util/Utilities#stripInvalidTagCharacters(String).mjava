@@ -3,8 +3,9 @@
      * @return
      */
     public static String stripInvalidTagCharacters(String tag) {
-        if (tag == null)
+        if (tag == null) {
             throw new NullPointerException();
+        }
 
         StringBuffer sb = new StringBuffer();
         char[] charArray = tag.toCharArray();

@@ -27,7 +27,9 @@
                         splitcats[i],    // name
                         splitcats[i],    // description
                         null );          // image
-                if (i == 0) firstCat = c;
+                if (i == 0) {
+                    firstCat = c;
+                }
                 rootCat.getWeblogCategories().add(c);
                 this.strategy.store(c);
             }
@@ -46,7 +48,7 @@
                 null, "root", "root", newWeblog);
         this.strategy.store(root);
         
-        Integer zero = new Integer(0);
+        Integer zero = 0;
         String blogroll = WebloggerConfig.getProperty("newuser.blogroll");
         if (blogroll != null) {
             String[] splitroll = blogroll.split(",");

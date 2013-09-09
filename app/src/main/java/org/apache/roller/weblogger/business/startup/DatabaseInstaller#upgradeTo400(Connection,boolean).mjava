@@ -18,7 +18,9 @@
             }
         } catch(Exception ex) {
             log.error("ERROR running 400 database upgrade script", ex);
-            if (runner != null) messages.addAll(runner.getMessages());
+            if (runner != null) {
+                messages.addAll(runner.getMessages());
+            }
             
             errorMessage("Problem upgrading database to version 400", ex);
             throw new StartupException("Problem upgrading database to version 400", ex);
@@ -74,7 +76,9 @@
                 updateParent.executeUpdate();
             }
             
-            if (!con.getAutoCommit()) con.commit();
+            if (!con.getAutoCommit()) {
+                con.commit();
+            }
            
             successMessage("Done populating parentid columns.");
             
@@ -223,7 +227,9 @@
                 log.debug("Updated "+folderNumUpdated+" Lx folder paths");
             } while(folderNumUpdated > 0);
             
-            if (!con.getAutoCommit()) con.commit();
+            if (!con.getAutoCommit()) {
+                con.commit();
+            }
            
             successMessage("Done populating path columns.");
             
@@ -278,7 +284,9 @@
                 renameExternalGroup.executeUpdate();
             }
             
-            if (!con.getAutoCommit()) con.commit();
+            if (!con.getAutoCommit()) {
+                con.commit();
+            }
            
             successMessage("Planet group 'external' merged into group 'all'.");
             
@@ -325,7 +333,9 @@
             }
             }
             
-            if (!con.getAutoCommit()) con.commit();
+            if (!con.getAutoCommit()) {
+                con.commit();
+            }
            
             successMessage("Comments successfully updated to use new comment plugins.");
             
@@ -415,7 +425,9 @@
             updateCommentsPlugins.setString(1, plugins);
             updateCommentsPlugins.executeUpdate();
             
-            if (!con.getAutoCommit()) con.commit();
+            if (!con.getAutoCommit()) {
+                con.commit();
+            }
            
             successMessage("Comments successfully updated to use new comment plugins.");
             

@@ -29,8 +29,9 @@
         // query for object
         WeblogEntry entry = mgr.getWeblogEntry(testEntry.getId());
 
-        if (entry == null)
+        if (entry == null) {
             throw new WebloggerException("error setting up weblog entry");
+        }
 
         return entry;
     }

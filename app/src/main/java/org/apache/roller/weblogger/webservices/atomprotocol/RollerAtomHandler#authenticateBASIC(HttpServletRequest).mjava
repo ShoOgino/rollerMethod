@@ -17,8 +17,8 @@
                         int p = userPass.indexOf(':');
                         if (p != -1) {
                             userID = userPass.substring(0, p);
-                            User user = roller.getUserManager().getUserByUserName(userID);
-                            boolean enabled = user.getEnabled().booleanValue();
+                            User inUser = roller.getUserManager().getUserByUserName(userID);
+                            boolean enabled = inUser.getEnabled();
                             if (enabled) {
                                 // are passwords encrypted?
                                 String encrypted =
@@ -28,7 +28,7 @@
                                     password = Utilities.encodePassword(password,
                                             WebloggerConfig.getProperty("passwds.encryption.algorithm"));
                                 }
-                                valid = user.getPassword().equals(password);
+                                valid = inUser.getPassword().equals(password);
                             }
                         }
                     }
@@ -37,7 +37,9 @@
         } catch (Exception e) {
             log.debug(e);
         }
-        if (valid) return userID;
+        if (valid) {
+            return userID;
+        }
         return null;
     }
 

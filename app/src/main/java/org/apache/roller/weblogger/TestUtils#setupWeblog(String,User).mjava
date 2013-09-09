@@ -28,8 +28,9 @@
         // query for the new weblog and return it
         Weblog weblog = mgr.getWeblogByHandle(handle);
 
-        if (weblog == null)
+        if (weblog == null) {
             throw new WebloggerException("error setting up weblog");
+        }
 
         return weblog;
     }

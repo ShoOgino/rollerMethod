@@ -52,7 +52,11 @@
         } catch (SQLException e) {
             throw new StartupException("ERROR obtaining connection");
         } finally {
-            try { if (con != null) con.close(); } catch (Exception ignored) {}
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (Exception ignored) {}
         }
     }
 

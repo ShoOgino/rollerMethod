@@ -8,11 +8,13 @@
     public List getReferersToDate(Weblog website, String date)
             throws WebloggerException {
 
-        if (website==null )
+        if (website==null) {
             throw new WebloggerException("website is null");
+        }
         
-        if (date==null )
+        if (date==null) {
             throw new WebloggerException("Date is null");
+        }
         
         Query q = strategy.getNamedQuery(
             "WeblogReferrer.getByWebsite&DateString&DuplicateOrderByTotalHitsDesc");

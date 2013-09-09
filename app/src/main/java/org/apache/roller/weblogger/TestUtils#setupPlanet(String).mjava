@@ -15,8 +15,9 @@
         // query to make sure we return the persisted object
         Planet planet = mgr.getWeblogger(handle);
 
-        if (planet == null)
+        if (planet == null) {
             throw new WebloggerException("error inserting new planet");
+        }
 
         return planet;
     }

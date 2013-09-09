@@ -19,7 +19,9 @@
             )
             throws MessagingException {
         String[] recipient = null;
-        if (to!=null) recipient = new String[] {to};
+        if (to != null) {
+            recipient = new String[] {to};
+        }
         
         sendMessage(from, recipient, cc, bcc, subject, content, "text/plain; charset=utf-8");
     }

@@ -78,7 +78,7 @@
         // delete all bad counts
         Query removeq = strategy.getNamedUpdate(
                 "WeblogEntryTagAggregate.removeByTotalLessEqual");
-        removeq.setParameter(1, new Integer(0));
+        removeq.setParameter(1, 0);
         removeq.executeUpdate();
     }
 

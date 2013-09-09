@@ -1,9 +1,10 @@
     public WeblogThemeTemplateCode getTemplateCodeByType(String templateId, String type) throws WebloggerException{
-         if(templateId == null)
-             throw new WebloggerException("Template Name is null");
+        if(templateId == null) {
+            throw new WebloggerException("Template Name is null");
+        }
 
-        if(type == null){
-            throw  new WebloggerException("Type is null");
+        if (type == null) {
+            throw new WebloggerException("Type is null");
         }
 
         Query query = strategy.getNamedQuery("WeblogThemeTemplateCode.getTemplateCodeByType");

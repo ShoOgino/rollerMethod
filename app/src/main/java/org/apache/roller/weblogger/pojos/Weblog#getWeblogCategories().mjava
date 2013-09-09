@@ -4,13 +4,7 @@
      * @roller.wrapPojoMethod type="pojo-collection" class="org.apache.roller.weblogger.pojos.WeblogCategory"
      */
     public Set getWeblogCategories() {
-        Set ret = new HashSet();
-//        try {           
-            WeblogCategory category = this.getDefaultCategory();
-            ret = category.getWeblogCategories();
-//        } catch (WebloggerException e) {
-//            log.error("ERROR: fetching categories", e);
-//        }
-        return ret;
+        WeblogCategory category = this.getDefaultCategory();
+        return category.getWeblogCategories();
     }
 

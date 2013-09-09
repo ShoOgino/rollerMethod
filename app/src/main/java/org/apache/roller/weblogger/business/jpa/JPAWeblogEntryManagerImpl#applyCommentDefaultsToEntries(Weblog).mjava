@@ -11,7 +11,7 @@
         Query q = strategy.getNamedUpdate(
                 "WeblogEntry.updateAllowComments&CommentDaysByWebsite");
         q.setParameter(1, website.getDefaultAllowComments());
-        q.setParameter(2, new Integer(website.getDefaultCommentDays()));
+        q.setParameter(2, website.getDefaultCommentDays());
         q.setParameter(3, website);
         q.executeUpdate();
     }

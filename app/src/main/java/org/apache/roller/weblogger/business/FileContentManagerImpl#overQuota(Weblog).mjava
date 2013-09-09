@@ -1,13 +1,13 @@
     /**
-     * @see org.apache.roller.weblogger.model.FileContentManager#overQuota(weblog)
+     * @see org.apache.roller.weblogger.business.FileContentManager#overQuota(Weblog)
      */
     public boolean overQuota(Weblog weblog) {
         
         String maxDir = WebloggerRuntimeConfig.getProperty("uploads.dir.maxsize");
         String maxFile = WebloggerRuntimeConfig.getProperty("uploads.file.maxsize");
-        BigDecimal maxDirSize = new BigDecimal(maxDir); // in megabytes
-        BigDecimal maxFileSize = new BigDecimal(maxFile); // in megabytes
-        
+        // maxDirSize in megabytes
+        BigDecimal maxDirSize = new BigDecimal(maxDir);
+
         long maxDirBytes = (long)(1024000 * maxDirSize.doubleValue());
         
         try {

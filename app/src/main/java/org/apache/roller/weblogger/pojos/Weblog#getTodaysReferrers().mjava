@@ -3,15 +3,13 @@
      * @roller.wrapPojoMethod type="pojo-collection" class="org.apache.roller.weblogger.pojos.WeblogReferrer"
      */
     public List getTodaysReferrers() {
-        List referers = null;
         try {
             Weblogger roller = WebloggerFactory.getWeblogger();
             RefererManager rmgr = roller.getRefererManager();
             return rmgr.getTodaysReferers(this);
-            
         } catch (WebloggerException e) {
             log.error("PageModel getTodaysReferers()", e);
         }
-        return (referers == null ? Collections.EMPTY_LIST : referers);        
+        return Collections.EMPTY_LIST;
     }
 

@@ -18,8 +18,9 @@
         // query to make sure we return the persisted object
         Subscription sub = mgr.getSubscriptionById(testSub.getId());
 
-        if (sub == null)
+        if (sub == null) {
             throw new WebloggerException("error inserting new subscription");
+        }
 
         return sub;
     }

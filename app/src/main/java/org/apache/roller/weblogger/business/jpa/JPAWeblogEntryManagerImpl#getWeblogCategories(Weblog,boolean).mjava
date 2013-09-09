@@ -3,10 +3,13 @@
      */
     public List getWeblogCategories(Weblog website, boolean includeRoot)
     throws WebloggerException {
-        if (website == null)
+        if (website == null) {
             throw new WebloggerException("website is null");
+        }
         
-        if (includeRoot) return getWeblogCategories(website);
+        if (includeRoot) {
+            return getWeblogCategories(website);
+        }
         
         Query q = strategy.getNamedQuery(
                 "WeblogCategory.getByWebsite&ParentNotNull");

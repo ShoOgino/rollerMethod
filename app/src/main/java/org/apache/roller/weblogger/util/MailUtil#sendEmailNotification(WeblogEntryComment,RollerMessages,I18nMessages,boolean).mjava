@@ -48,21 +48,18 @@
             List comments = entry.getComments(true, true);
             for (Iterator it = comments.iterator(); it.hasNext();) {
                 WeblogEntryComment comment = (WeblogEntryComment) it.next();
-                if (!StringUtils.isEmpty(comment.getEmail())) {
-                    // If user has commented twice,
-                    // count the most recent notify setting
-                    if (commentObject.getApproved()) {
-                        if (comment.getNotify().booleanValue()) {
-                            // only add those with valid email
-                            if (comment.getEmail().matches(EMAIL_ADDR_REGEXP)) {
-                                log.info("Add to subscribers list : " + comment.getEmail());
-                                subscribers.add(comment.getEmail());
-                            }
-                        } else {
-                            // remove user who doesn't want to be notified
-                            log.info("Remove from subscribers list : " + comment.getEmail());
-                            subscribers.remove(comment.getEmail());
+                if (!StringUtils.isEmpty(comment.getEmail()) && commentObject.getApproved()) {
+                    // If user has commented twice, count the most recent notify setting
+                    if (comment.getNotify()) {
+                        // only add those with valid email
+                        if (comment.getEmail().matches(EMAIL_ADDR_REGEXP)) {
+                            log.info("Add to subscribers list : " + comment.getEmail());
+                            subscribers.add(comment.getEmail());
                         }
+                    } else {
+                        // remove user who doesn't want to be notified
+                        log.info("Remove from subscribers list : " + comment.getEmail());
+                        subscribers.remove(comment.getEmail());
                     }
                 }
             }

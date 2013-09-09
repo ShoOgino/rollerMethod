@@ -4,7 +4,9 @@
         
         Query query = null;
         
-        if (endDate == null) endDate = new Date();
+        if (endDate == null) {
+            endDate = new Date();
+        }
         
         if (startDate != null) {
             Timestamp start = new Timestamp(startDate.getTime());
@@ -40,7 +42,7 @@
         }
         // Original query ordered by desc # comments.
         // JPA QL doesn't allow queries to be ordered by agregates; do it in memory
-        Collections.sort(results, statCountCountReverseComparator);
+        Collections.sort(results, STAT_COUNT_COUNT_REVERSE_COMPARATOR);
         
         return results;
     }

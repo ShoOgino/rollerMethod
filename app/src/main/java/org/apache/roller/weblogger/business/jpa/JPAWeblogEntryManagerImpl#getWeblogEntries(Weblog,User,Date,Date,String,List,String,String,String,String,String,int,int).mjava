@@ -19,7 +19,9 @@
         WeblogCategory cat = null;
         if (StringUtils.isNotEmpty(catName) && website != null) {
             cat = getWeblogCategoryByPath(website, catName);
-            if (cat == null) catName = null;
+            if (cat == null) {
+                catName = null;
+            }
         }
         if (catName != null && catName.trim().equals("/")) {
             catName = null;
@@ -36,7 +38,9 @@
             queryString.append("SELECT e FROM WeblogEntry e JOIN e.tags t WHERE ");
             queryString.append("(");
             for(int i = 0; i < tags.size(); i++) {
-                if (i != 0) queryString.append(" OR ");
+                if (i != 0) {
+                    queryString.append(" OR ");
+                }
                 params.add(size++, tags.get(i));
                 queryString.append(" t.name = ?").append(size);                
             }

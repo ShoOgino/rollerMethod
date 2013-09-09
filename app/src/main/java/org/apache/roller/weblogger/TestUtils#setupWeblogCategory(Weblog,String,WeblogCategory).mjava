@@ -22,8 +22,9 @@
         // query for object
         WeblogCategory cat = mgr.getWeblogCategory(testCat.getId());
 
-        if (cat == null)
+        if (cat == null) {
             throw new WebloggerException("error setting up weblog category");
+        }
 
         return cat;
     }

@@ -3,7 +3,9 @@
      */
     public boolean isMediaEditURI(AtomRequest areq) {
         String[] pathInfo = StringUtils.split(areq.getPathInfo(),"/");
-        if (pathInfo.length > 1 && pathInfo[1].equals("resource")) return true;
+        if (pathInfo.length > 1 && pathInfo[1].equals("resource")) {
+            return true;
+        }
         return false;
     }
 

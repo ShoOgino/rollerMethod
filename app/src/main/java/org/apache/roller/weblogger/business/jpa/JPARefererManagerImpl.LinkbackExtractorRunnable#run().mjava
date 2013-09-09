@@ -71,7 +71,7 @@
                                 maxweight = weight;
                             }
 
-                            if (referer.getVisible().booleanValue()) {
+                            if (referer.getVisible()) {
                                 // If any are visible then chosen
                                 // replacement must be visible as well.
                                 visible = Boolean.TRUE;
@@ -84,7 +84,7 @@
                         for (Iterator rdItr = refs.iterator();rdItr.hasNext();) {
                             WeblogReferrer referer = (WeblogReferrer) rdItr.next();
 
-                            if (referer != chosen) {
+                            if (!referer.equals(chosen)) {
                                 referer.setDuplicate(Boolean.TRUE);
                             } else {
                                 referer.setDuplicate(Boolean.FALSE);

@@ -7,14 +7,20 @@
      * @roller.wrapPojoMethod type="pojo-collection" class="org.apache.roller.weblogger.pojos.WeblogEntryData"
      */
     public List getRecentWeblogEntriesByTag(String tag, int length) {  
-        if (tag != null && "nil".equals(tag)) tag = null;
-        if (length > 100) length = 100;
+        if (tag != null && "nil".equals(tag)) {
+            tag = null;
+        }
+        if (length > 100) {
+            length = 100;
+        }
         List recentEntries = new ArrayList();
         List tags = new ArrayList();
         if (tag != null) {
             tags.add(tag);
         }
-        if (length < 1) return recentEntries;
+        if (length < 1) {
+            return recentEntries;
+        }
         try {
             WeblogEntryManager wmgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
             recentEntries = wmgr.getWeblogEntries(

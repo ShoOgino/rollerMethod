@@ -21,8 +21,9 @@
         // query to make sure we return the persisted object
         PlanetGroup group = mgr.getGroupById(testGroup.getId());
 
-        if (group == null)
+        if (group == null) {
             throw new WebloggerException("error inserting new group");
+        }
 
         return group;
     }

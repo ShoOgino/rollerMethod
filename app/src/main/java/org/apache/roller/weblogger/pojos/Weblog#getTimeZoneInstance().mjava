@@ -7,11 +7,7 @@
      */
     public TimeZone getTimeZoneInstance() {
         if (getTimeZone() == null) {
-            if (TimeZone.getDefault() != null) {
-                this.setTimeZone( TimeZone.getDefault().getID() );
-            } else {
-                this.setTimeZone("America/New_York");
-            }
+            this.setTimeZone( TimeZone.getDefault().getID() );
         }
         return TimeZone.getTimeZone(getTimeZone());
     }

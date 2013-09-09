@@ -6,17 +6,19 @@
         log.debug("processing referrer ["+referrerUrl+
                 "] accessing ["+requestUrl+"]");
 
-        if (weblogHandle == null)
+        if (weblogHandle == null) {
             return;
+        }
 
-        String selfSiteFragment = "/"+weblogHandle;
         Weblog weblog = null;
         WeblogEntry entry = null;
 
         // lookup the weblog now
         try {
             weblog = roller.getWeblogManager().getWeblogByHandle(weblogHandle);
-            if (weblog == null) return;
+            if (weblog == null) {
+                return;
+            }
 
             // now lookup weblog entry if possible
             if (entryAnchor != null) {
@@ -66,8 +68,8 @@
                 // Referer was found in database, so bump up hit count
                 WeblogReferrer ref = (WeblogReferrer)matchRef.get(0);
 
-                ref.setDayHits(new Integer(ref.getDayHits().intValue() + 1));
-                ref.setTotalHits(new Integer(ref.getTotalHits().intValue() + 1));
+                ref.setDayHits(ref.getDayHits() + 1);
+                ref.setTotalHits(ref.getTotalHits() + 1);
 
                 log.debug("Incrementing hit count on existing referer: " +
                     referrerUrl);
@@ -77,7 +79,7 @@
             } else if (matchRef.size() == 0) {
 
                 // Referer was not found in database, so new Referer object
-                Integer one = new Integer(1);
+                Integer one = 1;
                 WeblogReferrer ref =
                         new WeblogReferrer(
                         null,

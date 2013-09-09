@@ -24,14 +24,16 @@
                 ret.append(str.substring(start, beginTag));
                 
                 // replace each tag with a space (looks better)
-                if (addSpace) ret.append(" ");
+                if (addSpace) {
+                    ret.append(" ");
+                }
             }
             endTag = str.indexOf('>', beginTag);
             
             // if endTag found move "cursor" forward
             if (endTag > -1) {
                 start = endTag + 1;
-                beginTag = str.indexOf("<", start);
+                beginTag = str.indexOf('<', start);
             }
             // if no endTag found, get rest of str and break
             else {

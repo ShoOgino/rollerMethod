@@ -15,8 +15,9 @@
      * {@link javax.mail.internet.InternetAddress}, but almost always undesired.
      */
     public static boolean isValidEmailAddress(String aEmailAddress) {
-        if (aEmailAddress == null)
+        if (aEmailAddress == null) {
             return false;
+        }
         boolean result = true;
         try {
             // See if its valid

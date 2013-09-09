@@ -6,11 +6,12 @@
 
         BookmarkManager mgr = WebloggerFactory.getWeblogger()
                 .getBookmarkManager();
-        WeblogBookmarkFolder root = mgr.getRootFolder(weblog);
 
-        WeblogBookmarkFolder folderParent = root;
+        WeblogBookmarkFolder folderParent;
         if (parent != null) {
             folderParent = parent;
+        } else {
+            folderParent = mgr.getRootFolder(weblog);
         }
         WeblogBookmarkFolder testFolder = new WeblogBookmarkFolder(
                 folderParent, name, null, weblog);
@@ -19,11 +20,8 @@
         // flush to db
         WebloggerFactory.getWeblogger().flush();
 
-        // query for object
-        WeblogBookmarkFolder cat = mgr.getFolder(testFolder.getId());
-
-        if (testFolder == null)
-            throw new WebloggerException("error setting up weblog folder");
+        // query to make sure we return the persisted object
+        testFolder = mgr.getFolder(testFolder.getId());
 
         return testFolder;
     }

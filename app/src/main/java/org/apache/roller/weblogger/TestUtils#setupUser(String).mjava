@@ -27,8 +27,9 @@
         // query for the user to make sure we return the persisted object
         User user = mgr.getUserByUserName(userName);
 
-        if (user == null)
+        if (user == null) {
             throw new WebloggerException("error inserting new user");
+        }
 
         return user;
     }

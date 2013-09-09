@@ -3,17 +3,19 @@
      */
     public FileContentManagerImpl() {
         
-        String storagedir = WebloggerConfig.getProperty("mediafiles.storage.dir");
+        String inStorageDir = WebloggerConfig.getProperty("mediafiles.storage.dir");
         
         // Note: System property expansion is now handled by WebloggerConfig.
         
-        if (storagedir == null || storagedir.trim().length() < 1)
-            storagedir = System.getProperty("user.home")
-                + File.separator+"roller_data"+File.separator+"mediafiles";
+        if (inStorageDir == null || inStorageDir.trim().length() < 1) {
+            inStorageDir = System.getProperty("user.home")
+                    + File.separator+"roller_data"+File.separator+"mediafiles";
+        }
         
-        if (! storagedir.endsWith(File.separator))
-            storagedir += File.separator;
+        if (!inStorageDir.endsWith(File.separator)) {
+            inStorageDir += File.separator;
+        }
         
-        this.storage_dir = storagedir.replace('/',File.separatorChar);
+        this.storageDir = inStorageDir.replace('/',File.separatorChar);
     }
 

@@ -8,8 +8,9 @@
         byte buffer[] = new byte[8192];
         for (int count = 0; count != -1;) {
             count = in.read(buffer, 0, 8192);
-            if (count != -1)
+            if (count != -1) {
                 out.write(buffer, 0, count);
+            }
         }
         
         try {

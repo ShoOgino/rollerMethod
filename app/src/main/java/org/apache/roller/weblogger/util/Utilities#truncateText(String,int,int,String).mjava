@@ -1,8 +1,7 @@
     public static String truncateText(String str, int lower, int upper, String appendToEnd) {
         // strip markup from the string
         String str2 = removeHTML(str, false);
-        boolean diff = (str2.length() < str.length());
-        
+
         // quickly adjust the upper if it is set lower than 'lower'
         if(upper < lower) {
             upper = lower;
@@ -24,7 +23,6 @@
             } else {
                 // no it wasnt, so we'll cut it off at the upper limit
                 str2 = str2.substring(0, upper);
-                loc = upper;
             }
             // the string was truncated, so we append the appendToEnd String
             str = str2 + appendToEnd;

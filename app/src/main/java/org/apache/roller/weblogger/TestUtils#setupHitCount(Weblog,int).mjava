@@ -19,8 +19,9 @@
         // query for it
         testCount = mgr.getHitCount(testCount.getId());
 
-        if (testCount == null)
+        if (testCount == null) {
             throw new WebloggerException("error setting up hit count");
+        }
 
         return testCount;
     }

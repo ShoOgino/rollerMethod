@@ -16,23 +16,31 @@
 
         if (startDate != null) {
             Timestamp start = new Timestamp(startDate.getTime());
-            if (whereClause.length() > 0) whereClause.append(" AND ");
+            if (whereClause.length() > 0) {
+                whereClause.append(" AND ");
+            }
             params.add(size++, start);
             whereClause.append(" w.dateCreated > ?" + size);
         }
         if (endDate != null) {
             Timestamp end = new Timestamp(endDate.getTime());
-            if (whereClause.length() > 0) whereClause.append(" AND ");
+            if (whereClause.length() > 0) {
+                whereClause.append(" AND ");
+            }
             params.add(size++, end);
             whereClause.append(" w.dateCreated < ?" + size);
         }
         if (enabled != null) {
-            if (whereClause.length() > 0) whereClause.append(" AND ");
+            if (whereClause.length() > 0) {
+                whereClause.append(" AND ");
+            }
             params.add(size++, enabled);
             whereClause.append(" w.enabled = ?" + size);
         }
         if (active != null) {
-            if (whereClause.length() > 0) whereClause.append(" AND ");
+            if (whereClause.length() > 0) {
+                whereClause.append(" AND ");
+            }
             params.add(size++, active);
             whereClause.append(" w.active = ?" + size);
         }      

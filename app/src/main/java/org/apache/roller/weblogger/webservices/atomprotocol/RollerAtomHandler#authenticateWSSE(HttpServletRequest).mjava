@@ -4,7 +4,9 @@
      */
     protected String authenticateWSSE(HttpServletRequest request) {
         String wsseHeader = request.getHeader("X-WSSE");
-        if (wsseHeader == null) return null;
+        if (wsseHeader == null) {
+            return null;
+        }
         
         String ret = null;
         String userName = null;
@@ -31,11 +33,11 @@
         }
         String digest = null;
         try {
-            User user = roller.getUserManager().getUserByUserName(userName);
+            User inUser = roller.getUserManager().getUserByUserName(userName);
             digest = WSSEUtilities.generateDigest(
                     WSSEUtilities.base64Decode(nonce),
                     created.getBytes("UTF-8"),
-                    user.getPassword().getBytes("UTF-8"));
+                    inUser.getPassword().getBytes("UTF-8"));
             if (digest.equals(passwordDigest)) {
                 ret = userName;
             }

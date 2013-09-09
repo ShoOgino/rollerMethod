@@ -14,15 +14,15 @@
         //Append tags as parameter markers to avoid potential escaping issues
         //The IN clause would be of form (?1, ?2, ?3, ..)
         ArrayList params = new ArrayList(tags.size() + 1);
-        final String PARAM_SEPERATOR = ", ";
+        final String PARAM_SEPARATOR = ", ";
         int i;
         for (i=0; i < tags.size(); i++) {
-            queryString.append('?').append(i+1).append(PARAM_SEPERATOR);
+            queryString.append('?').append(i+1).append(PARAM_SEPARATOR);
             params.add(tags.get(i));
         }
         
-        // Remove the trailing PARAM_SEPERATOR
-        queryString.delete(queryString.length() - PARAM_SEPERATOR.length(),
+        // Remove the trailing PARAM_SEPARATOR
+        queryString.delete(queryString.length() - PARAM_SEPARATOR.length(),
                 queryString.length());
         // Close the brace of IN clause
         queryString.append(')');

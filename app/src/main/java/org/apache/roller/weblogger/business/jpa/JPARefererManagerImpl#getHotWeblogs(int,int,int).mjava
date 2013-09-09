@@ -8,8 +8,10 @@
      */
     public List getHotWeblogs(int sinceDays, int offset, int length)
             throws WebloggerException {
-        
-        String msg = "Getting hot weblogs";
+
+        if (log.isDebugEnabled()) {
+            log.debug("Getting hot weblogs");
+        }
         List results = new ArrayList();
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
@@ -47,7 +49,7 @@
         }
         // Original query ordered by desc hits.
         // JPA QL doesn't allow queries to be ordered by agregates; do it in memory
-        Collections.sort(results, statCountCountReverseComparator);
+        Collections.sort(results, STAT_COUNT_COUNT_REVERSE_COMPARATOR);
 
         return results;
     }

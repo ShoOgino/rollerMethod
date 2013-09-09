@@ -3,8 +3,9 @@
      */
     public List getWeblogCategories(Weblog website)
     throws WebloggerException {
-        if (website == null)
+        if (website == null) {
             throw new WebloggerException("website is null");
+        }
         
         Query q = strategy.getNamedQuery(
                 "WeblogCategory.getByWebsite");

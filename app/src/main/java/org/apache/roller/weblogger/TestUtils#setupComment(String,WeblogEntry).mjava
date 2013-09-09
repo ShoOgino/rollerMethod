@@ -26,8 +26,9 @@
         // query for object
         WeblogEntryComment comment = mgr.getComment(testComment.getId());
 
-        if (comment == null)
+        if (comment == null) {
             throw new WebloggerException("error setting up comment");
+        }
 
         return comment;
     }

@@ -3,7 +3,9 @@
      * If a null day is passed in, a new Date is created.
      */
     public static Date getStartOfMinute(Date day, Calendar cal) {
-        if (day == null) day = new Date();
+        if (day == null) {
+            day = new Date();
+        }
         cal.setTime(day);
         cal.set(Calendar.SECOND,      cal.getMinimum(Calendar.SECOND));
         cal.set(Calendar.MILLISECOND, cal.getMinimum(Calendar.MILLISECOND));

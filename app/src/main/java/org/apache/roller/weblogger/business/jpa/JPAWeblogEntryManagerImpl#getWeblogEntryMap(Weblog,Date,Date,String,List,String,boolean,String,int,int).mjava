@@ -10,7 +10,7 @@
             int     offset,
             int     length) throws WebloggerException {
         
-        TreeMap map = new TreeMap(reverseComparator);
+        TreeMap map = new TreeMap(REVERSE_COMPARATOR);
         
         List entries = getWeblogEntries( 
                 website,
@@ -37,8 +37,9 @@
             WeblogEntry entry = (WeblogEntry) wbItr.next();
             Date sDate = DateUtil.getNoonOfDay(entry.getPubTime(), cal);
             if (stringsOnly) {
-                if (map.get(sDate) == null)
+                if (map.get(sDate) == null) {
                     map.put(sDate, formatter.format(sDate));
+                }
             } else {
                 List dayEntries = (List) map.get(sDate);
                 if (dayEntries == null) {

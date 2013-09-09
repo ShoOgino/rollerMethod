@@ -1,9 +1,10 @@
     /**
-     * @see org.apache.roller.weblogger.model.UserManager#getPages(Weblog)
+     * @see org.apache.roller.weblogger.business.WeblogManager#getPages(Weblog)
      */
     public List getPages(Weblog website) throws WebloggerException {
-        if (website == null)
+        if (website == null) {
             throw new WebloggerException("website is null");
+        }
         Query q = strategy.getNamedQuery(
                 "WeblogTemplate.getByWebsiteOrderByName");
         q.setParameter(1, website);

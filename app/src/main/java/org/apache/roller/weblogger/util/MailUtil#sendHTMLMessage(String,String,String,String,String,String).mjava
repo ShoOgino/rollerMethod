@@ -22,9 +22,15 @@
         String[] copy = null;
         String[] bcopy = null;
         
-        if (to!=null) recipient = new String[] {to};
-        if (cc!=null) copy = new String[] {cc};
-        if (bcc!=null) bcopy = new String[] {bcc};
+        if (to != null) {
+            recipient = new String[] {to};
+        }
+        if (cc != null) {
+            copy = new String[] {cc};
+        }
+        if (bcc != null) {
+            bcopy = new String[] {bcc};
+        }
         
         sendMessage(from, recipient, copy, bcopy, subject, content, "text/html; charset=utf-8");
     }
