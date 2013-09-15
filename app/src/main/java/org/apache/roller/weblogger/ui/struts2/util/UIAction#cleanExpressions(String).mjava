@@ -1,40 +1,4 @@
     private static String cleanExpressions(String s) {
-        StringBuilder cleaned = new StringBuilder(s.length());
-        boolean skipping = false;
-        int braceDepth = 0;
-        int p = 0;
-        Character prior = ' ';
-        while (p < s.length()) {
-            boolean priorIsOpenChar = OPEN_CHARS.contains(prior);
-            char c = s.charAt(p);
-            switch (c) {
-                case '{':
-                    ++braceDepth;
-                    skipping = skipping || priorIsOpenChar;
-                    break;
-                case '}':
-                    if (braceDepth > 0) {
-                        --braceDepth;
-                    }
-                    break;
-                default:
-            }
-            if (!skipping) {
-                if (priorIsOpenChar) {
-                    cleaned.append(prior);
-                }
-                if (!OPEN_CHARS.contains(c)) {
-                    cleaned.append(c);
-                }
-            }
-            skipping = skipping && (braceDepth > 0);
-            prior = c;
-            ++p;
-        }
-        if (OPEN_CHARS.contains(prior)) {
-            // string had final open character held in prior
-            cleaned.append(prior);
-        }
-        return cleaned.toString();
+        return (s == null || s.contains("${") || s.contains("%{")) ? "" : s;
     }
 
