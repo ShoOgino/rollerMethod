@@ -1,0 +1,84 @@
+    /**
+     * @see org.apache.roller.weblogger.ui.rendering.Renderer#render(java.util.Map,
+     *      java.io.Writer)
+     */
+    public void render(Map<String, Object> model, Writer out)
+            throws RenderingException {
+
+        try {
+
+            if (velocityException != null) {
+
+                // Render exception
+                renderException(model, out, null);
+
+                // and we're done
+                return;
+            }
+
+            long startTime = System.currentTimeMillis();
+
+            // convert model to Velocity Context
+            Context ctx = new VelocityContext(model);
+
+            if (velocityDecorator != null) {
+
+                /**
+                 * We only allow decorating once, so the process isn't fully
+                 * recursive. This is just to keep it simple.
+                 */
+
+                // render base template to a temporary StringWriter
+                StringWriter sw = new StringWriter();
+                velocityTemplate.merge(ctx, sw);
+
+                // put rendered template into context
+                ctx.put("decorator_body", sw.toString());
+
+                log.debug("Applying decorator " + velocityDecorator.getName());
+
+                // now render decorator to our output writer
+                velocityDecorator.merge(ctx, out);
+
+            } else {
+
+                // no decorator, so just merge template to our output writer
+                velocityTemplate.merge(ctx, out);
+            }
+
+            long endTime = System.currentTimeMillis();
+            long renderTime = (endTime - startTime) / 1000;
+
+            log.debug("Rendered [" + renderTemplate.getId() + "] in "
+                    + renderTime + " secs");
+
+        } catch (ParseErrorException ex) {
+
+            // in the case of a parsing error including a page we want to render
+            // an error on the page instead so the user knows what was wrong
+            velocityException = ex;
+
+            // need to lookup parse error template
+            renderException(model, out, "error-parse.vm");
+
+            // and we're done
+            return;
+
+        } catch (MethodInvocationException ex) {
+
+            // in the case of a parsing error including a page we want to render
+            // an error on the page instead so the user knows what was wrong
+            velocityException = ex;
+
+            // need to lookup parse error template
+            renderException(model, out, "error-parse.vm");
+
+            // and we're done
+            return;
+
+        } catch (Exception ex) {
+            // wrap and rethrow so caller can deal with it
+            throw new RenderingException("Error during rendering", ex);
+        }
+    }
+
