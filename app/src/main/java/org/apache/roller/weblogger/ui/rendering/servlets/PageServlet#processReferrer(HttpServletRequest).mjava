@@ -1,114 +1,114 @@
-	/**
-	 * Process the incoming request to extract referrer info and pass it on to
-	 * the referrer processing queue for tracking.
-	 * 
-	 * @return true if referrer was spam, false otherwise
-	 */
-	private boolean processReferrer(HttpServletRequest request) {
+    /**
+     * Process the incoming request to extract referrer info and pass it on to
+     * the referrer processing queue for tracking.
+     * 
+     * @return true if referrer was spam, false otherwise
+     */
+    private boolean processReferrer(HttpServletRequest request) {
 
-		log.debug("processing referrer for " + request.getRequestURI());
+        log.debug("processing referrer for " + request.getRequestURI());
 
-		// bleh! because ref processing does a flush it will close
-		// our hibernate session and cause lazy init exceptions on
-		// objects we have fetched, so we need to use a separate
-		// page request object for this
-		WeblogPageRequest pageRequest;
-		try {
-			pageRequest = new WeblogPageRequest(request);
-		} catch (InvalidRequestException ex) {
-			return false;
-		}
+        // bleh! because ref processing does a flush it will close
+        // our hibernate session and cause lazy init exceptions on
+        // objects we have fetched, so we need to use a separate
+        // page request object for this
+        WeblogPageRequest pageRequest;
+        try {
+            pageRequest = new WeblogPageRequest(request);
+        } catch (InvalidRequestException ex) {
+            return false;
+        }
 
-		// if this came from site-wide frontpage then skip it
-		if (WebloggerRuntimeConfig.isSiteWideWeblog(pageRequest
-				.getWeblogHandle())) {
-			return false;
-		}
+        // if this came from site-wide frontpage then skip it
+        if (WebloggerRuntimeConfig.isSiteWideWeblog(pageRequest
+                .getWeblogHandle())) {
+            return false;
+        }
 
-		// if this came from a robot then don't process it
-		if (robotPattern != null) {
-			String userAgent = request.getHeader("User-Agent");
-			if (userAgent != null && userAgent.length() > 0
-					&& robotPattern.matcher(userAgent).matches()) {
-				log.debug("skipping referrer from robot");
-				return false;
-			}
-		}
+        // if this came from a robot then don't process it
+        if (robotPattern != null) {
+            String userAgent = request.getHeader("User-Agent");
+            if (userAgent != null && userAgent.length() > 0
+                    && robotPattern.matcher(userAgent).matches()) {
+                log.debug("skipping referrer from robot");
+                return false;
+            }
+        }
 
-		String referrerUrl = request.getHeader("Referer");
-		StringBuffer reqsb = request.getRequestURL();
-		if (request.getQueryString() != null) {
-			reqsb.append("?");
-			reqsb.append(request.getQueryString());
-		}
-		String requestUrl = reqsb.toString();
+        String referrerUrl = request.getHeader("Referer");
+        StringBuffer reqsb = request.getRequestURL();
+        if (request.getQueryString() != null) {
+            reqsb.append("?");
+            reqsb.append(request.getQueryString());
+        }
+        String requestUrl = reqsb.toString();
 
-		log.debug("referrer = " + referrerUrl);
+        log.debug("referrer = " + referrerUrl);
 
-		// if this came from persons own blog then don't process it
-		String selfSiteFragment = "/" + pageRequest.getWeblogHandle();
-		if (referrerUrl != null && referrerUrl.indexOf(selfSiteFragment) != -1) {
-			log.debug("skipping referrer from own blog");
-			return false;
-		}
+        // if this came from persons own blog then don't process it
+        String selfSiteFragment = "/" + pageRequest.getWeblogHandle();
+        if (referrerUrl != null && referrerUrl.indexOf(selfSiteFragment) != -1) {
+            log.debug("skipping referrer from own blog");
+            return false;
+        }
 
-		// validate the referrer
-		if (pageRequest != null && pageRequest.getWeblogHandle() != null) {
+        // validate the referrer
+        if (pageRequest != null && pageRequest.getWeblogHandle() != null) {
 
-			// Base page URLs, with and without www.
-			String basePageUrlWWW = WebloggerRuntimeConfig
-					.getAbsoluteContextURL()
-					+ "/"
-					+ pageRequest.getWeblogHandle();
-			String basePageUrl = basePageUrlWWW;
-			if (basePageUrlWWW.startsWith("http://www.")) {
-				// chop off the http://www.
-				basePageUrl = "http://" + basePageUrlWWW.substring(11);
-			}
+            // Base page URLs, with and without www.
+            String basePageUrlWWW = WebloggerRuntimeConfig
+                    .getAbsoluteContextURL()
+                    + "/"
+                    + pageRequest.getWeblogHandle();
+            String basePageUrl = basePageUrlWWW;
+            if (basePageUrlWWW.startsWith("http://www.")) {
+                // chop off the http://www.
+                basePageUrl = "http://" + basePageUrlWWW.substring(11);
+            }
 
-			// ignore referrers coming from users own blog
-			if (referrerUrl == null
-					|| (!referrerUrl.startsWith(basePageUrl) && !referrerUrl
-							.startsWith(basePageUrlWWW))) {
+            // ignore referrers coming from users own blog
+            if (referrerUrl == null
+                    || (!referrerUrl.startsWith(basePageUrl) && !referrerUrl
+                            .startsWith(basePageUrlWWW))) {
 
-				// validate the referrer
-				if (referrerUrl != null) {
-					// treat editor referral as direct
-					int lastSlash = requestUrl.indexOf('/', 8);
-					if (lastSlash == -1) {
-						lastSlash = requestUrl.length();
-					}
-					String requestSite = requestUrl.substring(0, lastSlash);
+                // validate the referrer
+                if (referrerUrl != null) {
+                    // treat editor referral as direct
+                    int lastSlash = requestUrl.indexOf('/', 8);
+                    if (lastSlash == -1) {
+                        lastSlash = requestUrl.length();
+                    }
+                    String requestSite = requestUrl.substring(0, lastSlash);
 
-					if (referrerUrl.matches(requestSite + ".*\\.rol.*")) {
-						referrerUrl = null;
-					} else if (BlacklistChecker.checkReferrer(
-							pageRequest.getWeblog(), referrerUrl)) {
-						return true;
-					}
-				}
-			} else {
-				log.debug("Ignoring referer = " + referrerUrl);
-				return false;
-			}
-		}
+                    if (referrerUrl.matches(requestSite + ".*\\.rol.*")) {
+                        referrerUrl = null;
+                    } else if (BlacklistChecker.checkReferrer(
+                            pageRequest.getWeblog(), referrerUrl)) {
+                        return true;
+                    }
+                }
+            } else {
+                log.debug("Ignoring referer = " + referrerUrl);
+                return false;
+            }
+        }
 
-		// referrer is valid, lets record it
-		try {
-			IncomingReferrer referrer = new IncomingReferrer();
-			referrer.setReferrerUrl(referrerUrl);
-			referrer.setRequestUrl(requestUrl);
-			referrer.setWeblogHandle(pageRequest.getWeblogHandle());
-			referrer.setWeblogAnchor(pageRequest.getWeblogAnchor());
-			referrer.setWeblogDateString(pageRequest.getWeblogDate());
+        // referrer is valid, lets record it
+        try {
+            IncomingReferrer referrer = new IncomingReferrer();
+            referrer.setReferrerUrl(referrerUrl);
+            referrer.setRequestUrl(requestUrl);
+            referrer.setWeblogHandle(pageRequest.getWeblogHandle());
+            referrer.setWeblogAnchor(pageRequest.getWeblogAnchor());
+            referrer.setWeblogDateString(pageRequest.getWeblogDate());
 
-			ReferrerQueueManager refQueue = WebloggerFactory.getWeblogger()
-					.getReferrerQueueManager();
-			refQueue.processReferrer(referrer);
-		} catch (Exception e) {
-			log.error("Error processing referrer", e);
-		}
+            ReferrerQueueManager refQueue = WebloggerFactory.getWeblogger()
+                    .getReferrerQueueManager();
+            refQueue.processReferrer(referrer);
+        } catch (Exception e) {
+            log.error("Error processing referrer", e);
+        }
 
-		return false;
-	}
+        return false;
+    }
 

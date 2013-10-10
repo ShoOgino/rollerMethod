@@ -1,0 +1,43 @@
+	/**
+	 * Set the Last-Modified header using the given time in milliseconds. Note
+	 * that because the header has the granularity of one second, the value will
+	 * get truncated to the nearest second that does not exceed the provided
+	 * value.
+	 * <p/>
+	 * This will also set the Expires header to a date in the past. This forces
+	 * clients to revalidate the cache each time.
+	 * 
+	 * @param response
+	 *            the response
+	 * @param lastModifiedTimeMillis
+	 *            the last modified time millis
+	 * @param deviceType
+	 *            the device type. Null to ignore ie no theme device type
+	 *            swithing check.
+	 */
+	public static void setLastModifiedHeader(HttpServletResponse response,
+			long lastModifiedTimeMillis,
+			MobileDeviceRepository.DeviceType deviceType) {
+
+		// Save our device type for device switching. Must use chaching on
+		// headers for this to work.
+		if (deviceType != null) {
+
+			// int code = new HashCodeBuilder().append(deviceType.name())
+			// .hashCode();
+			// String eTag = String.valueOf(code);
+
+			String eTag = deviceType.name();
+
+			response.setHeader("ETag", eTag);
+		}
+
+		response.setDateHeader("Last-Modified", lastModifiedTimeMillis);
+		// Force clients to revalidate each time
+		// See RFC 2616 (HTTP 1.1 spec) secs 14.21, 13.2.1
+		response.setDateHeader("Expires", 0);
+		// We may also want this (See 13.2.1 and 14.9.4)
+		// response.setHeader("Cache-Control","must-revalidate");
+
+	}
+
