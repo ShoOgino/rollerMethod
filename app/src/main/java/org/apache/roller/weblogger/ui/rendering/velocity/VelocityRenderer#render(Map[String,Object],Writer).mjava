@@ -76,6 +76,18 @@
             // and we're done
             return;
 
+        } catch (VelocityException ex) {
+
+            // in the case of a parsing error including a macro we want to
+            // render an error page instead so the user knows what was wrong
+            velocityException = ex;
+
+            // need to lookup parse error template
+            renderException(model, out, "error-parse.vm");
+
+            // and we're done
+            return;
+
         } catch (Exception ex) {
             // wrap and rethrow so caller can deal with it
             throw new RenderingException("Error during rendering", ex);

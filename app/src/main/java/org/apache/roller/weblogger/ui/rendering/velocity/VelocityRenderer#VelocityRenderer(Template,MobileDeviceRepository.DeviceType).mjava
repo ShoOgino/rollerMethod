@@ -50,6 +50,16 @@
             velocityTemplate = RollerVelocity.getTemplate("error-page.vm",
                     deviceType);
 
+        } catch (VelocityException ex) {
+
+            // in the case of a parsing error including a macro we want to
+            // render an error page instead so the user knows what was wrong
+            velocityException = ex;
+
+            // need to lookup error page template
+            velocityTemplate = RollerVelocity.getTemplate("error-page.vm",
+                    deviceType);
+
         } catch (Exception ex) {
             // some kind of generic/unknown exception, dump it to the logs
             log.error(
