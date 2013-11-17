@@ -6,7 +6,7 @@
         
         RollerMessages messages = new RollerMessages();
         
-        log.debug("Sending trackback to url - "+trackbackURL);
+        LOG.debug("Sending trackback to url - " + trackbackURL);
         
         // Construct data
         String title = entry.getTitle();
@@ -22,7 +22,7 @@
         params.put("blog_name", URLUtilities.encode(blog_name));
         String queryString = URLUtilities.getQueryString(params);
         
-        log.debug("query string - "+queryString);
+        LOG.debug("query string - " + queryString);
         
         // prepare http request
         HttpClient client = new HttpClient();
@@ -38,8 +38,8 @@
             byte[] response = method.getResponseBody();
             String responseString = Utilities.escapeHTML(new String(response, "UTF-8"));
             
-            log.debug("result = "+statusCode+" "+method.getStatusText());
-            log.debug("response:\n"+responseString);
+            LOG.debug("result = " + statusCode + " " + method.getStatusText());
+            LOG.debug("response:\n" + responseString);
             
             if(statusCode == HttpStatus.SC_OK) {
                 // trackback request succeeded, message will give details
@@ -61,7 +61,7 @@
             
         } catch (IOException e) {
             // some kind of transport error sending trackback post
-            log.debug("Error sending trackback", e);
+            LOG.debug("Error sending trackback", e);
             messages.addError("weblogEdit.trackbackErrorTransport");
         } finally {
             // release used connection

@@ -14,13 +14,13 @@
 					.getName())) {
 				clearMap(cl, loader, "resourceEntries");
 			} else {
-				if (log.isDebugEnabled()) {
-					log.debug("class loader " + cl.getName()
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("class loader " + cl.getName()
 							+ " is not tomcat loader.");
 				}
 			}
 		} catch (Exception e) {
-			log.warn("couldn't clear tomcat cache", e);
+			LOG.warn("couldn't clear tomcat cache", e);
 		}
 	}
 

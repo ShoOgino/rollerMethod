@@ -1,15 +1,15 @@
     public String render(WeblogEntry entry, String str) {
         String text = str;
         
-        if (mLogger.isDebugEnabled()) {
-            mLogger.debug("render(entry = "+entry.getId()+")");
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("render(entry = "+entry.getId()+")");
         }
         
         /*
          * Get acronyms Properties.
          */
         Properties acronyms = loadAcronyms(entry.getWebsite());
-        mLogger.debug("acronyms.size()=" + acronyms.size());
+        LOG.debug("acronyms.size()=" + acronyms.size());
         if (acronyms.size() == 0) {
             return text;
         }
@@ -23,7 +23,7 @@
         for (Iterator iter = acronyms.keySet().iterator(); iter.hasNext();) {
             String acronym = (String) iter.next();
             acronymPatterns[count] = Pattern.compile("\\b" + acronym + "\\b");
-            mLogger.debug("match '" + acronym + "'");
+            LOG.debug("match '" + acronym + "'");
             acronymTags[count] =
                     "<acronym title=\""
                     + acronyms.getProperty(acronym)

@@ -1,7 +1,7 @@
     public String getNextLink() {
         if(isMoreItems()) {
             int nextPage = pageNum + 1;
-            Map<String, String> params = new HashMap();
+            Map<String, String> params = new HashMap<String, String>();
             params.put("bean.page", ""+nextPage);
             return createURL(baseUrl, params);
         }

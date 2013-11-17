@@ -8,7 +8,7 @@
             String dateString = null;
             List entries = (List)monthMap.get(day);
             if ( entries != null ) {
-                dateString = mStarDateFormat.format(
+                dateString = STAR_DATE_FORMAT.format(
                         ((WeblogEntry)entries.get(0)).getPubTime());
                 
                 // append 8 char date string on end of selfurl
@@ -18,7 +18,7 @@
                 sb.append("<a href=\"");
                 sb.append( dayUrl );
                 sb.append("\">");
-                sb.append( mSingleDayFormat.format( day ) );
+                sb.append(SINGLE_DAY_FORMAT.format(day));
                 sb.append("</a></div>");
                 
                 for ( int i=0; i<entries.size(); i++ ) {
@@ -41,7 +41,7 @@
                 
             } else {
                 sb.append("<div class=\"hCalendarDayTitleBig\">");
-                sb.append( mSingleDayFormat.format( day ) );
+                sb.append(SINGLE_DAY_FORMAT.format(day));
                 sb.append("</div>");
                 sb.append("<div class=\"bCalendarDayContentBig\"/>");
             }

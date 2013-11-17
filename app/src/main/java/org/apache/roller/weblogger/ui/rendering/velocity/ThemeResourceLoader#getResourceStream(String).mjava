@@ -1,8 +1,9 @@
     public InputStream getResourceStream(String name)
             throws ResourceNotFoundException {
 
-        if (log.isDebugEnabled())
+        if (log.isDebugEnabled()) {
             logger.debug("Looking for: " + name);
+        }
 
         if (name == null || name.length() < 1) {
             throw new ResourceNotFoundException(
@@ -44,8 +45,9 @@
                 contents = template.getContents();
             }
 
-            if (log.isDebugEnabled())
+            if (log.isDebugEnabled()) {
                 logger.debug("Resource found!");
+            }
 
             // return the input stream
             return new ByteArrayInputStream(contents.getBytes("UTF-8"));

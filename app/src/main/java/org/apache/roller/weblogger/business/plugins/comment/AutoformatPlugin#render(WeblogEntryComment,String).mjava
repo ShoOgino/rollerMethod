@@ -1,6 +1,6 @@
     public String render(final WeblogEntryComment comment, String text) {
         
-        log.debug("starting value:\n"+text);
+        LOG.debug("starting value:\n" + text);
         
         /* 
          * setup a buffered reader and iterate through each line
@@ -39,10 +39,10 @@
             }
             
         } catch(Exception e) {
-            log.warn("trouble rendering text.", e);
+            LOG.warn("trouble rendering text.", e);
         }
         
-        log.debug("ending value:\n"+buf.toString());
+        LOG.debug("ending value:\n" + buf.toString());
         
         return buf.toString();
     }
