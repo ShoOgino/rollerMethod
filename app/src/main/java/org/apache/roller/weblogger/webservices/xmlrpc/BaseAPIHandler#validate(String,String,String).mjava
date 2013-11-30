@@ -18,13 +18,13 @@
             UserManager userMgr = WebloggerFactory.getWeblogger().getUserManager();
             WeblogManager weblogMgr = WebloggerFactory.getWeblogger().getWeblogManager();
             user = userMgr.getUserByUserName(username);
-            userEnabled = user.getEnabled().booleanValue();
+            userEnabled = user.getEnabled();
             
             website = weblogMgr.getWeblogByHandle(blogid);
             if (website != null) {
                 weblogFound = true;
-                weblogEnabled = website.getEnabled().booleanValue();
-                apiEnabled = website.getEnableBloggerApi().booleanValue() 
+                weblogEnabled = website.getEnabled();
+                apiEnabled = website.getEnableBloggerApi()
                 	&& WebloggerRuntimeConfig.getBooleanProperty("webservices.enableXmlRpc");
             }
             

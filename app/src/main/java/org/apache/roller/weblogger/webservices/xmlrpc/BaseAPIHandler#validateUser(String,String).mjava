@@ -15,7 +15,7 @@
             UserManager userMgr = WebloggerFactory.getWeblogger().getUserManager();
             user = userMgr.getUserByUserName(username);
             
-            enabled = user.getEnabled().booleanValue();
+            enabled = user.getEnabled();
             if (enabled) {
                 // are passwords encrypted?
                 String encrypted =
