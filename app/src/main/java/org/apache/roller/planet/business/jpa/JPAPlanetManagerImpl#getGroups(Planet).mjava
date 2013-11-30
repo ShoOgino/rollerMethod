@@ -1,4 +1,4 @@
-    public List getGroups(Planet planet) throws RollerException {
+    public List<PlanetGroup> getGroups(Planet planet) throws RollerException {
         Query q = strategy.getNamedQuery("PlanetGroup.getByPlanet");
         q.setParameter(1, planet.getHandle());
         return q.getResultList();
