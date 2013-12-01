@@ -1,21 +1,19 @@
     /**
-     * Generate a cache key from a parsed planet request.
-     * This generates a key of the form ...
-     *
-     * <context>/<type>/<language>[/user]
-     *   or
+     * Generate a cache key from a parsed planet request. This generates a key
+     * of the form ...
+     * 
+     * <context>/<type>/<language>[/user] or
      * <context>/<type>[/flavor]/<language>[/excerpts]
-     *
-     *
+     * 
+     * 
      * examples ...
-     *
-     * planet/page/en
-     * planet/feed/rss/en/excerpts
-     *
+     * 
+     * planet/page/en planet/feed/rss/en/excerpts
+     * 
      */
     private String generateKey(PlanetRequest planetRequest) {
 
-        StringBuffer key = new StringBuffer();
+        StringBuilder key = new StringBuilder();
         key.append(planetRequest.getContext());
         key.append("/");
         key.append(planetRequest.getType());

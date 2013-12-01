@@ -12,8 +12,8 @@
      */
     private static String removeVisibleHTMLTags(String str) {
         str = stripLineBreaks(str);
-        StringBuffer result = new StringBuffer(str);
-        StringBuffer lcresult = new StringBuffer(str.toLowerCase());
+        StringBuilder result = new StringBuilder(str);
+        StringBuilder lcresult = new StringBuilder(str.toLowerCase());
         
         // <img should take care of smileys
         String[] visibleTags = {"<img"}; // are there others to add?

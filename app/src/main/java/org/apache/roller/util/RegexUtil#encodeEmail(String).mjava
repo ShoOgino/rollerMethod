@@ -1,7 +1,7 @@
     public static String encodeEmail(String str) {
         // obfuscate mailto's: turns them into hex encoded,
         // so that browsers can still understand the mailto link
-        Matcher mailtoMatch = mailtoPattern.matcher(str);
+        Matcher mailtoMatch = MAILTO_PATTERN.matcher(str);
         while (mailtoMatch.find()) {
             String email = mailtoMatch.group(1);
             //System.out.println("email=" + email);

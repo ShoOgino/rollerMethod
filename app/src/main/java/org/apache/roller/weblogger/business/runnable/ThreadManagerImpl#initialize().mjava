@@ -8,7 +8,7 @@
             
             String taskClassName = WebloggerConfig.getProperty("tasks."+taskName+".class");
             if(taskClassName != null) {
-                log.info("Initializing task: "+taskName);
+                LOG.info("Initializing task: " + taskName);
                 
                 try {
                     Class taskClass = Class.forName(taskClassName);
@@ -18,7 +18,7 @@
                     // make sure there is a tasklock record in the db
                     TaskLock taskLock = getTaskLockByName(task.getName());
                     if (taskLock == null) {
-                        log.debug("Task record does not exist, inserting empty record to start with");
+                        LOG.debug("Task record does not exist, inserting empty record to start with");
 
                         // insert an empty record
                         taskLock = new TaskLock();
@@ -35,11 +35,11 @@
                     webloggerTasks.add(task);
                     
                 } catch (ClassCastException ex) {
-                    log.warn("Task does not extend RollerTask class", ex);
+                    LOG.warn("Task does not extend RollerTask class", ex);
                 } catch (WebloggerException ex) {
-                    log.error("Error scheduling task", ex);
+                    LOG.error("Error scheduling task", ex);
                 } catch (Exception ex) {
-                    log.error("Error instantiating task", ex);
+                    LOG.error("Error instantiating task", ex);
                 }
             }
         }
@@ -49,7 +49,7 @@
         
         // start scheduler thread, but only if it's not already running
         if (schedulerThread == null && scheduler != null) {
-            log.debug("Starting scheduler thread");
+            LOG.debug("Starting scheduler thread");
             schedulerThread = new Thread(scheduler, "Roller Weblogger Task Scheduler");
             // set thread priority between MAX and NORM so we get slightly preferential treatment
             schedulerThread.setPriority((Thread.MAX_PRIORITY + Thread.NORM_PRIORITY)/2);

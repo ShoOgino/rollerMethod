@@ -1,13 +1,13 @@
     public void shutdown() {
         
-        log.debug("starting shutdown sequence");
+        LOG.debug("starting shutdown sequence");
         
         // trigger an immediate shutdown of any backgrounded tasks
         serviceScheduler.shutdownNow();
         
         // only stop if we are already running
         if(schedulerThread != null) {
-            log.debug("Stopping scheduler");
+            LOG.debug("Stopping scheduler");
             schedulerThread.interrupt();
         }
     }

@@ -1,11 +1,9 @@
     public void deleteEntries(Subscription sub) 
         throws RollerException {
-        Iterator entries = sub.getEntries().iterator();
-        while(entries.hasNext()) {
-            strategy.remove(entries.next());
+        for (Object entry : sub.getEntries()) {
+            strategy.remove(entry);
         }
-        
-        // make sure and clear the other side of the assocation
+        // make sure and clear the other side of the association
         sub.getEntries().clear();
     }
 

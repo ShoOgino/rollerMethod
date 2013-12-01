@@ -1,6 +1,6 @@
     protected List getBlackListedReferer(Weblog website, String[] blacklist) 
             throws WebloggerException {
-        StringBuffer queryString = getQueryStringForBlackList(blacklist);
+        StringBuilder queryString = getQueryStringForBlackList(blacklist);
         queryString.append(" AND r.website = ?1 ");
         Query query = strategy.getDynamicQuery(queryString.toString());
         query.setParameter(1, website);

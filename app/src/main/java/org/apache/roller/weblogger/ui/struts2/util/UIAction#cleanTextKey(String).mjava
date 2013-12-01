@@ -1,5 +1,7 @@
     public static String cleanTextKey(String s) {
-        if (s == null || s.isEmpty()) return s;
+        if (s == null || s.isEmpty()) {
+            return s;
+        }
         // escape HTML
         return StringEscapeUtils.escapeHtml(cleanExpressions(s));
     }
