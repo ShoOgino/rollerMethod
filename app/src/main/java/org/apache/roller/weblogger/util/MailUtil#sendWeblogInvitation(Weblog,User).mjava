@@ -28,7 +28,7 @@
             ResourceBundle resources = ResourceBundle.getBundle(
                     "ApplicationResources",
                     website.getLocaleInstance());
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append(MessageFormat.format(
                     resources.getString("inviteMember.notificationSubject"),
                     new Object[] {
@@ -36,7 +36,7 @@
                 website.getHandle()})
                 );
             subject = sb.toString();
-            sb = new StringBuffer();
+            sb = new StringBuilder();
             sb.append(MessageFormat.format(
                     resources.getString("inviteMember.notificationContent"),
                     new Object[] {

@@ -1,0 +1,77 @@
+	/**
+	 * Sets the HTTP response status to 304 (NOT MODIFIED) if the request
+	 * contains an If-Modified-Since header that specifies a time that is at or
+	 * after the time specified by the value of lastModifiedTimeMillis
+	 * <em>truncated to second granularity</em>. Returns true if the response
+	 * status was set, false if not.
+	 * 
+	 * @param request
+	 *            the request
+	 * @param response
+	 *            the response
+	 * @param lastModifiedTimeMillis
+	 *            the last modified time millis
+	 * @param deviceType
+	 *            the device type. Null to ignore ie no theme device type
+	 *            swithing check.
+	 * 
+	 * @return true if a response status was sent, false otherwise.
+	 */
+	public static boolean respondIfNotModified(HttpServletRequest request,
+			HttpServletResponse response, long lastModifiedTimeMillis,
+			MobileDeviceRepository.DeviceType deviceType) {
+
+		long sinceDate = 0;
+		try {
+			sinceDate = request.getDateHeader("If-Modified-Since");
+		} catch (IllegalArgumentException ex) {
+			// this indicates there was some problem parsing the header value as
+			// a date
+			return false;
+		}
+
+		// truncate to seconds
+		lastModifiedTimeMillis -= (lastModifiedTimeMillis % 1000);
+
+		if (log.isDebugEnabled()) {
+			SimpleDateFormat dateFormat = new SimpleDateFormat(
+					"EEE MMM dd 'at' h:mm:ss a");
+			log.debug("since date = "
+					+ DateUtil.format(new Date(sinceDate), dateFormat));
+			log.debug("last mod date (trucated to seconds) = "
+					+ DateUtil.format(new Date(lastModifiedTimeMillis),
+							dateFormat));
+		}
+
+		// Set device type for device switching
+		String eTag = null;
+		if (deviceType != null) {
+			// int code = new HashCodeBuilder().append(deviceType.name())
+			// .hashCode();
+			// eTag = String.valueOf(code);
+			eTag = deviceType.name();
+		}
+
+		String previousToken = request.getHeader("If-None-Match");
+		if (eTag != null && previousToken != null && eTag.equals(previousToken)
+				&& lastModifiedTimeMillis <= sinceDate
+				|| (eTag == null || previousToken == null)
+				&& lastModifiedTimeMillis <= sinceDate) {
+
+			if (log.isDebugEnabled()) {
+				log.debug("NOT MODIFIED " + request.getRequestURL());
+            }
+
+			response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+
+			// use the same date we sent when we created the ETag the
+			// first time through
+			response.setHeader("Last-Modified",
+					request.getHeader("If-Modified-Since"));
+
+			return true;
+		} else {
+			return false;
+		}
+	}
+

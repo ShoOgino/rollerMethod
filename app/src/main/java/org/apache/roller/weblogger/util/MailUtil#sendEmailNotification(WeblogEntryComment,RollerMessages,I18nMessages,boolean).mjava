@@ -19,7 +19,7 @@
         
         // Only send email if email notificaiton is enabled
         boolean notify = WebloggerRuntimeConfig.getBooleanProperty("users.comments.emailnotify");
-        if (!notify || !weblog.getEmailComments().booleanValue()) {
+        if (!notify || !weblog.getEmailComments()) {
             // notifications disabled, just bail
             return;
         }
@@ -75,8 +75,8 @@
         // Build separate owner and commenter (aka subscriber) messages
         
         // Determine with mime type to use for e-mail
-        StringBuffer msg = new StringBuffer();
-        StringBuffer ownermsg = new StringBuffer();
+        StringBuilder msg = new StringBuilder();
+        StringBuilder ownermsg = new StringBuilder();
         boolean escapeHtml = !WebloggerRuntimeConfig.getBooleanProperty("users.comments.htmlenabled");
         
         // first the commenter message

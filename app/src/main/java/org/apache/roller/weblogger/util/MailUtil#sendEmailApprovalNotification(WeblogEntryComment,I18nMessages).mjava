@@ -13,7 +13,7 @@
         
         // Only send email if email notificaiton is enabled
         boolean notify = WebloggerRuntimeConfig.getBooleanProperty("users.comments.emailnotify");
-        if (!notify || !weblog.getEmailComments().booleanValue()) {
+        if (!notify || !weblog.getEmailComments()) {
             // notifications disabled, just bail
             return;
         }
@@ -30,7 +30,7 @@
         // form the message to be sent
         String subject = resources.getString("email.comment.commentApproved");
         
-        StringBuffer msg = new StringBuffer();
+        StringBuilder msg = new StringBuilder();
         msg.append(resources.getString("email.comment.commentApproved"));
         msg.append("\n\n");
         msg.append(WebloggerFactory.getWeblogger().getUrlStrategy()

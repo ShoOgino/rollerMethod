@@ -4,7 +4,7 @@
         if ("properties".equals(connectionTypeString)) {
             type = ConfigurationType.MAIL_PROPERTIES;
         }
-        jndiName =     WebloggerConfig.getProperty("mail.jndi.name");
+        String jndiName =     WebloggerConfig.getProperty("mail.jndi.name");
         mailHostname = WebloggerConfig.getProperty("mail.hostname");
         mailUsername = WebloggerConfig.getProperty("mail.username");
         mailPassword = WebloggerConfig.getProperty("mail.password");
@@ -14,7 +14,7 @@
                 mailPort = Integer.parseInt(portString);
             }
         } catch (Exception e) {
-            log.warn("mail server port not a valid integer, ignoring");
+            LOG.warn("mail server port not a valid integer, ignoring");
         }
         
         // init and connect now so we fail early

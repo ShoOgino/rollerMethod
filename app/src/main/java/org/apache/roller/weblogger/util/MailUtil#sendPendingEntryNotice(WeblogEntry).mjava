@@ -43,7 +43,7 @@
             
             ResourceBundle resources = ResourceBundle.getBundle(
                     "ApplicationResources", entry.getWebsite().getLocaleInstance());
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append(
                     MessageFormat.format(
                     resources.getString("weblogEntry.pendingEntrySubject"),
@@ -52,7 +52,7 @@
                 entry.getWebsite().getHandle()
             }));
             subject = sb.toString();
-            sb = new StringBuffer();
+            sb = new StringBuilder();
             sb.append(
                     MessageFormat.format(
                     resources.getString("weblogEntry.pendingEntryContent"),

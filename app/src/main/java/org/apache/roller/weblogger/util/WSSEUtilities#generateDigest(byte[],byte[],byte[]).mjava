@@ -8,7 +8,7 @@
             digester.update(created);
             digester.update(password);
             byte[] digest = digester.digest();
-            result = new String(base64Encode(digest));
+            result = base64Encode(digest);
         }
         catch (NoSuchAlgorithmException e) {
             result = null;

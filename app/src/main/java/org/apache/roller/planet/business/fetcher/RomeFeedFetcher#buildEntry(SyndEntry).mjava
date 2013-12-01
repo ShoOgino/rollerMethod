@@ -54,10 +54,8 @@
         // copy categories
         if (romeEntry.getCategories().size() > 0) {
             List list = new ArrayList();
-            Iterator cats = romeEntry.getCategories().iterator();
-            while (cats.hasNext()) {
-                SyndCategory cat = (SyndCategory)cats.next();
-                list.add(cat.getName());
+            for (Object cat : romeEntry.getCategories()) {
+                list.add(((SyndCategory) cat).getName());
             }
             newEntry.setCategoriesString(list);
         }
