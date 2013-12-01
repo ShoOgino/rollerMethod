@@ -14,10 +14,10 @@
         
         List params = new ArrayList();
         int size = 0;
-        StringBuffer queryString = new StringBuffer();
+        StringBuilder queryString = new StringBuilder();
         queryString.append("SELECT c FROM WeblogEntryComment c ");
         
-        StringBuffer whereClause = new StringBuffer();
+        StringBuilder whereClause = new StringBuilder();
         if (entry != null) {
             params.add(size++, entry);
             whereClause.append("c.weblogEntry = ?").append(size);

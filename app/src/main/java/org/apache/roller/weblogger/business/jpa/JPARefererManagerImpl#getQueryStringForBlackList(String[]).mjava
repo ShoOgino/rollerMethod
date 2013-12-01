@@ -5,9 +5,9 @@
      * @param blacklist
      * @return
      */
-    private StringBuffer getQueryStringForBlackList(String[] blacklist) {
+    private StringBuilder getQueryStringForBlackList(String[] blacklist) {
         assert blacklist.length > 0;
-        StringBuffer queryString = new StringBuffer("SELECT r FROM WeblogReferrer r WHERE (");
+        StringBuilder queryString = new StringBuilder("SELECT r FROM WeblogReferrer r WHERE (");
         //Search for any matching entry from blacklist[]
         final String orKeyword = " OR ";
         for (int i = 0; i < blacklist.length; i++) {
