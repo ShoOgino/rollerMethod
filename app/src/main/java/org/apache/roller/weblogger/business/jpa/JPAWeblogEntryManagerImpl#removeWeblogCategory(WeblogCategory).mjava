@@ -3,7 +3,7 @@
      */
     public void removeWeblogCategory(WeblogCategory cat)
     throws WebloggerException {
-        if(cat.retrieveWeblogEntries(true).size() > 0) {
+        if(cat.retrieveWeblogEntries(false).size() > 0) {
             throw new WebloggerException("Cannot remove category with entries");
         }
         
