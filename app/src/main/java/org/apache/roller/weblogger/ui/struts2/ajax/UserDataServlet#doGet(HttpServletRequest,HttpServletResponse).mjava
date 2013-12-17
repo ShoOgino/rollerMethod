@@ -22,11 +22,9 @@
         Weblogger roller = WebloggerFactory.getWeblogger();
         try {
             UserManager umgr = roller.getUserManager();
-            List users =
+            List<User> users =
                     umgr.getUsersStartingWith(startsWith, enabledOnly, offset, length);
-            Iterator userIter = users.iterator();
-            while (userIter.hasNext()) {
-                User user = (User)userIter.next();
+            for (User user : users) {
                 response.getWriter().print(user.getUserName());
                 response.getWriter().print(",");
                 response.getWriter().println(user.getEmailAddress());

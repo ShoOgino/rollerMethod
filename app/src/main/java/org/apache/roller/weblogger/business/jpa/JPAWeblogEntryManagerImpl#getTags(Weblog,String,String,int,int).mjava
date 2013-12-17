@@ -1,7 +1,7 @@
     /**
      * @inheritDoc
      */
-    public List getTags(Weblog website, String sortBy,
+    public List<TagStat> getTags(Weblog website, String sortBy,
             String startsWith, int offset, int limit) throws WebloggerException {
         Query query = null;
         List queryResults = null;
@@ -43,7 +43,7 @@
         }
         queryResults = query.getResultList();
         
-        List results = new ArrayList();
+        List<TagStat> results = new ArrayList<TagStat>();
         for (Iterator iter = queryResults.iterator(); iter.hasNext();) {
             Object[] row = (Object[]) iter.next();
             TagStat ce = new TagStat();
@@ -52,7 +52,7 @@
             ce.setCount(((Long) row[1]).intValue());
             results.add(ce);
         }
-        
+
         if (sortByName) {
             Collections.sort(results, TAG_STAT_NAME_COMPARATOR);
         } else {

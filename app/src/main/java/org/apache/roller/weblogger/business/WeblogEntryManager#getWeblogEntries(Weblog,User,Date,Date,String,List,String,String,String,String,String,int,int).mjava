@@ -11,11 +11,11 @@
      * @param sortBy     Sort by either 'pubTime' or 'updateTime' (null for pubTime)
      * @param sortOrder  Sort order of ASCENDING or DESCENDING (null for DESCENDING)
      * @param offset     Offset into results for paging
-     * @param length     Max comments to return (or -1 for no limit)
+     * @param range
      * @return List of WeblogEntryData objects in reverse chrono order.
      * @throws WebloggerException
      */
-    List getWeblogEntries(
+    List<WeblogEntry> getWeblogEntries(
             Weblog website,
             User    user,
             Date        startDate,

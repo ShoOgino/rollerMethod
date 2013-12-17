@@ -12,14 +12,12 @@
             return true;
         }
         
-        Iterator cats = cat.getWeblogCategories().iterator();
-        while (cats.hasNext()) {
-            WeblogCategory childCat = (WeblogCategory)cats.next();
+        for (WeblogCategory childCat : cat.getWeblogCategories()) {
             if (childCat.isInUse()) {
                 return true;
             }
         }
-        
+
         if (cat.getWebsite().getBloggerCategory().equals(cat)) {
             return true;
         }

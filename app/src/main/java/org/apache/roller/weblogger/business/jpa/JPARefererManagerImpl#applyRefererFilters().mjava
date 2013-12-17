@@ -8,9 +8,8 @@
         if (blacklist.length == 0) {
             return;
         }
-        List referers = getBlackListedReferer(blacklist);
-        for (Iterator iterator = referers.iterator(); iterator.hasNext();) {
-            WeblogReferrer referer= (WeblogReferrer) iterator.next();
+        List<WeblogReferrer> referers = getBlackListedReferer(blacklist);
+        for (WeblogReferrer referer : referers) {
             this.strategy.remove(referer);
         }
     }

@@ -64,10 +64,8 @@
             this.strategy.store(fd);
 
             // Import folder's children
-            Iterator iter = elem.getChildren("outline").iterator();
-            while ( iter.hasNext() ) {
-                Element subelem = (Element)iter.next();
-                importOpmlElement( website, subelem, fd  );
+            for (Object subelem : elem.getChildren("outline")) {
+                importOpmlElement( website, (Element) subelem, fd  );
             }
         }
     }

@@ -33,7 +33,7 @@
         q.setParameter(1, Boolean.TRUE);
         q.setParameter(2, Boolean.TRUE);
         q.setParameter(3, start);
-        List queryResults = (List)q.getResultList();
+        List queryResults = q.getResultList();
         for (Iterator it = queryResults.iterator(); it.hasNext(); ) {
             Object[] row = (Object[])it.next();
             long hits = ((Number)row[0]).longValue();

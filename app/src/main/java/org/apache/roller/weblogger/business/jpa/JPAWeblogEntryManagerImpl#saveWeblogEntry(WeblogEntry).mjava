@@ -25,16 +25,14 @@
             entry.setAnchor(this.createAnchor(entry));
         }
         
-        for(Iterator it = entry.getAddedTags().iterator(); it.hasNext();) {
-            String name = (String) it.next();
-            updateTagCount(name, entry.getWebsite(), 1);
+        for (Object name : entry.getAddedTags()) {
+            updateTagCount((String) name, entry.getWebsite(), 1);
         }
-        
-        for(Iterator it = entry.getRemovedTags().iterator(); it.hasNext();) {
-            String name = (String) it.next();
-            updateTagCount(name, entry.getWebsite(), -1);
+
+        for (Object name : entry.getRemovedTags()) {
+            updateTagCount((String) name, entry.getWebsite(), -1);
         }
-        
+
         // if the entry was published to future, set status as SCHEDULED
         // we only consider an entry future published if it is scheduled
         // more than 1 minute into the future

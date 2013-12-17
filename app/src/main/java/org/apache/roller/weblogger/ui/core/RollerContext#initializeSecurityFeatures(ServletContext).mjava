@@ -19,8 +19,7 @@
         
         if (!rememberMeEnabled) {
             ProviderManager provider = (ProviderManager) ctx.getBean("_authenticationManager");
-            for (Iterator it = provider.getProviders().iterator(); it.hasNext();) {
-                AuthenticationProvider authProvider = (AuthenticationProvider) it.next();
+            for (AuthenticationProvider authProvider : provider.getProviders()) {
                 if (authProvider instanceof RememberMeAuthenticationProvider) {
                     provider.getProviders().remove(authProvider);
                 }

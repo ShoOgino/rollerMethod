@@ -18,12 +18,9 @@
 
             // Iterate through children of OPML body, importing each
             Element body = doc.getRootElement().getChild("body");
-            Iterator iter = body.getChildren().iterator();
-            while (iter.hasNext()) {
-                Element elem = (Element)iter.next();
-                importOpmlElement( website, elem, newFolder );
+            for (Object elem : body.getChildren()) {
+                importOpmlElement(website, (Element) elem, newFolder );
             }
-
         } catch (Exception ex) {
             throw new WebloggerException(ex);
         }

@@ -10,22 +10,18 @@
         log.debug("entering");
         
         // give each mapper a chance to handle the request
-        RequestMapper mapper = null;
-        Iterator mappersIT = this.requestMappers.iterator();
-        while(mappersIT.hasNext()) {
-            mapper = (RequestMapper) mappersIT.next();
-            
-            log.debug("trying mapper "+mapper.getClass().getName());
-            
+        for (RequestMapper mapper : requestMappers) {
+            log.debug("trying mapper " + mapper.getClass().getName());
+
             boolean wasHandled = mapper.handleRequest(request, response);
             if(wasHandled) {
                 // if mapper has handled the request then we are done
-                log.debug("request handled by "+mapper.getClass().getName());
+                log.debug("request handled by " + mapper.getClass().getName());
                 log.debug("exiting");
                 return;
             }
         }
-        
+
         log.debug("request not mapped");
         
         // nobody handled the request, so let it continue as usual

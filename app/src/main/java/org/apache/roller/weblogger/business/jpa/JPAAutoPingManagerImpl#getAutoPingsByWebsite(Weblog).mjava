@@ -1,4 +1,4 @@
-    public List getAutoPingsByWebsite(Weblog website) throws WebloggerException {
+    public List<AutoPing> getAutoPingsByWebsite(Weblog website) throws WebloggerException {
         Query q = strategy.getNamedQuery("AutoPing.getByWebsite");
         q.setParameter(1, website);
         return q.getResultList();

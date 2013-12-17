@@ -10,10 +10,7 @@
                 mLogger.info("Max Async Referrer queue size: " + maxAsyncQueueSize);
             }
             // kill all of our threads
-            WorkerThread worker = null;
-            Iterator it = this.workers.iterator();
-            while(it.hasNext()) {
-                worker = (WorkerThread) it.next();
+            for (WorkerThread worker : workers) {
                 worker.interrupt();
             }
         }

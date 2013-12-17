@@ -5,10 +5,10 @@
      *
      * If the Map of props is empty/null then we will initialize all properties.
      **/
-    private Map initializeMissingProps(Map props) {
+    private Map initializeMissingProps(Map<String, RuntimeConfigProperty> props) {
 
         if(props == null) {
-            props = new HashMap();
+            props = new HashMap<String, RuntimeConfigProperty>();
         }
 
         // start by getting our runtimeConfigDefs
@@ -20,35 +20,25 @@
             return props;
         }
 
-        // iterator through all the definitions and add properties
+        // iterate through all the definitions and add properties
         // that are not already in our props map
-        ConfigDef configDef = null;
-        DisplayGroup dGroup = null;
-        PropertyDef propDef = null;
-        Iterator defs = runtimeConfigDefs.getConfigDefs().iterator();
-        while(defs.hasNext()) {
-            configDef = (ConfigDef) defs.next();
 
-            Iterator groups = configDef.getDisplayGroups().iterator();
-            while(groups.hasNext()) {
-                dGroup = (DisplayGroup) groups.next();
-
-                Iterator propdefs = dGroup.getPropertyDefs().iterator();
-                while(propdefs.hasNext()) {
-                    propDef = (PropertyDef) propdefs.next();
+        for (ConfigDef configDef : runtimeConfigDefs.getConfigDefs()) {
+            for (DisplayGroup dGroup : configDef.getDisplayGroups()) {
+                for (PropertyDef propDef : dGroup.getPropertyDefs()) {
 
                     // do we already have this prop?  if not then add it
                     if(!props.containsKey(propDef.getName())) {
                         RuntimeConfigProperty newprop =
-                            new RuntimeConfigProperty(
-                                propDef.getName(), propDef.getDefaultValue());
+                                new RuntimeConfigProperty(
+                                        propDef.getName(), propDef.getDefaultValue());
 
                         props.put(propDef.getName(), newprop);
 
                         log.info("Found uninitialized property " +
-                            propDef.getName() +
-                            " ... setting value to [" + 
-                            propDef.getDefaultValue() + "]");
+                                propDef.getName() +
+                                " ... setting value to [" +
+                                propDef.getDefaultValue() + "`]");
                     }
                 }
             }

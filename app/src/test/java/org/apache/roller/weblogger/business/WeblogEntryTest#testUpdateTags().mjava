@@ -1,5 +1,4 @@
     public void testUpdateTags() throws Exception {
-
         WeblogEntryManager mgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
 
         // setup some test entries to use
@@ -25,9 +24,8 @@
         TestUtils.endSession(true);
 
         entry = mgr.getWeblogEntry(id);
-        HashSet tagNames = new HashSet();
-        for (Iterator it = entry.getTags().iterator(); it.hasNext();) {
-            WeblogEntryTag tagData = (WeblogEntryTag) it.next();
+        HashSet<String> tagNames = new HashSet<String>();
+        for (WeblogEntryTag tagData : entry.getTags()) {
             tagNames.add(tagData.getName());
         }
 

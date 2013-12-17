@@ -51,16 +51,14 @@
 
                         // LOOP: find the referer with the highest weight
                         Boolean visible = Boolean.FALSE;
-                        List refs= getReferersWithSameTitle(
+                        List<WeblogReferrer> refs= getReferersWithSameTitle(
                                 mReferer.getWebsite(),
                                 mReferer.getRequestUrl(),
                                 lb.getTitle(),
                                 lb.getExcerpt());
                         WeblogReferrer chosen = null;
                         int maxweight = 0;
-                        for (Iterator rdItr = refs.iterator();rdItr.hasNext();) {
-                            WeblogReferrer referer = (WeblogReferrer) rdItr.next();
-
+                        for (WeblogReferrer referer : refs) {
                             int weight = referer.getRefererUrl().length();
                             if (referer.getRefererUrl().indexOf('#') != -1) {
                                 weight += 100;
@@ -76,14 +74,11 @@
                                 // replacement must be visible as well.
                                 visible = Boolean.TRUE;
                             }
-
                         }
 
                         // LOOP: to mark all of the lower weight ones
                         // as duplicates
-                        for (Iterator rdItr = refs.iterator();rdItr.hasNext();) {
-                            WeblogReferrer referer = (WeblogReferrer) rdItr.next();
-
+                        for (WeblogReferrer referer : refs) {
                             if (!referer.equals(chosen)) {
                                 referer.setDuplicate(Boolean.TRUE);
                             } else {
@@ -92,8 +87,6 @@
                             }
                             saveReferer(referer);
                         }
-
-
                     }
                 } else {
                     // It is not a linkback, but store it anyway

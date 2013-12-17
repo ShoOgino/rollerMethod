@@ -24,9 +24,9 @@
             }
         }
 
-        WeblogEntryManager weblogManager = WebloggerFactory.getWeblogger().getWeblogEntryManager();
+        WeblogEntryManager weblogEntryManager = WebloggerFactory.getWeblogger().getWeblogEntryManager();
         for (Iterator it = removeTags.iterator(); it.hasNext();) {
-            weblogManager.removeWeblogEntryTag((String) it.next(), this);
+            weblogEntryManager.removeWeblogEntryTag((String) it.next(), this);
         }
         
         for (Iterator it = newTags.iterator(); it.hasNext();) {

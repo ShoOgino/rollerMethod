@@ -24,15 +24,13 @@
 
 		// check Chinese
 		System.out.println("Veriyfing " + bundle + "...");
-		for (Iterator iter = keys.iterator(); iter.hasNext();)
-		{
-			String key = (String) iter.next();
-			if (props.getProperty(key) == null)
-			{
-				System.err.println(key + " = " + baseProps.getProperty(key));
-				missingMessage = true;
-			}
-		}
+        for (Object key : baseProps.keySet()) {
+            if (props.getProperty((String) key) == null)
+            {
+                System.err.println(key + " = " + baseProps.getProperty((String) key));
+                missingMessage = true;
+            }
+        }
 
 		assertFalse(missingMessage);
 	}

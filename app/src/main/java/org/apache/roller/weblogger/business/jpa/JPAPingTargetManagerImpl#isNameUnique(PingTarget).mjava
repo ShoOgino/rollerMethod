@@ -9,7 +9,7 @@
         
         // Determine the set of "brother" targets (custom or common) 
         // among which this name should be unique.
-        List brotherTargets = null;
+        List<PingTarget> brotherTargets;
         Weblog website = pingTarget.getWebsite();
         if (website == null) {
             brotherTargets = getCommonPingTargets();
@@ -20,11 +20,9 @@
         // Within that set of targets, fail if there is a target 
         // with the same name and that target doesn't
         // have the same id.
-        for (Iterator i = brotherTargets.iterator(); i.hasNext();) {
-            PingTarget brother = (PingTarget) i.next();
-            // Fail if it has the same name but not the same id.
-            if (brother.getName().equals(name) && 
-                (id == null || !brother.getId().equals(id))) {
+        for (PingTarget brother : brotherTargets) {
+            if (brother.getName().equals(name) &&
+                    (id == null || !brother.getId().equals(id))) {
                 return false;
             }
         }
