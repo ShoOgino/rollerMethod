@@ -1,16 +1,14 @@
     /**
      * Get pinned entries.
-     * @param sinceDays Only consider weblogs updated in the last sinceDays
      * @param length    Max number of results to return
      */
-    public List getPinnedWeblogEntries(int length) {
-        List results = new ArrayList();
+    public List<WeblogEntryWrapper> getPinnedWeblogEntries(int length) {
+        List<WeblogEntryWrapper> results = new ArrayList<WeblogEntryWrapper>();
         try {            
             Weblogger roller = WebloggerFactory.getWeblogger();
             WeblogEntryManager wmgr = roller.getWeblogEntryManager();
-            List weblogs = wmgr.getWeblogEntriesPinnedToMain(length);
-            for (Iterator it = weblogs.iterator(); it.hasNext();) {
-                WeblogEntry entry = (WeblogEntry) it.next();
+            List<WeblogEntry> weblogEntries = wmgr.getWeblogEntriesPinnedToMain(length);
+            for (WeblogEntry entry : weblogEntries) {
                 results.add(WeblogEntryWrapper.wrap(entry, urlStrategy));
             }
         } catch (Exception e) {

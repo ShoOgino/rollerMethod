@@ -5,10 +5,8 @@
         // NOTE: Invalidating an entire website for each referer is not
         //       good for our caching.  This may need reevaluation later.
         //lastExpiredCache.put(referer.getWebsite().getHandle(), new Date());
-        
-        Iterator handlers = cacheHandlers.iterator();
-        while(handlers.hasNext()) {
-            ((CacheHandler) handlers.next()).invalidate(referer);
+        for (CacheHandler handler : cacheHandlers) {
+            handler.invalidate(referer);
         }
     }
 

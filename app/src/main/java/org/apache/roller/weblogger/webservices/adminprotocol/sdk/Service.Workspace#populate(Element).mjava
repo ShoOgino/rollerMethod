@@ -1,14 +1,12 @@
         public void populate(Element elem) {
             setTitle(elem.getAttributeValue(Attributes.TITLE)); //, NAMESPACE));
-            List collections = new ArrayList();
-            List spaces = elem.getChildren("collection", NAMESPACE);
-            Iterator iter = spaces.iterator();
-            while (iter.hasNext()) {
-                Element e = (Element) iter.next();
+            List<Collection> collections = new ArrayList<Collection>();
+            List<Element> spaces = elem.getChildren("collection", NAMESPACE);
+            for (Element e : spaces) {
                 Collection col = new Collection();
                 col.populate(e);
                 collections.add(col);
             }
-            Workspace.this.setEntries((Entry[])collections.toArray(new Collection[0]));
+            Workspace.this.setEntries(collections.toArray(new Collection[0]));
         }
 

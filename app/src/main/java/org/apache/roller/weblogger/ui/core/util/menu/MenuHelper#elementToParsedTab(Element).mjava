@@ -12,13 +12,11 @@
         tab.setEnabledProperty(element.getAttributeValue("enabledProperty"));
         tab.setDisabledProperty(element.getAttributeValue("disabledProperty"));
         
-        List menuItems = element.getChildren("menu-item");
-        Iterator iter = menuItems.iterator();
-        while (iter.hasNext()) {
-            Element e = (Element) iter.next();
+        List<Element> menuItems = element.getChildren("menu-item");
+        for (Element e : menuItems) {
             tab.addItem(elementToParsedTabItem(e));
         }
-        
+
         return tab;
     }
 

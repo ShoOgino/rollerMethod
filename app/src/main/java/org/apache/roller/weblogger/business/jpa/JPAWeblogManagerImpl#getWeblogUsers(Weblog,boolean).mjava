@@ -1,5 +1,5 @@
-    public List getWeblogUsers(Weblog weblog, boolean enabledOnly) throws WebloggerException {
-        List users = new ArrayList();
+    public List<User> getWeblogUsers(Weblog weblog, boolean enabledOnly) throws WebloggerException {
+        List<User> users = new ArrayList<User>();
         List<WeblogPermission> perms = roller.getUserManager().getWeblogPermissions(weblog);
         for (WeblogPermission perm : perms) {
             User user = perm.getUser();

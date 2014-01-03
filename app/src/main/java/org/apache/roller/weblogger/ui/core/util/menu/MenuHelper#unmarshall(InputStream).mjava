@@ -15,13 +15,11 @@
         Document doc = builder.build(instream);
         
         Element root = doc.getRootElement();
-        List parsedMenus = root.getChildren("menu");
-        Iterator iter = parsedMenus.iterator();
-        while (iter.hasNext()) {
-            Element e = (Element) iter.next();
+        List<Element> parsedMenus = root.getChildren("menu");
+        for (Element e : parsedMenus) {
             config.addTab(elementToParsedTab(e));
         }
-        
+
         return config;
     }
 

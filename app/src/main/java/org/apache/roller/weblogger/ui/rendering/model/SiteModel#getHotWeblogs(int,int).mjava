@@ -1,18 +1,16 @@
     /**
      * Get list of WebsiteDisplay objects, ordered by number of hits.
      * @param sinceDays Only consider weblogs updated in the last sinceDays
-     * @param len      Max number of results to return
+     * @param length      Max number of results to return
      */
-    public List getHotWeblogs(int sinceDays, int length) {
+    public List<StatCount> getHotWeblogs(int sinceDays, int length) {
         
-        List results = new ArrayList();
+        List<StatCount> results = new ArrayList<StatCount>();
         try {
             WeblogEntryManager mgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
-            List hotBlogs = mgr.getHotWeblogs(sinceDays, 0, length);
+            List<WeblogHitCount> hotBlogs = mgr.getHotWeblogs(sinceDays, 0, length);
             
-            Iterator hitCounts = hotBlogs.iterator();
-            while (hitCounts.hasNext()) {
-                WeblogHitCount hitCount = (WeblogHitCount) hitCounts.next();
+            for (WeblogHitCount hitCount : hotBlogs) {
                 StatCount statCount = new StatCount(
                     hitCount.getWeblog().getId(),
                     hitCount.getWeblog().getHandle(),

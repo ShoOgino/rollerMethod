@@ -7,17 +7,10 @@
      * something a bit more elaborate, like JMX.
      */
     public static Map getStats() {
-        
         Map allStats = new HashMap();
-        
-        Cache cache = null;
-        Iterator cachesIT = caches.values().iterator();
-        while(cachesIT.hasNext()) {
-            cache = (Cache) cachesIT.next();
-            
+        for (Cache cache : caches.values()) {
             allStats.put(cache.getId(), cache.getStats());
         }
-        
         return allStats;
     }
 

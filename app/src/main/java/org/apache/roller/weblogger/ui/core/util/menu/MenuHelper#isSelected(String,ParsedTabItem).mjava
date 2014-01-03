@@ -4,11 +4,11 @@
             return true;
         }
         
-        // an item is also considered selected if it's subforwards are the current action
+        // an item is also considered selected if its subforwards are the current action
         String[] subActions = tabItem.getSubActions();
-        if (subActions != null && subActions.length > 0) {
-            for(int i=0; i < subActions.length; i++) {
-                if (currentAction.equals(subActions[i])) {
+        if (subActions != null) {
+            for (String subAction : subActions) {
+                if (currentAction.equals(subAction)) {
                     return true;
                 }
             }

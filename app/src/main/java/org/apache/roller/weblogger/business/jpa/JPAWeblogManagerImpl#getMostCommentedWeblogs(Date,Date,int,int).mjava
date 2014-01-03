@@ -1,4 +1,4 @@
-    public List getMostCommentedWeblogs(Date startDate, Date endDate,
+    public List<StatCount> getMostCommentedWeblogs(Date startDate, Date endDate,
             int offset, int length)
             throws WebloggerException {
         
@@ -28,7 +28,7 @@
             query.setMaxResults(length);
         }
         List queryResults = query.getResultList();
-        List results = new ArrayList();
+        List<StatCount> results = new ArrayList<StatCount>();
         for (Iterator iter = queryResults.iterator(); iter.hasNext();) {
             Object[] row = (Object[]) iter.next();
             StatCount sc = new StatCount(

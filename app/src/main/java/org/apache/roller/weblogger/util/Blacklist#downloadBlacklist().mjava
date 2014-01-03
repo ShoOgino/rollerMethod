@@ -53,7 +53,7 @@
                 
                 // read from url and write to file
                 byte[] buf = new byte[4096];
-                int length = 0;
+                int length;
                 while((length = instream.read(buf)) > 0) {
                     outstream.write(buf, 0, length);
                 }

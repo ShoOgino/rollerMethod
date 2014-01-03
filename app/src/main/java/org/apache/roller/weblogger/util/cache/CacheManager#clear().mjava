@@ -2,13 +2,7 @@
      * Flush the entire cache system.
      */
     public static void clear() {
-        
-        // loop through all caches and trigger a clear
-        Cache cache = null;
-        Iterator cachesIT = caches.values().iterator();
-        while(cachesIT.hasNext()) {
-            cache = (Cache) cachesIT.next();
-            
+        for (Cache cache : caches.values()) {
             cache.clear();
         }
     }

@@ -1,9 +1,9 @@
     /**
      * Get top X subscriptions, restricted by group.
      */
-    public List getTopSubscriptions(
+    public List<Subscription> getTopSubscriptions(
             PlanetGroup group, int offset, int len) throws RollerException {
-        List result = null;
+        List<Subscription> result;
         if (group != null) {
             Query q = strategy.getNamedQuery(
                     "Subscription.getByGroupOrderByInboundBlogsDesc");
