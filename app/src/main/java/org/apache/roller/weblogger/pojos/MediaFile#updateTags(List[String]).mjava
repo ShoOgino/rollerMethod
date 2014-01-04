@@ -4,20 +4,18 @@
             return;
         }
 
-        HashSet newTags = new HashSet(updatedTags.size());
+        HashSet<String> newTags = new HashSet<String>(updatedTags.size());
         Locale localeObject = getWeblog() != null ? getWeblog()
                 .getLocaleInstance() : Locale.getDefault();
 
-        for (Iterator<String> it = updatedTags.iterator(); it.hasNext();) {
-            String inName = it.next();
+        for (String inName : updatedTags) {
             newTags.add(Utilities.normalizeTag(inName, localeObject));
         }
 
-        HashSet removeTags = new HashSet();
+        HashSet<String> removeTags = new HashSet<String>();
 
         // remove old ones no longer passed.
-        for (Iterator it = getTags().iterator(); it.hasNext();) {
-            MediaFileTag tag = (MediaFileTag) it.next();
+        for (MediaFileTag tag : getTags()) {
             if (!newTags.contains(tag.getName())) {
                 removeTags.add(tag.getName());
             } else {
@@ -27,12 +25,13 @@
 
         MediaFileManager mediaManager = WebloggerFactory.getWeblogger()
                 .getMediaFileManager();
-        for (Iterator it = removeTags.iterator(); it.hasNext();) {
-            mediaManager.removeMediaFileTag((String) it.next(), this);
+
+        for (String tag : removeTags) {
+            mediaManager.removeMediaFileTag(tag, this);
         }
 
-        for (Iterator it = newTags.iterator(); it.hasNext();) {
-            addTag((String) it.next());
+        for (String tag : newTags) {
+            addTag(tag);
         }
     }
 

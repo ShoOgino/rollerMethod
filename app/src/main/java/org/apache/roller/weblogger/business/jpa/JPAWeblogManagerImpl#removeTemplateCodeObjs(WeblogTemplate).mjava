@@ -3,10 +3,8 @@
         codeQuery.setParameter(1, page.getId());
         List codeList = codeQuery.getResultList();
 
-        for (Iterator itr = codeList.iterator(); itr.hasNext(); ) {
-            WeblogThemeTemplateCode templateCode = (WeblogThemeTemplateCode) itr.next();
-            this.strategy.remove(templateCode);
+        for (Object obj : codeList) {
+            this.strategy.remove(obj);
         }
-
     }
 

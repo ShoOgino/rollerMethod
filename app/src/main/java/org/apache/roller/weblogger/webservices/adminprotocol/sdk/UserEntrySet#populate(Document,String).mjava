@@ -4,15 +4,14 @@
         if (!rootName.equals(Tags.USERS)) {
             throw new UnexpectedRootElementException("ERROR: Unexpected root element", Tags.USERS, rootName);
         }
-        List users = root.getChildren(UserEntry.Tags.USER, NAMESPACE);
+        List<Element> users = root.getChildren(UserEntry.Tags.USER, NAMESPACE);
         if (users != null) {
-            List entries = new ArrayList();
-            for (Iterator i = users.iterator(); i.hasNext(); ) {
-                Element user = (Element)i.next();
+            List<UserEntry> entries = new ArrayList<UserEntry>();
+            for (Element user : users) {
                 UserEntry entry = new UserEntry(user, urlPrefix);
                 entries.add(entry);
             }
-            setEntries((Entry[])entries.toArray(new Entry[0]));
+            setEntries(entries.toArray(new Entry[0]));
         }
         setHref(urlPrefix + "/" + Types.USERS);
     }    

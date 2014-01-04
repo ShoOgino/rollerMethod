@@ -12,13 +12,11 @@
         }
         
         // get all entries in category and subcats
-        List results = srcCat.retrieveWeblogEntries(false);
+        List<WeblogEntry> results = srcCat.retrieveWeblogEntries(false);
         
         // Loop through entries in src cat, assign them to dest cat
-        Iterator iter = results.iterator();
         Weblog website = destCat.getWebsite();
-        while (iter.hasNext()) {
-            WeblogEntry entry = (WeblogEntry) iter.next();
+        for (WeblogEntry entry : results) {
             entry.setCategory(destCat);
             entry.setWebsite(website);
             this.strategy.store(entry);

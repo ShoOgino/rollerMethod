@@ -3,9 +3,8 @@
      * (case-insensitive comparison).
      */
     public boolean inCategory(String category) {
-        Iterator cats = getCategories().iterator();
-        while (cats.hasNext()) {
-            String catName = ((String)cats.next()).toLowerCase();
+        for (Category cat : getCategories()) {
+            String catName = cat.getName().toLowerCase();
             if (catName.contains(category.toLowerCase())) {
                 return true;
             }

@@ -5,9 +5,8 @@
      */
     public void removeAll(Collection pos) throws WebloggerException {
         EntityManager em = getEntityManager(true);
-        for (Iterator iterator = pos.iterator(); iterator.hasNext();) {
-            Object obj = iterator.next();
+        for (Object obj : pos) {
             em.remove(obj);
         }
-    }    
+    }
 

@@ -5,7 +5,7 @@
 
         log.debug("Parsing theme descriptor for " + this.themeDir);
 
-        ThemeMetadata themeMetadata = null;
+        ThemeMetadata themeMetadata;
         try {
             // lookup theme descriptor and parse it
             ThemeMetadataParser parser = new ThemeMetadataParser();
@@ -127,11 +127,7 @@
         }
 
         // go through static resources and add them to the theme
-        String resourcePath = null;
-        Iterator resourcesIter = themeMetadata.getResources().iterator();
-        while (resourcesIter.hasNext()) {
-            resourcePath = (String) resourcesIter.next();
-
+        for (String resourcePath : themeMetadata.getResources()) {
             // construct ThemeResource object from resource
             File resourceFile = new File(this.themeDir + File.separator
                     + resourcePath);
@@ -157,11 +153,8 @@
         }
 
         // go through templates and read in contents to a ThemeTemplate
-        SharedThemeTemplate theme_template = null;
-        ThemeMetadataTemplate templateMetadata = null;
-        Iterator templatesIter = themeMetadata.getTemplates().iterator();
-        while (templatesIter.hasNext()) {
-            templateMetadata = (ThemeMetadataTemplate) templatesIter.next();
+        SharedThemeTemplate theme_template;
+        for (ThemeMetadataTemplate templateMetadata : themeMetadata.getTemplates()) {
 
             // getting the template codes for available types
             ThemeMetadataTemplateCode standardTemplateCode = templateMetadata

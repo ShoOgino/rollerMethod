@@ -5,10 +5,7 @@
      * @return boolean true if child folder exists, false otherwise.
      */
     public boolean hasFolder(String name) {
-        Iterator folders = this.getFolders().iterator();
-        WeblogBookmarkFolder folder = null;
-        while(folders.hasNext()) {
-            folder = (WeblogBookmarkFolder) folders.next();
+        for (WeblogBookmarkFolder folder : this.getFolders()) {
             if(name.equals(folder.getName())) {
                 return true;
             }

@@ -60,8 +60,8 @@
             WebloggerFactory.getWeblogger().flush();
             
             // notify caches of changes, flush weblogs affected by changes
-            for (Iterator sites = flushList.iterator(); sites.hasNext();) {
-                CacheManager.invalidate((Weblog)sites.next());
+            for (Weblog weblog : flushList) {
+                CacheManager.invalidate(weblog);
             }
             
             addMessage("commentManagement.updateSuccess");

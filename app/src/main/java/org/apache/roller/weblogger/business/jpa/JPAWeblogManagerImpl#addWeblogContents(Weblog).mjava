@@ -79,11 +79,7 @@
         PingTargetManager pingTargetMgr = roller.getPingTargetManager();
         AutoPingManager autoPingMgr = roller.getAutopingManager();
         
-        Iterator pingTargets = pingTargetMgr.getCommonPingTargets().iterator();
-        PingTarget pingTarget = null;
-        while(pingTargets.hasNext()) {
-            pingTarget = (PingTarget) pingTargets.next();
-            
+        for (PingTarget pingTarget : pingTargetMgr.getCommonPingTargets()) {
             if(pingTarget.isAutoEnabled()) {
                 AutoPing autoPing = new AutoPing(
                         null, pingTarget, newWeblog);

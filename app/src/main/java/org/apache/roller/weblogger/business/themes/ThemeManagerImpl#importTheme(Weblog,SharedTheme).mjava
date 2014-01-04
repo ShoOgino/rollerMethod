@@ -17,14 +17,10 @@
                     + " does not have a root MediaFile directory");
         }
 
-		Set importedActionTemplates = new HashSet();
-		ThemeTemplate themeTemplate = null;
+		Set<String> importedActionTemplates = new HashSet<String>();
 		ThemeTemplate stylesheetTemplate = theme.getStylesheet();
-		Iterator iter = theme.getTemplates().iterator();
-		while (iter.hasNext()) {
-			themeTemplate = (ThemeTemplate) iter.next();
-
-			WeblogTemplate template = null;
+		for (ThemeTemplate themeTemplate : theme.getTemplates()) {
+			WeblogTemplate template;
 
 			// if template is an action, lookup by action
 			if (themeTemplate.getAction() != null
@@ -76,8 +72,7 @@
 			for (String type : ThemeManagerImpl.getTypesList()) {
 
 				// See if we already have some code for this template already (eg previous theme)
-				WeblogThemeTemplateCode weblogTemplateCode = (WeblogThemeTemplateCode) template
-						.getTemplateCode(type);
+				WeblogThemeTemplateCode weblogTemplateCode = template.getTemplateCode(type);
 
 				// Get the template for the new theme
 				TemplateCode templateCode = themeTemplate.getTemplateCode(type);
@@ -126,11 +121,7 @@
 		wmgr.saveWeblog(website);
 
 		// now lets import all the theme resources
-		List resources = theme.getResources();
-		Iterator iterat = resources.iterator();
-		ThemeResource resource = null;
-		while (iterat.hasNext()) {
-			resource = (ThemeResource) iterat.next();
+        for (ThemeResource resource : theme.getResources()) {
 
 			log.debug("Importing resource " + resource.getPath());
 
@@ -150,9 +141,9 @@
 			} else {
 				String resourcePath = resource.getPath();
 
-				MediaFileDirectory mdir = null;
-				String justName = null;
-				String justPath = null;
+				MediaFileDirectory mdir;
+				String justName;
+				String justPath;
 
 				if (resourcePath.indexOf('/') == -1) {
 					mdir = fileMgr.getMediaFileRootDirectory(website);

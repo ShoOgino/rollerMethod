@@ -6,18 +6,16 @@
      * @param folders
      * @return
      */
-    private String lookInFolders(String text, Collection folders) {
+    private String lookInFolders(String text, Collection<WeblogBookmarkFolder> folders) {
         
-        Iterator it = folders.iterator();
-        while (it.hasNext()) {
-            WeblogBookmarkFolder folder = (WeblogBookmarkFolder)it.next();
+        for (WeblogBookmarkFolder folder: folders) {
             text = matchBookmarks(text, folder);
-            
+
             if (!folder.getFolders().isEmpty()) {
                 lookInFolders(text, folder.getFolders());
             }
         }
-        
+
         return text;
     }
 

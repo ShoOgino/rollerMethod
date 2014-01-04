@@ -1,8 +1,6 @@
-    private String matchBookmarks(String text,WeblogBookmarkFolder folder) {
-        Iterator bookmarks = folder.getBookmarks().iterator();
+    private String matchBookmarks(String text, WeblogBookmarkFolder folder) {
         String workingText = text;
-        while (bookmarks.hasNext()) {
-            WeblogBookmark bookmark = (WeblogBookmark)bookmarks.next();
+        for (WeblogBookmark bookmark : folder.getBookmarks()) {
             String bkDescription = bookmark.getDescription();
             if (bkDescription == null) {
                 bkDescription = "";
