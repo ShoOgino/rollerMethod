@@ -1,14 +1,14 @@
     /**
      * Get initialized plugins for use during rendering process.
      */
-    public Map getInitializedPlugins() {
+    public Map<String, WeblogEntryPlugin> getInitializedPlugins() {
         if (initializedPlugins == null) {
             try {
                 Weblogger roller = WebloggerFactory.getWeblogger();
                 PluginManager ppmgr = roller.getPluginManager();
-                initializedPlugins = ppmgr.getWeblogEntryPlugins(this); 
+                initializedPlugins = ppmgr.getWeblogEntryPlugins(this);
             } catch (Exception e) {
-                this.log.error("ERROR: initializing plugins");
+                log.error("ERROR: initializing plugins");
             }
         }
         return initializedPlugins;

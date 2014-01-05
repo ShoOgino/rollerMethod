@@ -1,17 +1,12 @@
-    public List getRecentComments(int length) {
-        List initialCollection = this.pojo.getRecentComments(length);
-        
-        // iterate through and wrap
-        // we force the use of an ArrayList because it should be good enough to cover
-        // for any Collection type we encounter.
-        ArrayList wrappedCollection = new ArrayList(initialCollection.size());
-        Iterator it = initialCollection.iterator();
+    public List<WeblogEntryCommentWrapper> getRecentComments(int length) {
+        List<WeblogEntryComment> unwrapped = this.pojo.getRecentComments(length);
+        List<WeblogEntryCommentWrapper> wrapped = new ArrayList<WeblogEntryCommentWrapper>(unwrapped.size());
+
         int i = 0;
-        while(it.hasNext()) {
-            wrappedCollection.add(i,WeblogEntryCommentWrapper.wrap((WeblogEntryComment) it.next(), urlStrategy));
+        for (WeblogEntryComment wec : unwrapped) {
+            wrapped.add(i, WeblogEntryCommentWrapper.wrap(wec, urlStrategy));
             i++;
         }
-        
-        return wrappedCollection;
+        return wrapped;
     }
 

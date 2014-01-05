@@ -2,16 +2,12 @@
         
         try {
             // only set values for properties that are already defined
-            String propName = null;
-            RuntimeConfigProperty updProp = null;
+            RuntimeConfigProperty updProp;
             String incomingProp = null;
-            Iterator propsIT = getProperties().keySet().iterator();
-            while(propsIT.hasNext()) {
-                propName = (String) propsIT.next();
-                
+            for (String propName : getProperties().keySet()) {
                 log.debug("Checking property ["+propName+"]");
                 
-                updProp = (RuntimeConfigProperty) getProperties().get(propName);
+                updProp = getProperties().get(propName);
                 String[] propValues = (String[]) getParameters().get(updProp.getName());
                 if(propValues != null && propValues.length > 0) {
                     // we don't deal with multi-valued props

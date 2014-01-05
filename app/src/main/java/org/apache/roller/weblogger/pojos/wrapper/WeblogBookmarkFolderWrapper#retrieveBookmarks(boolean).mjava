@@ -1,19 +1,18 @@
-    public List retrieveBookmarks(boolean subfolders)
+    public List<WeblogBookmarkWrapper> retrieveBookmarks(boolean subfolders)
             throws WebloggerException {
         
-        List initialCollection = this.pojo.retrieveBookmarks(subfolders);
+        List<WeblogBookmark> initialCollection = this.pojo.retrieveBookmarks(subfolders);
         
         // iterate through and wrap
         // we force the use of an ArrayList because it should be good enough to cover
         // for any Collection type we encounter.
-        ArrayList wrappedCollection = new ArrayList(initialCollection.size());
-        Iterator it = initialCollection.iterator();
+        List<WeblogBookmarkWrapper> wrappedCollection = new ArrayList<WeblogBookmarkWrapper>(initialCollection.size());
         int i = 0;
-        while(it.hasNext()) {
-            wrappedCollection.add(i,WeblogBookmarkWrapper.wrap((WeblogBookmark) it.next()));
+        for (WeblogBookmark bookmark : initialCollection) {
+            wrappedCollection.add(i,WeblogBookmarkWrapper.wrap(bookmark));
             i++;
         }
-        
+
         return wrappedCollection;
     }
 

@@ -3,7 +3,7 @@
      * @param website Web site.
      * @return List of type WeblogReferrer
      */
-    public List getTodaysReferers(Weblog website) throws WebloggerException {
+    public List<WeblogReferrer> getTodaysReferers(Weblog website) throws WebloggerException {
         Query q = strategy.getNamedQuery(
             "WeblogReferrer.getByWebsite&DayHitsGreaterZeroOrderByDayHitsDesc");
         q.setParameter(1, website);

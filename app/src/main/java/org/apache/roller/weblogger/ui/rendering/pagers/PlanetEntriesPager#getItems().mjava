@@ -1,4 +1,4 @@
-    public List getItems() {
+    public List<SubscriptionEntry> getItems() {
         
         if (entries == null) {
             // calculate offset
@@ -12,12 +12,12 @@
                 startDate = cal.getTime();
             }
             
-            List results = new ArrayList();
+            List<SubscriptionEntry> results = new ArrayList<SubscriptionEntry>();
             try {
                 PlanetManager planetManager = WebloggerFactory.getWeblogger().getPlanetManager();
                 Planet planet = planetManager.getWeblogger("default");
                 
-                List entries = null;
+                List<SubscriptionEntry> entries;
                 if (feedURL != null) {
                     Subscription sub = planetManager.getSubscription(feedURL);
                     entries = planetManager.getEntries(sub, offset, length+1);
@@ -31,8 +31,7 @@
                 
                 // wrap 'em
                 int count = 0;
-                for (Iterator it = entries.iterator(); it.hasNext();) {
-                    SubscriptionEntry entry = (SubscriptionEntry) it.next();
+                for (SubscriptionEntry entry : entries) {
                     // TODO needs pojo wrapping from planet
                     if (count++ < length) { 
                         results.add(entry);

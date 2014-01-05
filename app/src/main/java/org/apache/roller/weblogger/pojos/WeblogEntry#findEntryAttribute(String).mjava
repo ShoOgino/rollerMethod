@@ -3,8 +3,7 @@
      */
     public String findEntryAttribute(String name) {
         if (getEntryAttributes() != null) {
-            for (Iterator it = getEntryAttributes().iterator(); it.hasNext(); ) {
-                WeblogEntryAttribute att = (WeblogEntryAttribute) it.next();
+            for (WeblogEntryAttribute att : getEntryAttributes()) {
                 if (name.equals(att.getName())) {
                     return att.getValue();
                 }

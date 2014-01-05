@@ -1,15 +1,11 @@
     private DisplayGroup elementToDisplayGroup(Element element) {
-        
         DisplayGroup displaygroup = new DisplayGroup();
         
         displaygroup.setName(element.getAttributeValue("name"));
         displaygroup.setKey(element.getAttributeValue("key"));
         
-        List displaygroups = element.getChildren("property-def");
-        Iterator iter = displaygroups.iterator();
-        while (iter.hasNext())
-        {
-            Element e = (Element) iter.next();
+        List<Element> displaygroups = element.getChildren("property-def");
+        for (Element e : displaygroups) {
             displaygroup.addPropertyDef(this.elementToPropertyDef(e));
         }
         

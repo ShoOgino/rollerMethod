@@ -9,10 +9,10 @@
      * @param status     Status of DRAFT, PENDING, PUBLISHED or null for all
      * @param offset     Offset into results for paging
      * @param range
-     * @return Map of Lists, keyed by Date, and containing WeblogEntryData.
+     * @return Map of Lists, keyed by Date, and containing WeblogEntry objects.
      * @throws WebloggerException
      */
-    Map getWeblogEntryObjectMap(
+    Map<Date, List<WeblogEntry>> getWeblogEntryObjectMap(
             Weblog website,
             Date        startDate,
             Date        endDate,

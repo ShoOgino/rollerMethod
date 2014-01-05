@@ -24,7 +24,7 @@
             Weblogger roller = WebloggerFactory.getWeblogger();
             WeblogEntryManager weblogMgr = roller.getWeblogEntryManager();
             if (website != null) {
-                List entries = weblogMgr.getWeblogEntries(
+                List<WeblogEntry> entries = weblogMgr.getWeblogEntries(
                         website,           // website
                         null,
                         null,              // startDate
@@ -38,9 +38,7 @@
                         null,
                         0, numposts);
                 
-                Iterator iter = entries.iterator();
-                while (iter.hasNext()) {
-                    WeblogEntry entry = (WeblogEntry)iter.next();
+                for (WeblogEntry entry : entries) {
                     results.addElement(createPostStruct(entry, userid));
                 }
             }

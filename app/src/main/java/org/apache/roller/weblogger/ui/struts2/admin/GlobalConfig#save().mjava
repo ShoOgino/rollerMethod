@@ -7,13 +7,10 @@
         }
         
         // only set values for properties that are already defined
-        String propName = null;
-        RuntimeConfigProperty updProp = null;
-        String incomingProp = null;
-        Iterator propsIT = getProperties().keySet().iterator();
-        while (propsIT.hasNext()) {
-            propName = (String) propsIT.next();
-            updProp = (RuntimeConfigProperty) getProperties().get(propName);
+        RuntimeConfigProperty updProp;
+        String incomingProp;
+        for (String propName : getProperties().keySet()) {
+            updProp = getProperties().get(propName);
             incomingProp = this.getParameter(updProp.getName());
             
             log.debug("Checking property ["+propName+"]");
@@ -48,8 +45,7 @@
         if(getCommentPlugins().length > 0) {
             enabledPlugins = StringUtils.join(getCommentPlugins(), ",");
         }
-        RuntimeConfigProperty prop = 
-                    (RuntimeConfigProperty) getProperties().get("users.comments.plugins");
+        RuntimeConfigProperty prop = getProperties().get("users.comments.plugins");
         prop.setValue(enabledPlugins);
             
         try {

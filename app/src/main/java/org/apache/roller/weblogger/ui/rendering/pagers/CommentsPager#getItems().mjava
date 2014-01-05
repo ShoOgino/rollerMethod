@@ -1,10 +1,10 @@
-    public List getItems() {
+    public List<WeblogEntryCommentWrapper> getItems() {
         
         if (comments == null) {
             // calculate offset
             int offset = getPage() * length;
             
-            List results = new ArrayList();
+            List<WeblogEntryCommentWrapper> results = new ArrayList<WeblogEntryCommentWrapper>();
             
             Date startDate = null;
             if(sinceDays > 0) {
@@ -17,13 +17,12 @@
             try {
                 Weblogger roller = WebloggerFactory.getWeblogger();
                 WeblogEntryManager wmgr = roller.getWeblogEntryManager();
-                List entries = wmgr.getComments(
+                List<WeblogEntryComment> entries = wmgr.getComments(
                         weblog, null, null, startDate, null, WeblogEntryComment.APPROVED, true, offset, length + 1);
                 
                 // wrap the results
                 int count = 0;
-                for (Iterator it = entries.iterator(); it.hasNext();) {
-                    WeblogEntryComment comment = (WeblogEntryComment) it.next();
+                for (WeblogEntryComment comment : entries) {
                     if (count++ < length) {
                         results.add(WeblogEntryCommentWrapper.wrap(comment, urlStrategy));
                     } else {

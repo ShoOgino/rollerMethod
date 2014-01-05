@@ -21,7 +21,7 @@
             if (!RollerAtomHandler.canView(user, website)) {
                 throw new AtomNotAuthorizedException("Not authorized to access website: " + handle);
             }
-            List entries = roller.getWeblogEntryManager().getWeblogEntries( 
+            List<WeblogEntry> entries = roller.getWeblogEntryManager().getWeblogEntries(
                     website,           // website
                     null,              // user
                     null,              // startDate
@@ -46,13 +46,15 @@
             link.setType("text/html");
             feed.setAlternateLinks(Collections.singletonList(link));
 
-            List atomEntries = new ArrayList();
+            List<Entry> atomEntries = new ArrayList<Entry>();
             int count = 0;
-            for (Iterator iter = entries.iterator(); iter.hasNext() && count < MAX_ENTRIES; count++) {
-                WeblogEntry rollerEntry = (WeblogEntry)iter.next();
+            for (WeblogEntry rollerEntry : entries) {
+                if (count++ >= MAX_ENTRIES) {
+                    break;
+                }
                 Entry entry = createAtomEntry(rollerEntry);
                 atomEntries.add(entry);
-                if (count == 0) {
+                if (count == 1) {
                     // first entry is most recent
                     feed.setUpdated(entry.getUpdated());
                 }

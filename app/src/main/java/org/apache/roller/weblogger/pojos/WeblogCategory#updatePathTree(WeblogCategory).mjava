@@ -4,11 +4,7 @@
         
         log.debug("Updating path tree for category "+cat.getPath());
         
-        WeblogCategory childCat = null;
-        Iterator childCats = cat.getWeblogCategories().iterator();
-        while(childCats.hasNext()) {
-            childCat = (WeblogCategory) childCats.next();
-            
+        for (WeblogCategory childCat : cat.getWeblogCategories()) {
             log.debug("OLD child category path was "+childCat.getPath());
             
             // update path and save

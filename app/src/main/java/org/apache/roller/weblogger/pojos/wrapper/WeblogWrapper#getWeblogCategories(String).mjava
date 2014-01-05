@@ -1,17 +1,12 @@
-    public List getWeblogCategories(String categoryPath) {
-        Set initialCollection = this.pojo.getWeblogCategories(categoryPath);
-        
-        // iterate through and wrap
-        // we force the use of an ArrayList because it should be good enough to cover
-        // for any Collection type we encounter.
-        ArrayList wrappedCollection = new ArrayList(initialCollection.size());
-        Iterator it = initialCollection.iterator();
+    public List<WeblogCategoryWrapper> getWeblogCategories(String categoryPath) {
+        Set<WeblogCategory> unwrapped = this.pojo.getWeblogCategories(categoryPath);
+        List<WeblogCategoryWrapper> wrapped = new ArrayList<WeblogCategoryWrapper>(unwrapped.size());
+
         int i = 0;
-        while(it.hasNext()) {
-            wrappedCollection.add(i,WeblogCategoryWrapper.wrap((WeblogCategory) it.next(), urlStrategy));
+        for (WeblogCategory category : unwrapped) {
+            wrapped.add(i,WeblogCategoryWrapper.wrap(category, urlStrategy));
             i++;
         }
-        
-        return wrappedCollection;
+        return wrapped;
     }
 

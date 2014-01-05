@@ -1,17 +1,11 @@
-    public List getTodaysReferrers() {
-        List initialCollection = this.pojo.getTodaysReferrers();
-        
-        // iterate through and wrap
-        // we force the use of an ArrayList because it should be good enough to cover
-        // for any Collection type we encounter.
-        ArrayList wrappedCollection = new ArrayList(initialCollection.size());
-        Iterator it = initialCollection.iterator();
+    public List<WeblogReferrerWrapper> getTodaysReferrers() {
+        List<WeblogReferrer> unwrapped = this.pojo.getTodaysReferrers();
+        List<WeblogReferrerWrapper> wrapped = new ArrayList<WeblogReferrerWrapper>(unwrapped.size());
         int i = 0;
-        while(it.hasNext()) {
-            wrappedCollection.add(i,WeblogReferrerWrapper.wrap((WeblogReferrer) it.next(), urlStrategy));
+        for (WeblogReferrer referrer : unwrapped) {
+            wrapped.add(i,WeblogReferrerWrapper.wrap(referrer, urlStrategy));
             i++;
         }
-        
-        return wrappedCollection;
+        return wrapped;
     }
 

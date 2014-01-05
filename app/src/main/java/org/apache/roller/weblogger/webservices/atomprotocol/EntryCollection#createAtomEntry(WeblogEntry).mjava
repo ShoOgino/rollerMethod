@@ -33,7 +33,7 @@
         atomEntry.setAuthors(   Collections.singletonList(author));
         
         // Add Atom category for Weblogger category, using category scheme
-        List categories = new ArrayList();
+        List<Category> categories = new ArrayList<Category>();
         Category atomCat = new Category();
         atomCat.setScheme(RollerAtomService.getWeblogCategoryScheme(entry.getWebsite()));
         atomCat.setTerm(entry.getCategory().getPath().substring(1));
@@ -42,8 +42,7 @@
         // Add Atom categories for each Weblogger tag with null scheme
         Set<WeblogEntryTag> tmp = new TreeSet<WeblogEntryTag>(new WeblogEntryTagComparator());
         tmp.addAll(entry.getTags());
-        for (Iterator tagit = tmp.iterator(); tagit.hasNext();) {
-            WeblogEntryTag tag = (WeblogEntryTag) tagit.next();
+        for (WeblogEntryTag tag : tmp) {
             Category newcat = new Category();
             newcat.setTerm(tag.getName());
             categories.add(newcat);

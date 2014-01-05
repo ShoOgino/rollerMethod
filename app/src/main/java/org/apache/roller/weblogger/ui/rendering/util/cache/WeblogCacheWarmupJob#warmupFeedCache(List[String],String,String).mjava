@@ -1,4 +1,4 @@
-    private void warmupFeedCache(List weblogs, String type, String format) {
+    private void warmupFeedCache(List<String> weblogs, String type, String format) {
         
         if(weblogs == null) {
             return;
@@ -6,13 +6,9 @@
         
         // we are working on the feed cache
         WeblogFeedCache feedCache = WeblogFeedCache.getInstance();
-        
         long start = System.currentTimeMillis();
         
-        Iterator allWeblogs = weblogs.iterator();
-        String weblogHandle = null;
-        while(allWeblogs.hasNext()) {
-            weblogHandle = (String) allWeblogs.next();
+        for (String weblogHandle : weblogs) {
             log.debug("doing weblog "+weblogHandle);
             
             try {
@@ -24,7 +20,7 @@
                 
                 
                 // populate the rendering model
-                HashMap model = new HashMap();
+                Map model = new HashMap();
                 Map initData = new HashMap();
                 initData.put("request", null);
                 initData.put("feedRequest", feedRequest);

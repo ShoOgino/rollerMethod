@@ -1,14 +1,14 @@
-    public List getItems() {
+    public List<UserWrapper> getItems() {
         
         if (users == null) {
             // calculate offset
             int offset = getPage() * length;
             
-            List results = new ArrayList();
+            List<UserWrapper> results = new ArrayList<UserWrapper>();
             try {
                 Weblogger roller = WebloggerFactory.getWeblogger();
                 UserManager umgr = roller.getUserManager();
-                List rawUsers = null;
+                List<User> rawUsers;
                 if (letter == null) {
                     rawUsers = umgr.getUsers(Boolean.TRUE, null, null, offset, length + 1);
                 } else {
@@ -17,8 +17,7 @@
                 
                 // wrap the results
                 int count = 0;
-                for (Iterator it = rawUsers.iterator(); it.hasNext();) {
-                    User user = (User) it.next();
+                for (User user : rawUsers) {
                     if (count++ < length) {
                         results.add(UserWrapper.wrap(user));
                     } else {

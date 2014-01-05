@@ -11,8 +11,7 @@
             return;
         }
         
-        for (Iterator it = getTags().iterator(); it.hasNext();) {
-            WeblogEntryTag tag = (WeblogEntryTag) it.next();
+        for (WeblogEntryTag tag : getTags()) {
             if (tag.getName().equals(name)) {
                 return;
             }

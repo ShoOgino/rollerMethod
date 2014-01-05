@@ -3,7 +3,7 @@
         if(letter != null) {
             int page = getPage() - 1;
             if (page >= 0) {
-                Map params = new HashMap();
+                Map<String, String> params = new HashMap<String, String>();
                 params.put("page", ""+page);
                 params.put("letter", letter);
                 return createURL(getUrl(), params);
