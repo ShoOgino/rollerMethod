@@ -5,27 +5,34 @@
         log.debug("Into myprepare");
         refreshAllDirectories();
         try {
-            MediaFileManager mgr = WebloggerFactory.getWeblogger().getMediaFileManager();
+            MediaFileManager mgr = WebloggerFactory.getWeblogger()
+                    .getMediaFileManager();
             if (!StringUtils.isEmpty(bean.getDirectoryId())) {
                 setDirectory(mgr.getMediaFileDirectory(bean.getDirectoryId()));
 
             } else if (StringUtils.isNotEmpty(directoryPath)) {
-                setDirectory(mgr.getMediaFileDirectoryByPath(getActionWeblog(), directoryPath));
+                setDirectory(mgr.getMediaFileDirectoryByPath(getActionWeblog(),
+                        directoryPath));
 
             } else {
-                setDirectory(mgr.createRootMediaFileDirectory(getActionWeblog()));
+                MediaFileDirectory root = mgr
+                        .getMediaFileRootDirectory(getActionWeblog());
+                if (root == null) {
+                    root = mgr.createRootMediaFileDirectory(getActionWeblog());
+                }
+                setDirectory(root);
             }
             directoryPath = getDirectory().getPath();
             bean.setDirectoryId(getDirectory().getId());
 
         } catch (WebloggerException ex) {
             log.error("Error looking up media file directory", ex);
-        } finally{
-            //flush
+        } finally {
+            // flush
             try {
                 WebloggerFactory.getWeblogger().flush();
             } catch (WebloggerException e) {
-                //ignored
+                // ignored
             }
         }
     }

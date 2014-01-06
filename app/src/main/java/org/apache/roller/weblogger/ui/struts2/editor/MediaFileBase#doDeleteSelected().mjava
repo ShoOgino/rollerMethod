@@ -5,10 +5,12 @@
         String[] fileIds = getSelectedMediaFiles();
         String[] dirIds = getSelectedMediaFileDirectories();
         try {
-            MediaFileManager manager = WebloggerFactory.getWeblogger().getMediaFileManager();
+            MediaFileManager manager = WebloggerFactory.getWeblogger()
+                    .getMediaFileManager();
 
             if (fileIds != null && fileIds.length > 0) {
-                log.debug("Processing delete of " + fileIds.length + " media files.");
+                log.debug("Processing delete of " + fileIds.length
+                        + " media files.");
                 for (int index = 0; index < fileIds.length; index++) {
                     log.debug("Deleting media file - " + fileIds[index]);
                     MediaFile mediaFile = manager.getMediaFile(fileIds[index]);
@@ -19,19 +21,25 @@
             }
 
             if (dirIds != null && dirIds.length > 0) {
-                log.debug("Processing delete of " + dirIds.length + " media directories.");
+                log.debug("Processing delete of " + dirIds.length
+                        + " media directories.");
                 manager = WebloggerFactory.getWeblogger().getMediaFileManager();
                 for (int index = 0; index < dirIds.length; index++) {
-                    log.debug("Deleting media file directory - " + dirIds[index]);
-                    MediaFileDirectory mediaFileDir = manager.getMediaFileDirectory(dirIds[index]);
+                    log.debug("Deleting media file directory - "
+                            + dirIds[index]);
+                    MediaFileDirectory mediaFileDir = manager
+                            .getMediaFileDirectory(dirIds[index]);
                     if (mediaFileDir != null) {
-                        mediaFileDir.getParent().removeChildDirectory(mediaFileDir);
+                        mediaFileDir.getParent().removeChildDirectory(
+                                mediaFileDir);
                         manager.removeMediaFileDirectory(mediaFileDir);
                     }
                 }
+                refreshAllDirectories();
             }
-            WebloggerFactory.getWeblogger().getWeblogManager().saveWeblog(this.getActionWeblog());
-            
+            WebloggerFactory.getWeblogger().getWeblogManager()
+                    .saveWeblog(this.getActionWeblog());
+
             // flush changes
             WebloggerFactory.getWeblogger().flush();
             WebloggerFactory.getWeblogger().release();
