@@ -17,7 +17,14 @@
         Set<MediaFileDirectory> dirs = dir.getChildDirectories();
         for (MediaFileDirectory md : dirs) {
             removeMediaFileDirectory(md);
+            // Refresh associated object
+            strategy.refresh(md);
         }
         this.strategy.remove(dir);
+        
+        // Refresh associated parent
+        roller.flush();
+        strategy.refresh(dir.getParent());
+     
     }
 

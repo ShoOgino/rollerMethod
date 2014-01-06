@@ -6,9 +6,19 @@
             MediaFileDirectory targetDir) throws WebloggerException {
 
         for (MediaFileDirectory mediaFileDir : mediaFileDirs) {
+            // Refresh associated parent for changes
+            strategy.refresh(mediaFileDir.getParent());
             mediaFileDir.setParent(targetDir);
             this.strategy.store(mediaFileDir);
         }
+        
+        // Refresh associated parent for changes
+        roller.flush();
+        strategy.refresh(targetDir);
+        if (targetDir.getParent() != null) {
+            strategy.refresh(targetDir.getParent());
+        }
+        
         // update weblog last modified date. date updated by saveWebsite()
         roller.getWeblogManager().saveWeblog(targetDir.getWeblog());
     }

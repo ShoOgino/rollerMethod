@@ -31,6 +31,7 @@
 
             // flush changes
             WebloggerFactory.getWeblogger().flush();
+            WebloggerFactory.getWeblogger().release();
             addMessage("mediaFile.move.success");
 
         } catch (WebloggerException e) {

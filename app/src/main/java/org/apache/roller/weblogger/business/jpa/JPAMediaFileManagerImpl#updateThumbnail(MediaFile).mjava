@@ -30,6 +30,9 @@
 
             cmgr.saveFileContent(mediaFile.getWeblog(), mediaFile.getId()
                     + "_sm", new ByteArrayInputStream(baos.toByteArray()));
+            
+            // Refresh associated parent for changes
+            strategy.refresh(mediaFile.getDirectory());
 
         } catch (Exception e) {
             log.debug("ERROR creating thumbnail", e);

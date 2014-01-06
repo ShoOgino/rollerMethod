@@ -10,6 +10,7 @@
             manager.removeMediaFile(getActionWeblog(), mediaFile);
             // flush changes
             WebloggerFactory.getWeblogger().flush();
+            WebloggerFactory.getWeblogger().release();
             addMessage("mediaFile.delete.success");
         } catch (WebloggerException e) {
             log.error("Error deleting media file", e);

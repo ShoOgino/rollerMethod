@@ -17,6 +17,9 @@
             throw new FileIOException(msgs.toString());
         }
         cmgr.saveFileContent(weblog, mediaFile.getId(), is);
+        
+        // Refresh associated parent for changes
+        strategy.refresh(mediaFile.getDirectory());
 
         if (mediaFile.isImageFile()) {
             updateThumbnail(mediaFile);
