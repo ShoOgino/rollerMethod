@@ -4,6 +4,9 @@
     public void createMediaFileDirectory(MediaFileDirectory directory)
             throws WebloggerException {
         this.strategy.store(directory);
+        
+        // Refresh associated parent for changes
+        strategy.refresh(directory.getParent());
 
         // update weblog last modified date. date updated by saveWebsite()
         roller.getWeblogManager().saveWeblog(directory.getWeblog());

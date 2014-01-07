@@ -1,0 +1,58 @@
+    /**
+     * Clear test data.
+     * 
+     * @throws Exception
+     *             the exception
+     */
+    private static void clearTestData() throws Exception {
+
+        ClasspathDatabaseScriptProvider scriptProvider = new ClasspathDatabaseScriptProvider();
+        InputStream script = scriptProvider
+                .getDatabaseScript("junit-cleartables-mysql.sql");
+
+        if (script == null) {
+
+            System.out
+                    .println("File /dbscripts/junit-cleartables-mysql.sql not found on class path.");
+            return;
+
+        }
+
+        // Run script to remove the junit test user
+        try {
+
+            DatabaseProvider dbp = WebloggerStartup.getDatabaseProvider();
+            Connection con = dbp.getConnection();
+
+            SQLScriptRunner runner = new SQLScriptRunner(script);
+
+            if (runner != null) {
+
+                // Loop script and remove invalid lines
+                List<String> updatedCommands = new ArrayList<String>();
+                List<String> commands = runner.getCommands();
+                for (String command : commands) {
+                    if (!command.startsWith("--")) {
+                        updatedCommands.add(command);
+                    }
+                }
+
+                // Run script
+                runner.setCommands(updatedCommands);
+                runner.runScript(con, true);
+
+                // Flush for this update
+                WebloggerFactory.getWeblogger().flush();
+                WebloggerFactory.getWeblogger().release();
+
+            }
+
+        } finally {
+            try {
+                script.close();
+            } catch (Exception e) {
+                // ignored
+            }
+        }
+    }
+

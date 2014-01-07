@@ -11,6 +11,9 @@
 
         MediaFileDirectory newDirectory = parentDirectory
                 .createNewDirectory(newDirName);
+        
+        // Refresh associated parent for changes
+        strategy.refresh(parentDirectory);
 
         // update weblog last modified date. date updated by saveWeblog()
         roller.getWeblogManager().saveWeblog(newDirectory.getWeblog());

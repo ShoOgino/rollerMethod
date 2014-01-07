@@ -1,7 +1,7 @@
     /**
      * Test getting list of all directories for a given user.
      */
-    public void testGetMediaFileDirectories() throws Exception {
+    public void ZtestGetMediaFileDirectories() throws Exception {
 
         User testUser = null;
         Weblog testWeblog = null;
@@ -43,5 +43,6 @@
         TestUtils.endSession(true);
         TestUtils.teardownWeblog(testWeblog.getId());
         TestUtils.teardownUser(testUser.getUserName());
+        TestUtils.endSession(true);
     }
 

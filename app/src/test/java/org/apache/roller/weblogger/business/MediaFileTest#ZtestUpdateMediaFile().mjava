@@ -1,11 +1,11 @@
     /**
-     * Test deletion of media file
+     * Test media file update
      */
-    public void testDeleteMediaFile() throws Exception {
+    public void ZtestUpdateMediaFile() throws Exception {
         User testUser = null;
         Weblog testWeblog = null;
-        testUser = TestUtils.setupUser("mediaFileTestUser4");
-        testWeblog = TestUtils.setupWeblog("mediaFileTestWeblog4", testUser);
+        testUser = TestUtils.setupUser("mediaFileTestUser5");
+        testWeblog = TestUtils.setupWeblog("mediaFileTestWeblog5", testUser);
 
         MediaFileManager mfMgr = WebloggerFactory.getWeblogger()
                 .getMediaFileManager();
@@ -24,20 +24,21 @@
         rootDirectory = mfMgr.getMediaFileDirectory(rootDirectory.getId());
 
         MediaFile mediaFile = new MediaFile();
-        mediaFile.setName("test4.jpg");
-        mediaFile.setDescription("This is a test image 4");
-        mediaFile.setCopyrightText("test 4 copyright text");
+        mediaFile.setName("test5.jpg");
+        mediaFile.setDescription("This is a test image 5");
+        mediaFile.setCopyrightText("test 5 copyright text");
         mediaFile.setSharedForGallery(false);
         mediaFile.setLength(3000);
         mediaFile.setDirectory(rootDirectory);
         mediaFile.setWeblog(testWeblog);
-        mediaFile.setContentType("image/jpeg");
         mediaFile.setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
+        mediaFile.setContentType("image/jpeg");
 
         // Add tags
-        mediaFile.setTagsAsString("tst4work tst4home");
+        mediaFile.setTagsAsString("tst5work tst5home");
 
         mfMgr.createMediaFile(testWeblog, mediaFile, new RollerMessages());
+        rootDirectory.getMediaFiles().add(mediaFile);
         String id = mediaFile.getId();
         TestUtils.endSession(true);
         assertNotNull(id);
@@ -45,28 +46,26 @@
 
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         MediaFile mediaFile1 = mfMgr.getMediaFile(id);
-
-        assertEquals("test4.jpg", mediaFile1.getName());
-        assertNotNull(mediaFile1.getTags());
-        assertEquals(2, mediaFile1.getTags().size());
-
-        try {
-            mfMgr.removeMediaFile(testWeblog, mediaFile1);
-        } catch (Exception ignorable) {
-            log.debug("ERROR removing media file", ignorable);
-        }
+        mediaFile1.setWeblog(testWeblog);
+        mediaFile1.setName("updated.gif");
+        mediaFile1.setDescription("updated desc");
+        mediaFile1.setCopyrightText("updated copyright");
+        mediaFile1.setContentType("image/gif");
+        mediaFile1.setSharedForGallery(true);
+        mfMgr.updateMediaFile(testWeblog, mediaFile1);
         TestUtils.endSession(true);
 
         MediaFile mediaFile2 = mfMgr.getMediaFile(id);
-        assertNull(mediaFile2);
+        assertEquals("updated.gif", mediaFile2.getName());
+        assertEquals("updated desc", mediaFile2.getDescription());
+        assertEquals("updated copyright", mediaFile2.getCopyrightText());
+        assertEquals("image/gif", mediaFile2.getContentType());
+        assertTrue(mediaFile2.isSharedForGallery());
+        assertNotNull(mediaFile2.getTags());
+        assertEquals(2, mediaFile2.getTags().size());
 
         TestUtils.endSession(true);
         TestUtils.teardownWeblog(testWeblog.getId());
         TestUtils.teardownUser(testUser.getUserName());
-
-        String uploadsDirName = WebloggerConfig.getProperty("uploads.dir");
-        File flag = new File(uploadsDirName + File.separator
-                + "migration-status.properties");
-        flag.delete();
     }
 

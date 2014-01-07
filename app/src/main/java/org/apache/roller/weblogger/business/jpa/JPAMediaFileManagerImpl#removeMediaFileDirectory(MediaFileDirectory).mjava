@@ -14,17 +14,30 @@
             }
             this.strategy.remove(mf);
         }
+
         Set<MediaFileDirectory> dirs = dir.getChildDirectories();
+        // Recursive fix ConcurrentModificationException
+        List<MediaFileDirectory> concurrentFix = new ArrayList<MediaFileDirectory>();
         for (MediaFileDirectory md : dirs) {
-            removeMediaFileDirectory(md);
-            // Refresh associated object
-            strategy.refresh(md);
+            concurrentFix.add(md);
         }
+
+        for (Iterator<MediaFileDirectory> i = concurrentFix.iterator(); i
+                .hasNext();) {
+            MediaFileDirectory md = i.next();
+            removeMediaFileDirectory(md);
+            // strategy.refresh(md);
+        }
+
+        // for (MediaFileDirectory md : dirs) {
+        // removeMediaFileDirectory(md);
+        // }
+
         this.strategy.remove(dir);
-        
+
         // Refresh associated parent
         roller.flush();
         strategy.refresh(dir.getParent());
-     
+
     }
 
