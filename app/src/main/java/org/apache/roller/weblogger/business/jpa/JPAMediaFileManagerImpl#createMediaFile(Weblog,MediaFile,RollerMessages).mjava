@@ -13,6 +13,7 @@
         strategy.store(mediaFile);
 
         // Refresh associated parent for changes
+        roller.flush();
         strategy.refresh(mediaFile.getDirectory());
 
         // update weblog last modified date. date updated by saveWeblog()
