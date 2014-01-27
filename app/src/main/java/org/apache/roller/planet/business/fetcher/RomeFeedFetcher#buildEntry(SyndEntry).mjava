@@ -38,7 +38,7 @@
         if (romeEntry.getContents().size() > 0) {
             SyndContent content= (SyndContent)romeEntry.getContents().get(0);
             if (content != null && content.getType().equals("text/plain")) {
-                newEntry.setText(StringEscapeUtils.unescapeHtml(content.getValue()));
+                newEntry.setText(StringEscapeUtils.unescapeHtml4(content.getValue()));
             } else if (content != null) {
                 newEntry.setText(content.getValue());
             }

@@ -1,7 +1,5 @@
-    //------------------------------------------------------------------------
-    public static void copyInputToOutput(
-            InputStream input,
-            OutputStream output)
+    // ------------------------------------------------------------------------
+    public static void copyInputToOutput(InputStream input, OutputStream output)
             throws IOException {
         BufferedInputStream in = new BufferedInputStream(input);
         BufferedOutputStream out = new BufferedOutputStream(output);
@@ -12,7 +10,7 @@
                 out.write(buffer, 0, count);
             }
         }
-        
+
         try {
             in.close();
             out.close();
