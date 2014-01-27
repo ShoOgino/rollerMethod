@@ -31,6 +31,7 @@
             cmgr.saveFileContent(mediaFile.getWeblog(), mediaFile.getId()
                     + "_sm", new ByteArrayInputStream(baos.toByteArray()));
 
+            roller.flush();
             // Refresh associated parent for changes
             strategy.refresh(mediaFile.getDirectory());
 
