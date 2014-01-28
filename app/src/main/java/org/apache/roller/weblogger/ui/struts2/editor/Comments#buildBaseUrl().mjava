@@ -1,28 +1,32 @@
-    // use the action data to build a url representing this action, including query data
+    // use the action data to build a url representing this action, including
+    // query data
     private String buildBaseUrl() {
-        
-        Map<String, String> params = new HashMap();
-        
-        if(!StringUtils.isEmpty(getBean().getEntryId())) {
+
+        Map<String, String> params = new HashMap<String, String>();
+
+        if (!StringUtils.isEmpty(getBean().getEntryId())) {
             params.put("bean.entryId", getBean().getEntryId());
         }
-        if(!StringUtils.isEmpty(getBean().getSearchString())) {
+        if (!StringUtils.isEmpty(getBean().getSearchString())) {
             params.put("bean.searchString", getBean().getSearchString());
         }
-        if(!StringUtils.isEmpty(getBean().getStartDateString())) {
+        if (!StringUtils.isEmpty(getBean().getStartDateString())) {
             params.put("bean.startDateString", getBean().getStartDateString());
         }
-        if(!StringUtils.isEmpty(getBean().getEndDateString())) {
+        if (!StringUtils.isEmpty(getBean().getEndDateString())) {
             params.put("bean.endDateString", getBean().getEndDateString());
         }
-        if(!StringUtils.isEmpty(getBean().getApprovedString())) {
+        if (!StringUtils.isEmpty(getBean().getApprovedString())) {
             params.put("bean.approvedString", getBean().getApprovedString());
         }
-        if(!StringUtils.isEmpty(getBean().getSpamString())) {
+        if (!StringUtils.isEmpty(getBean().getSpamString())) {
             params.put("bean.spamString", getBean().getSpamString());
         }
-        
-        return WebloggerFactory.getWeblogger().getUrlStrategy().getActionURL("comments", "/roller-ui/authoring", 
-                getActionWeblog().getHandle(), params, false);
+
+        return WebloggerFactory
+                .getWeblogger()
+                .getUrlStrategy()
+                .getActionURL("comments", "/roller-ui/authoring",
+                        getActionWeblog().getHandle(), params, false);
     }
 

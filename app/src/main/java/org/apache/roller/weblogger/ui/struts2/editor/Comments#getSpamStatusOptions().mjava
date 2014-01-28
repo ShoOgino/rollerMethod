@@ -1,11 +1,13 @@
-    public List getSpamStatusOptions() {
-        
-        List opts = new ArrayList();
-        
+    public List<KeyValueObject> getSpamStatusOptions() {
+
+        List<KeyValueObject> opts = new ArrayList<KeyValueObject>();
+
         opts.add(new KeyValueObject("ALL", getText("commentManagement.all")));
-        opts.add(new KeyValueObject("NO_SPAM", getText("commentManagement.noSpam")));
-        opts.add(new KeyValueObject("ONLY_SPAM", getText("commentManagement.onlySpam")));
-        
+        opts.add(new KeyValueObject("NO_SPAM",
+                getText("commentManagement.noSpam")));
+        opts.add(new KeyValueObject("ONLY_SPAM",
+                getText("commentManagement.onlySpam")));
+
         return opts;
     }
 
