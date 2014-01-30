@@ -1,19 +1,29 @@
-    private static boolean isSelected(String currentAction, ParsedTabItem tabItem) {
-        
+    /**
+     * Checks if is selected.
+     * 
+     * @param currentAction
+     *            the current action
+     * @param tabItem
+     *            the tab item
+     * 
+     * @return true, if is selected
+     */
+    private static boolean isSelected(String currentAction,
+            ParsedTabItem tabItem) {
+
         if (currentAction.equals(tabItem.getAction())) {
             return true;
         }
-        
-        // an item is also considered selected if its subforwards are the current action
-        String[] subActions = tabItem.getSubActions();
+
+        // an item is also considered selected if it's a subforward of the
+        // current action
+        Set<String> subActions = tabItem.getSubActions();
         if (subActions != null) {
-            for (String subAction : subActions) {
-                if (currentAction.equals(subAction)) {
-                    return true;
-                }
+            if (subActions.contains(currentAction)) {
+                return true;
             }
         }
-        
+
         return false;
     }
 

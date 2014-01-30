@@ -1,22 +1,37 @@
-    public static Menu getMenu(String menuId, String currentAction,
-                               User user, Weblog weblog) {
-        
-        if(menuId == null) {
+    /**
+     * Gets the menu.
+     * 
+     * @param menuId
+     *            the menu id
+     * @param currentAction
+     *            the current action
+     * @param user
+     *            the user
+     * @param weblog
+     *            the weblog
+     * 
+     * @return the menu
+     */
+    public static Menu getMenu(String menuId, String currentAction, User user,
+            Weblog weblog) {
+
+        if (menuId == null) {
             return null;
         }
-        
+
         Menu menu = null;
-        
+
         // do we know the specified menu config?
         ParsedMenu menuConfig = (ParsedMenu) menus.get(menuId);
-        if(menuConfig != null) {
+        if (menuConfig != null) {
             try {
-                menu = buildMenu(menuConfig, currentAction, user, weblog);
+                menu = buildMenu(menuId, menuConfig, currentAction, user,
+                        weblog);
             } catch (WebloggerException ex) {
-                log.debug("ERROR: fethcing user roles", ex);
+                log.error("ERROR: fethcing user roles", ex);
             }
         }
-        
+
         return menu;
     }
 
