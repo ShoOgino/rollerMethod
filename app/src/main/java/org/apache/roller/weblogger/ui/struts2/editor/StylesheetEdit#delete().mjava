@@ -1,22 +1,22 @@
-	/**
-	 * set theme to default stylesheet, ie delete it.
-	 */
-	public String delete() {
+    /**
+     * set theme to default stylesheet, ie delete it.
+     */
+    public String delete() {
 
-		if (getTemplate() == null) {
-			log.error("Unable to locate stylesheet template");
-			addError("error.recordnotfound");
-			return ERROR;
-		}
+        if (getTemplate() == null) {
+            log.error("Unable to locate stylesheet template");
+            addError("error.recordnotfound");
+            return ERROR;
+        }
 
-		// make sure we are still using a shared theme so that deleting is
-		// possible
-		if (WeblogTheme.CUSTOM.equals(getActionWeblog().getEditorTheme())) {
-			log.error("Unable to delete stylesheet");
-			addError("stylesheetEdit.error.customTheme");
-		}
+        // make sure we are still using a shared theme so that deleting is
+        // possible
+        if (WeblogTheme.CUSTOM.equals(getActionWeblog().getEditorTheme())) {
+            log.error("Unable to delete stylesheet");
+            addError("stylesheetEdit.error.customTheme");
+        }
 
-		if (!hasActionErrors()) {
+        if (!hasActionErrors()) {
             try {
 
                 WeblogTemplate stylesheet = getTemplate();
@@ -54,7 +54,7 @@
             }
         }
 
-		return "delete";
+        return "delete";
 
-	}
+    }
 

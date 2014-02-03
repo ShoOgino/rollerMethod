@@ -1,15 +1,15 @@
-	/**
-	 * Save an existing stylesheet.
-	 */
-	public String save() {
+    /**
+     * Save an existing stylesheet.
+     */
+    public String save() {
 
-		if (getTemplate() == null) {
-			// TODO: i18n
-			addError("Unable to locate stylesheet template");
-			return ERROR;
-		}
+        if (getTemplate() == null) {
+            // TODO: i18n
+            addError("Unable to locate stylesheet template");
+            return ERROR;
+        }
 
-		if (!hasActionErrors()) {
+        if (!hasActionErrors()) {
             try {
 
                 WeblogTemplate stylesheet = getTemplate();
@@ -68,6 +68,6 @@
             }
         }
 
-		return INPUT;
-	}
+        return INPUT;
+    }
 
