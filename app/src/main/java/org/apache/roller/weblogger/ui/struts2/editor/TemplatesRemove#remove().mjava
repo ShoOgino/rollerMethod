@@ -1,9 +1,9 @@
-	/**
-	 * Remove Selected templates
-	 */
-	public String remove() {
+    /**
+     * Remove Selected templates
+     */
+    public String remove() {
 
-		if (getIds() != null) {
+        if (getIds() != null) {
             try {
 
                 String[] idsToDelete = Utilities.stringToStringArray(getIds(),
@@ -22,8 +22,8 @@
                             template = mgr.getPage(idsToDelete[i]);
                             if (!template.isRequired()
                                     || !WeblogTemplate.ACTION_CUSTOM
-                                    .equals(getActionWeblog()
-                                            .getEditorTheme())) {
+                                            .equals(getActionWeblog()
+                                                    .getEditorTheme())) {
 
                                 // if weblog template remove custom style sheet
                                 // also
@@ -36,12 +36,12 @@
                                     // Delete style sheet if the same name
                                     if (stylesheet != null
                                             && getActionWeblog().getTheme()
-                                            .getStylesheet() != null
+                                                    .getStylesheet() != null
                                             && stylesheet.getLink().equals(
-                                            getActionWeblog()
-                                                    .getTheme()
-                                                    .getStylesheet()
-                                                    .getLink())) {
+                                                    getActionWeblog()
+                                                            .getTheme()
+                                                            .getStylesheet()
+                                                            .getLink())) {
                                         // Same so OK to delete
                                         WeblogTemplate css = mgr.getPageByLink(
                                                 getActionWeblog(),
@@ -85,6 +85,6 @@
             }
         }
 
-		return "confirm";
-	}
+        return "confirm";
+    }
 
