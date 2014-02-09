@@ -6,7 +6,7 @@
             User    user,
             Date        startDate,
             Date        endDate,
-            String      catPath,
+            String      catName,
             List        tags,
             String      status,
             String      text,
@@ -17,10 +17,10 @@
             int         length) throws WebloggerException {
         
         WeblogCategory cat = null;
-        if (StringUtils.isNotEmpty(catPath) && website != null) {
-            cat = getWeblogCategoryByName(website, catPath);
+        if (StringUtils.isNotEmpty(catName) && website != null) {
+            cat = getWeblogCategoryByName(website, catName);
             if (cat == null) {
-                catPath = null;
+                catName = null;
             }
         }
 

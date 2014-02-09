@@ -1,4 +1,4 @@
-    public List getNextPrevEntries(WeblogEntry current, String catPath,
+    public List getNextPrevEntries(WeblogEntry current, String catName,
             String locale, int maxEntries, boolean next)
             throws WebloggerException {
 
@@ -33,13 +33,13 @@
             }
         }
         
-        if (catPath != null) {
-            category = getWeblogCategoryByName(current.getWebsite(), catPath);
+        if (catName != null) {
+            category = getWeblogCategoryByName(current.getWebsite(), catName);
             if (category != null) {
                 params.add(size++, category);
                 whereClause.append(" AND e.category = ?" + size);
             } else {
-                throw new WebloggerException("Cannot find category: " + catPath);
+                throw new WebloggerException("Cannot find category: " + catName);
             } 
         }
         
