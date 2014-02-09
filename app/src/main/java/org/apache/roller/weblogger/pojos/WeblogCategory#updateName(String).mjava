@@ -3,17 +3,8 @@
         
         // update name
         setName(newName);
-        
-        // calculate path
-        if(getParent() == null) {
-            setPath("/");
-        } else if("/".equals(getParent().getPath())) {
-            setPath("/"+getName());
-        } else {
-            setPath(getParent().getPath() + "/" + getName());
-        }
-        
+
         // update path tree for all children
-        updatePathTree(this);
+        WebloggerFactory.getWeblogger().getWeblogEntryManager().saveWeblogCategory(this);
     }
 

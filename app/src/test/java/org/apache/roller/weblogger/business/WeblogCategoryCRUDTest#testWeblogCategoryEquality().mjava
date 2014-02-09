@@ -12,10 +12,12 @@
         
         WeblogCategory testCat = new WeblogCategory(testWeblog, null, "root", "root", null);
         assertTrue(root.equals(testCat));
-        
-        testCat = new WeblogCategory(testWeblog, root, "root", "root", null);
+        mgr.removeWeblogCategory(testCat);
+
+        testCat = new WeblogCategory(testWeblog, root, "other name", "root", null);
         assertFalse(root.equals(testCat));
-        
+        mgr.removeWeblogCategory(testCat);
+
         log.info("END");
     }
 

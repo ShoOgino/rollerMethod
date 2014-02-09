@@ -1,8 +1,5 @@
-    /**
-     * @inheritDoc
-     */
     public WeblogCategory getWeblogCategoryByPath(Weblog website,
-            String categoryPath) throws WebloggerException {
-        return getWeblogCategoryByPath(website, null, categoryPath);
+                                                  String categoryPath) throws WebloggerException {
+        return getWeblogCategoryByName(website, null, categoryPath.substring(1));
     }
 

@@ -3,13 +3,10 @@
      */
     public boolean descendentOf(WeblogCategory ancestor) {
         
-        // if this is a root node then we can't be a descendent
-        if(getParent() == null) {
-            return false;
+        if (parentCategory == ancestor) {
+            return true;
         } else {
-            // if our path starts with our parents path then we are a descendent
-            return getPath().startsWith(ancestor.getPath());
+            return false;
         }
-
     }
 

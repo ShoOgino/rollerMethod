@@ -7,8 +7,8 @@
         // ensure that no sibling categories share the same name
         WeblogCategory parent = cat.getParent();
         if (null != parent) {
-            return (getWeblogCategoryByPath(
-                    cat.getWebsite(), cat.getPath()) != null);
+            return (getWeblogCategoryByName(
+                    cat.getWebsite(), cat.getName()) != null);
         }
         
         return false;
