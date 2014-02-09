@@ -1,14 +1,14 @@
     /**
      * @inheritDoc
      */
-    // TODO: ditch this method in favor of getWeblogCategoryByPath(weblog, path)
+    // TODO: ditch this method in favor of getWeblogCategoryByName(weblog, name)
     public WeblogCategory getWeblogCategoryByName(Weblog website,
             WeblogCategory category, String name) throws WebloggerException {
         
         if (name == null) {
             return getRootWeblogCategory(website);
         } else {
-            // now just do simple lookup by path
+            // now just do simple lookup by name
             Query q = strategy.getNamedQuery(
                     "WeblogCategory.getByName&Website");
             q.setParameter(1, name);

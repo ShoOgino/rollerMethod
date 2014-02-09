@@ -4,7 +4,7 @@
             Weblogger roller = WebloggerFactory.getWeblogger();
             WeblogEntryManager wmgr = roller.getWeblogEntryManager();
             if (categoryPath != null && !categoryPath.equals("nil")) {
-                category = wmgr.getWeblogCategoryByPath(this, categoryPath);
+                category = wmgr.getWeblogCategoryByName(this, categoryPath.substring(1));
             } else {
                 category = this.getDefaultCategory();
             }

@@ -1,4 +1,4 @@
-    public List getNextPrevEntries(WeblogEntry current, String catName,
+    public List getNextPrevEntries(WeblogEntry current, String catPath,
             String locale, int maxEntries, boolean next)
             throws WebloggerException {
 
@@ -7,8 +7,8 @@
 			return Collections.emptyList();
 		}
 
-        Query query = null;
-        WeblogCategory category = null;
+        Query query;
+        WeblogCategory category;
         
         List params = new ArrayList();
         int size = 0;
@@ -33,13 +33,13 @@
             }
         }
         
-        if (catName != null) {
-            category = getWeblogCategoryByPath(current.getWebsite(), catName);
+        if (catPath != null) {
+            category = getWeblogCategoryByName(current.getWebsite(), catPath.substring(1));
             if (category != null) {
                 params.add(size++, category);
                 whereClause.append(" AND e.category = ?" + size);
             } else {
-                throw new WebloggerException("Cannot find category: " + catName);
+                throw new WebloggerException("Cannot find category: " + catPath);
             } 
         }
         

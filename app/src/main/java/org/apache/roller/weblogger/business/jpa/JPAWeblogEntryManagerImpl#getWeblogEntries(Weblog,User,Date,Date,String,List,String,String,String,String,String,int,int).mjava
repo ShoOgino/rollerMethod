@@ -6,7 +6,7 @@
             User    user,
             Date        startDate,
             Date        endDate,
-            String      catName,
+            String      catPath,
             List        tags,
             String      status,
             String      text,
@@ -17,16 +17,13 @@
             int         length) throws WebloggerException {
         
         WeblogCategory cat = null;
-        if (StringUtils.isNotEmpty(catName) && website != null) {
-            cat = getWeblogCategoryByPath(website, catName);
+        if (StringUtils.isNotEmpty(catPath) && website != null) {
+            cat = getWeblogCategoryByName(website, catPath.substring(1));
             if (cat == null) {
-                catName = null;
+                catPath = null;
             }
         }
-        if (catName != null && catName.trim().equals("/")) {
-            catName = null;
-        }
-        
+
         List params = new ArrayList();
         int size = 0;
         StringBuilder queryString = new StringBuilder();
