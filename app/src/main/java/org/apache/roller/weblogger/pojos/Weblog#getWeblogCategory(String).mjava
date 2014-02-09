@@ -1,15 +1,15 @@
-    public WeblogCategory getWeblogCategory(String categoryPath) {
+    public WeblogCategory getWeblogCategory(String categoryName) {
         WeblogCategory category = null;
         try {
             Weblogger roller = WebloggerFactory.getWeblogger();
             WeblogEntryManager wmgr = roller.getWeblogEntryManager();
-            if (categoryPath != null && !categoryPath.equals("nil")) {
-                category = wmgr.getWeblogCategoryByName(this, categoryPath.substring(1));
+            if (categoryName != null && !categoryName.equals("nil")) {
+                category = wmgr.getWeblogCategoryByName(this, categoryName);
             } else {
                 category = this.getDefaultCategory();
             }
         } catch (WebloggerException e) {
-            log.error("ERROR: fetching category at path: " + categoryPath, e);
+            log.error("ERROR: fetching category: " + categoryName, e);
         }
         return category;
     }

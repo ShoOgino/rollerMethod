@@ -1,8 +1,8 @@
     private Hashtable createCategoryStruct(WeblogCategory category, String userid) {
         
         Hashtable struct = new Hashtable();
-        struct.put("title", category.getPath());
-        struct.put("description", category.getPath());
+        struct.put("title", category.getName());
+        struct.put("description", category.getName());
         
         Weblogger roller = WebloggerFactory.getWeblogger();
         URLStrategy strategy = roller.getUrlStrategy();

@@ -34,7 +34,7 @@
         }
         
         if (catPath != null) {
-            category = getWeblogCategoryByName(current.getWebsite(), catPath.substring(1));
+            category = getWeblogCategoryByName(current.getWebsite(), catPath);
             if (category != null) {
                 params.add(size++, category);
                 whereClause.append(" AND e.category = ?" + size);

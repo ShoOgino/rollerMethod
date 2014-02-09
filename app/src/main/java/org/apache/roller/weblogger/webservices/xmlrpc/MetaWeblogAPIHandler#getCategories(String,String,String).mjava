@@ -21,7 +21,7 @@
             WeblogEntryManager weblogMgr = roller.getWeblogEntryManager();
             List<WeblogCategory> cats = weblogMgr.getWeblogCategories(website, false);
             for (WeblogCategory category : cats) {
-                result.put(category.getPath(),
+                result.put(category.getName(),
                         createCategoryStruct(category, userid));
             }
             return result;
