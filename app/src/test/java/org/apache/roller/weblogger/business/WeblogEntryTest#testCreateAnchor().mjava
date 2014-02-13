@@ -10,7 +10,7 @@
         // setup some test entries to use
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         testUser = TestUtils.getManagedUser(testUser);
-        WeblogEntry entry1 = TestUtils.setupWeblogEntry("entry1", testWeblog.getDefaultCategory(), testWeblog, testUser);
+        WeblogEntry entry1 = TestUtils.setupWeblogEntry("entry1", testWeblog, testUser);
         TestUtils.endSession(true);
         
         // make sure createAnchor gives us a new anchor value
@@ -22,7 +22,7 @@
         // make sure we can create a new entry with specified anchor
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         testUser = TestUtils.getManagedUser(testUser);
-        WeblogEntry entry2 = TestUtils.setupWeblogEntry(anchor, testWeblog.getDefaultCategory(), testWeblog, testUser);
+        WeblogEntry entry2 = TestUtils.setupWeblogEntry(anchor, testWeblog, testUser);
         TestUtils.endSession(true);
         assertNotNull(entry2);
         

@@ -12,17 +12,7 @@
             return true;
         }
         
-        for (WeblogCategory childCat : cat.getWeblogCategories()) {
-            if (childCat.isInUse()) {
-                return true;
-            }
-        }
-
-        if (cat.getWebsite().getBloggerCategory().equals(cat)) {
-            return true;
-        }
-        
-        if (cat.getWebsite().getDefaultCategory().equals(cat)) {
+        if (cat.getWeblog().getBloggerCategory().equals(cat)) {
             return true;
         }
         

@@ -1,10 +1,8 @@
-    // TODO: validation
     public void myValidate() {
-        
-        // name is required, has max length, no html
-        
+        // TODO: Check max length & no html
+
         // make sure new name is not a duplicate of an existing folder
-        if(getCategory().hasCategory(getBean().getName())) {
+        if(getActionWeblog().hasCategory(getBean().getName())) {
             addError("categoryForm.error.duplicateName", getBean().getName());
         }
     }

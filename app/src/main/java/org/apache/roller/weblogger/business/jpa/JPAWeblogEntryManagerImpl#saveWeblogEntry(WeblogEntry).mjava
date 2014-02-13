@@ -5,13 +5,11 @@
     public void saveWeblogEntry(WeblogEntry entry) throws WebloggerException {
 
         if (entry.getCategory() == null) {
-
             // Entry is invalid without category, so use weblog client cat
             WeblogCategory cat = entry.getWebsite().getBloggerCategory();
             if (cat == null) {
-                // Sill no category, so use first one found
-                cat = (WeblogCategory)
-                    entry.getWebsite().getWeblogCategories().iterator().next();
+                // Still no category, so use first one found
+                cat = entry.getWebsite().getWeblogCategories().iterator().next();
             }
             entry.setCategory(cat);
         }

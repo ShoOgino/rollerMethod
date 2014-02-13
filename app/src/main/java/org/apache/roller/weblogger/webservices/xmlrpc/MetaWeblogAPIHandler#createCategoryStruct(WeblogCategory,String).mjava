@@ -7,11 +7,11 @@
         Weblogger roller = WebloggerFactory.getWeblogger();
         URLStrategy strategy = roller.getUrlStrategy();
         
-        String catUrl = strategy.getWeblogCollectionURL(category.getWebsite(),
+        String catUrl = strategy.getWeblogCollectionURL(category.getWeblog(),
         		null, category.getName(), null, null, 0, true);
         struct.put("htmlUrl", catUrl);
         
-        String rssUrl = strategy.getWeblogFeedURL(category.getWebsite(),
+        String rssUrl = strategy.getWeblogFeedURL(category.getWeblog(),
                null, "entries", "rss", category.getName(), null, null, false, true);
         struct.put("rssUrl",rssUrl);
         

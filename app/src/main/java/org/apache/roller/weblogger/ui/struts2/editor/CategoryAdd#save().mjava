@@ -2,13 +2,6 @@
      * Save new category.
      */
     public String save() {
-        
-        if(getCategory() == null) {
-            // TODO: i18n
-            addError("Cannot add category to null parent category");
-            return ERROR;
-        }
-        
         // validation
         myValidate();
         
@@ -17,13 +10,9 @@
 
                 WeblogCategory newCategory = new WeblogCategory(
                         getActionWeblog(),
-                        getCategory(),
                         getBean().getName(),
                         getBean().getDescription(),
                         getBean().getImage());
-
-                // add new folder to parent
-                getCategory().addCategory(newCategory);
 
                 // save changes
                 WeblogEntryManager wmgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();

@@ -2,17 +2,12 @@
      * Convenience method for creating a weblog category.
      */
     public static WeblogCategory setupWeblogCategory(Weblog weblog,
-            String name, WeblogCategory parent) throws Exception {
+            String name) throws Exception {
 
         WeblogEntryManager mgr = WebloggerFactory.getWeblogger()
                 .getWeblogEntryManager();
-        WeblogCategory root = mgr.getRootWeblogCategory(weblog);
 
-        WeblogCategory catParent = root;
-        if (parent != null) {
-            catParent = parent;
-        }
-        WeblogCategory testCat = new WeblogCategory(weblog, catParent, name,
+        WeblogCategory testCat = new WeblogCategory(weblog, name,
                 null, null);
         mgr.saveWeblogCategory(testCat);
 

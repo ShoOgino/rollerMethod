@@ -8,15 +8,13 @@
         String wid = weblog.getId();
         
         // setup some test entries to use
-        WeblogEntry entry = TestUtils.setupWeblogEntry("tagsExistEntry1", 
-                testWeblog.getDefaultCategory(), testWeblog, testUser);
+        WeblogEntry entry = TestUtils.setupWeblogEntry("tagsExistEntry1", testWeblog, testUser);
         String id1 = entry.getId();
         entry.addTag("blahTag");
         entry.addTag("fooTag");
         mgr.saveWeblogEntry(entry);
 
-        WeblogEntry entry2 = TestUtils.setupWeblogEntry("tagsExistEntry2", 
-                weblog.getDefaultCategory(), weblog, testUser);
+        WeblogEntry entry2 = TestUtils.setupWeblogEntry("tagsExistEntry2", weblog, testUser);
         String id2 = entry2.getId();
         entry2.addTag("aaaTag");
         entry2.addTag("bbbTag");

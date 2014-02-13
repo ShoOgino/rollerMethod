@@ -12,13 +12,13 @@
             testUser = TestUtils.setupUser("categoryTestUser");
             testWeblog = TestUtils.setupWeblog("categoryTestWeblog", testUser);
             
-            // setup a category tree to use for testing
-            cat1 = TestUtils.setupWeblogCategory(testWeblog, "catTest-cat1", null);
-            cat2 = TestUtils.setupWeblogCategory(testWeblog, "catTest-cat2", cat1);
-            cat3 = TestUtils.setupWeblogCategory(testWeblog, "catTest-cat3", cat2);
+            // setup several categories for testing
+            cat1 = TestUtils.setupWeblogCategory(testWeblog, "catTest-cat1");
+            cat2 = TestUtils.setupWeblogCategory(testWeblog, "catTest-cat2");
+            cat3 = TestUtils.setupWeblogCategory(testWeblog, "catTest-cat3");
             
             // a simple test cat at the root level
-            testCat = TestUtils.setupWeblogCategory(testWeblog, "catTest-testCat", null);
+            testCat = TestUtils.setupWeblogCategory(testWeblog, "catTest-testCat");
             
             TestUtils.endSession(true);
         } catch (Throwable t) {

@@ -1,0 +1,9 @@
+    /**
+     * Convenience method for creating a published weblog entry with the blog's default category
+     */
+    public static WeblogEntry setupWeblogEntry(String anchor, Weblog weblog, User user) throws Exception {
+
+        return TestUtils.setupWeblogEntry(anchor, weblog.getDefaultCategory(), WeblogEntry.PUBLISHED,
+                weblog, user);
+    }
+

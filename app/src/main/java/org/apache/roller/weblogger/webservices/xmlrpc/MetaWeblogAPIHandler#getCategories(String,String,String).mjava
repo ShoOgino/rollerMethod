@@ -19,7 +19,7 @@
         try {
             Hashtable result = new Hashtable();
             WeblogEntryManager weblogMgr = roller.getWeblogEntryManager();
-            List<WeblogCategory> cats = weblogMgr.getWeblogCategories(website, false);
+            List<WeblogCategory> cats = weblogMgr.getWeblogCategories(website);
             for (WeblogCategory category : cats) {
                 result.put(category.getName(),
                         createCategoryStruct(category, userid));

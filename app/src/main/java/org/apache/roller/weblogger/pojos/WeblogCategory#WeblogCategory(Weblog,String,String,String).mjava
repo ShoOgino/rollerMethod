@@ -1,6 +1,5 @@
     public WeblogCategory(
-            Weblog website,
-            WeblogCategory parent,
+            Weblog weblog,
             String name,
             String description,
             String image) {
@@ -9,7 +8,7 @@
         this.description = description;
         this.image = image;
         
-        this.website = website;
-        this.parentCategory = parent;
+        this.weblog = weblog;
+        weblog.getWeblogCategories().add(this);
     }
 

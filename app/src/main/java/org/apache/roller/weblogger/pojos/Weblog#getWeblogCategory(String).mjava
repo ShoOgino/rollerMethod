@@ -6,7 +6,7 @@
             if (categoryName != null && !categoryName.equals("nil")) {
                 category = wmgr.getWeblogCategoryByName(this, categoryName);
             } else {
-                category = this.getDefaultCategory();
+                category = getWeblogCategories().iterator().next();
             }
         } catch (WebloggerException e) {
             log.error("ERROR: fetching category: " + categoryName, e);

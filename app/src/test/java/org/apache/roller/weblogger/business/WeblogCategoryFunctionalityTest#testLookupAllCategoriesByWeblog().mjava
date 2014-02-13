@@ -7,16 +7,10 @@
         
         WeblogEntryManager mgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
         
-        // including root
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
-        List cats = mgr.getWeblogCategories(testWeblog, true);
+        List cats = mgr.getWeblogCategories(testWeblog);
         assertNotNull(cats);
         assertEquals(5, cats.size());
-        
-        // not including root
-        cats = mgr.getWeblogCategories(testWeblog, false);
-        assertNotNull(cats);
-        assertEquals(4, cats.size());
         
         log.info("END");
     }

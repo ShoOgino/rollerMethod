@@ -6,30 +6,19 @@
         if(cat.retrieveWeblogEntries(false).size() > 0) {
             throw new WebloggerException("Cannot remove category with entries");
         }
-        
+
+        Weblog testWeblog = cat.getWeblog();
+        cat.getWeblog().getWeblogCategories().remove(cat);
+
         // remove cat
         this.strategy.remove(cat);
-        //relationship management for the other side
-        WeblogCategory parent = cat.getParent();
-        if(parent != null) {
-            parent.getWeblogCategories().remove(cat);
+
+        if(cat.equals(cat.getWeblog().getBloggerCategory())) {
+            cat.getWeblog().setBloggerCategory(cat.getWeblog().getDefaultCategory());
+            this.strategy.store(cat.getWeblog());
         }
-        
-        // update website default cats if needed
-        if(cat.getWebsite().getBloggerCategory().equals(cat)) {
-            WeblogCategory rootCat = this.getRootWeblogCategory(cat.getWebsite());
-            cat.getWebsite().setBloggerCategory(rootCat);
-            this.strategy.store(cat.getWebsite());
-        }
-        
-        if(cat.getWebsite().getDefaultCategory().equals(cat)) {
-            WeblogCategory rootCat = this.getRootWeblogCategory(cat.getWebsite());
-            cat.getWebsite().setDefaultCategory(rootCat);
-            this.strategy.store(cat.getWebsite());
-        }
-        
+
         // update weblog last modified date.  date updated by saveWebsite()
-        roller.getWeblogManager().saveWeblog(
-                cat.getWebsite());
+        roller.getWeblogManager().saveWeblog(cat.getWeblog());
     }
 

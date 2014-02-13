@@ -118,15 +118,9 @@
         }
         this.strategy.flush();
         
-        // remove categories
-        WeblogCategory rootCat = emgr.getRootWeblogCategory(website);
-        if (null != rootCat) {
-            this.strategy.remove(rootCat);
-        }
-
         // delete all weblog categories
         Query removeCategories= strategy.getNamedUpdate(
-                "WeblogCategory.removeByWebsite");
+                "WeblogCategory.removeByWeblog");
         removeCategories.setParameter(1, website);
         removeCategories.executeUpdate();
 

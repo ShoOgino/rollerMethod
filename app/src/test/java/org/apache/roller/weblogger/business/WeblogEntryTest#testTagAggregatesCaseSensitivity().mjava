@@ -22,8 +22,7 @@
         assertEquals(0, tags.size());
 
         // setup some test entries to use
-        WeblogEntry entry = TestUtils.setupWeblogEntry("entry1", testWeblog
-                .getDefaultCategory(), testWeblog, testUser);
+        WeblogEntry entry = TestUtils.setupWeblogEntry("entry1", testWeblog, testUser);
         entry.addTag("one");
         entry.addTag("two");
         entry.addTag("ONE");
@@ -47,8 +46,7 @@
         }
 
         // now add another entry in another blog
-        entry = TestUtils.setupWeblogEntry("entry3", testWeblog2
-                .getDefaultCategory(), testWeblog2, testUser);
+        entry = TestUtils.setupWeblogEntry("entry3", testWeblog2, testUser);
         entry.addTag("ONE");
         entry.addTag("three");
         mgr.saveWeblogEntry(entry);
