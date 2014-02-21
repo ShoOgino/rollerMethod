@@ -90,7 +90,7 @@
 
                     boolean includeItem = true;
 
-                    if (!item.contains(currentAction)) {
+                    if (currentAction != null && !item.contains(currentAction)) {
                         // includeItem = false;
                         // Set first action on menu
                         // if (firstItem) {
@@ -145,7 +145,7 @@
 
                         // is this the selected item? Only one can be selected
                         // so skip the rest
-                        if (selectable
+                        if (currentAction != null && selectable
                                 && isSelected(currentAction, configTabItem)) {
                             tabItem.setSelected(true);
                             tab.setSelected(true);
