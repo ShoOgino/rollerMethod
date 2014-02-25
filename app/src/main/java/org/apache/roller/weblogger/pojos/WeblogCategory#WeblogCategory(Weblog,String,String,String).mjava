@@ -10,6 +10,11 @@
         
         this.weblog = weblog;
         weblog.getWeblogCategories().add(this);
-        this.position = weblog.getWeblogCategories().size();
+        int size = weblog.getWeblogCategories().size();
+        if (size == 1) {
+            this.position = 0;
+        } else {
+            this.position = weblog.getWeblogCategories().get(size - 2).getPosition() + 1;
+        }
     }
 
