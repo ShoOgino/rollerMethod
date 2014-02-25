@@ -2,29 +2,19 @@
      * Display the remove template confirmation.
      */
     public String execute() {
-        
-        // build list of categories for display
-        TreeSet allCategoriesSet = new TreeSet(new WeblogCategoryPathComparator());
-        
         try {
-            // Build list of all categories, except for current one, sorted by path.
+            // Build list of categories that the removed category's blog entries (if any) can be moved to
             WeblogEntryManager wmgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
             List<WeblogCategory> cats = wmgr.getWeblogCategories(getActionWeblog());
             for(WeblogCategory cat : cats) {
                 if (!cat.getId().equals(getRemoveId())) {
-                    allCategoriesSet.add(cat);
+                    allCategories.add(cat);
                 }
             }
         } catch (WebloggerException ex) {
             log.error("Error building categories list", ex);
-            // TODO: i18n
             addError("Error building categories list");
         }
-        
-        if (allCategoriesSet.size() > 0) {
-            setAllCategories(allCategoriesSet);
-        }
-        
         return INPUT;
     }
 
