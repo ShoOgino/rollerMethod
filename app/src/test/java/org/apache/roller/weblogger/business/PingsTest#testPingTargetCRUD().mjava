@@ -17,18 +17,6 @@
         assertNotNull(ping);
         assertEquals(testCommonPing.getPingUrl(), ping.getPingUrl());
         
-        // create custom ping
-        testCustomPing.setWebsite(TestUtils.getManagedWebsite(testWeblog));
-        mgr.savePingTarget(testCustomPing);
-        String customId = testCustomPing.getId();
-        TestUtils.endSession(true);
-        
-        // make sure custom ping was stored
-        ping = null;
-        ping = mgr.getPingTarget(customId);
-        assertNotNull(ping);
-        assertEquals(testCustomPing.getPingUrl(), ping.getPingUrl());
-        
         // update common ping
         ping = null;
         ping = mgr.getPingTarget(commonId);
@@ -42,19 +30,6 @@
         assertNotNull(ping);
         assertEquals("testtestCommon", ping.getName());
         
-        // update custom ping
-        ping = null;
-        ping = mgr.getPingTarget(customId);
-        ping.setName("testtestCustom");
-        mgr.savePingTarget(ping);
-        TestUtils.endSession(true);
-        
-        // make sure custom ping was updated
-        ping = null;
-        ping = mgr.getPingTarget(customId);
-        assertNotNull(ping);
-        assertEquals("testtestCustom", ping.getName());
-        
         // delete common ping
         ping = null;
         ping = mgr.getPingTarget(commonId);
@@ -64,17 +39,6 @@
         // make sure common ping was deleted
         ping = null;
         ping = mgr.getPingTarget(commonId);
-        assertNull(ping);
-        
-        // delete custom ping
-        ping = null;
-        ping = mgr.getPingTarget(customId);
-        mgr.removePingTarget(ping);
-        TestUtils.endSession(true);
-        
-        // make sure custom ping was deleted
-        ping = null;
-        ping = mgr.getPingTarget(customId);
         assertNull(ping);
     }
 

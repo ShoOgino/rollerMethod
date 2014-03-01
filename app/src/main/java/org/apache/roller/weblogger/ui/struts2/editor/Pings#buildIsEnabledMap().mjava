@@ -21,21 +21,13 @@
             isEnabled.put(autoPing.getPingTarget().getId(), Boolean.TRUE);
         }
         
-        // Somewhat awkward, but the two loops save building a separate combined list.
-        // Add disabled common ones with FALSE
+        // Add disabled ping targets ones with FALSE
         for (PingTarget inPingTarget : getCommonPingTargets()) {
             if (isEnabled.get(inPingTarget.getId()) == null) {
                 isEnabled.put(inPingTarget.getId(), Boolean.FALSE);
             }
         }
-        
-        // Add disabled custom ones with FALSE
-        for (PingTarget inPingTarget : getCustomPingTargets()) {
-            if (isEnabled.get(inPingTarget.getId()) == null) {
-                isEnabled.put(inPingTarget.getId(), Boolean.FALSE);
-            }
-        }
-        
+
         if (isEnabled.size() > 0) {
             setPingStatus(isEnabled);
         }
