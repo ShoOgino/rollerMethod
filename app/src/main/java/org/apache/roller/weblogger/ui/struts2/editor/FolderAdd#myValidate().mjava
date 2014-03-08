@@ -4,7 +4,7 @@
         // name is required, has max length, no html
         
         // make sure new name is not a duplicate of an existing folder
-        if(getFolder().hasFolder(getBean().getName())) {
+        if(getActionWeblog().getBookmarkFolder(null).hasFolder(getBean().getName())) {
             addError("folderForm.error.duplicateName", getBean().getName());
         }
     }

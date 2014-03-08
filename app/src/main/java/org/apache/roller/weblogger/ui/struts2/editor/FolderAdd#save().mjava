@@ -1,24 +1,17 @@
     public String save() {
-        
-        if(getFolder() == null) {
-            // TODO: i18n
-            addError("Cannot add folder to null parent folder");
-            return ERROR;
-        }
-        
         // validation
         myValidate();
         
         if(!hasActionErrors())  {
             try {
                 WeblogBookmarkFolder newFolder = new WeblogBookmarkFolder(
-                        getFolder(),
+                        getActionWeblog().getBookmarkFolder(null),
                         getBean().getName(),
                         getBean().getDescription(),
                         getActionWeblog());
 
-                // add new folder to parent
-                getFolder().addFolder(newFolder);
+                // add new folder to weblog
+                getActionWeblog().getBookmarkFolder(null).addFolder(newFolder);
 
                 // save changes
                 BookmarkManager bmgr = WebloggerFactory.getWeblogger().getBookmarkManager();
