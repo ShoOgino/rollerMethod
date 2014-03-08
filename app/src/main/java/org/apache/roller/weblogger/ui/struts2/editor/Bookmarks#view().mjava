@@ -1,0 +1,15 @@
+    /**
+     * View the contents of another bookmark folder.
+     */
+    public String view() {
+        try {
+            BookmarkManager bmgr = WebloggerFactory.getWeblogger().getBookmarkManager();
+            if (!StringUtils.isEmpty(viewFolderId)) {
+                setFolder(bmgr.getFolder(viewFolderId));
+            }
+        } catch (WebloggerException ex) {
+            log.error("Error looking up folder", ex);
+        }
+        return execute();
+    }
+
