@@ -1,19 +1,14 @@
     public WeblogBookmarkFolder getFolder(Weblog website, String name)
             throws WebloggerException {
 
-        if (name == null) {
-            return getRootFolder(website);
-        } else {
-
-            // now just do simple lookup by name
-            Query query = strategy.getNamedQuery("WeblogBookmarkFolder.getByWebsite&Name");
-            query.setParameter(1, website);
-            query.setParameter(2, name);
-            try {
-                return (WeblogBookmarkFolder)query.getSingleResult();
-            } catch (NoResultException e) {
-                return null;
-            }
+        // Do simple lookup by name
+        Query query = strategy.getNamedQuery("WeblogBookmarkFolder.getByWebsite&Name");
+        query.setParameter(1, website);
+        query.setParameter(2, name);
+        try {
+            return (WeblogBookmarkFolder) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
         }
     }
 

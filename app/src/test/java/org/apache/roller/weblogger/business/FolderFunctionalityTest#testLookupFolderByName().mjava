@@ -16,10 +16,10 @@
         assertNotNull(folder);
         assertEquals(f3, folder);
         
-        // if no name is specified then we should get root folder
-        folder = bmgr.getFolder(testWeblog, null);
+        // test to check that default folder is accessible
+        folder = bmgr.getDefaultFolder(testWeblog);
         assertNotNull(folder);
-        assertEquals("root", folder.getName());
+        assertEquals("default", folder.getName());
         
         log.info("END");
     }

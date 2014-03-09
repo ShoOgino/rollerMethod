@@ -1,13 +1,11 @@
     public WeblogBookmarkFolder(
-            WeblogBookmarkFolder parent,
             String name,
             String desc,
-            Weblog website) {
+            Weblog weblog) {
         
         this.name = name;
         this.description = desc;
-        
-        this.website = website;
-        this.parentFolder = parent;
+        this.weblog = weblog;
+        weblog.addBookmarkFolder(this);
     }
 

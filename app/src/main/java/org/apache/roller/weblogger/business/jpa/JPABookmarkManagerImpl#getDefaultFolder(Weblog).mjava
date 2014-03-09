@@ -1,0 +1,17 @@
+    public WeblogBookmarkFolder getDefaultFolder(Weblog weblog)
+            throws WebloggerException {
+
+        if (weblog == null) {
+            throw new WebloggerException("weblog is null");
+        }
+        
+        Query q = strategy.getNamedQuery("WeblogBookmarkFolder.getByWebsite&Name");
+        q.setParameter(1, weblog);
+        q.setParameter(2, "default");
+        try {
+            return (WeblogBookmarkFolder)q.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+

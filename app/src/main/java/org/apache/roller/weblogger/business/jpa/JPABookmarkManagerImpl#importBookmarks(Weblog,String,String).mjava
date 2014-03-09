@@ -11,8 +11,7 @@
             WeblogBookmarkFolder newFolder = getFolder(website, folderName);
             if (newFolder == null) {
                 newFolder = new WeblogBookmarkFolder(
-                        getRootFolder(website), 
-                        folderName, folderName, website);
+                        folderName, null, website);
                 this.strategy.store(newFolder);
             }
 

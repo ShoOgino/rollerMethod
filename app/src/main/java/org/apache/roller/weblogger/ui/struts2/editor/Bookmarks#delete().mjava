@@ -6,28 +6,10 @@
 		BookmarkManager bmgr = WebloggerFactory.getWeblogger()
 				.getBookmarkManager();
 
-		log.debug("Deleting selected folders and bookmarks.");
+		log.debug("Deleting selected bookmarks.");
 
 		try {
-			String folders[] = getSelectedFolders();
-			if (null != folders && folders.length > 0) {
-				if (log.isDebugEnabled()) {
-                    log.debug("Processing delete of " + folders.length
-                            + " folders.");
-                }
-				for (int i = 0; i < folders.length; i++) {
-					if (log.isDebugEnabled()) {
-                        log.debug("Deleting folder - " + folders[i]);
-                    }
-					WeblogBookmarkFolder fd = bmgr.getFolder(folders[i]);
-					if (fd != null) {
-						bmgr.removeFolder(fd); // removes child folders and
-						// bookmarks too
-					}
-				}
-			}
-
-			WeblogBookmark bookmark = null;
+			WeblogBookmark bookmark;
 			String bookmarks[] = getSelectedBookmarks();
 			if (null != bookmarks && bookmarks.length > 0) {
 				if (log.isDebugEnabled()) {
@@ -53,9 +35,8 @@
 			CacheManager.invalidate(getActionWeblog());
 
 		} catch (WebloggerException ex) {
-			log.error("Error doing folder/bookmark deletes", ex);
-			// TODO: i18n
-			addError("Error doing folder/bookmark deletes");
+			log.error("Error doing bookmark deletes", ex);
+			addError("Error doing bookmark deletes");
 		}
 
 		return execute();

@@ -2,11 +2,11 @@
 		try {
 			BookmarkManager bmgr = WebloggerFactory.getWeblogger()
 					.getBookmarkManager();
-			if (!StringUtils.isEmpty(getFolderId())
-					&& !"/".equals(getFolderId())) {
+			if (!StringUtils.isEmpty(getFolderId())) {
 				setFolder(bmgr.getFolder(getFolderId()));
 			} else {
-				setFolder(bmgr.getRootFolder(getActionWeblog()));
+				setFolder(bmgr.getDefaultFolder(getActionWeblog()));
+                setFolderId(getFolder().getId());
 			}
 		} catch (WebloggerException ex) {
 			log.error("Error looking up folder", ex);

@@ -6,14 +6,14 @@
         BookmarkManager bmgr = getRoller().getBookmarkManager();
         
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
-        WeblogBookmarkFolder root = bmgr.getRootFolder(testWeblog);
+        WeblogBookmarkFolder root = bmgr.getDefaultFolder(testWeblog);
         
         // add some folders
-        WeblogBookmarkFolder f1 = new WeblogBookmarkFolder(root, "f1", null, TestUtils.getManagedWebsite(testWeblog));
+        WeblogBookmarkFolder f1 = new WeblogBookmarkFolder("f1", null, TestUtils.getManagedWebsite(testWeblog));
         bmgr.saveFolder(f1);
-        WeblogBookmarkFolder f2 = new WeblogBookmarkFolder(f1, "f2", null, TestUtils.getManagedWebsite(testWeblog));
+        WeblogBookmarkFolder f2 = new WeblogBookmarkFolder("f2", null, TestUtils.getManagedWebsite(testWeblog));
         bmgr.saveFolder(f2);
-        WeblogBookmarkFolder f3 = new WeblogBookmarkFolder(root, "f3", null, TestUtils.getManagedWebsite(testWeblog));
+        WeblogBookmarkFolder f3 = new WeblogBookmarkFolder("f3", null, TestUtils.getManagedWebsite(testWeblog));
         bmgr.saveFolder(f3);
         
         TestUtils.endSession(true);

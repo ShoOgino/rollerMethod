@@ -57,10 +57,9 @@
         } else {
             // Store a folder
             WeblogBookmarkFolder fd = new WeblogBookmarkFolder(
-                    parent,
                     title,
                     desc,
-                    parent.getWebsite());
+                    parent.getWeblog());
             this.strategy.store(fd);
 
             // Import folder's children

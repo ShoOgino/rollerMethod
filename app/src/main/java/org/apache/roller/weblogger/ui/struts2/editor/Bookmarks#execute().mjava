@@ -1,29 +1,24 @@
 	/**
-	 * Present the bookmarks and subfolders available in the folder specified by
-	 * the request.
+	 * Present the bookmarks available in the folder specified by the request.
 	 */
 	public String execute() {
 
-		// build list of folders for display
-		TreeSet newFolders = new TreeSet(new FolderNameComparator());
+		// build list of folders that the user can navigate to
+        List<WeblogBookmarkFolder> newFolders = new ArrayList<WeblogBookmarkFolder>();
 
 		try {
-			// Build list of all folders, except for current one, sorted by name
-			BookmarkManager bmgr = WebloggerFactory.getWeblogger()
-					.getBookmarkManager();
-			List<WeblogBookmarkFolder> folders = bmgr
-					.getAllFolders(getActionWeblog());
-			for (WeblogBookmarkFolder fd : folders) {
-				if (getFolderId() == null && fd.getParent() == null) {
-					// Root folder so do not show the root /
-				} else if (!fd.getId().equals(getFolderId())) {
+			// Build list of all folders, except for current one
+			BookmarkManager bmgr = WebloggerFactory.getWeblogger().getBookmarkManager();
+			List<WeblogBookmarkFolder> folders = bmgr.getAllFolders(getActionWeblog());
+			log.info("*** Folder ID is: " + getFolderId());
+            for (WeblogBookmarkFolder fd : folders) {
+				if (!fd.getId().equals(getFolderId())) {
 					newFolders.add(fd);
 				}
 			}
 
 		} catch (WebloggerException ex) {
 			log.error("Error building folders list", ex);
-			// TODO: i18n
 			addError("Error building folders list");
 		}
 

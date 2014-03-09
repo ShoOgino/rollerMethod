@@ -4,11 +4,7 @@
     private boolean isDuplicateFolderName(WeblogBookmarkFolder folder) 
         throws WebloggerException {
 
-        // ensure that no sibling categories share the same name
-        WeblogBookmarkFolder parent = folder.getParent();
-        if (null != parent) {
-            return (getFolder(folder.getWebsite(), folder.getName()) != null);
-        }
-        return false;
+        // ensure that no sibling folders share the same name
+        return getFolder(folder.getWeblog(), folder.getName()) != null;
     }
 

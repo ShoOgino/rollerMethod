@@ -1,21 +1,14 @@
     /**
-     * Recursively travel down Folder tree, attempting
-     * to match up Bookmarks in each Folder.
+     * Travel given collection of folders, attempting to match up Bookmarks in each one.
      *
      * @param text
      * @param folders
      * @return
      */
     private String lookInFolders(String text, Collection<WeblogBookmarkFolder> folders) {
-        
         for (WeblogBookmarkFolder folder: folders) {
             text = matchBookmarks(text, folder);
-
-            if (!folder.getFolders().isEmpty()) {
-                lookInFolders(text, folder.getFolders());
-            }
         }
-
         return text;
     }
 

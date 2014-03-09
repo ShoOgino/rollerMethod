@@ -5,13 +5,9 @@
         if(!hasActionErrors())  {
             try {
                 WeblogBookmarkFolder newFolder = new WeblogBookmarkFolder(
-                        getActionWeblog().getBookmarkFolder(null),
                         getBean().getName(),
                         getBean().getDescription(),
                         getActionWeblog());
-
-                // add new folder to weblog
-                getActionWeblog().getBookmarkFolder(null).addFolder(newFolder);
 
                 // save changes
                 BookmarkManager bmgr = WebloggerFactory.getWeblogger().getBookmarkManager();
@@ -31,7 +27,6 @@
 
             } catch(Exception ex) {
                 log.error("Error saving new folder", ex);
-                // TODO: i18n
                 addError("Error saving new folder");
             }
         }
