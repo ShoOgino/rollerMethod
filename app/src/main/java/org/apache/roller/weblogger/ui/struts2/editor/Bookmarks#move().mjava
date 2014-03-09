@@ -1,5 +1,5 @@
 	/**
-	 * Move folders and bookmarks to a new folder.
+	 * Move bookmarks to a new folder.
 	 */
 	public String move() {
 
@@ -8,28 +8,12 @@
 					.getBookmarkManager();
 
 			if (log.isDebugEnabled()) {
-                log.debug("Moving folders and bookmarks to folder - "
+                log.debug("Moving bookmarks to folder - "
                         + getTargetFolderId());
             }
 
-			// Move folders to new parent folder.
-			String folders[] = getSelectedFolders();
-			WeblogBookmarkFolder parent = bmgr.getFolder(getTargetFolderId());
-			if (null != folders && folders.length > 0) {
-				for (int i = 0; i < folders.length; i++) {
-					WeblogBookmarkFolder fd = bmgr.getFolder(folders[i]);
-
-					// Don't move folder into itself.
-					if (!fd.getId().equals(parent.getId())
-							&& !parent.descendentOf(fd)) {
-						bmgr.moveFolder(fd, parent);
-					} else {
-						addMessage("bookmarksForm.warn.notMoving", fd.getName());
-					}
-				}
-			}
-
 			// Move bookmarks to new parent folder.
+            WeblogBookmarkFolder parent = bmgr.getFolder(getTargetFolderId());
 			String bookmarks[] = getSelectedBookmarks();
 			if (null != bookmarks && bookmarks.length > 0) {
 				for (int j = 0; j < bookmarks.length; j++) {
@@ -47,7 +31,7 @@
 			CacheManager.invalidate(getActionWeblog());
 
 		} catch (WebloggerException e) {
-			log.error("Error doing folder/bookmark move", e);
+			log.error("Error doing bookmark move", e);
 			addError("bookmarksForm.error.move");
 		}
 

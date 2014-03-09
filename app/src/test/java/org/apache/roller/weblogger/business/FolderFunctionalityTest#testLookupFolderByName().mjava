@@ -1,0 +1,26 @@
+    /**
+     * Test folder lookup by id.
+     */
+    public void testLookupFolderByName() throws Exception {
+        
+        log.info("BEGIN");
+        
+        BookmarkManager bmgr = WebloggerFactory.getWeblogger().getBookmarkManager();
+        
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
+        WeblogBookmarkFolder folder = bmgr.getFolder(testWeblog, "folderFuncTest-f1");
+        assertNotNull(folder);
+        assertEquals(f1, folder);
+        
+        folder = bmgr.getFolder(testWeblog, "folderFuncTest-f3");
+        assertNotNull(folder);
+        assertEquals(f3, folder);
+        
+        // if no name is specified then we should get root folder
+        folder = bmgr.getFolder(testWeblog, null);
+        assertNotNull(folder);
+        assertEquals("root", folder.getName());
+        
+        log.info("END");
+    }
+

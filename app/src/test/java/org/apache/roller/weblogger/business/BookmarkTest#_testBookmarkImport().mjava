@@ -9,7 +9,7 @@
         
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         fd = getRoller().getBookmarkManager().getFolder(testWeblog, "ZZZ_imports_ZZZ");
-        assertTrue(fd.retrieveBookmarks(true).size() > 0 );
+        assertTrue(fd.retrieveBookmarks().size() > 0 );
         getRoller().getBookmarkManager().removeFolder(fd);
         TestUtils.endSession(true);
     }

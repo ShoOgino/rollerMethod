@@ -1,20 +1,14 @@
-    public WeblogBookmarkFolder getFolder(Weblog website, String path)
+    public WeblogBookmarkFolder getFolder(Weblog website, String name)
             throws WebloggerException {
 
-        if (path == null || path.trim().equals("/")) {
+        if (name == null) {
             return getRootFolder(website);
         } else {
-            String folderPath = path;
 
-            // all folder paths must begin with a '/'
-            if(!folderPath.startsWith("/")) {
-                folderPath = "/"+folderPath;
-            }
-
-            // now just do simple lookup by path
-            Query query = strategy.getNamedQuery("WeblogBookmarkFolder.getByWebsite&Path");
+            // now just do simple lookup by name
+            Query query = strategy.getNamedQuery("WeblogBookmarkFolder.getByWebsite&Name");
             query.setParameter(1, website);
-            query.setParameter(2, folderPath);
+            query.setParameter(2, name);
             try {
                 return (WeblogBookmarkFolder)query.getSingleResult();
             } catch (NoResultException e) {

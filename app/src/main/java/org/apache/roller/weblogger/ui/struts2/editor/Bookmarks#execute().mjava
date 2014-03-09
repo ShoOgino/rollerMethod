@@ -5,11 +5,10 @@
 	public String execute() {
 
 		// build list of folders for display
-		TreeSet newFolders = new TreeSet(new FolderPathComparator());
+		TreeSet newFolders = new TreeSet(new FolderNameComparator());
 
 		try {
-			// Build list of all folders, except for current one, sorted by
-			// path.
+			// Build list of all folders, except for current one, sorted by name
 			BookmarkManager bmgr = WebloggerFactory.getWeblogger()
 					.getBookmarkManager();
 			List<WeblogBookmarkFolder> folders = bmgr
@@ -22,17 +21,6 @@
 				}
 			}
 
-			// build folder path
-			WeblogBookmarkFolder parent = getFolder().getParent();
-			if (parent != null) {
-				List inFolderPath = new LinkedList();
-				inFolderPath.add(0, getFolder());
-				while (parent != null) {
-					inFolderPath.add(0, parent);
-					parent = parent.getParent();
-				}
-				setFolderPath(inFolderPath);
-			}
 		} catch (WebloggerException ex) {
 			log.error("Error building folders list", ex);
 			// TODO: i18n

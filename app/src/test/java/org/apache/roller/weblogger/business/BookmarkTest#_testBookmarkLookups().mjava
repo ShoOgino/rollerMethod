@@ -47,17 +47,12 @@
         
         // test lookup of all bookmarks in single folder
         WeblogBookmarkFolder testFolder = bmgr.getFolder(f1.getId());
-        List allBookmarks = bmgr.getBookmarks(testFolder, false);
+        List allBookmarks = bmgr.getBookmarks(testFolder);
         assertNotNull(allBookmarks);
         assertEquals(2, allBookmarks.size());
         
         // getBookmarks(folder, false) should also match folder.getBookmarks()
         assertEquals(allBookmarks.size(), testFolder.getBookmarks().size());
         
-        // test lookup of all bookmarks in folder branch (including subfolders)
-        testFolder = bmgr.getFolder(f1.getId());
-        allBookmarks = bmgr.getBookmarks(testFolder, true);
-        assertNotNull(allBookmarks);
-        assertEquals(3, allBookmarks.size());
     }
 

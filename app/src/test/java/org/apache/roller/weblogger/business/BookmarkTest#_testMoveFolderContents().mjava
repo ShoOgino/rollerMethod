@@ -67,33 +67,11 @@
             assertEquals(1, f1.getBookmarks().size());
             assertEquals(1, f2.getBookmarks().size());
             assertEquals(1, f3.getBookmarks().size());
-            assertEquals(0, dest.retrieveBookmarks(true).size());
-            assertEquals(3, f1.retrieveBookmarks(true).size());
-
-            // test that parent cannot be moved into child
-            boolean safe = false;
-            try {
-                // Move folder into one of it's children
-                bmgr.moveFolder(f1, f3);
-                TestUtils.endSession(true);
-            } catch (WebloggerException e) {
-                safe = true;
-            }
-            assertTrue(safe);
-
-            // move f1 to dest
-            f1   = bmgr.getFolder( f1.getId());   //Get managed copy
-            dest = bmgr.getFolder( dest.getId()); //Get managed copy
-            bmgr.moveFolder(f1, dest);
-            TestUtils.endSession(true);
-
-            // after move, verify number of entries in eacch folder
-            dest = bmgr.getFolder(dest.getId());
-            f1 = bmgr.getFolder(f1.getId());
-            assertEquals(3, dest.retrieveBookmarks(true).size());
+            assertEquals(0, dest.retrieveBookmarks().size());
+            assertEquals(3, f1.retrieveBookmarks().size());
 
             // check that paths and child folders are correct
-            assertEquals("/dest/f1", f1.getPath());
+            assertEquals("f1", f1.getName());
             assertEquals(1, dest.getFolders().size());
         
             bmgr.removeFolder(f1);
