@@ -5,10 +5,10 @@
      * @return the set of variant options configured for the given ping target url, or
      *         the empty set if there are no variants configured.
      */
-    public static Set getVariantOptions(String pingTargetUrl) {
-        Set variantOptions = (Set) CONFIGURED_VARIANTS.get(pingTargetUrl);
+    public static Set<String> getVariantOptions(String pingTargetUrl) {
+        Set<String> variantOptions = CONFIGURED_VARIANTS.get(pingTargetUrl);
         if (variantOptions == null) {
-            variantOptions = Collections.EMPTY_SET;
+            variantOptions = Collections.emptySet();
         }
         return variantOptions;
     }
