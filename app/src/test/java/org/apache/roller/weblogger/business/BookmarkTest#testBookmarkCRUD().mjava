@@ -5,7 +5,7 @@
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         WeblogBookmarkFolder root = bmgr.getDefaultFolder(testWeblog);
         
-        WeblogBookmarkFolder folder = new WeblogBookmarkFolder("TestFolder2", null, TestUtils.getManagedWebsite(testWeblog));
+        WeblogBookmarkFolder folder = new WeblogBookmarkFolder("TestFolder2", TestUtils.getManagedWebsite(testWeblog));
         bmgr.saveFolder(folder);
         TestUtils.endSession(true);
         
@@ -19,7 +19,6 @@
                 "created by testBookmarkCRUD()",
                 "http://www.example.com",
                 "http://www.example.com/rss.xml",
-                1,
                 12,
                 "test.jpg");
         bookmark1.setFolder(folder);
@@ -32,7 +31,6 @@
                 "created by testBookmarkCRUD()",
                 "http://www.example.com",
                 "http://www.example.com/rss.xml",
-                1,
                 12,
                 "test.jpf");
         bookmark2.setFolder(folder);
