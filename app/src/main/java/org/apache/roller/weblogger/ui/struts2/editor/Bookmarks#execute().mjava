@@ -1,31 +1,31 @@
-	/**
-	 * Present the bookmarks available in the folder specified by the request.
-	 */
-	public String execute() {
+    /**
+     * Present the bookmarks available in the folder specified by the request.
+     */
+    public String execute() {
 
-		// build list of folders that the user can navigate to
+        // build list of folders that the user can navigate to
         List<WeblogBookmarkFolder> newFolders = new ArrayList<WeblogBookmarkFolder>();
 
-		try {
-			// Build list of all folders, except for current one
-			BookmarkManager bmgr = WebloggerFactory.getWeblogger().getBookmarkManager();
-			List<WeblogBookmarkFolder> folders = bmgr.getAllFolders(getActionWeblog());
-			log.info("*** Folder ID is: " + getFolderId());
+        try {
+            // Build list of all folders, except for current one
+            BookmarkManager bmgr = WebloggerFactory.getWeblogger().getBookmarkManager();
+            List<WeblogBookmarkFolder> folders = bmgr.getAllFolders(getActionWeblog());
+            log.info("*** Folder ID is: " + getFolderId());
             for (WeblogBookmarkFolder fd : folders) {
-				if (!fd.getId().equals(getFolderId())) {
-					newFolders.add(fd);
-				}
-			}
+                if (!fd.getId().equals(getFolderId())) {
+                    newFolders.add(fd);
+                }
+            }
 
-		} catch (WebloggerException ex) {
-			log.error("Error building folders list", ex);
-			addError("Error building folders list");
-		}
+        } catch (WebloggerException ex) {
+            log.error("Error building folders list", ex);
+            addError("Error building folders list");
+        }
 
-		if (newFolders.size() > 0) {
-			setAllFolders(newFolders);
-		}
+        if (newFolders.size() > 0) {
+            setAllFolders(newFolders);
+        }
 
-		return LIST;
-	}
+        return LIST;
+    }
 

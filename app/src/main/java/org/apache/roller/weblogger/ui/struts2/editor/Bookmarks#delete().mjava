@@ -1,44 +1,43 @@
-	/**
-	 * Delete folders and bookmarks.
-	 */
-	public String delete() {
+    /**
+     * Delete bookmarks.
+     */
+    public String delete() {
 
-		BookmarkManager bmgr = WebloggerFactory.getWeblogger()
-				.getBookmarkManager();
+        BookmarkManager bmgr = WebloggerFactory.getWeblogger().getBookmarkManager();
 
-		log.debug("Deleting selected bookmarks.");
+        log.info("Deleting selected bookmarks.");
 
-		try {
-			WeblogBookmark bookmark;
-			String bookmarks[] = getSelectedBookmarks();
-			if (null != bookmarks && bookmarks.length > 0) {
-				if (log.isDebugEnabled()) {
+        try {
+            WeblogBookmark bookmark;
+            String bookmarks[] = getSelectedBookmarks();
+            if (null != bookmarks && bookmarks.length > 0) {
+                if (log.isDebugEnabled()) {
                     log.debug("Processing delete of " + bookmarks.length
                             + " bookmarks.");
                 }
-				for (int j = 0; j < bookmarks.length; j++) {
-					if (log.isDebugEnabled()) {
-						log.debug("Deleting bookmark - " + bookmarks[j]);
+                for (int j = 0; j < bookmarks.length; j++) {
+                    if (log.isDebugEnabled()) {
+                        log.debug("Deleting bookmark - " + bookmarks[j]);
                     }
-					bookmark = bmgr.getBookmark(bookmarks[j]);
-					if (bookmark != null) {
-						bmgr.removeBookmark(bookmark);
-					}
+                    bookmark = bmgr.getBookmark(bookmarks[j]);
+                    if (bookmark != null) {
+                        bmgr.removeBookmark(bookmark);
+                    }
 
-				}
-			}
+                }
+            }
 
-			// flush changes
-			WebloggerFactory.getWeblogger().flush();
+            // flush changes
+            WebloggerFactory.getWeblogger().flush();
 
-			// notify caches
-			CacheManager.invalidate(getActionWeblog());
+            // notify caches
+            CacheManager.invalidate(getActionWeblog());
 
-		} catch (WebloggerException ex) {
-			log.error("Error doing bookmark deletes", ex);
-			addError("Error doing bookmark deletes");
-		}
+        } catch (WebloggerException ex) {
+            log.error("Error doing bookmark deletes", ex);
+            addError("Error doing bookmark deletes");
+        }
 
-		return execute();
-	}
+        return execute();
+    }
 
