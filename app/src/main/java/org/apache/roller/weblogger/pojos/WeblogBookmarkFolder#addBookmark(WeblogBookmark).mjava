@@ -1,8 +1,10 @@
     /** 
      * Add a bookmark to this folder.
      */
-    public void addBookmark(WeblogBookmark bookmark) throws WebloggerException {
+    public void addBookmark(WeblogBookmark bookmark) {
         bookmark.setFolder(this);
-        getBookmarks().add(bookmark);
+        if (!getBookmarks().contains(bookmark)) {
+            getBookmarks().add(bookmark);
+        }
     }
 

@@ -1,15 +1,8 @@
     public List<WeblogBookmarkWrapper> getBookmarks() {
-        Set<WeblogBookmark> initialCollection = new TreeSet<WeblogBookmark>(new BookmarkComparator());
-        initialCollection.addAll(this.pojo.getBookmarks());
-        
         // iterate through and wrap
-        // we force the use of an ArrayList because it should be good enough to cover
-        // for any Collection type we encounter.
-        List<WeblogBookmarkWrapper> wrappedCollection = new ArrayList<WeblogBookmarkWrapper>(initialCollection.size());
-        int i = 0;
-        for (WeblogBookmark bookmark : initialCollection) {
-            wrappedCollection.add(i,WeblogBookmarkWrapper.wrap(bookmark));
-            i++;
+        List<WeblogBookmarkWrapper> wrappedCollection = new ArrayList<WeblogBookmarkWrapper>(this.pojo.getBookmarks().size());
+        for (WeblogBookmark bookmark : this.pojo.getBookmarks()) {
+            wrappedCollection.add(WeblogBookmarkWrapper.wrap(bookmark));
         }
         return wrappedCollection;
     }    
