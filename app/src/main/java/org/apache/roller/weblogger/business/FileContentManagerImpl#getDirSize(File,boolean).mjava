@@ -6,15 +6,18 @@
     private long getDirSize(File dir, boolean recurse) {
         
         long size = 0;
-        if(dir.exists() && dir.isDirectory() && dir.canRead()) {
-            File[] files = dir.listFiles();
+
+        if (dir.exists() && dir.isDirectory() && dir.canRead()) {
             long dirSize = 0l;
-            for (int i=0; i < files.length; i++) {
-                if (!files[i].isDirectory()) {
-                    dirSize += files[i].length();
-                } else if(recurse) {
-                    // count a subdirectory
-                    dirSize += getDirSize(files[i], recurse);
+            File[] files = dir.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    if (!file.isDirectory()) {
+                        dirSize += file.length();
+                    } else if(recurse) {
+                        // count a subdirectory
+                        dirSize += getDirSize(file, recurse);
+                    }
                 }
             }
             size += dirSize;

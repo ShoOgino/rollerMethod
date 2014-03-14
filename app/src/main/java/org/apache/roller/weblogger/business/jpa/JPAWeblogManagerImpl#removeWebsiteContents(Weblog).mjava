@@ -7,10 +7,8 @@
         
         UserManager        umgr = roller.getUserManager();
         WeblogEntryManager emgr = roller.getWeblogEntryManager();
-        BookmarkManager    bmgr = roller.getBookmarkManager();
 
         //remove theme Assocs
-
         Query themeAssocQuery = strategy.getNamedQuery("WeblogThemeAssoc.getThemeAssocsByWeblog");
         themeAssocQuery.setParameter(1,website);
         List<WeblogThemeAssoc> assocResults = themeAssocQuery.getResultList();

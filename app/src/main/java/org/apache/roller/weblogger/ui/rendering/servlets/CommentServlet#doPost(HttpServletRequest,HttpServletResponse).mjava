@@ -8,10 +8,10 @@
             throws IOException, ServletException {
 
         String error = null;
-        String dispatch_url = null;
+        String dispatch_url;
 
-        Weblog weblog = null;
-        WeblogEntry entry = null;
+        Weblog weblog;
+        WeblogEntry entry;
 
         String message = null;
         RollerMessages messages = new RollerMessages();
@@ -38,7 +38,7 @@
             return;
         }
 
-        WeblogCommentRequest commentRequest = null;
+        WeblogCommentRequest commentRequest;
         try {
             commentRequest = new WeblogCommentRequest(request);
 
@@ -83,7 +83,7 @@
         comment.setEmail(commentRequest.getEmail());
         comment.setUrl(commentRequest.getUrl());
         comment.setContent(commentRequest.getContent());
-        comment.setNotify(Boolean.valueOf(commentRequest.isNotify()));
+        comment.setNotify(commentRequest.isNotify());
         comment.setWeblogEntry(entry);
         comment.setRemoteHost(request.getRemoteHost());
         comment.setPostTime(new Timestamp(System.currentTimeMillis()));
@@ -165,7 +165,7 @@
                 // add specific error messages if they exist
                 if (messages.getErrorCount() > 0) {
                     Iterator errors = messages.getErrors();
-                    RollerMessage errorKey = null;
+                    RollerMessage errorKey;
 
                     StringBuilder buf = new StringBuilder();
                     buf.append("<ul>");

@@ -1,14 +1,4 @@
     public String render(WeblogEntry entry, String str) {
-        String text = str;
-        try {
-            BookmarkManager bMgr = WebloggerFactory.getWeblogger().getBookmarkManager();
-            WeblogBookmarkFolder defaultFolder = bMgr.getDefaultFolder(entry.getWebsite());
-            text = lookInFolders(text, entry.getWebsite().getBookmarkFolders());
-        } catch (WebloggerException e) {
-            // nothing much I can do, go with default "Weblog" value
-            // could be WebloggerException or NullPointerException
-            mLogger.warn(e);
-        }
-        return text;
+        return lookInFolders(str, entry.getWebsite().getBookmarkFolders());
     }
 

@@ -14,7 +14,7 @@
         File saveFile = new File(dirPath.getAbsolutePath() + File.separator + fileId);
         
         byte[] buffer = new byte[8192];
-        int bytesRead = 0;
+        int bytesRead;
         OutputStream bos = null;
         try {
             bos = new FileOutputStream(saveFile);
@@ -26,8 +26,10 @@
             throw new FileIOException("ERROR uploading file", e);
         } finally {
             try {
-                bos.flush();
-                bos.close();
+                if (bos != null) {
+                    bos.flush();
+                    bos.close();
+                }
             } catch (Exception ignored) {}
         }
         

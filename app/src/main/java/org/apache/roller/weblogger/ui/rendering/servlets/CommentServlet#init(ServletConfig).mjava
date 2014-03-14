@@ -22,11 +22,6 @@
         // instantiate a comment validation manager for comment spam checking
         commentValidationManager = new CommentValidationManager();
 
-        // instantiate a comment format manager for comment formatting
-        String fmtrs = WebloggerConfig
-                .getProperty("comment.formatter.classnames");
-        String[] formatters = Utilities.stringToStringArray(fmtrs, ",");
-
         // are we doing throttling?
         if (WebloggerConfig.getBooleanProperty("comment.throttle.enabled")) {
 
