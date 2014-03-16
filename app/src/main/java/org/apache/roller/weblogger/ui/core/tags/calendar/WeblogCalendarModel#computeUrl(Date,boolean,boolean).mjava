@@ -15,13 +15,14 @@
             dateString = DateUtil.format8chars(day);
         	dateString = format8chars(day,getCalendar());
         } else if (dateString == null && monthURL) {
-//            dateString = DateUtil.format6chars(day);
             dateString = format6chars(day,getCalendar());
         }
         try {
-            if (pageLink == null) { // create date URL
+            if (pageLink == null) {
+                // create date URL
                 url = WebloggerFactory.getWeblogger().getUrlStrategy().getWeblogCollectionURL(weblog, locale, cat, dateString, null, -1, false);
-            } else { // create page URL
+            } else {
+                // create page URL
                 url = WebloggerFactory.getWeblogger().getUrlStrategy().getWeblogPageURL(weblog, locale, pageLink, null, cat, dateString, null, -1, false);
             }
         } catch (Exception e) {
