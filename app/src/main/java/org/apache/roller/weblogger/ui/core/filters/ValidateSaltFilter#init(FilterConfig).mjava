@@ -1,7 +1,7 @@
 	// @Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 
-		// Construct our list of ignord urls
+		// Construct our list of ignored urls
 		String urls = WebloggerConfig.getProperty("salt.ignored.urls");
 		String[] urlsArray = StringUtils.stripAll(StringUtils.split(urls, ","));
 		for (int i = 0; i < urlsArray.length; i++) {
