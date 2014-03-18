@@ -59,14 +59,14 @@
                 if (fromSSO != null) {
                     // Copy user details from Spring Security, including LDAP attributes
                     getBean().copyFrom(fromSSO);
-                    setFromSso(true);
+                    setFromSSO(true);
                 }
                 // See if user is already logged in via CMA
                 else if (getServletRequest().getUserPrincipal() != null) {
                     // Only detail we get is username, sadly no LDAP attributes
                     getBean().setUserName(getServletRequest().getUserPrincipal().getName());
                     getBean().setScreenName(getServletRequest().getUserPrincipal().getName());
-                    setFromSso(true);
+                    setFromSSO(true);
                 }
             }
             

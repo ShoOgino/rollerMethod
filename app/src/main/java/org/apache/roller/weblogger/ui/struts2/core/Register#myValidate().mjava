@@ -1,7 +1,7 @@
     public void myValidate() {
         
         // if usingSSO, we don't want to error on empty password/username from HTML form.
-        setFromSso(false);
+        setFromSSO(false);
         boolean usingSSO = WebloggerConfig.getBooleanProperty("users.sso.enabled");
         if (usingSSO) {
             boolean storePassword = WebloggerConfig.getBooleanProperty("users.sso.passwords.saveInRollerDb");
@@ -16,7 +16,7 @@
                 getBean().setPasswordText(password);
                 getBean().setPasswordConfirm(password);
                 getBean().setUserName(fromSSO.getUserName());
-                setFromSso(true);
+                setFromSSO(true);
             }
 
             // Preserve username and password, CMA case             
@@ -24,7 +24,7 @@
                 getBean().setUserName(getServletRequest().getUserPrincipal().getName());
                 getBean().setPasswordText(password);
                 getBean().setPasswordConfirm(password);
-                setFromSso(true);
+                setFromSSO(true);
             }
         }
         
@@ -40,7 +40,7 @@
         }
         
         // check password, it is required if OpenID and SSO are disabled
-        if (getOpenIdConfiguration().equals("disabled") && !getFromSso()
+        if (getOpenIdConfiguration().equals("disabled") && !getFromSSO()
                 && StringUtils.isEmpty(getBean().getPasswordText())) {
                 addError("error.add.user.passwordEmpty");
                 return;

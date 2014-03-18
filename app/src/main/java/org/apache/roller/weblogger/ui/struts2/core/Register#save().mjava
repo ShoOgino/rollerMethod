@@ -87,15 +87,16 @@
                         // send activation mail to the user
                         MailUtil.sendUserActivationEmail(ud);
                     } catch (WebloggerException ex) {
-                        log.error("Error sending activation email to - "+ud.getEmailAddress(), ex);
+                        log.error("Error sending activation email to - " + ud.getEmailAddress(), ex);
                     }
 
                     setActivationStatus("pending");
                 }
 
                 // Invalidate session, otherwise new user who was originally
-                // authenticated via LDAP/SSO will remain logged in with
-                // a but without a valid Roller role.
+                // authenticated via LDAP/SSO will remain logged in but
+                // without a valid Roller role.
+                getServletRequest().getSession().removeAttribute(RollerSession.ROLLER_SESSION);
                 getServletRequest().getSession().invalidate();
 
                 // set a special page title
