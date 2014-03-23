@@ -12,7 +12,8 @@
         int count = StringUtils.countMatches(text.substring(start, nextCloseIdx), open);
 //        System.err.println("count: "+count);
         if(count == 0) {
-            return -1;  // tag is never opened
+            // tag is never opened
+            return -1;
         }
         int expected = 1;
         while(count != expected) {

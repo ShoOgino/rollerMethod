@@ -11,8 +11,9 @@
         if (LOG.isDebugEnabled()) {
             LOG.debug("parsing _acronyms template: \n'"+rawAcronyms+"'");
         }
-        
-        String regex = "\n"; // end of line
+
+        // split by end of line
+        String regex = "\n";
         String[] lines = rawAcronyms.split(regex);
         
         if (lines != null) {

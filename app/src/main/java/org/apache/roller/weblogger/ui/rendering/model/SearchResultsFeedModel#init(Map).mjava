@@ -27,11 +27,8 @@
 
 		String pagerUrl = urlStrategy.getWeblogFeedURL(weblog,
 				feedRequest.getLocale(), feedRequest.getType(),
-				feedRequest.getFormat(), null, null, /*
-													 * cat and term are null but
-													 * added to the url in the
-													 * pager
-													 */
+				// cat and term below null but added to URL in pager
+                feedRequest.getFormat(), null, null,
 				null, false, true);
 
 		// if there is no query, then we are done

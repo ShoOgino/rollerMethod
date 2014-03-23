@@ -16,7 +16,7 @@
             if(deletes != null && deletes.size() > 0) {
                 log.debug("Processing deletes - "+deletes.size());
                 
-                WeblogEntryComment deleteComment = null;
+                WeblogEntryComment deleteComment;
                 for(String deleteId : deletes) {
                     deleteComment = wmgr.getComment(deleteId);
                     flushList.add(deleteComment.getWeblogEntry().getWebsite());

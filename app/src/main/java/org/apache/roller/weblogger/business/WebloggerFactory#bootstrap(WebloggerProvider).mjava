@@ -21,9 +21,9 @@
             throw new NullPointerException("WebloggerProvider is null");
         }
         
-        log.info("Bootstrapping Roller Weblogger business tier");
+        LOG.info("Bootstrapping Roller Weblogger business tier");
         
-        log.info("Weblogger Provider = "+provider.getClass().getName());
+        LOG.info("Weblogger Provider = " + provider.getClass().getName());
         
         // save reference to provider
         webloggerProvider = provider;
@@ -36,8 +36,8 @@
             throw new BootstrapException("Bootstrapping failed, Weblogger instance is null");
         }
         
-        log.info("Roller Weblogger business tier successfully bootstrapped");
-        log.info("   Version: " + webloggerProvider.getWeblogger().getVersion());
-        log.info("   Revision: " + webloggerProvider.getWeblogger().getRevision());
+        LOG.info("Roller Weblogger business tier successfully bootstrapped");
+        LOG.info("   Version: " + webloggerProvider.getWeblogger().getVersion());
+        LOG.info("   Revision: " + webloggerProvider.getWeblogger().getRevision());
     }
 

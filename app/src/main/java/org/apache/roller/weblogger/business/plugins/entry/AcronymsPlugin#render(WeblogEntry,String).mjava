@@ -1,6 +1,5 @@
     public String render(WeblogEntry entry, String str) {
-        String text = str;
-        
+
         if (LOG.isDebugEnabled()) {
             LOG.debug("render(entry = "+entry.getId()+")");
         }
@@ -11,7 +10,7 @@
         Properties acronyms = loadAcronyms(entry.getWebsite());
         LOG.debug("acronyms.size()=" + acronyms.size());
         if (acronyms.size() == 0) {
-            return text;
+            return str;
         }
         
         /*
@@ -35,9 +34,9 @@
         
         // if there are none, no work to do
         if (acronymPatterns.length == 0) {
-            return text;
+            return str;
         }
         
-        return matchAcronyms(text, acronymPatterns, acronymTags);
+        return matchAcronyms(str, acronymPatterns, acronymTags);
     }
 

@@ -18,12 +18,7 @@
         // an item is also considered selected if it's a subforward of the
         // current action
         Set<String> subActions = tabItem.getSubActions();
-        if (subActions != null) {
-            if (subActions.contains(currentAction)) {
-                return true;
-            }
-        }
 
-        return false;
+        return subActions != null && subActions.contains(currentAction);
     }
 
