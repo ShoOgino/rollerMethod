@@ -47,7 +47,7 @@
             }
 
             long endTime = System.currentTimeMillis();
-            long renderTime = (endTime - startTime) / 1000;
+            long renderTime = (endTime - startTime) / RollerConstants.SEC_IN_MS;
 
             log.debug("Rendered [" + renderTemplate.getId() + "] in "
                     + renderTime + " secs");
@@ -61,9 +61,6 @@
             // need to lookup parse error template
             renderException(model, out, "error-parse.vm");
 
-            // and we're done
-            return;
-
         } catch (MethodInvocationException ex) {
 
             // in the case of a parsing error including a page we want to render
@@ -73,9 +70,6 @@
             // need to lookup parse error template
             renderException(model, out, "error-parse.vm");
 
-            // and we're done
-            return;
-
         } catch (VelocityException ex) {
 
             // in the case of a parsing error including a macro we want to
@@ -84,9 +78,6 @@
 
             // need to lookup parse error template
             renderException(model, out, "error-parse.vm");
-
-            // and we're done
-            return;
 
         } catch (Exception ex) {
             // wrap and rethrow so caller can deal with it

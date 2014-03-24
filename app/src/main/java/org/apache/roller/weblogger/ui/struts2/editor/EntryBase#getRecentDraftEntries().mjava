@@ -8,14 +8,12 @@
 		List<WeblogEntry> entries = Collections.emptyList();
 		try {
 			entries = WebloggerFactory.getWeblogger().getWeblogEntryManager()
-					.getWeblogEntries(
-
-					getActionWeblog(), null, null, // startDate
+					.getWeblogEntries(getActionWeblog(), null, null,
 							null, // endDate
 							null, // catName
-							null, WeblogEntry.DRAFT, // status
+							null, WeblogEntry.DRAFT,
 							null, // text
-							"updateTime", // sortby
+							"updateTime",
 							null, null, 0, 20); // maxEntries
 		} catch (WebloggerException ex) {
 			log.error("Error getting entries list", ex);

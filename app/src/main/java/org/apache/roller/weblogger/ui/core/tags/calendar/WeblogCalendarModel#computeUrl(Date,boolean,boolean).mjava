@@ -12,9 +12,8 @@
             return null;
         }
         else if (dateString == null && !monthURL) {
-            dateString = DateUtil.format8chars(day);
         	dateString = format8chars(day,getCalendar());
-        } else if (dateString == null && monthURL) {
+        } else if (dateString == null) {
             dateString = format6chars(day,getCalendar());
         }
         try {

@@ -26,7 +26,7 @@
         
         // prepare http request
         HttpClient client = new HttpClient();
-        client.setConnectionTimeout(45 * 1000);
+        client.setConnectionTimeout(45 * RollerConstants.SEC_IN_MS);
         HttpMethod method = new PostMethod(trackbackURL);
         method.setQueryString(queryString);
         

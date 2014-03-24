@@ -6,9 +6,6 @@
      */
     public static boolean matchesRulesOnly(
         String str, List<String> stringRules, List<Pattern> regexRules) {
-        if (testStringRules(str, stringRules)) {
-            return true;
-        }
-        return testRegExRules(str, regexRules);  
+        return testStringRules(str, stringRules) || testRegExRules(str, regexRules);
     }
 

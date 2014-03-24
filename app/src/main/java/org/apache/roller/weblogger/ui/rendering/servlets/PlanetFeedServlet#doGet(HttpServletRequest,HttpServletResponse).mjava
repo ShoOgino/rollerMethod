@@ -134,8 +134,8 @@
             return;
         }
 
-        // render content. use default size of about 24K for a standard page
-        CachedContent rendererOutput = new CachedContent(24567);
+        // render content
+        CachedContent rendererOutput = new CachedContent(RollerConstants.TWENTYFOUR_KB_IN_BYTES);
         try {
             log.debug("Doing rendering");
             renderer.render(model, rendererOutput.getCachedWriter());

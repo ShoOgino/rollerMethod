@@ -18,8 +18,8 @@
         StringBuilder result = new StringBuilder(str);
         StringBuilder lcresult = new StringBuilder(str.toLowerCase());
 
-        // <img should take care of smileys
-        String[] visibleTags = { "<img" }; // are there others to add?
+        // <img should take care of smileys, others to add?
+        String[] visibleTags = { "<img" };
         int stringIndex;
         for (int j = 0; j < visibleTags.length; j++) {
             while ((stringIndex = lcresult.indexOf(visibleTags[j])) != -1) {
@@ -45,9 +45,8 @@
 
         // TODO: This code is buggy by nature. It doesn't deal with nesting of
         // tags properly.
-        // remove certain elements with open & close tags
-        String[] openCloseTags = { "li", "a", "div", "h1", "h2", "h3", "h4" }; // more
-                                                                               // ?
+        // remove certain elements with open & close tags, more available?
+        String[] openCloseTags = { "li", "a", "div", "h1", "h2", "h3", "h4" };
         for (int j = 0; j < openCloseTags.length; j++) {
             // could this be better done with a regular expression?
             String closeTag = "</" + openCloseTags[j] + ">";

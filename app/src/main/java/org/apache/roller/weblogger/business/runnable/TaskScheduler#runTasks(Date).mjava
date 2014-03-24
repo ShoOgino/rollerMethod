@@ -26,14 +26,14 @@
                 // if we missed the last scheduled run time then see when the
                 // most appropriate next run time should be and wait 'til then
                 boolean needToWait = false;
-                if(currentTime.getTime() > (nextRunTime.getTime() + ONE_MINUTE_MS)) {
+                if(currentTime.getTime() > (nextRunTime.getTime() + RollerConstants.MIN_IN_MS)) {
                     
                     log.debug("MISSED last run, checking if waiting is necessary");
                     if("startOfDay".equals(task.getStartTimeDesc())) {
                         // for daily tasks we only run during the first 
                         // couple minutes of the day
                         Date startOfDay = DateUtil.getStartOfDay(currentTime);
-                        if(currentTime.getTime() > startOfDay.getTime() + (2 * ONE_MINUTE_MS)) {
+                        if(currentTime.getTime() > startOfDay.getTime() + (2 * RollerConstants.MIN_IN_MS)) {
                             needToWait = true;
                             log.debug("WAITING for next reasonable run time");
                         }
@@ -41,7 +41,7 @@
                         // for hourly tasks we only run during the first
                         // couple minutes of the hour
                         Date startOfHour = DateUtil.getStartOfHour(currentTime);
-                        if(currentTime.getTime() > startOfHour.getTime() + (2 * ONE_MINUTE_MS)) {
+                        if(currentTime.getTime() > startOfHour.getTime() + (2 * RollerConstants.MIN_IN_MS)) {
                             needToWait = true;
                             log.debug("WAITING for next reasonable run time");
                         }

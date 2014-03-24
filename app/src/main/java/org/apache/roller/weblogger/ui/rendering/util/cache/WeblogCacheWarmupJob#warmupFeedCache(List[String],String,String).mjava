@@ -20,8 +20,8 @@
                 
                 
                 // populate the rendering model
-                Map model = new HashMap();
-                Map initData = new HashMap();
+                Map<String, Object> model = new HashMap<String, Object>();
+                Map<String, WeblogFeedRequest> initData = new HashMap<String, WeblogFeedRequest>();
                 initData.put("request", null);
                 initData.put("feedRequest", feedRequest);
                 initData.put("weblogRequest", feedRequest);
@@ -36,14 +36,14 @@
                 
                 
                 // lookup Renderer we are going to use
-                Renderer renderer = null;
+                Renderer renderer;
                 Template template = new StaticTemplate(
 					"weblog-"+type+"-"+format+".vm", "velocity");
                 renderer = RendererManager.getRenderer(template, DeviceType.standard);
                 
                 
                 // render content.  use default size of about 24K for a standard page
-                CachedContent rendererOutput = new CachedContent(24567);
+                CachedContent rendererOutput = new CachedContent(RollerConstants.TWENTYFOUR_KB_IN_BYTES);
                 renderer.render(model, rendererOutput.getCachedWriter());
                 
                 
@@ -62,7 +62,7 @@
         }
         
         long end = System.currentTimeMillis();
-        long time = (end-start)*1000;
+        long time = (end-start) * RollerConstants.SEC_IN_MS;
         
         log.info("Completed warmup for "+type+"/"+format+" in "+time+" secs.");
         

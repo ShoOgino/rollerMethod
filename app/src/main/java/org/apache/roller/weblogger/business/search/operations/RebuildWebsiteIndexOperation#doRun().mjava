@@ -40,11 +40,11 @@
                 // Add Doc
                 WeblogEntryManager weblogManager = roller
                         .getWeblogEntryManager();
-                List<WeblogEntry> entries = weblogManager.getWeblogEntries(website, // website
+                List<WeblogEntry> entries = weblogManager.getWeblogEntries(website,
                         null, null, // startDate
                         null, // endDate
                         null, // catName
-                        null, WeblogEntry.PUBLISHED, // status
+                        null, WeblogEntry.PUBLISHED,
                         null, // text
                         null, // sortby (null means pubTime)
                         null, null, 0, -1); // offset, length, locale
@@ -55,8 +55,7 @@
                     writer.addDocument(getDocument(entry));
                     mLogger.debug(MessageFormat.format(
                             "Indexed entry {0}: {1}",
-                            new Object[] { entry.getPubTime(),
-                                    entry.getAnchor() }));
+                            entry.getPubTime(), entry.getAnchor()));
                 }
 
                 // release the database connection
@@ -72,7 +71,7 @@
         }
 
         Date end = new Date();
-        double length = (end.getTime() - start.getTime()) / (double) 1000;
+        double length = (end.getTime() - start.getTime()) / (double) RollerConstants.SEC_IN_MS;
 
         if (website == null) {
             mLogger.info("Completed rebuilding index for all users in '"

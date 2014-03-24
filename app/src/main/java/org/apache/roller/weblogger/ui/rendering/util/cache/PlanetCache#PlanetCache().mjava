@@ -28,7 +28,7 @@
         String timeoutString = WebloggerConfig.getProperty("cache.planet.timeout");
         try {
             long timeoutSecs = Long.parseLong(timeoutString);
-            this.timeout = timeoutSecs * 1000;
+            this.timeout = timeoutSecs * RollerConstants.SEC_IN_MS;
         } catch(Exception e) {
             // ignored ... illegal value
         }

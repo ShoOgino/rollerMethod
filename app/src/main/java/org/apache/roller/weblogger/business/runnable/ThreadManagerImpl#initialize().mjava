@@ -48,7 +48,7 @@
         TaskScheduler scheduler = new TaskScheduler(webloggerTasks);
         
         // start scheduler thread, but only if it's not already running
-        if (schedulerThread == null && scheduler != null) {
+        if (schedulerThread == null) {
             LOG.debug("Starting scheduler thread");
             schedulerThread = new Thread(scheduler, "Roller Weblogger Task Scheduler");
             // set thread priority between MAX and NORM so we get slightly preferential treatment

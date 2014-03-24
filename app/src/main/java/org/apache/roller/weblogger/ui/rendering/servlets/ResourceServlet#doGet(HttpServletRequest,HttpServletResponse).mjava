@@ -4,12 +4,12 @@
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        Weblog weblog = null;
+        Weblog weblog;
         //String ctx = request.getContextPath();
         //String servlet = request.getServletPath();
         //String reqURI = request.getRequestURI();
 
-        WeblogResourceRequest resourceRequest = null;
+        WeblogResourceRequest resourceRequest;
         try {
             // parse the incoming request and extract the relevant data
             resourceRequest = new WeblogResourceRequest(request);
@@ -91,11 +91,11 @@
         response.setContentType(this.context.getMimeType(resourceRequest
                 .getResourcePath()));
 
-        OutputStream out = null;
+        OutputStream out;
         try {
             // ok, lets serve up the file
-            byte[] buf = new byte[8192];
-            int length = 0;
+            byte[] buf = new byte[RollerConstants.EIGHT_KB_IN_BYTES];
+            int length;
             out = response.getOutputStream();
             while ((length = resourceStream.read(buf)) > 0) {
                 out.write(buf, 0, length);

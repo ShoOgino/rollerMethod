@@ -22,7 +22,7 @@
                 throw new AtomNotAuthorizedException("Not authorized to access website: " + handle);
             }
             List<WeblogEntry> entries = roller.getWeblogEntryManager().getWeblogEntries(
-                    website,           // website
+                    website,
                     null,              // user
                     null,              // startDate
                     null,              // endDate
@@ -59,7 +59,7 @@
                     feed.setUpdated(entry.getUpdated());
                 }
             }
-            List links = new ArrayList();
+            List<Link> links = new ArrayList<Link>();
             if (entries.size() > max) {
                 // add next link
                 int nextOffset = start + max;

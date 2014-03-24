@@ -4,7 +4,7 @@
     public synchronized IncomingReferrer dequeue() {
         
         if(!this.referrerQueue.isEmpty()) {
-            return (IncomingReferrer) this.referrerQueue.remove(0);
+            return this.referrerQueue.remove(0);
         }
         
         return null;

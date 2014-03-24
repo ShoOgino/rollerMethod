@@ -8,13 +8,11 @@
 		List<WeblogEntry> entries = Collections.emptyList();
 		try {
 			entries = WebloggerFactory.getWeblogger().getWeblogEntryManager()
-					.getWeblogEntries(
-
-					getActionWeblog(), // userName
+					.getWeblogEntries(getActionWeblog(),
 							null, null, // startDate
 							null, // endDate
 							null, // catName
-							null, WeblogEntry.PUBLISHED, // status
+							null, WeblogEntry.PUBLISHED,
 							null, // text
 							null, // sortby (null for pubTime)
 							null, null, 0, 20);

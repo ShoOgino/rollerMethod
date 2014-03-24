@@ -12,10 +12,10 @@
         BufferedOutputStream out = new BufferedOutputStream(output);
 
         byte[] buffer;
-        buffer = new byte[8192];
+        buffer = new byte[RollerConstants.EIGHT_KB_IN_BYTES];
 
         for (length = byteCount; length > 0;) {
-            bytes = (int) (length > 8192 ? 8192 : length);
+            bytes = (int) (length > RollerConstants.EIGHT_KB_IN_BYTES ? RollerConstants.EIGHT_KB_IN_BYTES : length);
 
             try {
                 bytes = in.read(buffer, 0, bytes);

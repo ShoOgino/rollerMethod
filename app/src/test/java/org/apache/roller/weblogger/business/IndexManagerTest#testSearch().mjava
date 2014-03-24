@@ -48,7 +48,7 @@
          imgr.executeIndexOperationNow(
              new AddEntryOperation(WebloggerFactory.getWeblogger(), (IndexManagerImpl)imgr, wd2));
 
-        Thread.sleep(1000);
+        Thread.sleep(RollerConstants.SEC_IN_MS);
 
         SearchOperation search = new SearchOperation(imgr);
         search.setTerm("Enterprise");

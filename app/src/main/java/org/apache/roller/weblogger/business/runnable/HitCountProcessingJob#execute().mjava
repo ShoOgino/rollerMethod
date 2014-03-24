@@ -48,7 +48,7 @@
             
             long endTime = System.currentTimeMillis();
             
-            log.debug("Completed: "+ (endTime-startTime)/1000 + " secs");
+            log.debug("Completed: "+ (endTime-startTime)/ RollerConstants.SEC_IN_MS + " secs");
             
         } catch (WebloggerException ex) {
             log.error("Error persisting updated hit counts", ex);

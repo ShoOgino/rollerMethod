@@ -6,7 +6,9 @@
             try {
                 WeblogEntryTagAggregate agg = (WeblogEntryTagAggregate)query.getSingleResult();
                 agg.setTotal(agg.getTotal() - stat.getCount());
-            } catch (NoResultException ignored) {} // no agg to be updated
+            } catch (NoResultException ignored) {
+                // nothing to update
+            }
         }
     }
 

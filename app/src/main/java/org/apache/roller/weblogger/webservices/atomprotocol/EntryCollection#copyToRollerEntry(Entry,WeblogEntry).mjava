@@ -35,11 +35,9 @@
         // Atom categories with weblog-level scheme are Weblogger categories.
         // Atom supports multiple cats, but Weblogger supports one/entry
         // so here we take accept the first category that exists.
-        List categories = entry.getCategories();
+        List<Category> categories = entry.getCategories();
         if (categories != null && categories.size() > 0) {
-            for (int i=0; i<categories.size(); i++) {
-                Category cat = (Category)categories.get(i);
-                
+            for (Category cat : categories) {
                 if (cat.getScheme() != null && cat.getScheme().equals(
                         RollerAtomService.getWeblogCategoryScheme(rollerEntry.getWebsite()))) {
                     String catString = cat.getTerm();
@@ -66,8 +64,7 @@
         String tags = "";
         StringBuilder buff = new StringBuilder();
         if (categories != null && categories.size() > 0) {
-            for (int i=0; i<categories.size(); i++) {
-                Category cat = (Category)categories.get(i);            
+            for (Category cat : categories) {
                 if (cat.getScheme() == null) {
                     buff.append(" ").append(cat.getTerm());
                 }                

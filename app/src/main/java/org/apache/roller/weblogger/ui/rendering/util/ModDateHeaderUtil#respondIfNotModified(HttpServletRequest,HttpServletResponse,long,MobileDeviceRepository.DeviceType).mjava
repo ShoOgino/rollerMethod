@@ -21,7 +21,7 @@
 			HttpServletResponse response, long lastModifiedTimeMillis,
 			MobileDeviceRepository.DeviceType deviceType) {
 
-		long sinceDate = 0;
+		long sinceDate;
 		try {
 			sinceDate = request.getDateHeader("If-Modified-Since");
 		} catch (IllegalArgumentException ex) {
@@ -31,7 +31,7 @@
 		}
 
 		// truncate to seconds
-		lastModifiedTimeMillis -= (lastModifiedTimeMillis % 1000);
+		lastModifiedTimeMillis -= (lastModifiedTimeMillis % RollerConstants.SEC_IN_MS);
 
 		if (log.isDebugEnabled()) {
 			SimpleDateFormat dateFormat = new SimpleDateFormat(

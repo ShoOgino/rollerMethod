@@ -14,7 +14,7 @@
         Content content = new Content();
         content.setType(Content.HTML);
         content.setValue(entry.getText());
-        List contents = new ArrayList();
+        List<Content> contents = new ArrayList<Content>();
         contents.add(content);
         
         atomEntry.setContents(contents);
@@ -52,7 +52,7 @@
         Link altlink = new Link();
         altlink.setRel("alternate");
         altlink.setHref(entry.getPermalink());
-        List altlinks = new ArrayList();
+        List<Link> altlinks = new ArrayList<Link>();
         altlinks.add(altlink);
         atomEntry.setAlternateLinks(altlinks);
         
@@ -61,11 +61,11 @@
         editlink.setHref(
                 atomURL
                 +"/"+entry.getWebsite().getHandle() + "/entry/" + entry.getId());
-        List otherlinks = new ArrayList();
+        List<Link> otherlinks = new ArrayList<Link>();
         otherlinks.add(editlink);
         atomEntry.setOtherLinks(otherlinks);
         
-        List modules = new ArrayList();
+        List<AppModule> modules = new ArrayList<AppModule>();
         AppModule app = new AppModuleImpl();
         app.setDraft(!WeblogEntry.PUBLISHED.equals(entry.getStatus()));
         app.setEdited(entry.getUpdateTime());
