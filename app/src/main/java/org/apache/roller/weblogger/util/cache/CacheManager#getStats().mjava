@@ -6,8 +6,8 @@
      * This is here with the full expectation that it will be replaced by
      * something a bit more elaborate, like JMX.
      */
-    public static Map getStats() {
-        Map allStats = new HashMap();
+    public static Map<String, Map<String, Object>> getStats() {
+        Map<String, Map<String, Object>> allStats = new HashMap<String, Map<String, Object>>();
         for (Cache cache : caches.values()) {
             allStats.put(cache.getId(), cache.getStats());
         }

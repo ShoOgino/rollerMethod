@@ -9,8 +9,8 @@
         char[] chrs = str.toCharArray();
         int sz = chrs.length;
         StringBuilder buffer = new StringBuilder(2*sz);
-        for(int i=0; i<sz; i++) {
-            switch(chrs[i]) {
+        for (char c : chrs) {
+            switch(c) {
               case '[' :
               case ']' :
               case '?' :
@@ -22,7 +22,7 @@
               case '$' :
                 buffer.append("\\");
               default : 
-                buffer.append(chrs[i]);
+                buffer.append(c);
             }
         }
         return buffer.toString();

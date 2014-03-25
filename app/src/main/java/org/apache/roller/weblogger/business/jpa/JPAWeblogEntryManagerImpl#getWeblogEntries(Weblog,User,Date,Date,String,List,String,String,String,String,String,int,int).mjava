@@ -24,17 +24,16 @@
             }
         }
 
-        List params = new ArrayList();
+        List<Object> params = new ArrayList<Object>();
         int size = 0;
         StringBuilder queryString = new StringBuilder();
         
-        //queryString.append("SELECT e FROM WeblogEntry e WHERE ");
         if (tags == null || tags.size()==0) {
             queryString.append("SELECT e FROM WeblogEntry e WHERE ");
         } else {
             queryString.append("SELECT e FROM WeblogEntry e JOIN e.tags t WHERE ");
             queryString.append("(");
-            for(int i = 0; i < tags.size(); i++) {
+            for (int i = 0; i < tags.size(); i++) {
                 if (i != 0) {
                     queryString.append(" OR ");
                 }
@@ -59,7 +58,7 @@
             queryString.append(" AND EXISTS (SELECT t FROM WeblogEntryTag t WHERE "
                     + " t.weblogEntry = e AND t.name IN (");
             final String PARAM_SEPERATOR = ", ";
-            for(int i = 0; i < tags.size(); i++) {
+            for (int i = 0; i < tags.size(); i++) {
                 params.add(size++, tags.get(i));
                 queryString.append("?").append(size).append(PARAM_SEPERATOR);
             }
@@ -88,7 +87,7 @@
             queryString.append(" AND e.pubTime <= ?").append(size);
         }
         
-        if (cat != null && website != null) {
+        if (cat != null) {
             params.add(size++, cat.getId());
             queryString.append(" AND e.category.id = ?").append(size);
         }

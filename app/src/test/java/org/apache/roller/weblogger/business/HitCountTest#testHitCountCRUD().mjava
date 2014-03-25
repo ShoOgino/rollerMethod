@@ -15,7 +15,7 @@
         TestUtils.endSession(true);
         
         // make sure it was created
-        WeblogHitCount hitCount = null;
+        WeblogHitCount hitCount;
         hitCount = mgr.getHitCount(id);
         assertNotNull(hitCount);
         assertEquals(testCount, hitCount);
@@ -27,7 +27,6 @@
         TestUtils.endSession(true);
         
         // make sure it was updated
-        hitCount = null;
         hitCount = mgr.getHitCount(id);
         assertNotNull(hitCount);
         assertEquals(testCount, hitCount);
@@ -38,7 +37,6 @@
         TestUtils.endSession(true);
         
         // make sure it was deleted
-        hitCount = null;
         hitCount = mgr.getHitCount(id);
         assertNull(hitCount);
     }

@@ -40,8 +40,8 @@
         String blogroll = WebloggerConfig.getProperty("newuser.blogroll");
         if (blogroll != null) {
             String[] splitroll = blogroll.split(",");
-            for (int i=0; i<splitroll.length; i++) {
-                String[] rollitems = splitroll[i].split("\\|");
+            for (String splitItem : splitroll) {
+                String[] rollitems = splitItem.split("\\|");
                 if (rollitems != null && rollitems.length > 1) {
                     WeblogBookmark b = new WeblogBookmark(
                             defaultFolder,

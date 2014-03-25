@@ -4,7 +4,7 @@
     // TODO: this method should be removed and its functionality moved to getWeblogEntries()
     public List<WeblogEntry> getWeblogEntries(WeblogCategory cat, boolean publishedOnly)
     throws WebloggerException {
-        List results = null;
+        List results;
         
         if (publishedOnly) {
             Query q = strategy.getNamedQuery(

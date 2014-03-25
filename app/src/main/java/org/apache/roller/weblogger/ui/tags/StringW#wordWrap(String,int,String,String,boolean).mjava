@@ -30,11 +30,11 @@
         }
         //        System.err.println( "width after: "+ width );
 
-        int idx = -1;
-        String substr = null;
+        int idx;
+        String substr;
 
         // beware: i is rolled-back inside the loop
-        for(int i=0; i<sz; i+=width) {
+        for (int i=0; i<sz; i+=width) {
 
             // on the last line
             if(i > sz - width) {
@@ -75,8 +75,8 @@
 
             // figure out where the last space is
             char[] chrs = substr.toCharArray();
-            for(int j=width; j>0; j--) {
-                if(Character.isWhitespace(chrs[j-1])) {
+            for (int j=width; j>0; j--) {
+                if (Character.isWhitespace(chrs[j-1])) {
                     idx = j;
 //                    System.err.println("Found whitespace: "+idx);
                     break;
@@ -85,15 +85,15 @@
 
             // idx is the last whitespace on the line.
 //            System.err.println("idx is "+idx);
-            if(idx == -1) {
-                for(int j=width; j>0; j--) {
+            if (idx == -1) {
+                for (int j=width; j>0; j--) {
                     if(chrs[j-1] == '-') {
                         idx = j;
 //                        System.err.println("Found Dash: "+idx);
                         break;
                     }
                 }
-                if(idx == -1) {
+                if (idx == -1) {
                     buffer.append(substr);
                     buffer.append(delim);
 //                    System.err.print(substr);
@@ -136,7 +136,7 @@
 //                }
             }
         }
-//        System.err.println("\n*************");
+
         return buffer.toString();
     }
 

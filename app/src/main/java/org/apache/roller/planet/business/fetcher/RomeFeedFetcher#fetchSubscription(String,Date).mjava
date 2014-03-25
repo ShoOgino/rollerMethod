@@ -46,7 +46,7 @@
             try {
                 SyndFeedInfo feedInfo = feedCache.getFeedInfo(new URL(newSub.getFeedURL()));
                 if(feedInfo.getLastModified() != null) {
-                    long lastUpdatedLong = ((Long)feedInfo.getLastModified()).longValue();
+                    long lastUpdatedLong = (Long) feedInfo.getLastModified();
                     if (lastUpdatedLong != 0) {
                         newSub.setLastUpdated(new Date(lastUpdatedLong));
                     }
@@ -63,7 +63,7 @@
         }
         
         if(log.isDebugEnabled()) {
-            log.debug("Subscription is: "+newSub.toString());
+            log.debug("Subscription is: " + newSub.toString());
         }
         
         
@@ -80,7 +80,7 @@
         
         // add entries
         List<SyndEntry> feedEntries = feed.getEntries();
-        for( SyndEntry feedEntry : feedEntries ) {
+        for (SyndEntry feedEntry : feedEntries) {
             SubscriptionEntry newEntry = buildEntry(feedEntry);
             
             // some kludge to handle feeds with no entry dates

@@ -3,11 +3,11 @@
      *
      * Does not fail if there is a problem with one of the models.
      */
-    public static void loadCustomModels(Weblog weblog, Map model, Map initData) {
+    public static void loadCustomModels(Weblog weblog, Map<String, Object> modelMap, Map initData) {
         
         if (weblog.getPageModels() != null) {
             try {
-                loadModels(weblog.getPageModels(), model, initData, false);
+                loadModels(weblog.getPageModels(), modelMap, initData, false);
             } catch(WebloggerException ex) {
                 // shouldn't happen, but log it just in case
                 log.error("Error loading weblog custom models", ex);

@@ -4,7 +4,7 @@
     public Weblog getWeblogByHandle(String handle, Boolean enabled)
     throws WebloggerException {
         
-        if (handle==null ) {
+        if (handle==null) {
             throw new WebloggerException("Handle cannot be null");
         }
         
@@ -28,7 +28,7 @@
         
         Query query = strategy.getNamedQuery("Weblog.getByHandle");
         query.setParameter(1, handle);
-        Weblog website = null;
+        Weblog website;
         try {
             website = (Weblog)query.getSingleResult();
         } catch (NoResultException e) {

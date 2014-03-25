@@ -3,19 +3,12 @@
      */
     public boolean isWeblogCategoryInUse(WeblogCategory cat)
     throws WebloggerException {
-        
-        Query q = strategy.getNamedQuery("WeblogEntry.getByCategory");
-        q.setParameter(1, cat);
-        int entryCount = q.getResultList().size();
-        
-        if (entryCount > 0) {
-            return true;
-        }
-        
         if (cat.getWeblog().getBloggerCategory().equals(cat)) {
             return true;
         }
-        
-        return false;
+        Query q = strategy.getNamedQuery("WeblogEntry.getByCategory");
+        q.setParameter(1, cat);
+        int entryCount = q.getResultList().size();
+        return entryCount > 0;
     }
 

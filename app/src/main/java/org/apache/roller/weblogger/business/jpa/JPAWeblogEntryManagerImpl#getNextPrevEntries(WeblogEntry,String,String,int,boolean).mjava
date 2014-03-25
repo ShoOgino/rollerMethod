@@ -10,26 +10,25 @@
         Query query;
         WeblogCategory category;
         
-        List params = new ArrayList();
+        List<Object> params = new ArrayList<Object>();
         int size = 0;
-        StringBuilder queryString = new StringBuilder();
+        String queryString = "SELECT e FROM WeblogEntry e WHERE ";
         StringBuilder whereClause = new StringBuilder();
-        queryString.append("SELECT e FROM WeblogEntry e WHERE ");
-                     
+
         params.add(size++, current.getWebsite());
-        whereClause.append("e.website = ?" + size); 
+        whereClause.append("e.website = ?").append(size);
         
         params.add(size++, WeblogEntry.PUBLISHED);
-        whereClause.append(" AND e.status = ?" + size);
+        whereClause.append(" AND e.status = ?").append(size);
                 
         if (next) {
             params.add(size++, current.getPubTime());
-            whereClause.append(" AND e.pubTime > ?" + size);
+            whereClause.append(" AND e.pubTime > ?").append(size);
         } else {
             // pub time null if current article not yet published, in Draft view
             if (current.getPubTime() != null) {
                 params.add(size++, current.getPubTime());
-                whereClause.append(" AND e.pubTime < ?" + size);
+                whereClause.append(" AND e.pubTime < ?").append(size);
             }
         }
         
@@ -37,7 +36,7 @@
             category = getWeblogCategoryByName(current.getWebsite(), catName);
             if (category != null) {
                 params.add(size++, category);
-                whereClause.append(" AND e.category = ?" + size);
+                whereClause.append(" AND e.category = ?").append(size);
             } else {
                 throw new WebloggerException("Cannot find category: " + catName);
             } 
@@ -45,7 +44,7 @@
         
         if(locale != null) {
             params.add(size++, locale + '%');
-            whereClause.append(" AND e.locale like ?" + size);
+            whereClause.append(" AND e.locale like ?").append(size);
         }
         
         if (next) {
@@ -53,7 +52,7 @@
         } else {
             whereClause.append(" ORDER BY e.pubTime DESC");
         }
-        query = strategy.getDynamicQuery(queryString.toString() + whereClause.toString());
+        query = strategy.getDynamicQuery(queryString + whereClause.toString());
         for (int i=0; i<params.size(); i++) {
             query.setParameter(i+1, params.get(i));
         }

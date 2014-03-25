@@ -3,7 +3,7 @@
      */
     public boolean getTagComboExists(List tags, Weblog weblog) throws WebloggerException{
         
-        if(tags == null || tags.size() == 0) {
+        if (tags == null || tags.size() == 0) {
             return false;
         }
         
@@ -13,7 +13,7 @@
         //?1) AND w.weblog = ?2");
         //Append tags as parameter markers to avoid potential escaping issues
         //The IN clause would be of form (?1, ?2, ?3, ..)
-        ArrayList params = new ArrayList(tags.size() + 1);
+        List<Object> params = new ArrayList<Object>(tags.size() + 1);
         final String paramSeparator = ", ";
         int i;
         for (i=0; i < tags.size(); i++) {

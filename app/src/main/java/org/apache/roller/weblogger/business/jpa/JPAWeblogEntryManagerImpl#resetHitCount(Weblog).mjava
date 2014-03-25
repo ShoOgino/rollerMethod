@@ -4,7 +4,7 @@
     public void resetHitCount(Weblog weblog) throws WebloggerException {
         Query q = strategy.getNamedQuery("WeblogHitCount.getByWeblog");
         q.setParameter(1, weblog);
-        WeblogHitCount hitCount = null;
+        WeblogHitCount hitCount;
         try {
             hitCount = (WeblogHitCount)q.getSingleResult();
             hitCount.setDailyHits(0);
