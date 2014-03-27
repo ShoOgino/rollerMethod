@@ -5,8 +5,7 @@
         try {
             MediaFileManager mgr = WebloggerFactory.getWeblogger()
                     .getMediaFileManager();
-            List<MediaFileDirectory> directories = mgr
-                    .getMediaFileDirectories(getActionWeblog());
+            List<MediaFileDirectory> directories = mgr.getMediaFileDirectories(getActionWeblog());
             List<MediaFileDirectory> sortedDirList = new ArrayList<MediaFileDirectory>();
             sortedDirList.addAll(directories);
             Collections.sort(sortedDirList, new MediaFileDirectoryComparator(

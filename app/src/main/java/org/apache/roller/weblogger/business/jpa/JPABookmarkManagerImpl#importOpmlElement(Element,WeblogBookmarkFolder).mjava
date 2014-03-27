@@ -2,13 +2,12 @@
     // NOTE: this method does not commit any changes; 
     // that is done higher up in execution chain
     private void importOpmlElement(
-            Weblog website, Element elem, WeblogBookmarkFolder folder)
+            Element elem, WeblogBookmarkFolder folder)
             throws WebloggerException {
         String text = elem.getAttributeValue("text");
         String title = elem.getAttributeValue("title");
         String desc = elem.getAttributeValue("description");
         String url = elem.getAttributeValue("url");
-        //String type = elem.getAttributeValue("type");
         String xmlUrl = elem.getAttributeValue("xmlUrl");
         String htmlUrl = elem.getAttributeValue("htmlUrl");
 
@@ -52,7 +51,7 @@
         } else {
             // Import suboutline's children into folder
             for (Object subelem : elem.getChildren("outline")) {
-                importOpmlElement( website, (Element) subelem, folder );
+                importOpmlElement((Element) subelem, folder );
             }
         }
     }

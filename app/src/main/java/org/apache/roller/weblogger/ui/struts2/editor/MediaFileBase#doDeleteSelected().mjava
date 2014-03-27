@@ -11,9 +11,9 @@
             if (fileIds != null && fileIds.length > 0) {
                 log.debug("Processing delete of " + fileIds.length
                         + " media files.");
-                for (int index = 0; index < fileIds.length; index++) {
-                    log.debug("Deleting media file - " + fileIds[index]);
-                    MediaFile mediaFile = manager.getMediaFile(fileIds[index]);
+                for (String fileId : fileIds) {
+                    log.debug("Deleting media file - " + fileId);
+                    MediaFile mediaFile = manager.getMediaFile(fileId);
                     if (mediaFile != null) {
                         manager.removeMediaFile(getActionWeblog(), mediaFile);
                     }
@@ -24,14 +24,11 @@
                 log.debug("Processing delete of " + dirIds.length
                         + " media directories.");
                 manager = WebloggerFactory.getWeblogger().getMediaFileManager();
-                for (int index = 0; index < dirIds.length; index++) {
-                    log.debug("Deleting media file directory - "
-                            + dirIds[index]);
-                    MediaFileDirectory mediaFileDir = manager
-                            .getMediaFileDirectory(dirIds[index]);
+                for (String dirId : dirIds) {
+                    log.debug("Deleting media file directory - " + dirId);
+                    MediaFileDirectory mediaFileDir = manager.getMediaFileDirectory(dirId);
                     if (mediaFileDir != null) {
-                        mediaFileDir.getParent().removeChildDirectory(
-                                mediaFileDir);
+                        mediaFileDir.getParent().removeChildDirectory(mediaFileDir);
                         manager.removeMediaFileDirectory(mediaFileDir);
                     }
                 }

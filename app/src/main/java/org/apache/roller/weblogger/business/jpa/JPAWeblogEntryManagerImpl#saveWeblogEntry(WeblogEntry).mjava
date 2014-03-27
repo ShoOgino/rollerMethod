@@ -35,7 +35,7 @@
         // we only consider an entry future published if it is scheduled
         // more than 1 minute into the future
         if ("PUBLISHED".equals(entry.getStatus()) &&
-                entry.getPubTime().after(new Date(System.currentTimeMillis() + 60000))) {
+                entry.getPubTime().after(new Date(System.currentTimeMillis() + RollerConstants.MIN_IN_MS))) {
             entry.setStatus(WeblogEntry.SCHEDULED);
         }
         

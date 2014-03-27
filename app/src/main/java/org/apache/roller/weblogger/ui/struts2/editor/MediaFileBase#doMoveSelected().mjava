@@ -14,16 +14,13 @@
                         + " media files.");
                 MediaFileDirectory targetDirectory = manager
                         .getMediaFileDirectory(this.selectedDirectory);
-                for (int index = 0; index < fileIds.length; index++) {
-                    log.debug("Moving media file - " + fileIds[index]
+                for (String fileId : fileIds) {
+                    log.debug("Moving media file - " + fileId
                             + " to directory - " + this.selectedDirectory);
-                    MediaFile mediaFile = manager.getMediaFile(fileIds[index]);
-                    if (mediaFile != null) {
-                        if (!mediaFile.getDirectory().getId()
-                                .equals(targetDirectory.getId())) {
-                            manager.moveMediaFile(mediaFile, targetDirectory);
-                            movedFiles++;
-                        }
+                    MediaFile mediaFile = manager.getMediaFile(fileId);
+                    if (mediaFile != null && !mediaFile.getDirectory().getId().equals(targetDirectory.getId())) {
+                        manager.moveMediaFile(mediaFile, targetDirectory);
+                        movedFiles++;
                     }
                 }
             }
@@ -34,20 +31,16 @@
                         + " media files directories.");
                 MediaFileDirectory targetDirectory = manager
                         .getMediaFileDirectory(this.selectedDirectory);
-                for (int index = 0; index < dirIds.length; index++) {
-                    log.debug("Moving media file - " + dirIds[index]
+                for (String dirId : dirIds) {
+                    log.debug("Moving media file - " + dirId
                             + " to directory - " + this.selectedDirectory);
                     MediaFileDirectory mediaFileDir = manager
-                            .getMediaFileDirectory(dirIds[index]);
-                    if (mediaFileDir != null) {
-                        if (!mediaFileDir.getId().equals(
-                                targetDirectory.getId())
-                                && !mediaFileDir.getParent().getId()
-                                        .equals(targetDirectory.getId())) {
-                            manager.moveMediaFileDirectory(mediaFileDir,
-                                    targetDirectory);
-                            movedDirs++;
-                        }
+                            .getMediaFileDirectory(dirId);
+                    if (mediaFileDir != null
+                            && !mediaFileDir.getId().equals(targetDirectory.getId())
+                            && !mediaFileDir.getParent().getId().equals(targetDirectory.getId())) {
+                        manager.moveMediaFileDirectory(mediaFileDir,targetDirectory);
+                        movedDirs++;
                     }
                 }
             }

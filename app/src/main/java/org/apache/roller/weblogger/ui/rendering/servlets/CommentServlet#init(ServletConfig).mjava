@@ -35,12 +35,12 @@
                         e);
             }
 
-            int interval = 60000;
+            int interval = RollerConstants.MIN_IN_MS;
             try {
                 interval = Integer.parseInt(WebloggerConfig
                         .getProperty("comment.throttle.interval"));
                 // convert from seconds to milliseconds
-                interval = interval * 1000;
+                interval = interval * RollerConstants.SEC_IN_MS;
             } catch (Exception e) {
                 log.warn(
                         "bad input for config property comment.throttle.interval",

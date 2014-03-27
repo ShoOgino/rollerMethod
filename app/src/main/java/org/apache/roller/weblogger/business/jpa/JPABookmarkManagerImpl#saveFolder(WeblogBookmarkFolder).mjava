@@ -1,10 +1,8 @@
     public void saveFolder(WeblogBookmarkFolder folder) throws WebloggerException {
-        
-        if (folder.getId() == null || this.getFolder(folder.getId()) == null) {
-            // New folder, so make sure name is unique
-            if (isDuplicateFolderName(folder)) {
-                throw new WebloggerException("Duplicate folder name");
-            }
+
+        // If new folder make sure name is unique
+        if ((folder.getId() == null || this.getFolder(folder.getId()) == null) && isDuplicateFolderName(folder)) {
+            throw new WebloggerException("Duplicate folder name");
         }
 
         this.strategy.store(folder);

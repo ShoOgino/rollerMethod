@@ -48,10 +48,8 @@
         }
         
         // no content, try summary
-        if (newEntry.getText() == null || newEntry.getText().trim().length() == 0) {
-            if (romeEntry.getDescription() != null) {
-                newEntry.setText(romeEntry.getDescription().getValue());
-            }
+        if (StringUtils.isBlank(newEntry.getText()) && romeEntry.getDescription() != null)  {
+            newEntry.setText(romeEntry.getDescription().getValue());
         }
         
         // copy categories

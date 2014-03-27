@@ -37,9 +37,9 @@
 
             long filterSize = this.size ;
             if ("mediaFileView.kb".equals(this.sizeUnit)) {
-                filterSize = this.size * 1024;
+                filterSize = this.size * RollerConstants.ONE_KB_IN_BYTES;
             } else if ("mediaFileView.mb".equals(this.sizeUnit)) {
-                    filterSize = this.size * 1024 * 1024;
+                    filterSize = this.size * RollerConstants.ONE_MB_IN_BYTES;
             }
             dataHolder.setSize(filterSize);
         }
