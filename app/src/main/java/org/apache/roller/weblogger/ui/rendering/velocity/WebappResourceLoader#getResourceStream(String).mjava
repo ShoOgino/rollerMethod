@@ -4,11 +4,10 @@
 	 * @param name
 	 *            name of template to get
 	 * @return InputStream containing the template
-	 * @throws ResourceNotFoundException
-	 *             if template not found in classpath.
+	 * @throws ResourceNotFoundException if template not found in classpath.
+	 *
 	 */
-	public InputStream getResourceStream(String name)
-			throws ResourceNotFoundException {
+	public InputStream getResourceStream(String name) {
 
 		InputStream result = null;
 		Exception exception = null;
@@ -26,7 +25,7 @@
 			throw new ResourceNotFoundException("Invalid ThemeRL key " + name);
 		}
 
-		String savedPath = (String) templatePaths.get(name);
+		String savedPath = templatePaths.get(name);
 		if (savedPath != null) {
 			result = servletContext.getResourceAsStream(savedPath + split[0]);
 		}

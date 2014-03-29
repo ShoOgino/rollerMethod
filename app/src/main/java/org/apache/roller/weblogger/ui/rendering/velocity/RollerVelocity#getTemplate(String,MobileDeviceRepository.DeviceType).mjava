@@ -1,9 +1,9 @@
     /**
      * Convenience static method for looking up a template.
+     * @throws ResourceNotFoundException, ParseErrorException
      */
     public static Template getTemplate(String name, 
-			MobileDeviceRepository.DeviceType deviceType)
-            throws ResourceNotFoundException, ParseErrorException, Exception {
+			MobileDeviceRepository.DeviceType deviceType) {
         return velocityEngine.getTemplate(name + "|" + deviceType);
     }
 

@@ -1,6 +1,8 @@
-    public UserDetails loadUserByUsername(String userName) 
-            throws UsernameNotFoundException, DataAccessException {
-        Weblogger roller = null;
+    /**
+     * @throws UsernameNotFoundException, DataAccessException
+     */
+    public UserDetails loadUserByUsername(String userName) {
+        Weblogger roller;
         try {
             roller = WebloggerFactory.getWeblogger();
         } catch (Exception e) {

@@ -31,15 +31,12 @@
             String cfgs = WebloggerConfig
                     .getProperty("schemeenforcement.https.urls");
             String[] cfgsArray = cfgs.split(",");
-            for (int i = 0; i < cfgsArray.length; i++) {
-                this.allowedUrls.add(cfgsArray[i]);
-            }
+            Collections.addAll(this.allowedUrls, cfgsArray);
+
             cfgs = WebloggerConfig
                     .getProperty("schemeenforcement.https.ignored");
             cfgsArray = StringUtils.stripAll(StringUtils.split(cfgs, ","));
-            for (int i = 0; i < cfgsArray.length; i++) {
-                this.ignored.add(cfgsArray[i]);
-            }
+            Collections.addAll(this.ignored, cfgsArray);
 
             // some logging for the curious
             log.info("Scheme enforcement = enabled");
