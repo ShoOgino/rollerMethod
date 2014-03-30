@@ -17,20 +17,12 @@
         }
         try {
             WeblogEntryManager wmgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
-            recentEntries = wmgr.getWeblogEntries(
-                    
-                    this, 
-                    null,       // user
-                    null,       // startDate
-                    null,       // endDate
-                    cat,        // cat or null
-                    null,WeblogEntry.PUBLISHED, 
-                    null,       // text
-                    "pubTime",  // sortby
-                    null,
-                    null, 
-                    0,
-                    length); 
+            WeblogEntrySearchCriteria wesc = new WeblogEntrySearchCriteria();
+            wesc.setWeblog(this);
+            wesc.setCatName(cat);
+            wesc.setStatus(WeblogEntry.PUBLISHED);
+            wesc.setMaxResults(length);
+            recentEntries = wmgr.getWeblogEntries(wesc);
         } catch (WebloggerException e) {
             log.error("ERROR: getting recent entries", e);
         }

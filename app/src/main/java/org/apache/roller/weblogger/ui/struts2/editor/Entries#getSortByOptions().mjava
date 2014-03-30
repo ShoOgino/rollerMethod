@@ -1,8 +1,8 @@
     public List<KeyValueObject> getSortByOptions() {
         List<KeyValueObject> opts = new ArrayList<KeyValueObject>();
         
-        opts.add(new KeyValueObject("pubTime", getText("weblogEntryQuery.label.pubTime")));
-        opts.add(new KeyValueObject("updateTime", getText("weblogEntryQuery.label.updateTime")));
+        opts.add(new KeyValueObject(WeblogEntrySearchCriteria.SortBy.PUBLICATION_TIME.toString(), getText("weblogEntryQuery.label.pubTime")));
+        opts.add(new KeyValueObject(WeblogEntrySearchCriteria.SortBy.UPDATE_TIME.toString(), getText("weblogEntryQuery.label.updateTime")));
         
         return opts;
     }

@@ -48,7 +48,7 @@
                 if (!expectedWeblogTags.containsKey(stat.getName())) {
                     fail("Unexpected tagName.");
                 }
-                Integer expectedCount = (Integer)expectedWeblogTags.get(stat.getName());
+                Integer expectedCount = expectedWeblogTags.get(stat.getName());
                 assertEquals(expectedCount.intValue(), stat.getCount());
             }
 
@@ -77,7 +77,7 @@
                 if (!expectedSiteTags.containsKey(stat.getName()))
                     fail("Unexpected tagName.");
 
-                Integer expectedCount = (Integer) expectedSiteTags.get(stat.getName());
+                Integer expectedCount = expectedSiteTags.get(stat.getName());
                 assertEquals(expectedCount.intValue(), stat.getCount());
             }
 
@@ -109,7 +109,7 @@
                     fail("Unexpected tagName.");
                 }
                 Integer expectedCount =
-                        (Integer)expectedWeblogTags.get(stat.getName());
+                        expectedWeblogTags.get(stat.getName());
                 assertEquals(stat.getName(),
                         expectedCount.intValue(), stat.getCount());
             }
@@ -128,7 +128,7 @@
                 if (!expectedSiteTags.containsKey(stat.getName())) {
                     fail("Unexpected tagName.");
                 }
-                Integer expectedCount = (Integer)expectedSiteTags.get(stat.getName());
+                Integer expectedCount = expectedSiteTags.get(stat.getName());
                 assertEquals(stat.getName(), expectedCount.intValue(), stat.getCount());
             }
 

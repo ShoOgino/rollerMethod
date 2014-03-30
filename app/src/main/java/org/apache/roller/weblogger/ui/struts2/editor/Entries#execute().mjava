@@ -10,20 +10,18 @@
             String status = getBean().getStatus();
             
             WeblogEntryManager wmgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
-            List<WeblogEntry> rawEntries = wmgr.getWeblogEntries(
-                    getActionWeblog(),
-                    null,
-                    getBean().getStartDate(),
-                    getBean().getEndDate(),
-                    getBean().getCategoryPath(),
-                    getBean().getTags(),
-                    ("ALL".equals(status)) ? null : status,
-                    getBean().getText(),
-                    getBean().getSortBy(),
-                    null,
-                    null,
-                    getBean().getPage() * COUNT,
-                    COUNT + 1);
+            WeblogEntrySearchCriteria wesc = new WeblogEntrySearchCriteria();
+            wesc.setWeblog(getActionWeblog());
+            wesc.setStartDate(getBean().getStartDate());
+            wesc.setEndDate(getBean().getEndDate());
+            wesc.setCatName(getBean().getCategoryName());
+            wesc.setTags(getBean().getTags());
+            wesc.setStatus("ALL".equals(status) ? null : status);
+            wesc.setText(getBean().getText());
+            wesc.setSortBy(getBean().getSortBy());
+            wesc.setOffset(getBean().getPage() * COUNT);
+            wesc.setMaxResults(COUNT + 1);
+            List<WeblogEntry> rawEntries = wmgr.getWeblogEntries(wesc);
             entries = new ArrayList<WeblogEntry>();
             entries.addAll(rawEntries);
             if (entries.size() > 0) {
@@ -34,8 +32,8 @@
                     hasMore = true;
                 }
                 
-                setFirstEntry((WeblogEntry)entries.get(0));
-                setLastEntry((WeblogEntry)entries.get(entries.size()-1));
+                setFirstEntry(entries.get(0));
+                setLastEntry(entries.get(entries.size()-1));
             }
         } catch (WebloggerException ex) {
             log.error("Error looking up entries", ex);

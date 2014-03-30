@@ -13,8 +13,11 @@
 
             testWeblog = TestUtils.getManagedWebsite(testWeblog);
 
-            List results = mgr.getWeblogEntries(testWeblog, null, null, null, null,
-                Arrays.asList(new String[] { "testtag" }), null, null, null, null, null, 0, -1);
+            WeblogEntrySearchCriteria wesc = new WeblogEntrySearchCriteria();
+            wesc.setWeblog(testWeblog);
+            // tags are always saved lowercase (testTag -> testtag)
+            wesc.setTags(Arrays.asList("testtag"));
+            List results = mgr.getWeblogEntries(wesc);
             assertEquals(1, results.size());
             WeblogEntry testEntry = (WeblogEntry) results.iterator().next();
             assertEquals(entry, testEntry);

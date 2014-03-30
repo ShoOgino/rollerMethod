@@ -3,9 +3,8 @@
      */
      public void testEntryAttributeCRUD() throws Exception {
         
-        WeblogManager mgr = WebloggerFactory.getWeblogger().getWeblogManager();
         WeblogEntryManager emgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
-        WeblogEntry entry = null;
+        WeblogEntry entry;
         
         WeblogEntry testEntry = new WeblogEntry();
         testEntry.setTitle("entryTestEntry");
@@ -51,7 +50,6 @@
         TestUtils.endSession(true);
         
         // make sure entry was updated
-        entry = null;
         entry = emgr.getWeblogEntry(id);
         assertNotNull(entry);
         assertEquals("testtest", entry.getTitle());
@@ -61,7 +59,6 @@
         TestUtils.endSession(true);
         
         // make sure entry was deleted
-        entry = null;
         entry = emgr.getWeblogEntry(id);
         assertNull(entry);
     }

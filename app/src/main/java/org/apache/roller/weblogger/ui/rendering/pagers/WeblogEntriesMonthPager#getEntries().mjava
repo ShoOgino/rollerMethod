@@ -10,17 +10,19 @@
         if (entries == null) {
             entries = new TreeMap<Date, List<WeblogEntryWrapper>>(new ReverseComparator());
             try {
+                WeblogEntrySearchCriteria wesc = new WeblogEntrySearchCriteria();
+                wesc.setWeblog(weblog);
+                wesc.setStartDate(startDate);
+                wesc.setEndDate(endDate);
+                wesc.setCatName(catName);
+                wesc.setTags(tags);
+                wesc.setStatus(WeblogEntry.PUBLISHED);
+                wesc.setLocale(locale);
+                wesc.setOffset(offset);
+                wesc.setMaxResults(length+1);
                 Map<Date, List<WeblogEntry>> mmap = WebloggerFactory.getWeblogger()
-                        .getWeblogEntryManager().getWeblogEntryObjectMap(
-                        weblog,
-                        startDate,
-                        endDate,
-                        catPath,
-                        tags,WeblogEntry.PUBLISHED, 
-                        locale,
-                        offset,  
-                        length + 1);
-                              
+                        .getWeblogEntryManager().getWeblogEntryObjectMap(wesc);
+
                 // need to wrap pojos
                 int count = 0;
                 for (Map.Entry<Date, List<WeblogEntry>> entry : mmap.entrySet()) {

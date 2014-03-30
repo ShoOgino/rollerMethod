@@ -40,14 +40,10 @@
                 // Add Doc
                 WeblogEntryManager weblogManager = roller
                         .getWeblogEntryManager();
-                List<WeblogEntry> entries = weblogManager.getWeblogEntries(website,
-                        null, null, // startDate
-                        null, // endDate
-                        null, // catName
-                        null, WeblogEntry.PUBLISHED,
-                        null, // text
-                        null, // sortby (null means pubTime)
-                        null, null, 0, -1); // offset, length, locale
+                WeblogEntrySearchCriteria wesc = new WeblogEntrySearchCriteria();
+                wesc.setWeblog(website);
+                wesc.setStatus(WeblogEntry.PUBLISHED);
+                List<WeblogEntry> entries = weblogManager.getWeblogEntries(wesc);
 
                 mLogger.debug("Entries to index: " + entries.size());
 

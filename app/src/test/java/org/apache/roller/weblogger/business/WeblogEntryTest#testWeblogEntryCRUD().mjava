@@ -4,7 +4,7 @@
     public void testWeblogEntryCRUD() throws Exception {
         
         WeblogEntryManager mgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
-        WeblogEntry entry = null;
+        WeblogEntry entry;
         
         WeblogEntry testEntry = new WeblogEntry();
         testEntry.setTitle("entryTestEntry");
@@ -35,7 +35,6 @@
         TestUtils.endSession(true);
         
         // make sure entry was updated
-        entry = null;
         entry = mgr.getWeblogEntry(id);
         assertNotNull(entry);
         assertEquals("testtest", entry.getTitle());
@@ -45,7 +44,6 @@
         TestUtils.endSession(true);
         
         // make sure entry was deleted
-        entry = null;
         entry = mgr.getWeblogEntry(id);
         assertNull(entry);
     }

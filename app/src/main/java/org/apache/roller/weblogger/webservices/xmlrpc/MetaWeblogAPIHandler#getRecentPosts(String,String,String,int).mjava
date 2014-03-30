@@ -24,20 +24,12 @@
             Weblogger roller = WebloggerFactory.getWeblogger();
             WeblogEntryManager weblogMgr = roller.getWeblogEntryManager();
             if (website != null) {
-                List<WeblogEntry> entries = weblogMgr.getWeblogEntries(
-                        website,
-                        null,
-                        null,              // startDate
-                        null,              // endDate
-                        null,              // catName
-                        null,              // tags
-                        null,              // status
-                        null,              // text
-                        "updateTime",      // sortby
-                        null,
-                        null,
-                        0, numposts);
-                
+                WeblogEntrySearchCriteria wesc = new WeblogEntrySearchCriteria();
+                wesc.setWeblog(website);
+                wesc.setSortBy(WeblogEntrySearchCriteria.SortBy.UPDATE_TIME);
+                wesc.setMaxResults(numposts);
+                List<WeblogEntry> entries = weblogMgr.getWeblogEntries(wesc);
+
                 for (WeblogEntry entry : entries) {
                     results.addElement(createPostStruct(entry, userid));
                 }
