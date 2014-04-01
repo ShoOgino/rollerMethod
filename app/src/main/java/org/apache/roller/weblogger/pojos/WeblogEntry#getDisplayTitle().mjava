@@ -6,7 +6,7 @@
      */
     public String getDisplayTitle() {
         if ( getTitle()==null || getTitle().trim().equals("") ) {
-            return StringUtils.left(Utilities.removeHTML(getText()),255);
+            return StringUtils.left(Utilities.removeHTML(getText()), RollerConstants.TEXTWIDTH_255);
         }
         return Utilities.removeHTML(getTitle());
     }

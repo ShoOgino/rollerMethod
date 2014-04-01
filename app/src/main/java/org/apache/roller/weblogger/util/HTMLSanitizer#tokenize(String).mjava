@@ -1,63 +1,63 @@
-	/**
-	 * Splits html tag and tag content <......>.
-	 *
-	 * @param html
-	 * @return a list of token
-	 */
-	private static List<String> tokenize(String html) {
-		ArrayList tokens = new ArrayList();
-		int pos = 0;
-		String token = "";
-		int len = html.length();
-		while (pos < len) {
-			char c = html.charAt(pos);
+    /**
+     * Splits html tag and tag content <......>.
+     *
+     * @param html
+     * @return a list of token
+     */
+    private static List<String> tokenize(String html) {
+        ArrayList tokens = new ArrayList();
+        int pos = 0;
+        String token = "";
+        int len = html.length();
+        while (pos < len) {
+            char c = html.charAt(pos);
 
-			String ahead = html.substring(pos, pos > len - 4 ? len : pos + 4);
+            String ahead = html.substring(pos, pos > len - 4 ? len : pos + 4);
 
-			//a comment is starting
-			if ("<!--".equals(ahead)) {
-				//store the current token
-				if (token.length() > 0) {
-					tokens.add(token);
-				}
+            //a comment is starting
+            if ("<!--".equals(ahead)) {
+                //store the current token
+                if (token.length() > 0) {
+                    tokens.add(token);
+                }
 
-				//clear the token
-				token = "";
+                //clear the token
+                token = "";
 
-				// serch the end of <......>
-				int end = moveToMarkerEnd(pos, "-->", html);
-				tokens.add(html.substring(pos, end));
-				pos = end;
+                // search the end of <......>
+                int end = moveToMarkerEnd(pos, "-->", html);
+                tokens.add(html.substring(pos, end));
+                pos = end;
 
 
-				// a new "<" token is starting
-			} else if ('<' == c) {
+                // a new "<" token is starting
+            } else if ('<' == c) {
 
-				//store the current token
-				if (token.length() > 0) {
-					tokens.add(token);
-				}
+                //store the current token
+                if (token.length() > 0) {
+                    tokens.add(token);
+                }
 
-				//clear the token
-				token = "";
+                //clear the token
+                token = "";
 
-				// serch the end of <......>
-				int end = moveToMarkerEnd(pos, ">", html);
-				tokens.add(html.substring(pos, end));
-				pos = end;
+                // serch the end of <......>
+                int end = moveToMarkerEnd(pos, ">", html);
+                tokens.add(html.substring(pos, end));
+                pos = end;
 
-			} else {
-				token = token + c;
-				pos++;
-			}
+            } else {
+                token = token + c;
+                pos++;
+            }
 
-		}
+        }
 
-		//store the last token
-		if (token.length() > 0) {
-			tokens.add(token);
-		}
+        //store the last token
+        if (token.length() > 0) {
+            tokens.add(token);
+        }
 
-		return tokens;
-	}
+        return tokens;
+    }
 
