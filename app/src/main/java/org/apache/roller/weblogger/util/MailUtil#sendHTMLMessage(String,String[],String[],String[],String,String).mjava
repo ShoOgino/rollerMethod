@@ -7,16 +7,8 @@
      * @param content the body of the e-mail
      * @throws MessagingException the exception to indicate failure
      */
-    public static void sendHTMLMessage
-            (
-            String from,
-            String[] to,
-            String[] cc,
-            String[] bcc,
-            String subject,
-            String content
-            )
-            throws MessagingException {
+    public static void sendHTMLMessage(String from, String[] to, String[] cc, String[] bcc, String subject,
+                                       String content) throws MessagingException {
         sendMessage(from, to, cc, bcc, subject, content, "text/html; charset=utf-8");
     }
 

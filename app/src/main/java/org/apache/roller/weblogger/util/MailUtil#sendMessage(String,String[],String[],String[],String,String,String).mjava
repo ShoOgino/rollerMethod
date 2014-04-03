@@ -9,17 +9,8 @@
      * @param mimeType type of message, i.e. text/plain or text/html
      * @throws MessagingException the exception to indicate failure
      */
-    public static void sendMessage
-            (
-            String from,
-            String[] to,
-            String[] cc,
-            String[] bcc,
-            String subject,
-            String content,
-            String mimeType
-            )
-            throws MessagingException {
+    public static void sendMessage(String from, String[] to, String[] cc, String[] bcc, String subject,
+            String content, String mimeType) throws MessagingException {
         
         MailProvider mailProvider = WebloggerStartup.getMailProvider();
         if (mailProvider == null) {

@@ -1,8 +1,7 @@
     /**
      * Send an email notice that a new pending entry has been submitted.
      */
-    public static void sendPendingEntryNotice(WeblogEntry entry) 
-            throws WebloggerException {
+    public static void sendPendingEntryNotice(WeblogEntry entry) throws WebloggerException {
         
         Session mailSession = WebloggerStartup.getMailProvider() != null
                 ? WebloggerStartup.getMailProvider().getSession() : null;
