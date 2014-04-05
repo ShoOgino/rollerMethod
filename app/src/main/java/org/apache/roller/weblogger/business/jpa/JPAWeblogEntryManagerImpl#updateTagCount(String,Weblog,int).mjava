@@ -47,14 +47,6 @@
             weblogTagData.setTotal(weblogTagData.getTotal() + amount);
             weblogTagData.setLastUsed(lastUsed);
             strategy.store(weblogTagData);
-            // Why use update query when only one object needs update?
-//            Query update = strategy.getNamedUpdate(
-//                    "WeblogEntryTagAggregate.updateAddToTotalByName&Weblog");
-//            update.setParameter(1, new Long(amount));
-//            update.setParameter(2, lastUsed);
-//            update.setParameter(3, weblogTagData.getName());
-//            update.setParameter(4, website);
-//            update.executeUpdate();
         }
         
         // create it only if we are going to need it.
@@ -67,12 +59,6 @@
             siteTagData.setTotal(siteTagData.getTotal() + amount);
             siteTagData.setLastUsed(lastUsed);
             strategy.store(siteTagData);
-            // Why use update query when only one object needs update?
-//            Query update = strategy.getNamedUpdate(
-//                    "WeblogEntryTagAggregate.updateAddToTotalByName&WeblogNull");
-//            update.setParameter(1, new Long(amount));
-//            update.setParameter(2, siteTagData.getName());
-//            update.executeUpdate();
         }
         
         // delete all bad counts

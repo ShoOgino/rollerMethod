@@ -35,25 +35,6 @@
             queryString.append("e.website.enabled = ?").append(size);
         }
         
-        /*if (wesc.getTags() != null && wesc.getTags().size() > 0) {
-            // A JOIN with WeblogEntryTag in parent query will cause a DISTINCT in SELECT clause
-            // WeblogEntry has a clob field and many databases do not link DISTINCT for CLOB fields
-            // Hence as a workaround using corelated EXISTS query.
-            queryString.append(" AND EXISTS (SELECT t FROM WeblogEntryTag t WHERE "
-                    + " t.weblogEntry = e AND t.name IN (");
-            final String PARAM_SEPARATOR = ", ";
-            for (int i = 0; i < wesc.getTags().size(); i++) {
-                params.add(size++, wesc.getTags().get(i));
-                queryString.append("?").append(size).append(PARAM_SEPARATOR);
-            }
-            // Remove the trailing PARAM_SEPARATOR
-            queryString.delete(queryString.length() - PARAM_SEPARATOR.length(),
-                    queryString.length());
-
-            // Close the brace FOR IN clause and EXIST clause
-            queryString.append(" ) )");
-        }*/
-
         if (wesc.getUser() != null) {
             params.add(size++, wesc.getUser().getUserName());
             queryString.append(" AND e.creatorUserName = ?").append(size);
@@ -93,8 +74,8 @@
             queryString.append("    OR e.title LIKE ?").append(size);
             queryString.append(") ");
         }
-        
-        if (wesc.getSortBy() != null && wesc.getSortBy().equals("updateTime")) {
+
+        if (wesc.getSortBy() != null && wesc.getSortBy().equals(WeblogEntrySearchCriteria.SortBy.UPDATE_TIME)) {
             queryString.append(" ORDER BY e.updateTime ");
         } else {
             queryString.append(" ORDER BY e.pubTime ");

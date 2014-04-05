@@ -6,21 +6,18 @@
             int length) throws WebloggerException {
         Query query;
         List queryResults;
-        if (endDate == null) {
-            endDate = new Date();
-        }
-        
+
+        Timestamp end = new Timestamp(endDate != null? endDate.getTime() : new Date().getTime());
+
         if (website != null) {
             if (startDate != null) {
                 Timestamp start = new Timestamp(startDate.getTime());
-                Timestamp end = new Timestamp(endDate.getTime());
                 query = strategy.getNamedQuery(
                         "WeblogEntryComment.getMostCommentedWeblogEntryByWebsite&EndDate&StartDate");
                 query.setParameter(1, website);
                 query.setParameter(2, end);
                 query.setParameter(3, start);
             } else {
-                Timestamp end = new Timestamp(endDate.getTime());
                 query = strategy.getNamedQuery(
                         "WeblogEntryComment.getMostCommentedWeblogEntryByWebsite&EndDate");
                 query.setParameter(1, website);
@@ -29,13 +26,11 @@
         } else {
             if (startDate != null) {
                 Timestamp start = new Timestamp(startDate.getTime());
-                Timestamp end = new Timestamp(endDate.getTime());
                 query = strategy.getNamedQuery(
                         "WeblogEntryComment.getMostCommentedWeblogEntryByEndDate&StartDate");
                 query.setParameter(1, end);
                 query.setParameter(2, start);
             } else {
-                Timestamp end = new Timestamp(endDate.getTime());
                 query = strategy.getNamedQuery(
                         "WeblogEntryComment.getMostCommentedWeblogEntryByEndDate");
                 query.setParameter(1, end);

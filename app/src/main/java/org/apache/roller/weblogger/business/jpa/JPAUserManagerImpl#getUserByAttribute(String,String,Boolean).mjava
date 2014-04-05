@@ -30,7 +30,7 @@
         for (int i = 0; i < params.length; i++) {
             query.setParameter(i + 1, params[i]);
         }
-        User user = null;
+        User user;
         try {
             user = (User) query.getSingleResult();
         } catch (NoResultException e) {

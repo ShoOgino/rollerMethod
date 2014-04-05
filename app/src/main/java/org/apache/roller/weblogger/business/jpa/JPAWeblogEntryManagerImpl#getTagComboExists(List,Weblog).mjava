@@ -10,9 +10,8 @@
         StringBuilder queryString = new StringBuilder();
         queryString.append("SELECT DISTINCT w.name ");
         queryString.append("FROM WeblogEntryTagAggregate w WHERE w.name IN (");
-        //?1) AND w.weblog = ?2");
-        //Append tags as parameter markers to avoid potential escaping issues
-        //The IN clause would be of form (?1, ?2, ?3, ..)
+        // Append tags as parameter markers to avoid potential escaping issues
+        // The IN clause would be of form (?1, ?2, ?3, ..)
         List<Object> params = new ArrayList<Object>(tags.size() + 1);
         final String paramSeparator = ", ";
         int i;

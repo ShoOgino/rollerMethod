@@ -1,12 +1,8 @@
     /**
      * Get users of a website
      */
-    public List getUsers(Weblog website, Boolean enabled, int offset, int length) throws WebloggerException {
-        Query query = null;
-
-        if (length == -1) {
-            length = Integer.MAX_VALUE - offset;
-        }
+    public List<User> getUsers(Weblog website, Boolean enabled, int offset, int length) throws WebloggerException {
+        Query query;
 
         if (enabled != null) {
             if (website != null) {
