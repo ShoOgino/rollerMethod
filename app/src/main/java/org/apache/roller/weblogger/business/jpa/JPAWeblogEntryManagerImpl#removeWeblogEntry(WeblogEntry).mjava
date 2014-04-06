@@ -10,19 +10,12 @@
         for (Object obj : referers) {
             this.strategy.remove(obj);
         }
-        
-        // remove comments
-        List<WeblogEntryComment> comments = getComments(
-                null,  // website
-                entry,
-                null,  // search String
-                null,  // startDate
-                null,  // endDate
-                null,  // status
-                true,  // reverse chrono order (not that it matters)
-                0,     // offset
-                -1);   // no limit
 
+        CommentSearchCriteria csc = new CommentSearchCriteria();
+        csc.setEntry(entry);
+
+        // remove comments
+        List<WeblogEntryComment> comments = getComments(csc);
         for (WeblogEntryComment comment : comments) {
             this.strategy.remove(comment);
         }

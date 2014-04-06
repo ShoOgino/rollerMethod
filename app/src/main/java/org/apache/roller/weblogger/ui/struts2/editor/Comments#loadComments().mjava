@@ -11,22 +11,28 @@
                 setQueryEntry(wmgr.getWeblogEntry(getBean().getEntryId()));
             }
 
-            // query for comments (reverse chrono order)
-            List<WeblogEntryComment> rawComments = wmgr.getComments(
-                    getActionWeblog(), getQueryEntry(), getBean()
-                            .getSearchString(), getBean().getStartDate(),
-                    getBean().getEndDate(), getBean().getStatus(), true,
-                    getBean().getPage() * COUNT, COUNT + 1);
+            CommentSearchCriteria csc = new CommentSearchCriteria();
+            csc.setWeblog(getActionWeblog());
+            csc.setEntry(getQueryEntry());
+            csc.setSearchText(getBean().getSearchString());
+            csc.setStartDate(getBean().getStartDate());
+            csc.setEndDate(getBean().getEndDate());
+            csc.setStatus(getBean().getStatus());
+            csc.setReverseChrono(true);
+            csc.setOffset(getBean().getPage() * COUNT);
+            csc.setMaxResults(COUNT + 1);
+
+            List<WeblogEntryComment> rawComments = wmgr.getComments(csc);
             comments = new ArrayList<WeblogEntryComment>();
             comments.addAll(rawComments);
-            if (comments != null && comments.size() > 0) {
+            if (comments.size() > 0) {
                 if (comments.size() > COUNT) {
                     comments.remove(comments.size() - 1);
                     hasMore = true;
                 }
 
-                setFirstComment((WeblogEntryComment) comments.get(0));
-                setLastComment((WeblogEntryComment) comments.get(comments
+                setFirstComment(comments.get(0));
+                setLastComment(comments.get(comments
                         .size() - 1));
             }
         } catch (WebloggerException ex) {

@@ -11,12 +11,17 @@
             // comments that have been deleted, so build a list of those entries
             Set<WeblogEntry> reindexEntries = new HashSet<WeblogEntry>();
             if (WebloggerConfig.getBooleanProperty("search.enabled")) {
-                List<WeblogEntryComment> targetted = (List<WeblogEntryComment>) wmgr
-                        .getComments(getActionWeblog(), getQueryEntry(),
-                                getBean().getSearchString(), getBean()
-                                        .getStartDate(),
-                                getBean().getEndDate(), getBean().getStatus(),
-                                true, 0, -1);
+
+                CommentSearchCriteria csc = new CommentSearchCriteria();
+                csc.setWeblog(getActionWeblog());
+                csc.setEntry(getQueryEntry());
+                csc.setSearchText(getBean().getSearchString());
+                csc.setStartDate(getBean().getStartDate());
+                csc.setEndDate(getBean().getEndDate());
+                csc.setStatus(getBean().getStatus());
+                csc.setReverseChrono(true);
+
+                List<WeblogEntryComment> targetted = wmgr.getComments(csc);
                 for (WeblogEntryComment comment : targetted) {
                     reindexEntries.add(comment.getWeblogEntry());
                 }
