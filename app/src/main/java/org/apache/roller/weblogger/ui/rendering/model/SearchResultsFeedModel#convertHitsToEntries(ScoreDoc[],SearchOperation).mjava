@@ -24,7 +24,7 @@
 		}
 
 		try {
-			TreeSet<String> categories = new TreeSet<String>();
+			TreeSet<String> categorySet = new TreeSet<String>();
 			Weblogger roller = WebloggerFactory.getWeblogger();
 			WeblogEntryManager weblogMgr = roller.getWeblogEntryManager();
 
@@ -42,7 +42,7 @@
 
 				if (!(websiteSpecificSearch && handle.equals(feedRequest.getWeblogHandle()))
                         && doc.getField(FieldConstants.CATEGORY) != null) {
-                    categories.add(doc.getField(FieldConstants.CATEGORY).stringValue());
+                    categorySet.add(doc.getField(FieldConstants.CATEGORY).stringValue());
 				}
 
 				// maybe null if search result returned inactive user
@@ -53,8 +53,8 @@
 				}
 			}
 
-			if (categories.size() > 0) {
-				this.categories = categories;
+			if (categorySet.size() > 0) {
+				this.categories = categorySet;
 			}
 		} catch (IOException e) {
 			throw new WebloggerException(e);

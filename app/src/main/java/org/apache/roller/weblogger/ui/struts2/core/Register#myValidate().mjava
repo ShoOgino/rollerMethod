@@ -8,14 +8,14 @@
             String password = WebloggerConfig.getProperty("users.sso.passwords.defaultValue", "<unknown>");
             
             // Preserve username and password, Spring Security case
-            User fromSSO = CustomUserRegistry.getUserDetailsFromAuthentication(getServletRequest());
-            if (fromSSO != null) {
+            User fromSSOUser = CustomUserRegistry.getUserDetailsFromAuthentication(getServletRequest());
+            if (fromSSOUser != null) {
                 if (storePassword) {
-                    password = fromSSO.getPassword();
+                    password = fromSSOUser.getPassword();
                 }
                 getBean().setPasswordText(password);
                 getBean().setPasswordConfirm(password);
-                getBean().setUserName(fromSSO.getUserName());
+                getBean().setUserName(fromSSOUser.getUserName());
                 setFromSSO(true);
             }
 

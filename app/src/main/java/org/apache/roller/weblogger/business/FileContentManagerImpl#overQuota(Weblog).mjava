@@ -11,8 +11,8 @@
         long maxDirBytes = (long)(RollerConstants.ONE_MB_IN_BYTES * maxDirSize.doubleValue());
         
         try {
-            File storageDir = this.getRealFile(weblog, null);
-            long weblogDirSize = this.getDirSize(storageDir, true);
+            File storageDirectory = this.getRealFile(weblog, null);
+            long weblogDirSize = this.getDirSize(storageDirectory, true);
             
             return weblogDirSize > maxDirBytes;
         } catch (Exception ex) {

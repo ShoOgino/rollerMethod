@@ -3,9 +3,6 @@
      */
     public boolean isAtomServiceURI(AtomRequest areq) {
         String[] pathInfo = StringUtils.split(areq.getPathInfo(),"/");
-        if (pathInfo.length == 0) {
-            return true;
-        }
-        return false;
+        return pathInfo.length == 0;
     }
 
