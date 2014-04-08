@@ -1,7 +1,6 @@
      private ArrayList<SimpleGrantedAuthority> getAuthorities(User userData, UserManager umgr) throws WebloggerException {
          List<String> roles = umgr.getRoles(userData);
          ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>(roles.size());
-         int i = 0;
          for (String role : roles) {
              authorities.add(new SimpleGrantedAuthority(role));
          }

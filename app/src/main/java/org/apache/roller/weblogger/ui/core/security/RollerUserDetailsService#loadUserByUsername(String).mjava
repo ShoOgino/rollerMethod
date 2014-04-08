@@ -13,7 +13,7 @@
         }
         try {
             UserManager umgr = roller.getUserManager();
-            User userData = null;  
+            User userData;
             // OpenID user
             if (userName.startsWith("http://") || userName.startsWith("https://")) {
                 if (userName.endsWith("/")) {
@@ -44,10 +44,8 @@
                      name = userData.getUserName();
                      password = userData.getPassword();
                 }
-                UserDetails usr = new org.springframework.security.core.userdetails.User(name, password,
+                return new org.springframework.security.core.userdetails.User(name, password,
                         true, true, true, true, authorities);
-                return  usr;
-                
             } else {
                 // standard username/password auth
                 try {

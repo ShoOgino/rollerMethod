@@ -4,8 +4,8 @@
      * @return List of comment objects.
      */
     public List<WeblogEntryComment> getRecentComments(int length) {
-        if (length > 100) {
-            length = 100;
+        if (length > MAX_ENTRIES) {
+            length = MAX_ENTRIES;
         }
         List<WeblogEntryComment> recentComments = new ArrayList<WeblogEntryComment>();
         if (length < 1) {
