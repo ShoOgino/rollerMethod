@@ -3,9 +3,9 @@
             throws ServletException, IOException {
 
         String[] pathInfo = new String[0];
-        boolean siteWide = true;
-        String handle = null;
-        String prefix = null;
+        boolean siteWide;
+        String handle;
+        String prefix;
         String format = "json";
         int page = 0;
         
@@ -34,8 +34,8 @@
         } catch (Exception ignored) {}
 
         Weblogger roller = WebloggerFactory.getWeblogger();
-        List<TagStat> tags = null;
-        Weblog weblog = null;
+        List<TagStat> tags;
+        Weblog weblog;
         try {
             WeblogManager wmgr = roller.getWeblogManager();
             WeblogEntryManager emgr = roller.getWeblogEntryManager();
