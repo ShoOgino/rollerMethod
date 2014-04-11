@@ -35,10 +35,9 @@
 
                         props.put(propDef.getName(), newprop);
 
-                        log.info("Found uninitialized property " +
-                                propDef.getName() +
-                                " ... setting value to [" +
-                                propDef.getDefaultValue() + "`]");
+                        log.info("Property " + propDef.getName() +
+                            " not yet in roller_properties database table, will store with " +
+                            "default value of [" + propDef.getDefaultValue() + "`]");
                     }
                 }
             }
