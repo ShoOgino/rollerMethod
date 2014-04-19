@@ -1,0 +1,10 @@
+    @Override
+    protected Item parseItem(Element rssRoot,Element eItem, Locale locale) {
+        Item item = super.parseItem(rssRoot, eItem, locale);
+        Element e = eItem.getChild("pubDate",getRSSNamespace());
+        if (e!=null) {
+            item.setPubDate(DateParser.parseRFC822(e.getText(), locale));
+        }
+        return item;
+    }
+
