@@ -5,12 +5,11 @@
         log.debug("Entering");
         String[] pathInfo = StringUtils.split(areq.getPathInfo(),"/");
         if (pathInfo.length > 2) {
-            if (pathInfo[1].equals("entry")) // URI is /blogname/entry/entryid
-            {                    
+            // URI is /blogname/entry/entryid
+            if (pathInfo[1].equals("entry")) {
                 EntryCollection ecol = new EntryCollection(user, atomURL);
                 ecol.deleteEntry(areq);
                 return;
-
             } else if (pathInfo[1].equals("resource")) {
                 MediaCollection mcol = new MediaCollection(user, atomURL);
                 mcol.deleteEntry(areq);

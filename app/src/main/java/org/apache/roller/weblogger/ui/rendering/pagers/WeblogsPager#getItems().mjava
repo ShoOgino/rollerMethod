@@ -1,10 +1,10 @@
-    public List getItems() {
+    public List<WeblogWrapper> getItems() {
         
         if (weblogs == null) {
             // calculate offset
             int offset = getPage() * length;
             
-            List results = new ArrayList();
+            List<WeblogWrapper> results = new ArrayList<WeblogWrapper>();
             Date startDate = null;
             if (sinceDays != -1) {
                 Calendar cal = Calendar.getInstance();
@@ -15,7 +15,7 @@
             try {
                 Weblogger roller = WebloggerFactory.getWeblogger();
                 WeblogManager wmgr = roller.getWeblogManager();
-                List rawWeblogs = null;
+                List<Weblog> rawWeblogs;
                 if (letter == null) {
                     rawWeblogs = wmgr.getWeblogs(Boolean.TRUE, Boolean.TRUE, startDate, null, offset, length + 1);
                 } else {
@@ -24,10 +24,9 @@
                 
                 // wrap the results
                 int count = 0;
-                for (Iterator it = rawWeblogs.iterator(); it.hasNext();) {
-                    Weblog website = (Weblog) it.next();
+                for (Weblog website : rawWeblogs) {
                     if (count++ < length) {
-                        results.add(WeblogWrapper.wrap(website, urlStrategy));                    
+                        results.add(WeblogWrapper.wrap(website, urlStrategy));
                     } else {
                         more = true;
                     }

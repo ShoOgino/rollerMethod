@@ -44,9 +44,6 @@
                         throw new AtomException("Duplicate file name");
                     }
 
-                    if (path.length() > 0) {
-                        path = path + File.separator;
-                    }
                     FileInputStream fis = new FileInputStream(tempFile);
 
                     MediaFile mf = new MediaFile();
@@ -70,8 +67,8 @@
                                       
                     MediaFile stored = fileMgr.getMediaFile(mf.getId());
                     Entry mediaEntry = createAtomResourceEntry(website, stored);
-                    for (Iterator it = mediaEntry.getOtherLinks().iterator(); it.hasNext();) {
-                        Link link = (Link)it.next();
+                    for (Object objLink : mediaEntry.getOtherLinks()) {
+                        Link link = (Link) objLink;
                         if ("edit".equals(link.getRel())) {
                             log.debug("Exiting");
                             return mediaEntry;

@@ -1,10 +1,8 @@
     public static void invalidate(WeblogEntry entry) {
         
         log.debug("invalidating entry = "+entry.getAnchor());
-        
-        Iterator handlers = cacheHandlers.iterator();
-        while(handlers.hasNext()) {
-            ((CacheHandler) handlers.next()).invalidate(entry);
+        for (CacheHandler handler : cacheHandlers) {
+            handler.invalidate(entry);
         }
     }
 

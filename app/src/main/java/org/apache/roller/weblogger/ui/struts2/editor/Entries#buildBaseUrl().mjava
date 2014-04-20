@@ -1,10 +1,10 @@
     // use the action data to build a url representing this action, including query data
     private String buildBaseUrl() {
         
-        Map<String, String> params = new HashMap();
+        Map<String, String> params = new HashMap<String, String>();
         
-        if(!StringUtils.isEmpty(getBean().getCategoryPath())) {
-            params.put("bean.categoryPath", getBean().getCategoryPath());
+        if(!StringUtils.isEmpty(getBean().getCategoryName())) {
+            params.put("bean.categoryPath", getBean().getCategoryName());
         }
         if(!StringUtils.isEmpty(getBean().getTagsAsString())) {
             params.put("bean.tagsAsString", getBean().getTagsAsString());
@@ -21,10 +21,10 @@
         if(!StringUtils.isEmpty(getBean().getStatus())) {
             params.put("bean.status", getBean().getStatus());
         }
-        if(!StringUtils.isEmpty(getBean().getSortBy())) {
-            params.put("bean.sortBy", getBean().getSortBy());
+        if(getBean().getSortBy() != null) {
+            params.put("bean.sortBy", getBean().getSortBy().toString());
         }
-        
+
         return WebloggerFactory.getWeblogger().getUrlStrategy().getActionURL("entries", "/roller-ui/authoring", 
                 getActionWeblog().getHandle(), params, false);
     }

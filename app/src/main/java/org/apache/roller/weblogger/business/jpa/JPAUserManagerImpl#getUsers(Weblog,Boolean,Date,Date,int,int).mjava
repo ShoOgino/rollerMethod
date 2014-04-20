@@ -1,14 +1,9 @@
-    public List getUsers(Weblog weblog, Boolean enabled, Date startDate,
+    public List<User> getUsers(Weblog weblog, Boolean enabled, Date startDate,
             Date endDate, int offset, int length)
             throws WebloggerException {
-        Query query = null;
+        Query query;
 
-        // if we are doing date range then we must have an end date
-        if (startDate != null && endDate == null) {
-            endDate = new Date();
-        }
-
-        List params = new ArrayList();
+        List<Object> params = new ArrayList<Object>();
         int size = 0;
         StringBuilder queryString = new StringBuilder();
         StringBuilder whereClause = new StringBuilder();
@@ -16,7 +11,7 @@
         if (weblog != null) {
             queryString.append("SELECT u FROM User u JOIN u.permissions p ");
             params.add(size++, weblog);
-            whereClause.append(" WHERE p.website = ?" + size);
+            whereClause.append(" WHERE p.website = ?").append(size);
         } else {
             queryString.append("SELECT u FROM User u ");
         }
@@ -28,7 +23,7 @@
                 whereClause.append(" AND ");
             }
             params.add(size++, enabled);
-            whereClause.append("u.enabled = ?" + size);
+            whereClause.append("u.enabled = ?").append(size);
         }
 
         if (startDate != null) {
@@ -38,16 +33,14 @@
                 whereClause.append(" AND ");
             }
 
-            // if we are doing date range then we must have an end date
-            if(endDate == null) {
-                endDate = new Date();
-            }
             Timestamp start = new Timestamp(startDate.getTime());
-            Timestamp end = new Timestamp(endDate.getTime());
+            // if we are doing date range then we must have an end date
+            // TODO: why? confirm end date needed
+            Timestamp end = new Timestamp(endDate != null ? endDate.getTime() : new Date().getTime());
             params.add(size++, start);
-            whereClause.append("u.dateCreated > ?" + size);
+            whereClause.append("u.dateCreated > ?").append(size);
             params.add(size++, end);
-            whereClause.append(" AND u.dateCreated < ?" + size);
+            whereClause.append(" AND u.dateCreated < ?").append(size);
         }
         whereClause.append(" ORDER BY u.dateCreated DESC");
         query = strategy.getDynamicQuery(queryString.toString() + whereClause.toString());

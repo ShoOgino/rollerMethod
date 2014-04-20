@@ -4,10 +4,8 @@
         
         configdef.setName(element.getAttributeValue("name"));
         
-        List displaygroups = element.getChildren("display-group");
-        Iterator iter = displaygroups.iterator();
-        while (iter.hasNext()) {
-            Element e = (Element) iter.next();
+        List<Element> displaygroups = element.getChildren("display-group");
+        for (Element e : displaygroups) {
             configdef.addDisplayGroup(this.elementToDisplayGroup(e));
         }
         

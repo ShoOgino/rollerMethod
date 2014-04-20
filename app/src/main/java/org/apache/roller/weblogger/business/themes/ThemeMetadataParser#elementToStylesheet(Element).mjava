@@ -8,13 +8,9 @@
         template.setLink(element.getChildText("link"));
 
         // parsing templatecode segment
-         List templateCodeList = element.getChildren("templateCode");
-        Iterator templCodeitr = templateCodeList.iterator();
-
+        List<Element> templateCodeList = element.getChildren("templateCode");
 		boolean roller50format = false;
-        while (templCodeitr.hasNext()){
-            Element templateCodeElement = (Element) templCodeitr.next();
-
+        for (Element templateCodeElement : templateCodeList) {
             ThemeMetadataTemplateCode templateCode = new ThemeMetadataTemplateCode();
             templateCode.setTemplateLang(templateCodeElement.getChildText("templateLanguage"));
             templateCode.setContentsFile(templateCodeElement.getChildText("contentsFile"));

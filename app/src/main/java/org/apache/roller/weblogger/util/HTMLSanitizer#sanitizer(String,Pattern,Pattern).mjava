@@ -1,244 +1,246 @@
-	public static SanitizeResult sanitizer(String html, Pattern allowedTags, Pattern forbiddenTags) {
-		SanitizeResult ret = new SanitizeResult();
-		Stack<String> openTags = new Stack();
+    public static SanitizeResult sanitizer(String html, Pattern allowedTags, Pattern forbiddenTags) {
+        SanitizeResult ret = new SanitizeResult();
+        Stack<String> openTags = new Stack<String>();
 
 
-		List<String> tokens = tokenize(html);
+        List<String> tokens = tokenize(html);
 
-		// -------------------   LOOP for every token --------------------------
-		for (String token : tokens) {
-			boolean isAcceptedToken = false;
+        // -------------------   LOOP for every token --------------------------
+        for (String token : tokens) {
+            boolean isAcceptedToken = false;
 
-			Matcher startMatcher = tagStartPattern.matcher(token);
-			Matcher endMatcher = tagClosePattern.matcher(token);
-
-
-			//--------------------------------------------------------------------------------  COMMENT    <!-- ......... -->
-			if (commentPattern.matcher(token).find()) {
-				ret.val = ret.val + token + (token.endsWith("-->") ? "" : "-->");
-				ret.invalidTags.add(token + (token.endsWith("-->") ? "" : "-->"));
-				continue;
+            Matcher startMatcher = tagStartPattern.matcher(token);
+            Matcher endMatcher = tagClosePattern.matcher(token);
 
 
-				//--------------------------------------------------------------------------------  OPEN TAG    <tag .........>
-			} else if (startMatcher.find()) {
-
-				//tag name extraction
-				String tag = startMatcher.group(1).toLowerCase();
-
-
-				//-----------------------------------------------------  FORBIDDEN TAG   <script .........>
-				if (forbiddenTags.matcher(tag).find()) {
-					ret.invalidTags.add("<" + tag + ">");
-					continue;
+            //--------------------------------------------------------------------------------  COMMENT    <!-- ......... -->
+            if (commentPattern.matcher(token).find()) {
+                ret.val = ret.val + token + (token.endsWith("-->") ? "" : "-->");
+                ret.invalidTags.add(token + (token.endsWith("-->") ? "" : "-->"));
+                continue;
 
 
-					// --------------------------------------------------  WELL KNOWN TAG
-				} else if (allowedTags.matcher(tag).find()) {
+                //--------------------------------------------------------------------------------  OPEN TAG    <tag .........>
+            } else if (startMatcher.find()) {
+
+                //tag name extraction
+                String tag = startMatcher.group(1).toLowerCase();
 
 
-					String cleanToken = "<" + tag;
-					String tokenBody = startMatcher.group(2);
+                //-----------------------------------------------------  FORBIDDEN TAG   <script .........>
+                if (forbiddenTags.matcher(tag).find()) {
+                    ret.invalidTags.add("<" + tag + ">");
+                    continue;
 
 
-					//first test table consistency
-					//table tbody tfoot thead th tr td
-					if ("thead".equals(tag) || "tbody".equals(tag) || "tfoot".equals(tag) || "tr".equals(tag)) {
-						if (openTags.search("table") < 1) {
-							ret.invalidTags.add("<" + tag + ">");
-							continue;
-						}
-					} else if ("td".equals(tag) || "th".equals(tag)) {
-						if (openTags.search("tr") < 1) {
-							ret.invalidTags.add("<" + tag + ">");
-							continue;
-						}
-					}
+                    // --------------------------------------------------  WELL KNOWN TAG
+                } else if (allowedTags.matcher(tag).find()) {
 
 
-					// then test properties
-					Matcher attributes = attributesPattern.matcher(tokenBody);
-
-					boolean foundURL = false; // URL flag
-					while (attributes.find()) {
-
-						String attr = attributes.group(1).toLowerCase();
-						String val = attributes.group(2);
-
-						// we will accept href in case of <A>
-						if ("a".equals(tag) && "href".equals(attr)) {    // <a href="......">
-							String[] customSchemes = {"http", "https"};
-							if (new UrlValidator(customSchemes).isValid(val)) {
-								foundURL = true;
-							} else {
-								// may be it is a mailto?
-								//  case <a href="mailto:pippo@pippo.com?subject=...."
-								if (val.toLowerCase().startsWith("mailto:") && val.indexOf('@') >= 0) {
-									String val1 = "http://www." + val.substring(val.indexOf('@') + 1);
-									if (new UrlValidator(customSchemes).isValid(val1)) {
-										foundURL = true;
-									} else {
-										ret.invalidTags.add(attr + " " + val);
-										val = "";
-									}
-								} else {
-									ret.invalidTags.add(attr + " " + val);
-									val = "";
-								}
-							}
-
-						} else if (tag.matches("img|embed") && "src".equals(attr)) { // <img src="......">
-							String[] customSchemes = {"http", "https"};
-							if (new UrlValidator(customSchemes).isValid(val)) {
-								foundURL = true;
-							} else {
-								ret.invalidTags.add(attr + " " + val);
-								val = "";
-							}
-
-						} else if ("href".equals(attr) || "src".equals(attr)) { // <tag src/href="......">   skipped
-							ret.invalidTags.add(tag + " " + attr + " " + val);
-							continue;
+                    String cleanToken = "<" + tag;
+                    String tokenBody = startMatcher.group(2);
 
 
-						} else if (attr.matches("width|height")) { // <tag width/height="......">
-							if (!val.toLowerCase().matches("\\d+%|\\d+$")) { // test numeric values
-								ret.invalidTags.add(tag + " " + attr + " " + val);
-								continue;
-							}
-
-						} else if ("style".equals(attr)) { // <tag style="......">
-
-
-							// then test properties
-							Matcher styles = stylePattern.matcher(val);
-							String cleanStyle = "";
-
-							while (styles.find()) {
-								String styleName = styles.group(1).toLowerCase();
-								String styleValue = styles.group(2);
-
-								// suppress invalid styles values
-								if (forbiddenStylePattern.matcher(styleValue).find()) {
-									ret.invalidTags.add(tag + " " + attr + " " + styleValue);
-									continue;
-								}
-
-								// check if valid url
-								Matcher urlStyleMatcher = urlStylePattern.matcher(styleValue);
-								if (urlStyleMatcher.find()) {
-									String[] customSchemes = {"http", "https"};
-									String url = urlStyleMatcher.group(1);
-									if (!new UrlValidator(customSchemes).isValid(url)) {
-										ret.invalidTags.add(tag + " " + attr + " " + styleValue);
-										continue;
-									}
-								}
-
-								cleanStyle = cleanStyle + styleName + ":" + encode(styleValue) + ";";
-
-							}
-							val = cleanStyle;
-
-						} else if (attr.startsWith("on")) {  // skip all javascript events
-							ret.invalidTags.add(tag + " " + attr + " " + val);
-							continue;
-
-						} else {  // by default encode all properies
-							val = encode(val);
-						}
-
-						cleanToken = cleanToken + " " + attr + "=\"" + val + "\"";
-					}
-					cleanToken = cleanToken + ">";
-
-					isAcceptedToken = true;
-
-					// for <img> and <a>
-					if (tag.matches("a|img|embed") && !foundURL) {
-						isAcceptedToken = false;
-						cleanToken = "";
-					}
-
-					token = cleanToken;
+                    //first test table consistency
+                    //table tbody tfoot thead th tr td
+                    if ("thead".equals(tag) || "tbody".equals(tag) || "tfoot".equals(tag) || "tr".equals(tag)) {
+                        if (openTags.search("table") < 1) {
+                            ret.invalidTags.add("<" + tag + ">");
+                            continue;
+                        }
+                    } else if (("td".equals(tag) || "th".equals(tag)) && openTags.search("tr") < 1) {
+                        ret.invalidTags.add("<" + tag + ">");
+                        continue;
+                    }
 
 
-					// push the tag if require closure and it is accepted (otherwirse is encoded)
-					if (isAcceptedToken && !(standAloneTags.matcher(tag).find() || selfClosed.matcher(tag).find())) {
-						openTags.push(tag);
-					}
+                    // then test properties
+                    Matcher attributes = attributesPattern.matcher(tokenBody);
 
-					// --------------------------------------------------------------------------------  UNKNOWN TAG
-				} else {
-					ret.invalidTags.add(token);
-					ret.val = ret.val + token;
-					continue;
+                    // URL flag
+                    boolean foundURL = false;
+                    while (attributes.find()) {
+
+                        String attr = attributes.group(1).toLowerCase();
+                        String val = attributes.group(2);
+
+                        // we will accept href in case of <A>
+                        // <a href="......">
+                        if ("a".equals(tag) && "href".equals(attr)) {
+                            String[] customSchemes = {"http", "https"};
+                            if (new UrlValidator(customSchemes).isValid(val)) {
+                                foundURL = true;
+                            } else {
+                                // may be it is a mailto?
+                                // case <a href="mailto:pippo@pippo.com?subject=...."
+                                if (val.toLowerCase().startsWith("mailto:") && val.indexOf('@') >= 0) {
+                                    String val1 = "http://www." + val.substring(val.indexOf('@') + 1);
+                                    if (new UrlValidator(customSchemes).isValid(val1)) {
+                                        foundURL = true;
+                                    } else {
+                                        ret.invalidTags.add(attr + " " + val);
+                                        val = "";
+                                    }
+                                } else {
+                                    ret.invalidTags.add(attr + " " + val);
+                                    val = "";
+                                }
+                            }
+
+                        } else if (tag.matches("img|embed") && "src".equals(attr)) {
+                            // <img src="......">
+                            String[] customSchemes = {"http", "https"};
+                            if (new UrlValidator(customSchemes).isValid(val)) {
+                                foundURL = true;
+                            } else {
+                                ret.invalidTags.add(attr + " " + val);
+                                val = "";
+                            }
+                        } else if ("href".equals(attr) || "src".equals(attr)) {
+                            // <tag src/href="......">   skipped
+                            ret.invalidTags.add(tag + " " + attr + " " + val);
+                            continue;
+                        } else if (attr.matches("width|height")) {
+                            // <tag width/height="......">
+                            if (!val.toLowerCase().matches("\\d+%|\\d+$")) {
+                                // test numeric values
+                                ret.invalidTags.add(tag + " " + attr + " " + val);
+                                continue;
+                            }
+
+                        } else if ("style".equals(attr)) {
+                            // <tag style="......">
+                            // then test properties
+                            Matcher styles = stylePattern.matcher(val);
+                            String cleanStyle = "";
+
+                            while (styles.find()) {
+                                String styleName = styles.group(1).toLowerCase();
+                                String styleValue = styles.group(2);
+
+                                // suppress invalid styles values
+                                if (forbiddenStylePattern.matcher(styleValue).find()) {
+                                    ret.invalidTags.add(tag + " " + attr + " " + styleValue);
+                                    continue;
+                                }
+
+                                // check if valid url
+                                Matcher urlStyleMatcher = urlStylePattern.matcher(styleValue);
+                                if (urlStyleMatcher.find()) {
+                                    String[] customSchemes = {"http", "https"};
+                                    String url = urlStyleMatcher.group(1);
+                                    if (!new UrlValidator(customSchemes).isValid(url)) {
+                                        ret.invalidTags.add(tag + " " + attr + " " + styleValue);
+                                        continue;
+                                    }
+                                }
+
+                                cleanStyle = cleanStyle + styleName + ":" + encode(styleValue) + ";";
+
+                            }
+                            val = cleanStyle;
+
+                        } else if (attr.startsWith("on")) {
+                            // skip all javascript events
+                            ret.invalidTags.add(tag + " " + attr + " " + val);
+                            continue;
+
+                        } else {
+                            // by default encode all properties
+                            val = encode(val);
+                        }
+
+                        cleanToken = cleanToken + " " + attr + "=\"" + val + "\"";
+                    }
+                    cleanToken = cleanToken + ">";
+
+                    isAcceptedToken = true;
+
+                    // for <img> and <a>
+                    if (tag.matches("a|img|embed") && !foundURL) {
+                        isAcceptedToken = false;
+                        cleanToken = "";
+                    }
+
+                    token = cleanToken;
 
 
-				}
+                    // push the tag if require closure and it is accepted (otherwise is encoded)
+                    if (isAcceptedToken && !(standAloneTags.matcher(tag).find() || selfClosed.matcher(tag).find())) {
+                        openTags.push(tag);
+                    }
 
-				// --------------------------------------------------------------------------------  CLOSE TAG </tag>
-			} else if (endMatcher.find()) {
-				String tag = endMatcher.group(1).toLowerCase();
-
-				//is self closing
-				if (selfClosed.matcher(tag).find()) {
-					ret.invalidTags.add(token);
-					continue;
-				}
-				if (forbiddenTags.matcher(tag).find()) {
-					ret.invalidTags.add("/" + tag);
-					continue;
-				}
-				if (!allowedTags.matcher(tag).find()) {
-					ret.invalidTags.add(token);
-					ret.val = ret.val + token;
-					continue;
-				} else {
+                    // --------------------------------------------------------------------------------  UNKNOWN TAG
+                } else {
+                    ret.invalidTags.add(token);
+                    ret.val = ret.val + token;
+                    continue;
 
 
-					String cleanToken = "";
+                }
 
-					// check tag position in the stack
-					int pos = openTags.search(tag);
-					// if found on top ok
-					for (int i = 1; i <= pos; i++) {
-						//pop all elements before tag and close it
-						String poppedTag = openTags.pop();
-						cleanToken = cleanToken + "</" + poppedTag + ">";
-						isAcceptedToken = true;
-					}
+                // --------------------------------------------------------------------------------  CLOSE TAG </tag>
+            } else if (endMatcher.find()) {
+                String tag = endMatcher.group(1).toLowerCase();
 
-					token = cleanToken;
-				}
-
-			}
-
-			ret.val = ret.val + token;
-
-			if (isAcceptedToken) {
-				ret.html = ret.html + token;
-				//ret.text = ret.text + " ";
-			} else {
-				String sanToken = htmlEncodeApexesAndTags(token);
-				ret.html = ret.html + sanToken;
-				ret.text = ret.text + htmlEncodeApexesAndTags(removeLineFeed(token));
-			}
+                //is self closing
+                if (selfClosed.matcher(tag).find()) {
+                    ret.invalidTags.add(token);
+                    continue;
+                }
+                if (forbiddenTags.matcher(tag).find()) {
+                    ret.invalidTags.add("/" + tag);
+                    continue;
+                }
+                if (!allowedTags.matcher(tag).find()) {
+                    ret.invalidTags.add(token);
+                    ret.val = ret.val + token;
+                    continue;
+                } else {
 
 
-		}
+                    String cleanToken = "";
 
-		// must close remaining tags
-		while (openTags.size() > 0) {
-			//pop all elements before tag and close it
-			String poppedTag = openTags.pop();
-			ret.html = ret.html + "</" + poppedTag + ">";
-			ret.val = ret.val + "</" + poppedTag + ">";
-		}
+                    // check tag position in the stack
+                    int pos = openTags.search(tag);
+                    // if found on top ok
+                    for (int i = 1; i <= pos; i++) {
+                        //pop all elements before tag and close it
+                        String poppedTag = openTags.pop();
+                        cleanToken = cleanToken + "</" + poppedTag + ">";
+                        isAcceptedToken = true;
+                    }
 
-		//set boolean value
-		ret.isValid = ret.invalidTags.size() == 0;
+                    token = cleanToken;
+                }
 
-		return ret;
-	}
+            }
+
+            ret.val = ret.val + token;
+
+            if (isAcceptedToken) {
+                ret.html = ret.html + token;
+                //ret.text = ret.text + " ";
+            } else {
+                String sanToken = htmlEncodeApexesAndTags(token);
+                ret.html = ret.html + sanToken;
+                ret.text = ret.text + htmlEncodeApexesAndTags(removeLineFeed(token));
+            }
+
+
+        }
+
+        // must close remaining tags
+        while (openTags.size() > 0) {
+            //pop all elements before tag and close it
+            String poppedTag = openTags.pop();
+            ret.html = ret.html + "</" + poppedTag + ">";
+            ret.val = ret.val + "</" + poppedTag + ">";
+        }
+
+        //set boolean value
+        ret.isValid = ret.invalidTags.size() == 0;
+
+        return ret;
+    }
 

@@ -1,7 +1,7 @@
     /**
      * Get websites of a user
      */
-    public List getWeblogs(
+    public List<Weblog> getWeblogs(
             Boolean enabled, Boolean active,
             Date startDate, Date endDate, int offset, int length) throws WebloggerException {
         
@@ -9,10 +9,10 @@
                       
         List params = new ArrayList();
         int size = 0;
-        StringBuilder queryString = new StringBuilder();
+        String queryString;
         StringBuilder whereClause = new StringBuilder();
         
-        queryString.append("SELECT w FROM Weblog w WHERE ");
+        queryString = "SELECT w FROM Weblog w WHERE ";
 
         if (startDate != null) {
             Timestamp start = new Timestamp(startDate.getTime());
@@ -47,7 +47,7 @@
                 
         whereClause.append(" ORDER BY w.dateCreated DESC");
         
-        Query query = strategy.getDynamicQuery(queryString.toString() + whereClause.toString());
+        Query query = strategy.getDynamicQuery(queryString + whereClause.toString());
         if (offset != 0) {
             query.setFirstResult(offset);
         }

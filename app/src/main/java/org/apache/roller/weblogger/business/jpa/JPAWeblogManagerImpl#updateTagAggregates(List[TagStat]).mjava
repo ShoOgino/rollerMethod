@@ -1,0 +1,14 @@
+    protected void updateTagAggregates(List<TagStat> tags) throws WebloggerException {
+        for (TagStat stat : tags) {
+            Query query = strategy.getNamedUpdate(
+                "WeblogEntryTagAggregate.getByName&WebsiteNullOrderByLastUsedDesc");
+            query.setParameter(1, stat.getName());
+            try {
+                WeblogEntryTagAggregate agg = (WeblogEntryTagAggregate)query.getSingleResult();
+                agg.setTotal(agg.getTotal() - stat.getCount());
+            } catch (NoResultException ignored) {
+                // nothing to update
+            }
+        }
+    }
+

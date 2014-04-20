@@ -13,14 +13,13 @@
         TestUtils.endSession(true);
         
         // test lookup by id
-        WeblogHitCount hitCount = null;
+        WeblogHitCount hitCount;
         hitCount = mgr.getHitCount(id);
         assertNotNull(hitCount);
         assertEquals(testCount, hitCount);
         assertEquals(10, hitCount.getDailyHits());
         
         // test lookup by weblog
-        hitCount = null;
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         hitCount = mgr.getHitCountByWeblog(testWeblog);
         assertNotNull(hitCount);
@@ -32,7 +31,6 @@
         TestUtils.endSession(true);
         
         // make sure it was deleted
-        hitCount = null;
         hitCount = mgr.getHitCount(id);
         assertNull(hitCount);
     }

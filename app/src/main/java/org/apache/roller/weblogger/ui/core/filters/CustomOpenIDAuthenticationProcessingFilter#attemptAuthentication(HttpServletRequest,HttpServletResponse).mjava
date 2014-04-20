@@ -1,7 +1,9 @@
+    /**
+     * @throws org.springframework.security.core.AuthenticationException
+     */
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse rsp) throws AuthenticationException,
-            IOException {
-        OpenIDAuthenticationToken auth = null;
+    public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse rsp) throws IOException {
+        OpenIDAuthenticationToken auth;
 
         // Processing standard OpenId user authentication    
         auth = (OpenIDAuthenticationToken) super.attemptAuthentication(req, rsp);

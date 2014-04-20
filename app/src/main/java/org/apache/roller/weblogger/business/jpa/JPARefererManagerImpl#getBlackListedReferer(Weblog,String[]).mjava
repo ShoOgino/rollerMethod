@@ -1,4 +1,4 @@
-    protected List getBlackListedReferer(Weblog website, String[] blacklist) 
+    protected List<WeblogReferrer> getBlackListedReferer(Weblog website, String[] blacklist)
             throws WebloggerException {
         StringBuilder queryString = getQueryStringForBlackList(blacklist);
         queryString.append(" AND r.website = ?1 ");

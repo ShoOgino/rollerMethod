@@ -8,11 +8,7 @@
 
         int i = theUrl.lastIndexOf('.');
 
-        if (i <= 0 || i == theUrl.length() - 1) {
-            return true;
-        }
-
-        return ignored.contains(theUrl.substring(i + 1));
+        return i <= 0 || i == theUrl.length()-1 || ignored.contains(theUrl.substring(i + 1));
 
     }
 

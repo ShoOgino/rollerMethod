@@ -21,7 +21,7 @@
             
             WeblogEntry entry = this.getWeblogEntry((String) this.entryAnchorToIdMap.get(mappingKey));
             if(entry != null) {
-                log.debug("entryAnchorToIdMap CACHE HIT - "+mappingKey);
+                LOG.debug("entryAnchorToIdMap CACHE HIT - " + mappingKey);
                 return entry;
             } else {
                 // mapping hit with lookup miss?  mapping must be old, remove it
@@ -34,7 +34,7 @@
                 "WeblogEntry.getByWebsite&AnchorOrderByPubTimeDesc");
         q.setParameter(1, website);
         q.setParameter(2, anchor);
-        WeblogEntry entry = null;
+        WeblogEntry entry;
         try {
             entry = (WeblogEntry)q.getSingleResult();
         } catch (NoResultException e) {
@@ -43,7 +43,7 @@
         
         // add mapping to cache
         if(entry != null) {
-            log.debug("entryAnchorToIdMap CACHE MISS - "+mappingKey);
+            LOG.debug("entryAnchorToIdMap CACHE MISS - " + mappingKey);
             this.entryAnchorToIdMap.put(mappingKey, entry.getId());
         }
         return entry;

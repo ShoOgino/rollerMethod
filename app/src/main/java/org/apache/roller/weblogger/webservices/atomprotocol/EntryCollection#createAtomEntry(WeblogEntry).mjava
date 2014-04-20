@@ -14,7 +14,7 @@
         Content content = new Content();
         content.setType(Content.HTML);
         content.setValue(entry.getText());
-        List contents = new ArrayList();
+        List<Content> contents = new ArrayList<Content>();
         contents.add(content);
         
         atomEntry.setContents(contents);
@@ -33,17 +33,16 @@
         atomEntry.setAuthors(   (List<SyndPerson>)Collections.singletonList(author));
         
         // Add Atom category for Weblogger category, using category scheme
-        List categories = new ArrayList();
+        List<Category> categories = new ArrayList<Category>();
         Category atomCat = new Category();
         atomCat.setScheme(RollerAtomService.getWeblogCategoryScheme(entry.getWebsite()));
-        atomCat.setTerm(entry.getCategory().getPath().substring(1));
+        atomCat.setTerm(entry.getCategory().getName());
         categories.add(atomCat);
         
         // Add Atom categories for each Weblogger tag with null scheme
         Set<WeblogEntryTag> tmp = new TreeSet<WeblogEntryTag>(new WeblogEntryTagComparator());
         tmp.addAll(entry.getTags());
-        for (Iterator tagit = tmp.iterator(); tagit.hasNext();) {
-            WeblogEntryTag tag = (WeblogEntryTag) tagit.next();
+        for (WeblogEntryTag tag : tmp) {
             Category newcat = new Category();
             newcat.setTerm(tag.getName());
             categories.add(newcat);
@@ -53,7 +52,7 @@
         Link altlink = new Link();
         altlink.setRel("alternate");
         altlink.setHref(entry.getPermalink());
-        List altlinks = new ArrayList();
+        List<Link> altlinks = new ArrayList<Link>();
         altlinks.add(altlink);
         atomEntry.setAlternateLinks(altlinks);
         
@@ -62,11 +61,11 @@
         editlink.setHref(
                 atomURL
                 +"/"+entry.getWebsite().getHandle() + "/entry/" + entry.getId());
-        List otherlinks = new ArrayList();
+        List<Link> otherlinks = new ArrayList<Link>();
         otherlinks.add(editlink);
         atomEntry.setOtherLinks(otherlinks);
         
-        List modules = new ArrayList();
+        List<Module> modules = new ArrayList<Module>();
         AppModule app = new AppModuleImpl();
         app.setDraft(!WeblogEntry.PUBLISHED.equals(entry.getStatus()));
         app.setEdited(entry.getUpdateTime());

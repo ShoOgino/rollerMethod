@@ -1,6 +1,5 @@
     public void copyFrom(Weblog dataHolder) {
         
-        this.id = dataHolder.getId();
         this.handle = dataHolder.getHandle();
         this.name = dataHolder.getName();
         this.description = dataHolder.getDescription();
@@ -25,10 +24,6 @@
         this.pageModels = dataHolder.getPageModels();
         setIcon(dataHolder.getIconPath());
         setAbout(dataHolder.getAbout());
-        
-        if (dataHolder.getDefaultCategory() != null) {
-            defaultCategoryId = dataHolder.getDefaultCategory().getId();
-        }
         if (dataHolder.getBloggerCategory() != null) {
             bloggerCategoryId = dataHolder.getBloggerCategory().getId();
         }

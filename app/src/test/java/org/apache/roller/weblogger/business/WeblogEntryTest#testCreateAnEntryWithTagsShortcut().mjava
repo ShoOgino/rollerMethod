@@ -1,7 +1,7 @@
     public void testCreateAnEntryWithTagsShortcut() throws Exception {
         try {
             WeblogEntryManager mgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
-            WeblogEntry entry = null;
+            WeblogEntry entry;
             testWeblog = TestUtils.getManagedWebsite(testWeblog);
             testUser = TestUtils.getManagedUser(testUser);
 
@@ -32,7 +32,7 @@
             assertEquals(testEntry, entry);
             assertNotNull(entry.getTags());
             assertEquals(1, entry.getTags().size());
-            assertEquals("testtag", ((WeblogEntryTag) entry.getTags()
+            assertEquals("testtag", (entry.getTags()
                     .iterator().next()).getName());
             TestUtils.endSession(true);
 

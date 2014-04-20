@@ -1,10 +1,10 @@
     /**
      * @inheritDoc
      */
-    public List getPopularTags(Weblog website, Date startDate, int offset, int limit)
+    public List<TagStat> getPopularTags(Weblog website, Date startDate, int offset, int limit)
     throws WebloggerException {
-        Query query = null;
-        List queryResults = null;
+        Query query;
+        List queryResults;
         
         if (website != null) {
             if (startDate != null) {
@@ -40,7 +40,7 @@
         double min = Integer.MAX_VALUE;
         double max = Integer.MIN_VALUE;
         
-        List results = new ArrayList(limit);
+        List<TagStat> results = new ArrayList<TagStat>(limit);
         
         for (Iterator iter = queryResults.iterator(); iter.hasNext();) {
             Object[] row = (Object[]) iter.next();
@@ -58,11 +58,10 @@
         
         double range = Math.max(.01, max - min) * 1.0001;
         
-        for (Iterator iter = results.iterator(); iter.hasNext(); ) {
-            TagStat t = (TagStat) iter.next();
+        for (TagStat t : results) {
             t.setIntensity((int) (1 + Math.floor(5 * (Math.log(1+t.getCount()) - min) / range)));
         }
-        
+
         // sort results by name, because query had to sort by total
         Collections.sort(results, TAG_STAT_NAME_COMPARATOR);
         

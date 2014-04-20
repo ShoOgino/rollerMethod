@@ -1,10 +1,8 @@
     public static void invalidate(WeblogCategory category) {
         
-        log.debug("invalidating category = "+category.getId());
-        
-        Iterator handlers = cacheHandlers.iterator();
-        while(handlers.hasNext()) {
-            ((CacheHandler) handlers.next()).invalidate(category);
+        log.debug("invalidating category = " + category.getId());
+        for (CacheHandler handler : cacheHandlers) {
+            handler.invalidate(category);
         }
     }
 

@@ -1,14 +1,12 @@
-    public String applyWeblogEntryPlugins(Map pagePlugins,WeblogEntry entry, String str) {
+    public String applyWeblogEntryPlugins(Map pagePlugins, WeblogEntry entry, String str) {
 
         String ret = str;
         WeblogEntry copy = new WeblogEntry(entry);
-        List entryPlugins = copy.getPluginsList();
+        List<String> entryPlugins = copy.getPluginsList();
 
-        if (entryPlugins != null && !entryPlugins.isEmpty()) {
-            Iterator iter = entryPlugins.iterator();
-            while (iter.hasNext()) {
-                String key = (String)iter.next();
-                WeblogEntryPlugin pagePlugin = (WeblogEntryPlugin)pagePlugins.get(key);
+        if (entryPlugins != null) {
+            for (String key : entryPlugins) {
+                WeblogEntryPlugin pagePlugin = (WeblogEntryPlugin) pagePlugins.get(key);
                 if (pagePlugin != null) {
                     ret = pagePlugin.render(entry, ret);
                 } else {

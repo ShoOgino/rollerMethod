@@ -6,25 +6,21 @@
      */
     public void execute() {
         
-        UserManager umgr = WebloggerFactory.getWeblogger().getUserManager();
         WeblogManager wmgr = WebloggerFactory.getWeblogger().getWeblogManager();
         WeblogEntryManager emgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
         
         HitCountQueue hitCounter = HitCountQueue.getInstance();
         
         // first get the current set of hits
-        List currentHits = hitCounter.getHits();
+        List<String> currentHits = hitCounter.getHits();
         
         // now reset the queued hits
         hitCounter.resetHits();
         
         // tally the counts, grouped by weblog handle
-        Map hitsTally = new HashMap();
-        String weblogHandle = null;
-        for(int i=0; i < currentHits.size(); i++) {
-            weblogHandle = (String) currentHits.get(i);
-            
-            Long count = (Long) hitsTally.get(weblogHandle);
+        Map<String, Long> hitsTally = new HashMap<String, Long>();
+        for (String weblogHandle : currentHits) {
+            Long count = hitsTally.get(weblogHandle);
             if(count == null) {
                 count = 1L;
             } else {
@@ -32,31 +28,27 @@
             }
             hitsTally.put(weblogHandle, count);
         }
-        
+
         // iterate over the tallied hits and store them in the db
         try {
             long startTime = System.currentTimeMillis();
             
-            Weblog weblog = null;
-            String key = null;
-            Iterator it = hitsTally.keySet().iterator();
-            while(it.hasNext()) {
-                key = (String) it.next();
-                
+            Weblog weblog;
+            for (Map.Entry<String, Long> entry : hitsTally.entrySet()) {
                 try {
-                    weblog = wmgr.getWeblogByHandle(key);
-                    emgr.incrementHitCount(weblog, ((Long)hitsTally.get(key)).intValue());
+                    weblog = wmgr.getWeblogByHandle(entry.getKey());
+                    emgr.incrementHitCount(weblog, entry.getValue().intValue());
                 } catch (WebloggerException ex) {
                     log.error(ex);
                 }
             }
-            
+
             // flush the results to the db
             WebloggerFactory.getWeblogger().flush();
             
             long endTime = System.currentTimeMillis();
             
-            log.debug("Completed: "+ (endTime-startTime)/1000 + " secs");
+            log.debug("Completed: "+ (endTime-startTime)/ RollerConstants.SEC_IN_MS + " secs");
             
         } catch (WebloggerException ex) {
             log.error("Error persisting updated hit counts", ex);

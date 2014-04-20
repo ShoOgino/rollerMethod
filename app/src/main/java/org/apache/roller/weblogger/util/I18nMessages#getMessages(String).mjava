@@ -6,7 +6,7 @@
         LOG.debug("request for messages in locale = " + locale);
         
         // check if we already have a message utils created for that locale
-        I18nMessages messages = messagesMap.get(locale);
+        I18nMessages messages = messagesMap.get(I18nUtils.toLocale(locale));
         
         // if no utils for that language yet then construct
         if(messages == null) {

@@ -1,14 +1,14 @@
-	/**
-	 * Trigger reindexing of modified entry.
-	 */
-	protected void removeEntryIndex(WeblogEntry entry) {
-		IndexManager manager = WebloggerFactory.getWeblogger()
-				.getIndexManager();
-		try {
-			manager.removeEntryIndexOperation(entry);
-		} catch (WebloggerException ex) {
-			log.warn("Trouble triggering entry indexing", ex);
-		}
+    /**
+     * Trigger reindexing of modified entry.
+     */
+    protected void removeEntryIndex(WeblogEntry entry) {
+        IndexManager manager = WebloggerFactory.getWeblogger()
+                .getIndexManager();
+        try {
+            manager.removeEntryIndexOperation(entry);
+        } catch (WebloggerException ex) {
+            log.warn("Trouble triggering entry indexing", ex);
+        }
 
-	}
+    }
 

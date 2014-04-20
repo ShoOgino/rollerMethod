@@ -56,11 +56,11 @@
 		} else {
 
 			TopFieldDocs docs = search.getResults();
-			ScoreDoc[] hits = docs.scoreDocs;
+			ScoreDoc[] hitsArr = docs.scoreDocs;
 			this.hits = search.getResultsCount();
 
 			// Convert the Hits into WeblogEntryData instances.
-			convertHitsToEntries(hits, search);
+			convertHitsToEntries(hitsArr, search);
 
 		}
 

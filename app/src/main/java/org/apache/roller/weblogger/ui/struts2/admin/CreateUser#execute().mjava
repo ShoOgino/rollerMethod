@@ -3,10 +3,7 @@
      */
     public String execute() {
         
-        // defaults for locale and timezone
-        getBean().setLocale(Locale.getDefault().toString());
-        getBean().setTimeZone(TimeZone.getDefault().getID());
-        
+        initializeBean();
         return INPUT;
     }
 

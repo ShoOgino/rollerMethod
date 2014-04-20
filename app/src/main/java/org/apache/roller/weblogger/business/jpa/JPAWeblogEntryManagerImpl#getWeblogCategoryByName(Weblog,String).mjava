@@ -1,0 +1,16 @@
+    /**
+     * @inheritDoc
+     */
+    public WeblogCategory getWeblogCategoryByName(Weblog weblog,
+            String categoryName) throws WebloggerException {
+        Query q = strategy.getNamedQuery(
+                "WeblogCategory.getByWeblog&Name");
+        q.setParameter(1, weblog);
+        q.setParameter(2, categoryName);
+        try {
+            return (WeblogCategory)q.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+

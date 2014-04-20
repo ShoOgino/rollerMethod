@@ -1,0 +1,23 @@
+    public WeblogBookmark(
+            WeblogBookmarkFolder parent,
+            String name,
+            String desc,
+            String url,
+            String feedUrl,
+            String image) {
+        this.folder = parent;
+        this.name = name;
+        this.description = desc;
+        this.url = url;
+        this.feedUrl = feedUrl;
+        this.image = image;
+
+        folder.addBookmark(this);
+        int size = folder.getBookmarks().size();
+        if (size == 1) {
+            this.priority = 0;
+        } else {
+            this.priority = folder.getBookmarks().get(size - 2).getPriority() + 1;
+        }
+    }
+

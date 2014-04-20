@@ -8,14 +8,12 @@
     public static Renderer getRenderer(Template template, MobileDeviceRepository.DeviceType deviceType)
             throws RenderingException {
 
-        Renderer renderer = null;
+        Renderer renderer;
 
         // iterate over our renderer factories and see if one of them
         // wants to handle this content
-        Iterator factories = rendererFactories.iterator();
-        while (factories.hasNext()) {
-            renderer = ((RendererFactory) factories.next()).getRenderer(template, deviceType);
-
+        for (RendererFactory rendererFactory : rendererFactories) {
+            renderer = rendererFactory.getRenderer(template, deviceType);
             if (renderer != null) {
                 return renderer;
             }

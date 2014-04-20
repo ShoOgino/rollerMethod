@@ -8,9 +8,7 @@
         
         // PreviewURLModel only works on preview requests, so cast weblogRequest
         // into a WeblogPreviewRequest and if it fails then throw exception
-        if(weblogRequest instanceof WeblogPreviewRequest) {
-            this.previewRequest = (WeblogPreviewRequest) weblogRequest;
-        } else {
+        if(!(weblogRequest instanceof WeblogPreviewRequest)) {
             throw new WebloggerException("weblogRequest is not a WeblogPreviewRequest."+
                     "  PreviewURLModel only supports preview requests.");
         }

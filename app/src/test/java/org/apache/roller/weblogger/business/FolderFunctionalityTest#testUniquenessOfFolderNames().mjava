@@ -6,14 +6,12 @@
         log.info("BEGIN");
         try {
             BookmarkManager bmgr = WebloggerFactory.getWeblogger().getBookmarkManager();
-
             testWeblog = TestUtils.getManagedWebsite(testWeblog);
-            WeblogBookmarkFolder root = bmgr.getRootFolder(testWeblog);
 
             boolean exception = false;
             try {
                 // child folder with same name as first
-                WeblogBookmarkFolder dupeFolder = new WeblogBookmarkFolder(root, testFolder.getName(), null, testWeblog);
+                WeblogBookmarkFolder dupeFolder = new WeblogBookmarkFolder(testFolder.getName(), testWeblog);
                 bmgr.saveFolder(dupeFolder);
                 TestUtils.endSession(true);
             } catch (Throwable e) {

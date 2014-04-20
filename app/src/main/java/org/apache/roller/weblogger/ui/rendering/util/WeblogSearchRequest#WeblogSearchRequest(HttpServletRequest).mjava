@@ -46,13 +46,8 @@
         
         if(request.getParameter("cat") != null &&
                 request.getParameter("cat").trim().length() > 0) {
-            this.weblogCategoryName = 
+            this.weblogCategoryName =
                     URLUtilities.decode(request.getParameter("cat"));
-            
-            // all categories must start with a /
-            if(!this.weblogCategoryName.startsWith("/")) {
-                this.weblogCategoryName = "/"+this.weblogCategoryName;
-            }
         }
     }
 

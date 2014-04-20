@@ -15,10 +15,8 @@
         Document doc = builder.build(instream);
         
         Element root = doc.getRootElement();
-        List configdefs = root.getChildren("config-def");
-        Iterator iter = configdefs.iterator();
-        while (iter.hasNext()) {
-            Element e = (Element) iter.next();
+        List<Element> configdefs = root.getChildren("config-def");
+        for (Element e : configdefs) {
             configs.addConfigDef(this.elementToConfigDef(e));
         }
         

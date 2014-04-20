@@ -10,7 +10,7 @@
         // let's make sure we are starting from scratch
 
         // site-wide
-        List tags = mgr.getTags(null, null, null, 0, -1);
+        List<TagStat> tags = mgr.getTags(null, null, null, 0, -1);
         assertEquals(0, tags.size());
 
         // first weblog
@@ -22,8 +22,7 @@
         assertEquals(0, tags.size());
 
         // setup some test entries to use
-        WeblogEntry entry = TestUtils.setupWeblogEntry("entry1", testWeblog
-                .getDefaultCategory(), testWeblog, testUser);
+        WeblogEntry entry = TestUtils.setupWeblogEntry("entry1", testWeblog, testUser);
         entry.addTag("one");
         entry.addTag("two");
         entry.addTag("ONE");
@@ -34,22 +33,20 @@
         tags = mgr.getTags(testWeblog, null, null, 0, -1);
         assertEquals(2, tags.size());
 
-        HashMap expectedWeblogTags = new HashMap();
-        expectedWeblogTags.put("one", new Integer(1));
-        expectedWeblogTags.put("two", new Integer(1));
+        HashMap<String, Integer> expectedWeblogTags = new HashMap<String, Integer>();
+        expectedWeblogTags.put("one", 1);
+        expectedWeblogTags.put("two", 1);
 
-        for (Iterator it = tags.iterator(); it.hasNext();) {
-            TagStat stat = (TagStat) it.next();
+        for (TagStat stat : tags) {
             if (!expectedWeblogTags.containsKey(stat.getName()))
                 fail("Unexpected tagName.");
 
-            Integer expectedCount = (Integer) expectedWeblogTags.get(stat.getName());
+            Integer expectedCount = expectedWeblogTags.get(stat.getName());
             assertEquals(expectedCount.intValue(), stat.getCount());
         }
 
         // now add another entry in another blog
-        entry = TestUtils.setupWeblogEntry("entry3", testWeblog2
-                .getDefaultCategory(), testWeblog2, testUser);
+        entry = TestUtils.setupWeblogEntry("entry3", testWeblog2, testUser);
         entry.addTag("ONE");
         entry.addTag("three");
         mgr.saveWeblogEntry(entry);
@@ -60,17 +57,16 @@
         tags = mgr.getTags(null, null, null, 0, -1);
         assertEquals(3, tags.size());
 
-        HashMap expectedSiteTags = new HashMap();
-        expectedSiteTags.put("one", new Integer(2));
-        expectedSiteTags.put("two", new Integer(1));
-        expectedSiteTags.put("three", new Integer(1));
+        HashMap<String, Integer> expectedSiteTags = new HashMap<String, Integer>();
+        expectedSiteTags.put("one", 2);
+        expectedSiteTags.put("two", 1);
+        expectedSiteTags.put("three", 1);
 
-        for (Iterator it = tags.iterator(); it.hasNext();) {
-            TagStat stat = (TagStat) it.next();
+        for (TagStat stat : tags) {
             if (!expectedSiteTags.containsKey(stat.getName()))
                 fail("Unexpected tagName.");
 
-            Integer expectedCount = (Integer) expectedSiteTags.get(stat.getName());
+            Integer expectedCount = expectedSiteTags.get(stat.getName());
             assertEquals(expectedCount.intValue(), stat.getCount());
         }
 

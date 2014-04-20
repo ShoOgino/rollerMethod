@@ -1,10 +1,7 @@
     public static void invalidate(WeblogTemplate template) {
-        
-        log.debug("invalidating template = "+template.getId());
-        
-        Iterator handlers = cacheHandlers.iterator();
-        while(handlers.hasNext()) {
-            ((CacheHandler) handlers.next()).invalidate(template);
+        log.debug("invalidating template = " + template.getId());
+        for (CacheHandler handler : cacheHandlers) {
+            handler.invalidate(template);
         }
     }
 

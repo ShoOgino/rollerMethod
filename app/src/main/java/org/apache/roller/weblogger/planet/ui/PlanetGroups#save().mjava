@@ -7,21 +7,21 @@
         
         if (!hasActionErrors()) {
             try {
-                PlanetGroup group = getGroup();
-                if(group == null) {
+                PlanetGroup planetGroup = getGroup();
+                if(planetGroup == null) {
                     log.debug("Adding New Group");
-                    group = new PlanetGroup();
-                    group.setPlanet(getPlanet());
+                    planetGroup = new PlanetGroup();
+                    planetGroup.setPlanet(getPlanet());
                 } else {
                     log.debug("Updating Existing Group");
                 }
 
                 // copy in submitted data
-                getBean().copyTo(group);
+                getBean().copyTo(planetGroup);
 
                 // save and flush
                 PlanetManager pmgr = WebloggerFactory.getWeblogger().getPlanetManager();
-                pmgr.saveGroup(group);
+                pmgr.saveGroup(planetGroup);
                 WebloggerFactory.getWeblogger().flush();
 
                 addMessage("planetGroups.success.saved");

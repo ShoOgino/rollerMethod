@@ -13,13 +13,8 @@
             char8DateFormat.setCalendar(cal);
             ParsePosition pos = new ParsePosition(0);
             ret = char8DateFormat.parse(dateString, pos);
-            
+
             // make sure the requested date is not in the future
-//            Date today = null;
-//            Calendar todayCal = Calendar.getInstance();
-//            todayCal = Calendar.getInstance(tz, locale);
-//            todayCal.setTime(new Date());
-//            today = todayCal.getTime();
             // Date is always ms offset from epoch in UTC, by no means of timezone.
             Date today = new Date();
             if(ret.after(today)) {
@@ -35,10 +30,6 @@
             ret = char6DateFormat.parse(dateString, pos);
             
             // make sure the requested date is not in the future
-//            Calendar todayCal = Calendar.getInstance();
-//            todayCal = Calendar.getInstance(tz, locale);
-//            todayCal.setTime(new Date());
-//            Date today = todayCal.getTime();
             Date today = new Date();
             if(ret.after(today)) {
                 ret = today;

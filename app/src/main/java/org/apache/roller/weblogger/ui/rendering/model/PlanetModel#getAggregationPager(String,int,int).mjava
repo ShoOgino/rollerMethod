@@ -1,8 +1,7 @@
     /**
      * Get pager for WeblogEntry objects from specified
      * Planet groups in reverse chrono order.
-     * @param offset   Offset into results (for paging)
-     * @param len      Max number of results to return
+     * @param length      Max number of results to return
      */
     public Pager getAggregationPager(String groupHandle, int sinceDays, int length) {
         
@@ -15,7 +14,6 @@
             null,
             groupHandle,
             pagerUrl,
-            weblogRequest.getLocale(),
             sinceDays,
             pageNum, 
             length);

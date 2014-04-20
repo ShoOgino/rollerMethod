@@ -3,8 +3,8 @@
         // Sort by name
         Set<WeblogEntryTag> tmp = new TreeSet<WeblogEntryTag>(new WeblogEntryTagComparator());
         tmp.addAll(getTags());
-        for (Iterator it = tmp.iterator(); it.hasNext();) {
-            sb.append(((WeblogEntryTag) it.next()).getName()).append(" ");
+        for (WeblogEntryTag entryTag : tmp) {
+            sb.append(entryTag.getName()).append(" ");
         }
         if (sb.length() > 0) {
             sb.deleteCharAt(sb.length() - 1);

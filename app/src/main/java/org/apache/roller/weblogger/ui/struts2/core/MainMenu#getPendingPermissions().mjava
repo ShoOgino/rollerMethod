@@ -1,9 +1,9 @@
-    public List getPendingPermissions() {
+    public List<WeblogPermission> getPendingPermissions() {
         try {
             UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
             return mgr.getPendingWeblogPermissions(getAuthenticatedUser());
         } catch(Exception e) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
     }
 

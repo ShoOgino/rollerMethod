@@ -21,15 +21,14 @@
         
         /* TODO: when Spring Security 2.1 is release comment out this stuff, 
          * which pre-populates the user bean with info from OpenID provider.
-         * 
+         *
         Collection attrsCollect = (Collection)WebloggerFactory.getWeblogger()
                 .getUserManager().userAttributes.get(UserAttribute.Attributes.openidUrl.toString());
         
         if (attrsCollect != null) {
             ArrayList attrs = new ArrayList(attrsCollect);
-            for (Iterator it = attrs.iterator(); it.hasNext();) {                
-                OpenIDUserAttribute attr = (OpenIDUserAttribute) it.next();    
-                if (attr.getName().equals(OpenIDUserAttribute.Attributes.country.toString())) {                                        
+            for (OpenIDUserAttribute attr : attrs) {
+                if (attr.getName().equals(OpenIDUserAttribute.Attributes.country.toString())) {
                     getBean().setLocale(UIUtils.getLocale(attr.getValue()));
                 }                
                if (attr.getName().equals(OpenIDUserAttribute.Attributes.email.toString())) {
@@ -56,18 +55,18 @@
             boolean usingSSO = WebloggerConfig.getBooleanProperty("users.sso.enabled");
             if (usingSSO) {
                 // See if user is already logged in via Spring Security
-                User fromSSO = CustomUserRegistry.getUserDetailsFromAuthentication(getServletRequest());
-                if (fromSSO != null) {
+                User fromSSOUser = CustomUserRegistry.getUserDetailsFromAuthentication(getServletRequest());
+                if (fromSSOUser != null) {
                     // Copy user details from Spring Security, including LDAP attributes
-                    getBean().copyFrom(fromSSO);
-                    setFromSso(true);
+                    getBean().copyFrom(fromSSOUser);
+                    setFromSSO(true);
                 }
                 // See if user is already logged in via CMA
                 else if (getServletRequest().getUserPrincipal() != null) {
                     // Only detail we get is username, sadly no LDAP attributes
                     getBean().setUserName(getServletRequest().getUserPrincipal().getName());
                     getBean().setScreenName(getServletRequest().getUserPrincipal().getName());
-                    setFromSso(true);
+                    setFromSSO(true);
                 }
             }
             

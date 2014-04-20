@@ -12,7 +12,7 @@
         
         if (text != null) {
             Matcher matcher;
-            matcher = pattern.matcher(text);
+            matcher = PATTERN.matcher(text);
 
             int start = 0;
             int end = text.length();
@@ -46,9 +46,6 @@
                     start = end;
                 }
             }
-        }
-        else {
-            result.append(text);    
         }
 
         return result.toString();

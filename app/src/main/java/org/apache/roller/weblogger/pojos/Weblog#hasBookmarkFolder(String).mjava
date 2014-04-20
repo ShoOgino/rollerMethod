@@ -1,0 +1,15 @@
+    /**
+     * Does this Weblog have a bookmark folder with the specified name?
+     *
+     * @param name The name of the folder to check for.
+     * @return boolean true if exists, false otherwise.
+     */
+    public boolean hasBookmarkFolder(String name) {
+        for (WeblogBookmarkFolder folder : this.getBookmarkFolders()) {
+            if(name.equals(folder.getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+

@@ -59,7 +59,7 @@
         TestUtils.endSession(true);
 
         directory = null;
-        
+
         // Using named query again MediaFileDirectory.getByWeblogAndNoParent
         directory = mfMgr.getMediaFileRootDirectory(testWeblog);
 
@@ -69,5 +69,6 @@
         TestUtils.endSession(true);
         TestUtils.teardownWeblog(testWeblog.getId());
         TestUtils.teardownUser(testUser.getUserName());
+        TestUtils.endSession(true);
     }
 

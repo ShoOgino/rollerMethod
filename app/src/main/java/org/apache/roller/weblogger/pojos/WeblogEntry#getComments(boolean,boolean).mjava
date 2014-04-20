@@ -1,20 +1,16 @@
     /**
      * TODO: why is this method exposed to users with ability to get spam/non-approved comments?
      */
-    public List getComments(boolean ignoreSpam, boolean approvedOnly) {
-        List list = new ArrayList();
+    public List<WeblogEntryComment> getComments(boolean ignoreSpam, boolean approvedOnly) {
+        List<WeblogEntryComment> list = new ArrayList<WeblogEntryComment>();
         try {
             WeblogEntryManager wmgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
-            return wmgr.getComments(
-                    getWebsite(),
-                    this,
-                    null,  // search String
-                    null,  // startDate
-                    null,
-                    approvedOnly ? WeblogEntryComment.APPROVED : null,
-                    false, // we want chrono order
-                    0,    // offset
-                    -1);   // no limit
+
+            CommentSearchCriteria csc = new CommentSearchCriteria();
+            csc.setWeblog(getWebsite());
+            csc.setEntry(this);
+            csc.setStatus(approvedOnly ? WeblogEntryComment.APPROVED : null);
+            return wmgr.getComments(csc);
         } catch (WebloggerException alreadyLogged) {}
         return list;
     }

@@ -1,0 +1,20 @@
+    public WeblogCategory(
+            Weblog weblog,
+            String name,
+            String description,
+            String image) {
+        
+        this.name = name;
+        this.description = description;
+        this.image = image;
+        
+        this.weblog = weblog;
+        weblog.getWeblogCategories().add(this);
+        int size = weblog.getWeblogCategories().size();
+        if (size == 1) {
+            this.position = 0;
+        } else {
+            this.position = weblog.getWeblogCategories().get(size - 2).getPosition() + 1;
+        }
+    }
+

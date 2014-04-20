@@ -2,16 +2,17 @@
      * Transforms the given String into a subset of HTML displayable on a web
      * page. The subset includes &lt;b&gt;, &lt;i&gt;, &lt;p&gt;, &lt;br&gt;,
      * &lt;pre&gt; and &lt;a href&gt; (and their corresponding end tags).
-     *
-     * @param s   the String to transform
-     * @return    the transformed String
+     * 
+     * @param s
+     *            the String to transform
+     * @return the transformed String
      */
     public static String transformToHTMLSubset(String s) {
-        
+
         if (s == null) {
             return null;
         }
-        
+
         s = replace(s, OPENING_B_TAG_PATTERN, "<b>");
         s = replace(s, CLOSING_B_TAG_PATTERN, "</b>");
         s = replace(s, OPENING_I_TAG_PATTERN, "<i>");
@@ -30,7 +31,7 @@
         s = replace(s, OPENING_LI_TAG_PATTERN, "<li>");
         s = replace(s, CLOSING_LI_TAG_PATTERN, "</li>");
         s = replace(s, QUOTE_PATTERN, "\"");
-        
+
         // HTTP links
         s = replace(s, CLOSING_A_TAG_PATTERN, "</a>");
         Matcher m = OPENING_A_TAG_PATTERN.matcher(s);
@@ -42,12 +43,12 @@
             s = s.substring(0, start) + link + s.substring(end, s.length());
             m = OPENING_A_TAG_PATTERN.matcher(s);
         }
-        
+
         // escaped angle brackets
         s = s.replaceAll("&amp;lt;", "&lt;");
         s = s.replaceAll("&amp;gt;", "&gt;");
         s = s.replaceAll("&amp;#", "&#");
-        
+
         return s;
     }
 

@@ -2,16 +2,12 @@
         
         try {
             // only set values for properties that are already defined
-            String propName = null;
-            RuntimeConfigProperty updProp = null;
+            RuntimeConfigProperty updProp;
             String incomingProp = null;
-            Iterator propsIT = getProperties().keySet().iterator();
-            while(propsIT.hasNext()) {
-                propName = (String) propsIT.next();
-                
+            for (String propName : getProperties().keySet()) {
                 log.debug("Checking property ["+propName+"]");
                 
-                updProp = (RuntimeConfigProperty) getProperties().get(propName);
+                updProp = getProperties().get(propName);
                 String[] propValues = (String[]) getParameters().get(updProp.getName());
                 if(propValues != null && propValues.length > 0) {
                     // we don't deal with multi-valued props
@@ -22,7 +18,8 @@
                 // this is a bit hacky since we are assuming that any prop
                 // with a value of "true" or "false" is meant to be a boolean
                 // it may not always be the case, but we should be okay for now
-                if( updProp.getValue() != null // null check needed w/Oracle
+                // below null check needed w/Oracle
+                if( updProp.getValue() != null
                         && (updProp.getValue().equals("true") || updProp.getValue().equals("false"))) {
                     
                     incomingProp = (incomingProp == null || !incomingProp.equals("on")) ? "false" : "true";

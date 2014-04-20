@@ -3,13 +3,11 @@
         sb.append(name);
         sb.append("\n");
 
-        Iterator it = this.templatesByName.values().iterator();
-        while (it.hasNext()) {
-            sb.append(it.next());
+        for (ThemeTemplate template : templatesByName.values()) {
+            sb.append(template);
             sb.append("\n");
         }
 
         return sb.toString();
-
     }
 

@@ -1,19 +1,8 @@
-    // convenience method for updating the category name, which triggers a path tree rebuild
+    /**
+     * Convenience method for updating the category name
+     */
     public void updateName(String newName) throws WebloggerException {
-        
-        // update name
         setName(newName);
-        
-        // calculate path
-        if(getParent() == null) {
-            setPath("/");
-        } else if("/".equals(getParent().getPath())) {
-            setPath("/"+getName());
-        } else {
-            setPath(getParent().getPath() + "/" + getName());
-        }
-        
-        // update path tree for all children
-        updatePathTree(this);
+        WebloggerFactory.getWeblogger().getWeblogEntryManager().saveWeblogCategory(this);
     }
 

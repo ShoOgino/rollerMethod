@@ -32,8 +32,8 @@
 
             rollerEntry = mgr.getWeblogEntry(rollerEntry.getId());
             Entry newEntry = createAtomEntry(rollerEntry);
-            for (Iterator it = newEntry.getOtherLinks().iterator(); it.hasNext();) {
-                Link link = (Link)it.next();
+            for (Object objLink : newEntry.getOtherLinks()) {
+                Link link = (Link) objLink;
                 if ("edit".equals(link.getRel())) {
                     log.debug("Exiting");
                     return createAtomEntry(rollerEntry);

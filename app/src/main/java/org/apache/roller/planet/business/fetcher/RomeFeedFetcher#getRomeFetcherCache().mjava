@@ -27,7 +27,8 @@
                 cacheDir.mkdirs();
             }
         } catch (Exception e) {
-            log.error("Unable to create planet cache directory: " + cacheDir.getPath(), e);
+            log.error("Unable to create planet cache directory: " +
+                    ((cacheDir != null) ? cacheDir.getPath() : null), e);
             return null;
         }
         

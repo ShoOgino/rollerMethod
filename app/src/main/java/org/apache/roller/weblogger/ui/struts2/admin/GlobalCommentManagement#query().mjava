@@ -11,17 +11,16 @@
         
         try {
             WeblogEntryManager wmgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
-            List allMatchingComments = wmgr.getComments(
-                    null,
-                    null,
-                    getBean().getSearchString(),
-                    getBean().getStartDate(),
-                    getBean().getEndDate(),
-                    getBean().getStatus(),
-                    true, // reverse  chrono order
-                    0,
-                    -1);
-            
+
+            CommentSearchCriteria csc = new CommentSearchCriteria();
+            csc.setSearchText(getBean().getSearchString());
+            csc.setStartDate(getBean().getStartDate());
+            csc.setEndDate(getBean().getEndDate());
+            csc.setStatus(getBean().getStatus());
+            csc.setReverseChrono(true);
+
+            List allMatchingComments = wmgr.getComments(csc);
+
             if(allMatchingComments.size() > COUNT) {
                 setBulkDeleteCount(allMatchingComments.size());
             }

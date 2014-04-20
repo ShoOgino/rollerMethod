@@ -4,15 +4,13 @@
      * 
      * @throws Exception
      */
-    public void testUpdateTagTime() throws Exception {
-
-        WeblogEntryManager mgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
+     public void testUpdateTagTime() throws Exception {
+         WeblogEntryManager mgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
 
         // setup some test entries to use
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         testUser = TestUtils.getManagedUser(testUser);
-        WeblogEntry entry = TestUtils.setupWeblogEntry("entry1", testWeblog
-                .getDefaultCategory(), testWeblog, testUser);
+        WeblogEntry entry = TestUtils.setupWeblogEntry("entry1", testWeblog, testUser);
         String id = entry.getId();
 
         entry.addTag("testWillStayTag");
@@ -25,13 +23,12 @@
 
         Timestamp original = null;
 
-        for (Iterator it = entry.getTags().iterator(); it.hasNext();) {
-            WeblogEntryTag tagData = (WeblogEntryTag) it.next();
+        for (WeblogEntryTag tagData : entry.getTags()) {
             if (tagData.getName().equals("testwillstaytag"))
                 original = tagData.getTime();
         }
 
-        List updateTags = new ArrayList();
+        List<String> updateTags = new ArrayList<String>();
         updateTags.add("testwillstaytag");
         updateTags.add("testnewtag");
         updateTags.add("testnewtag3");
@@ -40,12 +37,12 @@
         TestUtils.endSession(true);
 
         entry = mgr.getWeblogEntry(id);
-        HashSet tagNames = new HashSet();
-        for (Iterator it = entry.getTags().iterator(); it.hasNext();) {
-            WeblogEntryTag tagData = (WeblogEntryTag) it.next();
+        HashSet<String> tagNames = new HashSet<String>();
+        for (WeblogEntryTag tagData : entry.getTags()) {
             tagNames.add(tagData.getName());
-            if (tagData.getName().equals("testwillstaytag"))
+            if (tagData.getName().equals("testwillstaytag")) {
                 assertEquals(original, tagData.getTime());
+            }
         }
 
         assertEquals(3, entry.getTags().size());

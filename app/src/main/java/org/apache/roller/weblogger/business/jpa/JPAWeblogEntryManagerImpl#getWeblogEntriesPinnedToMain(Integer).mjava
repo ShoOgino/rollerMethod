@@ -1,7 +1,7 @@
     /**
      * @inheritDoc
      */
-    public List getWeblogEntriesPinnedToMain(Integer max)
+    public List<WeblogEntry> getWeblogEntriesPinnedToMain(Integer max)
     throws WebloggerException {
         Query query = strategy.getNamedQuery(
                 "WeblogEntry.getByPinnedToMain&statusOrderByPubTimeDesc");

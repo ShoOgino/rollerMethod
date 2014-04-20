@@ -1,13 +1,13 @@
     /**
      * @inheritDoc
      */
-    public List getTags(Weblog website, String sortBy,
+    public List<TagStat> getTags(Weblog website, String sortBy,
             String startsWith, int offset, int limit) throws WebloggerException {
-        Query query = null;
-        List queryResults = null;
+        Query query;
+        List queryResults;
         boolean sortByName = sortBy == null || !sortBy.equals("count");
                 
-        List params = new ArrayList();
+        List<Object> params = new ArrayList<Object>();
         int size = 0;
         StringBuilder queryString = new StringBuilder();
         queryString.append("SELECT w.name, SUM(w.total) FROM WeblogEntryTagAggregate w WHERE ");
@@ -29,7 +29,7 @@
         } else {
             sortBy = "w.name";
         }
-        queryString.append(" GROUP BY w.name, w.total ORDER BY " + sortBy);
+        queryString.append(" GROUP BY w.name, w.total ORDER BY ").append(sortBy);
 
         query = strategy.getDynamicQuery(queryString.toString());
         for (int i=0; i<params.size(); i++) {
@@ -43,7 +43,7 @@
         }
         queryResults = query.getResultList();
         
-        List results = new ArrayList();
+        List<TagStat> results = new ArrayList<TagStat>();
         for (Iterator iter = queryResults.iterator(); iter.hasNext();) {
             Object[] row = (Object[]) iter.next();
             TagStat ce = new TagStat();
@@ -52,7 +52,7 @@
             ce.setCount(((Long) row[1]).intValue());
             results.add(ce);
         }
-        
+
         if (sortByName) {
             Collections.sort(results, TAG_STAT_NAME_COMPARATOR);
         } else {

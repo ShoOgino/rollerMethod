@@ -3,7 +3,8 @@
      * acronyms in the entry text with acronym html-tags.
      *
      * @param text entry text
-     * @param acronyms user provided set of acronyms
+     * @param acronymPatterns user provided set of acronyms
+     * @param acronymTags
      * @return entry text with acronym explanations
      */
     private String matchAcronyms(String text, Pattern[] acronymPatterns, String[] acronymTags) {
@@ -11,7 +12,7 @@
             LOG.debug("matchAcronyms("+text+")");
         }
         
-        Matcher matcher = null;
+        Matcher matcher;
         for (int i=0; i<acronymPatterns.length; i++) {
             matcher = acronymPatterns[i].matcher(text);
             text = matcher.replaceAll(acronymTags[i]);

@@ -1,22 +1,22 @@
-	/**
-	 * Revert the stylesheet to its original state.
-	 */
-	public String revert() {
+    /**
+     * Revert the stylesheet to its original state.
+     */
+    public String revert() {
 
-		if (getTemplate() == null) {
-			// TODO: i18n
-			addError("Unable to locate stylesheet template");
-			return ERROR;
-		}
+        if (getTemplate() == null) {
+            // TODO: i18n
+            addError("Unable to locate stylesheet template");
+            return ERROR;
+        }
 
-		// make sure we are still using a shared theme so that reverting is
-		// possible
-		if (WeblogTheme.CUSTOM.equals(getActionWeblog().getEditorTheme())) {
-			// TODO: i18n
-			addError("stylesheetEdit.error.customTheme");
-		}
+        // make sure we are still using a shared theme so that reverting is
+        // possible
+        if (WeblogTheme.CUSTOM.equals(getActionWeblog().getEditorTheme())) {
+            // TODO: i18n
+            addError("stylesheetEdit.error.customTheme");
+        }
 
-		if (!hasActionErrors()) {
+        if (!hasActionErrors()) {
             try {
 
                 WeblogTemplate stylesheet = getTemplate();
@@ -71,6 +71,6 @@
             }
         }
 
-		return execute();
-	}
+        return execute();
+    }
 

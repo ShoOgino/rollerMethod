@@ -1,7 +1,7 @@
     public String getTagsAsString() {
         StringBuilder sb = new StringBuilder();
-        for (Iterator it = getTags().iterator(); it.hasNext();) {
-            sb.append(((MediaFileTag) it.next()).getName()).append(" ");
+        for (MediaFileTag tag : getTags()) {
+            sb.append(tag.getName()).append(" ");
         }
         if (sb.length() > 0) {
             sb.deleteCharAt(sb.length() - 1);

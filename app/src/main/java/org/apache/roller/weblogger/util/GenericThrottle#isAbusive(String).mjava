@@ -20,16 +20,12 @@
             client = (ClientInfo) cacheEntry.getValue();
             
             // this means entry had expired
-            if(client == null) {
+            if (client == null) {
                 log.debug("EXPIRED "+clientId);
                 this.clientHistoryCache.remove(clientId);
             }
         }
-        
-        if(client != null) {
-            return (client.hits > this.threshold);
-        } else {
-            return false;
-        }
+
+        return client != null && client.hits > this.threshold;
     }
 

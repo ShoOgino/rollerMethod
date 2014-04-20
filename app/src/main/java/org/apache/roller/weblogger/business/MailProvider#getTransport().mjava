@@ -1,9 +1,9 @@
     /**
      * Create and connect to transport, caller is responsible for closing transport.
      */
-    public Transport getTransport() throws NoSuchProviderException, MessagingException {
+    public Transport getTransport() throws MessagingException {
         
-        Transport transport = null;
+        Transport transport;
         
         if (type == ConfigurationType.MAIL_PROPERTIES) {
             // Configure transport ourselves using mail properties

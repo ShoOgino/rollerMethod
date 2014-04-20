@@ -1,11 +1,10 @@
     /**
      * Test that we can add and remove entry attributes for an entry.
      */
-    public void testEntryAttributeCRUD() throws Exception {
+     public void testEntryAttributeCRUD() throws Exception {
         
-        WeblogManager mgr = WebloggerFactory.getWeblogger().getWeblogManager();
         WeblogEntryManager emgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
-        WeblogEntry entry = null;
+        WeblogEntry entry;
         
         WeblogEntry testEntry = new WeblogEntry();
         testEntry.setTitle("entryTestEntry");
@@ -17,7 +16,7 @@
         testEntry.setWebsite(testWeblog);
         testEntry.setCreatorUserName(testUser.getUserName());
 
-        WeblogCategory cat = emgr.getWeblogCategory(testWeblog.getDefaultCategory().getId());
+        WeblogCategory cat = testWeblog.getDefaultCategory();
         testEntry.setCategory(cat);
         
         // create a weblog entry
@@ -51,7 +50,6 @@
         TestUtils.endSession(true);
         
         // make sure entry was updated
-        entry = null;
         entry = emgr.getWeblogEntry(id);
         assertNotNull(entry);
         assertEquals("testtest", entry.getTitle());
@@ -61,7 +59,6 @@
         TestUtils.endSession(true);
         
         // make sure entry was deleted
-        entry = null;
         entry = emgr.getWeblogEntry(id);
         assertNull(entry);
     }

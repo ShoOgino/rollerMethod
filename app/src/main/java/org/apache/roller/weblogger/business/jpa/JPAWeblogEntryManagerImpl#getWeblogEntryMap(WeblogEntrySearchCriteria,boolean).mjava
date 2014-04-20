@@ -1,0 +1,30 @@
+    private Map getWeblogEntryMap(WeblogEntrySearchCriteria wesc, boolean stringsOnly) throws WebloggerException {
+
+        TreeMap map = new TreeMap(REVERSE_COMPARATOR);
+
+        List<WeblogEntry> entries = getWeblogEntries(wesc);
+
+        Calendar cal = Calendar.getInstance();
+        if (wesc.getWeblog() != null) {
+            cal.setTimeZone(wesc.getWeblog().getTimeZoneInstance());
+        }
+        
+        SimpleDateFormat formatter = DateUtil.get8charDateFormat();
+        for (WeblogEntry entry : entries) {
+            Date sDate = DateUtil.getNoonOfDay(entry.getPubTime(), cal);
+            if (stringsOnly) {
+                if (map.get(sDate) == null) {
+                    map.put(sDate, formatter.format(sDate));
+                }
+            } else {
+                List dayEntries = (List) map.get(sDate);
+                if (dayEntries == null) {
+                    dayEntries = new ArrayList();
+                    map.put(sDate, dayEntries);
+                }
+                dayEntries.add(entry);
+            }
+        }
+        return map;
+    }
+

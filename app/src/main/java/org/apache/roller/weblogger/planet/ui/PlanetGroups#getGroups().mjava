@@ -1,18 +1,13 @@
     public List<PlanetGroup> getGroups() {
+        List<PlanetGroup> displayGroups = new ArrayList<PlanetGroup>();
         
-        List<PlanetGroup> displayGroups = new ArrayList();
-        
-        Iterator allgroups = getPlanet().getGroups().iterator();
-        while (allgroups.hasNext()) {
-            PlanetGroup agroup = (PlanetGroup) allgroups.next();
-            
+        for (PlanetGroup planetGroup : getPlanet().getGroups()) {
             // The "all" group is considered a special group and cannot be
             // managed independently
-            if (!agroup.getHandle().equals("all")) {
-                displayGroups.add(agroup);
+            if (!planetGroup.getHandle().equals("all")) {
+                displayGroups.add(planetGroup);
             }
         }
-        
         return displayGroups;
     }
 

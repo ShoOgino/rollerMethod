@@ -3,31 +3,12 @@
      */
     public boolean isWeblogCategoryInUse(WeblogCategory cat)
     throws WebloggerException {
-        
+        if (cat.getWeblog().getBloggerCategory().equals(cat)) {
+            return true;
+        }
         Query q = strategy.getNamedQuery("WeblogEntry.getByCategory");
         q.setParameter(1, cat);
         int entryCount = q.getResultList().size();
-        
-        if (entryCount > 0) {
-            return true;
-        }
-        
-        Iterator cats = cat.getWeblogCategories().iterator();
-        while (cats.hasNext()) {
-            WeblogCategory childCat = (WeblogCategory)cats.next();
-            if (childCat.isInUse()) {
-                return true;
-            }
-        }
-        
-        if (cat.getWebsite().getBloggerCategory().equals(cat)) {
-            return true;
-        }
-        
-        if (cat.getWebsite().getDefaultCategory().equals(cat)) {
-            return true;
-        }
-        
-        return false;
+        return entryCount > 0;
     }
 

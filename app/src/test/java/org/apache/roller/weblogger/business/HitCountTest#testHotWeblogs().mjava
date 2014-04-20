@@ -14,7 +14,7 @@
         TestUtils.endSession(true);
         
         // make sure data was properly initialized
-        WeblogHitCount testCount = null;
+        WeblogHitCount testCount;
         testCount = mgr.getHitCount(cnt1.getId());
         assertEquals(10, testCount.getDailyHits());
         testCount = mgr.getHitCount(cnt2.getId());
@@ -28,11 +28,10 @@
         assertEquals(3, hotBlogs.size());
         
         // also check ordering and values
-        WeblogHitCount hitCount = null;
+        WeblogHitCount hitCount;
         Iterator it = hotBlogs.iterator();
-        for(int i=3; it.hasNext(); i--) {
+        for (int i=3; it.hasNext(); i--) {
             hitCount = (WeblogHitCount) it.next();
-            
             assertEquals(i*10, hitCount.getDailyHits());
         }
         

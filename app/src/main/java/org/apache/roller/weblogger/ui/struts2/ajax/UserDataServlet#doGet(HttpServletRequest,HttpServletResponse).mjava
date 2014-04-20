@@ -1,7 +1,30 @@
-    public void doGet(HttpServletRequest request, 
-                      HttpServletResponse response)
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
+        boolean admin = false;
+
+        // This user check can be removed as we protected by spring (see above).
+        WeblogRequest weblogRequest = null;
+        try {
+            weblogRequest = new WeblogRequest(request);
+
+            // Make sure we have the correct authority
+            User user = weblogRequest.getUser();
+            if (user == null) {
+                // user not found
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            } else if (user.hasGlobalPermission("admin")) {
+                // admin
+                admin = true;
+            }
+
+        } catch (Exception e) {
+            // some kind of error just return
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+
         String startsWith = request.getParameter("startsWith");
         Boolean enabledOnly = null;
         int offset = 0;
@@ -14,22 +37,27 @@
         }
         try {
             offset = Integer.parseInt(request.getParameter("offset"));
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         try {
             length = Integer.parseInt(request.getParameter("length"));
-        } catch (Exception ignored) {}
-        
+        } catch (Exception ignored) {
+        }
+
         Weblogger roller = WebloggerFactory.getWeblogger();
         try {
             UserManager umgr = roller.getUserManager();
-            List users =
-                    umgr.getUsersStartingWith(startsWith, enabledOnly, offset, length);
-            Iterator userIter = users.iterator();
-            while (userIter.hasNext()) {
-                User user = (User)userIter.next();
+            List<User> users = umgr.getUsersStartingWith(startsWith,
+                    enabledOnly, offset, length);
+            for (User user : users) {
                 response.getWriter().print(user.getUserName());
-                response.getWriter().print(",");
-                response.getWriter().println(user.getEmailAddress());
+                if (admin) {
+                    response.getWriter().print(",");
+                    response.getWriter().println(user.getEmailAddress());
+                } else{
+                    response.getWriter().print(",");
+                    response.getWriter().println(user.getScreenName());
+                }
             }
             response.flushBuffer();
         } catch (WebloggerException e) {

@@ -2,9 +2,9 @@
 	 * This is a convenience method which loads all the theme data from themes
 	 * stored on the filesystem in the roller webapp /themes/ directory.
 	 */
-	private Map loadAllThemesFromDisk() {
+	private Map<String, Theme> loadAllThemesFromDisk() {
 
-		Map themeMap = new HashMap();
+		Map<String, Theme> themeMap = new HashMap<String, Theme>();
 
 		// first, get a list of the themes available
 		File themesdir = new File(this.themeDir);

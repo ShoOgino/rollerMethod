@@ -31,10 +31,11 @@
                 WebloggerFactory.getWeblogger().flush();
 
                 // TODO: i18n
-                addMessage("New user created");
-
+                addMessage("User " + getBean().getUserName() + " created.  If desired, create another new user below or" +
+                        " select Cancel to return to User Administration.");
+                setBean(new CreateUserBean());
+                initializeBean();
                 return INPUT;
-
             } catch (WebloggerException e) {
                 log.error("Error adding new user", e);
                 // TODO: i18n

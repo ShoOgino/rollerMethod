@@ -7,30 +7,22 @@
         Query q = strategy.getNamedQuery("WeblogReferrer.getByWeblogEntry");
         q.setParameter(1, entry);
         List referers = q.getResultList();
-        for (Iterator iter = referers.iterator(); iter.hasNext();) {
-            WeblogReferrer referer = (WeblogReferrer) iter.next();
-            this.strategy.remove(referer);
+        for (Object obj : referers) {
+            this.strategy.remove(obj);
         }
-        
+
+        CommentSearchCriteria csc = new CommentSearchCriteria();
+        csc.setEntry(entry);
+
         // remove comments
-        List comments = getComments(
-                null,  // website
-                entry,
-                null,  // search String
-                null,  // startDate
-                null,  // endDate
-                null,  // status
-                true,  // reverse chrono order (not that it matters)
-                0,     // offset
-                -1);   // no limit
-        Iterator commentsIT = comments.iterator();
-        while (commentsIT.hasNext()) {
-            this.strategy.remove((WeblogEntryComment) commentsIT.next());
+        List<WeblogEntryComment> comments = getComments(csc);
+        for (WeblogEntryComment comment : comments) {
+            this.strategy.remove(comment);
         }
         
         // remove tags aggregates
         if (entry.getTags() != null) {
-            for(Iterator it = entry.getTags().iterator(); it.hasNext(); ) {
+            for (Iterator it = entry.getTags().iterator(); it.hasNext(); ) {
                 WeblogEntryTag tag = (WeblogEntryTag) it.next();
                 updateTagCount(tag.getName(), entry.getWebsite(), -1);
                 it.remove();

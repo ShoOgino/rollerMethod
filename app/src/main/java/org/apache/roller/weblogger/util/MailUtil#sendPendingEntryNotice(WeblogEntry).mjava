@@ -1,8 +1,7 @@
     /**
      * Send an email notice that a new pending entry has been submitted.
      */
-    public static void sendPendingEntryNotice(WeblogEntry entry) 
-            throws WebloggerException {
+    public static void sendPendingEntryNotice(WeblogEntry entry) throws WebloggerException {
         
         Session mailSession = WebloggerStartup.getMailProvider() != null
                 ? WebloggerStartup.getMailProvider().getSession() : null;
@@ -23,19 +22,18 @@
             String content;
             
             // list of enabled website authors and admins
-            ArrayList reviewers = new ArrayList();
-            List websiteUsers = wmgr.getWeblogUsers(entry.getWebsite(), true);
+            List<String> reviewers = new ArrayList<String>();
+            List<User> websiteUsers = wmgr.getWeblogUsers(entry.getWebsite(), true);
             
             // build list of reviewers (website users with author permission)
-            Iterator websiteUserIter = websiteUsers.iterator();
-            while (websiteUserIter.hasNext()) {
-                User websiteUser = (User)websiteUserIter.next();
-                if (entry.getWebsite().hasUserPermission(                        
+            for (User websiteUser : websiteUsers) {
+                if (entry.getWebsite().hasUserPermission(
                         websiteUser, WeblogPermission.POST)
                         && websiteUser.getEmailAddress() != null) {
                     reviewers.add(websiteUser.getEmailAddress());
                 }
             }
+
             to = (String[])reviewers.toArray(new String[reviewers.size()]);
             
             // Figure URL to entry edit page

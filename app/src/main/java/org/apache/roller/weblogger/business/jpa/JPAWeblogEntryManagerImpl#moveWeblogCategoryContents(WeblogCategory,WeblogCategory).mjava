@@ -5,40 +5,22 @@
             WeblogCategory destCat)
             throws WebloggerException {
         
-        // TODO: this check should be made before calling this method?
-        if (destCat.descendentOf(srcCat)) {
-            throw new WebloggerException(
-                    "ERROR cannot move parent category into it's own child");
-        }
-        
         // get all entries in category and subcats
-        List results = srcCat.retrieveWeblogEntries(true);
+        List<WeblogEntry> results = srcCat.retrieveWeblogEntries(false);
         
         // Loop through entries in src cat, assign them to dest cat
-        Iterator iter = results.iterator();
-        Weblog website = destCat.getWebsite();
-        while (iter.hasNext()) {
-            WeblogEntry entry = (WeblogEntry) iter.next();
+        Weblog website = destCat.getWeblog();
+        for (WeblogEntry entry : results) {
             entry.setCategory(destCat);
             entry.setWebsite(website);
             this.strategy.store(entry);
         }
         
-        // Make sure website's default and bloggerapi categories
-        // are valid after the move
-        
-        if (srcCat.getWebsite().getDefaultCategory().getId()
-        .equals(srcCat.getId())
-        || srcCat.getWebsite().getDefaultCategory().descendentOf(srcCat)) {
-            srcCat.getWebsite().setDefaultCategory(destCat);
-            this.strategy.store(srcCat.getWebsite());
-        }
-        
-        if (srcCat.getWebsite().getBloggerCategory().getId()
-        .equals(srcCat.getId())
-        || srcCat.getWebsite().getBloggerCategory().descendentOf(srcCat)) {
-            srcCat.getWebsite().setBloggerCategory(destCat);
-            this.strategy.store(srcCat.getWebsite());
+        // Update Blogger API category if applicable
+        WeblogCategory bloggerCategory = srcCat.getWeblog().getBloggerCategory();
+        if (bloggerCategory != null && bloggerCategory.getId().equals(srcCat.getId())) {
+            srcCat.getWeblog().setBloggerCategory(destCat);
+            this.strategy.store(srcCat.getWeblog());
         }
     }
 

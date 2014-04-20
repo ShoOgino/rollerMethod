@@ -4,7 +4,7 @@
         Query q = strategy.getNamedQuery("WeblogPermission.getByUserName&WeblogIdIncludingPending");
         q.setParameter(1, user.getUserName());
         q.setParameter(2, weblog.getHandle());
-        WeblogPermission existingPerm = null;
+        WeblogPermission existingPerm;
         try {
             existingPerm = (WeblogPermission)q.getSingleResult();
 

@@ -33,11 +33,12 @@
                 return 0;
             }
             else {
-                return 100;
+                return RollerConstants.PERCENT_100;
             }
         } catch (Exception e) {
             log.error("ERROR checking comment against Akismet", e);
         }
-        return 0; // interpret error as spam: better safe than sorry? 
+        // interpreting error as spam: better safe than sorry?
+        return 0;
     }
 

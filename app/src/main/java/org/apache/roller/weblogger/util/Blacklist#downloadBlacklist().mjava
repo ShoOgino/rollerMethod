@@ -52,8 +52,8 @@
                 mLogger.debug("writing updated MT blacklist to "+path);
                 
                 // read from url and write to file
-                byte[] buf = new byte[4096];
-                int length = 0;
+                byte[] buf = new byte[RollerConstants.FOUR_KB_IN_BYTES];
+                int length;
                 while((length = instream.read(buf)) > 0) {
                     outstream.write(buf, 0, length);
                 }

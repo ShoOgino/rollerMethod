@@ -8,15 +8,13 @@
         String wid = weblog.getId();
         
         // setup some test entries to use
-        WeblogEntry entry = TestUtils.setupWeblogEntry("tagsExistEntry1", 
-                testWeblog.getDefaultCategory(), testWeblog, testUser);
+        WeblogEntry entry = TestUtils.setupWeblogEntry("tagsExistEntry1", testWeblog, testUser);
         String id1 = entry.getId();
         entry.addTag("blahTag");
         entry.addTag("fooTag");
         mgr.saveWeblogEntry(entry);
 
-        WeblogEntry entry2 = TestUtils.setupWeblogEntry("tagsExistEntry2", 
-                weblog.getDefaultCategory(), weblog, testUser);
+        WeblogEntry entry2 = TestUtils.setupWeblogEntry("tagsExistEntry2", weblog, testUser);
         String id2 = entry2.getId();
         entry2.addTag("aaaTag");
         entry2.addTag("bbbTag");
@@ -24,22 +22,22 @@
         TestUtils.endSession(true);
         
         // we'll need these
-        List tags1 = new ArrayList();
+        List<String> tags1 = new ArrayList<String>();
         tags1.add("nonExistTag");
         
-        List tags2 = new ArrayList();
+        List<String> tags2 = new ArrayList<String>();
         tags2.add("blahtag");
         
         // test site-wide
-        this.assertTrue(mgr.getTagComboExists(tags2, null));
-        this.assertFalse(mgr.getTagComboExists(tags1, null));
+        assertTrue(mgr.getTagComboExists(tags2, null));
+        assertFalse(mgr.getTagComboExists(tags1, null));
         
         // test weblog specific
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         weblog = TestUtils.getManagedWebsite(weblog);
-        this.assertTrue(mgr.getTagComboExists(tags2, testWeblog));
-        this.assertFalse(mgr.getTagComboExists(tags1, testWeblog));
-        this.assertFalse(mgr.getTagComboExists(tags2, weblog));
+        assertTrue(mgr.getTagComboExists(tags2, testWeblog));
+        assertFalse(mgr.getTagComboExists(tags1, testWeblog));
+        assertFalse(mgr.getTagComboExists(tags2, weblog));
         
         // teardown our test data
         TestUtils.teardownWeblogEntry(id1);

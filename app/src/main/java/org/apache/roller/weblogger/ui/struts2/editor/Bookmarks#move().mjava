@@ -1,56 +1,41 @@
-	/**
-	 * Move folders and bookmarks to a new folder.
-	 */
-	public String move() {
+    /**
+     * Move bookmarks to a new folder.
+     */
+    public String move() {
 
-		try {
-			BookmarkManager bmgr = WebloggerFactory.getWeblogger()
-					.getBookmarkManager();
+        try {
+            BookmarkManager bmgr = WebloggerFactory.getWeblogger()
+                    .getBookmarkManager();
 
-			if (log.isDebugEnabled()) {
-                log.debug("Moving folders and bookmarks to folder - "
+            if (log.isDebugEnabled()) {
+                log.debug("Moving bookmarks to folder - "
                         + getTargetFolderId());
             }
 
-			// Move folders to new parent folder.
-			String folders[] = getSelectedFolders();
-			WeblogBookmarkFolder parent = bmgr.getFolder(getTargetFolderId());
-			if (null != folders && folders.length > 0) {
-				for (int i = 0; i < folders.length; i++) {
-					WeblogBookmarkFolder fd = bmgr.getFolder(folders[i]);
+            // Move bookmarks to new parent folder.
+            WeblogBookmarkFolder newFolder = bmgr.getFolder(getTargetFolderId());
+            String bookmarks[] = getSelectedBookmarks();
+            if (null != bookmarks && bookmarks.length > 0) {
+                for (int j = 0; j < bookmarks.length; j++) {
+                    WeblogBookmark bd = bmgr.getBookmark(bookmarks[j]);
+                    newFolder.addBookmark(bd);
+                    bd.setFolder(newFolder);
+                    bmgr.saveBookmark(bd);
+                    folder.getBookmarks().remove(bd);
+                }
+            }
 
-					// Don't move folder into itself.
-					if (!fd.getId().equals(parent.getId())
-							&& !parent.descendentOf(fd)) {
-						bmgr.moveFolder(fd, parent);
-					} else {
-						addMessage("bookmarksForm.warn.notMoving", fd.getName());
-					}
-				}
-			}
+            // flush changes
+            WebloggerFactory.getWeblogger().flush();
 
-			// Move bookmarks to new parent folder.
-			String bookmarks[] = getSelectedBookmarks();
-			if (null != bookmarks && bookmarks.length > 0) {
-				for (int j = 0; j < bookmarks.length; j++) {
-					// maybe we should be using folder.addBookmark()?
-					WeblogBookmark bd = bmgr.getBookmark(bookmarks[j]);
-					bd.setFolder(parent);
-					bmgr.saveBookmark(bd);
-				}
-			}
+            // notify caches
+            CacheManager.invalidate(getActionWeblog());
 
-			// flush changes
-			WebloggerFactory.getWeblogger().flush();
+        } catch (WebloggerException e) {
+            log.error("Error doing bookmark move", e);
+            addError("bookmarksForm.error.move");
+        }
 
-			// notify caches
-			CacheManager.invalidate(getActionWeblog());
-
-		} catch (WebloggerException e) {
-			log.error("Error doing folder/bookmark move", e);
-			addError("bookmarksForm.error.move");
-		}
-
-		return execute();
-	}
+        return execute();
+    }
 

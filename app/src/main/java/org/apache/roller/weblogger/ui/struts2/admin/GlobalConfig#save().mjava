@@ -7,13 +7,10 @@
         }
         
         // only set values for properties that are already defined
-        String propName = null;
-        RuntimeConfigProperty updProp = null;
-        String incomingProp = null;
-        Iterator propsIT = getProperties().keySet().iterator();
-        while (propsIT.hasNext()) {
-            propName = (String) propsIT.next();
-            updProp = (RuntimeConfigProperty) getProperties().get(propName);
+        RuntimeConfigProperty updProp;
+        String incomingProp;
+        for (String propName : getProperties().keySet()) {
+            updProp = getProperties().get(propName);
             incomingProp = this.getParameter(updProp.getName());
             
             log.debug("Checking property ["+propName+"]");
@@ -23,7 +20,8 @@
             // this is a bit hacky since we are assuming that any prop
             // with a value of "true" or "false" is meant to be a boolean
             // it may not always be the case, but we should be okay for now
-            if( updProp.getValue() != null // null check needed w/Oracle
+            // null check below needed w/Oracle
+            if( updProp.getValue() != null
                     && (updProp.getValue().equals("true") || updProp.getValue().equals("false"))) {
                 
                 if(incomingProp == null || !incomingProp.equals("on")) {
@@ -48,8 +46,7 @@
         if(getCommentPlugins().length > 0) {
             enabledPlugins = StringUtils.join(getCommentPlugins(), ",");
         }
-        RuntimeConfigProperty prop = 
-                    (RuntimeConfigProperty) getProperties().get("users.comments.plugins");
+        RuntimeConfigProperty prop = getProperties().get("users.comments.plugins");
         prop.setValue(enabledPlugins);
             
         try {

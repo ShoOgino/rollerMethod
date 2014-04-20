@@ -4,15 +4,15 @@
     public boolean overQuota(Weblog weblog) {
         
         String maxDir = WebloggerRuntimeConfig.getProperty("uploads.dir.maxsize");
-        String maxFile = WebloggerRuntimeConfig.getProperty("uploads.file.maxsize");
+
         // maxDirSize in megabytes
         BigDecimal maxDirSize = new BigDecimal(maxDir);
 
-        long maxDirBytes = (long)(1024000 * maxDirSize.doubleValue());
+        long maxDirBytes = (long)(RollerConstants.ONE_MB_IN_BYTES * maxDirSize.doubleValue());
         
         try {
-            File storageDir = this.getRealFile(weblog, null);
-            long weblogDirSize = this.getDirSize(storageDir, true);
+            File storageDirectory = this.getRealFile(weblog, null);
+            long weblogDirSize = this.getDirSize(storageDirectory, true);
             
             return weblogDirSize > maxDirBytes;
         } catch (Exception ex) {

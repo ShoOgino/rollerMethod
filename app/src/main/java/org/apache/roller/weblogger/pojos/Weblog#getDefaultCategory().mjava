@@ -1,9 +1,7 @@
-    /**
-     * By default,the default category for a weblog is the root and all macros
-     * work with the top level categories that are immediately under the root.
-     * Setting a different default category allows you to partition your weblog.
-     */
     public WeblogCategory getDefaultCategory() {
-        return defaultCategory;
+        if (weblogCategories.size() == 0) {
+            return null;
+        }
+        return weblogCategories.iterator().next();
     }
 

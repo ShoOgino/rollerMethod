@@ -1,7 +1,6 @@
     public void putEntryAttribute(String name, String value) throws Exception {
         WeblogEntryAttribute att = null;
-        for (Iterator it = getEntryAttributes().iterator(); it.hasNext(); ) {
-            WeblogEntryAttribute o = (WeblogEntryAttribute) it.next();
+        for (WeblogEntryAttribute o : getEntryAttributes()) {
             if (name.equals(o.getName())) {
                 att = o; 
                 break;

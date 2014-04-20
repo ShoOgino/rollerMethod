@@ -5,10 +5,10 @@
             
             // get the 8 char YYYYMMDD datestring for day, returns null
             // if no weblog entry on that day
-            String dateString = null;
+            String dateString;
             List entries = (List)monthMap.get(day);
             if ( entries != null ) {
-                dateString = STAR_DATE_FORMAT.format(
+                dateString = starDateFormat.format(
                         ((WeblogEntry)entries.get(0)).getPubTime());
                 
                 // append 8 char date string on end of selfurl
@@ -18,7 +18,7 @@
                 sb.append("<a href=\"");
                 sb.append( dayUrl );
                 sb.append("\">");
-                sb.append(SINGLE_DAY_FORMAT.format(day));
+                sb.append(singleDayFormat.format(day));
                 sb.append("</a></div>");
                 
                 for ( int i=0; i<entries.size(); i++ ) {
@@ -41,7 +41,7 @@
                 
             } else {
                 sb.append("<div class=\"hCalendarDayTitleBig\">");
-                sb.append(SINGLE_DAY_FORMAT.format(day));
+                sb.append(singleDayFormat.format(day));
                 sb.append("</div>");
                 sb.append("<div class=\"bCalendarDayContentBig\"/>");
             }

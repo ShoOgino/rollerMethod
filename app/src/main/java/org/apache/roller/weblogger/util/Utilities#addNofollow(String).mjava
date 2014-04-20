@@ -1,5 +1,6 @@
     /**
-     * Code (stolen from Pebble) to add rel="nofollow" string to all links in HTML.
+     * Code (stolen from Pebble) to add rel="nofollow" string to all links in
+     * HTML.
      */
     public static String addNofollow(String html) {
         if (html == null || html.length() == 0) {
@@ -13,8 +14,8 @@
             String link = html.substring(start, end);
             buf.append(html.substring(0, start));
             if (link.contains("rel=\"nofollow\"")) {
-                buf.append(
-                        link.substring(0, link.length() - 1) + " rel=\"nofollow\">");
+                buf.append(link.substring(0, link.length() - 1)
+                        + " rel=\"nofollow\">");
             } else {
                 buf.append(link);
             }

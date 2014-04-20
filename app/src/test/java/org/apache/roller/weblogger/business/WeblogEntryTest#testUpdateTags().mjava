@@ -1,12 +1,10 @@
     public void testUpdateTags() throws Exception {
-
         WeblogEntryManager mgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
 
         // setup some test entries to use
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         testUser = TestUtils.getManagedUser(testUser);
-        WeblogEntry entry = TestUtils.setupWeblogEntry("entry1", testWeblog
-                .getDefaultCategory(), testWeblog, testUser);
+        WeblogEntry entry = TestUtils.setupWeblogEntry("entry1", testWeblog, testUser);
         entry.addTag("testWillStayTag");
         entry.addTag("testTagWillBeRemoved");
         String id = entry.getId();
@@ -16,7 +14,7 @@
         entry = mgr.getWeblogEntry(id);
         assertEquals(2, entry.getTags().size());
 
-        List updateTags = new ArrayList();
+        List<String> updateTags = new ArrayList<String>();
         updateTags.add("testwillstaytag");
         updateTags.add("testnewtag");
         updateTags.add("testnewtag3");
@@ -25,9 +23,8 @@
         TestUtils.endSession(true);
 
         entry = mgr.getWeblogEntry(id);
-        HashSet tagNames = new HashSet();
-        for (Iterator it = entry.getTags().iterator(); it.hasNext();) {
-            WeblogEntryTag tagData = (WeblogEntryTag) it.next();
+        HashSet<String> tagNames = new HashSet<String>();
+        for (WeblogEntryTag tagData : entry.getTags()) {
             tagNames.add(tagData.getName());
         }
 

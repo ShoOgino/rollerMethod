@@ -56,7 +56,7 @@
             if ( cat != null ) {
                 // Use first category specified by request
                 WeblogCategory cd =
-                        weblogMgr.getWeblogCategoryByPath(entry.getWebsite(), cat);
+                        weblogMgr.getWeblogCategoryByName(entry.getWebsite(), cat);
                 entry.setCategory(cd);
             }
             
@@ -69,7 +69,7 @@
             
             // TODO: Weblogger timestamps need better than 1 second accuracy
             // Until then, we can't allow more than one post per second
-            Thread.sleep(1000);
+            Thread.sleep(RollerConstants.SEC_IN_MS);
             
             return true;
         } catch (Exception e) {

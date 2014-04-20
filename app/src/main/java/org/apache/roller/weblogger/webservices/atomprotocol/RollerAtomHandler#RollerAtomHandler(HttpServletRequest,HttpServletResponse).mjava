@@ -6,14 +6,15 @@
     public RollerAtomHandler(HttpServletRequest request, HttpServletResponse response) {
         roller = WebloggerFactory.getWeblogger();
 
-        String userName = null;
+        String userName;
         if ("oauth".equals(WebloggerRuntimeConfig.getProperty("webservices.atomPubAuth"))) {
             userName = authenticationOAUTH(request, response);
 
         } else if ("wsse".equals(WebloggerRuntimeConfig.getProperty("webservices.atomPubAuth"))) {
             userName = authenticateWSSE(request);
 
-        } else { // default to basic
+        } else {
+            // default to basic
             userName = authenticateBASIC(request);
         }
 

@@ -21,20 +21,12 @@
             if (!RollerAtomHandler.canView(user, website)) {
                 throw new AtomNotAuthorizedException("Not authorized to access website: " + handle);
             }
-            List entries = roller.getWeblogEntryManager().getWeblogEntries( 
-                    website,           // website
-                    null,              // user
-                    null,              // startDate
-                    null,              // endDate
-                    null,              // catName
-                    null,              // tags
-                    null,              // status
-                    null,              // text
-                    "updateTime",      // sortby
-                    null,
-                    null,              // locale
-                    start,             // offset (for range paging)
-                    max + 1);          // MAX_ENTRIES
+            WeblogEntrySearchCriteria wesc = new WeblogEntrySearchCriteria();
+            wesc.setWeblog(website);
+            wesc.setSortBy(WeblogEntrySearchCriteria.SortBy.UPDATE_TIME);
+            wesc.setOffset(start);
+            wesc.setMaxResults(max + 1);
+            List<WeblogEntry> entries = roller.getWeblogEntryManager().getWeblogEntries(wesc);
             Feed feed = new Feed();
             feed.setId(atomURL
                 +"/"+website.getHandle() + "/entries/" + start);
@@ -46,18 +38,20 @@
             link.setType("text/html");
             feed.setAlternateLinks(Collections.singletonList(link));
 
-            List atomEntries = new ArrayList();
+            List<Entry> atomEntries = new ArrayList<Entry>();
             int count = 0;
-            for (Iterator iter = entries.iterator(); iter.hasNext() && count < MAX_ENTRIES; count++) {
-                WeblogEntry rollerEntry = (WeblogEntry)iter.next();
+            for (WeblogEntry rollerEntry : entries) {
+                if (count++ >= MAX_ENTRIES) {
+                    break;
+                }
                 Entry entry = createAtomEntry(rollerEntry);
                 atomEntries.add(entry);
-                if (count == 0) {
+                if (count == 1) {
                     // first entry is most recent
                     feed.setUpdated(entry.getUpdated());
                 }
             }
-            List links = new ArrayList();
+            List<Link> links = new ArrayList<Link>();
             if (entries.size() > max) {
                 // add next link
                 int nextOffset = start + max;

@@ -3,14 +3,13 @@
      * @param offset   Offset into results (for paging)
      * @param len      Max number of results to return
      */
-    public List getNewUsers(int sinceDays, int length) {
-        List results = new ArrayList();
+    public List<UserWrapper> getNewUsers(int sinceDays, int length) {
+        List<UserWrapper> results = new ArrayList<UserWrapper>();
         try {            
             Weblogger roller = WebloggerFactory.getWeblogger();
             UserManager umgr = roller.getUserManager();
-            List users = umgr.getUsers(Boolean.TRUE, null, null, 0, length);
-            for (Iterator it = users.iterator(); it.hasNext();) {
-                User user = (User) it.next();
+            List<User> users = umgr.getUsers(Boolean.TRUE, null, null, 0, length);
+            for (User user : users) {
                 results.add(UserWrapper.wrap(user));
             }
         } catch (Exception e) {

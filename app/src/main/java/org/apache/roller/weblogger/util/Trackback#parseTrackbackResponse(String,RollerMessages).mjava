@@ -7,7 +7,7 @@
         
         SAXBuilder builder = new SAXBuilder();
         Document doc = builder.build(
-                new StringReader(StringEscapeUtils.unescapeHtml(response)));
+                new StringReader(StringEscapeUtils.unescapeHtml4(response)));
         Element root = doc.getRootElement();
         
         if ("response".equals(root.getName())) {

@@ -14,7 +14,7 @@
         
         Query q = strategy.getNamedQuery("WeblogHitCount.getByWeblog");
         q.setParameter(1, weblog);
-        WeblogHitCount hitCount = null;
+        WeblogHitCount hitCount;
         try {
             hitCount = (WeblogHitCount)q.getSingleResult();
         } catch (NoResultException e) {

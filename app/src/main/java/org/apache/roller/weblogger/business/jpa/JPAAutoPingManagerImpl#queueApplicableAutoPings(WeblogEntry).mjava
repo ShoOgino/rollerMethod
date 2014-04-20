@@ -7,9 +7,8 @@
         }
 
         PingQueueManager pingQueueMgr = roller.getPingQueueManager();
-        List applicableAutopings = getApplicableAutoPings(changedWeblogEntry);
-        for (Iterator i = applicableAutopings.iterator(); i.hasNext();) {
-            AutoPing autoPing = (AutoPing) i.next();
+        List<AutoPing> applicableAutopings = getApplicableAutoPings(changedWeblogEntry);
+        for (AutoPing autoPing : applicableAutopings) {
             pingQueueMgr.addQueueEntry(autoPing);
         }
     }

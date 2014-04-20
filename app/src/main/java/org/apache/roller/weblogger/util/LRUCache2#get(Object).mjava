@@ -1,10 +1,10 @@
     public Object get(Object key)
     {
         Object value = null;
-        CacheEntry entry = null;
+        CacheEntry entry;
         synchronized(this)
         {
-            entry = (CacheEntry) cache.get(key);
+            entry = cache.get(key);
         }
         if (entry != null)
         {

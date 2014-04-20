@@ -4,7 +4,7 @@
     private String render(String str) {
         String ret = str;
         mLogger.debug("Applying page plugins to string");
-        Map inPlugins = getWebsite().getInitializedPlugins();
+        Map<String, WeblogEntryPlugin> inPlugins = getWebsite().getInitializedPlugins();
         if (str != null && inPlugins != null) {
             List entryPlugins = getPluginsList();
             
@@ -14,11 +14,9 @@
                 // now loop over mPagePlugins, matching
                 // against Entry plugins (by name):
                 // where a match is found render Plugin.
-                Iterator iter = inPlugins.keySet().iterator();
-                while (iter.hasNext()) {
-                    String key = (String)iter.next();
-                    if (entryPlugins.contains(key)) {
-                        WeblogEntryPlugin pagePlugin = (WeblogEntryPlugin) inPlugins.get(key);
+                for (Map.Entry<String, WeblogEntryPlugin> entry : inPlugins.entrySet()) {
+                    if (entryPlugins.contains(entry.getKey())) {
+                        WeblogEntryPlugin pagePlugin = entry.getValue();
                         try {
                             ret = pagePlugin.render(this, ret);
                         } catch (Exception e) {

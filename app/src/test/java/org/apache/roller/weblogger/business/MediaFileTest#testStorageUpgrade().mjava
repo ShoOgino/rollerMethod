@@ -17,6 +17,8 @@
             testUser = TestUtils.setupUser("mediaFileTestUser");
             testWeblog1 = TestUtils.setupWeblog("testblog1", testUser);
             testWeblog2 = TestUtils.setupWeblog("testblog2", testUser);
+            
+            TestUtils.endSession(true);
 
             MediaFileManager mgr = WebloggerFactory.getWeblogger()
                     .getMediaFileManager();
@@ -29,7 +31,7 @@
 
             assertFalse("Upgrade required", mmgr.isFileStorageUpgradeRequired());
 
-            // now, let's check to see if migration was sucessful
+            // now, let's check to see if migration was successful
 
             MediaFileDirectory root1 = mgr
                     .getMediaFileRootDirectory(testWeblog1);

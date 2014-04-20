@@ -18,5 +18,14 @@
         }
         // update weblog last modified date. date updated by saveWebsite()
         roller.getWeblogManager().saveWeblog(targetDirectory.getWeblog());
+
+        // Refresh associated parent for changes
+        roller.flush();
+        if (moved.size() > 0) {
+            strategy.refresh(moved.get(0).getDirectory());
+        }
+
+        // Refresh associated parent for changes
+        strategy.refresh(targetDirectory);
     }
 

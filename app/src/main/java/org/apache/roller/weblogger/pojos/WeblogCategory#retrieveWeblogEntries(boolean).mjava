@@ -1,13 +1,18 @@
     /**
-     * Retrieve all weblog entries in this category and, optionally, include
-     * weblog entries all sub-categories.
+     * Retrieve all weblog entries in this category.
      *
-     * @param subcats True if entries from sub-categories are to be returned.
+     * @param publishedOnly True if desired to return only published entries
      * @return List of WeblogEntryData objects.
      * @throws WebloggerException
      */
-    public List retrieveWeblogEntries(boolean subcats) throws WebloggerException {
+    public List<WeblogEntry> retrieveWeblogEntries(boolean publishedOnly) throws WebloggerException {
         WeblogEntryManager wmgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
-        return wmgr.getWeblogEntries(this, subcats);
+        WeblogEntrySearchCriteria wesc = new WeblogEntrySearchCriteria();
+        wesc.setWeblog(weblog);
+        wesc.setCatName(this.getName());
+        if (publishedOnly) {
+            wesc.setStatus(WeblogEntry.PUBLISHED);
+        }
+        return wmgr.getWeblogEntries(wesc);
     }
 

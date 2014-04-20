@@ -1,0 +1,13 @@
+    /**
+     * Gets the script url.
+     * 
+     * @param path
+     *            the path
+     * 
+     * @return the script url
+     */
+    public URL getScriptURL(String path) {
+        String resourcePath = "/dbscripts/" + path;
+        return ClasspathDatabaseScriptProvider.class.getResource(resourcePath);
+    }
+

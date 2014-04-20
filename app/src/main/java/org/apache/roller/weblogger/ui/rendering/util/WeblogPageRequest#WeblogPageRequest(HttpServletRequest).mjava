@@ -37,7 +37,7 @@
          */
         if(pathInfo != null && pathInfo.trim().length() > 0) {
             
-            // all views use 2 path elements, except category
+            // all views use 2 path elements
             String[] pathElements = pathInfo.split("/", 2);
             
             // the first part of the path always represents the context
@@ -59,12 +59,6 @@
                     
                 } else if("category".equals(this.context)) {
                     this.weblogCategoryName = URLUtilities.decode(pathElements[1]);
-                    
-                    // all categories must start with a /
-                    if(!this.weblogCategoryName.startsWith("/")) {
-                        this.weblogCategoryName = "/"+this.weblogCategoryName;
-                    }
-                    
                 } else if("page".equals(this.context)) {
                     this.weblogPageName = pathElements[1];
                     String tagsString = request.getParameter("tags");
@@ -136,11 +130,6 @@
                 if(request.getParameter("cat") != null) {
                     this.weblogCategoryName =
                             URLUtilities.decode(request.getParameter("cat"));
-                    
-                    // all categories must start with a /
-                    if(!this.weblogCategoryName.startsWith("/")) {
-                        this.weblogCategoryName = "/"+this.weblogCategoryName;
-                    }
                 }
             }
         }

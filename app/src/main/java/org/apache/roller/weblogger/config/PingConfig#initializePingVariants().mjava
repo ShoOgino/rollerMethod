@@ -19,7 +19,7 @@
             if (m.matches() && m.groupCount() == 2) {
                 String url = m.group(1).trim();
                 String optionsList = m.group(2).trim();
-                Set variantOptions = new HashSet();
+                Set<String> variantOptions = new HashSet<String>();
                 String[] options = optionsList.split(",");
                 for (int j = 0; j < options.length; j++) {
                     String option = options[j].trim().toLowerCase();

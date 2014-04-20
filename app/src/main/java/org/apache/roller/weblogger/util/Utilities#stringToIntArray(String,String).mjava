@@ -1,14 +1,11 @@
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     /** Convert string to integer array. */
-    public static int[] stringToIntArray(String instr, String delim)
-    throws NoSuchElementException, NumberFormatException {
-        StringTokenizer toker = new StringTokenizer(instr, delim);
-        int intArray[] = new int[toker.countTokens()];
+    public static int[] stringToIntArray(String instr, String delim) {
+        String[] str = StringUtils.split(instr, delim);
+        int intArray[] = new int[str.length];
         int i = 0;
-        
-        while (toker.hasMoreTokens()) {
-            String sInt = toker.nextToken();
-            int nInt = Integer.parseInt(sInt);
+        for (String string : str) {
+            int nInt = Integer.parseInt(string);
             intArray[i++] = nInt;
         }
         return intArray;

@@ -13,7 +13,7 @@
         TestUtils.endSession(true);
         
         // make sure it was created
-        WeblogHitCount hitCount = null;
+        WeblogHitCount hitCount;
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         hitCount = mgr.getHitCountByWeblog(testWeblog);
         assertNotNull(hitCount);
@@ -24,7 +24,6 @@
         TestUtils.endSession(true);
         
         // make sure it was incremented properly
-        hitCount = null;
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         hitCount = mgr.getHitCountByWeblog(testWeblog);
         assertNotNull(hitCount);
@@ -35,7 +34,6 @@
         TestUtils.endSession(true);
         
         // make sure it was deleted
-        hitCount = null;
         hitCount = mgr.getHitCount(id);
         assertNull(hitCount);
     }

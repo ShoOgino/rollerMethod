@@ -7,26 +7,21 @@
         
         UserManager        umgr = roller.getUserManager();
         WeblogEntryManager emgr = roller.getWeblogEntryManager();
-        BookmarkManager    bmgr = roller.getBookmarkManager();
 
         //remove theme Assocs
-
         Query themeAssocQuery = strategy.getNamedQuery("WeblogThemeAssoc.getThemeAssocsByWeblog");
         themeAssocQuery.setParameter(1,website);
-         List assocResults = themeAssocQuery.getResultList();
-
-        for(Iterator iter = assocResults.iterator(); iter.hasNext();) {
-            WeblogThemeAssoc themeAssoc = (WeblogThemeAssoc) iter.next();
+        List<WeblogThemeAssoc> assocResults = themeAssocQuery.getResultList();
+        for (WeblogThemeAssoc themeAssoc : assocResults) {
             this.strategy.remove(themeAssoc);
         }
         
         // remove tags
         Query tagQuery = strategy.getNamedQuery("WeblogEntryTag.getByWeblog");
         tagQuery.setParameter(1, website);
-        List results = tagQuery.getResultList();
+        List<WeblogEntryTag> results = tagQuery.getResultList();
         
-        for(Iterator iter = results.iterator(); iter.hasNext();) {
-            WeblogEntryTag tagData = (WeblogEntryTag) iter.next();
+        for (WeblogEntryTag tagData : results) {
             if (tagData.getWeblogEntry() != null) {
                 tagData.getWeblogEntry().getTags().remove(tagData);
             }
@@ -53,34 +48,23 @@
         Query q = strategy.getNamedQuery("PingQueueEntry.getByWebsite");
         q.setParameter(1, website);
         List queueEntries = q.getResultList();
-        Iterator it = queueEntries.iterator();
-        while(it.hasNext()) {
-            this.strategy.remove((PingQueueEntry) it.next());
+        for (Object obj : queueEntries) {
+            this.strategy.remove(obj);
         }
         
         // Remove the website's auto ping configurations
-        AutoPingManager autoPingMgr = roller
-        .getAutopingManager();
-        List autopings = autoPingMgr.getAutoPingsByWebsite(website);
-        it = autopings.iterator();
-        while(it.hasNext()) {
-            this.strategy.remove((AutoPing) it.next());
-        }
-        
-        // Remove the website's custom ping targets
-        PingTargetManager pingTargetMgr = roller.getPingTargetManager();
-        List pingtargets = pingTargetMgr.getCustomPingTargets(website);
-        it = pingtargets.iterator();
-        while(it.hasNext()) {
-            this.strategy.remove((PingTarget) it.next());
+        AutoPingManager autoPingMgr = roller.getAutopingManager();
+        List<AutoPing> autopings = autoPingMgr.getAutoPingsByWebsite(website);
+        for (AutoPing autoPing : autopings) {
+            this.strategy.remove(autoPing);
         }
         
         // remove associated referers
         Query refQuery2 = strategy.getNamedQuery("WeblogReferrer.getByWebsite");
         refQuery2.setParameter(1, website);
         List referers = refQuery2.getResultList();
-        for (Iterator iter = referers.iterator(); iter.hasNext();) {
-            WeblogReferrer referer = (WeblogReferrer) iter.next();
+        for (Object obj : referers) {
+            WeblogReferrer referer = (WeblogReferrer) obj;
             this.strategy.remove(referer.getClass(), referer.getId());
         }
         // TODO: can we eliminate this unnecessary flush with OpenJPA 1.0
@@ -90,8 +74,8 @@
         Query pageQuery = strategy.getNamedQuery("WeblogTemplate.getByWebsite");
         pageQuery.setParameter(1, website);
         List pages = pageQuery.getResultList();
-        for (Iterator iter = pages.iterator(); iter.hasNext();) {
-            WeblogTemplate page = (WeblogTemplate) iter.next();
+        for (Object obj : pages) {
+            WeblogTemplate page = (WeblogTemplate) obj;
 
             //remove associated templateCode objects
             this.removeTemplateCodeObjs(page);
@@ -100,11 +84,12 @@
         }
         
         // remove folders (including bookmarks)
-        WeblogBookmarkFolder rootFolder = bmgr.getRootFolder(website);
-        if (null != rootFolder) {
-            this.strategy.remove(rootFolder);
+        Query folderQuery = strategy.getNamedQuery("WeblogBookmarkFolder.getByWebsite");
+        folderQuery.setParameter(1, website);
+        List<WeblogBookmarkFolder> folders = pageQuery.getResultList();
+        for (WeblogBookmarkFolder wbf : folders) {
+            this.strategy.remove(wbf);
         }
-        this.strategy.flush();
 
         // remove mediafile metadata
         // remove uploaded files
@@ -119,23 +104,21 @@
         // remove entries
         Query refQuery = strategy.getNamedQuery("WeblogEntry.getByWebsite");
         refQuery.setParameter(1, website);
-        List entries = refQuery.getResultList();
-        for (Iterator iter = entries.iterator(); iter.hasNext();) {
-            WeblogEntry entry = (WeblogEntry) iter.next();
+        List<WeblogEntry> entries = refQuery.getResultList();
+        for (WeblogEntry entry : entries) {
             emgr.removeWeblogEntry(entry);
         }
         this.strategy.flush();
         
-        // remove categories
-        WeblogCategory rootCat = emgr.getRootWeblogCategory(website);
-        if (null != rootCat) {
-            this.strategy.remove(rootCat);
-        }
-        
+        // delete all weblog categories
+        Query removeCategories= strategy.getNamedUpdate(
+                "WeblogCategory.removeByWeblog");
+        removeCategories.setParameter(1, website);
+        removeCategories.executeUpdate();
+
         // remove permissions
-        for (Iterator iterator = umgr.getWeblogPermissions(website).iterator(); iterator.hasNext();) {
-            WeblogPermission perm = (WeblogPermission) iterator.next();
-            umgr.revokeWeblogPermission(perm.getWeblog(), perm.getUser(), WeblogPermission.ALL_ACTIONS); 
+        for (WeblogPermission perm : umgr.getWeblogPermissions(website)) {
+            umgr.revokeWeblogPermission(perm.getWeblog(), perm.getUser(), WeblogPermission.ALL_ACTIONS);
         }
         
         // flush the changes before returning. This is required as there is a

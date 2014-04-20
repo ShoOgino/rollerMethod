@@ -6,7 +6,7 @@
 	public boolean execute(HttpServletRequest request) {
 		User ud = CustomUserRegistry.getUserDetailsFromAuthentication(request);
 
-		if (ud != null) {
+		if (hasNecessaryFields(ud)) {
 			UserManager mgr;
 			try {
 				mgr = WebloggerFactory.getWeblogger().getUserManager();
@@ -27,12 +27,13 @@
 					}
 				}
 				WebloggerFactory.getWeblogger().flush();
+                return true;
 
-			} catch (WebloggerException e) {
+            } catch (WebloggerException e) {
 				log.warn("Error while auto-provisioning user from SSO.", e);
 			}
 		}
 
-		return true;
+        return false;
 	}
 

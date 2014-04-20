@@ -13,14 +13,14 @@
         List entries = (List)monthMap.get( day );
         if ( entries != null && day != null ) {
             WeblogEntry entry = (WeblogEntry)entries.get(0);
-            dateString = STAR_DATE_FORMAT.format(entry.getPubTime());
+            dateString = starDateFormat.format(entry.getPubTime());
         }
         if (dateString == null && !alwaysURL) {
             return null;
         }
         else if (dateString == null && !nextPrevMonthURL) {
             dateString = DateUtil.format8chars(day);
-        } else if (dateString == null && nextPrevMonthURL) {
+        } else if (dateString == null) {
             dateString = DateUtil.format6chars(day);
         }
         try {

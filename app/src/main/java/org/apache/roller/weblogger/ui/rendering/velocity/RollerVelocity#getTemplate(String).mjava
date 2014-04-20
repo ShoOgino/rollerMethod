@@ -1,8 +1,9 @@
     /**
      * Convenience static method for looking up a template.
+     * @throws org.apache.velocity.exception.ResourceNotFoundException,
+     *       org.apache.velocity.exception.ParseErrorException
      */
-    public static Template getTemplate(String name)
-            throws ResourceNotFoundException, ParseErrorException, Exception {
+    public static Template getTemplate(String name) {
         return velocityEngine.getTemplate(name + "|standard");
     }
 

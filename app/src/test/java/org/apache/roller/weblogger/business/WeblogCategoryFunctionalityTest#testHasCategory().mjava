@@ -4,13 +4,9 @@
     public void testHasCategory() throws Exception {
         
         log.info("BEGIN");
-        
-        WeblogEntryManager mgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
-        
-        WeblogCategory root = mgr.getRootWeblogCategory(TestUtils.getManagedWebsite(testWeblog));
-        
+
         // check that root has category
-        assertTrue(root.hasCategory(testCat.getName()));
+        assertTrue(testWeblog.hasCategory(testCat.getName()));
         
         log.info("END");
     }

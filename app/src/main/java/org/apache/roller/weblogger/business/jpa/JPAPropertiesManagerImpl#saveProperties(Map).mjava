@@ -4,9 +4,8 @@
     public void saveProperties(Map properties) throws WebloggerException {
 
         // just go through the list and saveProperties each property
-        Iterator props = properties.values().iterator();
-        while (props.hasNext()) {
-            this.strategy.store((RuntimeConfigProperty) props.next());
+        for (Object prop : properties.values()) {
+            this.strategy.store(prop);
         }
     }
 

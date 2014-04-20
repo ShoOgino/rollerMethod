@@ -1,10 +1,8 @@
     public static void invalidate(WeblogBookmark bookmark) {
         
         log.debug("invalidating bookmark = "+bookmark.getId());
-        
-        Iterator handlers = cacheHandlers.iterator();
-        while(handlers.hasNext()) {
-            ((CacheHandler) handlers.next()).invalidate(bookmark);
+        for (CacheHandler handler : cacheHandlers) {
+            handler.invalidate(bookmark);
         }
     }
 

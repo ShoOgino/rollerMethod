@@ -8,8 +8,9 @@
         myValidate();
 
         if (!hasActionErrors()) {
-            
-            MediaFileManager manager = WebloggerFactory.getWeblogger().getMediaFileManager();
+
+            MediaFileManager manager = WebloggerFactory.getWeblogger()
+                    .getMediaFileManager();
 
             RollerMessages errors = new RollerMessages();
             List<MediaFile> uploaded = new ArrayList();
@@ -37,36 +38,43 @@
                         }
 
                         // make sure fileName is valid
-                        if (fileName.indexOf('/') != -1 ||
-                                fileName.indexOf('\\') != -1 ||
-                                fileName.contains("..")) {
+                        if (fileName.indexOf('/') != -1
+                                || fileName.indexOf('\\') != -1
+                                || fileName.contains("..")) {
                             addError("uploadFiles.error.badPath", fileName);
                             continue;
                         }
 
-                        mediaFile.setName(       fileName);
-                        mediaFile.setDirectory(  getDirectory());
-                        mediaFile.setWeblog(     getActionWeblog());
-                        mediaFile.setLength(     this.uploadedFiles[i].length());
-                        mediaFile.setInputStream(new FileInputStream(this.uploadedFiles[i]));
-                        mediaFile.setContentType(this.uploadedFilesContentType[i]);
+                        mediaFile.setName(fileName);
+                        mediaFile.setDirectory(getDirectory());
+                        mediaFile.setWeblog(getActionWeblog());
+                        mediaFile.setLength(this.uploadedFiles[i].length());
+                        mediaFile.setInputStream(new FileInputStream(
+                                this.uploadedFiles[i]));
+                        mediaFile
+                                .setContentType(this.uploadedFilesContentType[i]);
 
                         // insome cases Struts2 is not able to guess the content
                         // type correctly and assigns the default, which is
                         // octet-stream. So in cases where we see octet-stream
                         // we double check and see if we can guess the content
                         // type via the Java MIME type facilities.
-                        mediaFile.setContentType(this.uploadedFilesContentType[i]);
+                        mediaFile
+                                .setContentType(this.uploadedFilesContentType[i]);
                         if (mediaFile.getContentType() == null
-                                || mediaFile.getContentType().endsWith("/octet-stream")) {
-                            
-                            String ctype = Utilities.getContentTypeFromFileName(mediaFile.getName());
+                                || mediaFile.getContentType().endsWith(
+                                        "/octet-stream")) {
+
+                            String ctype = Utilities
+                                    .getContentTypeFromFileName(mediaFile
+                                            .getName());
                             if (null != ctype) {
                                 mediaFile.setContentType(ctype);
                             }
                         }
 
-                        manager.createMediaFile(getActionWeblog(), mediaFile, errors);
+                        manager.createMediaFile(getActionWeblog(), mediaFile,
+                                errors);
                         WebloggerFactory.getWeblogger().flush();
 
                         if (mediaFile.isImageFile()) {
@@ -92,7 +100,8 @@
                 if (uploaded.size() > 0 && !this.errorsExist()) {
                     addMessage("uploadFiles.uploadedFiles");
                     for (MediaFile upload : uploaded) {
-                        addMessage("uploadFiles.uploadedFile", upload.getPermalink());
+                        addMessage("uploadFiles.uploadedFile",
+                                upload.getPermalink());
                     }
 
                 } else {

@@ -4,8 +4,8 @@
      */
     private static boolean testComment(WeblogEntryComment c) {
         boolean ret = false;
-        List stringRules = new ArrayList();
-        List regexRules = new ArrayList();
+        List<String> stringRules = new ArrayList<String>();
+        List<Pattern> regexRules = new ArrayList<Pattern>();
         Weblog website = c.getWeblogEntry().getWebsite();
         Blacklist.populateSpamRules(
             website.getBlacklist(), stringRules, regexRules, 

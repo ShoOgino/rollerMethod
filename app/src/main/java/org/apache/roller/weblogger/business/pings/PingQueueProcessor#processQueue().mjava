@@ -25,13 +25,13 @@
                 LOGGER.debug("Started processing ping queue.");
             }
             // Get all of the entries
-            List entries = pingQueueMgr.getAllQueueEntries();
+            List<PingQueueEntry> entries = pingQueueMgr.getAllQueueEntries();
             
             // Process each entry
-            for (Iterator i = entries.iterator(); i.hasNext();) {
-                PingQueueEntry pingQueueEntry = (PingQueueEntry) i.next();
+            for (PingQueueEntry pingQueueEntry : entries) {
                 processQueueEntry(pingQueueEntry);
             }
+
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Finished processing ping queue.");
             }
