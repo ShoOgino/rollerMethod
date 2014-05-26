@@ -10,7 +10,7 @@
         // still null, we need to get a fresh value
         if(lastModified == null) {
             lastModified = new Date();
-            this.lastUpdateTime = new ExpiringCacheEntry(lastModified, this.timeout);
+            this.lastUpdateTime = new ExpiringCacheEntry(lastModified, RollerConstants.FIFTEEN_MIN_IN_MS);
         }
         
         return lastModified;
