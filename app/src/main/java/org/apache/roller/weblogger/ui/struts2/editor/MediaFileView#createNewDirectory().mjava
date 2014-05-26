@@ -1,5 +1,5 @@
     /**
-     * Create a new directory by name under current directory
+     * Create a new directory by name.  All folders placed at the root.
      */
     public String createNewDirectory() {
         boolean dirCreated = false;
@@ -11,7 +11,7 @@
             try {
                 log.debug("Creating new directory - " + this.newDirectoryName);
                 MediaFileManager manager = WebloggerFactory.getWeblogger().getMediaFileManager();
-                MediaFileDirectory parentDirectory = manager.getMediaFileDirectory(this.directoryId);
+                MediaFileDirectory parentDirectory = manager.getMediaFileRootDirectory(getActionWeblog());
                 manager.createMediaFileDirectory(parentDirectory, this.newDirectoryName);
                 // flush changes
                 WebloggerFactory.getWeblogger().flush();
