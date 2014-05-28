@@ -1,0 +1,11 @@
+    /**
+     * {@inheritDoc}
+     */
+    public MediaFileDirectory createDefaultMediaFileDirectory(Weblog weblog)
+            throws WebloggerException {
+        MediaFileDirectory defaultDirectory = new MediaFileDirectory(null, "default",
+                "default directory", weblog);
+        createMediaFileDirectory(defaultDirectory);
+        return defaultDirectory;
+    }
+

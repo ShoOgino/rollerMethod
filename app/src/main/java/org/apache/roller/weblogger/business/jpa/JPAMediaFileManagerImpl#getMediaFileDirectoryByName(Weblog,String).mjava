@@ -1,0 +1,21 @@
+    /**
+     * {@inheritDoc}
+     */
+    public MediaFileDirectory getMediaFileDirectoryByName(Weblog weblog,
+            String name) throws WebloggerException {
+
+        name = name.startsWith("/") ? name.substring(1) : name;
+
+        log.debug("Looking up weblog|media file directory: " + weblog.getHandle() + "|" + name);
+
+        Query q = this.strategy
+                .getNamedQuery("MediaFileDirectory.getByWeblogAndName");
+        q.setParameter(1, weblog);
+        q.setParameter(2, name);
+        try {
+            return (MediaFileDirectory) q.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+

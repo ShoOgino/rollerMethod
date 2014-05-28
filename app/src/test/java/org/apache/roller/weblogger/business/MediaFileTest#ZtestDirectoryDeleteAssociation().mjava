@@ -15,7 +15,7 @@
 
         // no need to create root directory, that is done automatically now
         MediaFileDirectory rootDirectory = mfMgr
-                .getMediaFileRootDirectory(testWeblog);
+                .getDefaultMediaFileDirectory(testWeblog);
 
         MediaFileDirectory directory1 = new MediaFileDirectory(rootDirectory,
                 "dir1", "directory 1", testWeblog);
@@ -47,7 +47,7 @@
 
         // Using named query MediaFileDirectory.getByWeblogAndNoParent
         MediaFileDirectory directory = mfMgr
-                .getMediaFileRootDirectory(testWeblog);
+                .getDefaultMediaFileDirectory(testWeblog);
 
         assertEquals(3, directory.getChildDirectories().size());
 
@@ -61,7 +61,7 @@
         directory = null;
 
         // Using named query again MediaFileDirectory.getByWeblogAndNoParent
-        directory = mfMgr.getMediaFileRootDirectory(testWeblog);
+        directory = mfMgr.getDefaultMediaFileDirectory(testWeblog);
 
         // There should only be two, the database only has two.
         assertEquals(2, directory.getChildDirectories().size());

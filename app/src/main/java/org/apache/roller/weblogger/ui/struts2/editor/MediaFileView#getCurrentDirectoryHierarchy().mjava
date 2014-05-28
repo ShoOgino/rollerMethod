@@ -5,8 +5,7 @@
     public List<KeyValueObject> getCurrentDirectoryHierarchy() {
         List<KeyValueObject> directoryHierarchy = new ArrayList<KeyValueObject>();
 
-        directoryHierarchy.add(new KeyValueObject("/", "root"));
-        String fullPath = this.currentDirectory.getPath();
+        String fullPath = "/" + this.currentDirectory.getName();
         String dpath = "";
         if (fullPath.length() > 1) {
             String[] directoryNames = fullPath.substring(1).split("/");

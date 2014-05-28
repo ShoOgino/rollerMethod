@@ -6,12 +6,12 @@
 
         // get directory
         String fileName = path;
-        MediaFileDirectory mdir = null;
+        MediaFileDirectory mdir;
         int slash = path.lastIndexOf('/');
         if (slash > 0) {
-            mdir = getMediaFileDirectoryByPath(weblog, path.substring(0, slash));
+            mdir = getMediaFileDirectoryByName(weblog, path.substring(0, slash));
         } else {
-            mdir = getMediaFileRootDirectory(weblog);
+            mdir = getDefaultMediaFileDirectory(weblog);
         }
         if (slash != -1) {
             fileName = fileName.substring(slash + 1);

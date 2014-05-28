@@ -13,13 +13,9 @@
 
         // no need to create root directory, that is done automatically now
         MediaFileDirectory rootDirectory = mfMgr
-                .getMediaFileRootDirectory(testWeblog);
+                .getDefaultMediaFileDirectory(testWeblog);
 
         try {
-
-            // MediaFileDirectory rootDirectory = new MediaFileDirectory(null,
-            // "root", "root d", testWeblog);
-            //mfMgr.createMediaFileDirectory(rootDirectory);
 
             MediaFileDirectory directory1 = new MediaFileDirectory(
                     rootDirectory, "dir1", "directory 1", testWeblog);
@@ -50,8 +46,7 @@
             mediaFile.setCopyrightText("test 7.1 copyright text");
             mediaFile.setSharedForGallery(false);
             mediaFile.setLength(4000);
-            mediaFile
-                    .setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
+            mediaFile.setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
             mediaFile.setContentType("image/jpeg");
             mfMgr.createMediaFile(testWeblog, mediaFile, new RollerMessages());
             //rootDirectory.getMediaFiles().add(mediaFile);

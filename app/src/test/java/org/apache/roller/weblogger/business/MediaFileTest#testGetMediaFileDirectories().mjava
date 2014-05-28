@@ -13,11 +13,7 @@
 
         // no need to create root directory, that is done automatically now
         MediaFileDirectory rootDirectory = mfMgr
-                .getMediaFileRootDirectory(testWeblog);
-
-        // MediaFileDirectory rootDirectory = new MediaFileDirectory(null,
-        // "root", "root d", testWeblog);
-        // mfMgr.createMediaFileDirectory(rootDirectory);
+                .getDefaultMediaFileDirectory(testWeblog);
 
         MediaFileDirectory directory2 = new MediaFileDirectory(rootDirectory,
                 "dir2", "directory 2", testWeblog);
@@ -36,9 +32,9 @@
                 .getMediaFileDirectories(testWeblog);
         assertNotNull(directories);
         assertEquals(3, directories.size());
-        assertTrue(containsPath(directories, "/"));
-        assertTrue(containsPath(directories, "/dir2"));
-        assertTrue(containsPath(directories, "/dir3"));
+        assertTrue(containsName(directories, "default"));
+        assertTrue(containsName(directories, "dir2"));
+        assertTrue(containsName(directories, "dir3"));
 
         TestUtils.endSession(true);
         TestUtils.teardownWeblog(testWeblog.getId());

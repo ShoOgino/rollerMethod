@@ -7,14 +7,5 @@
 
         this.weblog = weblog;
         this.parent = parent;
-
-        // calculate path
-        if (parent == null) {
-            this.path = "/";
-        } else if ("/".equals(parent.getPath())) {
-            this.path = "/" + name;
-        } else {
-            this.path = parent.getPath() + "/" + name;
-        }
     }
 

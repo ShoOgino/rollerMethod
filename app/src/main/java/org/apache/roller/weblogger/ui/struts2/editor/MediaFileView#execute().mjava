@@ -12,14 +12,14 @@
             if (StringUtils.isNotEmpty(this.directoryId)) {
                 directory = manager.getMediaFileDirectory(this.directoryId);
 
-            } else if (StringUtils.isNotEmpty(this.directoryPath)) {
-                directory = manager.getMediaFileDirectoryByPath(getActionWeblog(), this.directoryPath);
+            } else if (StringUtils.isNotEmpty(this.directoryName)) {
+                directory = manager.getMediaFileDirectoryByName(getActionWeblog(), this.directoryName);
 
             } else {
-                directory = manager.getMediaFileRootDirectory(getActionWeblog());
+                directory = manager.getDefaultMediaFileDirectory(getActionWeblog());
             }
             this.directoryId = directory.getId();
-            this.directoryPath = directory.getPath();
+            this.directoryName = directory.getName();
 
             this.childDirectories = new ArrayList<MediaFileDirectory>();
             this.childDirectories.addAll(directory.getChildDirectories());

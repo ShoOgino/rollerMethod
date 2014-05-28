@@ -11,11 +11,11 @@
             MediaFileDirectory directory;
             if (this.directoryId != null) {
                 directory = manager.getMediaFileDirectory(this.directoryId);
-            } else if (this.directoryPath != null) {
-                directory = manager.getMediaFileDirectoryByPath(getActionWeblog(), this.directoryPath);
+            } else if (this.directoryName != null) {
+                directory = manager.getMediaFileDirectoryByName(getActionWeblog(), this.directoryName);
                 this.directoryId = directory.getId();
             } else {
-                directory = manager.getMediaFileRootDirectory(getActionWeblog());
+                directory = manager.getDefaultMediaFileDirectory(getActionWeblog());
                 this.directoryId = directory.getId();
             }
 

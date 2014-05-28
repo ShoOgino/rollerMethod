@@ -35,7 +35,7 @@
 
                     } catch (WebloggerException ex) {
                         log.error("ERROR creating directory: "
-                                + newDir.getPath() + "/" + files[i].getName());
+                                + newDir.getName() + "/" + files[i].getName());
                     }
                     upgradeUploadsDir(weblog, user, files[i], subDir);
                 }
@@ -49,10 +49,8 @@
 
                 } else {
 
-                    String originalPath = ("/".equals(newDir.getPath()) ? ""
-                            : newDir.getPath()) + "/" + files[i].getName();
-                    log.debug("    Upgrade file with original path: "
-                            + originalPath);
+                    String originalPath = "/" + newDir.getName() + "/" + files[i].getName();
+                    log.debug("Upgrade file with original path: " + originalPath);
 
                     MediaFile mf = new MediaFile();
                     try {
@@ -104,7 +102,7 @@
             log.debug("Count of files created: " + fileCount);
 
         } catch (WebloggerException ex) {
-            log.error("ERROR flushing changes to dir: " + newDir.getPath(), ex);
+            log.error("ERROR flushing changes to dir: " + newDir.getName(), ex);
         }
     }
 

@@ -40,10 +40,10 @@
                                     // create weblog's mediafile directory if
                                     // needed
                                     MediaFileDirectory root = this
-                                            .getMediaFileRootDirectory(weblog);
+                                            .getDefaultMediaFileDirectory(weblog);
                                     if (root == null) {
                                         root = this
-                                                .createRootMediaFileDirectory(weblog);
+                                                .createDefaultMediaFileDirectory(weblog);
                                         roller.flush();
                                     }
 

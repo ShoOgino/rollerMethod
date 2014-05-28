@@ -6,7 +6,7 @@
         try {
             MediaFileManager manager = WebloggerFactory.getWeblogger().getMediaFileManager();
             if (directoryId != null) {
-                log.debug("Deleting media file folder - " + directoryId + " (" + directoryPath + ")");
+                log.debug("Deleting media file folder - " + directoryId + " (" + directoryName + ")");
                 MediaFileDirectory mediaFileDir = manager.getMediaFileDirectory(directoryId);
                 mediaFileDir.getParent().removeChildDirectory(mediaFileDir);
                 manager.removeMediaFileDirectory(mediaFileDir);
@@ -22,9 +22,9 @@
                 CacheManager.invalidate(getActionWeblog());
 
                 // re-route to default folder
-                mediaFileDir = manager.getMediaFileRootDirectory(getActionWeblog());
+                mediaFileDir = manager.getDefaultMediaFileDirectory(getActionWeblog());
                 setDirectoryId(mediaFileDir.getId());
-                setDirectoryPath(mediaFileDir.getPath());
+                setDirectoryName(mediaFileDir.getName());
             } else {
                 log.error("(System error) No directory ID provided for media file folder delete.");
             }

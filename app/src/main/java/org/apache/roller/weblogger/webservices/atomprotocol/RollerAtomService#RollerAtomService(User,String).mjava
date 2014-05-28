@@ -66,8 +66,8 @@
                     List<MediaFileDirectory> dirs = mgr.getMediaFileDirectories(weblog);
                     for (MediaFileDirectory dir : dirs) {
                         Collection uploadSubCol = new Collection(
-                            "Media Files: " + dir.getPath(), "text",
-                            atomURL + "/" + weblog.getHandle() + "/resources/" + dir.getPath());
+                            "Media Files: " + dir.getName(), "text",
+                            atomURL + "/" + weblog.getHandle() + "/resources/" + dir.getName());
                         uploadSubCol.setAccepts(uploadAccepts);
                         workspace.addCollection(uploadSubCol);
                     }
