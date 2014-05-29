@@ -11,8 +11,7 @@
             try {
                 log.debug("Creating new directory - " + this.newDirectoryName);
                 MediaFileManager manager = WebloggerFactory.getWeblogger().getMediaFileManager();
-                MediaFileDirectory parentDirectory = manager.getDefaultMediaFileDirectory(getActionWeblog());
-                manager.createMediaFileDirectory(parentDirectory, this.newDirectoryName);
+                manager.createMediaFileDirectory(getActionWeblog(), this.newDirectoryName);
                 // flush changes
                 WebloggerFactory.getWeblogger().flush();
                 addMessage("mediaFile.directoryCreate.success");

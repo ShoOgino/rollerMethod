@@ -21,9 +21,6 @@
             this.directoryId = directory.getId();
             this.directoryName = directory.getName();
 
-            this.childDirectories = new ArrayList<MediaFileDirectory>();
-            this.childDirectories.addAll(directory.getChildDirectories());
-
             this.childFiles = new ArrayList<MediaFile>();
             this.childFiles.addAll(directory.getMediaFiles());
 
@@ -38,8 +35,6 @@
             } else {
                 // default to sort by name
                 sortBy = "name";
-                Collections.sort(this.childDirectories,
-                    new MediaFileDirectoryComparator(DirectoryComparatorType.NAME));
                 Collections.sort(this.childFiles,
                     new MediaFileComparator(MediaFileComparatorType.NAME));
             }

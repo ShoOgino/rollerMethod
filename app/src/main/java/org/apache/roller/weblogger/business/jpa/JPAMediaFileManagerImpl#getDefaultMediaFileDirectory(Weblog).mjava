@@ -3,13 +3,6 @@
      */
     public MediaFileDirectory getDefaultMediaFileDirectory(Weblog weblog)
             throws WebloggerException {
-        Query q = this.strategy
-                .getNamedQuery("MediaFileDirectory.getByWeblogAndNoParent");
-        q.setParameter(1, weblog);
-        try {
-            return (MediaFileDirectory) q.getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
+        return getMediaFileDirectoryByName(weblog, "default");
     }
 

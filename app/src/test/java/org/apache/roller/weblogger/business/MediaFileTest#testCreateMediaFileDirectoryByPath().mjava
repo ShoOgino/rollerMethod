@@ -32,23 +32,23 @@
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
 
         try {
-            mfMgr.createMediaFileDirectoryByName(testWeblog, "");
+            mfMgr.createMediaFileDirectory(testWeblog, "");
             assertTrue(false);
         } catch (WebloggerException e) {
             assertTrue(true);
         }
 
         try {
-            mfMgr.createMediaFileDirectoryByName(testWeblog, "default");
+            mfMgr.createMediaFileDirectory(testWeblog, "default");
             assertTrue(false);
         } catch (WebloggerException e) {
             assertTrue(true);
         }
 
         MediaFileDirectory newDirectory1 = mfMgr
-                .createMediaFileDirectoryByName(testWeblog, "test1");
+                .createMediaFileDirectory(testWeblog, "test1");
         MediaFileDirectory newDirectory2 = mfMgr
-                .createMediaFileDirectoryByName(testWeblog, "test2");
+                .createMediaFileDirectory(testWeblog, "test2");
         TestUtils.endSession(true);
 
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
@@ -63,7 +63,7 @@
 
         // show throw error when creating directory that already exists
         try {
-            mfMgr.createMediaFileDirectoryByName(testWeblog, "test1");
+            mfMgr.createMediaFileDirectory(testWeblog, "test1");
             assertTrue(false);
         } catch (WebloggerException e) {
             assertTrue(true);

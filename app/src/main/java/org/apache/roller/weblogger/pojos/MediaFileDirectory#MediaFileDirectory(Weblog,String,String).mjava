@@ -1,11 +1,11 @@
-    public MediaFileDirectory(MediaFileDirectory parent, String name,
-            String desc, Weblog weblog) {
+    public MediaFileDirectory(Weblog weblog, String name,
+            String desc) {
 
         this.id = UUIDGenerator.generateUUID();
         this.name = name;
         this.description = desc;
 
         this.weblog = weblog;
-        this.parent = parent;
+        weblog.getMediaFileDirectories().add(this);
     }
 

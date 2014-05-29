@@ -17,39 +17,30 @@
         MediaFileDirectory rootDirectory = mfMgr
                 .getDefaultMediaFileDirectory(testWeblog);
 
-        MediaFileDirectory directory1 = new MediaFileDirectory(rootDirectory,
-                "dir1", "directory 1", testWeblog);
+        MediaFileDirectory directory1 = new MediaFileDirectory(testWeblog,
+                "dir1", "directory 1");
         mfMgr.createMediaFileDirectory(directory1);
-        rootDirectory.getChildDirectories().add(directory1);
 
-        MediaFileDirectory directory2 = new MediaFileDirectory(rootDirectory,
-                "dir2", "directory 2", testWeblog);
+        MediaFileDirectory directory2 = new MediaFileDirectory(testWeblog,
+                "dir2", "directory 2");
         mfMgr.createMediaFileDirectory(directory2);
-        rootDirectory.getChildDirectories().add(directory2);
 
-        MediaFileDirectory directory3 = new MediaFileDirectory(rootDirectory,
-                "dir3", "directory 3", testWeblog);
+        MediaFileDirectory directory3 = new MediaFileDirectory(testWeblog,
+                "dir3", "directory 3");
         mfMgr.createMediaFileDirectory(directory3);
-        rootDirectory.getChildDirectories().add(directory3);
 
         TestUtils.endSession(true);
 
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         rootDirectory = mfMgr.getMediaFileDirectory(rootDirectory.getId());
 
-        Set<MediaFileDirectory> childDirectories = rootDirectory
-                .getChildDirectories();
+        List<MediaFileDirectory> childDirectories = testWeblog.getMediaFileDirectories();
+
         assertEquals(3, childDirectories.size());
 
         TestUtils.endSession(true);
 
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
-
-        // Using named query MediaFileDirectory.getByWeblogAndNoParent
-        MediaFileDirectory directory = mfMgr
-                .getDefaultMediaFileDirectory(testWeblog);
-
-        assertEquals(3, directory.getChildDirectories().size());
 
         // Delete folder
         MediaFileDirectory directoryById = mfMgr
@@ -57,14 +48,6 @@
 
         mfMgr.removeMediaFileDirectory(directoryById);
         TestUtils.endSession(true);
-
-        directory = null;
-
-        // Using named query again MediaFileDirectory.getByWeblogAndNoParent
-        directory = mfMgr.getDefaultMediaFileDirectory(testWeblog);
-
-        // There should only be two, the database only has two.
-        assertEquals(2, directory.getChildDirectories().size());
 
         TestUtils.endSession(true);
         TestUtils.teardownWeblog(testWeblog.getId());

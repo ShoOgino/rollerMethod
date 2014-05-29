@@ -14,21 +14,18 @@
         MediaFileDirectory rootDirectory = mfMgr
                 .getDefaultMediaFileDirectory(testWeblog);
 
-        MediaFileDirectory directory1 = new MediaFileDirectory(rootDirectory,
-                "dir1", "directory 1", testWeblog);
+        MediaFileDirectory directory1 = new MediaFileDirectory(testWeblog,
+                "dir1", "directory 1");
         mfMgr.createMediaFileDirectory(directory1);
-        rootDirectory.getChildDirectories().add(directory1);
 
-        MediaFileDirectory directory2 = new MediaFileDirectory(rootDirectory,
-                "dir2", "directory 2", testWeblog);
+        MediaFileDirectory directory2 = new MediaFileDirectory(testWeblog,
+                "dir2", "directory 2");
         mfMgr.createMediaFileDirectory(directory2);
-        rootDirectory.getChildDirectories().add(directory2);
 
-        MediaFileDirectory directory3 = new MediaFileDirectory(rootDirectory,
-                "dir3", "directory 3", testWeblog);
+        MediaFileDirectory directory3 = new MediaFileDirectory(testWeblog,
+                "dir3", "directory 3");
         mfMgr.createMediaFileDirectory(directory3);
-        rootDirectory.getChildDirectories().add(directory3);
-        
+
         TestUtils.endSession(true);
         
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
@@ -65,9 +62,9 @@
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         rootDirectory = mfMgr.getMediaFileDirectory(rootDirectory.getId());
 
-        Set<MediaFileDirectory> childDirectories = rootDirectory
-                .getChildDirectories();
-        assertEquals(3, childDirectories.size());
+        List<MediaFileDirectory> childDirectories = testWeblog
+                .getMediaFileDirectories();
+        assertEquals(4, childDirectories.size());
         assertTrue(containsName(childDirectories, "dir1"));
         assertTrue(containsName(childDirectories, "dir2"));
         assertTrue(containsName(childDirectories, "dir3"));

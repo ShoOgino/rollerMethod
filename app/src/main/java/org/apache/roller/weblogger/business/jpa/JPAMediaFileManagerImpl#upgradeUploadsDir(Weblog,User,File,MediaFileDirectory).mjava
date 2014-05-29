@@ -17,27 +17,24 @@
             // a directory: go recursive
             if (files[i].isDirectory()) {
 
-                if (newDir.hasDirectory(files[i].getName())) {
+                if (weblog.hasMediaFileDirectory(files[i].getName())) {
                     // already have a mediafile directory for that
                     upgradeUploadsDir(weblog, user, files[i],
-                            newDir.getChildDirectory(files[i].getName()));
+                            weblog.getMediaFileDirectory(files[i].getName()));
 
                 } else {
                     // need to create a new mediafile directory
-                    MediaFileDirectory subDir = null;
+                    MediaFileDirectory secondDir = null;
                     try {
-                        subDir = newDir.createNewDirectory(files[i].getName());
-                        roller.getMediaFileManager().createMediaFileDirectory(
-                                subDir);
-                        newDir.getChildDirectories().add(subDir);
+                        secondDir = new MediaFileDirectory(weblog, files[i].getName(), null);
+                        roller.getMediaFileManager().createMediaFileDirectory(secondDir);
                         roller.flush();
                         dirCount++;
-
                     } catch (WebloggerException ex) {
                         log.error("ERROR creating directory: "
                                 + newDir.getName() + "/" + files[i].getName());
                     }
-                    upgradeUploadsDir(weblog, user, files[i], subDir);
+                    upgradeUploadsDir(weblog, user, files[i], secondDir);
                 }
 
             } else {

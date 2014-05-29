@@ -8,7 +8,6 @@
             if (directoryId != null) {
                 log.debug("Deleting media file folder - " + directoryId + " (" + directoryName + ")");
                 MediaFileDirectory mediaFileDir = manager.getMediaFileDirectory(directoryId);
-                mediaFileDir.getParent().removeChildDirectory(mediaFileDir);
                 manager.removeMediaFileDirectory(mediaFileDir);
                 refreshAllDirectories();
                 WebloggerFactory.getWeblogger().getWeblogManager().saveWeblog(this.getActionWeblog());
