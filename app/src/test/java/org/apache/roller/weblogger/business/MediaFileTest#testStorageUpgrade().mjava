@@ -34,11 +34,11 @@
             // now, let's check to see if migration was successful
 
             MediaFileDirectory root1 = mgr
-                    .getMediaFileRootDirectory(testWeblog1);
+                    .getDefaultMediaFileDirectory(testWeblog1);
             assertNotNull("testblog1's mediafile dir exists", root1);
             assertNotNull(mgr.getMediaFileByPath(testWeblog1, "/sub1/hawk.jpg"));
             assertNotNull(mgr.getMediaFileByPath(testWeblog1,
-                    "/sub1/sub2/nasa.jpg"));
+                    "/sub2/nasa.jpg"));
             assertNotNull(mgr.getMediaFileByPath(testWeblog1,
                     "/roller50-prop.png"));
 
@@ -46,7 +46,7 @@
                     "/sub1/hawk.jpg"));
 
             MediaFileDirectory root2 = mgr
-                    .getMediaFileRootDirectory(testWeblog2);
+                    .getDefaultMediaFileDirectory(testWeblog2);
             assertNotNull("testblog2's mediafile dir exists", root2);
             assertNotNull(root2.getMediaFile("amsterdam.jpg"));
             assertNotNull(root2.getMediaFile("p47-thunderbolt.jpg"));

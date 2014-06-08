@@ -28,7 +28,7 @@
                 }
                 String name;
                 String password;
-                ArrayList<SimpleGrantedAuthority> authorities;
+                List<SimpleGrantedAuthority> authorities;
                 
                 // We are not throwing UsernameNotFound exception in case of 
                 // openid authentication in order to receive OpenID Simple Registration (SREG)
@@ -56,7 +56,7 @@
                 if (userData == null) {
                     throw new UsernameNotFoundException("ERROR no user: " + userName);
                 }
-                ArrayList<SimpleGrantedAuthority> authorities =  getAuthorities(userData, umgr);
+                List<SimpleGrantedAuthority> authorities =  getAuthorities(userData, umgr);
                 return new org.springframework.security.core.userdetails.User(userData.getUserName(), userData.getPassword(),
                         true, true, true, true, authorities);
             }            

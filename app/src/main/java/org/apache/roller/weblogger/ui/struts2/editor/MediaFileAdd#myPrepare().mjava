@@ -10,19 +10,19 @@
             if (!StringUtils.isEmpty(bean.getDirectoryId())) {
                 setDirectory(mgr.getMediaFileDirectory(bean.getDirectoryId()));
 
-            } else if (StringUtils.isNotEmpty(directoryPath)) {
-                setDirectory(mgr.getMediaFileDirectoryByPath(getActionWeblog(),
-                        directoryPath));
+            } else if (StringUtils.isNotEmpty(directoryName)) {
+                setDirectory(mgr.getMediaFileDirectoryByName(getActionWeblog(),
+                        directoryName));
 
             } else {
                 MediaFileDirectory root = mgr
-                        .getMediaFileRootDirectory(getActionWeblog());
+                        .getDefaultMediaFileDirectory(getActionWeblog());
                 if (root == null) {
-                    root = mgr.createRootMediaFileDirectory(getActionWeblog());
+                    root = mgr.createDefaultMediaFileDirectory(getActionWeblog());
                 }
                 setDirectory(root);
             }
-            directoryPath = getDirectory().getPath();
+            directoryName = getDirectory().getName();
             bean.setDirectoryId(getDirectory().getId());
 
         } catch (WebloggerException ex) {

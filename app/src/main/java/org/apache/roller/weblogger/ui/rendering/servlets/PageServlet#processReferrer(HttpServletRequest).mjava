@@ -93,22 +93,6 @@
             }
         }
 
-        // referrer is valid, lets record it
-        try {
-            IncomingReferrer referrer = new IncomingReferrer();
-            referrer.setReferrerUrl(referrerUrl);
-            referrer.setRequestUrl(requestUrl);
-            referrer.setWeblogHandle(pageRequest.getWeblogHandle());
-            referrer.setWeblogAnchor(pageRequest.getWeblogAnchor());
-            referrer.setWeblogDateString(pageRequest.getWeblogDate());
-
-            ReferrerQueueManager refQueue = WebloggerFactory.getWeblogger()
-                    .getReferrerQueueManager();
-            refQueue.processReferrer(referrer);
-        } catch (Exception e) {
-            log.error("Error processing referrer", e);
-        }
-
         return false;
     }
 

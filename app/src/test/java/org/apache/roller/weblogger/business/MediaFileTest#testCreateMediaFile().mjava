@@ -3,8 +3,8 @@
      */
     public void testCreateMediaFile() throws Exception {
 
-        User testUser = null;
-        Weblog testWeblog = null;
+        User testUser;
+        Weblog testWeblog;
         testUser = TestUtils.setupUser("mediaFileTestUser3");
         testWeblog = TestUtils.setupWeblog("mediaFileTestWeblog3", testUser);
 
@@ -13,11 +13,7 @@
 
         // no need to create root directory, that is done automatically now
         MediaFileDirectory rootDirectory = mfMgr
-                .getMediaFileRootDirectory(testWeblog);
-
-        // MediaFileDirectory rootDirectory = new MediaFileDirectory(null,
-        // "root", "root d", testWeblog);
-        // mfMgr.createMediaFileDirectory(rootDirectory);
+                .getDefaultMediaFileDirectory(testWeblog);
 
         TestUtils.endSession(true);
 

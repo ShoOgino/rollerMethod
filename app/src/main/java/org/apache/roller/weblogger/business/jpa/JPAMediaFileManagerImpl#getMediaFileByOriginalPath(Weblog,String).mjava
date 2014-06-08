@@ -16,7 +16,7 @@
                 .getNamedQuery("MediaFile.getByWeblogAndOrigpath");
         q.setParameter(1, weblog);
         q.setParameter(2, origpath);
-        MediaFile mf = null;
+        MediaFile mf;
         try {
             mf = (MediaFile) q.getSingleResult();
         } catch (NoResultException e) {

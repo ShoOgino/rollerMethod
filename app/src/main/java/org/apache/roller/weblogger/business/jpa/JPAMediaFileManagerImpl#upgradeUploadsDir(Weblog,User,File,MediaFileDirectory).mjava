@@ -17,27 +17,24 @@
             // a directory: go recursive
             if (files[i].isDirectory()) {
 
-                if (newDir.hasDirectory(files[i].getName())) {
+                if (weblog.hasMediaFileDirectory(files[i].getName())) {
                     // already have a mediafile directory for that
                     upgradeUploadsDir(weblog, user, files[i],
-                            newDir.getChildDirectory(files[i].getName()));
+                            weblog.getMediaFileDirectory(files[i].getName()));
 
                 } else {
                     // need to create a new mediafile directory
-                    MediaFileDirectory subDir = null;
+                    MediaFileDirectory secondDir = null;
                     try {
-                        subDir = newDir.createNewDirectory(files[i].getName());
-                        roller.getMediaFileManager().createMediaFileDirectory(
-                                subDir);
-                        newDir.getChildDirectories().add(subDir);
+                        secondDir = new MediaFileDirectory(weblog, files[i].getName(), null);
+                        roller.getMediaFileManager().createMediaFileDirectory(secondDir);
                         roller.flush();
                         dirCount++;
-
                     } catch (WebloggerException ex) {
                         log.error("ERROR creating directory: "
-                                + newDir.getPath() + "/" + files[i].getName());
+                                + newDir.getName() + "/" + files[i].getName());
                     }
-                    upgradeUploadsDir(weblog, user, files[i], subDir);
+                    upgradeUploadsDir(weblog, user, files[i], secondDir);
                 }
 
             } else {
@@ -49,10 +46,8 @@
 
                 } else {
 
-                    String originalPath = ("/".equals(newDir.getPath()) ? ""
-                            : newDir.getPath()) + "/" + files[i].getName();
-                    log.debug("    Upgrade file with original path: "
-                            + originalPath);
+                    String originalPath = "/" + newDir.getName() + "/" + files[i].getName();
+                    log.debug("Upgrade file with original path: " + originalPath);
 
                     MediaFile mf = new MediaFile();
                     try {
@@ -104,7 +99,7 @@
             log.debug("Count of files created: " + fileCount);
 
         } catch (WebloggerException ex) {
-            log.error("ERROR flushing changes to dir: " + newDir.getPath(), ex);
+            log.error("ERROR flushing changes to dir: " + newDir.getName(), ex);
         }
     }
 

@@ -11,16 +11,13 @@
             MediaFileDirectory directory;
             if (this.directoryId != null) {
                 directory = manager.getMediaFileDirectory(this.directoryId);
-            } else if (this.directoryPath != null) {
-                directory = manager.getMediaFileDirectoryByPath(getActionWeblog(), this.directoryPath);
+            } else if (this.directoryName != null) {
+                directory = manager.getMediaFileDirectoryByName(getActionWeblog(), this.directoryName);
                 this.directoryId = directory.getId();
             } else {
-                directory = manager.getMediaFileRootDirectory(getActionWeblog());
+                directory = manager.getDefaultMediaFileDirectory(getActionWeblog());
                 this.directoryId = directory.getId();
             }
-
-            this.childDirectories = new ArrayList<MediaFileDirectory>();
-            this.childDirectories.addAll(directory.getChildDirectories());
 
             this.childFiles = new ArrayList<MediaFile>();
 
@@ -31,8 +28,6 @@
                 }
             }
 
-            Collections.sort(this.childDirectories,
-                    new MediaFileDirectoryComparator(DirectoryComparatorType.NAME));
             Collections.sort(this.childFiles,
                     new MediaFileComparator(MediaFileComparatorType.NAME));
 

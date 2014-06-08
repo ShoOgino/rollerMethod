@@ -1,0 +1,16 @@
+    /**
+     * Test utility to determine whether the given list of directories contains
+     * a directory of given path.
+     * 
+     */
+    private boolean containsName(Collection<MediaFileDirectory> directories,
+            String name) {
+        for (MediaFileDirectory directory : directories) {
+            if (name.equals(directory.getName())) {
+                return true;
+            }
+        }
+        return false;
+
+    }
+

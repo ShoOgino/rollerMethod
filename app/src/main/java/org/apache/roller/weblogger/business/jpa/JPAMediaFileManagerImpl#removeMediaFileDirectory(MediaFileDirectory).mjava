@@ -17,23 +17,14 @@
             this.strategy.remove(mf);
         }
 
-        // Children
-        roller.flush();
+        dir.getWeblog().getMediaFileDirectories().remove(dir);
 
-        // Set<MediaFileDirectory> dirs = dir.getChildDirectories();
-        // Recursive fix ConcurrentModificationException
-        Set<MediaFileDirectory> dirs = Collections
-                .synchronizedSet(new HashSet<MediaFileDirectory>(dir
-                        .getChildDirectories()));
-        for (MediaFileDirectory md : dirs) {
-            removeMediaFileDirectory(md);
-        }
+        // Contained media files
+        roller.flush();
 
         this.strategy.remove(dir);
 
         // Refresh associated parent
         roller.flush();
-        strategy.refresh(dir.getParent());
-
     }
 

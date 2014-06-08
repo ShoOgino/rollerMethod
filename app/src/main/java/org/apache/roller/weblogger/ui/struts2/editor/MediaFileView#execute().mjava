@@ -12,17 +12,14 @@
             if (StringUtils.isNotEmpty(this.directoryId)) {
                 directory = manager.getMediaFileDirectory(this.directoryId);
 
-            } else if (StringUtils.isNotEmpty(this.directoryPath)) {
-                directory = manager.getMediaFileDirectoryByPath(getActionWeblog(), this.directoryPath);
+            } else if (StringUtils.isNotEmpty(this.directoryName)) {
+                directory = manager.getMediaFileDirectoryByName(getActionWeblog(), this.directoryName);
 
             } else {
-                directory = manager.getMediaFileRootDirectory(getActionWeblog());
+                directory = manager.getDefaultMediaFileDirectory(getActionWeblog());
             }
             this.directoryId = directory.getId();
-            this.directoryPath = directory.getPath();
-
-            this.childDirectories = new ArrayList<MediaFileDirectory>();
-            this.childDirectories.addAll(directory.getChildDirectories());
+            this.directoryName = directory.getName();
 
             this.childFiles = new ArrayList<MediaFile>();
             this.childFiles.addAll(directory.getMediaFiles());
@@ -38,8 +35,6 @@
             } else {
                 // default to sort by name
                 sortBy = "name";
-                Collections.sort(this.childDirectories,
-                    new MediaFileDirectoryComparator(DirectoryComparatorType.NAME));
                 Collections.sort(this.childFiles,
                     new MediaFileComparator(MediaFileComparatorType.NAME));
             }

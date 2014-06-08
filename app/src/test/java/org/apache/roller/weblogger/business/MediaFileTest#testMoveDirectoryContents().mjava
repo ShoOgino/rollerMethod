@@ -13,27 +13,21 @@
 
         // no need to create root directory, that is done automatically now
         MediaFileDirectory rootDirectory = mfMgr
-                .getMediaFileRootDirectory(testWeblog);
+                .getDefaultMediaFileDirectory(testWeblog);
 
         try {
 
-            // MediaFileDirectory rootDirectory = new MediaFileDirectory(null,
-            // "root", "root d", testWeblog);
-            //mfMgr.createMediaFileDirectory(rootDirectory);
-
             MediaFileDirectory directory1 = new MediaFileDirectory(
-                    rootDirectory, "dir1", "directory 1", testWeblog);
+                    testWeblog, "dir1", "directory 1");
             mfMgr.createMediaFileDirectory(directory1);
-            rootDirectory.getChildDirectories().add(directory1);
             String dir1Id = directory1.getId();
 
             MediaFileDirectory directory2 = new MediaFileDirectory(
-                    rootDirectory, "dir2", "directory 2", testWeblog);
+                    testWeblog, "dir2", "directory 2");
             mfMgr.createMediaFileDirectory(directory2);
-            rootDirectory.getChildDirectories().add(directory2);
 
             MediaFileDirectory directory3 = new MediaFileDirectory(
-                    rootDirectory, "dir3", "directory 3", testWeblog);
+                    testWeblog, "dir3", "directory 3");
             mfMgr.createMediaFileDirectory(directory3);
             //rootDirectory.getChildDirectories().add(directory3);
             
@@ -50,8 +44,7 @@
             mediaFile.setCopyrightText("test 7.1 copyright text");
             mediaFile.setSharedForGallery(false);
             mediaFile.setLength(4000);
-            mediaFile
-                    .setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
+            mediaFile.setInputStream(getClass().getResourceAsStream(TEST_IMAGE));
             mediaFile.setContentType("image/jpeg");
             mfMgr.createMediaFile(testWeblog, mediaFile, new RollerMessages());
             //rootDirectory.getMediaFiles().add(mediaFile);

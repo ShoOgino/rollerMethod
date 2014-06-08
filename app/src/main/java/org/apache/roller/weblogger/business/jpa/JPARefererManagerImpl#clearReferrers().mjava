@@ -1,9 +1,0 @@
-    /**
-     * Clear referrer dayhits and remove referrers without excerpts.
-     */
-    public void clearReferrers() throws WebloggerException {
-        clearDayHits();
-        Query q = strategy.getNamedUpdate("WeblogReferrer.removeByNullOrEmptyExcerpt");
-        q.executeUpdate();
-    }
-

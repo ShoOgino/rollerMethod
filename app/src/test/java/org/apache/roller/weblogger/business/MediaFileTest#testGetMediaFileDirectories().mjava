@@ -13,21 +13,15 @@
 
         // no need to create root directory, that is done automatically now
         MediaFileDirectory rootDirectory = mfMgr
-                .getMediaFileRootDirectory(testWeblog);
+                .getDefaultMediaFileDirectory(testWeblog);
 
-        // MediaFileDirectory rootDirectory = new MediaFileDirectory(null,
-        // "root", "root d", testWeblog);
-        // mfMgr.createMediaFileDirectory(rootDirectory);
-
-        MediaFileDirectory directory2 = new MediaFileDirectory(rootDirectory,
-                "dir2", "directory 2", testWeblog);
+        MediaFileDirectory directory2 = new MediaFileDirectory(testWeblog,
+                "dir2", "directory 2" );
         mfMgr.createMediaFileDirectory(directory2);
-        rootDirectory.getChildDirectories().add(directory2);
 
-        MediaFileDirectory directory3 = new MediaFileDirectory(rootDirectory,
-                "dir3", "directory 3", testWeblog);
+        MediaFileDirectory directory3 = new MediaFileDirectory(testWeblog,
+                "dir3", "directory 3");
         mfMgr.createMediaFileDirectory(directory3);
-        rootDirectory.getChildDirectories().add(directory3);
 
         TestUtils.endSession(true);
 
@@ -36,9 +30,9 @@
                 .getMediaFileDirectories(testWeblog);
         assertNotNull(directories);
         assertEquals(3, directories.size());
-        assertTrue(containsPath(directories, "/"));
-        assertTrue(containsPath(directories, "/dir2"));
-        assertTrue(containsPath(directories, "/dir3"));
+        assertTrue(containsName(directories, "default"));
+        assertTrue(containsName(directories, "dir2"));
+        assertTrue(containsName(directories, "dir3"));
 
         TestUtils.endSession(true);
         TestUtils.teardownWeblog(testWeblog.getId());

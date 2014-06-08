@@ -4,9 +4,6 @@
     public void shutdown() {
         try {
             HitCountQueue.getInstance().shutdown();
-            if (getReferrerQueueManager() != null) {
-                getReferrerQueueManager().shutdown();
-            }
             if (indexManager != null) {
                 indexManager.shutdown();
             }

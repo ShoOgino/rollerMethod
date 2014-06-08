@@ -12,7 +12,7 @@
 
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         MediaFileDirectory rootDirectory = mfMgr
-                .getMediaFileRootDirectory(testWeblog);
+                .getDefaultMediaFileDirectory(testWeblog);
 
         try {
 
@@ -120,10 +120,10 @@
             filter2.setName("test_home.jpg");
             searchResults = mfMgr.searchMediaFiles(testWeblog, filter2);
             assertFalse(searchResults.isEmpty());
-            assertEquals(id2, ((MediaFile) searchResults.get(0)).getId());
-            assertNotNull(((MediaFile) searchResults.get(0)).getDirectory());
-            assertEquals("/", ((MediaFile) searchResults.get(0)).getDirectory()
-                    .getPath());
+            assertEquals(id2, (searchResults.get(0)).getId());
+            assertNotNull((searchResults.get(0)).getDirectory());
+            assertEquals("default", (searchResults.get(0)).getDirectory()
+                    .getName());
 
             MediaFileFilter filter3 = new MediaFileFilter();
             filter3.setName("test_work.jpg");
