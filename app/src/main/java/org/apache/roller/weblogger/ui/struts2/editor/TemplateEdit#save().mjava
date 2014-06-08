@@ -5,7 +5,6 @@
         log.debug("Entering save()");
 
         if (getTemplate() == null) {
-            // TODO: i18n
             addError("Unable to locate specified template");
             return LIST;
         }
@@ -43,8 +42,7 @@
 
             } catch (Exception ex) {
                 log.error("Error updating page - " + getBean().getId(), ex);
-                // TODO: i18n
-                addError("Error saving template");
+                addError("Error updating template - check Roller logs");
             }
         }
 

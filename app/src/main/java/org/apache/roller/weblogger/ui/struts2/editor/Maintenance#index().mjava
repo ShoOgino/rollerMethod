@@ -10,8 +10,7 @@
             addMessage("maintenance.message.indexed");
         } catch (Exception ex) {
             log.error("Error doing index rebuild", ex);
-            // TODO: i18n
-            addError("Error rebuilding search index");
+            addError("maintenance.message.indexed.failure");
         }
         
         return SUCCESS;

@@ -32,8 +32,7 @@
                 } catch (Exception re) {
                     log.error("Error customizing theme for weblog - "
                             + getActionWeblog().getHandle(), re);
-                    // TODO: i18n
-                    addError("Error importing theme");
+                    addError("Error importing theme - check Roller logs");
                 }
 
                 if (!hasActionErrors()) {
@@ -51,9 +50,7 @@
                         // change
                         CacheManager.invalidate(weblog);
 
-                        // TODO: i18n
-                        addMessage("Successfully set theme to - "
-                                + WeblogTheme.CUSTOM);
+                        addMessage("themeEditor.setTheme.success", WeblogTheme.CUSTOM);
                         if (t != null) {
                             addMessage("Successfully copied templates from theme - "
                                     + t.getName());
@@ -70,8 +67,7 @@
                     }
                 }
             } else {
-                // TODO: i18n
-                addError("Sorry, custom themes are not allowed");
+                addError("themeEditor.customTheme.disallowed");
             }
 
             // we are dealing with a shared theme scenario
@@ -80,9 +76,7 @@
             // make sure theme is valid and enabled
             Theme newTheme = null;
             if (getThemeId() == null) {
-                // TODO: i18n
                 addError("No theme specified");
-
             } else {
                 try {
                     ThemeManager themeMgr = WebloggerFactory.getWeblogger()
@@ -90,13 +84,11 @@
                     newTheme = themeMgr.getTheme(getThemeId());
 
                     if (!newTheme.isEnabled()) {
-                        // TODO: i18n
                         addError("Theme not enabled");
                     }
 
                 } catch (Exception ex) {
                     log.warn(ex);
-                    // TODO: i18n
                     addError("Theme not found");
                 }
             }
@@ -142,7 +134,7 @@
 
                     // Theme set to..
                     if (!originalTheme.equals(getThemeId())) {
-                        addMessage("themeEditor.settheme", newTheme.getName());
+                        addMessage("themeEditor.setTheme.success", newTheme.getName());
                     }
 
                 } catch (WebloggerException re) {
@@ -155,7 +147,6 @@
             // unknown theme scenario, error
         } else {
             // invalid theme type
-            // TODO: i18n
             addError("no valid theme type submitted");
         }
 

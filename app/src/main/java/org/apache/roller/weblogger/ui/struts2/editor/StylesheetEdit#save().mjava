@@ -4,8 +4,7 @@
     public String save() {
 
         if (getTemplate() == null) {
-            // TODO: i18n
-            addError("Unable to locate stylesheet template");
+            addError("stylesheetEdit.error.cannotFind");
             return ERROR;
         }
 
@@ -63,8 +62,7 @@
             } catch (WebloggerException ex) {
                 log.error("Error updating stylesheet template for weblog - "
                         + getActionWeblog().getHandle(), ex);
-                // TODO: i18n
-                addError("Error saving template");
+                addError("Error saving template - check Roller logs");
             }
         }
 
