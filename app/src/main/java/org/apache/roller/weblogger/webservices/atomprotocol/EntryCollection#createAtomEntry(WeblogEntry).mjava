@@ -27,10 +27,10 @@
         }
         
         User creator = entry.getCreator();
-        Person author = new Person();
+        SyndPerson author = new Person();
         author.setName(         creator.getUserName());
         author.setEmail(        creator.getEmailAddress());
-        atomEntry.setAuthors(   Collections.singletonList(author));
+        atomEntry.setAuthors(   (List<SyndPerson>)Collections.singletonList(author));
         
         // Add Atom category for Weblogger category, using category scheme
         List<Category> categories = new ArrayList<Category>();
@@ -65,7 +65,7 @@
         otherlinks.add(editlink);
         atomEntry.setOtherLinks(otherlinks);
         
-        List<AppModule> modules = new ArrayList<AppModule>();
+        List<Module> modules = new ArrayList<Module>();
         AppModule app = new AppModuleImpl();
         app.setDraft(!WeblogEntry.PUBLISHED.equals(entry.getStatus()));
         app.setEdited(entry.getUpdateTime());
