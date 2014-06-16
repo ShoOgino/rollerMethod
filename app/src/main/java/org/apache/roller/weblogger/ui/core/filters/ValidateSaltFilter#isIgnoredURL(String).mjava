@@ -1,18 +1,19 @@
-	/**
-	 * Checks if this is an ignored url defined in the salt.ignored.urls property
-	 * 
-	 * @param theUrl
-	 *            the the url
-	 * 
-	 * @return true, if is ignored resource
-	 */
-	private boolean isIgnoredURL(String theUrl) {
-		int i = theUrl.lastIndexOf('/');
+    /**
+     * Checks if this is an ignored url defined in the salt.ignored.urls
+     * property
+     * 
+     * @param theUrl
+     *            the the url
+     * 
+     * @return true, if is ignored resource
+     */
+    private boolean isIgnoredURL(String theUrl) {
+        int i = theUrl.lastIndexOf('/');
 
-		// If it's not a resource then don't ignore it
-		if (i <= 0 || i == theUrl.length() - 1) {
+        // If it's not a resource then don't ignore it
+        if (i <= 0 || i == theUrl.length() - 1) {
             return false;
         }
-		return ignored.contains(theUrl.substring(i + 1));
-	}
+        return ignored.contains(theUrl.substring(i + 1));
+    }
 
