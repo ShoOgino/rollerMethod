@@ -1,21 +1,24 @@
     /**
-     * Fetches and displays list of media file for the given directory.
-     * The directory could be chosen by ID or path.
-     *
+     * Fetches and displays list of media file for the given directory. The
+     * directory could be chosen by ID or path.
+     * 
      * @return String The result of the action.
      */
     @SkipValidation
     public String execute() {
-        MediaFileManager manager = WebloggerFactory.getWeblogger().getMediaFileManager();
+        MediaFileManager manager = WebloggerFactory.getWeblogger()
+                .getMediaFileManager();
         try {
             MediaFileDirectory directory;
             if (this.directoryId != null) {
                 directory = manager.getMediaFileDirectory(this.directoryId);
             } else if (this.directoryName != null) {
-                directory = manager.getMediaFileDirectoryByName(getActionWeblog(), this.directoryName);
+                directory = manager.getMediaFileDirectoryByName(
+                        getActionWeblog(), this.directoryName);
                 this.directoryId = directory.getId();
             } else {
-                directory = manager.getDefaultMediaFileDirectory(getActionWeblog());
+                directory = manager
+                        .getDefaultMediaFileDirectory(getActionWeblog());
                 this.directoryId = directory.getId();
             }
 
@@ -28,17 +31,33 @@
                 }
             }
 
-            Collections.sort(this.childFiles,
-                    new MediaFileComparator(MediaFileComparatorType.NAME));
+            Collections.sort(this.childFiles, new MediaFileComparator(
+                    MediaFileComparatorType.NAME));
 
             this.currentDirectory = directory;
+
+            // List of available directories
+            List<MediaFileDirectory> sortedDirList = new ArrayList<MediaFileDirectory>();
+            List<MediaFileDirectory> directories = manager
+                    .getMediaFileDirectories(getActionWeblog());
+            for (MediaFileDirectory mediaFileDirectory : directories) {
+                if (!"default".equals(mediaFileDirectory.getName())
+                        && "default".equals(directory.getName())
+                        || !"default".equals(directory.getName())) {
+                    sortedDirList.add(mediaFileDirectory);
+                }
+            }
+
+            Collections.sort(sortedDirList, new MediaFileDirectoryComparator(
+                    DirectoryComparatorType.NAME));
+            setAllDirectories(sortedDirList);
 
             return SUCCESS;
 
         } catch (FileIOException ex) {
             log.error("Error viewing media file directory ", ex);
             addError("MediaFile.error.view");
-            
+
         } catch (Exception e) {
             log.error("Error viewing media file directory ", e);
             addError("MediaFile.error.view");
