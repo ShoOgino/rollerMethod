@@ -121,6 +121,14 @@
                     .getString("error.commentPostFailedEmailAddress");
             log.debug("Email Adddress is invalid : "
                     + commentRequest.getEmail());
+            // if there is an URL it must be valid
+        } else if (commentRequest.getUrl() != null) {
+            String[] customSchemes = { "http", "https" };
+            if (!new UrlValidator(customSchemes).isValid(commentRequest
+                    .getUrl())) {
+                error = messageUtils.getString("error.commentPostFailedURL");
+                log.debug("URL is invalid : " + commentRequest.getUrl());
+            }
             // if this is a real comment post then authenticate request
         } else if (!preview && !this.authenticator.authenticate(request)) {
             String[] msg = { request.getParameter("answer") };
