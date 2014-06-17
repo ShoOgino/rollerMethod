@@ -1,6 +1,6 @@
     /**
      * Save a media file.
-     *
+     * 
      * @return String The result of the action.
      */
     public String search() {
@@ -10,9 +10,11 @@
         if (valSuccess) {
             MediaFileFilter filter = new MediaFileFilter();
             bean.copyTo(filter);
-            MediaFileManager manager = WebloggerFactory.getWeblogger().getMediaFileManager();
+            MediaFileManager manager = WebloggerFactory.getWeblogger()
+                    .getMediaFileManager();
             try {
-                List<MediaFile> rawResults = manager.searchMediaFiles(getActionWeblog(), filter);
+                List<MediaFile> rawResults = manager.searchMediaFiles(
+                        getActionWeblog(), filter);
                 boolean hasMore = false;
                 List<MediaFile> results = new ArrayList<MediaFile>();
                 results.addAll(rawResults);
@@ -21,15 +23,16 @@
                     hasMore = true;
                 }
 
-                this.pager = new MediaFilePager(bean.getPageNum(), results, hasMore);
-                
+                this.pager = new MediaFilePager(bean.getPageNum(), results,
+                        hasMore);
+
             } catch (Exception e) {
                 log.error("Error applying search criteria", e);
                 addError("Error applying search criteria - check Roller logs");
             }
 
         }
-        
+
         return SUCCESS;
     }
 

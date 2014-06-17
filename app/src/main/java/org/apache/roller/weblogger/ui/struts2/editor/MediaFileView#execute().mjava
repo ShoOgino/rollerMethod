@@ -1,22 +1,25 @@
     /**
-     * Fetches and displays list of media file for the given directory.
-     * The directory could be chosen by ID or path.
+     * Fetches and displays list of media file for the given directory. The
+     * directory could be chosen by ID or path.
      * 
      * @return String The result of the action.
      */
     @SkipValidation
     public String execute() {
-        MediaFileManager manager = WebloggerFactory.getWeblogger().getMediaFileManager();
+        MediaFileManager manager = WebloggerFactory.getWeblogger()
+                .getMediaFileManager();
         try {
             MediaFileDirectory directory;
             if (StringUtils.isNotEmpty(this.directoryId)) {
                 directory = manager.getMediaFileDirectory(this.directoryId);
 
             } else if (StringUtils.isNotEmpty(this.directoryName)) {
-                directory = manager.getMediaFileDirectoryByName(getActionWeblog(), this.directoryName);
+                directory = manager.getMediaFileDirectoryByName(
+                        getActionWeblog(), this.directoryName);
 
             } else {
-                directory = manager.getDefaultMediaFileDirectory(getActionWeblog());
+                directory = manager
+                        .getDefaultMediaFileDirectory(getActionWeblog());
             }
             this.directoryId = directory.getId();
             this.directoryName = directory.getName();
@@ -25,21 +28,26 @@
             this.childFiles.addAll(directory.getMediaFiles());
 
             if ("type".equals(sortBy)) {
-                Collections.sort(this.childFiles,
-                    new MediaFileComparator(MediaFileComparatorType.TYPE));
+                Collections.sort(this.childFiles, new MediaFileComparator(
+                        MediaFileComparatorType.TYPE));
 
             } else if ("date_uploaded".equals(sortBy)) {
-                Collections.sort(this.childFiles,
-                    new MediaFileComparator(MediaFileComparatorType.DATE_UPLOADED));
+                Collections.sort(this.childFiles, new MediaFileComparator(
+                        MediaFileComparatorType.DATE_UPLOADED));
 
             } else {
                 // default to sort by name
                 sortBy = "name";
-                Collections.sort(this.childFiles,
-                    new MediaFileComparator(MediaFileComparatorType.NAME));
+                Collections.sort(this.childFiles, new MediaFileComparator(
+                        MediaFileComparatorType.NAME));
             }
 
             this.currentDirectory = directory;
+
+            // set current directory if valid
+            if (directory != null) {
+                setViewDirectoryId(directory.getId());
+            }
 
             return SUCCESS;
 
