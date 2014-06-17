@@ -1,0 +1,23 @@
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String theTheme = request.getParameter("theme");
+        if (StringUtils.isNotEmpty(theTheme)) {
+            try {
+                ThemeManager themeMgr = WebloggerFactory.getWeblogger()
+                        .getThemeManager();
+                Theme theme = themeMgr.getTheme(theTheme);
+                if (theme != null) {
+                    response.getWriter().print(theme.getDescription());
+                    response.flushBuffer();
+                } else {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                }
+            } catch (WebloggerException e) {
+                throw new ServletException(e.getMessage());
+            }
+        } else {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
+    }
+
