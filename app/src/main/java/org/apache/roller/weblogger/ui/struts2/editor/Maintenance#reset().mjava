@@ -1,10 +1,14 @@
     /**
-     * Flush page cache for weblog.
+     * Reset hit count for weblog.
      */
-    public String flushCache() {
+    public String reset() {
 
         try {
             Weblog weblog = getActionWeblog();
+
+            WeblogEntryManager mgr = WebloggerFactory.getWeblogger()
+                    .getWeblogEntryManager();
+            mgr.resetHitCount(weblog);
 
             // some caches are based on weblog last-modified, so update it
             weblog.setLastModified(new Date());
@@ -16,7 +20,7 @@
             // also notify cache manager
             CacheManager.invalidate(weblog);
 
-            addMessage("maintenance.message.flushed");
+            addMessage("maintenance.message.reset");
 
         } catch (Exception ex) {
             log.error("Error saving weblog - " + getActionWeblog().getHandle(),
