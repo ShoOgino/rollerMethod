@@ -4,7 +4,7 @@
     public long getCommentCount() throws WebloggerException {
         Query q = strategy.getNamedQuery(
                 "WeblogEntryComment.getCountAllDistinctByStatus");
-        q.setParameter(1, WeblogEntryComment.APPROVED);
+        q.setParameter(1, ApprovalStatus.APPROVED);
         List results = q.getResultList();
         return ((Long)results.get(0));
     }

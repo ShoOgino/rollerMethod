@@ -5,7 +5,7 @@
         Query q = strategy.getNamedQuery(
                 "WeblogEntryComment.getCountDistinctByWebsite&Status");
         q.setParameter(1, website);
-        q.setParameter(2, WeblogEntryComment.APPROVED);
+        q.setParameter(2, ApprovalStatus.APPROVED);
         List results = q.getResultList();
         return ((Long)results.get(0));
     }

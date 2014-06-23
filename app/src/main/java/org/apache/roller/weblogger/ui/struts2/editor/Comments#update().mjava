@@ -66,13 +66,13 @@
                     if (approvedIds.contains(ids[i])) {
                         // if a comment was previously PENDING then this is
                         // its first approval, so track it for notification
-                        if (WeblogEntryComment.PENDING.equals(comment
+                        if (ApprovalStatus.PENDING.equals(comment
                                 .getStatus())) {
                             approvedComments.add(comment);
                         }
 
                         log.debug("Marking as approved - " + comment.getId());
-                        comment.setStatus(WeblogEntryComment.APPROVED);
+                        comment.setStatus(ApprovalStatus.APPROVED);
                         wmgr.saveComment(comment);
 
                         flushList.add(comment);
@@ -80,16 +80,16 @@
 
                     } else if (spamIds.contains(ids[i])) {
                         log.debug("Marking as spam - " + comment.getId());
-                        comment.setStatus(WeblogEntryComment.SPAM);
+                        comment.setStatus(ApprovalStatus.SPAM);
                         wmgr.saveComment(comment);
 
                         flushList.add(comment);
                         reindexList.add(comment.getWeblogEntry());
 
-                    } else if (!WeblogEntryComment.DISAPPROVED.equals(comment
+                    } else if (!ApprovalStatus.DISAPPROVED.equals(comment
                             .getStatus())) {
                         log.debug("Marking as disapproved - " + comment.getId());
-                        comment.setStatus(WeblogEntryComment.DISAPPROVED);
+                        comment.setStatus(ApprovalStatus.DISAPPROVED);
                         wmgr.saveComment(comment);
 
                         flushList.add(comment);
@@ -132,7 +132,6 @@
             freshBean.setEndDateString(getBean().getEndDateString());
             freshBean.setSearchString(getBean().getSearchString());
             freshBean.setApprovedString(getBean().getApprovedString());
-            freshBean.setSpamString(getBean().getSpamString());
 
             // but if we're editing an entry's comments stick with that entry
             if (bean.getEntryId() != null) {

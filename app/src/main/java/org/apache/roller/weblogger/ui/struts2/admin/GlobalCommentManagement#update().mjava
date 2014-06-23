@@ -42,15 +42,18 @@
                 
                 // mark/unmark spam
                 if (spamIds.contains(id) &&
-                        !WeblogEntryComment.SPAM.equals(comment.getStatus())) {
-                    log.debug("Marking as spam - "+comment.getId());
-                    comment.setStatus(WeblogEntryComment.SPAM);
+                        !ApprovalStatus.SPAM.equals(comment.getStatus())) {
+                    log.debug("Marking as spam - " + comment.getId());
+                    comment.setStatus(ApprovalStatus.SPAM);
                     wmgr.saveComment(comment);
                     
                     flushList.add(comment.getWeblogEntry().getWebsite());
-                } else if(WeblogEntryComment.SPAM.equals(comment.getStatus())) {
-                    log.debug("Marking as approved - "+comment.getId());
-                    comment.setStatus(WeblogEntryComment.APPROVED);
+                } else if(!spamIds.contains(id) &&
+                        ApprovalStatus.SPAM.equals(comment.getStatus())) {
+                    // Administrator unmarked as spam, so changing to DISAPPROVED
+                    // as blogger still needs to approve it.
+                    log.debug("Marking as disapproved - " + comment.getId());
+                    comment.setStatus(ApprovalStatus.DISAPPROVED);
                     wmgr.saveComment(comment);
                     
                     flushList.add(comment.getWeblogEntry().getWebsite());

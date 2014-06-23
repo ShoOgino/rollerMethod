@@ -15,10 +15,7 @@
         if(!StringUtils.isEmpty(getBean().getApprovedString())) {
             params.put("bean.approvedString", getBean().getApprovedString());
         }
-        if(!StringUtils.isEmpty(getBean().getSpamString())) {
-            params.put("bean.spamString", getBean().getSpamString());
-        }
-        
+
         return WebloggerFactory.getWeblogger().getUrlStrategy().getActionURL("globalCommentManagement", "/roller-ui/admin", 
                 null, params, false);
     }

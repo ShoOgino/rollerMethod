@@ -6,7 +6,7 @@
         for (WeblogEntryComment comment : comments) {
             allComments.add(comment.getId());
 
-            if (WeblogEntryComment.SPAM.equals(comment.getStatus())) {
+            if (ApprovalStatus.SPAM.equals(comment.getStatus())) {
                 spamList.add(comment.getId());
             }
         }

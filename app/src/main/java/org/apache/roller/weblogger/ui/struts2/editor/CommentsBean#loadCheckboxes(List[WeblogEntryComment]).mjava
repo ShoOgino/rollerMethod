@@ -7,9 +7,9 @@
         for (WeblogEntryComment comment : comments) {
             allComments.add(comment.getId());
             
-            if(WeblogEntryComment.APPROVED.equals(comment.getStatus())) {
+            if(ApprovalStatus.APPROVED.equals(comment.getStatus())) {
                 approvedList.add(comment.getId());
-            } else if(WeblogEntryComment.SPAM.equals(comment.getStatus())) {
+            } else if(ApprovalStatus.SPAM.equals(comment.getStatus())) {
                 spamList.add(comment.getId());
             }
         }

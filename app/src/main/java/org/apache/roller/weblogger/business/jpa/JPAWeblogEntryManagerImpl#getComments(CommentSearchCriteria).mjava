@@ -36,18 +36,8 @@
         }
         
         if (csc.getStatus() != null) {
-            String comparisonOperator;
-            if("ALL_IGNORE_SPAM".equals(csc.getStatus())) {
-                // we want all comments, except spam
-                // so that means where status != SPAM
-                csc.setStatus(WeblogEntryComment.SPAM);
-                comparisonOperator = " <> ";
-            } else {
-                comparisonOperator = " = ";
-            }
             params.add(size++, csc.getStatus());
-            appendConjuctionToWhereclause(whereClause, "c.status ")
-                .append(comparisonOperator).append('?').append(size);
+            appendConjuctionToWhereclause(whereClause, "c.status = ?").append(size);
         }
         
         if(whereClause.length() != 0) {
