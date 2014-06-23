@@ -1,7 +1,7 @@
     public void copyTo(WeblogEntry entry) throws WebloggerException {
         
         entry.setTitle(getTitle());
-        entry.setStatus(getStatus());
+        entry.setStatus(PubStatus.valueOf(getStatus()));
         entry.setLocale(getLocale());
         entry.setSummary(getSummary());
         entry.setText(getText());

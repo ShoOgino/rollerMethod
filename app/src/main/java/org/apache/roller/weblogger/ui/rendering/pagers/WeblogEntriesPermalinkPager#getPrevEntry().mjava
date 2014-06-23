@@ -6,7 +6,7 @@
                 prevEntry = wmgr.getPreviousEntry(currEntry, null, locale);
                 // make sure that entry is published and not to future
                 if (prevEntry != null && prevEntry.getPubTime().after(new Date())
-                        && prevEntry.getStatus().equals(WeblogEntry.PUBLISHED)) {
+                        && prevEntry.getStatus().equals(PubStatus.PUBLISHED)) {
                     prevEntry = null;
                 }
             } catch (WebloggerException e) {

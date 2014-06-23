@@ -20,7 +20,7 @@
             WeblogEntrySearchCriteria wesc = new WeblogEntrySearchCriteria();
             wesc.setWeblog(this);
             wesc.setCatName(cat);
-            wesc.setStatus(WeblogEntry.PUBLISHED);
+            wesc.setStatus(PubStatus.PUBLISHED);
             wesc.setMaxResults(length);
             recentEntries = wmgr.getWeblogEntries(wesc);
         } catch (WebloggerException e) {

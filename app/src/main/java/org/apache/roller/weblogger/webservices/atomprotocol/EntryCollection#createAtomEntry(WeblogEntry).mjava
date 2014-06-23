@@ -67,7 +67,7 @@
         
         List<Module> modules = new ArrayList<Module>();
         AppModule app = new AppModuleImpl();
-        app.setDraft(!WeblogEntry.PUBLISHED.equals(entry.getStatus()));
+        app.setDraft(!WeblogEntry.PubStatus.PUBLISHED.equals(entry.getStatus()));
         app.setEdited(entry.getUpdateTime());
         modules.add(app);
         atomEntry.setModules(modules);

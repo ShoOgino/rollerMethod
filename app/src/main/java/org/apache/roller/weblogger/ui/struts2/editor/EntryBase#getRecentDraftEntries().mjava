@@ -9,7 +9,7 @@
         try {
             WeblogEntrySearchCriteria wesc = new WeblogEntrySearchCriteria();
             wesc.setWeblog(getActionWeblog());
-            wesc.setStatus(WeblogEntry.DRAFT);
+            wesc.setStatus(PubStatus.DRAFT);
             wesc.setSortBy(WeblogEntrySearchCriteria.SortBy.UPDATE_TIME);
             wesc.setMaxResults(20);
             entries = WebloggerFactory.getWeblogger().getWeblogEntryManager()

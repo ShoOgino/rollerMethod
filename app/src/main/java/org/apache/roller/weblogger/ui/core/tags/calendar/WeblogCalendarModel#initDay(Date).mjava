@@ -17,7 +17,7 @@
             // since we need an entry.pubTime < startDate, but the method uses endDate
             wesc.setEndDate(new Date(startDate.getTime()-1));
             wesc.setCatName(cat);
-            wesc.setStatus(WeblogEntry.PUBLISHED);
+            wesc.setStatus(PubStatus.PUBLISHED);
             wesc.setSortOrder(WeblogEntrySearchCriteria.SortOrder.DESCENDING);
             wesc.setLocale(locale);
             wesc.setMaxResults(1);
@@ -41,7 +41,7 @@
             // since we need an entry.pubTime > endDate, but the method uses startDate
             wesc.setStartDate(new Date(startDate.getTime()-1));
             wesc.setCatName(cat);
-            wesc.setStatus(WeblogEntry.PUBLISHED);
+            wesc.setStatus(PubStatus.PUBLISHED);
             wesc.setSortOrder(WeblogEntrySearchCriteria.SortOrder.ASCENDING);
             wesc.setLocale(locale);
             wesc.setMaxResults(1);

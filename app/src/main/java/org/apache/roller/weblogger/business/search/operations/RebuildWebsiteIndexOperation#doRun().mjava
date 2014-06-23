@@ -42,7 +42,7 @@
                         .getWeblogEntryManager();
                 WeblogEntrySearchCriteria wesc = new WeblogEntrySearchCriteria();
                 wesc.setWeblog(website);
-                wesc.setStatus(WeblogEntry.PUBLISHED);
+                wesc.setStatus(PubStatus.PUBLISHED);
                 List<WeblogEntry> entries = weblogManager.getWeblogEntries(wesc);
 
                 mLogger.debug("Entries to index: " + entries.size());

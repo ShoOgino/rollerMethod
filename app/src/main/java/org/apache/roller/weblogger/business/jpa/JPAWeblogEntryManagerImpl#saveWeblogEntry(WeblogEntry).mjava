@@ -34,9 +34,9 @@
         // if the entry was published to future, set status as SCHEDULED
         // we only consider an entry future published if it is scheduled
         // more than 1 minute into the future
-        if ("PUBLISHED".equals(entry.getStatus()) &&
+        if (PubStatus.PUBLISHED.equals(entry.getStatus()) &&
                 entry.getPubTime().after(new Date(System.currentTimeMillis() + RollerConstants.MIN_IN_MS))) {
-            entry.setStatus(WeblogEntry.SCHEDULED);
+            entry.setStatus(PubStatus.SCHEDULED);
         }
         
         // Store value object (creates new or updates existing)

@@ -21,9 +21,9 @@
 
 		if (perm != null && perm.hasAction(WeblogPermission.ADMIN)
 				&& perm.hasAction(WeblogPermission.POST)) {
-			getBean().setStatus(WeblogEntry.PUBLISHED);
+			getBean().setStatus(PubStatus.PUBLISHED.name());
 		} else {
-			getBean().setStatus(WeblogEntry.PENDING);
+			getBean().setStatus(PubStatus.PENDING.name());
 		}
 
 		// set entry locale based on weblog locale

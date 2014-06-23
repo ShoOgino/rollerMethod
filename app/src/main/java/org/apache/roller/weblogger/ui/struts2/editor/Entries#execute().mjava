@@ -16,7 +16,7 @@
             wesc.setEndDate(getBean().getEndDate());
             wesc.setCatName(getBean().getCategoryName());
             wesc.setTags(getBean().getTags());
-            wesc.setStatus("ALL".equals(status) ? null : status);
+            wesc.setStatus("ALL".equals(status) ? null : WeblogEntry.PubStatus.valueOf(status));
             wesc.setText(getBean().getText());
             wesc.setSortBy(getBean().getSortBy());
             wesc.setOffset(getBean().getPage() * COUNT);

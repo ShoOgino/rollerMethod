@@ -14,7 +14,7 @@
         }
         rollerEntry.setTitle(entry.getTitle());
         if (entry.getContents() != null && entry.getContents().size() > 0) {
-            Content content = (Content)entry.getContents().get(0);
+            Content content = entry.getContents().get(0);
             rollerEntry.setText(content.getValue());
         }
         if (entry.getSummary() != null) {
@@ -26,9 +26,9 @@
         AppModule control =
                 (AppModule)entry.getModule(AppModule.URI);
         if (control!=null && control.getDraft()) {
-            rollerEntry.setStatus(WeblogEntry.DRAFT);
+            rollerEntry.setStatus(PubStatus.DRAFT);
         } else {
-            rollerEntry.setStatus(WeblogEntry.PUBLISHED);
+            rollerEntry.setStatus(PubStatus.PUBLISHED);
         }
                 
         // Process incoming categories:

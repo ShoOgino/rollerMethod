@@ -39,7 +39,7 @@
                     // status
                     if (!getActionWeblog().hasUserPermission(
                             getAuthenticatedUser(), WeblogPermission.POST)) {
-                        weblogEntry.setStatus(WeblogEntry.PENDING);
+                        weblogEntry.setStatus(PubStatus.PENDING);
                     }
 
                     // If the entry was published to future, set status as
@@ -47,7 +47,7 @@
                     // it is scheduled more than 1 minute into the future
                     if (weblogEntry.getPubTime().after(
                             new Date(System.currentTimeMillis() + MINUTE_IN_MILLIS))) {
-                        getBean().setStatus(WeblogEntry.SCHEDULED);
+                        getBean().setStatus(PubStatus.SCHEDULED.name());
                     }
 
                 }
