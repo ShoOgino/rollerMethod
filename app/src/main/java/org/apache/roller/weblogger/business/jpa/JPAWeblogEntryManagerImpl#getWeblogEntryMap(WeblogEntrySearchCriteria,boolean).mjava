@@ -1,6 +1,6 @@
     private Map getWeblogEntryMap(WeblogEntrySearchCriteria wesc, boolean stringsOnly) throws WebloggerException {
 
-        TreeMap map = new TreeMap(REVERSE_COMPARATOR);
+        TreeMap map = new TreeMap(Collections.reverseOrder());
 
         List<WeblogEntry> entries = getWeblogEntries(wesc);
 

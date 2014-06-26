@@ -1,7 +1,7 @@
     public Map<Date, List<WeblogEntryWrapper>> getEntries() {
         
         if (entries == null) {
-            entries = new TreeMap<Date, List<WeblogEntryWrapper>>(new ReverseComparator());
+            entries = new TreeMap<Date, List<WeblogEntryWrapper>>(Collections.reverseOrder());
             try {
                 WeblogEntrySearchCriteria wesc = new WeblogEntrySearchCriteria();
                 wesc.setWeblog(weblog);
