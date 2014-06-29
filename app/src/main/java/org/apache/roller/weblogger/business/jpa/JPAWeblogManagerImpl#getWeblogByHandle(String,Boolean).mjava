@@ -13,7 +13,7 @@
         if(this.weblogHandleToIdMap.containsKey(handle)) {
             
             Weblog weblog = this.getWeblog(
-                    (String) this.weblogHandleToIdMap.get(handle));
+                    this.weblogHandleToIdMap.get(handle));
             if(weblog != null) {
                 // only return weblog if enabled status matches
                 if(enabled == null || enabled.equals(weblog.getEnabled())) {
@@ -26,11 +26,11 @@
             }
         }
         
-        Query query = strategy.getNamedQuery("Weblog.getByHandle");
+        TypedQuery<Weblog> query = strategy.getNamedQuery("Weblog.getByHandle", Weblog.class);
         query.setParameter(1, handle);
         Weblog website;
         try {
-            website = (Weblog)query.getSingleResult();
+            website = query.getSingleResult();
         } catch (NoResultException e) {
             website = null;
         }

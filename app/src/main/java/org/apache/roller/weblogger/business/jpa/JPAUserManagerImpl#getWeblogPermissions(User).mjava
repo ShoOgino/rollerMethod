@@ -1,6 +1,7 @@
     public List<WeblogPermission> getWeblogPermissions(User user) throws WebloggerException {
-        Query q = strategy.getNamedQuery("WeblogPermission.getByUserName");
+        TypedQuery<WeblogPermission> q = strategy.getNamedQuery("WeblogPermission.getByUserName",
+                WeblogPermission.class);
         q.setParameter(1, user.getUserName());
-        return (List<WeblogPermission>)q.getResultList();
+        return q.getResultList();
     }
 

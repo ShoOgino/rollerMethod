@@ -12,13 +12,13 @@
             origpath = "/" + origpath;
         }
 
-        Query q = this.strategy
-                .getNamedQuery("MediaFile.getByWeblogAndOrigpath");
+        TypedQuery<MediaFile> q = this.strategy
+                .getNamedQuery("MediaFile.getByWeblogAndOrigpath", MediaFile.class);
         q.setParameter(1, weblog);
         q.setParameter(2, origpath);
         MediaFile mf;
         try {
-            mf = (MediaFile) q.getSingleResult();
+            mf = q.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }

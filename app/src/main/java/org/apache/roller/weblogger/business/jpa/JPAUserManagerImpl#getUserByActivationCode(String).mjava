@@ -2,10 +2,10 @@
         if (activationCode == null) {
             throw new WebloggerException("activationcode is null");
         }
-        Query q = strategy.getNamedQuery("User.getUserByActivationCode");
+        TypedQuery<User> q = strategy.getNamedQuery("User.getUserByActivationCode", User.class);
         q.setParameter(1, activationCode);
         try {
-            return (User)q.getSingleResult();
+            return q.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }

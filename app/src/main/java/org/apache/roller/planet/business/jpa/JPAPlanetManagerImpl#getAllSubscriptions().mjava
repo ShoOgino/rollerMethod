@@ -1,7 +1,7 @@
     public Iterator getAllSubscriptions() {
         try {
             return (strategy.getNamedQuery(
-                    "Subscription.getAll").getResultList()).iterator();
+                    "Subscription.getAll", Subscription.class).getResultList()).iterator();
         } catch (Exception e) {
             throw new RuntimeException(
                     "ERROR fetching subscription collection", e);

@@ -11,12 +11,9 @@
             throw new OAuthException("ERROR storing accessor", ex);
         }
         
-        OAuthConsumer consumer = new OAuthConsumer(
-            null,
+        return new OAuthConsumer(null,
             record.getConsumerKey(),
             record.getConsumerSecret(),
             getServiceProvider());
-
-        return consumer;
     }
 

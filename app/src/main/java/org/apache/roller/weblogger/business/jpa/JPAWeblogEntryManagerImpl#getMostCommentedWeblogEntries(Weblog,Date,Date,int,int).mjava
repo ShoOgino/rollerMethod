@@ -4,7 +4,7 @@
     public List<StatCount> getMostCommentedWeblogEntries(Weblog website,
             Date startDate, Date endDate, int offset,
             int length) throws WebloggerException {
-        Query query;
+        TypedQuery<WeblogEntryComment> query;
         List queryResults;
 
         Timestamp end = new Timestamp(endDate != null? endDate.getTime() : new Date().getTime());
@@ -13,13 +13,14 @@
             if (startDate != null) {
                 Timestamp start = new Timestamp(startDate.getTime());
                 query = strategy.getNamedQuery(
-                        "WeblogEntryComment.getMostCommentedWeblogEntryByWebsite&EndDate&StartDate");
+                        "WeblogEntryComment.getMostCommentedWeblogEntryByWebsite&EndDate&StartDate",
+                        WeblogEntryComment.class);
                 query.setParameter(1, website);
                 query.setParameter(2, end);
                 query.setParameter(3, start);
             } else {
                 query = strategy.getNamedQuery(
-                        "WeblogEntryComment.getMostCommentedWeblogEntryByWebsite&EndDate");
+                        "WeblogEntryComment.getMostCommentedWeblogEntryByWebsite&EndDate", WeblogEntryComment.class);
                 query.setParameter(1, website);
                 query.setParameter(2, end);
             }
@@ -27,12 +28,12 @@
             if (startDate != null) {
                 Timestamp start = new Timestamp(startDate.getTime());
                 query = strategy.getNamedQuery(
-                        "WeblogEntryComment.getMostCommentedWeblogEntryByEndDate&StartDate");
+                        "WeblogEntryComment.getMostCommentedWeblogEntryByEndDate&StartDate", WeblogEntryComment.class);
                 query.setParameter(1, end);
                 query.setParameter(2, start);
             } else {
                 query = strategy.getNamedQuery(
-                        "WeblogEntryComment.getMostCommentedWeblogEntryByEndDate");
+                        "WeblogEntryComment.getMostCommentedWeblogEntryByEndDate", WeblogEntryComment.class);
                 query.setParameter(1, end);
             }
         }
@@ -44,16 +45,18 @@
         }
         queryResults = query.getResultList();
         List<StatCount> results = new ArrayList<StatCount>();
-        for (Iterator iter = queryResults.iterator(); iter.hasNext();) {
-            Object[] row = (Object[]) iter.next();
-            StatCount sc = new StatCount(
-                    (String)row[1],                             // weblog handle
-                    (String)row[2],                             // entry anchor
-                    (String)row[3],                             // entry title
-                    "statCount.weblogEntryCommentCountType",    // stat desc
-                    ((Long)row[0]));                            // count
-            sc.setWeblogHandle((String)row[1]);
-            results.add(sc);
+        if (queryResults != null) {
+            for (Object obj : queryResults) {
+                Object[] row = (Object[]) obj;
+                StatCount sc = new StatCount(
+                        (String)row[1],                             // weblog handle
+                        (String)row[2],                             // entry anchor
+                        (String)row[3],                             // entry title
+                        "statCount.weblogEntryCommentCountType",    // stat desc
+                        ((Long)row[0]));                            // count
+                sc.setWeblogHandle((String)row[1]);
+                results.add(sc);
+            }
         }
         // Original query ordered by desc count.
         // JPA QL doesn't allow queries to be ordered by agregates; do it in memory

@@ -2,11 +2,10 @@
      * @inheritDoc
      */
     public long getEntryCount(Weblog website) throws WebloggerException {
-        Query q = strategy.getNamedQuery(
-                "WeblogEntry.getCountDistinctByStatus&Website");
+        TypedQuery<Long> q = strategy.getNamedQuery(
+                "WeblogEntry.getCountDistinctByStatus&Website", Long.class);
         q.setParameter(1, PubStatus.PUBLISHED);
         q.setParameter(2, website);
-        List results = q.getResultList();
-        return ((Long)results.get(0));
+        return q.getResultList().get(0);
     }
 

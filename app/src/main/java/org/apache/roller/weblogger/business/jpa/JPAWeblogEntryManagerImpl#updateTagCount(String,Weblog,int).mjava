@@ -15,23 +15,23 @@
         // one in the case where we have multiple rows (clustered environment)
         // eventually that second entry will have a very low total (most likely 1) and
         // won't matter
-        Query weblogQuery = strategy.getNamedQuery(
-                "WeblogEntryTagAggregate.getByName&WebsiteOrderByLastUsedDesc");
+        TypedQuery<WeblogEntryTagAggregate> weblogQuery = strategy.getNamedQuery(
+                "WeblogEntryTagAggregate.getByName&WebsiteOrderByLastUsedDesc", WeblogEntryTagAggregate.class);
         weblogQuery.setParameter(1, name);
         weblogQuery.setParameter(2, website);
         WeblogEntryTagAggregate weblogTagData;
         try {
-            weblogTagData = (WeblogEntryTagAggregate)weblogQuery.getSingleResult();
+            weblogTagData = weblogQuery.getSingleResult();
         } catch (NoResultException e) {
             weblogTagData = null;
         }
-        
-        Query siteQuery = strategy.getNamedQuery(
-                "WeblogEntryTagAggregate.getByName&WebsiteNullOrderByLastUsedDesc");
+
+        TypedQuery<WeblogEntryTagAggregate> siteQuery = strategy.getNamedQuery(
+                "WeblogEntryTagAggregate.getByName&WebsiteNullOrderByLastUsedDesc", WeblogEntryTagAggregate.class);
         siteQuery.setParameter(1, name);
         WeblogEntryTagAggregate siteTagData;
         try {
-            siteTagData = (WeblogEntryTagAggregate)siteQuery.getSingleResult();
+            siteTagData = siteQuery.getSingleResult();
         } catch (NoResultException e) {
             siteTagData = null;
         }

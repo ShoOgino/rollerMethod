@@ -1,5 +1,5 @@
     public int getSubscriptionCount() throws RollerException {
-        Query q = strategy.getNamedQuery("Subscription.getAll");
+        Query q = strategy.getNamedQuery("Subscription.getAll", Subscription.class);
         return q.getResultList().size();
     }
 

@@ -1,10 +1,11 @@
     private void removeTemplateCodeObjs(WeblogTemplate page) throws WebloggerException {
-        Query codeQuery = strategy.getNamedQuery("WeblogThemeTemplateCode.getTemplateCodesByTemplateId");
+        TypedQuery<WeblogThemeTemplateCode> codeQuery = strategy.getNamedQuery(
+                "WeblogThemeTemplateCode.getTemplateCodesByTemplateId", WeblogThemeTemplateCode.class);
         codeQuery.setParameter(1, page.getId());
-        List codeList = codeQuery.getResultList();
+        List<WeblogThemeTemplateCode> codeList = codeQuery.getResultList();
 
-        for (Object obj : codeList) {
-            this.strategy.remove(obj);
+        for (WeblogThemeTemplateCode code : codeList) {
+            this.strategy.remove(code);
         }
     }
 

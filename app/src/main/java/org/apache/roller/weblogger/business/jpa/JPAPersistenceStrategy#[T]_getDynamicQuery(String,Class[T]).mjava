@@ -1,0 +1,17 @@
+    /**
+     * Create TypedQuery from queryString that won't commit changes to DB first (FlushModeType.COMMIT)
+     * Preferred over getDynamicQuery(String) due to it being typesafe.
+     * @param queryString the query
+     * @param resultClass return type of query
+     * @throws org.apache.roller.weblogger.WebloggerException on any error
+     */
+    public <T> TypedQuery<T> getDynamicQuery(String queryString, Class<T> resultClass)
+            throws WebloggerException {
+        EntityManager em = getEntityManager(false);
+        TypedQuery<T> q = em.createQuery(queryString, resultClass);
+        // For performance, never flush/commit prior to running queries.
+        // Roller code assumes this behavior
+        q.setFlushMode(FlushModeType.COMMIT);
+        return q;
+    }
+

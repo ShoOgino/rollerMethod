@@ -1,5 +1,5 @@
     public List<Subscription> getSubscriptions() throws RollerException {
-        Query q = strategy.getNamedQuery("Subscription.getAllOrderByFeedURL");
+        TypedQuery<Subscription> q = strategy.getNamedQuery("Subscription.getAllOrderByFeedURL", Subscription.class);
         return q.getResultList();
     }
 

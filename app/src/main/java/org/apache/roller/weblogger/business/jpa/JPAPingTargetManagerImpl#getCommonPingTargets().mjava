@@ -1,7 +1,7 @@
     public List<PingTarget> getCommonPingTargets()
             throws WebloggerException {
-        Query q = strategy.getNamedQuery(
-                "PingTarget.getPingTargetsOrderByName");
+        TypedQuery<PingTarget> q = strategy.getNamedQuery(
+                "PingTarget.getPingTargetsOrderByName", PingTarget.class);
         return q.getResultList();
     }
 

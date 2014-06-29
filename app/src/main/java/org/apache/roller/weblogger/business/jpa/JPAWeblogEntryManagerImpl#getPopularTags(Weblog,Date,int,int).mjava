@@ -3,30 +3,30 @@
      */
     public List<TagStat> getPopularTags(Weblog website, Date startDate, int offset, int limit)
     throws WebloggerException {
-        Query query;
+        TypedQuery<TagStat> query;
         List queryResults;
         
         if (website != null) {
             if (startDate != null) {
                 Timestamp start = new Timestamp(startDate.getTime());
                 query = strategy.getNamedQuery(
-                        "WeblogEntryTagAggregate.getPopularTagsByWebsite&StartDate");
+                        "WeblogEntryTagAggregate.getPopularTagsByWebsite&StartDate", TagStat.class);
                 query.setParameter(1, website);
                 query.setParameter(2, start);
             } else {
                 query = strategy.getNamedQuery(
-                        "WeblogEntryTagAggregate.getPopularTagsByWebsite");
+                        "WeblogEntryTagAggregate.getPopularTagsByWebsite", TagStat.class);
                 query.setParameter(1, website);
             }
         } else {
             if (startDate != null) {
                 Timestamp start = new Timestamp(startDate.getTime());
                 query = strategy.getNamedQuery(
-                        "WeblogEntryTagAggregate.getPopularTagsByWebsiteNull&StartDate");
+                        "WeblogEntryTagAggregate.getPopularTagsByWebsiteNull&StartDate", TagStat.class);
                 query.setParameter(1, start);
             } else {
                 query = strategy.getNamedQuery(
-                        "WeblogEntryTagAggregate.getPopularTagsByWebsiteNull");
+                        "WeblogEntryTagAggregate.getPopularTagsByWebsiteNull", TagStat.class);
             }
         }
         if (offset != 0) {
@@ -42,17 +42,19 @@
         
         List<TagStat> results = new ArrayList<TagStat>(limit >= 0 ? limit : 25);
         
-        for (Iterator iter = queryResults.iterator(); iter.hasNext();) {
-            Object[] row = (Object[]) iter.next();
-            TagStat t = new TagStat();
-            t.setName((String) row[0]);
-            t.setCount(((Number) row[1]).intValue());
-            
-            min = Math.min(min, t.getCount());
-            max = Math.max(max, t.getCount());
-            results.add(t);
+        if (queryResults != null) {
+            for (Object obj : queryResults) {
+                Object[] row = (Object[]) obj;
+                TagStat t = new TagStat();
+                t.setName((String) row[0]);
+                t.setCount(((Number) row[1]).intValue());
+
+                min = Math.min(min, t.getCount());
+                max = Math.max(max, t.getCount());
+                results.add(t);
+            }
         }
-        
+
         min = Math.log(1+min);
         max = Math.log(1+max);
         

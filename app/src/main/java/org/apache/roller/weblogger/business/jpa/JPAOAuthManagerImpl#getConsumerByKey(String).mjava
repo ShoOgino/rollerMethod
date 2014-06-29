@@ -1,9 +1,10 @@
     OAuthConsumer getConsumerByKey(String consumerKey) {
         OAuthConsumerRecord record = null;
         try {
-            Query q = strategy.getNamedQuery("OAuthConsumerRecord.getByConsumerKey");
+            TypedQuery<OAuthConsumerRecord> q = strategy.getNamedQuery("OAuthConsumerRecord.getByConsumerKey",
+                    OAuthConsumerRecord.class);
             q.setParameter(1, consumerKey);
-            record = (OAuthConsumerRecord)q.getSingleResult();
+            record = q.getSingleResult();
 
         } catch (Exception ex) {
             log.debug("ERROR fetching consumer", ex);

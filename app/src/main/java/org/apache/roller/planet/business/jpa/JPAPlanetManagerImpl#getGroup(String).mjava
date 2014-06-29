@@ -1,8 +1,8 @@
     public PlanetGroup getGroup(String handle) throws RollerException {
-        Query q = strategy.getNamedQuery("PlanetGroup.getByHandle");
+        TypedQuery<PlanetGroup> q = strategy.getNamedQuery("PlanetGroup.getByHandle", PlanetGroup.class);
         q.setParameter(1, handle);
         try {
-            return (PlanetGroup)q.getSingleResult();
+            return q.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }

@@ -1,9 +1,10 @@
     OAuthAccessor getAccessorByKey(String consumerKey) {
         OAuthAccessorRecord record = null;
         try {
-            Query q = strategy.getNamedQuery("OAuthAccessorRecord.getByKey");
+            TypedQuery<OAuthAccessorRecord> q = strategy.getNamedQuery("OAuthAccessorRecord.getByKey",
+                    OAuthAccessorRecord.class);
             q.setParameter(1, consumerKey);
-            record = (OAuthAccessorRecord)q.getSingleResult();
+            record = q.getSingleResult();
 
         } catch (Exception ex) {
             log.debug("ERROR fetching accessor", ex);

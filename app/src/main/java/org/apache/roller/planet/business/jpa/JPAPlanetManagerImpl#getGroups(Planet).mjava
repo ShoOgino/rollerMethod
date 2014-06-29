@@ -1,5 +1,5 @@
     public List<PlanetGroup> getGroups(Planet planet) throws RollerException {
-        Query q = strategy.getNamedQuery("PlanetGroup.getByPlanet");
+        TypedQuery<PlanetGroup> q = strategy.getNamedQuery("PlanetGroup.getByPlanet", PlanetGroup.class);
         q.setParameter(1, planet.getHandle());
         return q.getResultList();
     }

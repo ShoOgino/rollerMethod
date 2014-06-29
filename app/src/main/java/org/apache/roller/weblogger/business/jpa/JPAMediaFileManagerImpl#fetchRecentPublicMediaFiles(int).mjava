@@ -4,12 +4,8 @@
     public List<MediaFile> fetchRecentPublicMediaFiles(int length)
             throws WebloggerException {
 
-        StringBuilder queryString = new StringBuilder();
-
-        queryString
-                .append("SELECT m FROM MediaFile m WHERE m.sharedForGallery = true");
-        queryString.append(" order by m.dateUploaded");
-        Query query = strategy.getDynamicQuery(queryString.toString());
+        String queryString = "SELECT m FROM MediaFile m WHERE m.sharedForGallery = true order by m.dateUploaded";
+        TypedQuery<MediaFile> query = strategy.getDynamicQuery(queryString, MediaFile.class);
         query.setFirstResult(0);
         query.setMaxResults(length);
         return query.getResultList();

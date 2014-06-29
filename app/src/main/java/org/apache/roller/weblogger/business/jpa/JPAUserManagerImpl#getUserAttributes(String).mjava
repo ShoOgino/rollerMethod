@@ -1,8 +1,8 @@
     public List<UserAttribute> getUserAttributes(String userName) throws WebloggerException {
-        Query q = strategy.getNamedQuery("UserAttribute.getByUserName");
+        TypedQuery<UserAttribute> q = strategy.getNamedQuery("UserAttribute.getByUserName", UserAttribute.class);
         q.setParameter(1, userName);
         try {
-            return (List<UserAttribute>)q.getResultList();
+            return q.getResultList();
         } catch (NoResultException e) {            
             return null;
         }

@@ -3,10 +3,10 @@
      */
     public WeblogHitCount getHitCountByWeblog(Weblog weblog)
     throws WebloggerException {
-        Query q = strategy.getNamedQuery("WeblogHitCount.getByWeblog");
+        TypedQuery<WeblogHitCount> q = strategy.getNamedQuery("WeblogHitCount.getByWeblog", WeblogHitCount.class);
         q.setParameter(1, weblog);
         try {
-            return (WeblogHitCount)q.getSingleResult();
+            return q.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }

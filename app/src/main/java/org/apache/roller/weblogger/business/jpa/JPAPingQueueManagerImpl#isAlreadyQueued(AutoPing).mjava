@@ -3,7 +3,8 @@
     private boolean isAlreadyQueued(AutoPing autoPing) 
         throws WebloggerException {
         // first, determine if an entry already exists
-        Query q = strategy.getNamedQuery("PingQueueEntry.getByPingTarget&Website");
+        TypedQuery<PingQueueEntry> q = strategy.getNamedQuery("PingQueueEntry.getByPingTarget&Website",
+                PingQueueEntry.class);
         q.setParameter(1, autoPing.getPingTarget());
         q.setParameter(2, autoPing.getWebsite());
         return q.getResultList().size() > 0;

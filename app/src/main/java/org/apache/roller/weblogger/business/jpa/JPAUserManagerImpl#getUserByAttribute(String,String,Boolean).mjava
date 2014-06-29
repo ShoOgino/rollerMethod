@@ -7,32 +7,33 @@
         String[] parts = value.split("&");
         value = parts[0];
 
-        Query query;
-        query = strategy.getNamedQuery("UserAttribute.getByAttrNameAndAttrValue");
-        query.setParameter(1, name);
-        query.setParameter(2, value);
-        UserAttribute attribute = null;
+        TypedQuery<UserAttribute> attrQuery = strategy.getNamedQuery("UserAttribute.getByAttrNameAndAttrValue",
+                UserAttribute.class);
+        attrQuery.setParameter(1, name);
+        attrQuery.setParameter(2, value);
+        UserAttribute attribute;
 
         try {
-            attribute = (UserAttribute) query.getSingleResult();
+            attribute = attrQuery.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
 
         Object[] params;
+        TypedQuery<User> userQuery;
         if (enabled != null) {
-            query = strategy.getNamedQuery("User.getByUserName&Enabled");
+            userQuery = strategy.getNamedQuery("User.getByUserName&Enabled", User.class);
             params = new Object[]{attribute.getUserName(), enabled};
         } else {
-            query = strategy.getNamedQuery("User.getByUserName");
+            userQuery = strategy.getNamedQuery("User.getByUserName", User.class);
             params = new Object[]{attribute.getUserName()};
         }
         for (int i = 0; i < params.length; i++) {
-            query.setParameter(i + 1, params[i]);
+            userQuery.setParameter(i + 1, params[i]);
         }
         User user;
         try {
-            user = (User) query.getSingleResult();
+            user = userQuery.getSingleResult();
         } catch (NoResultException e) {
             user = null;
         }

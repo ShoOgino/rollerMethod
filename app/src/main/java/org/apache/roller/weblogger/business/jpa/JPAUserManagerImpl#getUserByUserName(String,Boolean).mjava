@@ -10,7 +10,7 @@
         if(this.userNameToIdMap.containsKey(userName)) {
 
             User user = this.getUser(
-                    (String) this.userNameToIdMap.get(userName));
+                    this.userNameToIdMap.get(userName));
             if(user != null) {
                 // only return the user if the enabled status matches
                 if(enabled == null || enabled.equals(user.getEnabled())) {
@@ -24,15 +24,15 @@
         }
 
         // cache failed, do lookup
-        Query query;
+        TypedQuery<User> query;
         Object[] params;
         if (enabled != null) {
             query = strategy.getNamedQuery(
-                    "User.getByUserName&Enabled");
+                    "User.getByUserName&Enabled", User.class);
             params = new Object[] {userName, enabled};
         } else {
             query = strategy.getNamedQuery(
-                    "User.getByUserName");
+                    "User.getByUserName", User.class);
             params = new Object[] {userName};
         }
         for (int i=0; i<params.length; i++) {
@@ -40,14 +40,14 @@
         }
         User user;
         try {
-            user = (User)query.getSingleResult();
+            user = query.getSingleResult();
         } catch (NoResultException e) {
             user = null;
         }
 
         // add mapping to cache
         if(user != null) {
-            log.debug("userNameToIdMap CACHE MISS - "+userName);
+            log.debug("userNameToIdMap CACHE MISS - " + userName);
             this.userNameToIdMap.put(user.getUserName(), user.getId());
         }
 

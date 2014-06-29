@@ -3,12 +3,12 @@
      */
     public WeblogCategory getWeblogCategoryByName(Weblog weblog,
             String categoryName) throws WebloggerException {
-        Query q = strategy.getNamedQuery(
-                "WeblogCategory.getByWeblog&Name");
+        TypedQuery<WeblogCategory> q = strategy.getNamedQuery(
+                "WeblogCategory.getByWeblog&Name", WeblogCategory.class);
         q.setParameter(1, weblog);
         q.setParameter(2, categoryName);
         try {
-            return (WeblogCategory)q.getSingleResult();
+            return q.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }

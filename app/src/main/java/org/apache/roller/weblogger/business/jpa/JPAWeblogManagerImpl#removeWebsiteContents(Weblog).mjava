@@ -9,7 +9,8 @@
         WeblogEntryManager emgr = roller.getWeblogEntryManager();
 
         //remove theme Assocs
-        Query themeAssocQuery = strategy.getNamedQuery("WeblogThemeAssoc.getThemeAssocsByWeblog");
+        TypedQuery<WeblogThemeAssoc> themeAssocQuery = strategy.getNamedQuery("WeblogThemeAssoc.getThemeAssocsByWeblog",
+                WeblogThemeAssoc.class);
         themeAssocQuery.setParameter(1,website);
         List<WeblogThemeAssoc> assocResults = themeAssocQuery.getResultList();
         for (WeblogThemeAssoc themeAssoc : assocResults) {
@@ -17,7 +18,8 @@
         }
         
         // remove tags
-        Query tagQuery = strategy.getNamedQuery("WeblogEntryTag.getByWeblog");
+        TypedQuery<WeblogEntryTag> tagQuery = strategy.getNamedQuery("WeblogEntryTag.getByWeblog",
+                WeblogEntryTag.class);
         tagQuery.setParameter(1, website);
         List<WeblogEntryTag> results = tagQuery.getResultList();
         
@@ -29,7 +31,7 @@
         }
         
         // remove site tag aggregates
-        List tags = emgr.getTags(website, null, null, 0, -1);
+        List<TagStat> tags = emgr.getTags(website, null, null, 0, -1);
         updateTagAggregates(tags);
         
         // delete all weblog tag aggregates
@@ -45,7 +47,7 @@
         removeCounts.executeUpdate();
         
         // Remove the website's ping queue entries
-        Query q = strategy.getNamedQuery("PingQueueEntry.getByWebsite");
+        TypedQuery<PingQueueEntry> q = strategy.getNamedQuery("PingQueueEntry.getByWebsite", PingQueueEntry.class);
         q.setParameter(1, website);
         List queueEntries = q.getResultList();
         for (Object obj : queueEntries) {
@@ -59,24 +61,21 @@
             this.strategy.remove(autoPing);
         }
         
-        // TODO: can we eliminate this unnecessary flush with OpenJPA 1.0
-        this.strategy.flush(); 
-       
         // remove associated pages
-        Query pageQuery = strategy.getNamedQuery("WeblogTemplate.getByWebsite");
+        TypedQuery<WeblogTemplate> pageQuery = strategy.getNamedQuery("WeblogTemplate.getByWebsite",
+                WeblogTemplate.class);
         pageQuery.setParameter(1, website);
-        List pages = pageQuery.getResultList();
-        for (Object obj : pages) {
-            WeblogTemplate page = (WeblogTemplate) obj;
+        List<WeblogTemplate> pages = pageQuery.getResultList();
 
-            //remove associated templateCode objects
+        for (WeblogTemplate page : pages) {
+            // remove associated templateCode objects
             this.removeTemplateCodeObjs(page);
-
             this.strategy.remove(page);
         }
         
         // remove folders (including bookmarks)
-        Query folderQuery = strategy.getNamedQuery("WeblogBookmarkFolder.getByWebsite");
+        TypedQuery<WeblogBookmarkFolder> folderQuery = strategy.getNamedQuery("WeblogBookmarkFolder.getByWebsite",
+                WeblogBookmarkFolder.class);
         folderQuery.setParameter(1, website);
         List<WeblogBookmarkFolder> folders = folderQuery.getResultList();
         for (WeblogBookmarkFolder wbf : folders) {
@@ -94,7 +93,7 @@
         this.strategy.flush();
 
         // remove entries
-        Query refQuery = strategy.getNamedQuery("WeblogEntry.getByWebsite");
+        TypedQuery<WeblogEntry> refQuery = strategy.getNamedQuery("WeblogEntry.getByWebsite", WeblogEntry.class);
         refQuery.setParameter(1, website);
         List<WeblogEntry> entries = refQuery.getResultList();
         for (WeblogEntry entry : entries) {
@@ -103,8 +102,7 @@
         this.strategy.flush();
         
         // delete all weblog categories
-        Query removeCategories= strategy.getNamedUpdate(
-                "WeblogCategory.removeByWeblog");
+        Query removeCategories= strategy.getNamedUpdate("WeblogCategory.removeByWeblog");
         removeCategories.setParameter(1, website);
         removeCategories.executeUpdate();
 

@@ -7,7 +7,7 @@
 			return Collections.emptyList();
 		}
 
-        Query query;
+        TypedQuery<WeblogEntry> query;
         WeblogCategory category;
         
         List<Object> params = new ArrayList<Object>();
@@ -52,7 +52,7 @@
         } else {
             whereClause.append(" ORDER BY e.pubTime DESC");
         }
-        query = strategy.getDynamicQuery(queryString + whereClause.toString());
+        query = strategy.getDynamicQuery(queryString + whereClause.toString(), WeblogEntry.class);
         for (int i=0; i<params.size(); i++) {
             query.setParameter(i+1, params.get(i));
         }

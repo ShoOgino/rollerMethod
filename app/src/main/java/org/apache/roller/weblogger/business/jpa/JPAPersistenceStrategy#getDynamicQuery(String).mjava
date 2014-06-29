@@ -1,13 +1,14 @@
     /**
-     * Create query from queryString with FlushModeType.COMMIT
-     * @param queryString the quuery
+     * Create query from queryString that won't commit changes to DB first (FlushModeType.COMMIT)
+     * @param queryString the query
      * @throws org.apache.roller.weblogger.WebloggerException on any error
      */
     public Query getDynamicQuery(String queryString)
     throws WebloggerException {
         EntityManager em = getEntityManager(false);
         Query q = em.createQuery(queryString);
-        // Never flush for queries. Roller code assumes this behavior
+        // For performance, never flush/commit prior to running queries.
+        // Roller code assumes this behavior
         q.setFlushMode(FlushModeType.COMMIT);
         return q;
     }

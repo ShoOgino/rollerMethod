@@ -1,5 +1,5 @@
     public List<AutoPing> getAutoPingsByTarget(PingTarget pingTarget) throws WebloggerException {
-        Query q = strategy.getNamedQuery("AutoPing.getByPingTarget");
+        TypedQuery<AutoPing> q = strategy.getNamedQuery("AutoPing.getByPingTarget", AutoPing.class);
         q.setParameter(1, pingTarget);
         return q.getResultList();
     }

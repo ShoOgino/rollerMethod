@@ -5,11 +5,12 @@
             throw new WebloggerException("weblog is null");
         }
         
-        Query q = strategy.getNamedQuery("WeblogBookmarkFolder.getByWebsite&Name");
+        TypedQuery<WeblogBookmarkFolder> q = strategy.getNamedQuery("WeblogBookmarkFolder.getByWebsite&Name",
+                WeblogBookmarkFolder.class);
         q.setParameter(1, weblog);
         q.setParameter(2, "default");
         try {
-            return (WeblogBookmarkFolder)q.getSingleResult();
+            return q.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }

@@ -12,11 +12,12 @@
             throw new WebloggerException("Pagelink is null");
         }
 
-        Query query = strategy.getNamedQuery("WeblogTemplate.getByWebsite&Link");
+        TypedQuery<WeblogTemplate> query = strategy.getNamedQuery("WeblogTemplate.getByWebsite&Link",
+                WeblogTemplate.class);
         query.setParameter(1, website);
         query.setParameter(2, pagelink);
         try {
-            return (WeblogTemplate) query.getSingleResult();
+            return query.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }

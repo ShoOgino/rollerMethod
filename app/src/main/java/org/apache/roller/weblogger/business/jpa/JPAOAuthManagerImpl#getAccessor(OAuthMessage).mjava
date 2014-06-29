@@ -9,9 +9,8 @@
         if (StringUtils.isNotEmpty(consumerToken)) {
             // caller provided a token, it better be good or else
             accessor = getAccessorByToken(consumerToken);
-            if (accessor == null){
-                OAuthProblemException problem = new OAuthProblemException("token_expired");
-                throw problem;
+            if (accessor == null) {
+                throw new OAuthProblemException("token_expired");
             }
         }
 

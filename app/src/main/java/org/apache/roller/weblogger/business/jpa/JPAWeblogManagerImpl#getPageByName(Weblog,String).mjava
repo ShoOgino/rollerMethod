@@ -12,11 +12,12 @@
             throw new WebloggerException("Page name is null");
         }
         
-        Query query = strategy.getNamedQuery("WeblogTemplate.getByWebsite&Name");
+        TypedQuery<WeblogTemplate> query = strategy.getNamedQuery("WeblogTemplate.getByWebsite&Name",
+                WeblogTemplate.class);
         query.setParameter(1, website);
         query.setParameter(2, pagename);
         try {
-            return (WeblogTemplate)query.getSingleResult();
+            return query.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }

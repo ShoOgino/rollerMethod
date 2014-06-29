@@ -1,12 +1,13 @@
     public void grantWeblogPermission(Weblog weblog, User user, List<String> actions) throws WebloggerException {
 
         // first, see if user already has a permission for the specified object
-        Query q = strategy.getNamedQuery("WeblogPermission.getByUserName&WeblogIdIncludingPending");
+        TypedQuery<WeblogPermission> q = strategy.getNamedQuery("WeblogPermission.getByUserName&WeblogIdIncludingPending",
+                WeblogPermission.class);
         q.setParameter(1, user.getUserName());
         q.setParameter(2, weblog.getHandle());
         WeblogPermission existingPerm = null;
         try {
-            existingPerm = (WeblogPermission)q.getSingleResult();
+            existingPerm = q.getSingleResult();
         } catch (NoResultException ignored) {}
 
         // permission already exists, so add any actions specified in perm argument

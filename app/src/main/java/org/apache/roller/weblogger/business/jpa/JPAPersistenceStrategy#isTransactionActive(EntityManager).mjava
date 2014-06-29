@@ -5,9 +5,6 @@
      *         transaction
      */
     private boolean isTransactionActive(EntityManager em) {
-        if (em == null) {
-            return false;
-        }
-        return em.getTransaction().isActive();
+        return em != null && em.getTransaction().isActive();
     }
 

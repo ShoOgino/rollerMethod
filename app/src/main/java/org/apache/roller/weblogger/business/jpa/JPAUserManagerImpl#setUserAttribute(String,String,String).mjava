@@ -1,10 +1,11 @@
     public void setUserAttribute(String userName, String attribute, String value) throws WebloggerException {
         UserAttribute userAttribute = null;
-        Query q = strategy.getNamedQuery("UserAttribute.getByUserNameAndAttrName");
+        TypedQuery<UserAttribute> q = strategy.getNamedQuery("UserAttribute.getByUserNameAndAttrName",
+                UserAttribute.class);
         q.setParameter(1, userName);
         q.setParameter(2, attribute);
         try {
-            userAttribute = (UserAttribute) q.getSingleResult();
+            userAttribute = q.getSingleResult();
         } catch (NoResultException ignored) {
         }
         if (userAttribute != null) {

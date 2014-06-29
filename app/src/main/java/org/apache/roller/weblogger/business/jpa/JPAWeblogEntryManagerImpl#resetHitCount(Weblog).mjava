@@ -2,11 +2,11 @@
      * @inheritDoc
      */
     public void resetHitCount(Weblog weblog) throws WebloggerException {
-        Query q = strategy.getNamedQuery("WeblogHitCount.getByWeblog");
+        TypedQuery<WeblogHitCount> q = strategy.getNamedQuery("WeblogHitCount.getByWeblog", WeblogHitCount.class);
         q.setParameter(1, weblog);
         WeblogHitCount hitCount;
         try {
-            hitCount = (WeblogHitCount)q.getSingleResult();
+            hitCount = q.getSingleResult();
             hitCount.setDailyHits(0);
             strategy.store(hitCount);
         } catch (NoResultException e) {

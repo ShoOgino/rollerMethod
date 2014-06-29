@@ -5,8 +5,8 @@
         if (website == null) {
             throw new WebloggerException("website is null");
         }
-        Query q = strategy.getNamedQuery(
-                "WeblogTemplate.getByWebsiteOrderByName");
+        TypedQuery<WeblogTemplate> q = strategy.getNamedQuery(
+                "WeblogTemplate.getByWebsiteOrderByName", WeblogTemplate.class);
         q.setParameter(1, website);
         return q.getResultList();
     }

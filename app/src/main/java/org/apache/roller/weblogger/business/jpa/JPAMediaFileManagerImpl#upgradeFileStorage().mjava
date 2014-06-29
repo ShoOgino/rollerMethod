@@ -14,12 +14,12 @@
                 File uploadsDir = new File(oldDirName);
                 File[] dirs = uploadsDir.listFiles();
                 if (null != dirs) {
-                    for (int i = 0; i < dirs.length; i++) {
+                    for (File dir : dirs) {
 
-                        if (dirs[i].isDirectory()) {
+                        if (dir.isDirectory()) {
                             WeblogManager wmgr = this.roller.getWeblogManager();
                             Weblog weblog = wmgr.getWeblogByHandle(
-                                    dirs[i].getName(), null);
+                                    dir.getName(), null);
                             if (weblog != null) {
 
                                 log.info("Migrating weblog: "
@@ -52,7 +52,7 @@
                                             weblog,
                                             chosenUser,
                                             new File(oldDirName + FS
-                                                    + dirs[i].getName()), root);
+                                                    + dir.getName()), root);
 
                                 } catch (Exception e) {
                                     log.error("ERROR upgading weblog", e);

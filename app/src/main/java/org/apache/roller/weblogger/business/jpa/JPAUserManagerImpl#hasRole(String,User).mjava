@@ -2,7 +2,7 @@
      * Returns true if user has role specified.
      */
     public boolean hasRole(String roleName, User user) throws WebloggerException {
-        Query q = strategy.getNamedQuery("UserRole.getByUserNameAndRole");
+        TypedQuery<UserRole> q = strategy.getNamedQuery("UserRole.getByUserNameAndRole", UserRole.class);
         q.setParameter(1, user.getUserName());
         q.setParameter(2, roleName);
         try {

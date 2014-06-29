@@ -1,5 +1,5 @@
     public void removeAllAutoPings() throws WebloggerException {
-        Query q = strategy.getNamedUpdate("AutoPing.getAll");
+        TypedQuery<AutoPing> q = strategy.getNamedQueryCommitFirst("AutoPing.getAll", AutoPing.class);
         removeAutoPings(q.getResultList());
     }
 

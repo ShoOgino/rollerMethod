@@ -10,7 +10,7 @@
         Date currentTime = new Date();
         
         // query for existing lease record first
-        TaskLock taskLock = null;
+        TaskLock taskLock;
         try {
             taskLock = getTaskLockByName(task.getName());
             if(taskLock == null) {
@@ -30,7 +30,7 @@
                 // calculate run time for task, this is expected time, not actual time
                 // i.e. if a task is meant to run daily at midnight this should
                 // reflect 00:00:00 on the current day
-                Date runTime = currentTime;
+                Date runTime;
                 if("startOfDay".equals(task.getStartTimeDesc())) {
                     // start of today
                     runTime = DateUtil.getStartOfDay(currentTime);
@@ -53,7 +53,7 @@
                 Query q = strategy.getNamedUpdate(
                         "TaskLock.updateClient&Timeacquired&Timeleased&LastRunByName&Timeacquired");
                 q.setParameter(1, task.getClientId());
-                q.setParameter(2, Integer.valueOf(task.getLeaseTime()));
+                q.setParameter(2, task.getLeaseTime());
                 q.setParameter(3, new Timestamp(runTime.getTime()));
                 q.setParameter(4, task.getName());
                 q.setParameter(5, taskLock.getTimeAcquired());

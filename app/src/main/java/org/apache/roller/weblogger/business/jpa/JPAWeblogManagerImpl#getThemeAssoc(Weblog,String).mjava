@@ -1,15 +1,16 @@
     public WeblogThemeAssoc getThemeAssoc(Weblog weblog , String type) throws WebloggerException {
 
-        if(weblog == null){
+        if (weblog == null) {
             throw new WebloggerException("Weblog is null");
         }
-        if(type == null){
+        if (type == null) {
             throw new WebloggerException("Type is null");
         }
-        Query query = strategy.getNamedQuery("WeblogThemeAssoc.getThemeAssocByType") ;
+        TypedQuery<WeblogThemeAssoc> query = strategy.getNamedQuery("WeblogThemeAssoc.getThemeAssocByType",
+                WeblogThemeAssoc.class);
         query.setParameter(1,weblog);
         query.setParameter(2,type);
 
-        return (WeblogThemeAssoc) query.getSingleResult();
+        return query.getSingleResult();
     }
 

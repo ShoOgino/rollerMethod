@@ -1,5 +1,5 @@
     /**
-     * Get named query with FlushModeType.COMMIT
+     * Get named query that won't commit changes to DB first (FlushModeType.COMMIT)
      * @param queryName the name of the query
      * @throws org.apache.roller.weblogger.WebloggerException on any error
      */
@@ -7,7 +7,8 @@
     throws WebloggerException {
         EntityManager em = getEntityManager(false);
         Query q = em.createNamedQuery(queryName);
-        // Never flush for queries. Roller code assumes this behavior
+        // For performance, never flush/commit prior to running queries.
+        // Roller code assumes this behavior
         q.setFlushMode(FlushModeType.COMMIT);
         return q;
     }

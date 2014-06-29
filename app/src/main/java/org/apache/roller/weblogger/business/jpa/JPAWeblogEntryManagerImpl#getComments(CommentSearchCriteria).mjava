@@ -49,7 +49,7 @@
             queryString.append(" ORDER BY c.postTime ASC");
         }
         
-        Query query = strategy.getDynamicQuery(queryString.toString());
+        TypedQuery<WeblogEntryComment> query = strategy.getDynamicQuery(queryString.toString(), WeblogEntryComment.class);
         if (csc.getOffset() != 0) {
             query.setFirstResult(csc.getOffset());
         }

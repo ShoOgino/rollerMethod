@@ -1,6 +1,6 @@
     public List<PingQueueEntry> getAllQueueEntries()
             throws WebloggerException {
-        return (List<PingQueueEntry>) strategy.getNamedQuery(
-                "PingQueueEntry.getAllOrderByEntryTime").getResultList();
+        return strategy.getNamedQuery("PingQueueEntry.getAllOrderByEntryTime",
+                PingQueueEntry.class).getResultList();
     }
 

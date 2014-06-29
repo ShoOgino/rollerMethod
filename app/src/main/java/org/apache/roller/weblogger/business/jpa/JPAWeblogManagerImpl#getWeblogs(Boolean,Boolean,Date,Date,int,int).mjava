@@ -7,7 +7,7 @@
         
         //if (endDate == null) endDate = new Date();
                       
-        List params = new ArrayList();
+        List<Object> params = new ArrayList<Object>();
         int size = 0;
         String queryString;
         StringBuilder whereClause = new StringBuilder();
@@ -20,7 +20,7 @@
                 whereClause.append(" AND ");
             }
             params.add(size++, start);
-            whereClause.append(" w.dateCreated > ?" + size);
+            whereClause.append(" w.dateCreated > ?").append(size);
         }
         if (endDate != null) {
             Timestamp end = new Timestamp(endDate.getTime());
@@ -28,26 +28,26 @@
                 whereClause.append(" AND ");
             }
             params.add(size++, end);
-            whereClause.append(" w.dateCreated < ?" + size);
+            whereClause.append(" w.dateCreated < ?").append(size);
         }
         if (enabled != null) {
             if (whereClause.length() > 0) {
                 whereClause.append(" AND ");
             }
             params.add(size++, enabled);
-            whereClause.append(" w.enabled = ?" + size);
+            whereClause.append(" w.enabled = ?").append(size);
         }
         if (active != null) {
             if (whereClause.length() > 0) {
                 whereClause.append(" AND ");
             }
             params.add(size++, active);
-            whereClause.append(" w.active = ?" + size);
+            whereClause.append(" w.active = ?").append(size);
         }      
                 
         whereClause.append(" ORDER BY w.dateCreated DESC");
         
-        Query query = strategy.getDynamicQuery(queryString + whereClause.toString());
+        TypedQuery<Weblog> query = strategy.getDynamicQuery(queryString + whereClause.toString(), Weblog.class);
         if (offset != 0) {
             query.setFirstResult(offset);
         }

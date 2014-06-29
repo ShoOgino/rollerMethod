@@ -1,0 +1,14 @@
+    /**
+     * Get named query with default flush mode (usually FlushModeType.AUTO)
+     * FlushModeType.AUTO commits changes to DB prior to running statement
+     *
+     * @param queryName the name of the query
+     * @param resultClass return type of query
+     * @throws org.apache.roller.weblogger.WebloggerException on any error
+     */
+    public <T> TypedQuery<T> getNamedQueryCommitFirst(String queryName, Class<T> resultClass)
+            throws WebloggerException {
+        EntityManager em = getEntityManager(true);
+        return em.createNamedQuery(queryName, resultClass);
+    }
+

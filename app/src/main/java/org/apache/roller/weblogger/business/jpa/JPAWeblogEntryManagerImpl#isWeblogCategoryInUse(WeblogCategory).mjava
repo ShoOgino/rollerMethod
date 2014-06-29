@@ -6,7 +6,7 @@
         if (cat.getWeblog().getBloggerCategory().equals(cat)) {
             return true;
         }
-        Query q = strategy.getNamedQuery("WeblogEntry.getByCategory");
+        TypedQuery<WeblogEntry> q = strategy.getNamedQuery("WeblogEntry.getByCategory", WeblogEntry.class);
         q.setParameter(1, cat);
         int entryCount = q.getResultList().size();
         return entryCount > 0;

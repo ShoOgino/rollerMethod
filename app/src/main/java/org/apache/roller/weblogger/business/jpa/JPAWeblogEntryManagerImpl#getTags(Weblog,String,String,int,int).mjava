@@ -21,7 +21,7 @@
                        
         if (startsWith != null && startsWith.length() > 0) {
             params.add(size++, startsWith + '%');
-            queryString.append(" AND w.name LIKE ?" + size);
+            queryString.append(" AND w.name LIKE ?").append(size);
         }
                     
         if (sortBy != null && sortBy.equals("count")) {
@@ -44,13 +44,15 @@
         queryResults = query.getResultList();
         
         List<TagStat> results = new ArrayList<TagStat>();
-        for (Iterator iter = queryResults.iterator(); iter.hasNext();) {
-            Object[] row = (Object[]) iter.next();
-            TagStat ce = new TagStat();
-            ce.setName((String) row[0]);
-            // The JPA query retrieves SUM(w.total) always as long
-            ce.setCount(((Long) row[1]).intValue());
-            results.add(ce);
+        if (queryResults != null) {
+            for (Object obj : queryResults) {
+                Object[] row = (Object[]) obj;
+                TagStat ce = new TagStat();
+                ce.setName((String) row[0]);
+                // The JPA query retrieves SUM(w.total) always as long
+                ce.setCount(((Long) row[1]).intValue());
+                results.add(ce);
+            }
         }
 
         if (sortByName) {

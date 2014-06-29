@@ -2,7 +2,7 @@
             int offset, int length)
             throws WebloggerException {
         
-        Query query = null;
+        Query query;
         
         if (endDate == null) {
             endDate = new Date();
@@ -29,19 +29,22 @@
         }
         List queryResults = query.getResultList();
         List<StatCount> results = new ArrayList<StatCount>();
-        for (Iterator iter = queryResults.iterator(); iter.hasNext();) {
-            Object[] row = (Object[]) iter.next();
-            StatCount sc = new StatCount(
-                    (String)row[1],                     // website id
-                    (String)row[2],                     // website handle
-                    (String)row[3],                     // website name
-                    "statCount.weblogCommentCountType", // stat type
-                    ((Long)row[0]));        // # comments
-            sc.setWeblogHandle((String)row[2]);
-            results.add(sc);
+        if (queryResults != null) {
+            for (Object obj : queryResults) {
+                Object[] row = (Object[]) obj;
+                StatCount sc = new StatCount(
+                        (String)row[1],                     // website id
+                        (String)row[2],                     // website handle
+                        (String)row[3],                     // website name
+                        "statCount.weblogCommentCountType", // stat type
+                        ((Long)row[0]));        // # comments
+                sc.setWeblogHandle((String)row[2]);
+                results.add(sc);
+            }
         }
+
         // Original query ordered by desc # comments.
-        // JPA QL doesn't allow queries to be ordered by agregates; do it in memory
+        // JPA QL doesn't allow queries to be ordered by aggregates; do it in memory
         Collections.sort(results, STAT_COUNT_COUNT_REVERSE_COMPARATOR);
         
         return results;

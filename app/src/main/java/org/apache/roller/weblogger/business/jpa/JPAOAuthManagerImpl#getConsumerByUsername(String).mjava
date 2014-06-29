@@ -1,9 +1,10 @@
     public OAuthConsumer getConsumerByUsername(String username) throws WebloggerException {
         OAuthConsumerRecord record = null;
         try {
-            Query q = strategy.getNamedQuery("OAuthConsumerRecord.getByUsername");
+            TypedQuery<OAuthConsumerRecord> q = strategy.getNamedQuery("OAuthConsumerRecord.getByUsername",
+                    OAuthConsumerRecord.class);
             q.setParameter(1, username);
-            record = (OAuthConsumerRecord)q.getSingleResult();
+            record = q.getSingleResult();
 
         } catch (Exception ex) {
             log.debug("ERROR fetching consumer", ex);
