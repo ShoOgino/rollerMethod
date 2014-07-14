@@ -8,15 +8,6 @@
         UserManager        umgr = roller.getUserManager();
         WeblogEntryManager emgr = roller.getWeblogEntryManager();
 
-        //remove theme Assocs
-        TypedQuery<WeblogThemeAssoc> themeAssocQuery = strategy.getNamedQuery("WeblogThemeAssoc.getThemeAssocsByWeblog",
-                WeblogThemeAssoc.class);
-        themeAssocQuery.setParameter(1,website);
-        List<WeblogThemeAssoc> assocResults = themeAssocQuery.getResultList();
-        for (WeblogThemeAssoc themeAssoc : assocResults) {
-            this.strategy.remove(themeAssoc);
-        }
-        
         // remove tags
         TypedQuery<WeblogEntryTag> tagQuery = strategy.getNamedQuery("WeblogEntryTag.getByWeblog",
                 WeblogEntryTag.class);
