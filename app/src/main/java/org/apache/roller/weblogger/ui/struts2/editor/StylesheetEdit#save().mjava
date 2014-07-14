@@ -35,11 +35,6 @@
                     WeblogThemeTemplateCode tc = stylesheet
                             .getTemplateCode(MOBILE_THEME_TYPE);
                     tc.setTemplate(getContentsMobile());
-                } else {
-                    WeblogThemeTemplateCode tc = new WeblogThemeTemplateCode(
-                            stylesheet.getId(), MOBILE_THEME_TYPE);
-                    // empty, we've got no default mobile template
-                    tc.setTemplate("");
                     WebloggerFactory.getWeblogger().getWeblogManager()
                             .saveTemplateCode(tc);
                 }
