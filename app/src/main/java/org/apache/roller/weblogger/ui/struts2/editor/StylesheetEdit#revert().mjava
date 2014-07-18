@@ -26,25 +26,25 @@
 
                 stylesheet.setLastModified(new Date());
 
-                if (stylesheet.getTemplateCode(STANDARD_THEME_TYPE) != null) {
-                    TemplateCode templateCode = theme.getStylesheet()
-                            .getTemplateCode(STANDARD_THEME_TYPE);
+                if (stylesheet.getTemplateRendition(STANDARD_THEME_TYPE) != null) {
+                    TemplateRendition templateCode = theme.getStylesheet()
+                            .getTemplateRendition(STANDARD_THEME_TYPE);
                     // if we have a template, then set it
-                    WeblogThemeTemplateCode existingTemplateCode = stylesheet
-                            .getTemplateCode(STANDARD_THEME_TYPE);
+                    CustomTemplateRendition existingTemplateCode = stylesheet
+                            .getTemplateRendition(STANDARD_THEME_TYPE);
                     existingTemplateCode
                             .setTemplate(templateCode.getTemplate());
                     WebloggerFactory.getWeblogger().getWeblogManager()
-                            .saveTemplateCode(existingTemplateCode);
+                            .saveTemplateRendition(existingTemplateCode);
 
                     // TODO do we still want to set the contents here?
                     stylesheet.setContents(templateCode.getTemplate());
                 }
-                if (stylesheet.getTemplateCode(MOBILE_THEME_TYPE) != null) {
-                    TemplateCode templateCode = theme.getStylesheet()
-                            .getTemplateCode(MOBILE_THEME_TYPE);
-                    WeblogThemeTemplateCode existingTemplateCode = stylesheet
-                            .getTemplateCode(MOBILE_THEME_TYPE);
+                if (stylesheet.getTemplateRendition(MOBILE_THEME_TYPE) != null) {
+                    TemplateRendition templateCode = theme.getStylesheet()
+                            .getTemplateRendition(MOBILE_THEME_TYPE);
+                    CustomTemplateRendition existingTemplateCode = stylesheet
+                            .getTemplateRendition(MOBILE_THEME_TYPE);
                     existingTemplateCode
                             .setTemplate(templateCode.getTemplate());
                 }

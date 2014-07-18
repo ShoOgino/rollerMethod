@@ -15,28 +15,28 @@
 
                 stylesheet.setLastModified(new Date());
 
-                if (stylesheet.getTemplateCode(STANDARD_THEME_TYPE) != null) {
+                if (stylesheet.getTemplateRendition(STANDARD_THEME_TYPE) != null) {
                     // if we have a template, then set it
-                    WeblogThemeTemplateCode tc = stylesheet
-                            .getTemplateCode(STANDARD_THEME_TYPE);
+                    CustomTemplateRendition tc = stylesheet
+                            .getTemplateRendition(STANDARD_THEME_TYPE);
                     tc.setTemplate(getContentsStandard());
                     WebloggerFactory.getWeblogger().getWeblogManager()
-                            .saveTemplateCode(tc);
+                            .saveTemplateRendition(tc);
                 } else {
                     // otherwise create it, then set it
-                    WeblogThemeTemplateCode tc = new WeblogThemeTemplateCode(
+                    CustomTemplateRendition tc = new CustomTemplateRendition(
                             stylesheet.getId(), STANDARD_THEME_TYPE);
                     tc.setTemplate(stylesheet.getContents());
                     WebloggerFactory.getWeblogger().getWeblogManager()
-                            .saveTemplateCode(tc);
+                            .saveTemplateRendition(tc);
                 }
 
-                if (stylesheet.getTemplateCode(MOBILE_THEME_TYPE) != null) {
-                    WeblogThemeTemplateCode tc = stylesheet
-                            .getTemplateCode(MOBILE_THEME_TYPE);
+                if (stylesheet.getTemplateRendition(MOBILE_THEME_TYPE) != null) {
+                    CustomTemplateRendition tc = stylesheet
+                            .getTemplateRendition(MOBILE_THEME_TYPE);
                     tc.setTemplate(getContentsMobile());
                     WebloggerFactory.getWeblogger().getWeblogManager()
-                            .saveTemplateCode(tc);
+                            .saveTemplateRendition(tc);
                 }
 
                 // TODO do we still want to set the contents here?

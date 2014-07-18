@@ -107,14 +107,14 @@
                         standardTemplateCode.getTemplateLang(), false, false);
 
                 for (String type : availableTypesList) {
-                    SharedThemeTemplateCode templateCode = createTemplateCode(
+                    SharedThemeTemplateRendition rendition = createTemplateCode(
                             theme_template.getId(),
                             stylesheetTmpl.getTemplateCode(type));
 
-                    theme_template.addTemplateCode(type, templateCode);
+                    theme_template.addTemplateRendition(type, rendition);
 
                     // Set Last Modified
-                    Date lstModified = templateCode.getLastModified();
+                    Date lstModified = rendition.getLastModified();
                     if (getLastModified() == null
                             || lstModified.after(getLastModified())) {
                         setLastModified(lstModified);
@@ -208,11 +208,11 @@
                     templateMetadata.isHidden(), templateMetadata.isNavbar());
 
             for (String type : availableTypesList) {
-                SharedThemeTemplateCode templateCode = createTemplateCode(
+                SharedThemeTemplateRendition templateCode = createTemplateCode(
                         theme_template.getId(),
                         templateMetadata.getTemplateCode(type));
 
-                theme_template.addTemplateCode(type, templateCode);
+                theme_template.addTemplateRendition(type, templateCode);
 
                 // Set Last Modified
                 Date lstModified = templateCode.getLastModified();

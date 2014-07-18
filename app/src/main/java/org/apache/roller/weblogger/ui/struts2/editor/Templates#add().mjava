@@ -42,20 +42,20 @@
                         .savePage(newTemplate);
 
                 // Create weblog template codes for available types.
-                WeblogThemeTemplateCode standardTemplCode = new WeblogThemeTemplateCode(
+                CustomTemplateRendition standardRendition = new CustomTemplateRendition(
                         newTemplate.getId(), "standard");
-                standardTemplCode.setTemplate(newTemplate.getContents());
-                standardTemplCode.setTemplateLanguage("velocity");
+                standardRendition.setTemplate(newTemplate.getContents());
+                standardRendition.setTemplateLanguage("velocity");
                 WebloggerFactory.getWeblogger().getWeblogManager()
-                        .saveTemplateCode(standardTemplCode);
+                        .saveTemplateRendition(standardRendition);
 
                 /* TBI -- need a way for user to specify dual or single template
-                WeblogThemeTemplateCode mobileTemplCode = new WeblogThemeTemplateCode(
+                CustomTemplateRendition mobileRendition = new CustomTemplateRendition(
                         newTemplate.getId(), "mobile");
-                mobileTemplCode.setTemplate(newTemplate.getContents());
-                mobileTemplCode.setTemplateLanguage("velocity");
+                mobileRendition.setTemplate(newTemplate.getContents());
+                mobileRendition.setTemplateLanguage("velocity");
                 WebloggerFactory.getWeblogger().getWeblogManager()
-                        .saveTemplateCode(mobileTemplCode);
+                        .saveTemplateRendition(mobileRendition);
                 */
 
                 // if this person happened to create a Weblog template from

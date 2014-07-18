@@ -72,16 +72,16 @@
 			for (String type : ThemeManagerImpl.getTypesList()) {
 
 				// See if we already have some code for this template already (eg previous theme)
-				WeblogThemeTemplateCode weblogTemplateCode = template.getTemplateCode(type);
+				CustomTemplateRendition weblogTemplateCode = template.getTemplateRendition(type);
 
 				// Get the template for the new theme
-				TemplateCode templateCode = themeTemplate.getTemplateCode(type);
+				TemplateRendition templateCode = themeTemplate.getTemplateRendition(type);
 				if (templateCode != null) {
 					
 					// Check for existing template
 					if (weblogTemplateCode == null) {
 						// Does not exist so create a new one
-						weblogTemplateCode = new WeblogThemeTemplateCode(
+						weblogTemplateCode = new CustomTemplateRendition(
 								template.getId(), type);
 					}
 					weblogTemplateCode.setType(type);
@@ -91,7 +91,7 @@
 					weblogTemplateCode.setContentType(templateCode
 							.getContentType());
 					WebloggerFactory.getWeblogger().getWeblogManager()
-							.saveTemplateCode(weblogTemplateCode);
+							.saveTemplateRendition(weblogTemplateCode);
 				}
 
 			}

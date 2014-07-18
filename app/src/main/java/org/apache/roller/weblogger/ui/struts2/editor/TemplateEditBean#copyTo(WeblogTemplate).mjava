@@ -1,19 +1,19 @@
     public void copyTo(WeblogTemplate dataHolder) throws WebloggerException {
 
-        if (dataHolder.getTemplateCode("standard") != null) {
+        if (dataHolder.getTemplateRendition("standard") != null) {
             // if we have a template, then set it
-            WeblogThemeTemplateCode tc = dataHolder.getTemplateCode("standard");
+            CustomTemplateRendition tc = dataHolder.getTemplateRendition("standard");
             tc.setTemplate(contentsStandard);
-            WebloggerFactory.getWeblogger().getWeblogManager().saveTemplateCode(tc);
+            WebloggerFactory.getWeblogger().getWeblogManager().saveTemplateRendition(tc);
         } else { 
             // otherwise create it, then set it
-            WeblogThemeTemplateCode tc = new WeblogThemeTemplateCode(dataHolder.getId(), "standard");
+            CustomTemplateRendition tc = new CustomTemplateRendition(dataHolder.getId(), "standard");
 			tc.setTemplate(dataHolder.getContents());
-            WebloggerFactory.getWeblogger().getWeblogManager().saveTemplateCode(tc);
+            WebloggerFactory.getWeblogger().getWeblogManager().saveTemplateRendition(tc);
         }
 
-        if (dataHolder.getTemplateCode("mobile") != null) {
-            WeblogThemeTemplateCode tc = dataHolder.getTemplateCode("mobile");
+        if (dataHolder.getTemplateRendition("mobile") != null) {
+            CustomTemplateRendition tc = dataHolder.getTemplateRendition("mobile");
             tc.setTemplate(contentsMobile);
         }
 

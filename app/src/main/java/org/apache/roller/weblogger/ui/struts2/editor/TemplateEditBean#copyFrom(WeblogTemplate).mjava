@@ -5,13 +5,13 @@
         this.description = dataHolder.getDescription();
         this.link = dataHolder.getLink();
 
-        if (dataHolder.getTemplateCode("standard") != null) {
-            this.contentsStandard = dataHolder.getTemplateCode("standard").getTemplate();
+        if (dataHolder.getTemplateRendition("standard") != null) {
+            this.contentsStandard = dataHolder.getTemplateRendition("standard").getTemplate();
         } else {
             this.contentsStandard = dataHolder.getContents();
         }
-        if (dataHolder.getTemplateCode("mobile") != null) {
-            this.contentsMobile = dataHolder.getTemplateCode("mobile").getTemplate();
+        if (dataHolder.getTemplateRendition("mobile") != null) {
+            this.contentsMobile = dataHolder.getTemplateRendition("mobile").getTemplate();
         }
 		log.debug("Standard: " + this.contentsStandard + " Mobile: " + this.contentsMobile); 
 

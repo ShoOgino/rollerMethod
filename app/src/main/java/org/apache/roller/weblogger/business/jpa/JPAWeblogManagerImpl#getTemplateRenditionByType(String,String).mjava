@@ -1,4 +1,4 @@
-    public WeblogThemeTemplateCode getTemplateCodeByType(String templateId, String type) throws WebloggerException{
+    public CustomTemplateRendition getTemplateRenditionByType(String templateId, String type) throws WebloggerException{
         if(templateId == null) {
             throw new WebloggerException("Template Name is null");
         }
@@ -7,8 +7,8 @@
             throw new WebloggerException("Type is null");
         }
 
-        TypedQuery<WeblogThemeTemplateCode> query = strategy.getNamedQuery("WeblogThemeTemplateCode.getTemplateCodeByType",
-                WeblogThemeTemplateCode.class);
+        TypedQuery<CustomTemplateRendition> query = strategy.getNamedQuery("CustomTemplateRendition.getRenditionByType",
+                CustomTemplateRendition.class);
         query.setParameter(1, templateId);
         query.setParameter(2, type);
         try {

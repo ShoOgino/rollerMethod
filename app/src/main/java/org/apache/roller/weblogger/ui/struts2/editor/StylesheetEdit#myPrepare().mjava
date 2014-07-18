@@ -33,24 +33,24 @@
                             .getTemplateLanguage());
 
                     // create template codes for available template code Types
-                    WeblogThemeTemplateCode standardTemplateCode = new WeblogThemeTemplateCode(
+                    CustomTemplateRendition standardRendition = new CustomTemplateRendition(
                             stylesheetTmpl.getId(), STANDARD_THEME_TYPE);
-                    standardTemplateCode.setTemplate(stylesheetTmpl
+                    standardRendition.setTemplate(stylesheetTmpl
                             .getContents());
-                    standardTemplateCode.setTemplateLanguage(stylesheetTmpl
+                    standardRendition.setTemplateLanguage(stylesheetTmpl
                             .getTemplateLanguage());
                     WebloggerFactory.getWeblogger().getWeblogManager()
-                            .saveTemplateCode(standardTemplateCode);
+                            .saveTemplateRendition(standardRendition);
 
-                    TemplateCode tCode = stylesheet.getTemplateCode(MOBILE_THEME_TYPE);
+                    TemplateRendition tCode = stylesheet.getTemplateRendition(MOBILE_THEME_TYPE);
                     if (tCode != null) {
-                        WeblogThemeTemplateCode mobileTemplateCode = new WeblogThemeTemplateCode(
+                        CustomTemplateRendition mobileRendition = new CustomTemplateRendition(
                                 stylesheetTmpl.getId(), MOBILE_THEME_TYPE);
-                        mobileTemplateCode.setTemplate(tCode.getTemplate());
-                        mobileTemplateCode.setTemplateLanguage(tCode
+                        mobileRendition.setTemplate(tCode.getTemplate());
+                        mobileRendition.setTemplateLanguage(tCode
                                 .getTemplateLanguage());
                         WebloggerFactory.getWeblogger().getWeblogManager()
-                                .saveTemplateCode(mobileTemplateCode);
+                                .saveTemplateRendition(mobileRendition);
                     }
 
                     WebloggerFactory.getWeblogger().getWeblogManager()
