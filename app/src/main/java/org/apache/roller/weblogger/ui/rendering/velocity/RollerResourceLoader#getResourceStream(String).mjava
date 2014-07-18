@@ -16,11 +16,11 @@
 		}
 
 		// theme templates name are <template>|<deviceType>
-		String deviceType = "standard";
+		RenditionType renditionType = RenditionType.STANDARD;
 		if (name.contains("|")) {
 			String[] pair = name.split("\\|");
 			name = pair[0];
-			deviceType = pair[1];
+			renditionType = RenditionType.valueOf(pair[1].toUpperCase());
 		}
 
 		logger.debug("   Actually, it's " + name);
@@ -34,7 +34,7 @@
 						"RollerResourceLoader: page \"" + name + "\" not found");
 			}
 			String contents;
-			TemplateRendition templateCode = page.getTemplateRendition(deviceType);
+			TemplateRendition templateCode = page.getTemplateRendition(renditionType);
 			if (templateCode != null) {
 				contents = templateCode.getTemplate();
 			} else {

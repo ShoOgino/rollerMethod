@@ -15,25 +15,25 @@
 
                 stylesheet.setLastModified(new Date());
 
-                if (stylesheet.getTemplateRendition(STANDARD_THEME_TYPE) != null) {
+                if (stylesheet.getTemplateRendition(RenditionType.STANDARD) != null) {
                     // if we have a template, then set it
                     CustomTemplateRendition tc = stylesheet
-                            .getTemplateRendition(STANDARD_THEME_TYPE);
+                            .getTemplateRendition(RenditionType.STANDARD);
                     tc.setTemplate(getContentsStandard());
                     WebloggerFactory.getWeblogger().getWeblogManager()
                             .saveTemplateRendition(tc);
                 } else {
                     // otherwise create it, then set it
                     CustomTemplateRendition tc = new CustomTemplateRendition(
-                            stylesheet.getId(), STANDARD_THEME_TYPE);
+                            stylesheet.getId(), RenditionType.STANDARD);
                     tc.setTemplate(stylesheet.getContents());
                     WebloggerFactory.getWeblogger().getWeblogManager()
                             .saveTemplateRendition(tc);
                 }
 
-                if (stylesheet.getTemplateRendition(MOBILE_THEME_TYPE) != null) {
+                if (stylesheet.getTemplateRendition(RenditionType.MOBILE) != null) {
                     CustomTemplateRendition tc = stylesheet
-                            .getTemplateRendition(MOBILE_THEME_TYPE);
+                            .getTemplateRendition(RenditionType.MOBILE);
                     tc.setTemplate(getContentsMobile());
                     WebloggerFactory.getWeblogger().getWeblogManager()
                             .saveTemplateRendition(tc);

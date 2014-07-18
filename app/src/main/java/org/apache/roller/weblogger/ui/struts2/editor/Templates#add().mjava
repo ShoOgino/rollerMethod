@@ -43,7 +43,7 @@
 
                 // Create weblog template codes for available types.
                 CustomTemplateRendition standardRendition = new CustomTemplateRendition(
-                        newTemplate.getId(), "standard");
+                        newTemplate.getId(), RenditionType.STANDARD);
                 standardRendition.setTemplate(newTemplate.getContents());
                 standardRendition.setTemplateLanguage("velocity");
                 WebloggerFactory.getWeblogger().getWeblogManager()
@@ -51,7 +51,7 @@
 
                 /* TBI -- need a way for user to specify dual or single template
                 CustomTemplateRendition mobileRendition = new CustomTemplateRendition(
-                        newTemplate.getId(), "mobile");
+                        newTemplate.getId(), RenditionType.MOBILE);
                 mobileRendition.setTemplate(newTemplate.getContents());
                 mobileRendition.setTemplateLanguage("velocity");
                 WebloggerFactory.getWeblogger().getWeblogManager()

@@ -34,7 +34,7 @@
 
                     // create template codes for available template code Types
                     CustomTemplateRendition standardRendition = new CustomTemplateRendition(
-                            stylesheetTmpl.getId(), STANDARD_THEME_TYPE);
+                            stylesheetTmpl.getId(), RenditionType.STANDARD);
                     standardRendition.setTemplate(stylesheetTmpl
                             .getContents());
                     standardRendition.setTemplateLanguage(stylesheetTmpl
@@ -42,10 +42,10 @@
                     WebloggerFactory.getWeblogger().getWeblogManager()
                             .saveTemplateRendition(standardRendition);
 
-                    TemplateRendition tCode = stylesheet.getTemplateRendition(MOBILE_THEME_TYPE);
+                    TemplateRendition tCode = stylesheet.getTemplateRendition(RenditionType.MOBILE);
                     if (tCode != null) {
                         CustomTemplateRendition mobileRendition = new CustomTemplateRendition(
-                                stylesheetTmpl.getId(), MOBILE_THEME_TYPE);
+                                stylesheetTmpl.getId(), RenditionType.MOBILE);
                         mobileRendition.setTemplate(tCode.getTemplate());
                         mobileRendition.setTemplateLanguage(tCode
                                 .getTemplateLanguage());

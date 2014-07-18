@@ -9,15 +9,15 @@
 
         try {
 
-            if (getTemplate().getTemplateRendition(STANDARD_THEME_TYPE) != null) {
+            if (getTemplate().getTemplateRendition(RenditionType.STANDARD) != null) {
                 setContentsStandard(getTemplate().getTemplateRendition(
-                        STANDARD_THEME_TYPE).getTemplate());
+                        RenditionType.STANDARD).getTemplate());
             } else {
                 setContentsStandard(getTemplate().getContents());
             }
-            if (getTemplate().getTemplateRendition(MOBILE_THEME_TYPE) != null) {
+            if (getTemplate().getTemplateRendition(RenditionType.MOBILE) != null) {
                 setContentsMobile(getTemplate().getTemplateRendition(
-                        MOBILE_THEME_TYPE).getTemplate());
+                        RenditionType.MOBILE).getTemplate());
             }
 
             if (log.isDebugEnabled()) {
