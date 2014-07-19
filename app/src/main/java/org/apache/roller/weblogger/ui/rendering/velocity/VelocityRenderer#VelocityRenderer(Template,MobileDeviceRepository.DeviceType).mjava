@@ -11,17 +11,6 @@
             velocityTemplate = RollerVelocity.getTemplate(template.getId(),
                     deviceType, "UTF-8");
 
-            // if this is a ThemeTemplate than look for a decorator too
-            if (template instanceof ThemeTemplate) {
-                ThemeTemplate templ = (ThemeTemplate) template;
-
-                Template decorator = templ.getDecorator();
-                if (decorator != null) {
-                    velocityDecorator = RollerVelocity.getTemplate(
-                            decorator.getId(), "UTF-8");
-                }
-            }
-
         } catch (ResourceNotFoundException ex) {
             // velocity couldn't find the resource so lets log a warning
             log.warn("Error creating renderer for " + template.getId()

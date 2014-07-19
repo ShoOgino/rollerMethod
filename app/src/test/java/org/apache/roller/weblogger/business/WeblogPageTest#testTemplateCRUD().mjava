@@ -15,8 +15,7 @@
         template = null;
         template = mgr.getPageByName(testWeblog, testPage.getName());
         assertNotNull(template);
-        assertEquals(testPage.getContents(), template.getContents());
-        
+
         // update template
         template.setName("testtesttest");
         mgr.savePage(template);
@@ -27,8 +26,7 @@
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         template = mgr.getPageByName(testWeblog, "testtesttest");
         assertNotNull(template);
-        assertEquals(testPage.getContents(), template.getContents());
-        
+
         // delete template
         mgr.removePage(template);
         TestUtils.endSession(true);

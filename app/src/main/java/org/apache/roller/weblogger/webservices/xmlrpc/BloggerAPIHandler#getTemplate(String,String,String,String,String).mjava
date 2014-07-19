@@ -22,12 +22,15 @@
         validate(blogid, userid,password);
         
         try {
+            CustomTemplateRendition ctr = null;
             WeblogTemplate page = WebloggerFactory.getWeblogger().getWeblogManager().getPage(templateType);
-            
-            if ( null == page ) {
-                throw new XmlRpcException(UNKNOWN_EXCEPTION,"Template not found");
+            if (page != null) {
+                ctr = page.getTemplateRendition(RenditionType.STANDARD);
+            }
+            if (null == ctr) {
+                throw new XmlRpcException(UNKNOWN_EXCEPTION,"Standard rendering of template not found");
             } else {
-                return page.getContents();
+                return ctr.getTemplate();
             }
         } catch (Exception e) {
             String msg = "ERROR in BlooggerAPIHander.getTemplate";

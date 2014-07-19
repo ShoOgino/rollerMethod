@@ -1,7 +1,7 @@
     /**
      * Look for any _acronyms Page and parse it into Properties.
-     * @param website
-     * @return
+     * @param website blog whose acronyms page to look for
+     * @return properties list of acronyms
      */
     private Properties loadAcronyms(Weblog website) {
         Properties acronyms = new Properties();
@@ -10,7 +10,10 @@
             WeblogTemplate acronymsPage = wmgr.getPageByName(
                     website, "_acronyms");
             if (acronymsPage != null) {
-                acronyms = parseAcronymPage(acronymsPage, acronyms);
+                CustomTemplateRendition ctr = acronymsPage.getTemplateRendition(TemplateRendition.RenditionType.STANDARD);
+                if (ctr != null) {
+                    acronyms = parseAcronymPage(ctr, acronyms);
+                }
             }
         } catch (WebloggerException e) {
             // not much we can do about it

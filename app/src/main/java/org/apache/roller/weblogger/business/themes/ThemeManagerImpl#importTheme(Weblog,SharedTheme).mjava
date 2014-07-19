@@ -55,13 +55,9 @@
 				template.setName(themeTemplate.getName());
 				template.setDescription(themeTemplate.getDescription());
 				template.setLink(themeTemplate.getLink());
-				template.setContents(themeTemplate.getContents());
 				template.setHidden(themeTemplate.isHidden());
 				template.setNavbar(themeTemplate.isNavbar());
-				template.setTemplateLanguage(themeTemplate
-						.getTemplateLanguage());
-				// NOTE: decorators are deprecated starting in 4.0
-				template.setDecoratorName(null);
+                template.setOutputContentType(themeTemplate.getOutputContentType());
 				template.setLastModified(new Date());
 
 				// save it
@@ -87,9 +83,7 @@
 					weblogTemplateCode.setType(type);
 					weblogTemplateCode.setTemplate(templateCode.getTemplate());
 					weblogTemplateCode.setTemplateLanguage(templateCode
-							.getTemplateLanguage());
-					weblogTemplateCode.setContentType(templateCode
-							.getContentType());
+                            .getTemplateLanguage());
 					WebloggerFactory.getWeblogger().getWeblogManager()
 							.saveTemplateRendition(weblogTemplateCode);
 				}
@@ -99,9 +93,7 @@
 
 		// now, see if the weblog has left over action templates that
 		// need to be deleted because they aren't in their new theme
-		for (int i = 0; i < WeblogTemplate.ACTIONS.length; i++) {
-			String action = WeblogTemplate.ACTIONS[i];
-
+        for (String action : WeblogTemplate.ACTIONS) {
 			// if we didn't import this action then see if it should be deleted
 			if (!importedActionTemplates.contains(action)) {
 				WeblogTemplate toDelete = wmgr.getPageByAction(website, action);
@@ -130,8 +122,7 @@
 						website, resource.getPath());
 				if (mdir == null) {
 					log.debug("    Creating directory: " + resource.getPath());
-					mdir = fileMgr.createMediaFileDirectory(website,
-							resource.getPath());
+					fileMgr.createMediaFileDirectory(website, resource.getPath());
 					roller.flush();
 				} else {
 					log.debug("    No action: directory already exists");

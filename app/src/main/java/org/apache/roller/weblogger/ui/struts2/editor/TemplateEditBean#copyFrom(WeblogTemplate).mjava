@@ -8,7 +8,7 @@
         if (dataHolder.getTemplateRendition(RenditionType.STANDARD) != null) {
             this.contentsStandard = dataHolder.getTemplateRendition(RenditionType.STANDARD).getTemplate();
         } else {
-            this.contentsStandard = dataHolder.getContents();
+            this.contentsStandard = "";
         }
         if (dataHolder.getTemplateRendition(RenditionType.MOBILE) != null) {
             this.contentsMobile = dataHolder.getTemplateRendition(RenditionType.MOBILE).getTemplate();
@@ -17,7 +17,6 @@
 
         this.navbar = dataHolder.isNavbar();
         this.hidden = dataHolder.isHidden();
-        this.templateLanguage = dataHolder.getTemplateLanguage();
         setManualContentType(dataHolder.getOutputContentType());
         if(getManualContentType() != null) {
             setAutoContentType(Boolean.FALSE);

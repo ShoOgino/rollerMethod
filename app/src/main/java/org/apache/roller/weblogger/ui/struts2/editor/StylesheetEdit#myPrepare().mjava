@@ -25,29 +25,27 @@
                     stylesheetTmpl.setName(stylesheet.getName());
                     stylesheetTmpl.setDescription(stylesheet.getDescription());
                     stylesheetTmpl.setLink(stylesheet.getLink());
-                    stylesheetTmpl.setContents(stylesheet.getContents());
                     stylesheetTmpl.setHidden(false);
                     stylesheetTmpl.setNavbar(false);
                     stylesheetTmpl.setLastModified(new Date());
-                    stylesheetTmpl.setTemplateLanguage(stylesheet
-                            .getTemplateLanguage());
 
-                    // create template codes for available template code Types
-                    CustomTemplateRendition standardRendition = new CustomTemplateRendition(
-                            stylesheetTmpl.getId(), RenditionType.STANDARD);
-                    standardRendition.setTemplate(stylesheetTmpl
-                            .getContents());
-                    standardRendition.setTemplateLanguage(stylesheetTmpl
-                            .getTemplateLanguage());
-                    WebloggerFactory.getWeblogger().getWeblogManager()
-                            .saveTemplateRendition(standardRendition);
+                    // create renditions for available rendition types
+                    TemplateRendition sCode = stylesheet.getTemplateRendition(RenditionType.STANDARD);
+                    if (sCode != null) {
+                        CustomTemplateRendition standardRendition = new CustomTemplateRendition(
+                                stylesheetTmpl.getId(), RenditionType.STANDARD);
+                        standardRendition.setTemplate(sCode.getTemplate());
+                        standardRendition.setTemplateLanguage(sCode.getTemplateLanguage());
+                        WebloggerFactory.getWeblogger().getWeblogManager()
+                                .saveTemplateRendition(standardRendition);
+                    }
 
-                    TemplateRendition tCode = stylesheet.getTemplateRendition(RenditionType.MOBILE);
-                    if (tCode != null) {
+                    TemplateRendition mCode = stylesheet.getTemplateRendition(RenditionType.MOBILE);
+                    if (mCode != null) {
                         CustomTemplateRendition mobileRendition = new CustomTemplateRendition(
                                 stylesheetTmpl.getId(), RenditionType.MOBILE);
-                        mobileRendition.setTemplate(tCode.getTemplate());
-                        mobileRendition.setTemplateLanguage(tCode
+                        mobileRendition.setTemplate(mCode.getTemplate());
+                        mobileRendition.setTemplateLanguage(mCode
                                 .getTemplateLanguage());
                         WebloggerFactory.getWeblogger().getWeblogManager()
                                 .saveTemplateRendition(mobileRendition);

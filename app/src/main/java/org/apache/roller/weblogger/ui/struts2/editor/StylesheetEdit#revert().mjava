@@ -36,9 +36,6 @@
                             .setTemplate(templateCode.getTemplate());
                     WebloggerFactory.getWeblogger().getWeblogManager()
                             .saveTemplateRendition(existingTemplateCode);
-
-                    // TODO do we still want to set the contents here?
-                    stylesheet.setContents(templateCode.getTemplate());
                 }
                 if (stylesheet.getTemplateRendition(RenditionType.MOBILE) != null) {
                     TemplateRendition templateCode = theme.getStylesheet()

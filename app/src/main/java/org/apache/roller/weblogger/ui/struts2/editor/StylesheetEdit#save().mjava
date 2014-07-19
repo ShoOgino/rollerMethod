@@ -26,7 +26,7 @@
                     // otherwise create it, then set it
                     CustomTemplateRendition tc = new CustomTemplateRendition(
                             stylesheet.getId(), RenditionType.STANDARD);
-                    tc.setTemplate(stylesheet.getContents());
+                    tc.setTemplate("");
                     WebloggerFactory.getWeblogger().getWeblogManager()
                             .saveTemplateRendition(tc);
                 }
@@ -39,12 +39,8 @@
                             .saveTemplateRendition(tc);
                 }
 
-                // TODO do we still want to set the contents here?
-                stylesheet.setContents(getContentsStandard());
-
                 // save template and flush
-                WebloggerFactory.getWeblogger().getWeblogManager()
-                        .savePage(stylesheet);
+                WebloggerFactory.getWeblogger().getWeblogManager().savePage(stylesheet);
 
                 WebloggerFactory.getWeblogger().flush();
 

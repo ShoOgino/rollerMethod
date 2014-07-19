@@ -1,14 +1,24 @@
     public Renderer getRenderer(Template template, 
 			MobileDeviceRepository.DeviceType deviceType) {
         Renderer renderer = null;
-        
+        TemplateRendition tr;
+
+        if (template == null || template.getId() == null) {
+            return null;
+        }
+
         // nothing we can do with null values
-        if (template.getTemplateLanguage() == null || template.getId() == null) {
+        try {
+            tr = template.getTemplateRendition(RenditionType.STANDARD);
+        } catch (WebloggerException e) {
+            return null;
+        }
+
+        if (tr == null) {
             return null;
         }
         
-        if ("velocity".equals(template.getTemplateLanguage())) { 
-            
+        if ("velocity".equals(tr.getTemplateLanguage())) {
             // standard velocity template
             try {
                renderer = new VelocityRenderer(template, deviceType);

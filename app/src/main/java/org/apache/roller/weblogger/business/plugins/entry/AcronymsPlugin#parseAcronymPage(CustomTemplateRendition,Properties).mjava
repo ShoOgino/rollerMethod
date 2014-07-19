@@ -1,0 +1,30 @@
+    /**
+     * Parse the Template of the provided WeblogTemplate and turns it
+     * into a <code>Properties</code> collection.
+     *
+     * @param acronymPage Rendition holding the list of acronyms.
+     * @return acronym properties (key = acronym, value= full text), empty if Template is empty
+     */
+    private Properties parseAcronymPage(CustomTemplateRendition acronymPage, Properties acronyms) {
+        String rawAcronyms = acronymPage.getTemplate();
+
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("parsing _acronyms template: \n'"+rawAcronyms+"'");
+        }
+
+        // split by end of line
+        String regex = "\n";
+        String[] lines = rawAcronyms.split(regex);
+        
+        for (String line : lines) {
+            int index = line.indexOf('=');
+            if (index > 0) {
+                String key = line.substring(0, index).trim();
+                String value = line.substring(index + 1, line.length()).trim();
+                acronyms.setProperty(key, value);
+            }
+        }
+
+        return acronyms;
+    }
+
