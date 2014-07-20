@@ -204,7 +204,7 @@
         Renderer renderer;
         try {
             log.debug("Looking up renderer");
-            Template template = new StaticTemplate(pageId, "velocity");
+            Template template = new StaticTemplate(pageId, TemplateLanguage.VELOCITY);
             renderer = RendererManager.getRenderer(template,
                     MobileDeviceRepository.DeviceType.standard);
         } catch (Exception e) {

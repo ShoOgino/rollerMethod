@@ -51,7 +51,7 @@
         Renderer renderer;
         try {
             log.debug("Looking up renderer");
-            Template template = new StaticTemplate("weblog/rsd.vm", "velocity");
+            Template template = new StaticTemplate("weblog/rsd.vm", TemplateLanguage.VELOCITY);
             renderer = RendererManager.getRenderer(template,
                     DeviceType.standard);
         } catch (Exception e) {

@@ -36,7 +36,7 @@
                 CustomTemplateRendition standardRendition = new CustomTemplateRendition(
                         newTemplate.getId(), RenditionType.STANDARD);
                 standardRendition.setTemplate(getText("pageForm.newTemplateContent"));
-                standardRendition.setTemplateLanguage("velocity");
+                standardRendition.setTemplateLanguage(TemplateLanguage.VELOCITY);
                 WebloggerFactory.getWeblogger().getWeblogManager()
                         .saveTemplateRendition(standardRendition);
 
@@ -44,7 +44,7 @@
                 CustomTemplateRendition mobileRendition = new CustomTemplateRendition(
                         newTemplate.getId(), RenditionType.MOBILE);
                 mobileRendition.setTemplate(newTemplate.getContents());
-                mobileRendition.setTemplateLanguage("velocity");
+                mobileRendition.setTemplateLanguage(TemplateLanguage.VELOCITY);
                 WebloggerFactory.getWeblogger().getWeblogManager()
                         .saveTemplateRendition(mobileRendition);
                 */
