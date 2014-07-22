@@ -1,6 +1,6 @@
     private SharedThemeTemplateRendition createTemplateCode(String templateId,
             ThemeMetadataTemplateRendition templateCodeMetadata) {
-        SharedThemeTemplateRendition templateCode = new SharedThemeTemplateRendition();
+        SharedThemeTemplateRendition templateRendition = new SharedThemeTemplateRendition();
 
         // construct File object from path
         File templateFile = new File(this.themeDir + File.separator
@@ -15,12 +15,12 @@
                     + "] template file [" + templateFile + "]");
         }
 
-        templateCode.setTemplateId(templateId);
-        templateCode.setTemplate(contents);
-        templateCode.setTemplateLanguage(templateCodeMetadata.getTemplateLang());
-        templateCode.setType(templateCodeMetadata.getType());
-        templateCode.setLastModified(new Date(templateFile.lastModified()));
+        templateRendition.setTemplateId(templateId);
+        templateRendition.setTemplate(contents);
+        templateRendition.setTemplateLanguage(templateCodeMetadata.getTemplateLang());
+        templateRendition.setType(templateCodeMetadata.getType());
+        templateRendition.setLastModified(new Date(templateFile.lastModified()));
 
-        return templateCode;
+        return templateRendition;
     }
 
