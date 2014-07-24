@@ -35,7 +35,7 @@
                 whereClause.append(" AND ");
             }
             params.add(size++, enabled);
-            whereClause.append(" w.enabled = ?").append(size);
+            whereClause.append(" w.visible = ?").append(size);
         }
         if (active != null) {
             if (whereClause.length() > 0) {

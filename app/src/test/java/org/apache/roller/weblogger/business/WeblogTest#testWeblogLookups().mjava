@@ -27,17 +27,17 @@
             assertNotNull(weblog);
             assertEquals(testWeblog1.getHandle(), weblog.getHandle());
             
-            // make sure disable weblogs are not returned
-            weblog.setEnabled(Boolean.FALSE);
+            // make sure disabled weblogs are not returned
+            weblog.setVisible(Boolean.FALSE);
             mgr.saveWeblog(weblog);
             TestUtils.endSession(true);
             weblog = null;
             weblog = mgr.getWeblogByHandle(testWeblog1.getHandle());
             assertNull(weblog);
             
-            // restore enabled state
+            // restore visible state
             weblog = mgr.getWeblogByHandle(testWeblog1.getHandle(), Boolean.FALSE);
-            weblog.setEnabled(Boolean.TRUE);
+            weblog.setVisible(Boolean.TRUE);
             mgr.saveWeblog(weblog);
             TestUtils.endSession(true);
             weblog = null;
@@ -52,7 +52,7 @@
             assertNotNull(weblog);           
             
             // make sure disabled weblogs are not returned
-            weblog.setEnabled(Boolean.FALSE);
+            weblog.setVisible(Boolean.FALSE);
             mgr.saveWeblog(weblog);
             TestUtils.endSession(true);
             List weblogs2 = mgr.getUserWeblogs(TestUtils.getManagedUser(testUser), true);

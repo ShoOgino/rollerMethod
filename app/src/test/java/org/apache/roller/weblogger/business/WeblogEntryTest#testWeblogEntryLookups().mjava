@@ -11,11 +11,11 @@
         // setup some test entries to use
         testWeblog = TestUtils.getManagedWebsite(testWeblog);
         testUser = TestUtils.getManagedUser(testUser);
-        WeblogEntry entry1 = TestUtils.setupWeblogEntry("entry1", testWeblog.getDefaultCategory(), testWeblog, testUser);
-        WeblogEntry entry2 = TestUtils.setupWeblogEntry("entry2", testWeblog.getDefaultCategory(), testWeblog, testUser);
-        WeblogEntry entry3 = TestUtils.setupWeblogEntry("entry3", testWeblog.getDefaultCategory(), testWeblog, testUser);
-        WeblogEntry entry4 = TestUtils.setupWeblogEntry("entry4", testWeblog.getDefaultCategory(), testWeblog, testUser);
-        WeblogEntry entry5 = TestUtils.setupWeblogEntry("entry5", testWeblog.getDefaultCategory(), testWeblog, testUser);
+        WeblogEntry entry1 = TestUtils.setupWeblogEntry("entry1", testWeblog, testUser);
+        WeblogEntry entry2 = TestUtils.setupWeblogEntry("entry2", testWeblog, testUser);
+        WeblogEntry entry3 = TestUtils.setupWeblogEntry("entry3", testWeblog, testUser);
+        WeblogEntry entry4 = TestUtils.setupWeblogEntry("entry4", testWeblog, testUser);
+        WeblogEntry entry5 = TestUtils.setupWeblogEntry("entry5", testWeblog, testUser);
         
         // make a couple changes
         entry1.setLocale("en_US");
@@ -73,7 +73,7 @@
         // get all (non-future) PUBLISHED entries in category 
         WeblogEntrySearchCriteria wesc9 = new WeblogEntrySearchCriteria();
         wesc9.setWeblog(testWeblog);
-        wesc9.setCatName(testWeblog.getDefaultCategory().getName());
+        wesc9.setCatName("General");
         wesc9.setStatus(PubStatus.PUBLISHED);
         entries = mgr.getWeblogEntries(wesc9);
         assertNotNull(entries);
@@ -108,7 +108,7 @@
         // get all entries in category
         WeblogEntrySearchCriteria wesc5 = new WeblogEntrySearchCriteria();
         wesc5.setWeblog(testWeblog);
-        wesc5.setCatName(testWeblog.getDefaultCategory().getName());
+        wesc5.setCatName("General");
         entries = mgr.getWeblogEntries(wesc5);
         assertNotNull(entries);
         assertEquals(5, entries.size());

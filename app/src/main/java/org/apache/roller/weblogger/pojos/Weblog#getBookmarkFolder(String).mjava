@@ -4,7 +4,6 @@
      * @return Folder object requested.
      */
     public WeblogBookmarkFolder getBookmarkFolder(String folderName) {
-        WeblogBookmarkFolder ret = null;
         try {
             Weblogger roller = WebloggerFactory.getWeblogger();
             BookmarkManager bmgr = roller.getBookmarkManager();
@@ -16,6 +15,6 @@
         } catch (WebloggerException re) {
             log.error("ERROR: fetching folder for weblog", re);
         }
-        return ret;
+        return null;
     }
 

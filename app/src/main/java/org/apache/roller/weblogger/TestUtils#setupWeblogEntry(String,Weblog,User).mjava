@@ -3,7 +3,7 @@
      */
     public static WeblogEntry setupWeblogEntry(String anchor, Weblog weblog, User user) throws Exception {
 
-        return TestUtils.setupWeblogEntry(anchor, weblog.getDefaultCategory(), PubStatus.PUBLISHED,
+        return TestUtils.setupWeblogEntry(anchor, weblog.getWeblogCategories().iterator().next(), PubStatus.PUBLISHED,
                 weblog, user);
     }
 

@@ -14,12 +14,11 @@
                             .getWeblogManager();
 
                     Weblog weblog = getActionWeblog();
-                    WeblogTemplate template = null;
+                    WeblogTemplate template;
 
-                    for (int i = 0; i < idsToDelete.length; i++) {
-                        if (!idsToDelete[i].equals("")) {
-
-                            template = mgr.getPage(idsToDelete[i]);
+                    for (String id : idsToDelete) {
+                        if (!id.equals("")) {
+                            template = mgr.getPage(id);
                             if (!template.isRequired()
                                     || !WeblogTemplate.ACTION_CUSTOM
                                             .equals(getActionWeblog()
@@ -54,12 +53,9 @@
 
                                     // Clear for next custom theme
                                     weblog.setCustomStylesheetPath(null);
-                                    weblog.setDefaultPageId(null);
 
                                 }
-
                                 mgr.removePage(template);
-
                             }
                         }
                     }

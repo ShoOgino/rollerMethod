@@ -13,7 +13,7 @@
         this.strategy.remove(cat);
 
         if(cat.equals(cat.getWeblog().getBloggerCategory())) {
-            cat.getWeblog().setBloggerCategory(cat.getWeblog().getDefaultCategory());
+            cat.getWeblog().setBloggerCategory(null);
             this.strategy.store(cat.getWeblog());
         }
 
