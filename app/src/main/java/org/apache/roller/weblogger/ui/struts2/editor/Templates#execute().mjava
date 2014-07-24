@@ -5,7 +5,7 @@
 
 			// get current list of templates, minus custom stylesheet
 			List<WeblogTemplate> raw = WebloggerFactory.getWeblogger()
-					.getWeblogManager().getPages(getActionWeblog());
+					.getWeblogManager().getTemplates(getActionWeblog());
 			List<WeblogTemplate> pages = new ArrayList<WeblogTemplate>();
 			pages.addAll(raw);
 			// Remove style sheet from list so not to show when theme is
@@ -14,7 +14,7 @@
 				pages.remove(WebloggerFactory
 						.getWeblogger()
 						.getWeblogManager()
-						.getPageByLink(
+						.getTemplateByLink(
 								getActionWeblog(),
 								getActionWeblog().getTheme().getStylesheet()
 										.getLink()));

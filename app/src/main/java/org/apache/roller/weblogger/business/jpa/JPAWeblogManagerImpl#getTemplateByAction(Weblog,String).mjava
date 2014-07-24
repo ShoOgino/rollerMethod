@@ -1,11 +1,11 @@
     /**
-     * @see org.apache.roller.weblogger.business.WeblogManager#getPageByAction(Weblog, String)
+     * @see org.apache.roller.weblogger.business.WeblogManager#getTemplateByAction(Weblog, String)
      */
-    public WeblogTemplate getPageByAction(Weblog website, String action)
+    public WeblogTemplate getTemplateByAction(Weblog weblog, String action)
             throws WebloggerException {
         
-        if (website == null) {
-            throw new WebloggerException("website is null");
+        if (weblog == null) {
+            throw new WebloggerException("weblog is null");
         }
 
         if (action == null) {
@@ -14,7 +14,7 @@
         
         TypedQuery<WeblogTemplate> query = strategy.getNamedQuery("WeblogTemplate.getByAction",
                 WeblogTemplate.class);
-        query.setParameter(1, website);
+        query.setParameter(1, weblog);
         query.setParameter(2, action);
         try {
             return query.getSingleResult();

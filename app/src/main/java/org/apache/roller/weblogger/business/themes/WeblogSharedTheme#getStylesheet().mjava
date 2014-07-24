@@ -12,7 +12,7 @@
         if(stylesheet != null) {
             // now try getting custom version from weblog
             ThemeTemplate override = WebloggerFactory.getWeblogger()
-                    .getWeblogManager().getPageByLink(this.weblog, stylesheet.getLink());
+                    .getWeblogManager().getTemplateByLink(this.weblog, stylesheet.getLink());
             if(override != null) {
                 stylesheet = override;
             }

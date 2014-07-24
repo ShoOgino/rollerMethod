@@ -18,7 +18,7 @@
 
                     for (String id : idsToDelete) {
                         if (!id.equals("")) {
-                            template = mgr.getPage(id);
+                            template = mgr.getTemplate(id);
                             if (!template.isRequired()
                                     || !WeblogTemplate.ACTION_CUSTOM
                                             .equals(getActionWeblog()
@@ -42,12 +42,12 @@
                                                             .getStylesheet()
                                                             .getLink())) {
                                         // Same so OK to delete
-                                        WeblogTemplate css = mgr.getPageByLink(
+                                        WeblogTemplate css = mgr.getTemplateByLink(
                                                 getActionWeblog(),
                                                 stylesheet.getLink());
 
                                         if (css != null) {
-                                            mgr.removePage(css);
+                                            mgr.removeTemplate(css);
                                         }
                                     }
 
@@ -55,7 +55,7 @@
                                     weblog.setCustomStylesheetPath(null);
 
                                 }
-                                mgr.removePage(template);
+                                mgr.removeTemplate(template);
                             }
                         }
                     }

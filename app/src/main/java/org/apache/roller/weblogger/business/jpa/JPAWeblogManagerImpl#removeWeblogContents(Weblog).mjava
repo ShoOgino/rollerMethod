@@ -2,7 +2,7 @@
      * convenience method for removing contents of a weblog.
      * TODO BACKEND: use manager methods instead of queries here
      */
-    private void removeWebsiteContents(Weblog website)
+    private void removeWeblogContents(Weblog weblog)
     throws  WebloggerException {
         
         UserManager        umgr = roller.getUserManager();
@@ -11,7 +11,7 @@
         // remove tags
         TypedQuery<WeblogEntryTag> tagQuery = strategy.getNamedQuery("WeblogEntryTag.getByWeblog",
                 WeblogEntryTag.class);
-        tagQuery.setParameter(1, website);
+        tagQuery.setParameter(1, weblog);
         List<WeblogEntryTag> results = tagQuery.getResultList();
         
         for (WeblogEntryTag tagData : results) {
@@ -22,13 +22,13 @@
         }
         
         // remove site tag aggregates
-        List<TagStat> tags = emgr.getTags(website, null, null, 0, -1);
+        List<TagStat> tags = emgr.getTags(weblog, null, null, 0, -1);
         updateTagAggregates(tags);
         
         // delete all weblog tag aggregates
         Query removeAggs= strategy.getNamedUpdate(
                 "WeblogEntryTagAggregate.removeByWeblog");
-        removeAggs.setParameter(1, website);
+        removeAggs.setParameter(1, weblog);
         removeAggs.executeUpdate();
         
         // delete all bad counts
@@ -37,37 +37,37 @@
         removeCounts.setParameter(1, 0);
         removeCounts.executeUpdate();
         
-        // Remove the website's ping queue entries
+        // Remove the weblog's ping queue entries
         TypedQuery<PingQueueEntry> q = strategy.getNamedQuery("PingQueueEntry.getByWebsite", PingQueueEntry.class);
-        q.setParameter(1, website);
+        q.setParameter(1, weblog);
         List queueEntries = q.getResultList();
         for (Object obj : queueEntries) {
             this.strategy.remove(obj);
         }
         
-        // Remove the website's auto ping configurations
+        // Remove the weblog's auto ping configurations
         AutoPingManager autoPingMgr = roller.getAutopingManager();
-        List<AutoPing> autopings = autoPingMgr.getAutoPingsByWebsite(website);
+        List<AutoPing> autopings = autoPingMgr.getAutoPingsByWebsite(weblog);
         for (AutoPing autoPing : autopings) {
             this.strategy.remove(autoPing);
         }
         
-        // remove associated pages
-        TypedQuery<WeblogTemplate> pageQuery = strategy.getNamedQuery("WeblogTemplate.getByWebsite",
+        // remove associated templates
+        TypedQuery<WeblogTemplate> templateQuery = strategy.getNamedQuery("WeblogTemplate.getByWeblog",
                 WeblogTemplate.class);
-        pageQuery.setParameter(1, website);
-        List<WeblogTemplate> pages = pageQuery.getResultList();
+        templateQuery.setParameter(1, weblog);
+        List<WeblogTemplate> templates = templateQuery.getResultList();
 
-        for (WeblogTemplate page : pages) {
+        for (WeblogTemplate template : templates) {
             // remove associated templateCode objects
-            this.removeTemplateCodeObjs(page);
-            this.strategy.remove(page);
+            this.removeTemplateRenditions(template);
+            this.strategy.remove(template);
         }
         
         // remove folders (including bookmarks)
         TypedQuery<WeblogBookmarkFolder> folderQuery = strategy.getNamedQuery("WeblogBookmarkFolder.getByWebsite",
                 WeblogBookmarkFolder.class);
-        folderQuery.setParameter(1, website);
+        folderQuery.setParameter(1, weblog);
         List<WeblogBookmarkFolder> folders = folderQuery.getResultList();
         for (WeblogBookmarkFolder wbf : folders) {
             this.strategy.remove(wbf);
@@ -76,8 +76,8 @@
         // remove mediafile metadata
         // remove uploaded files
         MediaFileManager mfmgr = WebloggerFactory.getWeblogger().getMediaFileManager();
-        mfmgr.removeAllFiles(website);
-        //List<MediaFileDirectory> dirs = mmgr.getMediaFileDirectories(website);
+        mfmgr.removeAllFiles(weblog);
+        //List<MediaFileDirectory> dirs = mmgr.getMediaFileDirectories(weblog);
         //for (MediaFileDirectory dir : dirs) {
             //this.strategy.remove(dir);
         //}
@@ -85,7 +85,7 @@
 
         // remove entries
         TypedQuery<WeblogEntry> refQuery = strategy.getNamedQuery("WeblogEntry.getByWebsite", WeblogEntry.class);
-        refQuery.setParameter(1, website);
+        refQuery.setParameter(1, weblog);
         List<WeblogEntry> entries = refQuery.getResultList();
         for (WeblogEntry entry : entries) {
             emgr.removeWeblogEntry(entry);
@@ -94,11 +94,11 @@
         
         // delete all weblog categories
         Query removeCategories= strategy.getNamedUpdate("WeblogCategory.removeByWeblog");
-        removeCategories.setParameter(1, website);
+        removeCategories.setParameter(1, weblog);
         removeCategories.executeUpdate();
 
         // remove permissions
-        for (WeblogPermission perm : umgr.getWeblogPermissions(website)) {
+        for (WeblogPermission perm : umgr.getWeblogPermissions(weblog)) {
             umgr.revokeWeblogPermission(perm.getWeblog(), perm.getUser(), WeblogPermission.ALL_ACTIONS);
         }
         

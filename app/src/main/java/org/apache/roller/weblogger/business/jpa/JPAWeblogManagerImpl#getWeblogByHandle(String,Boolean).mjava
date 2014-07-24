@@ -1,5 +1,5 @@
     /**
-     * Return website specified by handle.
+     * Return weblog specified by handle.
      */
     public Weblog getWeblogByHandle(String handle, Boolean visible)
     throws WebloggerException {
@@ -27,22 +27,22 @@
         
         TypedQuery<Weblog> query = strategy.getNamedQuery("Weblog.getByHandle", Weblog.class);
         query.setParameter(1, handle);
-        Weblog website;
+        Weblog weblog;
         try {
-            website = query.getSingleResult();
+            weblog = query.getSingleResult();
         } catch (NoResultException e) {
-            website = null;
+            weblog = null;
         }
         
         // add mapping to cache
-        if(website != null) {
+        if(weblog != null) {
             log.debug("weblogHandleToId CACHE MISS - "+handle);
-            this.weblogHandleToIdMap.put(website.getHandle(), website.getId());
+            this.weblogHandleToIdMap.put(weblog.getHandle(), weblog.getId());
         }
         
-        if(website != null &&
-                (visible == null || visible.equals(website.getVisible()))) {
-            return website;
+        if(weblog != null &&
+                (visible == null || visible.equals(weblog.getVisible()))) {
+            return weblog;
         } else {
             return null;
         }

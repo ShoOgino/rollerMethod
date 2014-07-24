@@ -13,14 +13,14 @@
             log.debug("custom stylesheet path is - " + stylesheet.getLink());
             try {
                 setTemplate(WebloggerFactory.getWeblogger().getWeblogManager()
-                        .getPageByLink(getActionWeblog(), stylesheet.getLink()));
+                        .getTemplateByLink(getActionWeblog(), stylesheet.getLink()));
 
                 if (getTemplate() == null) {
                     log.debug("custom stylesheet not found, creating it");
 
                     // template doesn't exist yet, so create it
                     WeblogTemplate stylesheetTmpl = new WeblogTemplate();
-                    stylesheetTmpl.setWebsite(getActionWeblog());
+                    stylesheetTmpl.setWeblog(getActionWeblog());
                     stylesheetTmpl.setAction(ThemeTemplate.ACTION_CUSTOM);
                     stylesheetTmpl.setName(stylesheet.getName());
                     stylesheetTmpl.setDescription(stylesheet.getDescription());
@@ -52,7 +52,7 @@
                     }
 
                     WebloggerFactory.getWeblogger().getWeblogManager()
-                            .savePage(stylesheetTmpl);
+                            .saveTemplate(stylesheetTmpl);
                     setTemplate(stylesheetTmpl);
                     WebloggerFactory.getWeblogger().flush();
 
@@ -69,7 +69,7 @@
                     ThemeTemplate override = WebloggerFactory
                             .getWeblogger()
                             .getWeblogManager()
-                            .getPageByLink(
+                            .getTemplateByLink(
                                     getActionWeblog(),
                                     getActionWeblog().getTheme()
                                             .getStylesheet().getLink());

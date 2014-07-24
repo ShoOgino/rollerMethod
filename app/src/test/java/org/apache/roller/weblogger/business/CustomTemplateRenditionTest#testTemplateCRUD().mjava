@@ -7,7 +7,7 @@
 
 
            // create template
-           mgr.savePage(testPage);
+           mgr.saveTemplate(testPage);
 
 
            //create standard template coce
@@ -55,8 +55,8 @@
            mobileCode = mgr.getTemplateRenditionByType(testPage.getId(), RenditionType.MOBILE);
            assertEquals("update.mobile.template",mobileCode.getTemplate());
 
-           WeblogTemplate page = mgr.getPage(testPage.getId());
-           mgr.removePage(page);
+           WeblogTemplate page = mgr.getTemplate(testPage.getId());
+           mgr.removeTemplate(page);
            TestUtils.endSession(true);
 
            // check that update was successful

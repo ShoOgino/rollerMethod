@@ -1,0 +1,10 @@
+    /**
+     * @see org.apache.roller.weblogger.business.WeblogManager#saveTemplate(WeblogTemplate)
+     */
+    public void saveTemplate(WeblogTemplate template) throws WebloggerException {
+        this.strategy.store(template);
+        
+        // update weblog last modified date.  date updated by saveWeblog()
+        roller.getWeblogManager().saveWeblog(template.getWeblog());
+    }
+

@@ -1,0 +1,13 @@
+    /**
+     * @see org.apache.roller.weblogger.business.WeblogManager#getTemplates(Weblog)
+     */
+    public List<WeblogTemplate> getTemplates(Weblog weblog) throws WebloggerException {
+        if (weblog == null) {
+            throw new WebloggerException("weblog is null");
+        }
+        TypedQuery<WeblogTemplate> q = strategy.getNamedQuery(
+                "WeblogTemplate.getByWeblogOrderByName", WeblogTemplate.class);
+        q.setParameter(1, weblog);
+        return q.getResultList();
+    }
+

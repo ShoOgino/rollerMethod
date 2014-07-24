@@ -17,7 +17,7 @@
 		try {
 			WeblogTemplate existingPage = WebloggerFactory.getWeblogger()
 					.getWeblogManager()
-					.getPageByName(getActionWeblog(), getNewTmplName());
+					.getTemplateByName(getActionWeblog(), getNewTmplName());
 			if (existingPage != null) {
 				addError("pagesForm.error.alreadyExists", getNewTmplName());
 			}

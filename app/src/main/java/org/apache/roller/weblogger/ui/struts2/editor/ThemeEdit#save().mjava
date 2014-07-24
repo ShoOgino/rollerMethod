@@ -106,13 +106,13 @@
                             && !originalTheme.equals(getThemeId())
                             && getActionWeblog().getTheme().getStylesheet() != null) {
 
-                        WeblogTemplate stylesheet = mgr.getPageByLink(
+                        WeblogTemplate stylesheet = mgr.getTemplateByLink(
                                 getActionWeblog(), getActionWeblog().getTheme()
                                         .getStylesheet().getLink());
 
                         if (stylesheet != null) {
                             // Remove template and page codes
-                            mgr.removePage(stylesheet);
+                            mgr.removeTemplate(stylesheet);
                             // Reset
                             weblog.setCustomStylesheetPath(null);
                         }

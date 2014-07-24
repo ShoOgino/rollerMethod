@@ -1,0 +1,9 @@
+    public void removeTemplate(WeblogTemplate template) throws WebloggerException {
+        //remove template code objects
+       this.removeTemplateRenditions(template);
+
+        this.strategy.remove(template);
+        // update weblog last modified date.  date updated by saveWeblog()
+        roller.getWeblogManager().saveWeblog(template.getWeblog());
+    }
+

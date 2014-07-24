@@ -4,7 +4,7 @@
         if (!getTemplate().getName().equals(getBean().getName())) {
             try {
                 if (WebloggerFactory.getWeblogger().getWeblogManager()
-                    .getPageByName(getActionWeblog(), getBean().getName()) != null) {
+                    .getTemplateByName(getActionWeblog(), getBean().getName()) != null) {
                     addError("pagesForm.error.alreadyExists", getBean().getName());
                 }
             } catch (WebloggerException ex) {
@@ -17,7 +17,7 @@
                 !getBean().getLink().equals(getTemplate().getLink())) {
             try {
                 if (WebloggerFactory.getWeblogger().getWeblogManager()
-                        .getPageByLink(getActionWeblog(), getBean().getLink()) != null) {
+                        .getTemplateByLink(getActionWeblog(), getBean().getLink()) != null) {
                     addError("pagesForm.error.alreadyExists", getBean().getLink());
                 }
             } catch (WebloggerException ex) {

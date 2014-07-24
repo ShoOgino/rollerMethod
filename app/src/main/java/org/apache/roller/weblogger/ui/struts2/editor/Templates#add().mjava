@@ -10,7 +10,7 @@
             try {
 
                 WeblogTemplate newTemplate = new WeblogTemplate();
-                newTemplate.setWebsite(getActionWeblog());
+                newTemplate.setWeblog(getActionWeblog());
                 newTemplate.setAction(getNewTmplAction());
                 newTemplate.setName(getNewTmplName());
                 newTemplate.setDescription(newTemplate.getName());
@@ -30,7 +30,7 @@
 
                 // save the new Template
                 WebloggerFactory.getWeblogger().getWeblogManager()
-                        .savePage(newTemplate);
+                        .saveTemplate(newTemplate);
 
                 // Create weblog template codes for available types.
                 CustomTemplateRendition standardRendition = new CustomTemplateRendition(

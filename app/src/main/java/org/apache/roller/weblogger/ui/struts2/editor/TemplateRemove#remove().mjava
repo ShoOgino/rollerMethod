@@ -28,11 +28,11 @@
                                 getActionWeblog().getTheme()
                                         .getStylesheet().getLink())) {
                             // Same so OK to delete
-                            WeblogTemplate css = mgr.getPageByLink(
+                            WeblogTemplate css = mgr.getTemplateByLink(
                                     getActionWeblog(), stylesheet.getLink());
 
                             if (css != null) {
-                                mgr.removePage(css);
+                                mgr.removeTemplate(css);
                             }
                         }
 
@@ -43,7 +43,7 @@
 
                     // notify cache
                     CacheManager.invalidate(getTemplate());
-                    mgr.removePage(getTemplate());
+                    mgr.removeTemplate(getTemplate());
                     WebloggerFactory.getWeblogger().flush();
 
                     return SUCCESS;

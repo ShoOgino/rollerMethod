@@ -23,7 +23,7 @@
         // if we didn't get the Template from a theme then look in the db
         if(template == null) {
             template = WebloggerFactory.getWeblogger()
-                    .getWeblogManager().getPageByLink(this.weblog, link);
+                    .getWeblogManager().getTemplateByLink(this.weblog, link);
         }
 
         return template;

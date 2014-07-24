@@ -1,7 +1,7 @@
-    private void removeTemplateCodeObjs(WeblogTemplate page) throws WebloggerException {
+    private void removeTemplateRenditions(WeblogTemplate template) throws WebloggerException {
         TypedQuery<CustomTemplateRendition> codeQuery = strategy.getNamedQuery(
                 "CustomTemplateRendition.getRenditionsByTemplateId", CustomTemplateRendition.class);
-        codeQuery.setParameter(1, page.getId());
+        codeQuery.setParameter(1, template.getId());
         List<CustomTemplateRendition> codeList = codeQuery.getResultList();
 
         for (CustomTemplateRendition code : codeList) {
