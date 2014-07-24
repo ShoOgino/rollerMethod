@@ -18,13 +18,13 @@
                 newTemplate.setNavbar(false);
                 newTemplate.setLastModified(new Date());
 
-                if (WeblogTemplate.ACTION_CUSTOM.equals(getNewTmplAction())) {
+                if (ComponentType.CUSTOM.equals(getNewTmplAction())) {
                     newTemplate.setLink(getNewTmplName());
                 }
 
                 // Make sure we have always have a Weblog main page. Stops
                 // deleting main page in custom theme mode also.
-                if (WeblogTemplate.ACTION_WEBLOG.equals(getNewTmplAction())) {
+                if (ComponentType.WEBLOG.equals(getNewTmplAction())) {
                     newTemplate.setName(WeblogTemplate.DEFAULT_PAGE);
                 }
 

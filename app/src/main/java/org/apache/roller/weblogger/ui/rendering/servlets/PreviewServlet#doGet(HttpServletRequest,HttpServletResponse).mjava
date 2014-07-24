@@ -74,7 +74,7 @@
         } else if("tags".equals(previewRequest.getContext()) &&
                 previewRequest.getTags() == null) {
             try {
-                page = weblog.getTheme().getTemplateByAction(ThemeTemplate.ACTION_TAGSINDEX);
+                page = weblog.getTheme().getTemplateByAction(ComponentType.TAGSINDEX);
             } catch(Exception e) {
                 log.error("Error getting weblog page for action 'tagsIndex'", e);
             }
@@ -92,7 +92,7 @@
         // If this is a permalink then look for a permalink template
         } else if(previewRequest.getWeblogAnchor() != null) {
             try {
-                page = weblog.getTheme().getTemplateByAction(ThemeTemplate.ACTION_PERMALINK);
+                page = weblog.getTheme().getTemplateByAction(ComponentType.PERMALINK);
             } catch(Exception e) {
                 log.error("Error getting weblog page for action 'permalink'", e);
             }

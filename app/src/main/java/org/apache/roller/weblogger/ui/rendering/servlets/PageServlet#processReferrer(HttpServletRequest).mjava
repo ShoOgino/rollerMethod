@@ -80,10 +80,8 @@
                     }
                     String requestSite = requestUrl.substring(0, lastSlash);
 
-                    if (referrerUrl.matches(requestSite + ".*\\.rol.*")) {
-                        referrerUrl = null;
-                    } else if (BlacklistChecker.checkReferrer(
-                            pageRequest.getWeblog(), referrerUrl)) {
+                    if (!referrerUrl.matches(requestSite + ".*\\.rol.*") &&
+                            BlacklistChecker.checkReferrer(pageRequest.getWeblog(), referrerUrl)) {
                         return true;
                     }
                 }
