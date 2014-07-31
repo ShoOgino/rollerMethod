@@ -1,8 +1,8 @@
-    public List<String> getTemplateLanguages() {
-        List<String> langList = new ArrayList<String>();
+    public Map<TemplateLanguage, String> getTemplateLanguages() {
+        Map<TemplateLanguage, String> langMap = new EnumMap<TemplateLanguage, String>(TemplateLanguage.class);
         for (TemplateLanguage lang : TemplateLanguage.values()) {
-            langList.add(lang.name());
+            langMap.put(lang, lang.getReadableName());
         }
-        return langList;
+        return langMap;
     }
 

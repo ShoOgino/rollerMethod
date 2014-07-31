@@ -29,11 +29,6 @@
                     + getActionWeblog().getHandle(), ex);
         }
 
-        if (!WebloggerRuntimeConfig
-                .getBooleanProperty("themes.customtheme.allowed")) {
-            return "input-sharedonly";
-        } else {
-            return INPUT;
-        }
+        return INPUT;
     }
 
