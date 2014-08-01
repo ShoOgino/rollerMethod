@@ -54,21 +54,19 @@
             
         try {
 
-            boolean usingSSO = WebloggerConfig.getBooleanProperty("users.sso.enabled");
-            if (usingSSO) {
+            if (WebloggerConfig.getAuthMethod() == AuthMethod.LDAP) {
                 // See if user is already logged in via Spring Security
                 User fromSSOUser = CustomUserRegistry.getUserDetailsFromAuthentication(getServletRequest());
                 if (fromSSOUser != null) {
                     // Copy user details from Spring Security, including LDAP attributes
                     getBean().copyFrom(fromSSOUser);
-                    setFromSSO(true);
                 }
+            } else if (WebloggerConfig.getAuthMethod() == AuthMethod.CMA) {
                 // See if user is already logged in via CMA
-                else if (getServletRequest().getUserPrincipal() != null) {
+                if (getServletRequest().getUserPrincipal() != null) {
                     // Only detail we get is username, sadly no LDAP attributes
                     getBean().setUserName(getServletRequest().getUserPrincipal().getName());
                     getBean().setScreenName(getServletRequest().getUserPrincipal().getName());
-                    setFromSSO(true);
                 }
             }
             

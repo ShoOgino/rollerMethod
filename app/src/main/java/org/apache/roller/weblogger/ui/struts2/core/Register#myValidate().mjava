@@ -1,8 +1,7 @@
     public void myValidate() {
         
         // if usingSSO, we don't want to error on empty password/username from HTML form.
-        setFromSSO(false);
-        boolean usingSSO = WebloggerConfig.getBooleanProperty("users.sso.enabled");
+        boolean usingSSO = authMethod == AuthMethod.LDAP || authMethod == AuthMethod.CMA;
         if (usingSSO) {
             boolean storePassword = WebloggerConfig.getBooleanProperty("users.sso.passwords.save");
             String password = WebloggerConfig.getProperty("users.sso.passwords.defaultValue", "<unknown>");
@@ -16,7 +15,6 @@
                 getBean().setPasswordText(password);
                 getBean().setPasswordConfirm(password);
                 getBean().setUserName(fromSSOUser.getUserName());
-                setFromSSO(true);
             }
 
             // Preserve username and password, CMA case             
@@ -24,7 +22,6 @@
                 getBean().setUserName(getServletRequest().getUserPrincipal().getName());
                 getBean().setPasswordText(password);
                 getBean().setPasswordConfirm(password);
-                setFromSSO(true);
             }
         }
         
@@ -40,14 +37,15 @@
         }
         
         // check password, it is required if OpenID and SSO are disabled
-        if (getOpenIdConfiguration().equals("disabled") && !getFromSSO()
+        if (AuthMethod.ROLLERDB.name().equals(getAuthMethod())
                 && StringUtils.isEmpty(getBean().getPasswordText())) {
                 addError("error.add.user.passwordEmpty");
                 return;
         }
         
         // User.password does not allow null, so generate one
-        if (getOpenIdConfiguration().equals("only")) {
+        if (getAuthMethod().equals(AuthMethod.OPENID.name()) ||
+                (getAuthMethod().equals(AuthMethod.DB_OPENID.name()) && !StringUtils.isEmpty(getBean().getOpenIdUrl()))) {
             String randomString = RandomStringUtils.randomAlphanumeric(255);
             getBean().setPasswordText(randomString);
             getBean().setPasswordConfirm(randomString);
@@ -55,7 +53,7 @@
         
         // check that passwords match 
         if (!getBean().getPasswordText().equals(getBean().getPasswordConfirm())) {
-            addError("Register.error.passowordMismatch");
+            addError("userRegister.error.mismatchedPasswords");
         }
         
         // check that username is not taken
@@ -69,7 +67,7 @@
                 }
             } catch (WebloggerException ex) {
                 log.error("error checking for user", ex);
-                addError("Unexpected error checking user -- check Roller logs");
+                addError("generic.system.error");
             }
         }
     }

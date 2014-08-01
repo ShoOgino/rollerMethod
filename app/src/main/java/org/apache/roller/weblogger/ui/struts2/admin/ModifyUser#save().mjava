@@ -49,7 +49,7 @@
                     
                 }
             
-                if (!IS_CMA) {
+                if (!AuthMethod.CMA.equals(WebloggerConfig.getAuthMethod())) {
                     RollerContext.flushAuthenticationUserCache(getUser().getUserName());
                 }
 
