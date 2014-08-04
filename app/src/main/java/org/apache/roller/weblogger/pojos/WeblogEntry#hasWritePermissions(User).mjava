@@ -27,10 +27,6 @@
         boolean author = perm.hasAction(WeblogPermission.POST) || perm.hasAction(WeblogPermission.ADMIN);
         boolean limited = !author && perm.hasAction(WeblogPermission.EDIT_DRAFT);
         
-        if (author || (limited && (isDraft() || isPending()))) {
-            return true;
-        }
-        
-        return false;
+        return author || (limited && (status == PubStatus.DRAFT || status == PubStatus.PENDING));
     }
 

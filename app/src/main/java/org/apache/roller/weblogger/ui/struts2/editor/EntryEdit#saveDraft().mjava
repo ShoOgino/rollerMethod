@@ -1,0 +1,10 @@
+    /**
+     * Save a draft entry.
+     *
+     * @return String The result of the action.
+     */
+    public String saveDraft() {
+        getBean().setStatus(PubStatus.DRAFT.name());
+        return save();
+    }
+

@@ -1,0 +1,22 @@
+    /**
+     * Publish an entry.
+     *
+     * @return String The result of the action.
+     */
+    public String publish() {
+        if (getActionWeblog().hasUserPermission(
+                getAuthenticatedUser(), WeblogPermission.POST)) {
+            Timestamp pubTime = getBean().getPubTime(getLocale(),
+                    getActionWeblog().getTimeZoneInstance());
+            if (pubTime != null && pubTime.after(
+                    new Date(System.currentTimeMillis() + RollerConstants.MIN_IN_MS))) {
+                getBean().setStatus(PubStatus.SCHEDULED.name());
+            } else {
+                getBean().setStatus(PubStatus.PUBLISHED.name());
+            }
+        } else {
+            getBean().setStatus(PubStatus.PENDING.name());
+        }
+        return save();
+    }
+

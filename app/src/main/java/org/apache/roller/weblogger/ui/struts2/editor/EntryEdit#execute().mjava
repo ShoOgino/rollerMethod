@@ -1,19 +1,19 @@
     /**
-     * Show form for editing an existing entry.
+     * Show form for adding/editing weblog entry.
      * 
      * @return String The result of the action.
      */
     @SkipValidation
     public String execute() {
-        // make sure we have an entry to edit and it belongs to the action weblog
-        if (getEntry() == null) {
-            return ERROR;
-        } else if (!getEntry().getWebsite().equals(getActionWeblog())) {
-            return DENIED;
+        if (getActionName().equals("entryEdit")) {
+            // load bean with pojo data
+            getBean().copyFrom(getEntry(), getLocale());
+        } else {
+            // set weblog defaults
+            getBean().setLocale(getActionWeblog().getLocale());
+            getBean().setAllowComments(getActionWeblog().getDefaultAllowComments());
+            getBean().setCommentDays(getActionWeblog().getDefaultCommentDays());
         }
-
-        // load bean with pojo data
-        getBean().copyFrom(getEntry(), getLocale());
 
         return INPUT;
     }
