@@ -15,14 +15,14 @@
         ud.setTimeZone(TimeZone.getDefault().getID());
         ud.setDateCreated(new java.util.Date());
 
-        String userName = null;
-        String password = null;
+        String userName;
+        String unusedPassword;
         String fullName = null;
         String email = null;
         String screenName = null;
         String locale = null;
         String timezone = null;
-        boolean enabled = false;
+        boolean enabled;
 
         if(authentication == null) {
             // Try to get SSO data from HttpServletRequest
@@ -65,7 +65,6 @@
             UserDetails userDetails = (UserDetails) oPrincipal;
         
             userName = userDetails.getUsername();
-            password = userDetails.getPassword();
             enabled = userDetails.isEnabled();
         
         
@@ -93,12 +92,10 @@
             } */
         }
 
-        boolean storePassword = WebloggerConfig.getBooleanProperty("users.sso.passwords.save");
-        if(!storePassword) {
-            password = WebloggerConfig.getProperty("users.sso.passwords.defaultValue","<unknown>");
-        }
-
-        ud.setPassword(password);
+        // for LDAP we don't store its password in the roller_users table,
+        // just an string indicating external auth method being used.
+        unusedPassword = WebloggerConfig.getProperty("users.passwords.externalAuthValue","<externalAuth>");
+        ud.setPassword(unusedPassword);
         ud.setEnabled(enabled ? Boolean.TRUE : Boolean.FALSE);
 
         ud.setUserName(userName);
