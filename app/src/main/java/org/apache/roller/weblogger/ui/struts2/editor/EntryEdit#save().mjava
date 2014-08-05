@@ -9,6 +9,9 @@
                 WeblogEntryManager weblogMgr = WebloggerFactory.getWeblogger()
                         .getWeblogEntryManager();
 
+                IndexManager indexMgr = WebloggerFactory.getWeblogger()
+                        .getIndexManager();
+
                 WeblogEntry weblogEntry = getEntry();
 
                 // set updatetime & pubtime
@@ -80,9 +83,9 @@
 
                 // notify search of the new entry
                 if (weblogEntry.isPublished()) {
-                    reindexEntry(weblogEntry);
+                    indexMgr.addEntryReIndexOperation(entry);
                 } else if ("entryEdit".equals(actionName)) {
-                    removeEntryIndex(weblogEntry);
+                    indexMgr.removeEntryIndexOperation(entry);
                 }
 
                 // notify caches

@@ -1,16 +1,11 @@
-    /**
-     * Get recent weblog entries using request parameters to determine username,
-     * date, and category name parameters.
-     *
-     * @return List of WeblogEntryData objects.
-     */
-    public List<WeblogEntry> getRecentScheduledEntries() {
+    private List<WeblogEntry> getRecentEntries(PubStatus pubStatus, WeblogEntrySearchCriteria.SortBy sortBy) {
         List<WeblogEntry> entries = Collections.emptyList();
         try {
             WeblogEntrySearchCriteria wesc = new WeblogEntrySearchCriteria();
             wesc.setWeblog(getActionWeblog());
-            wesc.setStatus(PubStatus.SCHEDULED);
             wesc.setMaxResults(20);
+            wesc.setStatus(pubStatus);
+            wesc.setSortBy(sortBy);
             entries = WebloggerFactory.getWeblogger().getWeblogEntryManager()
                     .getWeblogEntries(wesc);
         } catch (WebloggerException ex) {

@@ -1,0 +1,8 @@
+    /**
+     * Get recent published weblog entries
+     * @return List of published WeblogEntry objects sorted by publication time.
+     */
+    public List<WeblogEntry> getRecentPublishedEntries() {
+        return getRecentEntries(PubStatus.PUBLISHED, WeblogEntrySearchCriteria.SortBy.PUBLICATION_TIME);
+    }
+

@@ -1,0 +1,8 @@
+    /**
+     * Get recent pending weblog entries
+     * @return List of pending WeblogEntry objects sorted by update time.
+     */
+    public List<WeblogEntry> getRecentPendingEntries() {
+        return getRecentEntries(PubStatus.PENDING, WeblogEntrySearchCriteria.SortBy.UPDATE_TIME);
+    }
+

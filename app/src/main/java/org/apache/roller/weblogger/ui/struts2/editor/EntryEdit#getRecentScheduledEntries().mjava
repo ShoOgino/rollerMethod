@@ -1,0 +1,8 @@
+    /**
+     * Get recent scheduled weblog entries
+     * @return List of scheduled WeblogEntry objects sorted by publication time.
+     */
+    public List<WeblogEntry> getRecentScheduledEntries() {
+        return getRecentEntries(PubStatus.SCHEDULED, WeblogEntrySearchCriteria.SortBy.PUBLICATION_TIME);
+    }
+

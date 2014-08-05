@@ -1,0 +1,8 @@
+    /**
+     * Get recent draft weblog entries
+     * @return List of draft WeblogEntry objects sorted by update time.
+     */
+    public List<WeblogEntry> getRecentDraftEntries() {
+        return getRecentEntries(PubStatus.DRAFT, WeblogEntrySearchCriteria.SortBy.UPDATE_TIME);
+    }
+
