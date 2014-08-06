@@ -1,14 +1,9 @@
     @SkipValidation
     public String execute() {
-        
-        if(getBookmark() == null) {
-            addError("Cannot edit null bookmark");
-            return ERROR;
+        if (!isAdd()) {
+            // make sure bean is populated with DB values on initial load
+            getBean().copyFrom(getBookmark());
         }
-        
-        // make sure bean is properly loaded with pojo data
-        getBean().copyFrom(getBookmark());
-        
         return INPUT;
     }
 

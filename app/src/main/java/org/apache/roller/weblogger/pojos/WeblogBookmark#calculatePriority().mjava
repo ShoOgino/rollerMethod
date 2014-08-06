@@ -1,0 +1,9 @@
+    public void calculatePriority() {
+        int size = folder.getBookmarks().size();
+        if (size == 1) {
+            this.priority = 0;
+        } else {
+            this.priority = folder.getBookmarks().get(size - 2).getPriority() + 1;
+        }
+    }
+

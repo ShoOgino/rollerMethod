@@ -1,28 +1,22 @@
     public String save() {
-        
-        if(getBookmark() == null) {
-            addError("Cannot edit null bookmark");
-            return ERROR;
-        }
-        
+
         // validation
         myValidate();
         
         if(!hasActionErrors()) {
             try {
-                getBean().copyTo(getBookmark());
-
+                getBean().copyTo(bookmark);
                 BookmarkManager bmgr = WebloggerFactory.getWeblogger().getBookmarkManager();
-                bmgr.saveBookmark(getBookmark());
+                bmgr.saveBookmark(bookmark);
                 WebloggerFactory.getWeblogger().flush();
-
-                CacheManager.invalidate(getBookmark());
-
-                addMessage("bookmarkForm.changesSaved");
+                CacheManager.invalidate(bookmark);
+                addMessage(isAdd() ? "bookmarkForm.created" : "bookmarkForm.updated",
+                        getBookmark().getName());
+                return SUCCESS;
 
             } catch(Exception ex) {
                 log.error("Error saving bookmark", ex);
-                addError("bookmarkForm.error.saving");
+                addError("generic.error.check.logs");
             }
         }
         
