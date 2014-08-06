@@ -8,18 +8,7 @@
         getBean().setPasswordConfirm(null);
         getBean().setLocale(ud.getLocale());
         getBean().setTimeZone(ud.getTimeZone());
-        
-        UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
-        try {
-            UserAttribute openIdUrl = mgr.getUserAttribute(
-                ud.getUserName(), UserAttribute.Attributes.OPENID_URL.toString());
-            if (openIdUrl != null) {
-                getBean().setOpenIdUrl(openIdUrl.getValue());
-            }
-        } catch (Exception ex) {
-            log.error("Unexpected error loading user OpenID url", ex);
-            addError("error in action", ex.toString());
-        }
+        getBean().setOpenIdUrl(ud.getOpenIdUrl());
         return INPUT;
     }
 

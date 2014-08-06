@@ -32,13 +32,11 @@
                         if (openidurl.endsWith("/")) {
                             openidurl = openidurl.substring(0, openidurl.length() - 1);
                         }
-                        user = umgr.getUserByAttribute(
-                                UserAttribute.Attributes.OPENID_URL.toString(), 
-                                openidurl);
+                        user = umgr.getUserByOpenIdUrl(openidurl);
                     }
                     
                     // try one time to auto-provision, only happens if user==null
-                    // which means installation has SSO-enabled in security.xml
+                    // which means installation has LDAP enabled in security.xml
                     if (user == null && WebloggerConfig.getBooleanProperty("users.ldap.autoProvision.enabled")) {
                         
                         // provisioning enabled, get provisioner and execute

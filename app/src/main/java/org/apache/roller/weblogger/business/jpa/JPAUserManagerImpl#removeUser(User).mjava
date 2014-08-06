@@ -10,11 +10,5 @@
 
         // remove entry from cache mapping
         this.userNameToIdMap.remove(userName);
-        
-        // remove all associated attributes
-        List<UserAttribute> atts = getUserAttributes(userName);
-        for (UserAttribute att : atts) {
-            this.strategy.remove(att);
-        }
     }
 

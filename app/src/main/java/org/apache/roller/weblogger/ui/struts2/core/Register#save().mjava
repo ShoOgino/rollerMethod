@@ -66,18 +66,16 @@
                     ud.setActivationCode(inActivationCode);
                 }
 
-                // save new user
-                mgr.addUser(ud);
-
                 String openidurl = getBean().getOpenIdUrl();
                 if (openidurl != null) {
                     if (openidurl.endsWith("/")) {
                         openidurl = openidurl.substring(0, openidurl.length() - 1);
                     }
-                    mgr.setUserAttribute(
-                            ud.getUserName(), UserAttribute.Attributes.OPENID_URL.toString(),
-                            openidurl);
+                    ud.setOpenIdUrl(openidurl);
                 }
+
+                // save new user
+                mgr.addUser(ud);
 
                 WebloggerFactory.getWeblogger().flush();
 
