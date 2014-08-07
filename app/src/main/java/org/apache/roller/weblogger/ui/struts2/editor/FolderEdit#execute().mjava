@@ -3,15 +3,10 @@
      */
     @SkipValidation
     public String execute() {
-        
-        if(getFolder() == null) {
-            addError("Cannot edit null folder");
-            return ERROR;
+        if (!isAdd()) {
+            // load bean with database values during initial load
+            getBean().copyFrom(folder);
         }
-        
-        // make sure bean is properly loaded from pojo data
-        getBean().copyFrom(getFolder());
-        
         return INPUT;
     }
 

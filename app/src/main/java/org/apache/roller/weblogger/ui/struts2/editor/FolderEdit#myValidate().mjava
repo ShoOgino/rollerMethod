@@ -1,12 +1,7 @@
-    // TODO: validation
     public void myValidate() {
-        
-        // name is required, has max length, no html
-        
         // make sure new name is not a duplicate of an existing folder
-        if(!getFolder().getName().equals(getBean().getName())) {
-            Weblog weblog = getFolder().getWeblog();
-            if(weblog.hasBookmarkFolder(getBean().getName())) {
+        if((isAdd() || !folder.getName().equals(getBean().getName()))) {
+            if (folder.getWeblog().hasBookmarkFolder(getBean().getName())) {
                 addError("folderForm.error.duplicateName", getBean().getName());
             }
         }

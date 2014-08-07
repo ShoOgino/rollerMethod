@@ -1,12 +1,17 @@
     // load folder to edit
     public void myPrepare() {
-        try {
-            BookmarkManager bmgr = WebloggerFactory.getWeblogger().getBookmarkManager();
-            if(!StringUtils.isEmpty(getBean().getId())) {
-                setFolder(bmgr.getFolder(getBean().getId()));
+        if (StringUtils.isEmpty(bean.getId())) {
+            // Create and initialize new folder but don't save yet
+            folder = new WeblogBookmarkFolder();
+            folder.setWeblog(getActionWeblog());
+        } else {
+            // retrieve existing folder data from DB
+            try {
+                BookmarkManager bmgr = WebloggerFactory.getWeblogger().getBookmarkManager();
+                folder = bmgr.getFolder(getBean().getId());
+            } catch (WebloggerException ex) {
+                log.error("Error looking up folder", ex);
             }
-        } catch (WebloggerException ex) {
-            log.error("Error looking up folder", ex);
         }
     }
 
