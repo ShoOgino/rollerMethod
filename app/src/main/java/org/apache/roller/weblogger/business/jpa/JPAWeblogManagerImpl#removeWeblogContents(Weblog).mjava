@@ -59,8 +59,6 @@
         List<WeblogTemplate> templates = templateQuery.getResultList();
 
         for (WeblogTemplate template : templates) {
-            // remove associated templateCode objects
-            this.removeTemplateRenditions(template);
             this.strategy.remove(template);
         }
         

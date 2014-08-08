@@ -1,5 +1,7 @@
     public void saveTemplateRendition(CustomTemplateRendition rendition) throws WebloggerException {
         this.strategy.store(rendition);
-        // template update should happen by saving rendition.
+
+        // update weblog last modified date.  date updated by saveWeblog()
+        roller.getWeblogManager().saveWeblog(rendition.getWeblogTemplate().getWeblog());
     }
 
