@@ -1,31 +1,22 @@
-    /**
-     * Save a new ping target.
-     */
     public String save() {
-        
-        PingTarget pingTarget = createPingTarget();
-        
-        // Call private helper to validate ping target
-        // If there are errors, go back to the target edit page.
+        PingTarget pingTarget = new PingTarget(null, getBean().getName(),
+                getBean().getPingUrl(), false);
+
         myValidate(pingTarget);
-        
+
         if(!hasActionErrors()) {
             try {
                 // Appears to be ok.  Save it and flush.
                 PingTargetManager pingTargetMgr = WebloggerFactory.getWeblogger().getPingTargetManager();
                 pingTargetMgr.savePingTarget(pingTarget);
                 WebloggerFactory.getWeblogger().flush();
-
                 addMessage("pingTarget.saved");
-
                 return SUCCESS;
-
             } catch (WebloggerException ex) {
-                getLogger().error("Error adding ping target", ex);
+                log.error("Error adding ping target", ex);
                 addError("pingTarget.saved.error");
             }
         }
-        
         return INPUT;
     }
 
