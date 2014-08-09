@@ -1,21 +1,14 @@
-    /**
-     * Prepare action by loading ping target to work on.
-     */
     public void myPrepare() {
-        
         PingTargetManager pingTargetMgr = WebloggerFactory.getWeblogger().getPingTargetManager();
         if(!StringUtils.isEmpty(getBean().getId())) {
-            
             try {
-                setPingTarget(pingTargetMgr.getPingTarget(getBean().getId()));
+                pingTarget = pingTargetMgr.getPingTarget(getBean().getId());
             } catch (WebloggerException ex) {
-                getLogger().error("Error looking up ping target - "+getBean().getId());
+                log.error("Error looking up ping target - "+getBean().getId());
             }
-            
-            if(getPingTarget() == null) {
+            if(pingTarget == null) {
                 addError("pingTarget.notFound", getBean().getId());
             }
-            
         } else {
             addError("pingTarget.unspecified");
         }
