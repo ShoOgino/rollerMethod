@@ -2,31 +2,23 @@
      * Save ping target.
      */
     public String save() {
-
-        if(hasActionErrors()) {
-            // if we already have an error then that means we couldn't load
-            // an existing ping target to work on, so return ERROR result
-            return INPUT;
-        }
-
-        // copy data from form into ping target
-        getBean().copyTo(pingTarget);
-
-        // Call private helper to validate ping target
-        // If there are errors, go back to the target edit page.
-        myValidate(pingTarget);
+        myValidate();
 
         if (!hasActionErrors()) {
             try {
-                // Appears to be ok.  Save it and flush.
+                // copy data from form into ping target
+                getBean().copyTo(pingTarget);
                 PingTargetManager pingTargetMgr = WebloggerFactory.getWeblogger().getPingTargetManager();
                 pingTargetMgr.savePingTarget(pingTarget);
                 WebloggerFactory.getWeblogger().flush();
 
-                addMessage("pingTarget.saved");
+                addMessage(isAdd() ? "pingTarget.created" : "pingTarget.updated",
+                        pingTarget.getName());
+
+                return SUCCESS;
             } catch (WebloggerException ex) {
-                log.error("Error saving ping target", ex);
-                addError("pingTarget.saved.error");
+                log.error("Error adding/editing ping target", ex);
+                addError("generic.error.check.logs");
             }
         }
 
