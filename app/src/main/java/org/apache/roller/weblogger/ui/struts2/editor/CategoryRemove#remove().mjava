@@ -7,7 +7,7 @@
             try {
                 WeblogEntryManager wmgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
 
-                if(getTargetCategoryId() != null) {
+                if (getTargetCategoryId() != null) {
                     WeblogCategory target = wmgr.getWeblogCategory(getTargetCategoryId());
                     wmgr.moveWeblogCategoryContents(getCategory(), target);
                     WebloggerFactory.getWeblogger().flush();
@@ -19,15 +19,11 @@
 
                 wmgr.removeWeblogCategory(getCategory());
                 WebloggerFactory.getWeblogger().flush();
-
-                // set category id to parent for next page
-                setRemoveId(id);
-
+                addMessage("categoryForm.removed", category.getName());
                 return SUCCESS;
-
             } catch(Exception ex) {
-                log.error("Error removing category - "+getRemoveId(), ex);
-                addError("Error removing category");
+                log.error("Error removing category - " + getRemoveId(), ex);
+                addError("generic.error.check.logs");
             }
         }
         

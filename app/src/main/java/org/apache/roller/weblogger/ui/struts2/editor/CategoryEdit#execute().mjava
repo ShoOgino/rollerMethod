@@ -3,15 +3,10 @@
      */
     @SkipValidation
     public String execute() {
-        
-        if (getCategory() == null) {
-            addError("Cannot edit null category");
-            return ERROR;
+        if (!isAdd()) {
+            // make sure bean is properly loaded from pojo data
+            getBean().copyFrom(category);
         }
-        
-        // make sure bean is properly loaded from pojo data
-        getBean().copyFrom(getCategory());
-        
         return INPUT;
     }
 

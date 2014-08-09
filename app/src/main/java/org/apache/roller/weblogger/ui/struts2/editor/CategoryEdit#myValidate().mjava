@@ -1,11 +1,7 @@
-    // TODO: validation
     public void myValidate() {
-        
-        // name is required, has max length, no html
-        
         // make sure new name is not a duplicate of an existing category
-        if (!getCategory().getName().equals(bean.getName()) &&
-            getCategory().getWeblog().hasCategory(bean.getName())) {
+        if ((isAdd() || !category.getName().equals(bean.getName())) &&
+            category.getWeblog().hasCategory(bean.getName())) {
             addError("categoryForm.error.duplicateName", bean.getName());
         }
     }

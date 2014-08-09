@@ -2,33 +2,30 @@
      * Save new category.
      */
     public String save() {
-        
-        if(getCategory() == null) {
-            addError("Cannot edit null category");
-            return ERROR;
-        }
-        
-        // validation
         myValidate();
         
         if(!hasActionErrors()) {
             try {
+
                 // copy updated attributes
-                getBean().copyTo(getCategory());
+                getBean().copyTo(category);
 
                 // save changes
                 WeblogEntryManager wmgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
-                wmgr.saveWeblogCategory(getCategory());
+                wmgr.saveWeblogCategory(category);
                 WebloggerFactory.getWeblogger().flush();
 
                 // notify caches
-                CacheManager.invalidate(getCategory());
+                CacheManager.invalidate(category);
 
-                addMessage("categoryForm.changesSaved");
+                addMessage(isAdd()? "categoryForm.created"
+                        : "categoryForm.changesSaved",
+                        category.getName());
 
+                return SUCCESS;
             } catch(Exception ex) {
                 log.error("Error saving category", ex);
-                addError("categoryForm.error.saving");
+                addError("generic.error.check.logs");
             }
         }
         
