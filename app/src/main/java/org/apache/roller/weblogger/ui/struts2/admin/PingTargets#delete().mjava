@@ -2,27 +2,27 @@
      * Delete a ping target.
      */
     public String delete() {
-        
+
         if(getPingTarget() != null) {
-            
+
             try {
                 PingTargetManager pingTargetMgr = WebloggerFactory.getWeblogger().getPingTargetManager();
                 pingTargetMgr.removePingTarget(getPingTarget());
                 WebloggerFactory.getWeblogger().flush();
-                
+
                 // remove deleted target from list
                 getPingTargets().remove(getPingTarget());
-                
+
                 addMessage("pingTarget.successfullyDeleted", getPingTarget().getName());
-                
+
             } catch (WebloggerException ex) {
-                getLogger().error("Error deleting ping target - "+getPingTargetId(), ex);
+                log.error("Error deleting ping target - " + getPingTargetId(), ex);
                 addError("pingTarget.errorDeleting", getPingTargetId());
             }
         } else {
             addError("pingTarget.notFound", getPingTargetId());
         }
-        
+
         return LIST;
     }
 

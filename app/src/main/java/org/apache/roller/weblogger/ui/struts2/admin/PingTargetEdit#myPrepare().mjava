@@ -4,7 +4,7 @@
             try {
                 pingTarget = pingTargetMgr.getPingTarget(getBean().getId());
             } catch (WebloggerException ex) {
-                log.error("Error looking up ping target - "+getBean().getId());
+                log.error("Error looking up ping target - " + getBean().getId());
             }
             if(pingTarget == null) {
                 addError("pingTarget.notFound", getBean().getId());

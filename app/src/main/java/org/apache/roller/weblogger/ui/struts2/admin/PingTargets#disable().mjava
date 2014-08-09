@@ -11,7 +11,7 @@
                 pingTargetMgr.savePingTarget(getPingTarget());
                 WebloggerFactory.getWeblogger().flush();
             } catch (Exception ex) {
-                getLogger().error("Error saving ping target", ex);
+                log.error("Error saving ping target", ex);
                 addError("commonPingTargets.error.saving");
             }
         } else {
