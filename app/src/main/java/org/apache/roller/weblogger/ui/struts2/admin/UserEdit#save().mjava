@@ -1,0 +1,67 @@
+    /**
+     * Save modified user profile.
+     */
+    public String save() {
+        myValidate();
+        
+        if (!hasActionErrors()) {
+            getBean().copyTo(user);
+
+            // reset password if set
+            if (!StringUtils.isEmpty(getBean().getPassword())) {
+                try {
+                    user.resetPassword(getBean().getPassword());
+                } catch (WebloggerException e) {
+                    addMessage("yourProfile.passwordResetError");
+                }
+            }
+
+            try {
+                UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
+                if (isAdd()) {
+                    // fields not copied over from above copyTo():
+                    user.setUserName(getBean().getUserName());
+                    user.setDateCreated(new java.util.Date());
+                    // save new user
+                    mgr.addUser(user);
+                } else {
+                    mgr.saveUser(user);
+                }
+
+                // update Admin role as appropriate
+                boolean hasAdmin = false;
+                GlobalPermission adminPerm =
+                    new GlobalPermission(Collections.singletonList(GlobalPermission.ADMIN));
+                if (mgr.checkPermission(adminPerm, user)) {
+                    hasAdmin = true;
+                }  
+                // grant/revoke admin role if needed
+                if (hasAdmin && !getBean().isAdministrator()) {
+                    if (!isUserEditingSelf()) {
+                        // revoke role
+                        mgr.revokeRole("admin", user);
+                    } else {
+                        addError("userAdmin.cantChangeOwnRole");
+                    }
+                } else if(!hasAdmin && getBean().isAdministrator()) {
+                    mgr.grantRole("admin", user);
+                }
+                WebloggerFactory.getWeblogger().flush();
+                if (isAdd()) {
+                    // now that user is saved we have an id value
+                    // store it back in bean for use in next action
+                    bean.setId(user.getId());
+                    // route to edit mode, saveFirst() provides the success message.
+                    return SUCCESS;
+                } else {
+                    addMessage("userAdmin.userSaved");
+                    return INPUT;
+                }
+            } catch (WebloggerException ex) {
+                log.error("ERROR in action", ex);
+                addError("generic.error.check.logs");
+            }
+        }
+        return INPUT;
+    }
+
