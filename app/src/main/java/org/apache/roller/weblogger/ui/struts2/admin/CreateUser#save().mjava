@@ -13,16 +13,14 @@
 
                 // copy form data into new user pojo
                 User newUser = new User();
-                getBean().copyTo(newUser, getLocale());
-                // password not copied
-                newUser.setDateCreated(new java.util.Date());
-
-                // set username and password
+                getBean().copyTo(newUser);
+                // fields not copied over from above copyTo():
                 newUser.setUserName(getBean().getUserName());
+                newUser.setDateCreated(new java.util.Date());
                 newUser.resetPassword(getBean().getPassword());
 
                 // are we granting the user admin rights?
-                if(((CreateUserBean)getBean()).isAdministrator()) {
+                if((getBean()).isAdministrator()) {
                     mgr.grantRole("admin", newUser);
                 }
 

@@ -5,7 +5,7 @@
         
         if (getUser() != null && getUser().getUserName() != null) {
             // populate form data from user profile data
-            getBean().copyFrom(getUser(), getLocale());
+            getBean().copyFrom(getUser());
         } else {
             addError("userAdmin.error.userNotFound");
             return ERROR;

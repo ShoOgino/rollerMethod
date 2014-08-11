@@ -7,14 +7,9 @@
             // We ONLY modify the user currently logged in
             User existingUser = getAuthenticatedUser();
 
-            // We want to be VERY selective about what data gets updated
-            existingUser.setScreenName(getBean().getScreenName());
-            existingUser.setFullName(getBean().getFullName());
-            existingUser.setEmailAddress(getBean().getEmailAddress());
-            existingUser.setLocale(getBean().getLocale());
-            existingUser.setTimeZone(getBean().getTimeZone());
-            UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
-            
+            // copy updated attributes
+            getBean().copyTo(existingUser);
+
             if (StringUtils.isNotEmpty(getBean().getOpenIdUrl())) { 
                 try {
                     String openidurl = getBean().getOpenIdUrl();
@@ -40,19 +35,16 @@
 
             try {
                 // save the updated profile
+                UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
                 mgr.saveUser(existingUser);
                 WebloggerFactory.getWeblogger().flush();
-                addMessage("yourProfile.saved");
-
+                addMessage("generic.changes.saved");
                 return SUCCESS;
-
             } catch (WebloggerException ex) {
                 log.error("ERROR in action", ex);
                 addError("Unexpected error doing profile save");
             }
-
         }
-
         return INPUT;
     }
 

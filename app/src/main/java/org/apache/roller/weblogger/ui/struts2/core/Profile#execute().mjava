@@ -1,14 +1,8 @@
     @SkipValidation
     public String execute() {
         User ud = getAuthenticatedUser();
-        
         // load up the form from the users existing profile data
         getBean().copyFrom(ud);
-        getBean().setPasswordText(null);
-        getBean().setPasswordConfirm(null);
-        getBean().setLocale(ud.getLocale());
-        getBean().setTimeZone(ud.getTimeZone());
-        getBean().setOpenIdUrl(ud.getOpenIdUrl());
         return INPUT;
     }
 
