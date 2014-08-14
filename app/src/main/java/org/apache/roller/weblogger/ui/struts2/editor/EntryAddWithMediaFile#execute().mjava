@@ -15,11 +15,10 @@
 
             StringBuilder sb = new StringBuilder();
 
-            if ("weblog".equals(type) && selectedImages != null) {
-
-                for (int i=0; i<selectedImages.length; i++) {
-                    MediaFile mediaFile = manager.getMediaFile(selectedImages[i]);
-                    String link = "";
+            if (selectedImages != null) {
+                for (String image : selectedImages) {
+                    MediaFile mediaFile = manager.getMediaFile(image);
+                    String link;
 
                     if (mediaFile.isImageFile()) {
                         link = "<p>" + mediaFile.getName() + "</p>";
@@ -40,15 +39,13 @@
                 }
             }
 
-            else if ("podcast".equals(type) && StringUtils.isNotEmpty(selectedImage)) {
-                MediaFile podcastFile = manager.getMediaFile(selectedImage);
+            if (bean.getEnclosureURL() != null) {
                 sb.append("<p>")
                   .append(getText("mediaFileEdit.includesEnclosure"))
                   .append("<br />")
                   .append("<a href=''>")
-                  .append(podcastFile.getPermalink())
+                  .append(bean.getEnclosureURL())
                   .append("</a></p>");
-                bean.setEnclosureURL(podcastFile.getPermalink());
             }
 
             bean.setText(sb.toString());
