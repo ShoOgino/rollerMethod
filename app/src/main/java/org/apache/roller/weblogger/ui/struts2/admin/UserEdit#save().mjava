@@ -7,6 +7,30 @@
         if (!hasActionErrors()) {
             getBean().copyTo(user);
 
+            if (authMethod == AuthMethod.DB_OPENID) {
+                if (StringUtils.isEmpty(user.getPassword())
+                        && StringUtils.isEmpty(bean.getPassword())
+                        && StringUtils.isEmpty(bean.getOpenIdUrl())) {
+                    addError("userRegister.error.missingOpenIDOrPassword");
+                    return INPUT;
+                } else if (StringUtils.isNotEmpty(bean.getOpenIdUrl())
+                        && StringUtils.isNotEmpty(bean.getPassword())) {
+                    addError("userRegister.error.bothOpenIDAndPassword");
+                    return INPUT;
+                }
+            }
+
+            // User.password does not allow null, so generate one
+            if (authMethod.equals(AuthMethod.OPENID) ||
+                    (authMethod.equals(AuthMethod.DB_OPENID) && !StringUtils.isEmpty(bean.getOpenIdUrl()))) {
+                try {
+                    String randomString = RandomStringUtils.randomAlphanumeric(255);
+                    user.resetPassword(randomString);
+                } catch (WebloggerException e) {
+                    addMessage("yourProfile.passwordResetError");
+                }
+            }
+
             // reset password if set
             if (!StringUtils.isEmpty(getBean().getPassword())) {
                 try {
