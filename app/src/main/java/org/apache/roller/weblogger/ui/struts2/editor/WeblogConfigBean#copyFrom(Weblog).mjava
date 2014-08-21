@@ -14,6 +14,7 @@
         this.emailAddress = dataHolder.getEmailAddress();
         this.locale = dataHolder.getLocale();
         this.timeZone = dataHolder.getTimeZone();
+        this.defaultPlugins = dataHolder.getDefaultPlugins();
         this.entryDisplayCount = dataHolder.getEntryDisplayCount();
         setActive(dataHolder.getActive());
         this.commentModerationRequired = dataHolder.getCommentModerationRequired();
@@ -24,6 +25,9 @@
         setAbout(dataHolder.getAbout());
         if (dataHolder.getBloggerCategory() != null) {
             bloggerCategoryId = dataHolder.getBloggerCategory().getId();
+        }
+        if (dataHolder.getDefaultPlugins() != null) {
+            defaultPluginsArray = StringUtils.split(dataHolder.getDefaultPlugins(), ",");
         }
     }
 
