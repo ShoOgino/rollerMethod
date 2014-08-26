@@ -3,9 +3,10 @@
         // set theme to current value
         if (WeblogTheme.CUSTOM.equals(getActionWeblog().getEditorTheme())) {
             setThemeId(null);
+            setSelectedThemeId(null);
         } else {
             setThemeId(getActionWeblog().getTheme().getId());
-            setImportThemeId(getActionWeblog().getTheme().getId());
+            setSelectedThemeId(getThemeId());
         }
 
         // See if we have a custom style sheet from a custom theme.
