@@ -1,10 +1,8 @@
 	/**
 	 * @see org.apache.roller.weblogger.business.themes.ThemeManager#getEnabledThemesList()
-	 * 
-	 *      TODO: reimplement enabled vs. disabled logic once we support it
 	 */
-	public List<Theme> getEnabledThemesList() {
-		List<Theme> allThemes = new ArrayList<Theme>(this.themes.values());
+	public List<SharedTheme> getEnabledThemesList() {
+		List<SharedTheme> allThemes = new ArrayList<SharedTheme>(this.themes.values());
 
 		// sort 'em ... default ordering for themes is by name
 		Collections.sort(allThemes);
