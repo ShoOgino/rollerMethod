@@ -9,13 +9,13 @@
         if (WeblogTheme.CUSTOM.equals(getThemeType())) {
 
             // do theme import if necessary
-            SharedTheme t;
+            SharedTheme t = null;
 
             try {
                 ThemeManager themeMgr = WebloggerFactory.getWeblogger()
                         .getThemeManager();
-                t = themeMgr.getTheme(getSelectedThemeId());
-                if (!StringUtils.isEmpty(getSelectedThemeId())) {
+                if (importTheme && !StringUtils.isEmpty(selectedThemeId)) {
+                    t = themeMgr.getTheme(selectedThemeId);
                     themeMgr.importTheme(getActionWeblog(), t);
                 }
             } catch (Exception re) {
@@ -39,7 +39,10 @@
                     // make sure to flush the page cache so ppl can see the change
                     CacheManager.invalidate(weblog);
 
-                    addMessage("themeEditor.setCustomTheme.success", t.getName());
+                    addMessage("themeEditor.setTheme.success", WeblogTheme.CUSTOM);
+                    if (importTheme && t != null) {
+                        addMessage("themeEditor.setCustomTheme.success", t.getName());
+                    }
                     addMessage("themeEditor.setCustomTheme.instructions");
 
                 } catch (WebloggerException re) {
