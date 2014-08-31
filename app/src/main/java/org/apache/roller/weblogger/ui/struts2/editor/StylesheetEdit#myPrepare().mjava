@@ -1,5 +1,7 @@
     @Override
     public void myPrepare() {
+        sharedTheme = !WeblogTheme.CUSTOM.equals(getActionWeblog().getEditorTheme());
+        sharedStylesheetDeleted = false;
 
         ThemeTemplate stylesheet = null;
         try {
@@ -61,7 +63,7 @@
                     addMessage("stylesheetEdit.create.success");
                 }
 
-                // See if we have a custom style sheet from a custom theme.
+                // See if we're using a shared theme with a custom stylesheet
                 if (!WeblogTheme.CUSTOM.equals(getActionWeblog()
                         .getEditorTheme())
                         && getActionWeblog().getTheme().getStylesheet() != null) {
@@ -75,13 +77,13 @@
                                             .getStylesheet().getLink());
 
                     if (override != null) {
-                        customStylesheet = true;
+                        sharedThemeCustomStylesheet = true;
                     }
                 }
 
             } catch (WebloggerException ex) {
                 log.error(
-                        "Error finding/adding stylesheet tempalate from weblog - "
+                        "Error finding/adding stylesheet template from weblog - "
                                 + getActionWeblog().getHandle(), ex);
             }
         }

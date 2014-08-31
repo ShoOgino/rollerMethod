@@ -1,20 +1,8 @@
     /**
-     * Revert the stylesheet to its original state.
+     * Revert the stylesheet to its original state.  UI provides this only for shared themes.
      */
     public String revert() {
-
-        if (getTemplate() == null) {
-            addError("stylesheetEdit.error.cannotFind");
-            return ERROR;
-        }
-
-        // make sure we are still using a shared theme so that reverting is
-        // possible
-        if (WeblogTheme.CUSTOM.equals(getActionWeblog().getEditorTheme())) {
-            addError("stylesheetEdit.error.customTheme");
-        }
-
-        if (!hasActionErrors()) {
+        if (sharedTheme && !hasActionErrors()) {
             try {
 
                 WeblogTemplate stylesheet = getTemplate();
@@ -61,10 +49,9 @@
             } catch (WebloggerException ex) {
                 log.error("Error updating stylesheet template for weblog - "
                         + getActionWeblog().getHandle(), ex);
-                addError("stylesheetEdit.revert.failure");
+                addError("generic.error.check.logs");
             }
         }
-
         return execute();
     }
 

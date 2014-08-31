@@ -2,31 +2,14 @@
      * set theme to default stylesheet, ie delete it.
      */
     public String delete() {
-
-        if (getTemplate() == null) {
-            log.error("Unable to locate stylesheet template");
-            addError("error.recordnotfound");
-            return ERROR;
-        }
-
-        // make sure we are still using a shared theme so that deleting is
-        // possible
-        if (WeblogTheme.CUSTOM.equals(getActionWeblog().getEditorTheme())) {
-            log.error("Unable to delete stylesheet");
-            addError("stylesheetEdit.error.customTheme");
-        }
-
-        if (!hasActionErrors()) {
+        if (template != null && sharedTheme && !hasActionErrors()) {
             try {
-
-                WeblogTemplate stylesheet = getTemplate();
-
                 // Delete template and flush
                 WeblogManager mgr = WebloggerFactory.getWeblogger()
                         .getWeblogManager();
 
                 // Remove template and page codes
-                mgr.removeTemplate(stylesheet);
+                mgr.removeTemplate(template);
 
                 Weblog weblog = getActionWeblog();
 
@@ -34,24 +17,24 @@
                 mgr.saveWeblog(weblog);
 
                 // notify caches
-                CacheManager.invalidate(stylesheet);
+                CacheManager.invalidate(template);
 
                 // Flush for operation
                 WebloggerFactory.getWeblogger().flush();
 
                 // success message
                 addMessage("stylesheetEdit.default.success",
-                        stylesheet.getName());
+                        template.getName());
+
+                template = null;
+                sharedStylesheetDeleted = true;
 
             } catch (Exception e) {
                 log.error("Error deleting stylesheet template for weblog - "
                         + getActionWeblog().getHandle(), e);
-
-                return ERROR;
+                addError("generic.error.check.logs");
             }
         }
-
-        return "delete";
-
+        return INPUT;
     }
 

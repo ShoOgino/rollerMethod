@@ -2,12 +2,6 @@
      * Save an existing stylesheet.
      */
     public String save() {
-
-        if (getTemplate() == null) {
-            addError("stylesheetEdit.error.cannotFind");
-            return ERROR;
-        }
-
         if (!hasActionErrors()) {
             try {
 
@@ -57,7 +51,6 @@
                 addError("Error saving template - check Roller logs");
             }
         }
-
         return INPUT;
     }
 
