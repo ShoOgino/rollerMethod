@@ -1,0 +1,14 @@
+	/**
+	 * Static utility method that extracts the current device from the web
+	 * request. Encapsulates the {@link HttpServletRequest#getAttribute(String)}
+	 * lookup.
+	 * 
+	 * @param request
+	 *            the servlet request
+	 * @return the current device, or null if no device has been resolved for
+	 *         the request
+	 */
+	public static Device getCurrentDevice(HttpServletRequest request) {
+		return (Device) request.getAttribute(CURRENT_DEVICE_ATTRIBUTE);
+	}
+

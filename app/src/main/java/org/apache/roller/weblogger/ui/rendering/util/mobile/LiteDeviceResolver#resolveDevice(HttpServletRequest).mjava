@@ -1,0 +1,65 @@
+	public Device resolveDevice(HttpServletRequest request) {
+		String userAgent = request.getHeader("User-Agent");
+		// UserAgent keyword detection of Normal devices
+		if (userAgent != null) {
+			userAgent = userAgent.toLowerCase();
+			for (String keyword : normalUserAgentKeywords) {
+				if (userAgent.contains(keyword)) {
+					return resolveFallback(request);
+				}
+			}
+		}
+		// UserAgent keyword detection of Tablet devices
+		if (userAgent != null) {
+			userAgent = userAgent.toLowerCase();
+			// Android special case
+			if (userAgent.contains("android") && !userAgent.contains("mobile")) {
+				return LiteDevice.TABLET_INSTANCE;
+			}
+			// Kindle Fire special case
+			if (userAgent.contains("silk") && !userAgent.contains("mobile")) {
+				return LiteDevice.TABLET_INSTANCE;
+			}
+			for (String keyword : tabletUserAgentKeywords) {
+				if (userAgent.contains(keyword)) {
+					return LiteDevice.TABLET_INSTANCE;
+				}
+			}
+		}
+		// UAProf detection
+		if (request.getHeader("x-wap-profile") != null
+				|| request.getHeader("Profile") != null) {
+			return LiteDevice.MOBILE_INSTANCE;
+		}
+		// User-Agent prefix detection
+		if (userAgent != null && userAgent.length() >= 4) {
+			String prefix = userAgent.substring(0, 4).toLowerCase();
+			if (mobileUserAgentPrefixes.contains(prefix)) {
+				return LiteDevice.MOBILE_INSTANCE;
+			}
+		}
+		// Accept-header based detection
+		String accept = request.getHeader("Accept");
+		if (accept != null && accept.contains("wap")) {
+			return LiteDevice.MOBILE_INSTANCE;
+		}
+		// UserAgent keyword detection for Mobile devices
+		if (userAgent != null) {
+			for (String keyword : mobileUserAgentKeywords) {
+				if (userAgent.contains(keyword)) {
+					return LiteDevice.MOBILE_INSTANCE;
+				}
+			}
+		}
+		// OperaMini special case
+		@SuppressWarnings("rawtypes")
+		Enumeration headers = request.getHeaderNames();
+		while (headers.hasMoreElements()) {
+			String header = (String) headers.nextElement();
+			if (header.contains("OperaMini")) {
+				return LiteDevice.MOBILE_INSTANCE;
+			}
+		}
+		return resolveFallback(request);
+	}
+

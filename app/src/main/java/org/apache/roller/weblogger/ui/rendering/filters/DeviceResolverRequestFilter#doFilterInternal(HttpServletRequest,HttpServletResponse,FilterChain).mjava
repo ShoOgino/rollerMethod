@@ -1,0 +1,9 @@
+    @Override
+    protected void doFilterInternal(HttpServletRequest request,
+            HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+        Device device = deviceResolver.resolveDevice(request);
+        request.setAttribute(DeviceUtils.CURRENT_DEVICE_ATTRIBUTE, device);
+        filterChain.doFilter(request, response);
+    }
+

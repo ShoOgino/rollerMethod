@@ -1,0 +1,18 @@
+	/**
+	 * Gets the request device type.
+	 * 
+	 * @param request
+	 *            the request
+	 * 
+	 * @return the request type
+	 */
+	public static DeviceType getRequestType(HttpServletRequest request) {
+
+		DeviceType type = DeviceType.standard;
+
+		if (isMobileDevice(request)) {
+			type = DeviceType.mobile;
+		}
+		return type;
+	}
+

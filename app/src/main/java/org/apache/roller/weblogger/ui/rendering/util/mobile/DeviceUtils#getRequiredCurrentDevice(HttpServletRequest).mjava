@@ -1,0 +1,19 @@
+	/**
+	 * Static utility method that extracts the current device from the web
+	 * request. Encapsulates the {@link HttpServletRequest#getAttribute(String)}
+	 * lookup. Throws a runtime exception if the current device has not been
+	 * resolved.
+	 * 
+	 * @param request
+	 *            the servlet request
+	 * @return the current device
+	 */
+	public static Device getRequiredCurrentDevice(HttpServletRequest request) {
+		Device device = getCurrentDevice(request);
+		if (device == null) {
+			throw new IllegalStateException(
+					"No currenet device is set in this request and one is required - have you configured a DeviceResolvingHandlerInterceptor?");
+		}
+		return device;
+	}
+

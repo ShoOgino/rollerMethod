@@ -1,0 +1,14 @@
+	/**
+	 * Initialize this device resolver implementation. Registers the known set
+	 * of device signature strings. Subclasses may override to register
+	 * additional strings.
+	 */
+	protected void init() {
+		getMobileUserAgentPrefixes().addAll(
+				Arrays.asList(KNOWN_MOBILE_USER_AGENT_PREFIXES));
+		getMobileUserAgentKeywords().addAll(
+				Arrays.asList(KNOWN_MOBILE_USER_AGENT_KEYWORDS));
+		getTabletUserAgentKeywords().addAll(
+				Arrays.asList(KNOWN_TABLET_USER_AGENT_KEYWORDS));
+	}
+
