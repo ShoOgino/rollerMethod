@@ -10,27 +10,6 @@
             setSelectedThemeId(getThemeId());
         }
 
-        // See if we have a custom style sheet from a custom theme.
-        try {
-            if (!WeblogTheme.CUSTOM.equals(getActionWeblog().getEditorTheme())
-                    && getActionWeblog().getTheme().getStylesheet() != null) {
-
-                ThemeTemplate override = WebloggerFactory
-                        .getWeblogger()
-                        .getWeblogManager()
-                        .getTemplateByLink(
-                                getActionWeblog(),
-                                getActionWeblog().getTheme().getStylesheet()
-                                        .getLink());
-                if (override != null) {
-                    customStylesheet = true;
-                }
-            }
-        } catch (WebloggerException ex) {
-            log.error("Error looking up stylesheet on weblog - "
-                    + getActionWeblog().getHandle(), ex);
-        }
-
         return INPUT;
     }
 
