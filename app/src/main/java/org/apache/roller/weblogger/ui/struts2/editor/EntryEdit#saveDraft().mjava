@@ -5,6 +5,11 @@
      */
     public String saveDraft() {
         getBean().setStatus(PubStatus.DRAFT.name());
+        if (entry.isPublished()) {
+            // entry reverted from published to non-viewable draft
+            // so need to reduce tag aggregates
+            entry.setRefreshAggregates(true);
+        }
         return save();
     }
 

@@ -6,7 +6,7 @@
     private String save() {
         if (!hasActionErrors()) {
             try {
-                WeblogEntryManager weblogMgr = WebloggerFactory.getWeblogger()
+                WeblogEntryManager weblogEntryManager = WebloggerFactory.getWeblogger()
                         .getWeblogEntryManager();
 
                 IndexManager indexMgr = WebloggerFactory.getWeblogger()
@@ -58,11 +58,11 @@
                     try {
                         // if MediaCast string is empty, clean out MediaCast
                         // attributes
-                        weblogMgr.removeWeblogEntryAttribute(
+                        weblogEntryManager.removeWeblogEntryAttribute(
                                 "att_mediacast_url", weblogEntry);
-                        weblogMgr.removeWeblogEntryAttribute(
+                        weblogEntryManager.removeWeblogEntryAttribute(
                                 "att_mediacast_type", weblogEntry);
-                        weblogMgr.removeWeblogEntryAttribute(
+                        weblogEntryManager.removeWeblogEntryAttribute(
                                 "att_mediacast_length", weblogEntry);
 
                     } catch (WebloggerException e) {
@@ -78,7 +78,7 @@
                 }
 
                 log.debug("Saving entry");
-                weblogMgr.saveWeblogEntry(weblogEntry);
+                weblogEntryManager.saveWeblogEntry(weblogEntry);
                 WebloggerFactory.getWeblogger().flush();
 
                 // notify search of the new entry

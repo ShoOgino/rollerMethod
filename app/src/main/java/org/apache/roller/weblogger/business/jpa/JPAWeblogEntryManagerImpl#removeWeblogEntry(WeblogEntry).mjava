@@ -13,13 +13,10 @@
             this.strategy.remove(comment);
         }
         
-        // remove tags aggregates
+        // remove tag & tag aggregates
         if (entry.getTags() != null) {
-            for (Iterator it = entry.getTags().iterator(); it.hasNext(); ) {
-                WeblogEntryTag tag = (WeblogEntryTag) it.next();
-                updateTagCount(tag.getName(), entry.getWebsite(), -1);
-                it.remove();
-                this.strategy.remove(tag);
+            for (WeblogEntryTag tag : entry.getTags()) {
+                removeWeblogEntryTag(tag);
             }
         }
         

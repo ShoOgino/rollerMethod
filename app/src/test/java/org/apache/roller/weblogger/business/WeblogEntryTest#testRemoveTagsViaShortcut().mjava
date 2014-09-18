@@ -17,8 +17,7 @@
             TestUtils.endSession(true);
 
             entry = mgr.getWeblogEntry(id);
-            mgr.removeWeblogEntryTag("testtag", entry);
-            mgr.removeWeblogEntryTag("testtag2", entry);
+            entry.setTagsAsString("");
             mgr.saveWeblogEntry(entry);
             TestUtils.endSession(true);
 

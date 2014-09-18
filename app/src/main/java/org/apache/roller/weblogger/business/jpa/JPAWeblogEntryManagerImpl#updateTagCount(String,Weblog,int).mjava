@@ -1,13 +1,21 @@
     /**
-     * @inheritDoc
+     * This method maintains the tag aggregate table up-to-date with total counts. More
+     * specifically every time this method is called it will act upon exactly two rows
+     * in the database (tag,website,count), one with website matching the argument passed
+     * and one where website is null. If the count ever reaches zero, the row must be deleted.
+     *
+     * @param name      The tag name
+     * @param website   The website to used when updating the stats.
+     * @param amount    The amount to increment the tag count (it can be positive or negative).
+     * @throws WebloggerException
      */
-    public void updateTagCount(String name, Weblog website, int amount)
+    private void updateTagCount(String name, Weblog website, int amount)
     throws WebloggerException {
-        if(amount == 0) {
+        if (amount == 0) {
             throw new WebloggerException("Tag increment amount cannot be zero.");
         }
         
-        if(website == null) {
+        if (website == null) {
             throw new WebloggerException("Website cannot be NULL.");
         }
         

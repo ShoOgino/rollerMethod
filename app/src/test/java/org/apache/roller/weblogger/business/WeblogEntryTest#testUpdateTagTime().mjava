@@ -28,11 +28,7 @@
                 original = tagData.getTime();
         }
 
-        List<String> updateTags = new ArrayList<String>();
-        updateTags.add("testwillstaytag");
-        updateTags.add("testnewtag");
-        updateTags.add("testnewtag3");
-        entry.updateTags(updateTags);
+        entry.setTagsAsString("testwillstaytag testnewtag testnewtag3");
         mgr.saveWeblogEntry(entry);
         TestUtils.endSession(true);
 

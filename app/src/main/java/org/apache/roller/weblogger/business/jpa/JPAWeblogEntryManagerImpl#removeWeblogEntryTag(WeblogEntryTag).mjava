@@ -1,0 +1,7 @@
+    private void removeWeblogEntryTag(WeblogEntryTag tag) throws WebloggerException {
+        if (tag.getWeblogEntry().isPublished()) {
+            updateTagCount(tag.getName(), tag.getWeblogEntry().getWebsite(), -1);
+        }
+        this.strategy.remove(tag);
+    }
+

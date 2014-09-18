@@ -85,11 +85,7 @@
 
             testWeblog = TestUtils.getManagedWebsite(testWeblog);
             entry = mgr.getWeblogEntryByAnchor(testWeblog, "entry2");
-            List<String> updateTags = new ArrayList<String>();
-            updateTags.add("one");
-            updateTags.add("three");
-            updateTags.add("five");
-            entry.updateTags(updateTags);
+            entry.setTagsAsString("one three five");
             mgr.saveWeblogEntry(entry);
 
             TestUtils.endSession(true);
