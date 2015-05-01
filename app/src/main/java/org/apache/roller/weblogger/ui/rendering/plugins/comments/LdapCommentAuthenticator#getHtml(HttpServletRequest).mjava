@@ -13,17 +13,18 @@
 			ldapPass = ldapPassTemp != null ? ldapPassTemp : "";
 		}
 
+		I18nMessages messages = I18nMessages.getMessages(request.getLocale());
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("<p>");
-		sb.append(bundle.getString("comments.ldapAuthenticatorUserName"));
+		sb.append(messages.getString("comments.ldapAuthenticatorUserName"));
 		sb.append("</p>");
 		sb.append("<p>");
 		sb.append("<input name=\"ldapUser\" value=\"");
 		sb.append(ldapUser + "\">");
 		sb.append("</p>");
 		sb.append("<p>");
-		sb.append(bundle.getString("comments.ldapAuthenticatorPassword"));
+		sb.append(messages.getString("comments.ldapAuthenticatorPassword"));
 		sb.append("</p>");
 		sb.append("<p>");
 		sb.append("<input type=\"password\" name=\"ldapPass\" value=\"");
