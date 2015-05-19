@@ -22,7 +22,8 @@
         Integer value1o = (Integer)request.getSession().getAttribute("mathValue1");
         Integer value2o = (Integer)request.getSession().getAttribute("mathValue2");
 
-        I18nMessages messages = I18nMessages.getMessages(request.getLocale());
+        Locale locale = CommentAuthenticatorUtils.getLocale(request);
+        I18nMessages messages = I18nMessages.getMessages(locale);
         StringBuilder sb = new StringBuilder();
         
         sb.append("<p>");

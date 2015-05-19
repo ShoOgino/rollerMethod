@@ -13,7 +13,8 @@
 			ldapPass = ldapPassTemp != null ? ldapPassTemp : "";
 		}
 
-		I18nMessages messages = I18nMessages.getMessages(request.getLocale());
+		Locale locale = CommentAuthenticatorUtils.getLocale(request);
+		I18nMessages messages = I18nMessages.getMessages(locale);
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("<p>");
