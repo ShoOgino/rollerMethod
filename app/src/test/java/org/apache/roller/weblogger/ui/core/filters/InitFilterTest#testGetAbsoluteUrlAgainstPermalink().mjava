@@ -1,0 +1,10 @@
+    public void testGetAbsoluteUrlAgainstPermalink() throws Exception {
+        boolean secure = false;
+        String contextPath = "/roller";
+        String requestURI = "/roller/handle/entry/title";
+        String requestURL = "http://roller.example.com/roller/handle/entry/title";
+
+        String absoluteUrl = InitFilter.getAbsoluteUrl(secure, SERVER_NAME, contextPath, requestURI, requestURL);
+        assertEquals("http://roller.example.com/roller", absoluteUrl);
+    }
+
