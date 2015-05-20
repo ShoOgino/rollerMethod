@@ -1,0 +1,7 @@
+    // convenience method returns 8 char day stamp YYYYMMDD using time zone
+    public static String format8chars(Date date, TimeZone tz) {
+        SimpleDateFormat formatter = get8charDateFormat();
+        formatter.setTimeZone(tz);
+        return format(date, formatter);
+    }
+

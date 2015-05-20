@@ -10,15 +10,18 @@
             int                page) {
         
         super(strat, weblog, locale, pageLink, entryAnchor, dateString, catName, tags, page);
-        
+
+        TimeZone tz = weblog.getTimeZoneInstance();
+
         monthFormat = new SimpleDateFormat(
             messageUtils.getString("weblogEntriesPager.month.dateFormat"));
+        monthFormat.setTimeZone(tz);
         
         getEntries();
         
         month = parseDate(dateString);
         
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(tz);
         
         cal.setTime(month);
         cal.add(Calendar.MONTH, 1);

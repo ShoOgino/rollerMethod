@@ -1,4 +1,7 @@
     public BigWeblogCalendarModel(WeblogPageRequest pRequest, String cat) {
         super(pRequest, cat);
+        TimeZone tz = weblog.getTimeZoneInstance();
+        starDateFormat.setTimeZone(tz);
+        singleDayFormat.setTimeZone(tz);
     }
 
