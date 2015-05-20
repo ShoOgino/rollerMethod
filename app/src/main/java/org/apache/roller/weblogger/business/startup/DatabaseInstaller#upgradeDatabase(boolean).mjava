@@ -44,6 +44,10 @@
                 upgradeTo510(con, runScripts);
                 dbversion = 510;
             }
+            if(dbversion < 520) {
+                upgradeTo520(con, runScripts);
+                dbversion = 520;
+            }
             
             // make sure the database version is the exact version
             // we are upgrading too.
