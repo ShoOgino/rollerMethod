@@ -1,6 +1,8 @@
     @Before
     public void setUp() throws Exception {
-        driver = new FirefoxDriver();
+        FirefoxProfile profile = new FirefoxProfile();
+        profile.setPreference("intl.accept_languages", "en_US");
+        driver = new FirefoxDriver(profile);
         baseUrl = "http://localhost:8080/roller/";
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     }
