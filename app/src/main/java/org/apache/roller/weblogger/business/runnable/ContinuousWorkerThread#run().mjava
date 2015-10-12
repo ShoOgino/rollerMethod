@@ -10,8 +10,8 @@
         
         mLogger.info(this.id+" Started.");
         
-        // run forever
-        while(true) {
+        // run till interrupted
+        while (!Thread.currentThread().isInterrupted()) {
             
             // execute our job
             super.run();
@@ -25,5 +25,7 @@
                 break;
             }
         }
+
+        mLogger.info(this.id+" Done.");
     }
 
