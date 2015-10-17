@@ -1,35 +1,34 @@
     /**
-     * @see org.apache.roller.weblogger.business.FileContentManager#canSave(
-     * Weblog, String, String, long, RollerMessages)
+     * @see org.apache.roller.weblogger.business.FileContentManager#canSave(Weblog,
+     *      String, String, long, RollerMessages)
      */
-    public boolean canSave(Weblog weblog,
-    		           String fileName,
-                           String contentType,
-                           long size, 
-                           RollerMessages messages) {
-        
+    public boolean canSave(Weblog weblog, String fileName, String contentType,
+            long size, RollerMessages messages) {
+
         // first check, is uploading enabled?
-        if(!WebloggerRuntimeConfig.getBooleanProperty("uploads.enabled")) {
+        if (!WebloggerRuntimeConfig.getBooleanProperty("uploads.enabled")) {
             messages.addError("error.upload.disabled");
             return false;
         }
-        
+
         // second check, does upload exceed max size for file?
         BigDecimal maxFileMB = new BigDecimal(
                 WebloggerRuntimeConfig.getProperty("uploads.file.maxsize"));
-        int maxFileBytes = (int)(RollerConstants.ONE_MB_IN_BYTES * maxFileMB.doubleValue());
-        log.debug("max allowed file size = "+maxFileBytes);
-        log.debug("attempted save file size = "+size);
+        int maxFileBytes = (int) (RollerConstants.ONE_MB_IN_BYTES * maxFileMB
+                .doubleValue());
+        log.debug("max allowed file size = " + maxFileBytes);
+        log.debug("attempted save file size = " + size);
         if (size > maxFileBytes) {
-            String[] args = {fileName, maxFileMB.toString()};
+            String[] args = { fileName, maxFileMB.toString() };
             messages.addError("error.upload.filemax", args);
             return false;
         }
-        
+
         // third check, does file cause weblog to exceed quota?
         BigDecimal maxDirMB = new BigDecimal(
                 WebloggerRuntimeConfig.getProperty("uploads.dir.maxsize"));
-        long maxDirBytes = (long)(RollerConstants.ONE_MB_IN_BYTES * maxDirMB.doubleValue());
+        long maxDirBytes = (long) (RollerConstants.ONE_MB_IN_BYTES * maxDirMB
+                .doubleValue());
         try {
             File storageDirectory = this.getRealFile(weblog, null);
             long userDirSize = getDirSize(storageDirectory, true);
@@ -38,22 +37,27 @@
                 return false;
             }
         } catch (Exception ex) {
-            // shouldn't ever happen, means the weblogs uploads dir is bad somehow
+            // shouldn't ever happen, means the weblogs uploads dir is bad
+            // somehow
             // rethrow as a runtime exception
             throw new RuntimeException(ex);
         }
-        
+
         // fourth check, is upload type allowed?
-        String allows = WebloggerRuntimeConfig.getProperty("uploads.types.allowed");
-        String forbids = WebloggerRuntimeConfig.getProperty("uploads.types.forbid");
-        String[] allowFiles = StringUtils.split(StringUtils.deleteWhitespace(allows), ",");
-        String[] forbidFiles = StringUtils.split(StringUtils.deleteWhitespace(forbids), ",");
+        String allows = WebloggerRuntimeConfig
+                .getProperty("uploads.types.allowed");
+        String forbids = WebloggerRuntimeConfig
+                .getProperty("uploads.types.forbid");
+        String[] allowFiles = StringUtils.split(
+                StringUtils.deleteWhitespace(allows), ",");
+        String[] forbidFiles = StringUtils.split(
+                StringUtils.deleteWhitespace(forbids), ",");
         if (!checkFileType(allowFiles, forbidFiles, fileName, contentType)) {
-            String[] args = {fileName, contentType};
+            String[] args = { fileName, contentType };
             messages.addError("error.upload.forbiddenFile", args);
             return false;
         }
-        
+
         return true;
     }
 

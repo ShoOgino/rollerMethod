@@ -13,17 +13,19 @@
 			ldapPass = ldapPassTemp != null ? ldapPassTemp : "";
 		}
 
+		Locale locale = CommentAuthenticatorUtils.getLocale(request);
+		I18nMessages messages = I18nMessages.getMessages(locale);
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("<p>");
-		sb.append(bundle.getString("comments.ldapAuthenticatorUserName"));
+		sb.append(messages.getString("comments.ldapAuthenticatorUserName"));
 		sb.append("</p>");
 		sb.append("<p>");
 		sb.append("<input name=\"ldapUser\" value=\"");
 		sb.append(ldapUser + "\">");
 		sb.append("</p>");
 		sb.append("<p>");
-		sb.append(bundle.getString("comments.ldapAuthenticatorPassword"));
+		sb.append(messages.getString("comments.ldapAuthenticatorPassword"));
 		sb.append("</p>");
 		sb.append("<p>");
 		sb.append("<input type=\"password\" name=\"ldapPass\" value=\"");

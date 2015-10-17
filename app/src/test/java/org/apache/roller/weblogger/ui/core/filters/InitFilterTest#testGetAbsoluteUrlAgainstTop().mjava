@@ -1,0 +1,10 @@
+    public void testGetAbsoluteUrlAgainstTop() throws Exception {
+        boolean secure = false;
+        String contextPath = "/roller";
+        String requestURI = "/roller/";
+        String requestURL = "http://roller.example.com/roller/";
+
+        String absoluteUrl = InitFilter.getAbsoluteUrl(secure, SERVER_NAME, contextPath, requestURI, requestURL);
+        assertEquals("http://roller.example.com/roller", absoluteUrl);
+    }
+

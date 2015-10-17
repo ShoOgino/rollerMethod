@@ -2,11 +2,23 @@
      * Release database session, rolls back any uncommitted changes.
      */
     public void release() {
-        EntityManager em = getEntityManager(false);
-        if (isTransactionActive(em)) {
-            em.getTransaction().rollback();
+        EntityManager em = null;
+        try {
+            em = getEntityManager(false);
+            if (isTransactionActive(em)) {
+                em.getTransaction().rollback();
+            }
+        } catch (Exception e) {
+            logger.error("error during releasing database session", e);
+        } finally {
+            if (em != null) {
+                try {
+                    em.close();
+                } catch (Exception e) {
+                    logger.debug("error during closing EntityManager", e);
+                }
+            }
+            threadLocalEntityManager.remove();
         }
-        em.close();
-        setThreadLocalEntityManager(null);
     }
 

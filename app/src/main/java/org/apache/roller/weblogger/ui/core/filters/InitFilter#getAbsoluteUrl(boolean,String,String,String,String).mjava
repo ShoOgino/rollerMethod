@@ -1,0 +1,38 @@
+    protected static String getAbsoluteUrl(boolean secure, String serverName, String contextPath, String requestURI, String requestURL){
+
+        String url = null;
+
+        String fullUrl = null;
+
+        if (!secure) {
+            fullUrl = requestURL;
+        } else {
+            fullUrl = "http://" + serverName + contextPath;
+        }
+
+        // if the uri is only "/" then we are basically done
+        if ("/".equals(requestURI)) {
+            if (log.isDebugEnabled()) {
+                log.debug("requestURI is only '/'. fullUrl: " + fullUrl);
+            }
+            return removeTrailingSlash(fullUrl);
+        }
+
+        // find first "/" starting after hostname is specified
+        int index = fullUrl.indexOf('/',
+                fullUrl.indexOf(serverName));
+
+        if (index != -1) {
+            // extract just the part leading up to uri
+            url = fullUrl.substring(0, index);
+        } else {
+            url = fullUrl.trim();
+        }
+
+        // then just add on the context path
+        url += contextPath;
+
+        // make certain that we don't end with a /
+        return removeTrailingSlash(url);
+    }
+

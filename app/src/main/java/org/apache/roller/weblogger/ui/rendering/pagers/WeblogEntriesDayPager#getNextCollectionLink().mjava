@@ -1,6 +1,6 @@
     public String getNextCollectionLink() {
         if (nextDay != null) {
-            String next = DateUtil.format8chars(nextDay);
+            String next = DateUtil.format8chars(nextDay, weblog.getTimeZoneInstance());
             return createURL(0, 0, weblog, locale, pageLink, null, next, catName, tags);
         }
         return null;

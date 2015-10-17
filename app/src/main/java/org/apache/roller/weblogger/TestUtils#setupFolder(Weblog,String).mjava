@@ -1,13 +1,13 @@
     /**
      * Convenience method for creating a weblog folder.
      */
-    public static WeblogBookmarkFolder setupFolder(Weblog weblog, String name) throws Exception {
+    public static WeblogBookmarkFolder setupFolder(Weblog weblog, String name)
+            throws Exception {
 
         BookmarkManager mgr = WebloggerFactory.getWeblogger()
                 .getBookmarkManager();
 
-        WeblogBookmarkFolder testFolder = new WeblogBookmarkFolder(
-                name, weblog);
+        WeblogBookmarkFolder testFolder = new WeblogBookmarkFolder(name, weblog);
         mgr.saveFolder(testFolder);
 
         // flush to db

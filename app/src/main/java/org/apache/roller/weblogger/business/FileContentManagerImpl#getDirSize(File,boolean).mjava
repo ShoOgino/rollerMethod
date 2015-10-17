@@ -4,7 +4,7 @@
      * Optionally works recursively counting subdirectories if they exist.
      */
     private long getDirSize(File dir, boolean recurse) {
-        
+
         long size = 0;
 
         if (dir.exists() && dir.isDirectory() && dir.canRead()) {
@@ -14,7 +14,7 @@
                 for (File file : files) {
                     if (!file.isDirectory()) {
                         dirSize += file.length();
-                    } else if(recurse) {
+                    } else if (recurse) {
                         // count a subdirectory
                         dirSize += getDirSize(file, recurse);
                     }
@@ -22,7 +22,7 @@
             }
             size += dirSize;
         }
-        
+
         return size;
     }
 

@@ -64,17 +64,24 @@
             buf.append("\n--------------------------------------------------------------");
             log.info(buf.toString());
         } else {
+            Weblogger weblogger = null;
+
             try {
                 // trigger bootstrapping process
                 WebloggerFactory.bootstrap();
                 
                 // trigger initialization process
-                WebloggerFactory.getWeblogger().initialize();
+                weblogger = WebloggerFactory.getWeblogger();
+                weblogger.initialize();
                 
             } catch (BootstrapException ex) {
                 log.fatal("Roller Weblogger bootstrap failed", ex);
             } catch (WebloggerException ex) {
                 log.fatal("Roller Weblogger initialization failed", ex);
+            } finally {
+                if (weblogger != null) {
+                    weblogger.release();
+                }
             }
 		}
             

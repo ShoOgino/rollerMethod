@@ -1,14 +1,13 @@
     /**
      * Convenience method for creating a weblog category.
      */
-    public static WeblogCategory setupWeblogCategory(Weblog weblog,
-            String name) throws Exception {
+    public static WeblogCategory setupWeblogCategory(Weblog weblog, String name)
+            throws Exception {
 
         WeblogEntryManager mgr = WebloggerFactory.getWeblogger()
                 .getWeblogEntryManager();
 
-        WeblogCategory testCat = new WeblogCategory(weblog, name,
-                null, null);
+        WeblogCategory testCat = new WeblogCategory(weblog, name, null, null);
         mgr.saveWeblogCategory(testCat);
 
         // flush to db

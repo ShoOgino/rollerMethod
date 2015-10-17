@@ -1,6 +1,6 @@
     public String getPrevCollectionLink() {
         if (prevDay != null) {
-            String prev = DateUtil.format8chars(prevDay);
+            String prev = DateUtil.format8chars(prevDay, weblog.getTimeZoneInstance());
             return createURL(0, 0, weblog, locale, pageLink, null, prev, catName, tags);
         }
         return null;
