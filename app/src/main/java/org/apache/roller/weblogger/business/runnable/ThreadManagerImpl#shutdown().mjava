@@ -4,11 +4,22 @@
         
         // trigger an immediate shutdown of any backgrounded tasks
         serviceScheduler.shutdownNow();
-        
+        try {
+            serviceScheduler.awaitTermination(GRACEFUL_SHUTDOWN_WAIT_IN_SECONDS, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            LOG.debug(e.getMessage(), e);
+        }
+
         // only stop if we are already running
         if(schedulerThread != null) {
             LOG.debug("Stopping scheduler");
             schedulerThread.interrupt();
+            try {
+                schedulerThread.join(GRACEFUL_SHUTDOWN_WAIT_IN_MILLISECONDS);
+                LOG.debug("Scheduler was stopped successfully");
+            } catch (InterruptedException e) {
+                LOG.debug(e.getMessage(), e);
+            }
         }
     }
 
