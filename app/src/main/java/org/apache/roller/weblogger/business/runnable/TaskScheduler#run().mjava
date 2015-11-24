@@ -3,7 +3,7 @@
         boolean firstRun = true;
         
         // run forever, or until we get interrupted
-        while(true) {
+        while (!Thread.currentThread().isInterrupted()) {
             try {
                 // get current time
                 Date now = new Date();
@@ -49,12 +49,18 @@
                 }
                 
             } catch (InterruptedException ex) {
-                // thread interrupted
                 log.debug("Thread interrupted, scheduler is stopping");
-                pool.shutdownNow();
                 break;
             }
         }
-        
+
+        // thread interrupted
+        pool.shutdownNow();
+        try {
+            pool.awaitTermination(GRACEFUL_SHUTDOWN_WAIT_IN_SECONDS, TimeUnit.SECONDS);
+            log.debug("TaskScheduler executor was terminated successfully");
+        } catch (InterruptedException e) {
+            log.debug(e.getMessage(), e);
+        }
     }
 
