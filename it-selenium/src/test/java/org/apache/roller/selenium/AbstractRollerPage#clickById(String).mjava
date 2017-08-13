@@ -1,4 +1,6 @@
     protected void clickById(String buttonId) {
-        driver.findElement(By.id(buttonId)).click();
+        WebElement element = driver.findElement(By.id(buttonId));
+        element.click();
+        System.out.println("Element " + element.getTagName() + " id:" + element.getAttribute("id") + " clicked");
     }
 
