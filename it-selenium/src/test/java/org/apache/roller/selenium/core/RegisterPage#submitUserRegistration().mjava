@@ -1,5 +1,10 @@
     public WelcomePage submitUserRegistration() {
         clickById("submit");
+
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until( ExpectedConditions.visibilityOf( driver.findElement(By.id("a_clickHere"))));
+        driver.findElement(By.id("a_clickHere")).click();
+
         return new WelcomePage(driver);
     }
 
