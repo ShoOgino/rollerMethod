@@ -1,0 +1,10 @@
+    @Override
+    public void saveNewPlanetGroup(Planet planet, PlanetGroup planetGroup) throws WebloggerException {
+
+        planetGroup.setPlanet( planet );
+        strategy.store( planetGroup );
+
+        planet.getGroups().add( planetGroup );
+        strategy.store( planet );
+    }
+
