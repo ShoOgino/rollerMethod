@@ -2,7 +2,8 @@
         if (sub == null) {
             throw new WebloggerException("subscription cannot be null");
         }
-        TypedQuery<SubscriptionEntry> q = strategy.getNamedQuery("SubscriptionEntry.getBySubscription", SubscriptionEntry.class);
+        TypedQuery<SubscriptionEntry> q = strategy.getNamedQuery(
+                "SubscriptionEntry.getBySubscription", SubscriptionEntry.class);
         q.setParameter(1, sub);
         if (offset != 0) {
             q.setFirstResult(offset);

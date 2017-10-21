@@ -1,4 +1,8 @@
     public void deleteGroup(PlanetGroup group) throws RollerException {
+
+        group.getPlanet().getGroups().remove(group);
+        strategy.store(group.getPlanet());
+
         strategy.remove(group);
     }
 
