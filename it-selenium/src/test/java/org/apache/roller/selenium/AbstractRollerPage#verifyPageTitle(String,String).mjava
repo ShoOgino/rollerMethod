@@ -1,0 +1,8 @@
+    protected void verifyPageTitle(String waitForElementId, String pageTitle) {
+
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until( ExpectedConditions.visibilityOf( driver.findElement(By.id(waitForElementId))));
+
+        verifyPageTitle(pageTitle);
+    }
+

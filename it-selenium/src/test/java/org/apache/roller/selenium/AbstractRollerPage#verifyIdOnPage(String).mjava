@@ -7,8 +7,7 @@
         try {
             WebElement div = driver.findElement(By.id(idOnPage));
         } catch (NoSuchElementException e) {
-            throw new IllegalStateException("This is not the " + pageName + ", HTML ID: "
-                    + idOnPage + " not found.");
+            throw new IllegalStateException("HTML ID: " + idOnPage + " not found.");
         }
     }
 

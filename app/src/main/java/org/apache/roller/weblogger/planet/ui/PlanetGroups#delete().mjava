@@ -10,6 +10,9 @@
                 WebloggerFactory.getWeblogger().flush();
                 
                 addMessage("planetSubscription.success.deleted");
+
+                setGroup(null);
+
             } catch(Exception ex) {
                 log.error("Error deleting planet group - "+getBean().getId());
                 addError("Error deleting planet group");
