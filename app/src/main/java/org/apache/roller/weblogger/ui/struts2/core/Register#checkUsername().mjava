@@ -1,0 +1,16 @@
+	private void checkUsername() {
+		if (!StringUtils.isEmpty(getBean().getUserName())) {
+            try {
+                UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
+                if (mgr.getUserByUserName(getBean().getUserName(), null) != null) {
+                    addError("error.add.user.userNameInUse");
+                    // reset user name
+                    getBean().setUserName(null);
+                }
+            } catch (WebloggerException ex) {
+                log.error("error checking for user", ex);
+                addError("generic.error.check.logs");
+            }
+        }
+	}
+
