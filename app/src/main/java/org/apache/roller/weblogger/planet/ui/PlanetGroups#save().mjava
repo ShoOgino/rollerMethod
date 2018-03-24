@@ -1,37 +1,42 @@
-    /** 
+    /**
      * Save group.
      */
     public String save() {
-        
+
         myValidate();
-        
+
         if (!hasActionErrors()) {
             try {
+                PlanetManager planetManager = WebloggerFactory.getWeblogger().getPlanetManager();
+
+                Planet planet = getPlanet();
                 PlanetGroup planetGroup = getGroup();
-                if(planetGroup == null) {
-                    log.debug("Adding New Group");
+
+                if (planetGroup == null) {
                     planetGroup = new PlanetGroup();
-                    planetGroup.setPlanet(getPlanet());
+                    planetGroup.setPlanet(planet);
+                    getBean().copyTo(planetGroup);
+
+                    log.debug("Adding New Group: " + planetGroup.getHandle());
+                    planetManager.saveNewPlanetGroup(getPlanet(), planetGroup);
+
                 } else {
-                    log.debug("Updating Existing Group");
+                    log.debug("Updating Existing Group: " + planetGroup.getHandle());
+                    getBean().copyTo(planetGroup);
+                    planetManager.saveGroup(planetGroup);
                 }
 
-                // copy in submitted data
-                getBean().copyTo(planetGroup);
-
-                // save and flush
-                PlanetManager pmgr = WebloggerFactory.getWeblogger().getPlanetManager();
-                pmgr.saveGroup(planetGroup);
                 WebloggerFactory.getWeblogger().flush();
-
                 addMessage("planetGroups.success.saved");
 
-            } catch(Exception ex) {
+                setGroup(null);
+
+            } catch (Exception ex) {
                 log.error("Error saving planet group - " + getBean().getId(), ex);
                 addError("planetGroups.error.saved");
             }
         }
-        
+
         return LIST;
     }
 

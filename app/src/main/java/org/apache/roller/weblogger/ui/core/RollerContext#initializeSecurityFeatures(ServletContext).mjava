@@ -1,7 +1,7 @@
     /**
      * Setup Spring Security security features.
      */
-    protected void initializeSecurityFeatures(ServletContext context) { 
+    protected void initializeSecurityFeatures(ServletContext context) {
 
         ApplicationContext ctx =
                 WebApplicationContextUtils.getRequiredWebApplicationContext(context);
@@ -9,14 +9,14 @@
         /*String[] beanNames = ctx.getBeanDefinitionNames();
         for (String name : beanNames)
             System.out.println(name);*/
-        
+
         String rememberMe = WebloggerConfig.getProperty("rememberme.enabled");
         boolean rememberMeEnabled = Boolean.valueOf(rememberMe);
-        
+
         log.info("Remember Me enabled: " + rememberMeEnabled);
-        
+
         context.setAttribute("rememberMeEnabled", rememberMe);
-        
+
         if (!rememberMeEnabled) {
             ProviderManager provider = (ProviderManager) ctx.getBean("_authenticationManager");
             for (AuthenticationProvider authProvider : provider.getProviders()) {
@@ -25,10 +25,10 @@
                 }
             }
         }
-        
+
         String encryptPasswords = WebloggerConfig.getProperty("passwds.encryption.enabled");
         boolean doEncrypt = Boolean.valueOf(encryptPasswords);
-        
+
         String daoBeanName = "org.springframework.security.authentication.dao.DaoAuthenticationProvider#0";
 
         // for LDAP-only authentication, no daoBeanName (i.e., UserDetailsService) may be provided in security.xml.
@@ -51,7 +51,7 @@
 
         if (WebloggerConfig.getBooleanProperty("securelogin.enabled")) {
             LoginUrlAuthenticationEntryPoint entryPoint =
-                (LoginUrlAuthenticationEntryPoint) ctx.getBean("_formLoginEntryPoint");
+                    (LoginUrlAuthenticationEntryPoint) ctx.getBean("_formLoginEntryPoint");
             entryPoint.setForceHttps(true);
         }
    
