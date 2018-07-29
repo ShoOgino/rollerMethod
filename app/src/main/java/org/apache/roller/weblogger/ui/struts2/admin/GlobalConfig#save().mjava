@@ -13,9 +13,6 @@
             updProp = getProperties().get(propName);
             incomingProp = this.getParameter(updProp.getName());
 
-            log.debug("Checking property [" + propName + "]");
-            log.debug("Request value is [" + incomingProp + "]");
-
             PropertyDef propertyDef = globalConfigDef.getPropertyDef( propName );
             if ( propertyDef == null) {
                 // we're only processing defined properties, i.e. ones shown in the UI
@@ -27,6 +24,7 @@
                 try {
                     Boolean.parseBoolean(incomingProp);
                     updProp.setValue(incomingProp);
+                    log.debug("Set boolean " + propName + " = " + incomingProp);
                 } catch ( Exception nfe ) {
                     String propDesc = bundle.getString( propertyDef.getKey() );
                     addError("ConfigForm.invalidBooleanProperty",
@@ -38,6 +36,7 @@
                 try {
                     Integer.parseInt(incomingProp);
                     updProp.setValue(incomingProp);
+                    log.debug("Set integer " + propName + " = " + incomingProp);
                 } catch ( NumberFormatException nfe ) {
                     String propDesc = bundle.getString( propertyDef.getKey() );
                     addError("ConfigForm.invalidIntegerProperty",
@@ -49,6 +48,7 @@
                 try {
                     Float.parseFloat(incomingProp);
                     updProp.setValue(incomingProp);
+                    log.debug("Set float " + propName + " = " + incomingProp);
                 } catch ( NumberFormatException nfe ) {
                     String propDesc = bundle.getString( propertyDef.getKey() );
                     addError("ConfigForm.invalidFloatProperty",
@@ -57,6 +57,7 @@
 
             } else if ( incomingProp != null ){
                 updProp.setValue( incomingProp.trim() );
+                log.debug("Set something " + propName + " = " + incomingProp);
 
             } else if ( propertyDef.getName().equals("users.comments.plugins") ) {
                 // not a problem
