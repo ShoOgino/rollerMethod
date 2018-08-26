@@ -2,19 +2,18 @@
      * set theme to default stylesheet, ie delete it.
      */
     public String delete() {
-        if (template != null && sharedTheme && !hasActionErrors()) {
+        if (template != null && isSharedTheme() && !hasActionErrors()) {
             try {
                 // Delete template and flush
-                WeblogManager mgr = WebloggerFactory.getWeblogger()
-                        .getWeblogManager();
+                WeblogManager weblogManager = WebloggerFactory.getWeblogger().getWeblogManager();
 
                 // Remove template and page codes
-                mgr.removeTemplate(template);
+                weblogManager.removeTemplate(template);
 
                 Weblog weblog = getActionWeblog();
 
                 // save updated weblog and flush
-                mgr.saveWeblog(weblog);
+                weblogManager.saveWeblog(weblog);
 
                 // notify caches
                 CacheManager.invalidate(template);
@@ -23,15 +22,12 @@
                 WebloggerFactory.getWeblogger().flush();
 
                 // success message
-                addMessage("stylesheetEdit.default.success",
-                        template.getName());
+                addMessage("stylesheetEdit.default.success", template.getName());
 
                 template = null;
-                sharedStylesheetDeleted = true;
 
             } catch (Exception e) {
-                log.error("Error deleting stylesheet template for weblog - "
-                        + getActionWeblog().getHandle(), e);
+                log.error("Error deleting stylesheet template for weblog - " + getActionWeblog().getHandle(), e);
                 addError("generic.error.check.logs");
             }
         }

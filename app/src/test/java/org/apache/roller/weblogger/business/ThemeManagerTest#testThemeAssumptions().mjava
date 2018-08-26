@@ -1,0 +1,10 @@
+    public void testThemeAssumptions() throws Exception {
+
+        ThemeManager themeManager = WebloggerFactory.getWeblogger().getThemeManager();
+        themeManager.initialize();
+
+        assertNotNull( themeManager.getTheme("basic") );
+        assertNotNull( themeManager.getTheme("basic").getStylesheet() );
+        assertNull( themeManager.getTheme("frontpage").getStylesheet() );
+    }
+
