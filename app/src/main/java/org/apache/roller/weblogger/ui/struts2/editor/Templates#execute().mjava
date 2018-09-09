@@ -1,66 +1,62 @@
-	public String execute() {
+    public String execute() {
 
-		// query for templates list
-		try {
+        // query for templates list
+        try {
 
-			// get current list of templates, minus custom stylesheet
-			List<WeblogTemplate> raw = WebloggerFactory.getWeblogger()
-					.getWeblogManager().getTemplates(getActionWeblog());
-			List<WeblogTemplate> pages = new ArrayList<WeblogTemplate>();
-			pages.addAll(raw);
-			// Remove style sheet from list so not to show when theme is
-			// selected in shared theme mode
-			if (getActionWeblog().getTheme().getStylesheet() != null) {
-				pages.remove(WebloggerFactory
-						.getWeblogger()
-						.getWeblogManager()
-						.getTemplateByLink(
-								getActionWeblog(),
-								getActionWeblog().getTheme().getStylesheet()
-										.getLink()));
-			}
-			setTemplates(pages);
+            // get current list of templates, minus custom stylesheet
+            List<WeblogTemplate> raw = WebloggerFactory.getWeblogger()
+                .getWeblogManager().getTemplates(getActionWeblog());
+            List<WeblogTemplate> pages = new ArrayList<WeblogTemplate>();
+            pages.addAll(raw);
 
-			// build list of action types that may be added
-			Map<ComponentType, String> actionsMap = new EnumMap<ComponentType, String>(ComponentType.class);
-			addComponentTypeToMap(actionsMap, ComponentType.CUSTOM);
+            // Remove style sheet from list so not to show when theme is
+            // selected in shared theme mode
+            if (getActionWeblog().getTheme().getStylesheet() != null) {
+                pages.remove(WebloggerFactory.getWeblogger().getWeblogManager()
+                    .getTemplateByLink(getActionWeblog(), getActionWeblog().getTheme().getStylesheet().getLink()));
+            }
+            setTemplates(pages);
 
-			if (WeblogTheme.CUSTOM.equals(getActionWeblog().getEditorTheme())) {
-				// if the weblog is using a custom theme then determine which
-				// action templates are still available to be created
-				addComponentTypeToMap(actionsMap, ComponentType.PERMALINK);
-				addComponentTypeToMap(actionsMap, ComponentType.SEARCH);
-				addComponentTypeToMap(actionsMap, ComponentType.WEBLOG);
-				addComponentTypeToMap(actionsMap, ComponentType.TAGSINDEX);
+            // build list of action types that may be added
+            Map<ComponentType, String> actionsMap = new EnumMap<ComponentType, String>(ComponentType.class);
+            addComponentTypeToMap(actionsMap, ComponentType.CUSTOM);
 
-				for (WeblogTemplate tmpPage : getTemplates()) {
-					if (!ComponentType.CUSTOM.equals(tmpPage
-							.getAction())) {
-						actionsMap.remove(tmpPage.getAction());
-					}
-				}
-			} else {
-				// Make sure we have an option for the default web page
-				addComponentTypeToMap(actionsMap, ComponentType.WEBLOG);
-				if (getNewTmplAction() == null) {
-					setNewTmplAction(ComponentType.WEBLOG);
-				}
-				for (WeblogTemplate tmpPage : getTemplates()) {
-					if (ComponentType.WEBLOG.equals(tmpPage.getAction())) {
-						actionsMap.remove(ComponentType.WEBLOG);
-						setNewTmplAction(null);
-						break;
-					}
-				}
-			}
-			setAvailableActions(actionsMap);
+            if (WeblogTheme.CUSTOM.equals(getActionWeblog().getEditorTheme())) {
 
-		} catch (WebloggerException ex) {
-			log.error("Error getting templates for weblog - "
-					+ getActionWeblog().getHandle(), ex);
-			addError("Error getting template list - check Roller logs");
-		}
+                // if the weblog is using a custom theme then determine which
+                // action templates are still available to be created
+                addComponentTypeToMap(actionsMap, ComponentType.PERMALINK);
+                addComponentTypeToMap(actionsMap, ComponentType.SEARCH);
+                addComponentTypeToMap(actionsMap, ComponentType.WEBLOG);
+                addComponentTypeToMap(actionsMap, ComponentType.TAGSINDEX);
 
-		return LIST;
-	}
+                for (WeblogTemplate tmpPage : getTemplates()) {
+                    if (!ComponentType.CUSTOM.equals(tmpPage.getAction())) {
+                        actionsMap.remove(tmpPage.getAction());
+                    }
+                }
+            } else {
+                // Make sure we have an option for the default web page
+                addComponentTypeToMap(actionsMap, ComponentType.WEBLOG);
+                if (getNewTmplAction() == null) {
+                    setNewTmplAction(ComponentType.WEBLOG);
+                }
+                for (WeblogTemplate tmpPage : getTemplates()) {
+                    if (ComponentType.WEBLOG.equals(tmpPage.getAction())) {
+                        actionsMap.remove(ComponentType.WEBLOG);
+                        setNewTmplAction(null);
+                        break;
+                    }
+                }
+            }
+            setAvailableActions(actionsMap);
+
+        } catch (WebloggerException ex) {
+            log.error("Error getting templates for weblog - "
+                + getActionWeblog().getHandle(), ex);
+            addError("Error getting template list - check Roller logs");
+        }
+
+        return LIST;
+    }
 
