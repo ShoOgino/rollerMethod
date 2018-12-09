@@ -8,10 +8,7 @@
     public List getMostCommentedWeblogEntries(
             List cats, int sinceDays, int length) {
         List results = new ArrayList();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date());
-        cal.add(Calendar.DATE, -1 * sinceDays);
-        Date startDate = cal.getTime();
+        Date startDate = JPAWeblogEntryManagerImpl.getStartDateNow(sinceDays);
         try {            
             Weblogger roller = WebloggerFactory.getWeblogger();
             WeblogEntryManager wmgr = roller.getWeblogEntryManager();

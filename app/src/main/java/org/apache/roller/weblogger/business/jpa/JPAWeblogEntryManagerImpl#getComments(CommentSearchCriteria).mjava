@@ -49,12 +49,7 @@
         }
         
         TypedQuery<WeblogEntryComment> query = strategy.getDynamicQuery(queryString.toString(), WeblogEntryComment.class);
-        if (csc.getOffset() != 0) {
-            query.setFirstResult(csc.getOffset());
-        }
-        if (csc.getMaxResults() != -1) {
-            query.setMaxResults(csc.getMaxResults());
-        }
+        setFirstMax( query, csc.getOffset(), csc.getMaxResults());
         for (int i=0; i<params.size(); i++) {
             query.setParameter(i+1, params.get(i));
         }

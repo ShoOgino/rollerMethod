@@ -37,12 +37,7 @@
                 query.setParameter(1, end);
             }
         }
-        if (offset != 0) {
-            query.setFirstResult(offset);
-        }
-        if (length != -1) {
-            query.setMaxResults(length);
-        }
+        setFirstMax( query, offset, length);
         queryResults = query.getResultList();
         List<StatCount> results = new ArrayList<StatCount>();
         if (queryResults != null) {
