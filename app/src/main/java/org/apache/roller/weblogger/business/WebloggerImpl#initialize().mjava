@@ -12,7 +12,21 @@
         getThreadManager().initialize();
         getIndexManager().initialize();
         getMediaFileManager().initialize();
-        
+
+        // Turn off External DTD support in SAXParser to protect Roller from vulnerability.
+        SAXParserFactory spf = SAXParsers.getSAXParserFactory();
+        try {
+            spf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            spf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+        } catch (ParserConfigurationException | SAXNotRecognizedException | SAXNotSupportedException e) {
+            String message = "Unable to turn off External DTD support in SAXParser. XML-RLC is vulnerable";
+            if ( log.isDebugEnabled() ) {
+                log.error(message, e);
+            } else {
+                log.error(message);
+            }
+        }
+
         try {
             // Initialize ping systems
             // TODO: this should probably be moving inside ping manager initialize() methods?
