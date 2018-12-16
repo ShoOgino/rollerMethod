@@ -1,3 +1,4 @@
+    @Test
     public void testTagAggregates() throws Exception {
         log.info("BEGIN");
         WeblogEntryManager mgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
@@ -106,8 +107,7 @@
                 }
                 Integer expectedCount =
                         expectedWeblogTags.get(stat.getName());
-                assertEquals(stat.getName(),
-                        expectedCount.intValue(), stat.getCount());
+                assertEquals(expectedCount.intValue(), stat.getCount(), stat.getName());
             }
 
             tags = mgr.getTags(null, null, null, 0, -1);
@@ -125,7 +125,7 @@
                     fail("Unexpected tagName.");
                 }
                 Integer expectedCount = expectedSiteTags.get(stat.getName());
-                assertEquals(stat.getName(), expectedCount.intValue(), stat.getCount());
+                assertEquals( expectedCount.intValue(), stat.getCount(), stat.getName());
             }
 
             TestUtils.teardownWeblog(testWeblog2.getId());
