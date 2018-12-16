@@ -1,0 +1,24 @@
+	private String retryActivationCode(UserManager mgr, String inActivationCode) throws WebloggerException {
+		if (mgr.getUserByActivationCode(inActivationCode) != null) {
+		    // In the *extremely* unlikely event that we generate an
+		    // activation code that is already use, we'll retry 3 times.
+		    int numOfRetries = 3;
+		    if (numOfRetries < 1) {
+		        numOfRetries = 1;
+		    }
+		    for (int i = 0; i < numOfRetries; i++) {
+		        inActivationCode = UUID.randomUUID().toString();
+		        if (mgr.getUserByActivationCode(inActivationCode) == null) {
+		            break;
+		        } else {
+		            inActivationCode = null;
+		        }
+		    }
+		    // In more unlikely event that three retries isn't enough
+		    if (inActivationCode == null){
+		        throw new WebloggerException("error.add.user.activationCodeInUse");
+		    }
+		}
+		return inActivationCode;
+	}
+

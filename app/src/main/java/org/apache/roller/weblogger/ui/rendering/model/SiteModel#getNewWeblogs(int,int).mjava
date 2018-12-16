@@ -6,10 +6,7 @@
      */
     public List<WeblogWrapper> getNewWeblogs(int sinceDays, int length) {
         List<WeblogWrapper> results = new ArrayList<WeblogWrapper>();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date());
-        cal.add(Calendar.DATE, -1 * sinceDays);
-        Date startDate = cal.getTime();
+        Date startDate = JPAWeblogEntryManagerImpl.getStartDateNow(sinceDays);
         try {            
             List<Weblog> weblogs = WebloggerFactory.getWeblogger().getWeblogManager().getWeblogs(
                 Boolean.TRUE, Boolean.TRUE, startDate, null, 0, length);
