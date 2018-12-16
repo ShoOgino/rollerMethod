@@ -8,19 +8,7 @@
             String unusedPassword = WebloggerConfig.getProperty("users.passwords.externalAuthValue", "<externalAuth>");
             
             // Preserve username and password, Spring Security case
-            User fromSSOUser = CustomUserRegistry.getUserDetailsFromAuthentication(getServletRequest());
-            if (fromSSOUser != null) {
-                getBean().setPasswordText(unusedPassword);
-                getBean().setPasswordConfirm(unusedPassword);
-                getBean().setUserName(fromSSOUser.getUserName());
-            }
-
-            // Preserve username and password, CMA case             
-            else if (getServletRequest().getUserPrincipal() != null) {
-                getBean().setUserName(getServletRequest().getUserPrincipal().getName());
-                getBean().setPasswordText(unusedPassword);
-                getBean().setPasswordConfirm(unusedPassword);
-            }
+            preserveUsernameAndPassword(unusedPassword);
         }
         
         String allowed = WebloggerConfig.getProperty("username.allowedChars");
@@ -55,33 +43,9 @@
         }
         
         // check that username is not taken
-        if (!StringUtils.isEmpty(getBean().getUserName())) {
-            try {
-                UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
-                if (mgr.getUserByUserName(getBean().getUserName(), null) != null) {
-                    addError("error.add.user.userNameInUse");
-                    // reset user name
-                    getBean().setUserName(null);
-                }
-            } catch (WebloggerException ex) {
-                log.error("error checking for user", ex);
-                addError("generic.error.check.logs");
-            }
-        }
+        checkUsername();
 
         // check that OpenID, if provided, is not taken
-        if (!StringUtils.isEmpty(getBean().getOpenIdUrl())) {
-            try {
-                UserManager mgr = WebloggerFactory.getWeblogger().getUserManager();
-                if (mgr.getUserByOpenIdUrl(getBean().getOpenIdUrl()) != null) {
-                    addError("error.add.user.openIdInUse");
-                    // reset OpenID URL
-                    getBean().setOpenIdUrl(null);
-                }
-            } catch (WebloggerException ex) {
-                log.error("error checking OpenID URL", ex);
-                addError("generic.error.check.logs");
-            }
-        }
+        checkOpenID();
     }
 

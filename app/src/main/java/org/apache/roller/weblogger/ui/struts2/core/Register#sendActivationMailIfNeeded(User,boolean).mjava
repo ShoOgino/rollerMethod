@@ -1,0 +1,13 @@
+	private void sendActivationMailIfNeeded(User ud, boolean activationEnabled) {
+		if (activationEnabled && ud.getActivationCode() != null) {
+		    try {
+		        // send activation mail to the user
+		        MailUtil.sendUserActivationEmail(ud);
+		    } catch (WebloggerException ex) {
+		        log.error("Error sending activation email to - " + ud.getEmailAddress(), ex);
+		    }
+
+		    setActivationStatus("pending");
+		}
+	}
+
