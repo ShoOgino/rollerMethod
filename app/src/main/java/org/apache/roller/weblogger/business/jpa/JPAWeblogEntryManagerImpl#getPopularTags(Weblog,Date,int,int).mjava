@@ -29,12 +29,7 @@
                         "WeblogEntryTagAggregate.getPopularTagsByWebsiteNull", TagStat.class);
             }
         }
-        if (offset != 0) {
-            query.setFirstResult(offset);
-        }
-        if (limit != -1) {
-            query.setMaxResults(limit);
-        }
+        setFirstMax( query, offset, limit);
         queryResults = query.getResultList();
         
         double min = Integer.MAX_VALUE;

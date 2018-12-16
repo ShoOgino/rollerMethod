@@ -1,0 +1,14 @@
+    private static Analyzer instantiateAnalyzer(final Version luceneVersion) {
+        final String className = WebloggerConfig.getProperty("lucene.analyzer.class");
+        try {
+            final Class<?> clazz = Class.forName(className);
+            return (Analyzer) ConstructorUtils.invokeConstructor(clazz, luceneVersion);
+        } catch (final ClassNotFoundException e) {
+            mLogger.error("failed to lookup analyzer class: " + className, e);
+            return instantiateDefaultAnalyzer(luceneVersion);
+        } catch (final NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            mLogger.error("failed to instantiate analyzer: " + className, e);
+            return instantiateDefaultAnalyzer(luceneVersion);
+        }
+    }
+
