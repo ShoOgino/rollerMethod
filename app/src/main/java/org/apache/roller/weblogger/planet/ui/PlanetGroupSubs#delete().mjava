@@ -1,9 +1,9 @@
-    /** 
-     * Delete subscription, reset form  
+    /**
+     * Delete subscription, reset form
      */
     public String delete() {
-        
-        if(getSubUrl() != null) {
+
+        if (getSubUrl() != null) {
             try {
 
                 PlanetManager pmgr = WebloggerFactory.getWeblogger().getPlanetManager();
@@ -21,7 +21,7 @@
                 addMessage("planetSubscription.success.deleted");
 
             } catch (RollerException ex) {
-                LOGGER.error("Error removing planet subscription", ex);
+                log.error("Error removing planet subscription", ex);
                 addError("planetSubscription.error.deleting");
             }
         }

@@ -43,16 +43,14 @@
             if (configTab.getEnabledProperty() != null) {
                 includeTab = getBooleanProperty(configTab.getEnabledProperty());
             } else if (configTab.getDisabledProperty() != null) {
-                includeTab = !getBooleanProperty(configTab
-                        .getDisabledProperty());
+                includeTab = !getBooleanProperty(configTab.getDisabledProperty());
             }
 
             // user roles check
             if (includeTab && configTab.getGlobalPermissionActions() != null
                     && !configTab.getGlobalPermissionActions().isEmpty()) {
                 try {
-                    GlobalPermission perm = new GlobalPermission(
-                            configTab.getGlobalPermissionActions());
+                    GlobalPermission perm = new GlobalPermission( configTab.getGlobalPermissionActions());
                     if (!umgr.checkPermission(perm, user)) {
                         includeTab = false;
                     }
@@ -65,8 +63,7 @@
             // weblog permissions check
             if (includeTab && configTab.getWeblogPermissionActions() != null
                     && !configTab.getWeblogPermissionActions().isEmpty()) {
-                WeblogPermission perm = new WeblogPermission(weblog,
-                        configTab.getWeblogPermissionActions());
+                WeblogPermission perm = new WeblogPermission(weblog, configTab.getWeblogPermissionActions());
                 includeTab = umgr.checkPermission(perm, user);
             }
 
@@ -87,18 +84,15 @@
                     boolean includeItem = true;
 
                     if (configTabItem.getEnabledProperty() != null) {
-                        includeItem = getBooleanProperty(configTabItem
-                                .getEnabledProperty());
+                        includeItem = getBooleanProperty(configTabItem.getEnabledProperty());
                     } else if (configTabItem.getDisabledProperty() != null) {
-                        includeItem = !getBooleanProperty(configTabItem
-                                .getDisabledProperty());
+                        includeItem = !getBooleanProperty(configTabItem.getDisabledProperty());
                     }
 
                     // user roles check
                     if (includeItem
                             && configTabItem.getGlobalPermissionActions() != null
-                            && !configTabItem.getGlobalPermissionActions()
-                                    .isEmpty()) {
+                            && !configTabItem.getGlobalPermissionActions() .isEmpty()) {
                         GlobalPermission perm = new GlobalPermission(
                                 configTabItem.getGlobalPermissionActions());
                         if (!umgr.checkPermission(perm, user)) {
@@ -109,10 +103,8 @@
                     // weblog permissions check
                     if (includeItem
                             && configTabItem.getWeblogPermissionActions() != null
-                            && !configTabItem.getWeblogPermissionActions()
-                                    .isEmpty()) {
-                        WeblogPermission perm = new WeblogPermission(weblog,
-                                configTabItem.getWeblogPermissionActions());
+                            && !configTabItem.getWeblogPermissionActions().isEmpty()) {
+                        WeblogPermission perm = new WeblogPermission(weblog, configTabItem.getWeblogPermissionActions());
                         includeItem = umgr.checkPermission(perm, user);
                     }
 

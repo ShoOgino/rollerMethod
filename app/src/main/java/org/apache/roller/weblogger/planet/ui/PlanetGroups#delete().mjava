@@ -1,24 +1,24 @@
-    /** 
-     * Delete group, reset form  
+    /**
+     * Delete group, reset form
      */
     public String delete() {
-        
-        if(getGroup() != null) {
+
+        if (getGroup() != null) {
             try {
                 PlanetManager pmgr = WebloggerFactory.getWeblogger().getPlanetManager();
                 pmgr.deleteGroup(getGroup());
                 WebloggerFactory.getWeblogger().flush();
-                
+
                 addMessage("planetSubscription.success.deleted");
 
                 setGroup(null);
 
-            } catch(Exception ex) {
-                log.error("Error deleting planet group - "+getBean().getId());
+            } catch (Exception ex) {
+                log.error("Error deleting planet group - " + getBean().getId());
                 addError("Error deleting planet group");
             }
         }
-        
-        return LIST;
+
+        return "groups_list";
     }
 

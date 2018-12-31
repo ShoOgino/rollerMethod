@@ -1,0 +1,14 @@
+    @Override
+    public String getPageTitle() {
+        if (pageTitle == null) {
+            if (createNew) {
+                pageTitle = getText("planetGroupSubs.custom.title.new");
+            } else if (getGroup().getHandle().equals("all")) {
+                pageTitle = getText("planetGroupSubs.default.title");
+            } else {
+                pageTitle = getText("planetGroupSubs.custom.title", new String[] { getGroup().getHandle() } );
+            }
+        }
+        return pageTitle;
+    }
+

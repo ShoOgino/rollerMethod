@@ -1,12 +1,20 @@
     @Override
     public void myPrepare() {
-        
-        if(getPlanet() != null && getBean().getId() != null) {
+
+        if (getBean().getId() != null) {
             try {
                 PlanetManager pmgr = WebloggerFactory.getWeblogger().getPlanetManager();
                 setGroup(pmgr.getGroupById(getBean().getId()));
-            } catch(Exception ex) {
-                log.error("Error looking up planet group - " + getBean().getId(), ex);
+            } catch (Exception ex) {
+                log.error("Error looking up planet group by id: " + getBean().getId(), ex);
+            }
+
+        } else if (bean.getHandle() != null) {
+            try {
+                PlanetManager pmgr = WebloggerFactory.getWeblogger().getPlanetManager();
+                setGroup(pmgr.getGroup(getPlanet(), bean.getHandle()));
+            } catch (Exception ex) {
+                log.error("Error looking up planet group by handle: " + bean.getHandle(), ex);
             }
         }
     }
