@@ -1,29 +1,9 @@
     @Override
     public void setServletRequest(HttpServletRequest request) {
-
-        PlanetManager pmgr = WebloggerFactory.getWeblogger().getPlanetManager();
-        String action = null;
-        try {
-            if (request.getParameter("createNew") != null) {
-                createNew = true;
-
-            } else if (request.getParameter("bean.id") != null) {
-                String groupId = request.getParameter("bean.id");
-                action = "looking up planet group by id: " + groupId;
-                setGroup(pmgr.getGroupById(groupId));
-
-            } else if (request.getParameter("groupHandle") != null) {
-                String groupHandle = request.getParameter("groupHandle");
-                action = "looking up planet group by handle: " + groupHandle;
-                setGroup(pmgr.getGroup(getPlanet(), groupHandle));
-
-            } else {
-                action = "getting default group";
-                setGroup(pmgr.getGroup(getPlanet(), "all"));
-            }
-
-        } catch (Exception ex) {
-            log.error("Error " + action, ex);
+        if (request.getParameter("createNew") != null) {
+            group = new PlanetGroup();
+        } else {
+            group = getGroupFromRequest(request, getPlanet());
         }
     }
 

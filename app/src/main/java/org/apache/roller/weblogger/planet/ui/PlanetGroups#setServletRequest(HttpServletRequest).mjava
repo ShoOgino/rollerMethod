@@ -1,7 +1,5 @@
     @Override
     public void setServletRequest(HttpServletRequest request) {
-        if (request.getParameter("groupHandle") != null) {
-            bean.setHandle(request.getParameter("groupHandle"));
-        }
+        group = PlanetGroupSubs.getGroupFromRequest(request, getPlanet());
     }
 

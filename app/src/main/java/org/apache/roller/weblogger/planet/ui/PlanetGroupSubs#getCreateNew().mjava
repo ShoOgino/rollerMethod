@@ -1,4 +1,14 @@
     public boolean getCreateNew() {
+        if (createNew == null) {
+            PlanetManager pmgr = WebloggerFactory.getWeblogger().getPlanetManager();
+            PlanetGroup existingGroup = null;
+            try {
+                existingGroup = pmgr.getGroupById(group.getId());
+            } catch (RollerException e) {
+                log.error("Error getting group by ID", e);
+            }
+            createNew = (existingGroup == null);
+        }
         return createNew;
     }
 

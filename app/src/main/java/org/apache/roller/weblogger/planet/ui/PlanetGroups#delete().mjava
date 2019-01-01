@@ -1,5 +1,5 @@
     /**
-     * Delete group, reset form
+     * Delete group
      */
     public String delete() {
 
@@ -14,11 +14,11 @@
                 setGroup(null);
 
             } catch (Exception ex) {
-                log.error("Error deleting planet group - " + getBean().getId());
+                log.error("Error deleting planet group - " + getGroup().getId());
                 addError("Error deleting planet group");
             }
         }
 
-        return "groups_list";
+        return LIST;
     }
 

@@ -1,17 +1,17 @@
     /**
      * Validate posted group
      */
-    private void myValidate() {
+    private void validateGroup() {
 
-        if (StringUtils.isEmpty(getBean().getTitle())) {
+        if (StringUtils.isEmpty(getGroup().getTitle())) {
             addError("planetGroups.error.title");
         }
 
-        if (StringUtils.isEmpty(getBean().getHandle())) {
+        if (StringUtils.isEmpty(getGroup().getHandle())) {
             addError("planetGroups.error.handle");
         }
 
-        if (getBean().getHandle() != null && "all".equals(getBean().getHandle())) {
+        if (getGroup().getHandle() != null && "all".equals(getGroup().getHandle())) {
             addError("planetGroups.error.nameReserved");
         }
 
