@@ -4,22 +4,14 @@
     public String delete() {
 
         try {
-            WeblogEntryManager wmgr = WebloggerFactory.getWeblogger()
-                    .getWeblogEntryManager();
+            WeblogEntryManager wmgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
 
             // if search is enabled, we will need to re-index all entries with
             // comments that have been deleted, so build a list of those entries
             Set<WeblogEntry> reindexEntries = new HashSet<WeblogEntry>();
             if (WebloggerConfig.getBooleanProperty("search.enabled")) {
 
-                CommentSearchCriteria csc = new CommentSearchCriteria();
-                csc.setWeblog(getActionWeblog());
-                csc.setEntry(getQueryEntry());
-                csc.setSearchText(getBean().getSearchString());
-                csc.setStartDate(getBean().getStartDate());
-                csc.setEndDate(getBean().getEndDate());
-                csc.setStatus(getBean().getStatus());
-                csc.setReverseChrono(true);
+                CommentSearchCriteria csc = getCommentSearchCriteria();
 
                 List<WeblogEntryComment> targetted = wmgr.getComments(csc);
                 for (WeblogEntryComment comment : targetted) {
@@ -33,8 +25,7 @@
 
             // if we've got entries to reindex then do so
             if (!reindexEntries.isEmpty()) {
-                IndexManager imgr = WebloggerFactory.getWeblogger()
-                        .getIndexManager();
+                IndexManager imgr = WebloggerFactory.getWeblogger().getIndexManager();
                 for (WeblogEntry entry : reindexEntries) {
                     imgr.addEntryReIndexOperation(entry);
                 }

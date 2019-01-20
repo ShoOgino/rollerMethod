@@ -20,10 +20,7 @@
             params.put("bean.approvedString", getBean().getApprovedString());
         }
 
-        return WebloggerFactory
-                .getWeblogger()
-                .getUrlStrategy()
-                .getActionURL("comments", "/roller-ui/authoring",
-                        getActionWeblog().getHandle(), params, false);
+        return WebloggerFactory.getWeblogger().getUrlStrategy()
+            .getActionURL("comments", "/roller-ui/authoring", getActionWeblog().getHandle(), params, false);
     }
 

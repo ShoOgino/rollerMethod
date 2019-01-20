@@ -10,16 +10,9 @@
         getBean().loadCheckboxes(getPager().getItems());
 
         try {
-            WeblogEntryManager wmgr = WebloggerFactory.getWeblogger()
-                    .getWeblogEntryManager();
+            WeblogEntryManager wmgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();
 
-            CommentSearchCriteria csc = new CommentSearchCriteria();
-            csc.setWeblog(getActionWeblog());
-            csc.setSearchText(getBean().getSearchString());
-            csc.setStartDate(getBean().getStartDate());
-            csc.setEndDate(getBean().getEndDate());
-            csc.setStatus(getBean().getStatus());
-            csc.setReverseChrono(true);
+            CommentSearchCriteria csc = getCommentSearchCriteria();
 
             List<WeblogEntryComment> allMatchingComments = wmgr.getComments(csc);
             if (allMatchingComments.size() > COUNT) {
