@@ -27,8 +27,7 @@
             // now go through each theme and load it into a Theme object
             for (String themeName : themenames) {
                 try {
-                    SharedTheme theme = new SharedThemeFromDir(this.themeDir
-                            + File.separator + themeName);
+                    SharedTheme theme = new SharedThemeFromDir(this.themeDir + File.separator + themeName);
                     themeMap.put(theme.getId(), theme);
                     log.info("Loaded theme '" + themeName + "'");
                 } catch (Exception unexpected) {
