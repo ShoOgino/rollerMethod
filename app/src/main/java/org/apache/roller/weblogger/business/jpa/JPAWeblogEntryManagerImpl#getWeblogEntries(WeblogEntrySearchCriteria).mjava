@@ -93,13 +93,7 @@
             query.setParameter(i+1, params.get(i));
         }
         
-        if (wesc.getOffset() != 0) {
-            query.setFirstResult(wesc.getOffset());
-        }
-        if (wesc.getMaxResults() != -1) {
-            query.setMaxResults(wesc.getMaxResults());
-        }
-        
+        setFirstMax( query, wesc.getOffset(), wesc.getMaxResults() );
         return query.getResultList();
     }
 
