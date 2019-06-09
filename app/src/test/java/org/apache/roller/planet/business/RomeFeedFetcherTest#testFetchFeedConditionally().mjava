@@ -1,4 +1,9 @@
     public void testFetchFeedConditionally() throws FetcherException {
+
+        if (shouldSkip()) {
+            return;
+        }
+
         try {
             FeedFetcher feedFetcher = WebloggerFactory.getWeblogger().getFeedFetcher();
             
