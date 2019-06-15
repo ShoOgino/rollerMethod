@@ -1,0 +1,9 @@
+    @Override
+    public void afterAll(ExtensionContext extensionContext) throws Exception {
+        try {
+            derbyStartStopper.stop();
+        } catch (Exception e) {
+            log.warn("Error stopping Derby", e);
+        }
+    }
+

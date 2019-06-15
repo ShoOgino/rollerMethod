@@ -1,0 +1,9 @@
+    @Override
+    public void setServletRequest(HttpServletRequest request) {
+        if (request.getParameter("createNew") != null) {
+            group = new PlanetGroup();
+        } else {
+            group = getGroupFromRequest(request, getPlanet());
+        }
+    }
+

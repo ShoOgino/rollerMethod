@@ -2,6 +2,9 @@
      * Save an existing stylesheet.
      */
     public String save() {
+
+        WeblogManager weblogManager = WebloggerFactory.getWeblogger().getWeblogManager();
+
         if (!hasActionErrors()) {
             try {
 
@@ -12,26 +15,21 @@
 
                 if (stylesheet.getTemplateRendition(RenditionType.STANDARD) != null) {
                     // if we have a template, then set it
-                    CustomTemplateRendition tc = stylesheet
-                            .getTemplateRendition(RenditionType.STANDARD);
+                    CustomTemplateRendition tc = stylesheet.getTemplateRendition(RenditionType.STANDARD);
                     tc.setTemplate(getContentsStandard());
-                    WebloggerFactory.getWeblogger().getWeblogManager()
-                            .saveTemplateRendition(tc);
+                    weblogManager.saveTemplateRendition(tc);
+
                 } else {
                     // otherwise create it, then set it
-                    CustomTemplateRendition tc = new CustomTemplateRendition(
-                            stylesheet, RenditionType.STANDARD);
+                    CustomTemplateRendition tc = new CustomTemplateRendition( stylesheet, RenditionType.STANDARD);
                     tc.setTemplate("");
-                    WebloggerFactory.getWeblogger().getWeblogManager()
-                            .saveTemplateRendition(tc);
+                    weblogManager.saveTemplateRendition(tc);
                 }
 
                 if (stylesheet.getTemplateRendition(RenditionType.MOBILE) != null) {
-                    CustomTemplateRendition tc = stylesheet
-                            .getTemplateRendition(RenditionType.MOBILE);
+                    CustomTemplateRendition tc = stylesheet.getTemplateRendition(RenditionType.MOBILE);
                     tc.setTemplate(getContentsMobile());
-                    WebloggerFactory.getWeblogger().getWeblogManager()
-                            .saveTemplateRendition(tc);
+                    weblogManager.saveTemplateRendition(tc);
                 }
 
                 // save template and flush

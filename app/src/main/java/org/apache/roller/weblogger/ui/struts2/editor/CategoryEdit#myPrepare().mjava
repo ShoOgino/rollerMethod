@@ -1,8 +1,10 @@
     public void myPrepare() {
-        if (StringUtils.isEmpty(bean.getId())) {
+
+        if ( isAdd() ) {
             // Create and initialize new, not-yet-saved category
             category = new WeblogCategory();
             category.setWeblog(getActionWeblog());
+
         } else {
             try {
                 WeblogEntryManager wmgr = WebloggerFactory.getWeblogger().getWeblogEntryManager();

@@ -25,8 +25,7 @@
         ParsedMenu menuConfig = menus.get(menuId);
         if (menuConfig != null) {
             try {
-                menu = buildMenu(menuId, menuConfig, currentAction, user,
-                        weblog);
+                menu = buildMenu(menuId, menuConfig, currentAction, user, weblog);
             } catch (WebloggerException ex) {
                 log.error("ERROR: fethcing user roles", ex);
             }

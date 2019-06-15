@@ -1,0 +1,20 @@
+    /**
+     * Validate posted group
+     */
+    private void validateGroup() {
+
+        if (StringUtils.isEmpty(getGroup().getTitle())) {
+            addError("planetGroups.error.title");
+        }
+
+        if (StringUtils.isEmpty(getGroup().getHandle())) {
+            addError("planetGroups.error.handle");
+        }
+
+        if (getGroup().getHandle() != null && "all".equals(getGroup().getHandle())) {
+            addError("planetGroups.error.nameReserved");
+        }
+
+        // make sure duplicate group handles are prevented
+    }
+

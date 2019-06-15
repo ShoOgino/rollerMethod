@@ -1,0 +1,45 @@
+    public void start() throws Exception {
+
+        System.out.println("==============");
+        System.out.println("Starting Derby");
+        System.out.println("==============");
+
+        System.setProperty("derby.system.home", databaseDir);
+        System.setProperty("derby.drda.portNumber", port);
+        System.setProperty("derby.drda.host", "localhost");
+        System.setProperty("derby.drda.maxThreads", "10");
+        //System.setProperty("derby.drda.logConnections","true");
+
+        NetworkServerControl server = new NetworkServerControl();
+        server.start(new PrintWriter(System.out));
+        try {
+            Thread.sleep(2000);
+        } catch (Exception ignored) {
+        }
+        System.out.println("Runtime Info: " + server.getRuntimeInfo());
+        System.out.println("System Info:  " + server.getSysinfo());
+
+        Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+        Connection conn = DriverManager.getConnection("jdbc:derby:rollerdb;create=true", "APP", "APP");
+
+        // create roller tables
+
+        SQLScriptRunner runner1 = new SQLScriptRunner(
+            databaseScriptsDir
+                + File.separator + "droptables.sql");
+        runner1.runScript(conn, false);
+
+        SQLScriptRunner runner = new SQLScriptRunner(
+            databaseScriptsDir
+                + File.separator + "derby"
+                + File.separator + "createdb.sql");
+        try {
+            runner.runScript(conn, true);
+        } catch (Exception ignored) {
+            for (String message : runner.getMessages()) {
+                System.out.println(message);
+            }
+            ignored.printStackTrace();
+        }
+    }
+

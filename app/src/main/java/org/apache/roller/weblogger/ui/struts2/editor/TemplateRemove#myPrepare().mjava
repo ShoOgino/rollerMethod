@@ -1,13 +1,12 @@
-	public void myPrepare() {
-		if (getRemoveId() != null) {
+    public void myPrepare() {
+        if (StringUtils.isNotEmpty(getRemoveId())) {
             try {
-                setTemplate(WebloggerFactory.getWeblogger().getWeblogManager()
-                        .getTemplate(getRemoveId()));
+                setTemplate(
+                    WebloggerFactory.getWeblogger().getWeblogManager().getTemplate(getRemoveId()));
             } catch (WebloggerException ex) {
-                log.error("Error looking up template by id - " + getRemoveId(),
-                        ex);
+                log.error("Error looking up template by id - " + getRemoveId(), ex);
                 addError("editPages.remove.notFound", getRemoveId());
             }
         }
-	}
+    }
 

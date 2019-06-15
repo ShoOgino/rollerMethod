@@ -1,0 +1,36 @@
+    /**
+     * Save group.
+     */
+    public String saveGroup() {
+
+        validateGroup();
+
+        if (!hasActionErrors()) {
+            try {
+                PlanetManager planetManager = WebloggerFactory.getWeblogger().getPlanetManager();
+
+                PlanetGroup existingGroup = planetManager.getGroup(getPlanet(), getGroup().getHandle());
+
+                if (existingGroup == null) {
+                    log.debug("Adding New Group: " + getGroup().getHandle());
+                    planetManager.saveNewPlanetGroup(getPlanet(), getGroup());
+
+                } else {
+                    log.debug("Updating Existing Group: " + existingGroup.getHandle());
+                    existingGroup.setTitle( getGroup().getTitle() );
+                    existingGroup.setHandle( getGroup().getHandle() );
+                    planetManager.saveGroup(existingGroup);
+                }
+
+                WebloggerFactory.getWeblogger().flush();
+                addMessage("planetGroups.success.saved");
+
+            } catch (Exception ex) {
+                log.error("Error saving planet group", ex);
+                addError("planetGroups.error.saved");
+            }
+        }
+
+        return LIST;
+    }
+

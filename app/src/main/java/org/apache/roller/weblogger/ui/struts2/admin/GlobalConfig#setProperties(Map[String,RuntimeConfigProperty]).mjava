@@ -1,4 +1,7 @@
     public void setProperties(Map<String, RuntimeConfigProperty> properties) {
         this.properties = properties;
+        for (Map.Entry<String, RuntimeConfigProperty> entry : properties.entrySet()) {
+            log.debug("Got " + entry.getKey() + " = " + entry.getValue().getValue());
+        }
     }
 

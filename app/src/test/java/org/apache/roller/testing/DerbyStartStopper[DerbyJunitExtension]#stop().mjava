@@ -1,0 +1,42 @@
+    public void stop() throws Exception {
+
+        String driverURL = "jdbc:derby://localhost:" + port + "/rollerdb";
+
+        Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+        Connection conn = DriverManager.getConnection(driverURL,"APP", "APP");
+
+        // drop Roller tables
+        SQLScriptRunner runner = new SQLScriptRunner(
+            databaseScriptsDir + File.separator + "droptables.sql");
+        runner.runScript(conn, false);
+
+        System.out.println("==============");
+        System.out.println("Stopping Derby");
+        System.out.println("==============");
+
+        try {
+            DriverManager.getConnection(driverURL + ";shutdown=true");
+        } catch (Exception ignored) {
+        }
+
+        System.setProperty("derby.system.home", databaseDir);
+
+        // Network Derby
+        System.setProperty("derby.drda.portNumber", port);
+        System.setProperty("derby.drda.host", "localhost");
+        System.setProperty("derby.drda.maxThreads", "10");
+        //System.setProperty("derby.drda.logConnections","true");
+        NetworkServerControl server = new NetworkServerControl();
+        server.shutdown();
+
+        try {
+            while (true) {
+               server.ping();
+            }
+        } catch (Exception expected) {}
+
+        DriverManager.getConnection("jdbc:derby:;shutdown=true");
+
+        try {Thread.sleep(2000);} catch (Exception ignored) {}
+    }
+

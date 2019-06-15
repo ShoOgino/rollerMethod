@@ -1,35 +1,31 @@
-	/**
-	 * Remove a new template.
-	 */
-	public String remove() {
+    /**
+     * Remove a new template.
+     */
+    public String remove() {
 
-		if (getTemplate() != null) {
+        if (getTemplate() != null) {
             try {
                 if (!getTemplate().isRequired()
-                        || !WeblogTheme.CUSTOM.equals(getActionWeblog()
-                        .getEditorTheme())) {
+                    || !WeblogTheme.CUSTOM.equals(getActionWeblog().getEditorTheme())) {
 
-                    WeblogManager mgr = WebloggerFactory.getWeblogger()
-                            .getWeblogManager();
+                    WeblogManager mgr = WebloggerFactory.getWeblogger().getWeblogManager();
 
                     // if weblog template remove custom style sheet also
-                    if (getTemplate().getName().equals(
-                            WeblogTemplate.DEFAULT_PAGE)) {
+                    if (getTemplate().getName().equals(WeblogTemplate.DEFAULT_PAGE)) {
 
                         Weblog weblog = getActionWeblog();
 
-                        ThemeTemplate stylesheet = getActionWeblog().getTheme()
-                                .getStylesheet();
+                        ThemeTemplate stylesheet = getActionWeblog().getTheme().getStylesheet();
 
                         // Delete style sheet if the same name
                         if (stylesheet != null
-                                && getActionWeblog().getTheme().getStylesheet() != null
-                                && stylesheet.getLink().equals(
-                                getActionWeblog().getTheme()
-                                        .getStylesheet().getLink())) {
+                            && getActionWeblog().getTheme().getStylesheet() != null
+                            && stylesheet.getLink().equals(
+                            getActionWeblog().getTheme().getStylesheet().getLink())) {
+
                             // Same so OK to delete
-                            WeblogTemplate css = mgr.getTemplateByLink(
-                                    getActionWeblog(), stylesheet.getLink());
+                            WeblogTemplate css =
+                                mgr.getTemplateByLink(getActionWeblog(), stylesheet.getLink());
 
                             if (css != null) {
                                 mgr.removeTemplate(css);
@@ -53,6 +49,6 @@
             }
         }
 
-		return "confirm";
-	}
+        return "confirm";
+    }
 

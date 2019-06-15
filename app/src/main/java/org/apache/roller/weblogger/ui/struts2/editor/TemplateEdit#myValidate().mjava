@@ -4,7 +4,7 @@
         if (!getTemplate().getName().equals(getBean().getName())) {
             try {
                 if (WebloggerFactory.getWeblogger().getWeblogManager()
-                    .getTemplateByName(getActionWeblog(), getBean().getName()) != null) {
+                        .getTemplateByName(getActionWeblog(), getBean().getName()) != null) {
                     addError("pagesForm.error.alreadyExists", getBean().getName());
                 }
             } catch (WebloggerException ex) {

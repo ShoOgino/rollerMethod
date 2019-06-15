@@ -1,0 +1,12 @@
+    public PropertyDef getPropertyDef( String name ) {
+        if ( propertyDefs == null ) {
+            propertyDefs = new HashMap<>();
+            for (DisplayGroup displayGroup : getDisplayGroups()) {
+                for (PropertyDef propertyDef : displayGroup.getPropertyDefs()) {
+                    propertyDefs.put( propertyDef.getName(), propertyDef );
+                }
+            }
+        }
+        return propertyDefs.get( name );
+    }
+

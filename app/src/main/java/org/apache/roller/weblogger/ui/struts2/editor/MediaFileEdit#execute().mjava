@@ -5,8 +5,7 @@
      */
     @SkipValidation
     public String execute() {
-        MediaFileManager manager = WebloggerFactory.getWeblogger()
-                .getMediaFileManager();
+        MediaFileManager manager = WebloggerFactory.getWeblogger().getMediaFileManager();
         try {
             MediaFile mediaFile = manager.getMediaFile(getMediaFileId());
             this.bean.copyFrom(mediaFile);

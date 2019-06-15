@@ -6,8 +6,7 @@
      */
     @SkipValidation
     public String execute() {
-        MediaFileManager manager = WebloggerFactory.getWeblogger()
-                .getMediaFileManager();
+        MediaFileManager manager = WebloggerFactory.getWeblogger().getMediaFileManager();
         try {
             MediaFileDirectory directory;
             if (StringUtils.isNotEmpty(this.directoryId)) {
@@ -18,8 +17,7 @@
                         getActionWeblog(), this.directoryName);
 
             } else {
-                directory = manager
-                        .getDefaultMediaFileDirectory(getActionWeblog());
+                directory = manager.getDefaultMediaFileDirectory(getActionWeblog());
             }
             this.directoryId = directory.getId();
             this.directoryName = directory.getName();
