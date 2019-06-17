@@ -1,6 +1,7 @@
     /**
      * Test simple file save/delete.
      */
+    @Test
     public void testFileCRUD() throws Exception {
 
         try {
@@ -27,9 +28,9 @@
         // File should not exist initially
         try {
             FileContent fileContent = fmgr.getFileContent(testWeblog, "bookmarks-file-id");
-            assertTrue("Non-existant file retrieved without any exception", false);
+            assertTrue(false, "Non-existant file retrieved without any exception");
         } catch (FileNotFoundException e) {
-            assertTrue("Exception thrown for non-existant file as expected", true);
+            assertTrue(true, "Exception thrown for non-existant file as expected");
         }
 
         // store a file
@@ -47,9 +48,9 @@
         // File should not exist after delete
         try {
             FileContent fileContent = fmgr.getFileContent(testWeblog, "bookmarks-file-id");
-            assertTrue("Non-existant file retrieved without any exception", false);
+            assertTrue(false, "Non-existant file retrieved without any exception");
         } catch (FileNotFoundException e) {
-            assertTrue("Exception thrown for non-existant file as expected", true);
+            assertTrue(true, "Exception thrown for non-existant file as expected");
         }
 
         TestUtils.endSession(true);

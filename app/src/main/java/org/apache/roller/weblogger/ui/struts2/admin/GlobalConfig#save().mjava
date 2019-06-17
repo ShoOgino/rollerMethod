@@ -5,65 +5,99 @@
         if (!"POST".equals(httpMethod)) {
             return ERROR;
         }
-        
+
         // only set values for properties that are already defined
         RuntimeConfigProperty updProp;
         String incomingProp;
         for (String propName : getProperties().keySet()) {
             updProp = getProperties().get(propName);
             incomingProp = this.getParameter(updProp.getName());
-            
-            log.debug("Checking property ["+propName+"]");
-            log.debug("Request value is ["+incomingProp+"]");
-            
-            // some special treatment for booleans
-            // this is a bit hacky since we are assuming that any prop
-            // with a value of "true" or "false" is meant to be a boolean
-            // it may not always be the case, but we should be okay for now
-            // null check below needed w/Oracle
-            if( updProp.getValue() != null
-                    && (   updProp.getValue().equals("true") || updProp.getValue().equals("false")
-                        || updProp.getValue().equals("on")   || updProp.getValue().equals("off")
-                       )) {
-                if (incomingProp != null && (incomingProp.equalsIgnoreCase("true") || incomingProp.equalsIgnoreCase("on"))) {
-                    incomingProp = "true";
-                }
-                else {
-                    incomingProp = "false";
-                }
+
+            PropertyDef propertyDef = globalConfigDef.getPropertyDef( propName );
+            if ( propertyDef == null) {
+                // we're only processing defined properties, i.e. ones shown in the UI
+                continue;
             }
 
-            // only work on props that were submitted with the request
-            if(incomingProp != null) {
-                log.debug("Setting new value for ["+propName+"]");
-                
-                // NOTE: the old way had some locale sensitive way to do this??
-                updProp.setValue(incomingProp.trim());
+            if ( propertyDef.getType().equals("boolean") ) {
+
+                try {
+                    if (incomingProp == null) {
+                        updProp.setValue("false");
+                    } else {
+                        boolean value = Boolean.parseBoolean(incomingProp);
+                        updProp.setValue(Boolean.toString(value));
+                    }
+                    log.debug("Set boolean " + propName + " = " + incomingProp);
+                } catch ( Exception nfe ) {
+                    String propDesc = bundle.getString( propertyDef.getKey() );
+                    addError("ConfigForm.invalidBooleanProperty",
+                            Arrays.asList(propDesc, propName));
+                }
+
+            } else if ( incomingProp != null && propertyDef.getType().equals("integer") ) {
+
+                try {
+                    Integer.parseInt(incomingProp);
+                    updProp.setValue(incomingProp);
+                    log.debug("Set integer " + propName + " = " + incomingProp);
+                } catch ( NumberFormatException nfe ) {
+                    String propDesc = bundle.getString( propertyDef.getKey() );
+                    addError("ConfigForm.invalidIntegerProperty",
+                            Arrays.asList(propDesc, propName));
+                }
+
+            } else if ( incomingProp != null && propertyDef.getType().equals("float") ) {
+
+                try {
+                    Float.parseFloat(incomingProp);
+                    updProp.setValue(incomingProp);
+                    log.debug("Set float " + propName + " = " + incomingProp);
+                } catch ( NumberFormatException nfe ) {
+                    String propDesc = bundle.getString(propertyDef.getKey());
+                    addError("ConfigForm.invalidFloatProperty",
+                        Arrays.asList(propDesc, propName));
+                }
+
+            } else if ( incomingProp != null ){
+                updProp.setValue( incomingProp.trim() );
+                log.debug("Set something " + propName + " = " + incomingProp);
+
+            } else if ( propertyDef.getName().equals("users.comments.plugins") ) {
+                // not a problem
+
+            } else {
+                addError("ConfigForm.invalidProperty", propName);
             }
+
         }
-        
+
+        if ( this.hasActionErrors() ) {
+            return ERROR;
+        }
+
         // special handling for comment plugins
         String enabledPlugins = "";
-        if(getCommentPlugins().length > 0) {
+        if (getCommentPlugins().length > 0) {
             enabledPlugins = StringUtils.join(getCommentPlugins(), ",");
         }
         RuntimeConfigProperty prop = getProperties().get("users.comments.plugins");
         prop.setValue(enabledPlugins);
-            
+
         try {
             // save 'em and flush
             PropertiesManager mgr = WebloggerFactory.getWeblogger().getPropertiesManager();
             mgr.saveProperties(getProperties());
             WebloggerFactory.getWeblogger().flush();
-            
+
             // notify user of our success
             addMessage("generic.changes.saved");
-            
+
         } catch (WebloggerException ex) {
             log.error("Error saving roller properties", ex);
             addError("generic.error.check.logs");
         }
-                
+
         return SUCCESS;
     }
 

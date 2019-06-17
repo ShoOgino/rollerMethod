@@ -1,90 +1,25 @@
     @Override
     public void myPrepare() {
-        sharedTheme = !WeblogTheme.CUSTOM.equals(getActionWeblog().getEditorTheme());
-        sharedStylesheetDeleted = false;
 
-        ThemeTemplate stylesheet = null;
-        try {
-            stylesheet = getActionWeblog().getTheme().getStylesheet();
-        } catch (WebloggerException ex) {
-            log.error("Error looking up stylesheet on weblog - "
-                    + getActionWeblog().getHandle(), ex);
-        }
+        sharedThemeStylesheet = false;
 
-        if (stylesheet != null) {
-            log.debug("custom stylesheet path is - " + stylesheet.getLink());
+        WeblogManager weblogManager = WebloggerFactory.getWeblogger().getWeblogManager();
+        ThemeManager themeManager = WebloggerFactory.getWeblogger().getThemeManager();
+
+        if ( isSharedTheme() ) {
             try {
-                setTemplate(WebloggerFactory.getWeblogger().getWeblogManager()
-                        .getTemplateByLink(getActionWeblog(), stylesheet.getLink()));
+                SharedTheme themeName = themeManager.getTheme(getActionWeblog().getEditorTheme());
+                sharedThemeStylesheet = themeName.getStylesheet() != null;
 
-                if (getTemplate() == null) {
-                    log.debug("custom stylesheet not found, creating it");
+                ThemeTemplate themeStylesheet  = themeName.getStylesheet();
 
-                    // template doesn't exist yet, so create it
-                    WeblogTemplate stylesheetTmpl = new WeblogTemplate();
-                    stylesheetTmpl.setWeblog(getActionWeblog());
-                    stylesheetTmpl.setAction(ThemeTemplate.ComponentType.STYLESHEET);
-                    stylesheetTmpl.setName(stylesheet.getName());
-                    stylesheetTmpl.setDescription(stylesheet.getDescription());
-                    stylesheetTmpl.setLink(stylesheet.getLink());
-                    stylesheetTmpl.setHidden(false);
-                    stylesheetTmpl.setNavbar(false);
-                    stylesheetTmpl.setLastModified(new Date());
+                WeblogTemplate weblogStylesheet =
+                    weblogManager.getTemplateByLink(getActionWeblog(), themeStylesheet.getLink());
 
-                    // create renditions for available rendition types
-                    TemplateRendition sCode = stylesheet.getTemplateRendition(RenditionType.STANDARD);
-                    if (sCode != null) {
-                        CustomTemplateRendition standardRendition = new CustomTemplateRendition(
-                                stylesheetTmpl, RenditionType.STANDARD);
-                        standardRendition.setTemplate(sCode.getTemplate());
-                        standardRendition.setTemplateLanguage(sCode.getTemplateLanguage());
-                        WebloggerFactory.getWeblogger().getWeblogManager()
-                                .saveTemplateRendition(standardRendition);
-                    }
-
-                    TemplateRendition mCode = stylesheet.getTemplateRendition(RenditionType.MOBILE);
-                    if (mCode != null) {
-                        CustomTemplateRendition mobileRendition = new CustomTemplateRendition(
-                                stylesheetTmpl, RenditionType.MOBILE);
-                        mobileRendition.setTemplate(mCode.getTemplate());
-                        mobileRendition.setTemplateLanguage(mCode
-                                .getTemplateLanguage());
-                        WebloggerFactory.getWeblogger().getWeblogManager()
-                                .saveTemplateRendition(mobileRendition);
-                    }
-
-                    WebloggerFactory.getWeblogger().getWeblogManager()
-                            .saveTemplate(stylesheetTmpl);
-                    setTemplate(stylesheetTmpl);
-                    WebloggerFactory.getWeblogger().flush();
-
-
-                    // success message
-                    addMessage("stylesheetEdit.create.success");
-                }
-
-                // See if we're using a shared theme with a custom stylesheet
-                if (!WeblogTheme.CUSTOM.equals(getActionWeblog()
-                        .getEditorTheme())
-                        && getActionWeblog().getTheme().getStylesheet() != null) {
-
-                    ThemeTemplate override = WebloggerFactory
-                            .getWeblogger()
-                            .getWeblogManager()
-                            .getTemplateByLink(
-                                    getActionWeblog(),
-                                    getActionWeblog().getTheme()
-                                            .getStylesheet().getLink());
-
-                    if (override != null) {
-                        sharedThemeCustomStylesheet = true;
-                    }
-                }
+                setTemplate( weblogStylesheet );
 
             } catch (WebloggerException ex) {
-                log.error(
-                        "Error finding/adding stylesheet template from weblog - "
-                                + getActionWeblog().getHandle(), ex);
+                log.error("Error looking up shared theme name on weblog - " + getActionWeblog().getHandle(), ex);
             }
         }
     }

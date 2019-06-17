@@ -1,0 +1,12 @@
+    private CommentSearchCriteria getCommentSearchCriteria() {
+        CommentSearchCriteria commentSearchCriteria = new CommentSearchCriteria();
+        commentSearchCriteria.setWeblog(getActionWeblog());
+        commentSearchCriteria.setEntry(getQueryEntry());
+        commentSearchCriteria.setSearchText(getBean().getSearchString());
+        commentSearchCriteria.setStartDate(getBean().getStartDate());
+        commentSearchCriteria.setEndDate(getBean().getEndDate());
+        commentSearchCriteria.setStatus(getBean().getStatus());
+        commentSearchCriteria.setReverseChrono(true);
+        return commentSearchCriteria;
+    }
+

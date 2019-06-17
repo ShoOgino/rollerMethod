@@ -11,14 +11,7 @@
                 setQueryEntry(wmgr.getWeblogEntry(getBean().getEntryId()));
             }
 
-            CommentSearchCriteria csc = new CommentSearchCriteria();
-            csc.setWeblog(getActionWeblog());
-            csc.setEntry(getQueryEntry());
-            csc.setSearchText(getBean().getSearchString());
-            csc.setStartDate(getBean().getStartDate());
-            csc.setEndDate(getBean().getEndDate());
-            csc.setStatus(getBean().getStatus());
-            csc.setReverseChrono(true);
+            CommentSearchCriteria csc = getCommentSearchCriteria();
             csc.setOffset(getBean().getPage() * COUNT);
             csc.setMaxResults(COUNT + 1);
 

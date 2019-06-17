@@ -1,4 +1,5 @@
-    protected void tearDown() throws Exception {
+    @AfterEach
+    public void tearDown() throws Exception {
         TestUtils.teardownWeblogEntry(entry.getId());
         //TestUtils.teardownWeblogCategory(weblog.getDefaultCategory().getId());
         TestUtils.teardownWeblog(weblog.getId());

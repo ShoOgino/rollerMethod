@@ -1,0 +1,25 @@
+    static PlanetGroup getGroupFromRequest(HttpServletRequest request, Planet planet) {
+        PlanetManager pmgr = WebloggerFactory.getWeblogger().getPlanetManager();
+        PlanetGroup planetGroup = null;
+        String action = null;
+        try {
+            if (request.getParameter("group.id") != null) {
+                String groupId = request.getParameter("group.id");
+                action = "looking up planet group by id: " + groupId;
+                planetGroup = pmgr.getGroupById(groupId);
+
+            } else if (request.getParameter("group.handle") != null) {
+                String groupHandle = request.getParameter("group.handle");
+                action = "looking up planet group by handle: " + groupHandle;
+                planetGroup = pmgr.getGroup(planet, groupHandle);
+
+            } else {
+                action = "getting default group";
+                planetGroup = pmgr.getGroup(planet, "all");
+            }
+        } catch (Exception ex) {
+            log.error("Error " + action, ex);
+        }
+        return planetGroup;
+    }
+

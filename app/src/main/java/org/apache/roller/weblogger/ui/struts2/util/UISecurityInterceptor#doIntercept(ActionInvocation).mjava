@@ -27,7 +27,7 @@
                     if (log.isDebugEnabled()) {
                         log.debug("DENIED: required user not found");
                     }
-                    return "access-denied";
+                    return UIAction.DENIED;
                 }
 
                 // are we also enforcing global permissions?
@@ -38,10 +38,9 @@
                             theAction.requiredGlobalPermissionActions());
                     if (!umgr.checkPermission(perm, authenticatedUser)) {
                         if (log.isDebugEnabled()) {
-                            log.debug("DENIED: user does not have permission = "
-                                    + perm.toString());
+                            log.debug("DENIED: user does not have permission = " + perm.toString());
                         }
-                        return "access-denied";
+                        return UIAction.DENIED;
                     }
                 }
 
@@ -56,7 +55,7 @@
                                     " unable to process action \"" + ((UIAction) theAction).getActionName() +
                                     "\" because no weblog was defined (Check JSP form provides weblog value.)");
                         }
-                        return "access-denied";
+                        return UIAction.DENIED;
                     }
 
                     // are we also enforcing a specific weblog permission?
@@ -72,7 +71,7 @@
                                 log.debug("DENIED: user does not have required weblog permissions = "
                                         + required);
                             }
-                            return "access-denied";
+                            return UIAction.DENIED;
                         }
                     }
                 }

@@ -1,0 +1,57 @@
+    /**
+     * Test deletion of media file folder association with named queries
+     * 
+     * This test fails but it should not, so Z'ed out not to run.
+     */
+    public void testDirectoryDeleteAssociation() throws Exception {
+
+        User testUser = null;
+        Weblog testWeblog = null;
+        testUser = TestUtils.setupUser("mediaFileTestUser12");
+        testWeblog = TestUtils.setupWeblog("mediaFileTestWeblog12", testUser);
+
+        MediaFileManager mfMgr = WebloggerFactory.getWeblogger()
+                .getMediaFileManager();
+
+        // no need to create root directory, that is done automatically now
+        MediaFileDirectory rootDirectory = mfMgr
+                .getDefaultMediaFileDirectory(testWeblog);
+
+        MediaFileDirectory directory1 = new MediaFileDirectory(testWeblog,
+                "dir1", "directory 1");
+        mfMgr.createMediaFileDirectory(directory1);
+
+        MediaFileDirectory directory2 = new MediaFileDirectory(testWeblog,
+                "dir2", "directory 2");
+        mfMgr.createMediaFileDirectory(directory2);
+
+        MediaFileDirectory directory3 = new MediaFileDirectory(testWeblog,
+                "dir3", "directory 3");
+        mfMgr.createMediaFileDirectory(directory3);
+
+        TestUtils.endSession(true);
+
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
+        rootDirectory = mfMgr.getMediaFileDirectory(rootDirectory.getId());
+
+        List<MediaFileDirectory> childDirectories = testWeblog.getMediaFileDirectories();
+
+        assertEquals(3, childDirectories.size());
+
+        TestUtils.endSession(true);
+
+        testWeblog = TestUtils.getManagedWebsite(testWeblog);
+
+        // Delete folder
+        MediaFileDirectory directoryById = mfMgr
+                .getMediaFileDirectory(directory1.getId());
+
+        mfMgr.removeMediaFileDirectory(directoryById);
+        TestUtils.endSession(true);
+
+        TestUtils.endSession(true);
+        TestUtils.teardownWeblog(testWeblog.getId());
+        TestUtils.teardownUser(testUser.getUserName());
+        TestUtils.endSession(true);
+    }
+

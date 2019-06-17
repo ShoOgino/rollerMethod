@@ -1,3 +1,4 @@
+    @Test
     public void testStorageUpgrade() throws Exception {
         User testUser = null;
         Weblog testWeblog1 = null;
@@ -24,18 +25,18 @@
                     .getMediaFileManager();
             JPAMediaFileManagerImpl mmgr = (JPAMediaFileManagerImpl) mgr;
 
-            assertTrue("Upgrade required", mmgr.isFileStorageUpgradeRequired());
+            assertTrue(mmgr.isFileStorageUpgradeRequired(), "Upgrade required" );
 
             mmgr.upgradeFileStorage();
             TestUtils.endSession(true);
 
-            assertFalse("Upgrade required", mmgr.isFileStorageUpgradeRequired());
+            assertFalse(mmgr.isFileStorageUpgradeRequired(), "Upgrade required" );
 
             // now, let's check to see if migration was successful
 
             MediaFileDirectory root1 = mgr
                     .getDefaultMediaFileDirectory(testWeblog1);
-            assertNotNull("testblog1's mediafile dir exists", root1);
+            assertNotNull(root1, "testblog1's mediafile dir exists" );
             assertNotNull(mgr.getMediaFileByPath(testWeblog1, "/sub1/hawk.jpg"));
             assertNotNull(mgr.getMediaFileByPath(testWeblog1,
                     "/sub2/nasa.jpg"));
@@ -47,7 +48,7 @@
 
             MediaFileDirectory root2 = mgr
                     .getDefaultMediaFileDirectory(testWeblog2);
-            assertNotNull("testblog2's mediafile dir exists", root2);
+            assertNotNull(root2, "testblog2's mediafile dir exists");
             assertNotNull(root2.getMediaFile("amsterdam.jpg"));
             assertNotNull(root2.getMediaFile("p47-thunderbolt.jpg"));
             assertNotNull(root2.getMediaFile("rollerwiki.png"));

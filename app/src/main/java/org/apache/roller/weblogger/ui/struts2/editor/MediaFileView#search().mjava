@@ -10,11 +10,9 @@
         if (valSuccess) {
             MediaFileFilter filter = new MediaFileFilter();
             bean.copyTo(filter);
-            MediaFileManager manager = WebloggerFactory.getWeblogger()
-                    .getMediaFileManager();
+            MediaFileManager manager = WebloggerFactory.getWeblogger().getMediaFileManager();
             try {
-                List<MediaFile> rawResults = manager.searchMediaFiles(
-                        getActionWeblog(), filter);
+                List<MediaFile> rawResults = manager.searchMediaFiles(getActionWeblog(), filter);
                 boolean hasMore = false;
                 List<MediaFile> results = new ArrayList<MediaFile>();
                 results.addAll(rawResults);

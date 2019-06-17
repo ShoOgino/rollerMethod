@@ -1,0 +1,51 @@
+    /**
+     * Save subscription, add to current group
+     */
+    public String saveSubscription() {
+
+        valudateNewSub();
+
+        if (!hasActionErrors()) {
+            try {
+                PlanetManager pmgr = WebloggerFactory.getWeblogger().getPlanetManager();
+
+                // check if this subscription already exists before adding it
+                Subscription sub = pmgr.getSubscription(getSubUrl());
+                if (sub == null) {
+                    log.debug("Adding New Subscription - " + getSubUrl());
+
+                    // sub doesn't exist yet, so we need to fetch it
+                    FeedFetcher fetcher = WebloggerFactory.getWeblogger().getFeedFetcher();
+                    sub = fetcher.fetchSubscription(getSubUrl());
+
+                    // save new sub
+                    pmgr.saveSubscription(sub);
+
+                } else {
+                    // Subscription already exists
+                    log.debug("Adding Existing Subscription - " + getSubUrl());
+                }
+
+                // add the sub to the group
+                group.getSubscriptions().add(sub);
+                sub.getGroups().add(group);
+                pmgr.saveGroup(group);
+                WebloggerFactory.getWeblogger().flush();
+
+                // clear field after success
+                setSubUrl(null);
+
+                addMessage("planetSubscription.success.saved");
+
+            } catch (FetcherException ex) {
+                addError("planetGroupSubs.error.fetchingFeed", ex.getRootCauseMessage());
+
+            } catch (RollerException ex) {
+                log.error("Unexpected error saving subscription", ex);
+                addError("planetGroupSubs.error.duringSave", ex.getRootCauseMessage());
+            }
+        }
+
+        return LIST;
+    }
+

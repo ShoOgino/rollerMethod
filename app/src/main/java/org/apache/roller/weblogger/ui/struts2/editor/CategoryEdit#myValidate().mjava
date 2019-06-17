@@ -1,8 +1,14 @@
     public void myValidate() {
-        // make sure new name is not a duplicate of an existing category
-        if ((isAdd() || !category.getName().equals(bean.getName())) &&
-            category.getWeblog().hasCategory(bean.getName())) {
-            addError("categoryForm.error.duplicateName", bean.getName());
+
+        if ( isAdd() ) {
+            if ( getActionWeblog().hasCategory( bean.getName() ) ) {
+                addError("categoryForm.error.duplicateName", bean.getName());
+            }
+        } else {
+            WeblogCategory wc = getActionWeblog().getWeblogCategory(bean.getName());
+            if ( wc != null && !wc.getId().equals( bean.getId() )) {
+                addError("categoryForm.error.duplicateName", bean.getName());
+            }
         }
     }
 

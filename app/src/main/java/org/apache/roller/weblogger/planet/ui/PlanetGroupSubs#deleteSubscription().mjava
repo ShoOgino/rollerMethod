@@ -1,0 +1,36 @@
+    /**
+     * Delete subscription, reset form
+     */
+    public String deleteSubscription() {
+
+        if (getSubUrl() != null) {
+            try {
+
+                PlanetManager pmgr = WebloggerFactory.getWeblogger().getPlanetManager();
+
+                Subscription sub = pmgr.getSubscription(getSubUrl());
+
+                // remove sub from group
+                getGroup().getSubscriptions().remove(sub);
+                pmgr.saveGroup(getGroup());
+
+                // remove group from sub
+                sub.getGroups().remove(getGroup());
+                pmgr.saveSubscription(sub);
+
+                WebloggerFactory.getWeblogger().flush();
+
+                // clear field after success
+                setSubUrl(null);
+
+                addMessage("planetSubscription.success.deleted");
+
+            } catch (RollerException ex) {
+                log.error("Error removing planet subscription", ex);
+                addError("planetSubscription.error.deleting");
+            }
+        }
+
+        return LIST;
+    }
+

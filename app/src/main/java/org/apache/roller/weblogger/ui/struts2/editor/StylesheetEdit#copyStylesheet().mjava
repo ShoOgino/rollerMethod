@@ -1,0 +1,70 @@
+    public String copyStylesheet() {
+
+        WeblogManager weblogManager = WebloggerFactory.getWeblogger().getWeblogManager();
+        ThemeManager themeManager = WebloggerFactory.getWeblogger().getThemeManager();
+
+        ThemeTemplate stylesheet = null;
+
+        try {
+            SharedTheme themeName = themeManager.getTheme(getActionWeblog().getEditorTheme());
+            stylesheet = themeName.getStylesheet();
+
+        } catch (WebloggerException ex) {
+
+        }
+
+        log.debug("custom stylesheet path is - " + stylesheet.getLink());
+        try {
+            setTemplate( weblogManager.getTemplateByLink(getActionWeblog(), stylesheet.getLink()));
+
+            if (getTemplate() == null) {
+                log.debug("custom stylesheet not found, creating it");
+
+                WeblogTemplate stylesheetTmpl = new WeblogTemplate();
+                stylesheetTmpl.setWeblog(getActionWeblog());
+                stylesheetTmpl.setAction(ComponentType.STYLESHEET);
+                stylesheetTmpl.setName(stylesheet.getName());
+                stylesheetTmpl.setDescription(stylesheet.getDescription());
+                stylesheetTmpl.setLink(stylesheet.getLink());
+                stylesheetTmpl.setHidden(false);
+                stylesheetTmpl.setNavbar(false);
+                stylesheetTmpl.setLastModified(new Date());
+
+                // create renditions for available rendition types: standard and mobile
+
+                TemplateRendition sCode = stylesheet.getTemplateRendition(RenditionType.STANDARD);
+                if (sCode != null) {
+                    CustomTemplateRendition standardRendition = new CustomTemplateRendition(
+                        stylesheetTmpl, RenditionType.STANDARD);
+                    standardRendition.setTemplate(sCode.getTemplate());
+                    standardRendition.setTemplateLanguage(sCode.getTemplateLanguage());
+                    weblogManager.saveTemplateRendition(standardRendition);
+                }
+
+                TemplateRendition mCode = stylesheet.getTemplateRendition(RenditionType.MOBILE);
+                if (mCode != null) {
+                    CustomTemplateRendition mobileRendition =
+                        new CustomTemplateRendition(stylesheetTmpl, RenditionType.MOBILE);
+                    mobileRendition.setTemplate(mCode.getTemplate());
+                    mobileRendition.setTemplateLanguage(mCode.getTemplateLanguage());
+                    weblogManager.saveTemplateRendition(mobileRendition);
+                }
+
+                weblogManager.saveTemplate(stylesheetTmpl);
+                setTemplate(stylesheetTmpl);
+
+                WebloggerFactory.getWeblogger().flush();
+
+                // success message
+                addMessage("stylesheetEdit.create.success");
+            }
+
+        } catch (WebloggerException ex) {
+            log.error("Error finding/adding stylesheet template from weblog - "
+                + getActionWeblog().getHandle(), ex);
+            addError("generic.error.check.logs");
+        }
+
+        return revert();
+    }
+
