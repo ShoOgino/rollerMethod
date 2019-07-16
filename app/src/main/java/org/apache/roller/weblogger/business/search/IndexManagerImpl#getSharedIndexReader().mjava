@@ -2,7 +2,9 @@
         if (reader == null) {
             try {
                 reader = DirectoryReader.open(getIndexDirectory());
-            } catch (IOException e) {
+            } catch (IOException ex) {
+                mLogger.error("Error opening DirectoryReader", ex);
+                throw new RuntimeException(ex);
             }
         }
         return reader;

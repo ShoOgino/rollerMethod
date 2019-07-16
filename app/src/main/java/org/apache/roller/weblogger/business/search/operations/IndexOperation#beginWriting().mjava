@@ -10,8 +10,7 @@
                     IndexManagerImpl.getAnalyzer(),
                     WebloggerConfig.getIntProperty("lucene.analyzer.maxTokenCount"));
 
-            IndexWriterConfig config = new IndexWriterConfig(
-                    FieldConstants.LUCENE_VERSION, analyzer);
+            IndexWriterConfig config = new IndexWriterConfig(analyzer);
 
             writer = new IndexWriter(manager.getIndexDirectory(), config);
 

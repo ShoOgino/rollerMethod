@@ -1,15 +1,16 @@
     private IndexOperation getSaveIndexOperation() {
         return new WriteToIndexOperation(this) {
+            @Override
             public void doRun() {
                 Directory dir = getIndexDirectory();
                 Directory fsdir = getFSDirectory(true);
                 IndexWriter writer = null;
                 try {
-                    IndexWriterConfig config = new IndexWriterConfig(FieldConstants.LUCENE_VERSION,
-                            new LimitTokenCountAnalyzer(IndexManagerImpl.getAnalyzer(),
-                                    IndexWriterConfig.DEFAULT_TERM_INDEX_INTERVAL));
+                    IndexWriterConfig config = new IndexWriterConfig(
+                            new LimitTokenCountAnalyzer(
+                                    IndexManagerImpl.getAnalyzer(), 128));
                     writer = new IndexWriter(fsdir, config);
-                    writer.addIndexes(new Directory[] { dir });
+                    writer.addIndexes(dir);
                     writer.commit();
                     indexConsistencyMarker.delete();
                 } catch (IOException e) {
@@ -17,12 +18,12 @@
                     // Delete the directory, since there was a problem saving the RAM contents
                     getFSDirectory(true);
                 } finally {
-                    try {
-                        if (writer != null) {
+                    if (writer != null) {
+                        try {
                             writer.close();
+                        } catch (IOException ex) {
+                            mLogger.warn("Unable to close IndexWriter.", ex);
                         }
-                    } catch (IOException e1) {
-                        mLogger.warn("Unable to close IndexWriter.");
                     }
                 }
             }

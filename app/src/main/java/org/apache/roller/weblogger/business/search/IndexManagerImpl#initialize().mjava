@@ -1,6 +1,7 @@
     /**
      * @inheritDoc
      */
+    @Override
     public void initialize() throws InitializationException {
 
         // only initialize the index if search is enabled
@@ -30,12 +31,23 @@
             }
 
             if (indexExists()) {
+                FSDirectory filesystem = getFSDirectory(false);
                 if (useRAMIndex) {
-                    Directory filesystem = getFSDirectory(false);
                     try {
                         fRAMindex = new RAMDirectory(filesystem, IOContext.DEFAULT);
                     } catch (IOException e) {
                         mLogger.error("Error creating in-memory index", e);
+                    }
+                } else {
+                    // test if the index is readable, if the version is outdated this might fail and we rebuild.
+                    // TODO: we probably should just eagerly initialize the actual rader here, since we have it already
+                    try {
+                        DirectoryReader readerProbe = DirectoryReader.open(filesystem);
+                        readerProbe.close();
+                    } catch (IOException ex) {
+                        mLogger.warn("Error opening search index, scheduling rebuild.", ex);
+                        getFSDirectory(true);
+                        inconsistentAtStartup = true;
                     }
                 }
             } else {
