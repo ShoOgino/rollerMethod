@@ -1,10 +1,7 @@
     @Override
     public void shutdown() {
-        if (useRAMIndex) {
-            scheduleIndexOperation(getSaveIndexOperation());
-        } else {
-            indexConsistencyMarker.delete();
-        }
+        
+        indexConsistencyMarker.delete();
 
         if (reader != null) {
             try {
