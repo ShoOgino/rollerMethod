@@ -71,8 +71,8 @@
 
         // keyword
         if (data.getPubTime() != null) {
-            doc.add(new StringField(FieldConstants.PUBLISHED, data.getPubTime()
-                    .toString(), Field.Store.YES));
+            // SearchOperation sorts results by date
+            doc.add(new SortedDocValuesField(FieldConstants.PUBLISHED, new BytesRef(data.getPubTime().toString())));
         }
 
         // index Category, needs to be in lower case as it is used in a term

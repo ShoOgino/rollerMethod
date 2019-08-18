@@ -1,16 +1,14 @@
+    @Override
     public void shutdown() {
-        if (useRAMIndex) {
-            scheduleIndexOperation(getSaveIndexOperation());
-        } else {
-            indexConsistencyMarker.delete();
-        }
+        
+        indexConsistencyMarker.delete();
 
-        try {
-            if (reader != null) {
+        if (reader != null) {
+            try {
                 reader.close();
+            } catch (IOException ex) {
+                mLogger.error("Unable to close reader.", ex);
             }
-        } catch (IOException e) {
-            // won't happen, since it was
         }
     }
 

@@ -1,6 +1,7 @@
     /**
      * @inheritDoc
      */
+    @Override
     public void initialize() throws InitializationException {
 
         // only initialize the index if search is enabled
@@ -30,23 +31,22 @@
             }
 
             if (indexExists()) {
-                if (useRAMIndex) {
-                    Directory filesystem = getFSDirectory(false);
-                    try {
-                        fRAMindex = new RAMDirectory(filesystem, IOContext.DEFAULT);
-                    } catch (IOException e) {
-                        mLogger.error("Error creating in-memory index", e);
+
+                // test if the index is readable, if the version is outdated or it fails we rebuild.
+                try {
+                    synchronized(this) {
+                        reader = DirectoryReader.open(getFSDirectory(false));
                     }
+                } catch (IOException ex) {
+                    mLogger.warn("Error opening search index, scheduling rebuild.", ex);
+                    getFSDirectory(true);
+                    inconsistentAtStartup = true;
                 }
             } else {
                 mLogger.debug("Creating index");
                 inconsistentAtStartup = true;
-                if (useRAMIndex) {
-                    fRAMindex = new RAMDirectory();
-                    createIndex(fRAMindex);
-                } else {
-                    createIndex(getFSDirectory(true));
-                }
+
+                createIndex(getFSDirectory(true));
             }
 
             if (isInconsistentAtStartup()) {
