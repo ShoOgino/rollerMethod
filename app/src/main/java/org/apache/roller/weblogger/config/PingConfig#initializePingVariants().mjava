@@ -30,10 +30,13 @@
                 if (!variantOptions.isEmpty()) {
                     CONFIGURED_VARIANTS.put(url, variantOptions);
                 } else {
-                    LOGGER.warn("Ping variant entry for url '" + url + "' has an empty variant options list.  Ignored.");
+                    LOGGER.warn("Ping variant entry for url '" + url
+                            + "' has an empty variant options list.  Ignored.");
                 }
             } else {
-                LOGGER.error("Unable to parse configured ping variant '" + thisVariant + "'. Skipping this variant. Check your setting of the property " + PINGS_VARIANT_OPTIONS_PROP);
+                LOGGER.error("Unable to parse configured ping variant '"
+                        + thisVariant + "'. Skipping this variant. Check your setting of the property "
+                        + PINGS_VARIANT_OPTIONS_PROP);
             }
         }
     }
