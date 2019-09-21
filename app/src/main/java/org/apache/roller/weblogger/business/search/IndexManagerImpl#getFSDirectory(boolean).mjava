@@ -1,10 +1,10 @@
-    private Directory getFSDirectory(boolean delete) {
+    private FSDirectory getFSDirectory(boolean delete) {
 
-        Directory directory = null;
+        FSDirectory directory = null;
 
         try {
 
-            directory = FSDirectory.open(new File(indexDir));
+            directory = FSDirectory.open(Path.of(indexDir));
 
             if (delete && directory != null) {
                 // clear old files
