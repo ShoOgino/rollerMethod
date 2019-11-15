@@ -17,6 +17,7 @@
         // Ignore inaccurate Sonar complaint about useless overriding method:
         //    http://jira.codehaus.org/browse/SONARJAVA-287
         Parser parser = (new HTMLEditorKit() {
+            @Override
             public Parser getParser() {
                 return super.getParser();
             }
