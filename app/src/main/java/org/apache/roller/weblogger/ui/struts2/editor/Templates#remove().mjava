@@ -3,15 +3,22 @@
      */
     public String remove() {
 
-        if (getTemplate() != null) {
+        WeblogTemplate template = null;
+        try {
+            template = WebloggerFactory.getWeblogger().getWeblogManager().getTemplate(getRemoveId());
+        } catch (WebloggerException e) {
+            addError("Error deleting template - check Roller logs");
+        }
+
+        if (template != null) {
             try {
-                if (!getTemplate().isRequired()
+                if (!template.isRequired()
                     || !WeblogTheme.CUSTOM.equals(getActionWeblog().getEditorTheme())) {
 
                     WeblogManager mgr = WebloggerFactory.getWeblogger().getWeblogManager();
 
                     // if weblog template remove custom style sheet also
-                    if (getTemplate().getName().equals(WeblogTemplate.DEFAULT_PAGE)) {
+                    if (template.getName().equals(WeblogTemplate.DEFAULT_PAGE)) {
 
                         Weblog weblog = getActionWeblog();
 
@@ -34,11 +41,10 @@
                     }
 
                     // notify cache
-                    CacheManager.invalidate(getTemplate());
-                    mgr.removeTemplate(getTemplate());
+                    CacheManager.invalidate(template);
+                    mgr.removeTemplate(template);
                     WebloggerFactory.getWeblogger().flush();
 
-                    return SUCCESS;
                 } else {
                     addError("editPages.remove.requiredTemplate");
                 }
@@ -47,8 +53,10 @@
                 log.error("Error removing page - " + getRemoveId(), ex);
                 addError("editPages.remove.error");
             }
+        } else {
+            addError("editPages.remove.error");
         }
 
-        return "confirm";
+        return execute();
     }
 
