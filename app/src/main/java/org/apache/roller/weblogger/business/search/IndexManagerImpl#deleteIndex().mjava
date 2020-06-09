@@ -1,0 +1,14 @@
+    private void deleteIndex() {
+        
+        try(FSDirectory directory = FSDirectory.open(Path.of(indexDir))) {
+            
+            String[] files = directory.listAll();
+            for (String file : files) {
+                Files.delete(Path.of(indexDir, file));
+            }
+        } catch (IOException ex) {
+             mLogger.error("Problem accessing index directory", ex);
+        }
+
+    }
+

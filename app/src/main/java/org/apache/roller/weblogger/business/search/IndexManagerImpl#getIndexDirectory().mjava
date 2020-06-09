@@ -5,6 +5,12 @@
      * @return Directory The directory containing the index, or null if error.
      */
     public Directory getIndexDirectory() {
-        return getFSDirectory(false);
+
+        try {
+            return FSDirectory.open(Path.of(indexDir));
+        } catch (IOException e) {
+            mLogger.error("Problem accessing index directory", e);
+        }
+        return null;
     }
 
