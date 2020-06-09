@@ -1,8 +1,5 @@
     @Override
-    public void removeEntryIndexOperation(WeblogEntry entry)
-            throws WebloggerException {
-        RemoveEntryOperation removeOp = new RemoveEntryOperation(roller, this,
-                entry);
-        executeIndexOperationNow(removeOp);
+    public void removeEntryIndexOperation(WeblogEntry entry) throws WebloggerException {
+        executeIndexOperationNow(new RemoveEntryOperation(roller, this, entry));
     }
 
