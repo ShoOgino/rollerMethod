@@ -1,12 +1,13 @@
 	/**
-	 * Get an InputStream so that the Runtime can build a template with it.
+	 * Get an Reader so that the Runtime can build a template with it.
 	 * 
 	 * @param name
 	 *            name of template
-	 * @return InputStream containing template
+	 * @return Reader containing template
      * @throws ResourceNotFoundException
 	 */
-	public InputStream getResourceStream(String name) {
+    @Override
+    public Reader getResourceReader(String name, String encoding) {
 
 		logger.debug("Looking for: " + name);
 
@@ -42,7 +43,7 @@
 			if (templateCode != null) {
 				contents = templateCode.getTemplate();
 			}
-			return new ByteArrayInputStream(contents.getBytes("UTF-8"));
+			return new InputStreamReader(new ByteArrayInputStream(contents.getBytes(encoding)));
 
 		} catch (UnsupportedEncodingException uex) {
 			// This should never actually happen. We expect UTF-8 in all JRE
@@ -51,7 +52,7 @@
 			logger.error(uex);
 			throw new RuntimeException(uex);
 
-		} catch (Exception re) {
+		} catch (WebloggerException | ResourceNotFoundException re) {
 			String msg = "RollerResourceLoader Error: "
 					+ "database problem trying to load resource " + name;
 			logger.error(msg, re);

@@ -43,6 +43,8 @@
             }
             
             // Generate files: execute control template
+            throw new UnsupportedOperationException("TODO: upgrade to velocity 2.x");
+            /* 
             Generator generator = Generator.getInstance();
             generator.setVelocityEngine(engine);
             generator.setOutputEncoding("UTF-8");
@@ -51,7 +53,7 @@
             generator.setTemplatePath(templateDir);
             generator.parse(mainPage, context);
             generator.shutdown();
-            
+            */
         } catch (Exception e) {
             log.error("ERROR generating planet", e);
         }
