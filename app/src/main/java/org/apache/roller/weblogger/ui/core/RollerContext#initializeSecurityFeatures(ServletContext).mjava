@@ -21,27 +21,14 @@
             }
         }
 
-        String encryptPasswords = WebloggerConfig.getProperty("passwds.encryption.enabled");
-        boolean doEncrypt = Boolean.valueOf(encryptPasswords);
+        encoder = createPasswordEncoder();
 
         String daoBeanName = "org.springframework.security.authentication.dao.DaoAuthenticationProvider#0";
 
         // for LDAP-only authentication, no daoBeanName (i.e., UserDetailsService) may be provided in security.xml.
-        if (doEncrypt && ctx.containsBean(daoBeanName)) {
+        if (ctx.containsBean(daoBeanName)) {
             DaoAuthenticationProvider provider = (DaoAuthenticationProvider) ctx.getBean(daoBeanName);
-            String algorithm = WebloggerConfig.getProperty("passwds.encryption.algorithm");
-            PasswordEncoder encoder = null;
-            if (algorithm.equalsIgnoreCase("SHA")) {
-                encoder = new ShaPasswordEncoder();
-            } else if (algorithm.equalsIgnoreCase("MD5")) {
-                encoder = new Md5PasswordEncoder();
-            } else {
-                log.error("Encryption algorithm '" + algorithm + "' not supported, disabling encryption.");
-            }
-            if (encoder != null) {
-                provider.setPasswordEncoder(encoder);
-                log.info("Password Encryption Algorithm set to '" + algorithm + "'");
-            }
+            provider.setPasswordEncoder(encoder);
         }
 
         if (WebloggerConfig.getBooleanProperty("securelogin.enabled")) {

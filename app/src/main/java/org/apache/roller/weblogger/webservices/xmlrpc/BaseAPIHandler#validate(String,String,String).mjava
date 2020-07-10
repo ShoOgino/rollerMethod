@@ -1,9 +1,9 @@
     //------------------------------------------------------------------------
     /**
      * Returns website, but only if user authenticates and is authorized to edit.
-     * @param blogid   Blogid sent in request (used as website's hanldle)
+     * @param blogid   Blogid sent in request (used as website's handle)
      * @param username Username sent in request
-     * @param password Password sent in requeset
+     * @param password Password sent in request
      */
     protected Weblog validate(String blogid, String username, String password)
     throws Exception {
@@ -13,12 +13,10 @@
         boolean apiEnabled = false;
         boolean weblogFound = false;
         Weblog website = null;
-        User user = null;
         try {
             UserManager userMgr = WebloggerFactory.getWeblogger().getUserManager();
             WeblogManager weblogMgr = WebloggerFactory.getWeblogger().getWeblogManager();
-            user = userMgr.getUserByUserName(username);
-            userEnabled = user.getEnabled();
+            User user = userMgr.getUserByUserName(username);
             
             website = weblogMgr.getWeblogByHandle(blogid);
             if (website != null) {
@@ -29,15 +27,8 @@
             }
             
             if (user != null) {
-                // are passwords encrypted
-                String encrypted =
-                        WebloggerConfig.getProperty("passwds.encryption.enabled");
-                //System.out.print("password was [" + password + "] ");
-                if ("true".equalsIgnoreCase(encrypted)) {
-                    password = Utilities.encodePassword(password,
-                            WebloggerConfig.getProperty("passwds.encryption.algorithm"));
-                }
-                authenticated = password.equals(user.getPassword());
+                userEnabled = user.getEnabled();
+                authenticated = RollerContext.getPasswordEncoder().matches(password, user.getPassword());
             }
         } catch (Exception e) {
             mLogger.error("ERROR internal error validating user", e);

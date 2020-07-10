@@ -2,31 +2,21 @@
     /**
      * Returns true if username/password are valid and user is not disabled.
      * @param username Username sent in request
-     * @param password Password sent in requeset
+     * @param password Password sent in request
      */
     protected boolean validateUser(String username, String password)
     throws Exception {
         boolean authenticated = false;
         boolean enabled = false;
         boolean apiEnabled = false;
-        User user = null;
         try {
             
             UserManager userMgr = WebloggerFactory.getWeblogger().getUserManager();
-            user = userMgr.getUserByUserName(username);
+            User user = userMgr.getUserByUserName(username);
             
-            enabled = user.getEnabled();
-            if (enabled) {
-                // are passwords encrypted?
-                String encrypted =
-                        WebloggerConfig.getProperty("passwds.encryption.enabled");
-                //System.out.print("password was [" + password + "] ");
-                if ("true".equalsIgnoreCase(encrypted)) {
-                    password = Utilities.encodePassword(password,
-                            WebloggerConfig.getProperty("passwds.encryption.algorithm"));
-                }
-                //System.out.println("is now [" + password + "]");
-                authenticated = user.getPassword().equals(password);
+            if (user != null) {
+                enabled = user.getEnabled();
+                authenticated = RollerContext.getPasswordEncoder().matches(password, user.getPassword());
                 
                 apiEnabled = WebloggerRuntimeConfig.getBooleanProperty("webservices.enableXmlRpc");
             }
@@ -34,12 +24,12 @@
             mLogger.error("ERROR internal error validating user", e);
         }
         
-        if ( !enabled ) {
-            throw new XmlRpcNotAuthorizedException(USER_DISABLED_MSG);
-        }
-        
         if ( !authenticated ) {
             throw new XmlRpcNotAuthorizedException(AUTHORIZATION_EXCEPTION_MSG);
+        }
+        
+        if ( !enabled ) {
+            throw new XmlRpcNotAuthorizedException(USER_DISABLED_MSG);
         }
         
         if ( !apiEnabled ) {
