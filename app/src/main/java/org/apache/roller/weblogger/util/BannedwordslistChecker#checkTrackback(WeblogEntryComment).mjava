@@ -1,0 +1,11 @@
+    /** 
+     * Test trackback comment, applying all bannedwordslists, if configured
+     * @return True if comment matches bannedwordslist term
+     */
+    public static boolean checkTrackback(WeblogEntryComment comment) {
+        if (WebloggerConfig.getBooleanProperty("site.bannedwordslist.enable.trackbacks")) {
+            return testComment(comment);
+        }
+        return false;
+    }
+

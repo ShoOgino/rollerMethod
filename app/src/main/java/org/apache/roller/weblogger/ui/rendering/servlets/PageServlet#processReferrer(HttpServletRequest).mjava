@@ -81,7 +81,7 @@
                     String requestSite = requestUrl.substring(0, lastSlash);
 
                     if (!referrerUrl.matches(requestSite + ".*\\.rol.*") &&
-                            BlacklistChecker.checkReferrer(pageRequest.getWeblog(), referrerUrl)) {
+                            BannedwordslistChecker.checkReferrer(pageRequest.getWeblog(), referrerUrl)) {
                         return true;
                     }
                 }

@@ -1,0 +1,22 @@
+    /** 
+     * Test comment against built in bannedwordslist, site bannedwordslist and website bannedwordslist
+     * @return True if comment matches bannedwordslist term
+     */
+    private static boolean testComment(WeblogEntryComment c) {
+        boolean ret = false;
+        List<String> stringRules = new ArrayList<String>();
+        List<Pattern> regexRules = new ArrayList<Pattern>();
+        Weblog website = c.getWeblogEntry().getWebsite();
+        Bannedwordslist.populateSpamRules(
+            website.getBannedwordslist(), stringRules, regexRules,
+            WebloggerRuntimeConfig.getProperty("spam.bannedwordslist"));
+        Bannedwordslist bannedwordslist = Bannedwordslist.getBannedwordslist();
+        if (   bannedwordslist.isBannedwordslisted(c.getUrl(),     stringRules, regexRules)
+            || bannedwordslist.isBannedwordslisted(c.getEmail(),   stringRules, regexRules)
+            || bannedwordslist.isBannedwordslisted(c.getName(),    stringRules, regexRules)
+            || bannedwordslist.isBannedwordslisted(c.getContent(), stringRules, regexRules)) {
+            ret = true;
+        }
+        return ret;
+    }        
+

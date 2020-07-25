@@ -1,6 +1,6 @@
     public int validate(WeblogEntryComment comment, RollerMessages messages) {
-        if (BlacklistChecker.checkComment(comment)) {
-            messages.addError("comment.validator.blacklistMessage");
+        if (BannedwordslistChecker.checkComment(comment)) {
+            messages.addError("comment.validator.bannedwordslistMessage");
             return 0;
         }
         return RollerConstants.PERCENT_100;

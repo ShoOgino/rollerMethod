@@ -1,0 +1,9 @@
+    @BeforeEach
+    public void setUp() throws Exception {
+        bannedwordslist = Bannedwordslist.getBannedwordslist();
+        String FS = File.separator;
+        String bannedwordslistName = System.getProperty("project.build.directory") + FS + "classes" + "bannedwordslist.txt";
+        log.info("Processing Banned-words list file: " + bannedwordslistName);
+        bannedwordslist.loadBannedwordslistFromFile(bannedwordslistName);
+    }
+

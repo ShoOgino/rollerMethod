@@ -1,16 +1,16 @@
-    /** Download the MT blacklist from the web to our uploads directory. */
-    private boolean downloadBlacklist() {
+    /** Download the MT bannedwordslist from the web to our uploads directory. */
+    private boolean downloadBannedwordslist() {
         
-        boolean blacklistUpdated = false;
+        boolean bannedwordslistUpdated = false;
         try {
-            mLogger.debug("Attempting to download MT blacklist");
+            mLogger.debug("Attempting to download MT bannedwordslist");
             
-            URL url = new URL(BLACKLIST_URL);
+            URL url = new URL(BANNEDWORDSLIST_URL);
             HttpURLConnection connection = 
                     (HttpURLConnection) url.openConnection();
             
             // after spending way too much time debugging i've discovered
-            // that the blacklist server is selective based on the User-Agent
+            // that the bannedwordslist server is selective based on the User-Agent
             // header.  without this header set i always get a 403 response :(
             connection.setRequestProperty("User-Agent", "Mozilla/5.0");
             
@@ -25,7 +25,7 @@
             
             // did the connection return NotModified? If so, no need to parse
             if (responseCode == HttpURLConnection.HTTP_NOT_MODIFIED) {
-                mLogger.debug("MT blacklist site says we are current");
+                mLogger.debug("MT bannedwordslist site says we are current");
                 return false;
             }
             
@@ -42,14 +42,14 @@
                         this.lastModified.getTime()));
                 mLogger.debug("MT last modified = " + lastModifiedLong);
                 
-                // save the new blacklist
+                // save the new bannedwordslist
                 InputStream instream = connection.getInputStream();
                 
                 String uploadDir = WebloggerConfig.getProperty("uploads.dir");
-                String path = uploadDir + File.separator + BLACKLIST_FILE;
+                String path = uploadDir + File.separator + BANNEDWORDSLIST_FILE;
                 FileOutputStream outstream = new FileOutputStream(path);
                 
-                mLogger.debug("writing updated MT blacklist to "+path);
+                mLogger.debug("writing updated MT bannedwordslist to "+path);
                 
                 // read from url and write to file
                 byte[] buf = new byte[RollerConstants.FOUR_KB_IN_BYTES];
@@ -61,18 +61,18 @@
                 outstream.close();
                 instream.close();
                 
-                blacklistUpdated = true;
+                bannedwordslistUpdated = true;
                 
-                mLogger.debug("MT blacklist download completed.");
+                mLogger.debug("MT bannedwordslist download completed.");
                 
             } else {
-                mLogger.debug("blacklist *NOT* saved, assuming we are current");
+                mLogger.debug("bannedwordslist *NOT* saved, assuming we are current");
             }
             
         } catch (Exception e) {
-            mLogger.error("error downloading blacklist", e);
+            mLogger.error("error downloading bannedwordslist", e);
         }
         
-        return blacklistUpdated;
+        return bannedwordslistUpdated;
     }
 
