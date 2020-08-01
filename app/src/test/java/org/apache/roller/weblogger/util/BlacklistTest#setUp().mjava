@@ -1,9 +1,0 @@
-    @BeforeEach
-    public void setUp() throws Exception {
-        blacklist = Blacklist.getBlacklist();
-        String FS = File.separator;
-        String blacklistName = System.getProperty("project.build.directory") + FS + "classes" + "blacklist.txt";
-        log.info("Processing Blacklist file: " + blacklistName);
-        blacklist.loadBlacklistFromFile(blacklistName);
-    }
-

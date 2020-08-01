@@ -1,0 +1,11 @@
+    /**
+     * Test comment, applying all bannedwordslists, if configured
+     * @return True if comment matches bannedwordslist term
+     */
+    public static boolean checkComment(WeblogEntryComment comment) {
+        if (WebloggerConfig.getBooleanProperty("site.bannedwordslist.enable.comments")) {
+            return testComment(comment);
+        }
+        return false;
+    }
+

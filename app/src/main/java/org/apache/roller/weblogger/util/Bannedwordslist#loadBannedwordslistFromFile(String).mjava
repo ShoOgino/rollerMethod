@@ -1,0 +1,45 @@
+    /**
+     * Load the MT bannedwordslist from the file system.
+     * We look for a previously downloaded version of the bannedwordslist first and
+     * if it's not found then we load the default bannedwordslist packed with Roller.
+     * Only public for purposes of unit testing.
+     */
+    public void loadBannedwordslistFromFile(String bannedwordslistFilePath) {
+        
+        InputStream txtStream;
+        try {
+            String path = bannedwordslistFilePath;
+            if (path == null) {
+                String uploadDir = WebloggerConfig.getProperty("uploads.dir");
+                path = uploadDir + File.separator + BANNEDWORDSLIST_FILE;
+            }
+            File bannedwordslistFile = new File(path);
+            
+            // check our lastModified date to see if we need to re-read the file
+            if (this.lastModified != null &&
+                    this.lastModified.getTime() >= bannedwordslistFile.lastModified()) {
+                mLogger.debug("Bannedwordslist is current, no need to load again");
+                return;
+            } else {
+                this.lastModified = new Date(bannedwordslistFile.lastModified());
+            }           
+            txtStream = new FileInputStream(bannedwordslistFile);
+            mLogger.info("Loading bannedwordslist from "+path);
+            
+        } catch (Exception e) {
+            // Roller keeps a copy in the webapp just in case
+            txtStream = getClass().getResourceAsStream("/bannedwordslist.txt");
+            mLogger.warn(
+                "Couldn't find downloaded bannedwordslist, loaded bannedwordslist.txt from classpath instead");
+        }
+        
+        if (txtStream != null) {
+            readFromStream(txtStream, false);
+        } else {
+            mLogger.error("Couldn't load a bannedwordslist file from anywhere, "
+                        + "this means bannedwordslist checking is disabled for now.");
+        }
+        mLogger.info("Number of bannedwordslist string rules: "+bannedwordslistStr.size());
+        mLogger.info("Number of bannedwordslist regex rules: "+bannedwordslistRegex.size());
+    }
+
