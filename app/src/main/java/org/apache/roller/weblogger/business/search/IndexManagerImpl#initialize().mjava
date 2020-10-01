@@ -7,15 +7,11 @@
         // only initialize the index if search is enabled
         if (this.searchEnabled) {
 
-            // 1. If inconsistency marker exists.
-            // Delete index
-            // 2. if we're using RAM index
-            // load ram index wrapper around index
-            //
+            // delete index if inconsistency marker exists
             if (indexConsistencyMarker.exists()) {
-                getFSDirectory(true);
-                inconsistentAtStartup = true;
                 mLogger.debug("Index inconsistent: marker exists");
+                inconsistentAtStartup = true;
+                deleteIndex();
             } else {
                 try {
                     File makeIndexDir = new File(indexDir);
@@ -35,26 +31,26 @@
                 // test if the index is readable, if the version is outdated or it fails we rebuild.
                 try {
                     synchronized(this) {
-                        reader = DirectoryReader.open(getFSDirectory(false));
+                        reader = DirectoryReader.open(getIndexDirectory());
                     }
-                } catch (IOException ex) {
-                    mLogger.warn("Error opening search index, scheduling rebuild.", ex);
-                    getFSDirectory(true);
+                } catch (IOException | IllegalArgumentException ex) {  // IAE for incompatible codecs
+                    mLogger.warn("Failed to open search index, scheduling rebuild.", ex);
                     inconsistentAtStartup = true;
+                    deleteIndex();
                 }
             } else {
                 mLogger.debug("Creating index");
                 inconsistentAtStartup = true;
-
-                createIndex(getFSDirectory(true));
+                deleteIndex();
+                createIndex(getIndexDirectory());
             }
 
-            if (isInconsistentAtStartup()) {
+            if (inconsistentAtStartup) {
                 mLogger.info("Index was inconsistent. Rebuilding index in the background...");
                 try {
                     rebuildWebsiteIndex();
-                } catch (WebloggerException e) {
-                    mLogger.error("ERROR: scheduling re-index operation");
+                } catch (WebloggerException ex) {
+                    mLogger.error("ERROR: scheduling re-index operation", ex);
                 }
             } else {
                 mLogger.info("Index initialized and ready for use.");
