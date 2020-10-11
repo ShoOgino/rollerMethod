@@ -1,0 +1,16 @@
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        try {
+            chain.doFilter(request, response);
+        } catch (RequestRejectedException ex) {
+            
+            HttpServletRequest req = (HttpServletRequest) request;
+            HttpServletResponse resp = (HttpServletResponse) response;
+            
+            // url seems to be dangerous -> log & 404
+            log.warn("request rejected: " + req.getRequestURL() + " cause: " + ex.getMessage());
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            
+        }
+    }
+

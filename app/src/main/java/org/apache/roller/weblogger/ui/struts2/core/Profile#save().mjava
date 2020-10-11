@@ -40,21 +40,13 @@
             if (authMethod.equals(AuthMethod.OPENID) ||
                     (authMethod.equals(AuthMethod.DB_OPENID) && !StringUtils.isEmpty(bean.getOpenIdUrl()))) {
                 String randomString = RandomStringUtils.randomAlphanumeric(255);
-                try {
-                    existingUser.resetPassword(randomString);
-                } catch (WebloggerException e) {
-                    addMessage("yourProfile.passwordResetError");
-                }
+                existingUser.resetPassword(randomString);
             }
 
             // If user set both password and passwordConfirm then reset password
             if (!StringUtils.isEmpty(getBean().getPasswordText()) &&
                     !StringUtils.isEmpty(getBean().getPasswordConfirm())) {
-                try {
-                    existingUser.resetPassword(getBean().getPasswordText());
-                } catch (WebloggerException e) {
-                    addMessage("yourProfile.passwordResetError");
-                }
+                existingUser.resetPassword(getBean().getPasswordText());
             }
 
             try {
